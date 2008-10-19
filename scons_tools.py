@@ -53,8 +53,12 @@ def createEnvironment(libs_list=[], force_debug=False, root_dir=sys.path[0]):
 	#	if ARGUMENTS.get('mingw'):
 	#		Tool('mingw')(env)
 
-	# Pour l'instant : on FORCE l'utilisation de MinGW (TODO : permettre VC++...)
-	Tool('mingw')(env)
+	if sys.platform == 'win32':
+		# Pour l'instant : on FORCE l'utilisation de MinGW (TODO : permettre VC++...)
+		Tool('mingw')(env)
+
+		# On evite l'inclusion par windows.h de choses inutiles dont winsock.h (conflit avec winsock2.h)
+		env.Append(CPPDEFINES=['WIN32', 'WIN32_LEAN_AND_MEAN'])
 
 	env.Append(CCFLAGS=['-Wall'])
 
@@ -76,9 +80,6 @@ def createEnvironment(libs_list=[], force_debug=False, root_dir=sys.path[0]):
 		elif lib == 'sockets':
 			if sys.platform == 'win32':
 				env.Append(LIBS=['ws2_32'])
-
-				# Eviter l'inclusion par windows.h de choses inutiles dont winsock.h (conflit avec winsock2.h)
-				env.Append(CPPDEFINES=['WIN32', 'WIN32_LEAN_AND_MEAN'])
 
 		elif lib == 'Robot':
 			env.Append(CPPPATH=[root_dir + '/robot/Robot'])
