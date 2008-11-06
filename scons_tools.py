@@ -35,7 +35,7 @@ def getRootDir():
 # d'une facon un peu bidouillee de recuperer le nom du repertoire ou se trouve scons_tools.py
 # (si on utilise directement sys.path[0], on recupere le dossier ou se trouve le SConstruct qui a appele
 # createEnvironment())
-def createEnvironment(libs_list=[], force_debug=False, root_dir=sys.path[0]):
+def createEnvironment(libs_list=[], force_debug=False):
 	command_line_options = Options()
 	#command_line_options.AddOptions(['mingw', 'Utiliser le compilateur MinGW a la place de VC++.' +
 	#								'Utile si vous avez l\'erreur \'cl\' n\'est pas reconnu en tant que commande interne.'])
