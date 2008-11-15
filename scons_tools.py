@@ -93,6 +93,13 @@ def createEnvironment(libs_list=[], force_debug=False):
 			env.Append(LIBPATH=[root_dir + '/robot/2008/lib'])
 			env.Append(LIBS=['Robot2008'])
 
+
+		elif lib == 'Robot2009':
+			env.Append(CPPPATH=[root_dir + '/robot/2009/libRobot2009',
+								root_dir + '/robot/Cartes'])
+			env.Append(LIBPATH=[root_dir + '/robot/2009/libRobot2009'])
+			env.Append(LIBS=['Robot2009'])
+
 		elif lib == 'Webcam':
 			env.Append(CPPPATH=[root_dir + '/webcam'])
 			env.Append(LIBPATH=[root_dir + '/webcam'])
