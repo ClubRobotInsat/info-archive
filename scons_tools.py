@@ -118,7 +118,9 @@ def createEnvironment(libs_list=[], force_debug=False):
 			env.Append(CPPPATH=[root_dir + '/webcam'])
 			env.Append(LIBPATH=[root_dir + '/webcam'])
 			env.Append(LIBS=['Webcam'])
-			env.ParseConfig('pkg-config libv4l1 --libs --cflags')
+			# N'existe pas et inutile sous Windows
+			if sys.platform == 'linux2':
+				env.ParseConfig('pkg-config libv4l1 --libs --cflags')
 
 		elif lib == 'glfw':
 			env.Append(CPPPATH=[root_dir + '/simulateur/GLFW/include'])
