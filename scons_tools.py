@@ -43,6 +43,10 @@ def createEnvironment(libs_list=[], force_debug=False):
 	#								'Utile si vous avez l\'erreur \'cl\' n\'est pas reconnu en tant que commande interne.'])
 	command_line_options.AddOptions(['debug', 'Compiler en mode debug'])
 
+	if sys.platform == 'linux2':
+		command_line_options.AddOptions(['no_libv4l1',
+			'Ne pas utiliser la libv4l1 (pour la libWebcam : utilise alors V4L1 plutot que V4L2'])
+
 	env = Environment(options = command_line_options)
 
 	# Generation du texte affiche lors du "scons --help".
@@ -119,7 +123,8 @@ def createEnvironment(libs_list=[], force_debug=False):
 			env.Append(LIBPATH=[root_dir + '/webcam'])
 			env.Append(LIBS=['Webcam'])
 			# N'existe pas et inutile sous Windows
-			if sys.platform == 'linux2':
+			if sys.platform == 'linux2' and str(ARGUMENTS.get('no_libv4l1')) != '1':
+				env.Append(CPPDEFINES=['USE_LIBV4L1'])
 				env.ParseConfig('pkg-config libv4l1 --libs --cflags')
 
 		elif lib == 'glfw':
