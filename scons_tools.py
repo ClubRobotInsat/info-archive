@@ -33,6 +33,7 @@ def getRootDir():
 # - 'Webcam'
 # - 'glfw'
 # - 'libcwiimote'
+# - 'boost_python'
 # NB : l'argument "root_dir" ne doit JAMAIS etre passe en parametre par l'utilisateur ; il s'agit juste
 # d'une facon un peu bidouillee de recuperer le nom du repertoire ou se trouve scons_tools.py
 # (si on utilise directement sys.path[0], on recupere le dossier ou se trouve le SConstruct qui a appele
@@ -144,4 +145,19 @@ def createEnvironment(libs_list=[], force_debug=False):
 				env.Append(LIBPATH=[root_dir + '/robot/libcwiimote/src'])
 				env.Append(LIBS=['cwiimote', 'bluetooth', 'm'])
 
+		elif lib == 'boost_python':
+			# Ajout de libpython et de Boost.Python
+			if sys.platform == 'win32':
+				env.Append(CPPPATH=[root_dir + '/python/include', root_dir + '/boost/include'])
+				env.Append(LIBPATH=[root_dir + '/python/lib-win32', root_dir + '/boost/lib-win32'])
+				env.Append(LIBS=['boost_python-mgw34-mt-1_35', 'python25'])
+				
+			elif sys.platform == 'linux2' and str(ARGUMENTS.get('no_python')) != '1':
+				env.Append(CPPPATH=[root_dir + '/boost/include'])
+				env.Append(LIBPATH=[root_dir + '/boost/lib'])
+				
+				# /usr/lib/libboost_python.a est fourni par le paquet libboost-python-dev sous Ubuntu
+				env.Append(LIBS=['boost_python'])
+				env.ParseConfig('python-config --cflags')
+				env.ParseConfig('python-config --libs')
 	return env
