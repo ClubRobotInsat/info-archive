@@ -148,13 +148,13 @@ def createEnvironment(libs_list=[], force_debug=False):
 		elif lib == 'boost_python':
 			# Ajout de libpython et de Boost.Python
 			if sys.platform == 'win32':
-				env.Append(CPPPATH=[root_dir + '/python/include', root_dir + '/boost/include'])
-				env.Append(LIBPATH=[root_dir + '/python/lib-win32', root_dir + '/boost/lib-win32'])
+				env.Append(CPPPATH=[root_dir + '/robot/python/include', root_dir + '/robot/boost/include'])
+				env.Append(LIBPATH=[root_dir + '/robot/python/lib-win32', root_dir + '/robot/boost/lib-win32'])
 				env.Append(LIBS=['boost_python-mgw34-mt-1_35', 'python25'])
 				
 			elif sys.platform == 'linux2' and str(ARGUMENTS.get('no_python')) != '1':
-				env.Append(CPPPATH=[root_dir + '/boost/include'])
-				env.Append(LIBPATH=[root_dir + '/boost/lib'])
+				env.Append(CPPPATH=[root_dir + '/robot/boost/include'])
+				env.Append(LIBPATH=[root_dir + '/robot/boost/lib'])
 				
 				# /usr/lib/libboost_python.a est fourni par le paquet libboost-python-dev sous Ubuntu
 				env.Append(LIBS=['boost_python'])
