@@ -13,7 +13,7 @@ def getSuffix():
 	else:
 		return ''
 
-# Fonction qui remonte l'arborescence depuis le repertoireen cours et renvoie le nom du repertoire qui
+# Fonction qui remonte l'arborescence depuis le repertoire en cours et renvoie le nom du repertoire qui
 # contient THIS_FILE_NAME.
 def getRootDir():
 	final_dir = os.path.abspath(sys.path[0])	# NB : sys.path[0] ou os.getcwd()...
@@ -27,17 +27,15 @@ def getRootDir():
 # - 'pthreads'
 # - 'sockets'
 # - 'Robot'
+# - 'Strategie'
 # - 'Cartes'
 # - 'Outils'
 # - 'Robot2008'
+# - 'Robot2009'
 # - 'Webcam'
 # - 'glfw'
 # - 'libcwiimote'
 # - 'boost_python'
-# NB : l'argument "root_dir" ne doit JAMAIS etre passe en parametre par l'utilisateur ; il s'agit juste
-# d'une facon un peu bidouillee de recuperer le nom du repertoire ou se trouve scons_tools.py
-# (si on utilise directement sys.path[0], on recupere le dossier ou se trouve le SConstruct qui a appele
-# createEnvironment())
 def createEnvironment(libs_list=[], force_debug=False):
 	command_line_options = Options()
 	#command_line_options.AddOptions(['mingw', 'Utiliser le compilateur MinGW a la place de VC++.' +
@@ -47,6 +45,8 @@ def createEnvironment(libs_list=[], force_debug=False):
 	if sys.platform == 'linux2':
 		command_line_options.AddOptions(['no_libv4l1',
 			'Ne pas utiliser la libv4l1 (pour la libWebcam : utilise alors V4L1 plutot que V4L2'])
+		command_line_options.AddOptions(['with_python',
+			'Ajoute l\'exportation vers Python et la creation d\'un terminal Python l\'utilisant'])
 
 	env = Environment(options = command_line_options)
 
@@ -93,6 +93,11 @@ def createEnvironment(libs_list=[], force_debug=False):
 			env.Append(LIBPATH=[root_dir + '/robot/Robot'])
 			env.Append(LIBS=['Robot'])
 
+		elif lib == 'Strategie':
+			env.Append(CPPPATH=[root_dir + '/robot/Strategie'])
+			env.Append(LIBPATH=[root_dir + '/robot/Strategie'])
+			env.Append(LIBS=['Strategie'])
+
 		elif lib == 'Cartes':
 			env.Append(CPPPATH=[root_dir + '/robot/Cartes'])
 			env.Append(LIBPATH=[root_dir + '/robot/Cartes'])
@@ -101,6 +106,7 @@ def createEnvironment(libs_list=[], force_debug=False):
 		elif lib == 'Outils':
 			env.Append(CPPPATH=[root_dir + '/robot/Outils',
 								root_dir + '/robot/Outils/Clock',
+								root_dir + '/robot/Outils/log',
 								root_dir + '/robot/Outils/MathToolbox'])
 			env.Append(LIBPATH=[root_dir + '/robot/Outils'])
 			env.Append(LIBS=['Outils'])
@@ -151,11 +157,11 @@ def createEnvironment(libs_list=[], force_debug=False):
 				env.Append(CPPPATH=[root_dir + '/robot/python/include', root_dir + '/robot/boost/include'])
 				env.Append(LIBPATH=[root_dir + '/robot/python/lib-win32', root_dir + '/robot/boost/lib-win32'])
 				env.Append(LIBS=['boost_python-mgw34-mt-1_35', 'python25'])
-				
-			elif sys.platform == 'linux2' and str(ARGUMENTS.get('no_python')) != '1':
-				env.Append(CPPPATH=[root_dir + '/robot/boost/include'])
+
+			elif sys.platform == 'linux2' and str(ARGUMENTS.get('with_python')) == '1':
 				env.Append(LIBPATH=[root_dir + '/robot/boost/lib'])
-				
+				# NB : les headers de Boost.Python utilises sont ceux de /usr/include
+
 				# /usr/lib/libboost_python.a est fourni par le paquet libboost-python-dev sous Ubuntu
 				env.Append(LIBS=['boost_python'])
 				env.ParseConfig('python-config --cflags')
