@@ -164,6 +164,6 @@ def createEnvironment(libs_list=[], force_debug=False):
 
 				# /usr/lib/libboost_python.a est fourni par le paquet libboost-python-dev sous Ubuntu
 				env.Append(LIBS=['boost_python'])
-				env.ParseConfig('python-config --cflags')
+				env.ParseConfig('python-config --includes')
 				env.ParseConfig('python-config --libs')
 	return env
