@@ -18,7 +18,8 @@ enum IdCarte
 	ID_CARTE_CONTACTEURS = 11,	// tirette, couleur equipe, recalage ascenceur,
 								// recalage detect adv, recalage robot avant / arriere
 	ID_CARTE_CONTACTEURS_RESERVE = 12, // Au cas ou
-	ID_CARTE_BALISE_XBEE = 13,
+	ID_CARTE_BARRIERE_IR = 13,
+	ID_CARTE_BALISE_XBEE = 14,
 	ID_BROADCAST = 15,
 	ID_CARTE_DEBUG       = 17
 };
