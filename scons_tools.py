@@ -129,10 +129,17 @@ def createEnvironment(libs_list=[], force_debug=False):
 			env.Append(CPPPATH=[root_dir + '/webcam'])
 			env.Append(LIBPATH=[root_dir + '/webcam'])
 			env.Append(LIBS=['Webcam'])
-			# N'existe pas et inutile sous Windows
+
+			# Ajout ou pas de la libv4l1 sous Linux (pour permettre d'utiliser V4L2 avec
+			# l'API de V4L1)
 			if sys.platform == 'linux2' and str(ARGUMENTS.get('no_libv4l1')) != '1':
 				env.Append(CPPDEFINES=['USE_LIBV4L1'])
 				env.ParseConfig('pkg-config libv4l1 --libs --cflags')
+
+			# Sous Linux toujours : on utilise la libuvc
+			if sys.platform == 'linux2':
+				env.Append(LIBS=['uvc'])
+				env.Append(LIBPATH=[root_dir + '/webcam/libuvc'])
 
 		elif lib == 'glfw':
 			env.Append(CPPPATH=[root_dir + '/simulateur/GLFW/include'])
