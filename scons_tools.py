@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 # scons_tools.py
 
 import sys
@@ -106,10 +107,17 @@ def createEnvironment(libs_list=[], force_debug=False):
 		elif lib == 'Outils':
 			env.Append(CPPPATH=[root_dir + '/robot/Outils',
 								root_dir + '/robot/Outils/Clock',
+								root_dir + '/robot/Outils/debug',
 								root_dir + '/robot/Outils/log',
 								root_dir + '/robot/Outils/MathToolbox'])
 			env.Append(LIBPATH=[root_dir + '/robot/Outils'])
 			env.Append(LIBS=['Outils'])
+
+			# Ajout de GTK+, si demandé, pour CGTKwin
+			if sys.platform == 'linux2' and str(ARGUMENTS.get('gtk')) == '1':
+				env.ParseConfig('pkg-config gtk+-2.0 --libs --cflags')
+			else:
+				env.Append(CPPDEFINES=['GTKWIN_DISABLE'])
 
 		elif lib == 'Robot2008':
 			env.Append(CPPPATH=[root_dir + '/robot/2008/lib',
@@ -173,4 +181,10 @@ def createEnvironment(libs_list=[], force_debug=False):
 				env.Append(LIBS=['boost_python'])
 				env.ParseConfig('python-config --includes')
 				env.ParseConfig('python-config --libs')
+		elif lib == 'gtk':
+			# Ajout de GTK+, si demandé, pour CGTKwin
+			if sys.platform == 'linux2' and str(ARGUMENTS.get('gtk')) == '1':
+				env.ParseConfig('pkg-config gtk+-2.0 --libs --cflags')
+			else:
+				env.Append(CPPDEFINES=['GTKWIN_DISABLE'])
 	return env
