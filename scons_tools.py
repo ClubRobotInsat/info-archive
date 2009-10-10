@@ -33,6 +33,7 @@ def getRootDir():
 # - 'Outils'
 # - 'Robot2008'
 # - 'Robot2009'
+# - 'Robot2010'
 # - 'Webcam'
 # - 'Webcam2009'
 # - 'glfw'
@@ -133,6 +134,12 @@ def createEnvironment(libs_list=[], force_debug=False):
 								root_dir + '/robot/Cartes'])
 			env.Append(LIBPATH=[root_dir + '/robot/2009/libRobot2009'])
 			env.Append(LIBS=['Robot2009'])
+
+		elif lib == 'Robot2010':
+			env.Append(CPPPATH=[root_dir + '/robot/2010/libRobot2010',
+								root_dir + '/robot/Cartes'])
+			env.Append(LIBPATH=[root_dir + '/robot/2010/libRobot2010'])
+			env.Append(LIBS=['Robot2010'])
 
 		elif lib == 'Webcam':
 			env.Append(CPPPATH=[root_dir + '/webcam'])
