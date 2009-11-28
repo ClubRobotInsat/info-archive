@@ -48,7 +48,7 @@ def createEnvironment(libs_list=[], force_debug=False):
 	if sys.platform == 'linux2':
 		command_line_options.AddOptions(['no_libv4l1',
 			'Ne pas utiliser la libv4l1 (pour la libWebcam : utilise alors V4L1 plutot que V4L2'])
-		command_line_options.AddOptions(['with_python',
+		command_line_options.AddOptions(['python',
 			'Ajoute l\'exportation vers Python et la creation d\'un terminal Python l\'utilisant'])
 
 	env = Environment(options = command_line_options)
@@ -186,12 +186,15 @@ def createEnvironment(libs_list=[], force_debug=False):
 				env.Append(LIBPATH=[root_dir + '/robot/python/lib-win32', root_dir + '/robot/boost/lib-win32'])
 				env.Append(LIBS=['boost_python-mgw34-mt-1_35', 'python25'])
 
-			elif sys.platform == 'linux2' and str(ARGUMENTS.get('with_python')) == '1':
+			elif sys.platform == 'linux2' and str(ARGUMENTS.get('python')) == '1':
 				env.Append(LIBPATH=[root_dir + '/robot/boost/lib'])
 				# NB : les headers de Boost.Python utilises sont ceux de /usr/include
 
-				# /usr/lib/libboost_python.a est fourni par le paquet libboost-python-dev sous Ubuntu
-				env.Append(LIBS=['boost_python'])
+				# /usr/lib/libboost_python[-mt].a est fourni par le paquet libboost-python-dev sous Ubuntu
+				if os.path.isfile('/usr/lib/libboost_python-mt.a'):	# depend de la version d'Ubuntu...
+					env.Append(LIBS=['boost_python-mt'])
+				else:
+					env.Append(LIBS=['boost_python'])
 				env.ParseConfig('python-config --includes')
 				env.ParseConfig('python-config --libs')
 		elif lib == 'gtk':
