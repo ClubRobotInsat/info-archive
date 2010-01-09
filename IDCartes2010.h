@@ -11,5 +11,9 @@ enum IdCarte
 	ID_BROADCAST = 15,
 	ID_CARTE_DEBUG_DESSIN = 16,
 	ID_CARTE_DEBUG = 17,
-	ID_CARTE_LCD = 18
+	ID_CARTE_LCD = 18,
+
+	// TODO
+	// Ajouter la cate Balises
+	ID_CARTE_BALISE_INERTIELLE = 2
 };
