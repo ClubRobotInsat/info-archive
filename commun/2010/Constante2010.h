@@ -20,15 +20,17 @@ enum NumContacteur
 // Indices des differents servos de ramassage dans le tableau de positions
 enum ServosRamassage{
 	SERVO_RAMASSAGE_PINCE_GAUCHE = 0,
-	SERVO_RAMASSAGE_PINCE_DROITE = 1,
-	SERVO_RAMASSAGE_ORANGE_GAUCHE = 2,
-	SERVO_RAMASSAGE_ORANGE_DROIT = 3
+	SERVO_RAMASSAGE_PINCE_DROITE,
+	SERVO_RAMASSAGE_ORANGE_GAUCHE,
+	SERVO_RAMASSAGE_ORANGE_DROIT,
+	SERVO_RAMASSAGE_NBR
 };
 
 // Indices des differents servos de depose dans le tableau de positions
 enum ServosDepose{
 	SERVO_DEPOSE_PORTE = 0,
-	SERVO_DEPOSE_PLANCHER = 1
+	SERVO_DEPOSE_PLANCHER,
+	SERVO_DEPOSE_NBR
 };
 
 // Numeros des positions des servos et moteur asservi et les roles associes
@@ -40,7 +42,7 @@ enum PositionPlancherNum {POSITION_PLANCHER_HAUT = 0, POSITION_PLANCHER_BAS, POS
 enum PositionAscenseurNum {POSITION_ASCENSEUR_BAS = 0, POSITION_ASCENSEUR_HAUT, POSITION_ASCENSEUR_NBR};
 
 // angles des positions des servos et moteur asservi (en valeur interne du servo)
-static const int positionPince[POSITION_PINCE_NBR] = {1900, 1239};
+static const int positionPinceGauche[POSITION_PINCE_NBR] = {1900, 1239};
 static const int positionPinceDroite[POSITION_PINCE_NBR] = {1200, 1810};
 static const int positionAscenseur[POSITION_ASCENSEUR_NBR] = {100, 200};
 static const int positionFourcheGauche[POSITION_FOURCHE_NBR] = {1900, 1239};
