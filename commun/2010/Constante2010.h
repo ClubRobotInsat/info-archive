@@ -5,6 +5,22 @@
 
 enum CouleurRobot {COULEUR_ROBOT_JAUNE = 1, COULEUR_ROBOT_BLEU = 0};
 
+// Pour permettre l'affichage d'une Couleur :
+inline std::ostream& operator<<(std::ostream& os, const CouleurRobot& couleur)
+{
+	switch(couleur)
+	{
+	case COULEUR_ROBOT_JAUNE:
+		os << "jaune";
+		break;
+	case COULEUR_ROBOT_BLEU:
+		os << "bleu";
+		break;
+	}
+
+	return os;
+}
+
 // Numeros des contacteurs et les roles associes
 enum NumContacteur
 {
