@@ -3,6 +3,8 @@
 #ifndef CONSTANTE_2010_H
 #define CONSTANTE_2010_H
 
+#include <iostream>
+
 enum CouleurRobot {COULEUR_ROBOT_JAUNE = 1, COULEUR_ROBOT_BLEU = 0};
 
 // Pour permettre l'affichage d'une Couleur :
