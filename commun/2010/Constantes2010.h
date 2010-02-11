@@ -35,7 +35,9 @@ enum NumContacteur
 };
 
 // Numeros des servos
-// Indices des differents servos de ramassage dans le tableau de positions
+
+// VERSION 5 SERVOS PAR CARTE
+/*// Indices des differents servos de ramassage dans le tableau de positions
 enum ServosRamassage{
 	SERVO_RAMASSAGE_PINCE_GAUCHE = 0,
 	SERVO_RAMASSAGE_PINCE_DROITE,
@@ -49,6 +51,23 @@ enum ServosDepose{
 	SERVO_DEPOSE_PORTE = 0,
 	SERVO_DEPOSE_PLANCHER,
 	SERVO_DEPOSE_NBR
+};*/
+
+// VERSION 3 SERVOS PAR CARTE
+// Indices des differents servos de ramassage dans le tableau de positions
+enum ServosAvant{
+	SERVO_AVANT_PINCE_GAUCHE = 0,
+	SERVO_AVANT_PINCE_DROITE,
+	SERVO_AVANT_PLANCHER,
+	SERVO_AVANT_NBR
+};
+
+// Indices des differents servos de depose dans le tableau de positions
+enum ServosArriere{
+	SERVO_ARRIERE_PORTE = 0,
+	SERVO_ARRIERE_ORANGE_GAUCHE,
+	SERVO_ARRIERE_ORANGE_DROIT,
+	SERVO_ARRIERE_NBR
 };
 
 // Numeros des positions des servos et moteur asservi et les roles associes
