@@ -7,6 +7,19 @@ from SCons.Script import *
 
 THIS_FILE_NAME = 'scons_tools.py'
 
+# Aucune idee de comment ca marche (ca s'appelle "generator functions"...), mais
+# ca definit une fonction new_id() qui renvoie une nouvelle valeur chaque fois que
+# l'on l'appelle (1, 2, ...etc). On utilise ca pour eviter d'appeler Help()
+# a chaque appel de createEnvironment() pour ne pas polluer la console lors d'un
+# scons --help
+def generator():
+	i = 0
+	while True:
+		i += 1
+		yield i
+
+new_id = generator().next
+
 # Renvoie '' ou '_d' suivant s'il y a eu "scons debug=1" ou pas.
 def getSuffix():
 	if ARGUMENTS.get('debug', 0):
@@ -40,21 +53,21 @@ def getRootDir():
 # - 'libcwiimote'
 # - 'boost_python'
 def createEnvironment(libs_list=[], force_debug=False):
-	command_line_options = Options()
-	#command_line_options.AddOptions(['mingw', 'Utiliser le compilateur MinGW a la place de VC++.' +
-	#								'Utile si vous avez l\'erreur \'cl\' n\'est pas reconnu en tant que commande interne.'])
-	command_line_options.AddOptions(['debug', 'Compiler en mode debug'])
+	vars = Variables()
+	vars.AddVariables(	#BoolVariable('mingw',    'Utiliser le compilateur MinGW a la place de VC++.' +
+						#			'Utile si vous avez l\'erreur \'cl\' n\'est pas reconnu en tant que commande interne\'.', 1),
+						BoolVariable('debug',     'Definit DEBUG et rajoute l\'option -g', 0),
+						BoolVariable('python',    'Ajoute le support Python', 0),
+						BoolVariable('gtk',       'Le simulateur utilise la fenetre de debug en GTK (sous Linux)', 0),
+						BoolVariable('nobuiltin', 'Utiliser les librairies deja installees sur le systeme pour le simulateur', 0),
+						BoolVariable('nolibv4l1', 'Ne pas utiliser la libv4l1 pour la webcam sous Linux (utilise V4L1 plutot que V4L2)', 0))
+	env = Environment(variables = vars)
 
-	if sys.platform == 'linux2':
-		command_line_options.AddOptions(['no_libv4l1',
-			'Ne pas utiliser la libv4l1 (pour la libWebcam : utilise alors V4L1 plutot que V4L2'])
-		command_line_options.AddOptions(['python',
-			'Ajoute l\'exportation vers Python et la creation d\'un terminal Python l\'utilisant'])
-
-	env = Environment(options = command_line_options)
-
-	# Generation du texte affiche lors du "scons --help".
-	Help(command_line_options.GenerateHelpText(env))
+	# Generation du texte affiche lors du "scons --help", uniquement lors du premier appel a createEnvironment():
+	if new_id() == 1:
+		Help(vars.GenerateHelpText(env))
+	else:
+		Help('')
 
 	root_dir = getRootDir()
 
