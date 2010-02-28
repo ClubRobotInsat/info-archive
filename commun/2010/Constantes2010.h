@@ -70,19 +70,27 @@ enum ServosArriere{
 	SERVO_ARRIERE_NBR
 };
 
+// Incides des telemetres servant au ramassage
+enum TelemetresRamassage{
+    TELEMETRE_PINCE = 0,
+    TELEMETRE_COMPTAGE_BAS,
+    TELEMETRE_COMPTAGE_HAUT,
+    TELEMETRE_RAMASSAGE_NBR
+};
+
 // Numeros des positions des servos et moteur asservi et les roles associes
 enum PositionPinceNum {POSITION_PINCE_OUVERTE = 0, POSITION_PINCE_FERMEE, POSITION_PINCE_NBR};
 enum PositionFourcheNum {POSITION_FOURCHE_BAS = 0, POSITION_FOURCHE_MILIEU, POSITION_FOURCHE_HAUT, POSITION_FOURCHE_NBR};
 enum NumeroFourcheNum {NUMERO_FOURCHE_GAUCHE = 0, NUMERO_FOURCHE_DROITE, NUMERO_FOURCHE_NBR};
 enum PositionPorteNum {POSITION_PORTE_OUVERTE = 0, POSITION_PORTE_FERMEE, POSITION_PORTE_NBR};
 enum PositionPlancherNum {POSITION_PLANCHER_HAUT = 0, POSITION_PLANCHER_BAS, POSITION_PLANCHER_NBR};
-enum PositionAscenseurNum {POSITION_ASCENSEUR_BAS = 0, POSITION_ASCENSEUR_HAUT, POSITION_ASCENSEUR_NBR};
+enum PositionAscenseurNum {POSITION_ASCENSEUR_BAS = 0, POSITION_ASCENSEUR_ARRACHAGE, POSITION_ASCENSEUR_HAUT, POSITION_ASCENSEUR_NBR};
 
 // angles des positions des servos et moteur asservi (en valeur interne du servo)
 static const int positionPinceGauche[POSITION_PINCE_NBR] = {600, 1210};			// ouvert, ferme
 static const int positionPinceDroite[POSITION_PINCE_NBR] = {2375, 1750};		// ouvert, ferme
 // 1995 tomate environ
-static const int positionAscenseur[POSITION_ASCENSEUR_NBR] = {45, 155}; 		// bas, haut (position bascule)), hauteur en mm
+static const int positionAscenseur[POSITION_ASCENSEUR_NBR] = {45, 100 /* TODO : mettre la bonne valeur*/, 155}; 		// bas, pos arrachage, haut (position bascule)), hauteur en mm
 static const int positionFourcheGauche[POSITION_FOURCHE_NBR] = {1600, 2050, 2500}; // bas, milieu, haut
 static const int positionFourcheDroite[POSITION_FOURCHE_NBR] = {1600, 2050, 2500}; // bas, milieu, haut
 static const int positionPorte[POSITION_PORTE_NBR] = {1600, 2500}; 				// ouvert, ferme
@@ -90,5 +98,8 @@ static const int positionPlancher[POSITION_PLANCHER_NBR] = {1580, 1370}; 		// ha
 
 static const int deltaPositionServo = 20; // > resolution sur les valeurs de position des servos
 static const int deltaPositionMoteur = 5; // > resolution sur les valeurs de position des moteurs (TODO : mettre la bonne valeur)
+
+// seuils de detection des telemetres de ramassage
+static const int seuilTelemetreRamassage[TELEMETRE_RAMASSAGE_NBR] = {10, 10, 10}; // TODO : mettre les bonnes valeurs
 
 #endif //CONSTANTE_2010_H
