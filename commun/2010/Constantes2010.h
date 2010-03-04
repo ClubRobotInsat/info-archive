@@ -91,8 +91,8 @@ static const int positionPinceGauche[POSITION_PINCE_NBR] = {600, 1210};			// ouv
 static const int positionPinceDroite[POSITION_PINCE_NBR] = {2375, 1750};		// ouvert, ferme
 // 1995 tomate environ
 static const int positionAscenseur[POSITION_ASCENSEUR_NBR] = {45, 100 /* TODO : mettre la bonne valeur*/, 155}; 		// bas, pos arrachage, haut (position bascule)), hauteur en mm
-static const int positionFourcheGauche[POSITION_FOURCHE_NBR] = {1600, 2050, 2500}; // bas, milieu, haut
-static const int positionFourcheDroite[POSITION_FOURCHE_NBR] = {1600, 2050, 2500}; // bas, milieu, haut
+static const int positionFourcheGauche[POSITION_FOURCHE_NBR] = {1400, 2050, 2500}; // bas, milieu, haut
+static const int positionFourcheDroite[POSITION_FOURCHE_NBR] = {1400, 2050, 2500}; // bas, milieu, haut
 static const int positionPorte[POSITION_PORTE_NBR] = {1600, 2500}; 				// ouvert, ferme
 static const int positionPlancher[POSITION_PLANCHER_NBR] = {1580, 1370}; 		// haut = releve, bas = abaisse
 
