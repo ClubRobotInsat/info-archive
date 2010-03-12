@@ -87,14 +87,14 @@ enum PositionPlancherNum {POSITION_PLANCHER_HAUT = 0, POSITION_PLANCHER_BAS, POS
 enum PositionAscenseurNum {POSITION_ASCENSEUR_BAS = 0, POSITION_ASCENSEUR_ARRACHAGE, POSITION_ASCENSEUR_HAUT, POSITION_ASCENSEUR_RECALAGE, POSITION_ASCENSEUR_NBR};
 
 // angles des positions des servos et moteur asservi (en valeur interne du servo)
-static const int positionPinceGauche[POSITION_PINCE_NBR] = {600, 950, 800, 1000, 1210};			// ouvert, bloque tomate, bloque mais, ferme
-static const int positionPinceDroite[POSITION_PINCE_NBR] = {2375, 2175, 2150, 1950, 1750};		// ouvert, bloque tomate, bloque mais, ferme
+static const int positionPinceGauche[POSITION_PINCE_NBR] = {600, 950, 800, 1000, 1300};			// ouvert, bloque tomate, bloque mais, ferme
+static const int positionPinceDroite[POSITION_PINCE_NBR] = {2375, 2175, 2150, 1950, 1650};		// ouvert, bloque tomate, bloque mais, ferme
 // 1995 tomate environ
-static const int positionAscenseur[POSITION_ASCENSEUR_NBR] = {-10000, -8000 /* TODO : mettre la bonne valeur*/, -1500, -1000}; 		// bas, pos arrachage, haut (position bascule)), hauteur en mm
-static const int positionFourcheGauche[POSITION_FOURCHE_NBR] = {1400, 2050, 2500}; // bas, milieu, haut
-static const int positionFourcheDroite[POSITION_FOURCHE_NBR] = {1400, 2050, 2500}; // bas, milieu, haut
-static const int positionPorte[POSITION_PORTE_NBR] = {1600, 2140}; 				// ouvert, ferme
-static const int positionPlancher[POSITION_PLANCHER_NBR] = {1580, 1370}; 		// haut = releve, bas = abaisse
+static const int positionAscenseur[POSITION_ASCENSEUR_NBR] = {-10000, -6000 /* TODO : mettre la bonne valeur*/, -1500, -1000}; 		// bas, pos arrachage, haut (position bascule)), hauteur en mm
+static const int positionFourcheGauche[POSITION_FOURCHE_NBR] = {1650, 2050, 2450}; // bas, milieu, haut
+static const int positionFourcheDroite[POSITION_FOURCHE_NBR] = {1400, 860, 560}; // bas, milieu, haut
+static const int positionPorte[POSITION_PORTE_NBR] = {1250, 2140}; 				// ouvert, ferme
+static const int positionPlancher[POSITION_PLANCHER_NBR] = {1550, 2340}; 		// haut = releve, bas = abaisse
 
 static const int deltaPositionServo = 20; // > resolution sur les valeurs de position des servos
 static const int deltaPositionMoteur = 5; // > resolution sur les valeurs de position des moteurs (TODO : mettre la bonne valeur)
