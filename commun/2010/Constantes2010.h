@@ -23,6 +23,14 @@ inline std::ostream& operator<<(std::ostream& os, const CouleurRobot& couleur)
 	return os;
 }
 
+// type d'objet ramassable
+enum TypeObjetRamassable
+{
+	OBJET_TOMATE,
+	OBJET_MAIS,
+	OBJET_ORANGE
+};
+
 // Numeros des contacteurs et les roles associes
 enum NumContacteur
 {
@@ -84,13 +92,13 @@ enum PositionFourcheNum {POSITION_FOURCHE_BAS = 0, POSITION_FOURCHE_MILIEU, POSI
 enum NumeroFourcheNum {NUMERO_FOURCHE_GAUCHE = 0, NUMERO_FOURCHE_DROITE, NUMERO_FOURCHE_NBR};
 enum PositionPorteNum {POSITION_PORTE_OUVERTE = 0, POSITION_PORTE_FERMEE, POSITION_PORTE_NBR};
 enum PositionPlancherNum {POSITION_PLANCHER_HAUT = 0, POSITION_PLANCHER_MILIEU, POSITION_PLANCHER_BAS, POSITION_PLANCHER_NBR};
-enum PositionAscenseurNum {POSITION_ASCENSEUR_BAS = 0, POSITION_ASCENSEUR_ARRACHAGE, POSITION_ASCENSEUR_HAUT, POSITION_ASCENSEUR_RECALAGE, POSITION_ASCENSEUR_NBR};
+enum PositionAscenseurNum {POSITION_ASCENSEUR_BAS = 0, POSITION_ASCENSEUR_ARRACHAGE, POSITION_ASCENSEUR_HAUT_TOMATE, POSITION_ASCENSEUR_HAUT_MAIS, POSITION_ASCENSEUR_RECALAGE, POSITION_ASCENSEUR_NBR};
 
 // angles des positions des servos et moteur asservi (en valeur interne du servo)
 static const int positionPinceGauche[POSITION_PINCE_NBR] = {600, 950, 800, 1000, 1300};			// ouvert, lache objet, bloque tomate, bloque mais, ferme
 static const int positionPinceDroite[POSITION_PINCE_NBR] = {2375, 2175, 2150, 1950, 1650};		// ouvert, lache objet, bloque tomate, bloque mais, ferme
 
-static const int positionAscenseur[POSITION_ASCENSEUR_NBR] = {-10000, -6000, -1500, 0}; 		// bas, pos arrachage, haut (position bascule)), hauteur en mm
+static const int positionAscenseur[POSITION_ASCENSEUR_NBR] = {-10000, -5000, -1500, -300, 0}; 		// bas, pos arrachage, haut (position bascule)), hauteur en mm
 static const int positionFourcheGauche[POSITION_FOURCHE_NBR] = {1650, 2050, 2450}; // bas, milieu, haut
 static const int positionFourcheDroite[POSITION_FOURCHE_NBR] = {1400, 860, 560}; // bas, milieu, haut
 static const int positionPorte[POSITION_PORTE_NBR] = {1250, 2140}; 				// ouvert, ferme
