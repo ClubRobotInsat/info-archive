@@ -49,6 +49,7 @@ def getRootDir():
 # - 'Robot2010'
 # - 'Webcam'
 # - 'Webcam2009'
+# - 'Webcam2010'
 # - 'glfw'
 # - 'libcwiimote'
 # - 'boost_python'
@@ -174,6 +175,11 @@ def createEnvironment(libs_list=[], force_debug=False):
 			env.Append(CPPPATH=[root_dir + '/webcam/2009/libWebcam2009'])
 			env.Append(LIBPATH=[root_dir + '/webcam/2009/libWebcam2009'])
 			env.Append(LIBS=['Webcam2009'])
+
+		elif lib == 'Webcam2010':
+			env.Append(CPPPATH=[root_dir + '/webcam/2010/libWebcam2010'])
+			env.Append(LIBPATH=[root_dir + '/webcam/2010/libWebcam2010'])
+			env.Append(LIBS=['Webcam2010'])
 
 		elif lib == 'glfw':
 			env.Append(CPPPATH=[root_dir + '/simulateur/GLFW/include'])
