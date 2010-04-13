@@ -23,12 +23,23 @@ inline std::ostream& operator<<(std::ostream& os, const CouleurRobot& couleur)
 	return os;
 }
 
-// type d'objet ramassable
+// Type d'objet ramassable
 enum TypeObjetRamassable
 {
+	OBJET_RIEN = 0,
 	OBJET_TOMATE,
-	OBJET_MAIS,
-	OBJET_ORANGE
+	OBJET_ORANGE,
+	OBJET_MAIS
+};
+
+// Type d'objet ramasse avec la pince a l'avant
+enum TypeObjetRamassePince
+{
+	OBJET_RAMASSE_RIEN = 0,
+	OBJET_RAMASSE_TOMATE,
+	OBJET_RAMASSE_ORANGE, // cas d'une orange tombee a terre
+	OBJET_RAMASSE_MAIS,
+	OBJET_RAMASSE_MAIS_NOIR
 };
 
 // Numeros des contacteurs et les roles associes
@@ -43,25 +54,6 @@ enum NumContacteur
 };
 
 // Numeros des servos
-
-// VERSION 5 SERVOS PAR CARTE
-/*// Indices des differents servos de ramassage dans le tableau de positions
-enum ServosRamassage{
-	SERVO_RAMASSAGE_PINCE_GAUCHE = 0,
-	SERVO_RAMASSAGE_PINCE_DROITE,
-	SERVO_RAMASSAGE_ORANGE_GAUCHE,
-	SERVO_RAMASSAGE_ORANGE_DROIT,
-	SERVO_RAMASSAGE_NBR
-};
-
-// Indices des differents servos de depose dans le tableau de positions
-enum ServosDepose{
-	SERVO_DEPOSE_PORTE = 0,
-	SERVO_DEPOSE_PLANCHER,
-	SERVO_DEPOSE_NBR
-};*/
-
-// VERSION 3 SERVOS PAR CARTE
 // Indices des differents servos de ramassage dans le tableau de positions
 enum ServosAvant{
 	SERVO_AVANT_PINCE_GAUCHE = 0,
@@ -78,7 +70,7 @@ enum ServosArriere{
 	SERVO_ARRIERE_NBR
 };
 
-// Incides des telemetres servant au ramassage
+// Indices des telemetres servant au ramassage
 enum TelemetresRamassage{
     TELEMETRE_PINCE = 0,
     TELEMETRE_COMPTAGE_BAS,
