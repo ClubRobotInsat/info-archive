@@ -33,13 +33,14 @@ enum TypeObjetRamassable
 };
 
 // Type d'objet ramasse avec la pince a l'avant
-enum TypeObjetRamassePince
+enum ResultatRamassagePince
 {
 	OBJET_RAMASSE_RIEN = 0,
 	OBJET_RAMASSE_TOMATE,
 	OBJET_RAMASSE_ORANGE, // cas d'une orange tombee a terre
 	OBJET_RAMASSE_MAIS,
-	OBJET_RAMASSE_MAIS_NOIR
+	OBJET_RAMASSE_MAIS_NOIR,
+	RESERVOIR_PLEIN
 };
 
 // Numeros des contacteurs et les roles associes
