@@ -85,15 +85,15 @@ enum PositionFourcheNum {POSITION_FOURCHE_BAS = 0, POSITION_FOURCHE_MILIEU, POSI
 enum NumeroFourcheNum {NUMERO_FOURCHE_GAUCHE = 0, NUMERO_FOURCHE_DROITE, NUMERO_FOURCHE_NBR};
 enum PositionPorteNum {POSITION_PORTE_OUVERTE = 0, POSITION_PORTE_FERMEE, POSITION_PORTE_NBR};
 enum PositionPlancherNum {POSITION_PLANCHER_HAUT = 0, POSITION_PLANCHER_MILIEU, POSITION_PLANCHER_BAS, POSITION_PLANCHER_NBR};
-enum PositionAscenseurNum {POSITION_ASCENSEUR_BAS = 0, POSITION_ASCENSEUR_ARRACHAGE, POSITION_ASCENSEUR_HAUT_TOMATE, POSITION_ASCENSEUR_HAUT_MAIS, POSITION_ASCENSEUR_RECALAGE, POSITION_ASCENSEUR_NBR};
+enum PositionAscenseurNum {POSITION_ASCENSEUR_BAS = 0, POSITION_ASCENSEUR_PENTE, POSITION_ASCENSEUR_ARRACHAGE, POSITION_ASCENSEUR_HAUT_TOMATE, POSITION_ASCENSEUR_HAUT_MAIS, POSITION_ASCENSEUR_RECALAGE, POSITION_ASCENSEUR_NBR};
 
 // angles des positions des servos et moteur asservi (en valeur interne du servo)
-static const int positionPinceGauche[POSITION_PINCE_NBR] = {600, 950, 800, 1000, 1300};			// ouvert, lache objet, bloque tomate, bloque mais, ferme
-static const int positionPinceDroite[POSITION_PINCE_NBR] = {2375, 2000, 2150, 1950, 1650};		// ouvert, lache objet, bloque tomate, bloque mais, ferme
+static const int positionPinceGauche[POSITION_PINCE_NBR] = {550, 950, 800, 1000, 1300};			// ouvert, lache objet, bloque tomate, bloque mais, ferme
+static const int positionPinceDroite[POSITION_PINCE_NBR] = {2450, 2000, 2150, 1950, 1650};		// ouvert, lache objet, bloque tomate, bloque mais, ferme
 
-static const int positionAscenseur[POSITION_ASCENSEUR_NBR] = {-10000, -5000, -1500, -300, 0}; 		// bas, pos arrachage, haut (position bascule)), hauteur en mm
-static const int positionFourcheGauche[POSITION_FOURCHE_NBR] = {1650, 2050, 2450}; // bas, milieu, haut
-static const int positionFourcheDroite[POSITION_FOURCHE_NBR] = {1400, 860, 560}; // bas, milieu, haut
+static const int positionAscenseur[POSITION_ASCENSEUR_NBR] = {-10000, -7200, -5000, -1500, -300, 0}; 		// bas, pos arrachage, haut (position bascule)), hauteur en mm
+static const int positionFourcheGauche[POSITION_FOURCHE_NBR] = {1500, 2000, 2450}; // bas, milieu, haut
+static const int positionFourcheDroite[POSITION_FOURCHE_NBR] = {1550, 1150, 560}; // bas, milieu, haut
 static const int positionPorte[POSITION_PORTE_NBR] = {1250, 2140}; 				// ouvert, ferme
 static const int positionPlancher[POSITION_PLANCHER_NBR] = {1550, 2200, 2340}; 		// haut = releve, milieu, bas = abaisse
 
