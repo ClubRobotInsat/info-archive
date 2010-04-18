@@ -61,8 +61,7 @@ def createEnvironment(libs_list=[], force_debug=False):
 						BoolVariable('python',    'Ajoute le support Python', 0),
 						BoolVariable('gtk',       'Le simulateur utilise la fenetre de debug en GTK (sous Linux)', 0),
 						BoolVariable('nobuiltin', 'Utiliser les librairies deja installees sur le systeme pour le simulateur', 0),
-						BoolVariable('no_libv4l1', 'Ne pas utiliser la libv4l1 pour la webcam sous Linux (utilise V4L1 plutot que V4L2)', 0),
-						BoolVariable('webcam2010', 'Compiler la Strategie2010 pour utilisation avec la libWebcam2010', 0))
+						BoolVariable('no_libv4l1', 'Ne pas utiliser la libv4l1 pour la webcam sous Linux (utilise V4L1 plutot que V4L2)', 0))
 	env = Environment(variables = vars)
 
 	# Generation du texte affiche lors du "scons --help", uniquement lors du premier appel a createEnvironment():
@@ -178,9 +177,6 @@ def createEnvironment(libs_list=[], force_debug=False):
 			env.Append(LIBS=['Webcam2009'])
 
 		elif lib == 'Webcam2010':
-			# Compilation de la strategie avec prise en charge webcam
-			if str(ARGUMENTS.get('webcam2010')) == '1':
-				env.Append(CPPDEFINES=['WEBCAM2010'])
 			env.Append(CPPPATH=[root_dir + '/webcam/2010/libWebcam2010'])
 			env.Append(LIBPATH=[root_dir + '/webcam/2010/libWebcam2010'])
 			env.Append(LIBS=['Webcam2010'])
