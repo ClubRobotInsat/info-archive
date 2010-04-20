@@ -84,7 +84,7 @@ def createEnvironment(libs_list=[], force_debug=False):
 		# On evite l'inclusion par windows.h de choses inutiles dont winsock.h (conflit avec winsock2.h)
 		env.Append(CPPDEFINES=['WIN32', 'WIN32_LEAN_AND_MEAN'])
 
-	env.Append(CCFLAGS=['-Wall'])
+	env.Append(CCFLAGS=['-Wall', '-O3'])
 
 	# Si "scons debug=1", alors on ajoute l'option "-g"
 	if ARGUMENTS.get('debug') or force_debug:
