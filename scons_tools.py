@@ -84,12 +84,14 @@ def createEnvironment(libs_list=[], force_debug=False):
 		# On evite l'inclusion par windows.h de choses inutiles dont winsock.h (conflit avec winsock2.h)
 		env.Append(CPPDEFINES=['WIN32', 'WIN32_LEAN_AND_MEAN'])
 
-	env.Append(CCFLAGS=['-Wall', '-O3'])
+	env.Append(CCFLAGS=['-Wall'])
 
 	# Si "scons debug=1", alors on ajoute l'option "-g"
 	if ARGUMENTS.get('debug') or force_debug:
 		env.Append(CCFLAGS=['-g'])
 		env.Append(CPPDEFINES=['DEBUG'])
+	else:
+		env.Append(CCFLAGS=['-O2'])
 
 	# Parcours de toutes les libs passees en parametres et utilisation de celles-ci dans l'environnement cree.
 	for lib in libs_list:
