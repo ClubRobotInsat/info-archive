@@ -17,6 +17,7 @@ enum IdCarte
 
 	ID_CARTE_ASSERVISSEMENT_PINCE = 5,
 	ID_CARTE_TELEMETRES_RAMASSAGE = 6,
+	ID_CARTE_MAT_LASER = 7,
 
 	ID_CARTE_ALIMENTATION = 10, 
 	ID_CARTE_CONTACTEURS = 11,	// tirette, couleur equipe, recalage ascenceur,
