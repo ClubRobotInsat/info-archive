@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
-<CodeBlocks_workspace_file>
-	<Workspace title="Workspace">
-		<Project filename="robot/robot_funto.cbp" active="1" />
-		<Project filename="webcam/webcam_funto.cbp" />
-	</Workspace>
-</CodeBlocks_workspace_file>
