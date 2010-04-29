@@ -98,7 +98,7 @@ static const int positionFourcheGauche[POSITION_FOURCHE_NBR] = {1500, 2000, 2450
 static const int positionFourcheDroite[POSITION_FOURCHE_NBR] = {1550, 1150, 560}; // bas, milieu, haut
 static const int positionPorte[POSITION_PORTE_NBR] = {600, 1675}; 				// ouvert, ferme
 static const int positionLoquet[POSITION_LOQUET_NBR] = {1390, 720}; 				// ouvert, ferme
-static const int positionPlancher[POSITION_PLANCHER_NBR] = {1550, 2200, 2380}; 		// haut = releve, milieu, bas = abaisse
+static const int positionPlancher[POSITION_PLANCHER_NBR] = {1550, 2100, 2380}; 		// haut = releve, milieu, bas = abaisse
 
 static const int deltaPositionServo = 20; // > resolution sur les valeurs de position des servos
 static const int deltaPositionMoteur = 5; // > resolution sur les valeurs de position des moteurs (TODO : mettre la bonne valeur)
