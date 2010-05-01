@@ -61,7 +61,7 @@ def createEnvironment(libs_list=[], force_debug=False):
 						BoolVariable('python',    'Ajoute le support Python', 0),
 						BoolVariable('gtk',       'Le simulateur utilise la fenetre de debug en GTK (sous Linux)', 0),
 						BoolVariable('nobuiltin', 'Utiliser les librairies deja installees sur le systeme pour le simulateur', 0),
-						BoolVariable('no_libv4l1', 'Ne pas utiliser la libv4l1 pour la webcam sous Linux (utilise V4L1 plutot que V4L2)', 0))
+						BoolVariable('libv4l1', 'utiliser la libv4l1 pour la webcam sous Linux (utilise V4L1 plutot que V4L2)', 0))
 	env = Environment(variables = vars)
 
 	# Generation du texte affiche lors du "scons --help", uniquement lors du premier appel a createEnvironment():
@@ -165,7 +165,7 @@ def createEnvironment(libs_list=[], force_debug=False):
 
 			# Ajout ou pas de la libv4l1 sous Linux (pour permettre d'utiliser V4L2 avec
 			# l'API de V4L1)
-			if sys.platform == 'linux2' and str(ARGUMENTS.get('no_libv4l1')) != '1':
+			if sys.platform == 'linux2' and str(ARGUMENTS.get('libv4l1')) == '1':
 				env.Append(CPPDEFINES=['USE_LIBV4L1'])
 				env.ParseConfig('pkg-config libv4l1 --libs --cflags')
 
