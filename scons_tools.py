@@ -61,7 +61,7 @@ def createEnvironment(libs_list=[], force_debug=False):
 						BoolVariable('python',    'Ajoute le support Python', 0),
 						BoolVariable('gtk',       'Le simulateur utilise la fenetre de debug en GTK (sous Linux)', 0),
 						BoolVariable('nobuiltin', 'Utiliser les librairies deja installees sur le systeme pour le simulateur', 0),
-						BoolVariable('libv4l1', 'utiliser la libv4l1 pour la webcam sous Linux (utilise V4L1 plutot que V4L2)', 0))
+						BoolVariable('libv4l1', 'utiliser la libv4l1 pour la webcam sous Linux (encapsule V4L2 dans des appels ressemblant a V4L1 : utilise donc V4L2)', 0))
 	env = Environment(variables = vars)
 
 	# Generation du texte affiche lors du "scons --help", uniquement lors du premier appel a createEnvironment():
