@@ -82,7 +82,7 @@ enum TelemetresRamassage{
 
 // Numeros des positions des servos et moteur asservi et les roles associes
 enum PositionPinceNum {POSITION_PINCE_OUVERTE = 0, POSITION_PINCE_LACHER_OBJET, POSITION_PINCE_BLOCAGE_TOMATE, POSITION_PINCE_BLOCAGE_MAIS, POSITION_PINCE_FERMEE, POSITION_PINCE_NBR};
-enum PositionFourcheNum {POSITION_FOURCHE_BAS = 0, POSITION_FOURCHE_MILIEU, POSITION_FOURCHE_HAUT, POSITION_FOURCHE_NBR};
+enum PositionFourcheNum {POSITION_FOURCHE_TRES_BAS = 0, POSITION_FOURCHE_BAS, POSITION_FOURCHE_MILIEU, POSITION_FOURCHE_CALAGE_ORANGE, POSITION_FOURCHE_HAUT, POSITION_FOURCHE_NBR};
 enum NumeroFourcheNum {NUMERO_FOURCHE_GAUCHE = 0, NUMERO_FOURCHE_DROITE, NUMERO_FOURCHE_NBR};
 enum PositionPorteNum {POSITION_PORTE_OUVERTE = 0, POSITION_PORTE_FERMEE, POSITION_PORTE_NBR};
 enum PositionPlancherNum {POSITION_PLANCHER_HAUT = 0, POSITION_PLANCHER_MILIEU, POSITION_PLANCHER_BAS, POSITION_PLANCHER_NBR};
@@ -94,9 +94,9 @@ static const int positionPinceGauche[POSITION_PINCE_NBR] = {700, 950, 1200, 1250
 static const int positionPinceDroite[POSITION_PINCE_NBR] = {2380, 2100, 1910, 1670, 1575};		// ouvert, lache objet, bloque tomate, bloque mais, ferme
 
 static const int positionAscenseur[POSITION_ASCENSEUR_NBR] = {-10000, -8500, -5000, -1900, -300, 0}; 		// bas, pos arrachage, haut (position bascule)), hauteur en mm
-static const int positionFourcheGauche[POSITION_FOURCHE_NBR] = {1500, 2000, 2450}; // bas, milieu, haut
-static const int positionFourcheDroite[POSITION_FOURCHE_NBR] = {1550, 1150, 560}; // bas, milieu, haut
-static const int positionPorte[POSITION_PORTE_NBR] = {600, 1675}; 				// ouvert, ferme
+static const int positionFourcheGauche[POSITION_FOURCHE_NBR] = {990, 1890, 2130, 2110, 2190}; // tout en bas, appréhension orange, faire basculer legerement les oranges, caler les oranges, vraiment coincé l'orange
+static const int positionFourcheDroite[POSITION_FOURCHE_NBR] = {2030, 1180, 920, 900, 880}; // tout en bas, appréhension orange, faire basculer legerement les oranges, caler les oranges, vraiment coincé l'orange
+static const int positionPorte[POSITION_PORTE_NBR] = {600, 1940}; 				// ouvert, ferme
 static const int positionLoquet[POSITION_LOQUET_NBR] = {1390, 720}; 				// ouvert, ferme
 static const int positionPlancher[POSITION_PLANCHER_NBR] = {1550, 2100, 2380}; 		// haut = releve, milieu, bas = abaisse
 
