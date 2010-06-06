@@ -90,10 +90,10 @@ enum PositionLoquetNum {POSITION_LOQUET_OUVERT = 0, POSITION_LOQUET_FERME, POSIT
 enum PositionAscenseurNum {POSITION_ASCENSEUR_BAS = 0, POSITION_ASCENSEUR_PENTE, POSITION_ASCENSEUR_ARRACHAGE, POSITION_ASCENSEUR_HAUT_TOMATE, POSITION_ASCENSEUR_HAUT_MAIS, POSITION_ASCENSEUR_RECALAGE, POSITION_ASCENSEUR_NBR};
 
 // angles des positions des servos et moteur asservi (en valeur interne du servo)
-static const int positionPinceGauche[POSITION_PINCE_NBR] = {700, 1050, 1240, 1425, 1530};			// ouvert, lache objet, bloque tomate, bloque mais, ferme
+static const int positionPinceGauche[POSITION_PINCE_NBR] = {700, 1050, 1240, 1390, 1530};			// ouvert, lache objet, bloque tomate, bloque mais, ferme
 static const int positionPinceDroite[POSITION_PINCE_NBR] = {2380, 2100, 2050, 1750, 1575};		// ouvert, lache objet, bloque tomate, bloque mais, ferme
 
-static const int positionAscenseur[POSITION_ASCENSEUR_NBR] = {-10000, -8500, -5000, -1900, -300, 0}; // bas, pos arrachage, haut (position bascule)), hauteur en mm
+static const int positionAscenseur[POSITION_ASCENSEUR_NBR] = {-10000, -8500, -8000, -1900, -300, 0}; // bas, pos arrachage, haut (position bascule)), hauteur en mm
 static const int positionFourcheGauche[POSITION_FOURCHE_NBR] = {930, 1210, 1780, 1870, 2080, 2400}; //tres_bas, bas, milieu, milieu_plus, haut, tres_haut
 static const int positionFourcheDroite[POSITION_FOURCHE_NBR] = {2050, 1780, 1200, 1100, 900, 700}; //tres_bas, bas, milieu, milieu_plus, haut, tres_haut
 static const int positionPorte[POSITION_PORTE_NBR] = {600, 1680}; 				// ouvert, ferme
