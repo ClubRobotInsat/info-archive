@@ -94,9 +94,9 @@ static const int positionPinceGauche[POSITION_PINCE_NBR] = {700, 1050, 1240, 142
 static const int positionPinceDroite[POSITION_PINCE_NBR] = {2380, 2100, 2050, 1750, 1575};		// ouvert, lache objet, bloque tomate, bloque mais, ferme
 
 static const int positionAscenseur[POSITION_ASCENSEUR_NBR] = {-10000, -8500, -5000, -1900, -300, 0}; // bas, pos arrachage, haut (position bascule)), hauteur en mm
-static const int positionFourcheGauche[POSITION_FOURCHE_NBR] = {930, 1210, 1800, 1930, 2080, 2400}; //tres_bas, bas, milieu, milieu_plus, haut, tres_haut
-static const int positionFourcheDroite[POSITION_FOURCHE_NBR] = {2050, 1780, 1180, 1040, 900, 700}; //tres_bas, bas, milieu, milieu_plus, haut, tres_haut
-static const int positionPorte[POSITION_PORTE_NBR] = {600, 1940}; 				// ouvert, ferme
+static const int positionFourcheGauche[POSITION_FOURCHE_NBR] = {930, 1210, 1800, 1870, 2080, 2400}; //tres_bas, bas, milieu, milieu_plus, haut, tres_haut
+static const int positionFourcheDroite[POSITION_FOURCHE_NBR] = {2050, 1780, 1180, 1100, 900, 700}; //tres_bas, bas, milieu, milieu_plus, haut, tres_haut
+static const int positionPorte[POSITION_PORTE_NBR] = {600, 1680}; 				// ouvert, ferme
 static const int positionLoquet[POSITION_LOQUET_NBR] = {1390, 720}; 				// ouvert, ferme
 static const int positionPlancher[POSITION_PLANCHER_NBR] = {1550, 2075, 2380}; 		// haut = releve, milieu, bas = abaisse
 
