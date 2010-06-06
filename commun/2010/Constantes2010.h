@@ -93,9 +93,9 @@ enum PositionAscenseurNum {POSITION_ASCENSEUR_BAS = 0, POSITION_ASCENSEUR_PENTE,
 static const int positionPinceGauche[POSITION_PINCE_NBR] = {700, 1050, 1240, 1390, 1530};			// ouvert, lache objet, bloque tomate, bloque mais, ferme
 static const int positionPinceDroite[POSITION_PINCE_NBR] = {2380, 2100, 2050, 1750, 1575};		// ouvert, lache objet, bloque tomate, bloque mais, ferme
 
-static const int positionAscenseur[POSITION_ASCENSEUR_NBR] = {-10000, -8500, -8000, -1900, -300, 0}; // bas, pos arrachage, haut (position bascule)), hauteur en mm
-static const int positionFourcheGauche[POSITION_FOURCHE_NBR] = {900, 1510, 2020, 2060, 2300, 2500}; //tres_bas, bas, milieu, milieu_plus, haut, tres_haut
-static const int positionFourcheDroite[POSITION_FOURCHE_NBR] = {2050, 1430, 920, 1100, 650, 500}; //tres_bas, bas, milieu, milieu_plus, haut, tres_haut
+static const int positionAscenseur[POSITION_ASCENSEUR_NBR] = {-10000, -8500, -6000, -1900, -300, 0}; // bas, pos arrachage, haut (position bascule)), hauteur en mm
+static const int positionFourcheGauche[POSITION_FOURCHE_NBR] = {900, 1510, 2000, 2060, 2300, 2500}; //tres_bas, bas, milieu, milieu_plus, haut, tres_haut
+static const int positionFourcheDroite[POSITION_FOURCHE_NBR] = {2050, 1430, 970, 800, 650, 500}; //tres_bas, bas, milieu, milieu_plus, haut, tres_haut
 static const int positionPorte[POSITION_PORTE_NBR] = {600, 1680}; 				// ouvert, ferme
 static const int positionLoquet[POSITION_LOQUET_NBR] = {1390, 720}; 				// ouvert, ferme
 static const int positionPlancher[POSITION_PLANCHER_NBR] = {1550, 1975, 2380}; 		// haut = releve, milieu, bas = abaisse
