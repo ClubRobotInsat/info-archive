@@ -53,6 +53,8 @@ def getRootDir():
 # - 'glfw'
 # - 'libcwiimote'
 # - 'boost_python'
+# - 'gtk'
+# - 'zbar'
 def createEnvironment(libs_list=[], force_debug=False):
 	vars = Variables()
 	vars.AddVariables(	#BoolVariable('mingw',    'Utiliser le compilateur MinGW a la place de VC++.' +
@@ -61,7 +63,8 @@ def createEnvironment(libs_list=[], force_debug=False):
 						BoolVariable('python',    'Ajoute le support Python', 0),
 						BoolVariable('gtk',       'Le simulateur utilise la fenetre de debug en GTK (sous Linux)', 0),
 						BoolVariable('nobuiltin', 'Utiliser les librairies deja installees sur le systeme pour le simulateur', 0),
-						BoolVariable('libv4l1', 'utiliser la libv4l1 pour la webcam sous Linux (encapsule V4L2 dans des appels ressemblant a V4L1 : utilise donc V4L2)', 0))
+						BoolVariable('libv4l1', 'utiliser la libv4l1 pour la webcam sous Linux (encapsule V4L2 dans des appels ressemblant a V4L1 : utilise donc V4L2)', 0),
+						BoolVariable('zbar', 'Utiliser la librairie ZBar (sous Linux) pour lire des codes barre avec la webcam', 0))
 	env = Environment(variables = vars)
 
 	# Generation du texte affiche lors du "scons --help", uniquement lors du premier appel a createEnvironment():
@@ -225,4 +228,7 @@ def createEnvironment(libs_list=[], force_debug=False):
 				env.ParseConfig('pkg-config gtk+-2.0 --libs --cflags')
 			else:
 				env.Append(CPPDEFINES=['GTKWIN_DISABLE'])
+		elif lib == 'zbar':
+			if sys.platform == 'linux2' and str(ARGUMENTS.get('zbar')) == '1':
+				env.ParseConfig('pkg-config zbar --libs --cflags')
 	return env
