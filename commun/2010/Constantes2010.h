@@ -1,7 +1,7 @@
-		// Constante2010.h
+// Constantes2010.h
 
-#ifndef CONSTANTE_2010_H
-#define CONSTANTE_2010_H
+#ifndef CONSTANTES_2010_H
+#define CONSTANTES_2010_H
 
 #include <iostream>
 
@@ -106,4 +106,5 @@ static const int deltaPositionMoteur = 5; // > resolution sur les valeurs de pos
 // seuils de detection des telemetres de ramassage
 static const int seuilTelemetreRamassage[TELEMETRE_RAMASSAGE_NBR] = {10, 10, 10}; // TODO : mettre les bonnes valeurs
 
-#endif //CONSTANTE_2010_H
+#endif //CONSTANTES_2010_H
+
