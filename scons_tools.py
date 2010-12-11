@@ -126,12 +126,16 @@ def createEnvironment(libs_list=[], force_debug=False):
 			env.Append(LIBS=['Cartes'])
 
 		elif lib == 'Outils':
+			if sys.platform == 'win32':
+				env.Append(LIBS=['ws2_32'])
+
 			env.Append(CPPPATH=[root_dir + '/robot/Outils',
 								root_dir + '/robot/Outils/Clock',
 								root_dir + '/robot/Outils/debug',
 								root_dir + '/robot/Outils/log',
 								root_dir + '/robot/Outils/MathToolbox',
-								root_dir + '/robot/Outils/tga'])
+								root_dir + '/robot/Outils/tga',
+								root_dir + '/robot/Outils/sockets'])
 			env.Append(LIBPATH=[root_dir + '/robot/Outils'])
 			env.Append(LIBS=['Outils'])
 
