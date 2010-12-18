@@ -5823,7 +5823,6 @@
 ./commun/2010/IDCartes2010.h
 ./commun/2011/titan/Constantes2011.h
 ./commun/2011/titan/IDCartes2011.h
-./commun/2009/IDCartes2009.h
 ./webcam2/webcam/Webcam.h
 ./webcam2/ImageBinarizer.h
 ./webcam2/ColorHSV.h
@@ -5878,3 +5877,5 @@
 ./simulateur/SConstruct
 ./simulateur/simu2010/SConstruct
 ./SConstruct
+robot/2011/titan/debug/ControleClavier.cpp
+simulateur/simu2011/IDebug2011.h
