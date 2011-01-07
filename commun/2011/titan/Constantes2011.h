@@ -54,8 +54,8 @@ enum PositionBrasNum {POSITION_BRAS_OUVERT = 0, POSITION_BRAS_FERME, POSITION_BR
 static const int positionGriffeGauche[POSITION_GRIFFE_NBR] = {700, 1240, 1530};
 static const int positionGriffeDroite[POSITION_GRIFFE_NBR] = {1530, 1240, 700};
 
-static const int positionBrasGauche[POSITION_BRAS_NBR]= {1000, 0};
-static const int positionBrasDroit[POSITION_BRAS_NBR]={1000, 0};
+static const int positionBrasGauche[POSITION_BRAS_NBR]= {1000, -1000};
+static const int positionBrasDroit[POSITION_BRAS_NBR]={1000, -1000};
 
 static const int deltaPositionMoteur = 5; // > resolution sur les valeurs de position des moteurs (TODO : mettre la bonne valeur)
 
