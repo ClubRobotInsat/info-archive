@@ -49,11 +49,16 @@ enum ServosNovaAscenseur{
 
 // Numeros des positions des servos et moteur asservi et les roles associes
 enum PositionGriffeNum {POSITION_GRIFFE_OUVERTE = 0, POSITION_GRIFFE_BLOCAGE_PION, POSITION_GRIFFE_FERMEE, POSITION_GRIFFE_NBR};
+enum PositionPinceNum {POSITION_PINCE_OUVERTE = 0, POSITION_PINCE_BLOCAGE_PION, POSITION_PINCE_FERMEE, POSITION_PINCE_NBR};
 enum PositionBrasNum {POSITION_BRAS_OUVERT = 0, POSITION_BRAS_FERME, POSITION_BRAS_NBR};
 
 // angles des positions des servos et moteur asservi (en valeur interne du servo)
 static const int positionGriffeGauche[POSITION_GRIFFE_NBR] = {700, 1240, 1530};
 static const int positionGriffeDroite[POSITION_GRIFFE_NBR] = {1530, 1240, 700};
+
+// angles des positions des servos et moteur asservi (en valeur interne du servo)
+static const int positionPinceGauche[POSITION_PINCE_NBR] = {700, 1240, 1530};
+static const int positionPinceDroite[POSITION_PINCE_NBR] = {1530, 1240, 700};
 
 static const int positionBrasGauche[POSITION_BRAS_NBR]= {-10000, -100};
 static const int positionBrasDroit[POSITION_BRAS_NBR]={-10000, -100};
