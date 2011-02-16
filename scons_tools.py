@@ -5,6 +5,9 @@ import sys
 import os
 from SCons.Script import *
 
+sys.path.append('.')
+from scons_help import *
+
 THIS_FILE_NAME = 'scons_tools.py'
 
 # Aucune idee de comment ca marche (ca s'appelle "generator functions"...), mais
@@ -57,14 +60,8 @@ def getRootDir():
 # - 'zbar'
 def createEnvironment(libs_list=[], force_debug=False):
 	vars = Variables()
-	vars.AddVariables(	#BoolVariable('mingw',    'Utiliser le compilateur MinGW a la place de VC++.' +
-						#			'Utile si vous avez l\'erreur \'cl\' n\'est pas reconnu en tant que commande interne\'.', 1),
-						BoolVariable('debug',     'Definit DEBUG et rajoute l\'option -g', 0),
-						BoolVariable('python',    'Ajoute le support Python', 0),
-						BoolVariable('gtk',       'Le simulateur utilise la fenetre de debug en GTK (sous Linux)', 0),
-						BoolVariable('nobuiltin', 'Utiliser les librairies deja installees sur le systeme pour le simulateur', 0),
-						BoolVariable('libv4l1', 'utiliser la libv4l1 pour la webcam sous Linux (encapsule V4L2 dans des appels ressemblant a V4L1 : utilise donc V4L2)', 0),
-						BoolVariable('zbar', 'Utiliser la librairie ZBar (sous Linux) pour lire des codes barre avec la webcam', 0))
+	for line in sconsHelp:
+		vars.AddVariables(BoolVariable(line[0], line[1], 0))
 	env = Environment(variables = vars)
 
 	# Generation du texte affiche lors du "scons --help", uniquement lors du premier appel a createEnvironment():
