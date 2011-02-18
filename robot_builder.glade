@@ -3,23 +3,64 @@
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
   <object class="GtkWindow" id="window">
-    <property name="width_request">700</property>
-    <property name="height_request">300</property>
     <property name="title" translatable="yes">RobotBuilder</property>
     <property name="window_position">center</property>
     <signal name="destroy" handler="onWindowDestroy"/>
+    <signal name="configure_event" handler="onWindowConfigureEvent"/>
     <child>
-      <object class="GtkVBox" id="vbox1">
+      <object class="GtkVBox" id="vboxMain">
         <property name="visible">True</property>
         <child>
-          <object class="GtkFrame" id="frame1">
+          <object class="GtkExpander" id="expanderOptions">
             <property name="visible">True</property>
-            <property name="label_xalign">0</property>
-            <property name="shadow_type">none</property>
+            <property name="can_focus">True</property>
             <child>
-              <object class="GtkAlignment" id="alignment1">
+              <object class="GtkVBox" id="vbox1">
                 <property name="visible">True</property>
-                <property name="left_padding">12</property>
+                <child>
+                  <object class="GtkHBox" id="hbox1">
+                    <property name="visible">True</property>
+                    <child>
+                      <object class="GtkButton" id="buttonSaveConfig">
+                        <property name="label" translatable="yes">_Enregistrer la config</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="use_underline">True</property>
+                        <signal name="clicked" handler="onButtonSaveConfigClicked"/>
+                      </object>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="label3">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Nombre de processus</property>
+                      </object>
+                      <packing>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkSpinButton" id="spinbuttonNbProcesses">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="invisible_char">&#x25CF;</property>
+                        <property name="adjustment">adjustmentNbProcesses</property>
+                        <property name="snap_to_ticks">True</property>
+                        <property name="numeric">True</property>
+                        <signal name="value_changed" handler="onSpinbuttonNbProcessesValueChanged"/>
+                      </object>
+                      <packing>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
                 <child>
                   <object class="GtkTable" id="tableOptions">
                     <property name="visible">True</property>
@@ -31,11 +72,14 @@
                       <placeholder/>
                     </child>
                   </object>
+                  <packing>
+                    <property name="position">1</property>
+                  </packing>
                 </child>
               </object>
             </child>
             <child type="label">
-              <object class="GtkLabel" id="label2">
+              <object class="GtkLabel" id="label4">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">&lt;b&gt;Options&lt;/b&gt;</property>
                 <property name="use_markup">True</property>
@@ -43,7 +87,6 @@
             </child>
           </object>
           <packing>
-            <property name="expand">False</property>
             <property name="position">0</property>
           </packing>
         </child>
@@ -62,7 +105,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkEntry" id="entryResult">
+              <object class="GtkEntry" id="entryCommand">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="editable">False</property>
@@ -73,12 +116,13 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="buttonCompile">
-                <property name="label" translatable="yes">_Build (Ctrl+B)</property>
+              <object class="GtkButton" id="buttonBuild">
+                <property name="label" translatable="yes">_Build (Alt+B)</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_underline">True</property>
+                <signal name="clicked" handler="onButtonBuildClicked"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -88,11 +132,12 @@
             </child>
             <child>
               <object class="GtkButton" id="buttonClean">
-                <property name="label" translatable="yes">_Clean (Ctrl+C)</property>
+                <property name="label" translatable="yes">_Clean (Alt+C)</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_underline">True</property>
+                <signal name="clicked" handler="onButtonCleanClicked"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -107,16 +152,16 @@
           </packing>
         </child>
         <child>
-          <object class="GtkTextView" id="textviewLog">
-            <property name="height_request">100</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-          </object>
-          <packing>
-            <property name="position">2</property>
-          </packing>
+          <placeholder/>
         </child>
       </object>
     </child>
+  </object>
+  <object class="GtkAction" id="actionBuild"/>
+  <object class="GtkAdjustment" id="adjustmentNbProcesses">
+    <property name="lower">1</property>
+    <property name="upper">100</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
   </object>
 </interface>
