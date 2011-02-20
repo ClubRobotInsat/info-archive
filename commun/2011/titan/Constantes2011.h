@@ -71,6 +71,6 @@ static const int positionBrasDroit[POSITION_BRAS_NBR]={-10000, -100};
 static const int positionAscenseur[POSITION_ASCENSEUR_NBR]={-10000, -7000, -3000, -100};
 
 static const int deltaPositionServo = 20; // > resolution sur les valeurs de position des servos
-static const int deltaPositionMoteur = 5; // > resolution sur les valeurs de position des moteurs (TODO : mettre la bonne valeur)
+static const int deltaPositionMoteur = 100; // > resolution sur les valeurs de position des moteurs (TODO : mettre la bonne valeur)
 
 #endif //CONSTANTES_2011_H
