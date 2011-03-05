@@ -5,26 +5,8 @@
 
 #include <iostream>
 
-enum CouleurRobot {
-	COULEUR_ROBOT_ROUGE = 0,
-	COULEUR_ROBOT_BLEU = 1
-};
-
-// Pour permettre l'affichage d'une Couleur :
-inline std::ostream& operator<<(std::ostream& os, const CouleurRobot& couleur) 
+namespace ConstantesTitan2011
 {
-	switch(couleur)
-	{
-	case COULEUR_ROBOT_ROUGE:
-		os << "rouge";
-		break;
-	case COULEUR_ROBOT_BLEU:
-		os << "bleu";
-		break;
-	}
-
-	return os;
-}
 
 enum Bras{
 	BRAS_GAUCHE = 0,
@@ -70,7 +52,5 @@ static const int positionBrasDroit[POSITION_BRAS_NBR]={-10000, -100};
 
 static const int positionAscenseur[POSITION_ASCENSEUR_NBR]={-10000, -7000, -3000, -100};
 
-static const int deltaPositionServo = 20; // > resolution sur les valeurs de position des servos
-static const int deltaPositionMoteur = 100; // > resolution sur les valeurs de position des moteurs (TODO : mettre la bonne valeur)
-
+}
 #endif //CONSTANTES_2011_H

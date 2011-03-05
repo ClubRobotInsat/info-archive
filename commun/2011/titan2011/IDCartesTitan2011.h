@@ -1,6 +1,8 @@
 // IDCartes2011.h - les IDs des cartes
 // En-tête utilisé par le simu et par l'IE
 
+namespace IDCartesTitan2011
+{
 enum IdCarte
 {
 	ID_CARTE_CAN_USB                          = 0,
@@ -18,3 +20,5 @@ enum IdCarte
 	ID_CARTE_DEBUG_DESSIN                     = 12,
 	ID_CARTE_DEBUG                            = 13
 };
+
+}
