@@ -49,11 +49,11 @@ enum ServosAvantAtlas{
 
 
 // Numeros des positions des servos et moteur asservi et les roles associes
-enum PositionPinceAtlasNum {POSITION_ATLAS_PINCE_OUVERTE = 0, POSITION_ATLAS_PINCE_LACHER_OBJET, POSITION_PINCE_ATLAS_BLOCAGE_TOMATE, POSITION_ATLAS_PINCE_BLOCAGE_MAIS, POSITION_ATLAS_PINCE_FERMEE, POSITION_ATLAS_PINCE_NBR};
+enum PositionPinceAtlasNum {POSITION_ATLAS_PINCE_OUVERTE = 0, POSITION_PINCE_BLOCAGE_PION, POSITION_ATLAS_PINCE_FERMEE, POSITION_ATLAS_PINCE_NBR};
 
 // angles des positions des servos et moteur asservi (en valeur interne du servo)
-static const int positionPinceGaucheAtlas[POSITION_ATLAS_PINCE_NBR] = {700, 1050, 1240, 1390, 1530};			// ouvert, lache objet, bloque tomate, bloque mais, ferme
-static const int positionPinceDroiteAtlas[POSITION_ATLAS_PINCE_NBR] = {2380, 2100, 2050, 1750, 1575};		// ouvert, lache objet, bloque tomate, bloque mais, ferme
+static const int positionPinceGaucheAtlas[POSITION_ATLAS_PINCE_NBR] = {700, 1240, 1530};			// ouvert,  bloque tomate, ferme
+static const int positionPinceDroiteAtlas[POSITION_ATLAS_PINCE_NBR] = {2380, 2050,  1575};		// ouvert, bloque tomate, ferme
 
 }
 #endif //CONSTANTES_2010_H
