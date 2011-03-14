@@ -64,7 +64,7 @@
 ./robot/2011/titan/librobot2011/MecaManager2011.cpp
 ./robot/2011/titan/debug/TestCarteDebug.cpp
 ./robot/2011/titan/debug/ControleClavier.cpp
-./robot/2011/titan/ia/robotTerm.cpp
+./robot/2011/titan/python/PythonTerm.cpp
 ./robot/2011/titan/ia/Igor.cpp
 ./robot/Strategie/Strategie.cpp
 ./robot/Strategie/Obstacle.cpp
@@ -139,6 +139,8 @@
 ./robot/Outils/log/LogTermWindows.cpp
 ./robot/Outils/log/LogTermVT100.cpp
 ./robot/Outils/log/LogRTF.cpp
+./simulateur/simulateur/ShadowMap.cpp
+./simulateur/simulateur/ShadowMap.h
 ./simulateur/simulateur/MoteurAsservi.cpp
 ./simulateur/simulateur/tinyxml/tinyxmlparser.cpp
 ./simulateur/simulateur/tinyxml/tinyxml.cpp
@@ -6091,6 +6093,7 @@
 ./robot/2011/titan/librobot2011/SConstruct
 ./robot/2011/titan/SConstruct
 ./robot/2011/titan/debug/SConstruct
+./robot/2011/titan/python/SConstruct
 ./robot/2011/titan/ia/SConstruct
 ./robot/2011/SConstruct
 ./robot/2011/atlas/SConstruct

@@ -87,7 +87,7 @@ def createEnvironment(libs_list=[], force_debug=False):
 	env.Append(CCFLAGS=['-Wall'])
 
 	# Si "scons debug=1", alors on ajoute l'option "-g"
-	if ARGUMENTS.get('debug') or force_debug:
+	if ARGUMENTS.get('debug', 0) or force_debug:
 		env.Append(CCFLAGS=['-g'])
 		env.Append(CPPDEFINES=['DEBUG'])
 	else:
@@ -161,7 +161,7 @@ def createEnvironment(libs_list=[], force_debug=False):
 								root_dir + '/robot/Cartes'])
 			env.Append(LIBPATH=[root_dir + '/robot/2010/libRobot2010'])
 			env.Append(LIBS=['Robot2010'])
-			
+
 		elif lib == 'RobotAtlas2011':
 			env.Append(CPPPATH=[root_dir + '/robot/2011/atlas/libRobot2011',
 								root_dir + '/robot/Cartes'])
@@ -210,6 +210,9 @@ def createEnvironment(libs_list=[], force_debug=False):
 			else:
 				env.Append(LIBS=['glfw', 'GL', 'GLU', 'm', 'X11', 'pthread', 'Xrandr'])
 				env.Append(LIBPATH=['/usr/X11R6/lib'])
+				if ARGUMENTS.get('shadow_maps', 0):
+					env.ParseConfig('pkg-config glew --libs --cflags')
+					env.Append(CPPDEFINES=['USE_SHADOW_MAPS'])
 
 		elif lib == 'libcwiimote':
 			if sys.platform == 'linux2':
