@@ -1,6 +1,9 @@
 // IDCartes2011.h - les IDs des cartes
 // En-tête utilisé par le simu et par l'IE
 
+#ifndef IDCARTES_TITAN_2011_H
+#define IDCCARTES_TITAN_2011_H
+
 namespace IDCartesTitan2011
 {
 enum IdCarte
@@ -18,7 +21,11 @@ enum IdCarte
 	ID_CARTE_XBEE_BALISE_ADVERSAIRE           = 10,
 	ID_CARTE_ALIMENTATION                     = 11,
 	ID_CARTE_DEBUG_DESSIN                     = 12,
-	ID_CARTE_DEBUG                            = 13
+	ID_CARTE_DEBUG                            = 13,
+	ID_CARTE_LCD                              = 14
+
 };
 
 }
+
+#endif
