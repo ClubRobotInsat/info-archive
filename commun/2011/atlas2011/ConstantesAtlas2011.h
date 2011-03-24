@@ -11,20 +11,7 @@ namespace ConstantesAtlas2011
 enum TypeObjetRamassableAtlas
 {
 	OBJET_RIEN = 0,
-	OBJET_TOMATE,
-	OBJET_ORANGE,
-	OBJET_MAIS
-};
-
-// Type d'objet ramasse avec la pince a l'avant
-enum ResultatRamassagePinceAtlas
-{
-	OBJET_RAMASSE_RIEN = 0,
-	OBJET_RAMASSE_TOMATE,
-	OBJET_RAMASSE_ORANGE, // cas d'une orange tombee a terre
-	OBJET_RAMASSE_MAIS,
-	OBJET_RAMASSE_MAIS_NOIR,
-	RESERVOIR_PLEIN
+	OBJET_PION
 };
 
 // Numeros des contacteurs et les roles associes
@@ -32,10 +19,10 @@ enum NumContacteurAtlas
 {
 	CONTACTEUR_ATLAS_TIRETTE = 0,
 	CONTACTEUR_ATLAS_CHOIX_EQUIPE = 1,
-	CONTACTEUR_ATLAS_RECALAGE_ASCENSEUR = 2,
+	//CONTACTEUR_ATLAS_RECALAGE_ASCENSEUR = 2,
 	CONTACTEUR_ATLAS_RECALAGE_DETECT_ADV = 3,
 	CONTACTEUR_ATLAS_ROBOT_AVANT = 4,
-	CONTACTEUR_ATLAS_ROBOT_ARRIERE = 5
+	//CONTACTEUR_ATLAS_ROBOT_ARRIERE = 5
 };
 
 // Numeros des servos
