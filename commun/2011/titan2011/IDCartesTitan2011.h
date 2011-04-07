@@ -22,7 +22,8 @@ enum IdCarte
 	ID_CARTE_ALIMENTATION                     = 11,
 	ID_CARTE_DEBUG_DESSIN                     = 12,
 	ID_CARTE_DEBUG                            = 13,
-	ID_CARTE_LCD                              = 14
+	ID_CARTE_LCD                              = 14,
+	ID_CARTE_CODES_BARRES                     = 15
 
 };
 
