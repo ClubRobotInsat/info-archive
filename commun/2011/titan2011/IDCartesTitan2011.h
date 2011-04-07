@@ -2,7 +2,7 @@
 // En-tête utilisé par le simu et par l'IE
 
 #ifndef IDCARTES_TITAN_2011_H
-#define IDCCARTES_TITAN_2011_H
+#define IDCARTES_TITAN_2011_H
 
 namespace IDCartesTitan2011
 {
