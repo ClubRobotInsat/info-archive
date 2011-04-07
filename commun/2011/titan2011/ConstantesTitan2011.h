@@ -23,6 +23,11 @@ enum NumContacteur{
 	CONTACTEUR_SOUS_BRAS_DROIT=4
 };
 
+enum NumCodeBarre{
+	CODE_BARRE_DROIT  = 0,
+	CODE_BARRE_GAUCHE = 1
+};
+
 // Numeros des servos
 enum ServosNovaAscenseur{
 	GRIFFE_GAUCHE = 0,
