@@ -11,7 +11,6 @@ enum IdCarte
 	ID_CARTE_CAN_USB                          = 0,
 	ID_CARTE_DEPLACEMENT                      = 1,
 	ID_CARTE_CONTACTEURS_BRAS                 = 2,
-	ID_CARTE_CONTACTEURS_RECALAGE             = 3,
 	ID_CARTE_CONTACTEURS_DEPART               = 4,
 	ID_CARTE_SERVOS_NOVA_ASCENSEUR            = 5,
 	ID_CARTE_ASSERVISSEMENT_ASCENSEUR         = 6,
