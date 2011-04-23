@@ -52,12 +52,12 @@ static const int positionGriffeDroite[POSITION_GRIFFE_NBR] = {1530, 1240, 700};
 
 // angles des positions des servos et moteur asservi (en valeur interne du servo)
 static const int positionPinceGauche[POSITION_PINCE_NBR] = {700, 1240, 1530};
-static const int positionPinceDroite[POSITION_PINCE_NBR] = {1530, 1240, 700};
+static const int positionPinceDroite[POSITION_PINCE_NBR] = {2350, 1240, 700};
 
-static const int positionBrasGauche[POSITION_BRAS_NBR]= {-10000, -100};
-static const int positionBrasDroit[POSITION_BRAS_NBR]={-10000, -100};
+static const int positionBrasGauche[POSITION_BRAS_NBR]= {20000, 0};
+static const int positionBrasDroit[POSITION_BRAS_NBR]={-20000, 0};
 
-static const int positionAscenseur[POSITION_ASCENSEUR_NBR]={-10000, -7000, -3000};
+static const int positionAscenseur[POSITION_ASCENSEUR_NBR]={0, 100000, 200000};
 
 }
 #endif //CONSTANTES_2011_H
