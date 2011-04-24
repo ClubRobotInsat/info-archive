@@ -47,8 +47,8 @@ enum PositionBrasNum {POSITION_BRAS_OUVERT = 0, POSITION_BRAS_FERME, POSITION_BR
 enum PositionAscenseurNum {POSITION_ASCENSEUR_BAS = 0, POSITION_ASCENSEUR_POUR_CLIPSER, POSITION_ASCENSEUR_POUR_NE_PAS_CLIPSER, POSITION_ASCENSEUR_NBR};
 
 // angles des positions des servos et moteur asservi (en valeur interne du servo)
-static const int positionGriffeGauche[POSITION_GRIFFE_NBR] = {700, 1240, 1530};
-static const int positionGriffeDroite[POSITION_GRIFFE_NBR] = {1530, 1240, 700};
+static const int positionGriffeGauche[POSITION_GRIFFE_NBR] = {750, 1240, 1530};
+static const int positionGriffeDroite[POSITION_GRIFFE_NBR] = {1550, 1240, 700};
 
 // angles des positions des servos et moteur asservi (en valeur interne du servo)
 static const int positionPinceGauche[POSITION_PINCE_NBR] = {700, 1240, 1530};
