@@ -81,6 +81,11 @@ def createEnvironment(libs_list=[], force_debug=False):
 		# Pour l'instant : on FORCE l'utilisation de MinGW (TODO : permettre VC++...)
 		Tool('mingw')(env)
 
+		# Ça c'est pour le bug de SCons signalé ici :http://markmail.org/message/6d37krhdrypuwmhj
+		# Et qu'on a déjà expérimenté ici : http://www.etud.insa-toulouse.fr/~club_robot/forum/viewtopic.php?f=7&t=13&p=240&hilit=%2Fnologo#p240
+		# et ici : http://www.etud.insa-toulouse.fr/~club_robot/forum/viewtopic.php?f=7&t=88
+		env['CCFLAGS'] = SCons.Util.CLVar('')
+
 		# On evite l'inclusion par windows.h de choses inutiles dont winsock.h (conflit avec winsock2.h)
 		env.Append(CPPDEFINES=['WIN32', 'WIN32_LEAN_AND_MEAN'])
 

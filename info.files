@@ -63,6 +63,7 @@
 ./robot/2011/titan/librobot2011/Robot2011.cpp
 ./robot/2011/titan/librobot2011/MecaManager2011.cpp
 ./robot/2011/titan/debug/TestCarteDebug.cpp
+./robot/2011/titan/debug/TestAction.cpp
 ./robot/2011/titan/debug/ControleClavier.cpp
 ./robot/2011/titan/python/PythonTerm.cpp
 ./robot/2011/titan/ia/Igor.cpp
@@ -138,6 +139,7 @@
 ./robot/boost/include/boost/test/utils/runtime/cla/named_parameter.cpp
 ./robot/boost/include/boost/test/utils/runtime/file/config_file.cpp
 ./robot/boost/include/boost/test/utils/runtime/file/config_file_iterator.cpp
+./robot/Outils/Action/Action.h
 ./robot/Outils/tga/TGALoader.cpp
 ./robot/Outils/MathToolbox/main.cpp
 ./robot/Outils/MathToolbox/MathUtilities.cpp
