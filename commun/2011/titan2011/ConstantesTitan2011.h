@@ -19,11 +19,16 @@ enum NumContacteur{
 	CONTACTEUR_TIRETTE = 0,
 	CONTACTEUR_CHOIX_EQUIPE = 1,
 	CONTACTEUR_ASCENSEUR =2,
-	CONTACTEUR_SOUS_BRAS_GAUCHE=3,
-	CONTACTEUR_SOUS_BRAS_DROIT=4,
-	CONTACTEUR_DEVANT_BRAS_GAUCHE = 5,
-	CONTACTEUR_DEVANT_BRAS_DROIT = 6
+
 };
+
+enum NumContacteurBras{
+	CONTACTEUR_SOUS_BRAS_GAUCHE=0,
+	CONTACTEUR_SOUS_BRAS_DROIT=1,
+	CONTACTEUR_DEVANT_BRAS_GAUCHE = 2,
+	CONTACTEUR_DEVANT_BRAS_DROIT = 3
+};
+
 
 enum NumCodeBarre{
 	CODE_BARRE_DROIT  = 0,
@@ -57,7 +62,7 @@ static const int positionPinceDroite[POSITION_PINCE_NBR] = {2350, 1240, 700};
 static const int positionBrasGauche[POSITION_BRAS_NBR]= {20000, 0};
 static const int positionBrasDroit[POSITION_BRAS_NBR]={-20000, 0};
 
-static const int positionAscenseur[POSITION_ASCENSEUR_NBR]={0, 350000, 435000};
+static const int positionAscenseur[POSITION_ASCENSEUR_NBR]=  {0, 350000, 435000};// realité {0, 350000, 435000}; simu {0, 10000, 20000};
 
 }
 #endif //CONSTANTES_2011_H
