@@ -16,14 +16,12 @@ enum IdCarte
 	ID_CARTE_ASSERVISSEMENT_ASCENSEUR         = 6,
 	ID_CARTE_ASSERVISSEMENT_BRAS_GAUCHE       = 7,
 	ID_CARTE_ASSERVISSEMENT_BRAS_DROIT        = 8,
-	//ID_CARTE_CAPTEUR_LUMINOSITE_ZONE_STOCKAGE = 9,
+	ID_CARTE_CODES_BARRES					  = 9,
 	ID_CARTE_XBEE_BALISE_ADVERSAIRE           = 10,
 	ID_CARTE_ALIMENTATION                     = 11,
 	ID_CARTE_DEBUG_DESSIN                     = 12,
 	ID_CARTE_DEBUG                            = 13,
-	ID_CARTE_LCD                              = 14,
-	ID_CARTE_CODES_BARRES                     = 15
-
+	ID_CARTE_LCD                              = 14
 };
 
 }
