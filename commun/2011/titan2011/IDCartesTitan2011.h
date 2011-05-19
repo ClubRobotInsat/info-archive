@@ -17,7 +17,7 @@ enum IdCarte
 	ID_CARTE_ASSERVISSEMENT_BRAS_GAUCHE       = 7,
 	ID_CARTE_ASSERVISSEMENT_BRAS_DROIT        = 8,
 	ID_CARTE_CODES_BARRES					  = 9,
-	ID_CARTE_XBEE_BALISE_ADVERSAIRE           = 10,
+	ID_CARTE_MAT_LASER                        = 10,
 	ID_CARTE_ALIMENTATION                     = 11,
 	ID_CARTE_DEBUG_DESSIN                     = 12,
 	ID_CARTE_DEBUG                            = 13,
