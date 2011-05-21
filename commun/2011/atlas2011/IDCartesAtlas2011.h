@@ -27,11 +27,9 @@ enum IdCarteAtlas
 	ID_CARTE_ALIMENTATION = 10,
 	ID_CARTE_CONTACTEURS = 11,	// tirette, couleur equipe, recalage ascenceur,
 								// recalage detect adv, recalage robot avant / arriere
+	ID_CARTE_DEBUG_DESSIN = 12,
 
-	ID_BROADCAST = 15,
-	ID_CARTE_DEBUG_DESSIN = 16,
-	ID_CARTE_DEBUG = 17,
-	ID_CARTE_LCD = 18
+	ID_CARTE_LCD = 13
 };
 }
 #endif
