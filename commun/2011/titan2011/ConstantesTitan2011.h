@@ -8,6 +8,12 @@
 namespace ConstantesTitan2011
 {
 
+enum TypeObjet{
+	FIGURE,
+	SIMPLE_PION,
+	TOUR
+};
+
 enum Bras{
 	BRAS_GAUCHE = 0,
 	BRAS_DROIT = 1,
