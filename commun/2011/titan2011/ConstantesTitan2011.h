@@ -68,7 +68,7 @@ static const int positionPinceDroite[POSITION_PINCE_NBR] = {2350, 1240, 1200};
 static const int positionBrasGauche[POSITION_BRAS_NBR]= {20000, 0, 25500};
 static const int positionBrasDroit[POSITION_BRAS_NBR]={-20000, 0, -25500};
 
-static const int positionAscenseur[POSITION_ASCENSEUR_NBR]=  {0, 700000, 870000};
+static const int positionAscenseur[POSITION_ASCENSEUR_NBR]=  {0, 540000, 700000};
 //simu ancienne valeur : maintenant ça marche à peu près sans changer les valeurs {0, 10000, 20000};
 
 }
