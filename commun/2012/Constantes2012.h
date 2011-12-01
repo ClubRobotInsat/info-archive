@@ -26,14 +26,27 @@ inline std::ostream& operator<<(std::ostream& os, const CouleurRobot& couleur)
 	return os;
 }
 
-// Numeros des contacteurs et les roles associes
-enum NumContacteur
+namespace Constantes2012
 {
-	CONTACTEUR_TIRETTE 					= 0,
-	CONTACTEUR_CHOIX_EQUIPE 			= 1,
-	CONTACTEUR_USB_EPIA					= 2
+	// Numeros des contacteurs et les roles associes
+	enum NumContacteur
+	{
+		CONTACTEUR_TIRETTE 					= 0,
+		CONTACTEUR_CHOIX_EQUIPE 			= 1,
+		CONTACTEUR_USB_EPIA					= 2
 
-};
+	};
+
+	// Numéro des bras du robot
+	enum NumBras
+	{
+		BRAS_GAUCHE							= 0,
+		BRAS_DROIT 							= 1,
+		BRAS_CARTE							= 2
+	};
+
+
+}
 
 #endif //CONSTANTES_2012_H
 
