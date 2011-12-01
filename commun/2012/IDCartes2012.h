@@ -18,7 +18,9 @@ namespace IDCartes2012
 		ID_CARTE_SERVOS_NOVA_COFFRE_ET_CALE			= 7,
 		ID_CARTE_SERVOS_NOVA_CARTE_ET_LINGOT_TOTEM	= 8,
 		ID_CARTE_POS_ADV							= 11,
-		ID_CARTE_ALIMENTATION 						= 12
+		ID_CARTE_ALIMENTATION 						= 12,
+		ID_CARTE_DEBUG_DESSIN                     	= 13,
+		ID_CARTE_DEBUG                            	= 14
 	};
 }
 #endif
