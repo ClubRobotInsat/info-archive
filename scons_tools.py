@@ -1,3 +1,4 @@
+
 # -*- encoding: utf-8 -*-
 # scons_tools.py
 
@@ -173,12 +174,17 @@ def createEnvironment(libs_list=[], force_debug=False):
 			env.Append(LIBPATH=[root_dir + '/robot/2011/atlas/libRobot2011'])
 			env.Append(LIBS=['RobotAtlas2011'])
 
-
 		elif lib == 'RobotTitan2011':
 			env.Append(CPPPATH=[root_dir + '/robot/2011/titan/librobot2011',
 								root_dir + '/robot/Cartes'])
 			env.Append(LIBPATH=[root_dir + '/robot/2011/titan/librobot2011'])
 			env.Append(LIBS=['RobotTitan2011'])
+
+		elif lib == 'Robot2012':
+			env.Append(CPPPATH=[root_dir + '/robot/2012/Hyperion/librobot2012',
+					    root_dir + '/robot/Cartes'])
+			env.Append(LIBPATH=[root_dir + '/robot/2012/Hyperion/librobot2012'])
+			env.Append(LIBS=['Robot2012'])
 
 		elif lib == 'Webcam':
 			env.Append(CPPPATH=[root_dir + '/webcam'])
