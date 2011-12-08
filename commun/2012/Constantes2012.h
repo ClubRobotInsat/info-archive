@@ -40,12 +40,20 @@ namespace Constantes2012
 	// Numéro des bras du robot
 	enum NumBras
 	{
-		BRAS_AVANT_GAUCHE					= 0,
-		BRAS_AVANT_DROIT 					= 1,
-		BRAS_CALE_DROITE					= 2,
-		BRAS_CALE_GAUCHE					= 3,
-		BRAS_CARTE							= 4
+		BRAS_AVANT							= 0,
+		BRAS_AVANT_GAUCHE					= 1,
+		BRAS_AVANT_DROIT 					= 2,
+		BRAS_CALE							= 3,
+		BRAS_CALE_DROITE					= 4,
+		BRAS_CALE_GAUCHE					= 5,
+		BRAS_CARTE							= 6
 	};
+
+	// Position des bras (générique)
+	enum PositionBras {POSITION_BRAS_OUVERTE = 0, POSITION_BRAS_FERME, POSITION_BRAS_NBR};
+	static const int positionBrasAvant[POSITION_BRAS_NBR] = {0,0}; //TBD
+	static const int positionBrasCale[POSITION_BRAS_NBR] = {0,0}; //TBD
+	static const int positionBrasCarte[POSITION_BRAS_NBR] = {0,0}; //TBD
 
 	// Numéro des pinces du robot
 	enum NumPinces
@@ -61,6 +69,9 @@ namespace Constantes2012
 
 	// Position des pinces (générique)
 	enum PositionPince {POSITION_PINCE_OUVERTE = 0, POSITION_PINCE_FERMEE, POSITION_PINCE_NBR};
+	static const int positionPinceHaut[POSITION_PINCE_NBR] = {0,0}; //TBD
+	static const int positionPinceTotem[POSITION_PINCE_NBR] = {0,0}; //TBD
+	static const int positionPinceCarte[POSITION_PINCE_NBR] = {0,0}; //TBD
 
 	// Position longitudinale des pinces pour attraper les lingots
 	enum PositionsLongitudinalesPinceTotem
