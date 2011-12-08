@@ -45,7 +45,15 @@ namespace Constantes2012
 		BRAS_CARTE							= 2
 	};
 
+	enum PositionsLongitudinalesPinceTotem
+	{
+		PINCE_RANGEE						= 0,
+		PINCE_SORTIE,
+		PINCE_MI_RENTREE,
+		NBR_POSITIONS_PINCE
+	};
 
+	static const int tableauPositionLongitudinalPinceTotem[NBR_POSITIONS_PINCE]= {0,0,0}; //ToBeDefined !!!
 }
 
 #endif //CONSTANTES_2012_H
