@@ -74,14 +74,17 @@ namespace Constantes2012
 	static const int positionPinceCarte[POSITION_PINCE_NBR] = {0,0}; //TBD
 
 	// Position longitudinale des pinces pour attraper les lingots
-	enum PositionsLongitudinalesPinceTotem
-	{
-		PINCE_RANGEE						= 0,
-		PINCE_SORTIE,
-		PINCE_MI_RENTREE,
-		NBR_POSITIONS_LONGITUDINALES_PINCE
-	};
-	static const int tableauPositionLongitudinalPinceTotem[NBR_POSITIONS_LONGITUDINALES_PINCE]= {0,0,0}; //ToBeDefined !!!
+	enum PositionsLongitudinalesPinceTotem	{PINCE_RANGEE = 0, PINCE_SORTIE, PINCE_MI_RENTREE, NBR_POSITIONS_LONGITUDINALES_PINCE};
+	static const int tableauPositionsLongitudinalesPinceTotem[NBR_POSITIONS_LONGITUDINALES_PINCE] = {0,0,0}; //ToBeDefined !!!
+
+	// Positions possibles pour la plaque vidant le coffre
+	enum PositionsLongitudinalesCoffre {COFFRE_OUVERT = 0, COFFRE_FERME, NBR_POSITIONS_LONGITUDINALES_COFFRE};
+	static const int tableauPositionsLongitudinalesCoffre[NBR_POSITIONS_LONGITUDINALES_COFFRE] = {0,0}; // TDB
+
+	// Positions possibles pour la moissoneuse
+	enum PositionsMoissoneuse {MOISSONEUSE_ARRET_VERTICAL = 0, MOISSONEUSE_ARRET_HORIZONTAL, NBR_POSITIONS_MOISSONEUSE};
+	static const int tableauPositionsMoissoneuse[NBR_POSITIONS_MOISSONEUSE] = {0,0}; // TDB
+
 }
 
 #endif //CONSTANTES_2012_H
