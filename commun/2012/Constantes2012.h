@@ -50,10 +50,10 @@ namespace Constantes2012
 	};
 
 	// Position des bras (générique)
-	enum PositionBras {POSITION_BRAS_OUVERTE = 0, POSITION_BRAS_FERME, POSITION_BRAS_NBR};
-	static const int positionBrasAvant[POSITION_BRAS_NBR] = {0,0}; //TBD
-	static const int positionBrasCale[POSITION_BRAS_NBR] = {0,0}; //TBD
-	static const int positionBrasCarte[POSITION_BRAS_NBR] = {0,0}; //TBD
+	enum PositionBras {POSITION_BRAS_OUVERTE = 0, POSITION_BRAS_MOITIE, POSITION_BRAS_FERME, POSITION_BRAS_NBR};
+	static const int positionBrasAvant[POSITION_BRAS_NBR] = {0,0,0}; //TBD
+	static const int positionBrasCale[POSITION_BRAS_NBR] = {0,0,0}; //TBD
+	static const int positionBrasCarte[POSITION_BRAS_NBR] = {0,0,0}; //TBD
 
 	// Numéro des pinces du robot
 	enum NumPinces
@@ -77,6 +77,10 @@ namespace Constantes2012
 	enum PositionsLongitudinalesPinceTotem	{PINCE_RANGEE = 0, PINCE_SORTIE, PINCE_MI_RENTREE, NBR_POSITIONS_LONGITUDINALES_PINCE};
 	static const int tableauPositionsLongitudinalesPinceTotem[NBR_POSITIONS_LONGITUDINALES_PINCE] = {0,0,0}; //ToBeDefined !!!
 
+	// Positions du servo d'ouverture du coffre
+	enum ServoCoffre {SERVO_COFFRE = 0};
+	enum PositionServoCoffre {POSITION_COFFRE_OUVERT = 0, POSITION_COFFRE_FERME, POSITION_COFFRE_NBR};
+	static const int positionServoCoffre[POSITION_COFFRE_NBR] = {0,0};
 	// Positions possibles pour la plaque vidant le coffre
 	enum PositionsLongitudinalesCoffre {COFFRE_OUVERT = 0, COFFRE_FERME, NBR_POSITIONS_LONGITUDINALES_COFFRE};
 	static const int tableauPositionsLongitudinalesCoffre[NBR_POSITIONS_LONGITUDINALES_COFFRE] = {0,0}; // TDB
