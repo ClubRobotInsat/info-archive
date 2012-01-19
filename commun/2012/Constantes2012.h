@@ -29,65 +29,70 @@ inline std::ostream& operator<<(std::ostream& os, const CouleurRobot& couleur)
 namespace Constantes2012
 {
 	// Numeros des contacteurs et les roles associes
-	enum NumContacteur
-	{
+	enum NumContacteur	{
 		CONTACTEUR_TIRETTE 					= 0,
 		CONTACTEUR_CHOIX_EQUIPE 			= 1,
 		CONTACTEUR_USB_EPIA					= 2
-
 	};
 
-	// Numéro des bras du robot
-	enum NumBras
-	{
-		BRAS_AVANT							= 0,
-		BRAS_AVANT_GAUCHE					= 1,
-		BRAS_AVANT_DROIT 					= 2,
-		BRAS_CALE							= 3,
-		BRAS_CALE_DROITE					= 4,
-		BRAS_CALE_GAUCHE					= 5,
-		BRAS_CARTE							= 6
+	///////////////////////////////////// Numéro des servos /////////////////////////////////////////////
+	// Indice des différents servo de ramassage dans le tableau de positions
+	enum ServosPieceTotem {
+		SERVO_HAUT_DROIT 					= 0,
+		SERVO_HAUT_GAUCHE					= 1,
+		SERVO_BAS_DROIT						= 2,
+		SERVO_BAS_GAUCHE					= 3,
+		SERVO_PIECE_TOTEM_NBR				= 4
 	};
 
-	// Position des bras (générique)
-	enum PositionBras {POSITION_BRAS_OUVERTE = 0, POSITION_BRAS_MOITIE, POSITION_BRAS_FERME, POSITION_BRAS_NBR};
-	static const int positionBrasAvant[POSITION_BRAS_NBR] = {0,0,0}; //TBD
-	static const int positionBrasCale[POSITION_BRAS_NBR] = {0,0,0}; //TBD
-	static const int positionBrasCarte[POSITION_BRAS_NBR] = {0,0,0}; //TBD
+	// Position des servos PieceTotem
+	enum PositionServosPieceTotem {POSITION_SERVO_TOTEM_OUVERT = 0, POSITION_SERVO_TOTEM_MOITIE, POSITION_SERVO_TOTEM_FERME, POSITION_SERVO_TOTEM_NBR};
+	static const int positionServosHaut[POSITION_SERVO_TOTEM_NBR] = {0,0,0}; //TBD
+	static const int positionServosBas[POSITION_SERVO_TOTEM_NBR] = {0,0,0}; //TBD
 
-	// Numéro des pinces du robot
-	enum NumPinces
-	{
-		PINCE_HAUT							= 0,
-		PINCE_HAUT_DROITE					= 1,
-		PINCE_HAUT_GAUCHE					= 2,
-		PINCE_TOTEM							= 3,
-		PINCE_TOTEM_DROITE 					= 4,
-		PINCE_TOTEM_GAUCHE					= 5,
-		PINCE_CARTE							= 6
+	///
+	// Indice des différents servo de dépose dans le tab de positions
+	enum ServosCoffreCale {
+		SERVO_BRAS_CALE_DROITE				= 0,
+		SERVO_BRAS_CALE_GAUCHE				= 1,
+		SERVO_COFFRE						= 2,
+		SERVO_COFFRE_CALE_NBR				= 3
 	};
 
-	// Position des pinces (générique)
-	enum PositionPince {POSITION_PINCE_OUVERTE = 0, POSITION_PINCE_FERMEE, POSITION_PINCE_NBR};
-	static const int positionPinceHaut[POSITION_PINCE_NBR] = {0,0}; //TBD
-	static const int positionPinceTotem[POSITION_PINCE_NBR] = {0,0}; //TBD
-	static const int positionPinceCarte[POSITION_PINCE_NBR] = {0,0}; //TBD
+	// Position des servos CoffreCale
+	enum PositionServosCale {POSITION_SERVO_CALE_OUVERT = 0, POSITION_SERVO_CALE_MOITIE, POSITION_SERVO_CALE_FERME, POSITION_SERVO_CALE_NBR};
+	static const int positionServosCale[POSITION_SERVO_CALE_NBR] = {0,0,0}; //TBD
+	enum PositionServoCoffre {POSITION_SERVO_COFFRE_OUVERT = 0, POSITION_SERVO_COFFRE_FERME, POSITION_SERVO_COFFRE_NBR};
+	static const int positionServoCoffre[POSITION_SERVO_COFFRE_NBR] = {0,0}; //TBD
 
-	// Position longitudinale des pinces pour attraper les lingots
-	enum PositionsLongitudinalesPinceTotem	{PINCE_RANGEE = 0, PINCE_SORTIE, PINCE_MI_RENTREE, NBR_POSITIONS_LONGITUDINALES_PINCE};
-	static const int tableauPositionsLongitudinalesPinceTotem[NBR_POSITIONS_LONGITUDINALES_PINCE] = {0,0,0}; //ToBeDefined !!!
+	///
+	// Indice des différents servo de ramassage lingot et carte dans le tab de positions
+	enum ServosCarteEtLingotTotem {
+		SERVO_PINCE_CARTE					= 0,
+		SERVO_BRAS_CARTE 					= 1,
+		SERVO_BRAS_PINCE_TOTEM_DROIT		= 2,
+		SERVO_BRAS_PINCE_TOTEM_GAUCHE		= 3,
+		SERVO_CARTE_ET_LINGOT_TOTEM_NBR		= 4
+	};
 
-	// Positions du servo d'ouverture du coffre
-	enum ServoCoffre {SERVO_COFFRE = 0};
-	enum PositionServoCoffre {POSITION_COFFRE_OUVERT = 0, POSITION_COFFRE_FERME, POSITION_COFFRE_NBR};
-	static const int positionServoCoffre[POSITION_COFFRE_NBR] = {0,0};
-	// Positions possibles pour la plaque vidant le coffre
-	enum PositionsLongitudinalesCoffre {COFFRE_OUVERT = 0, COFFRE_FERME, NBR_POSITIONS_LONGITUDINALES_COFFRE};
-	static const int tableauPositionsLongitudinalesCoffre[NBR_POSITIONS_LONGITUDINALES_COFFRE] = {0,0}; // TDB
+	// Position des servos CarteEtLingotTotem
+	enum PositionServosCarteEtLingotTotem {POSITION_SERVO_CARTE_LINGOT_OUVERT = 0, POSITION_SERVO_CARTE_LINGOT_MILIEU, POSITION_SERVO_CARTE_LINGOT_FERME, POSITION_SERVO_CARTE_LINGOT_NBR};
+	static const int positionsServosTotem[POSITION_SERVO_CARTE_LINGOT_NBR] = {0,0,0}; // TBD
+	static const int positionsServosPinceCarte[POSITION_SERVO_CARTE_LINGOT_NBR] = {0,0,0};
+	static const int positionsServosBrasCarte[POSITION_SERVO_CARTE_LINGOT_NBR] = {0,0,0};
 
-	// Positions possibles pour la moissoneuse
+	//////////////////////////////////////////// Moteurs ///////////////////////////////////////////////////////
+	// Positions possibles pour la plaque vidant le coffre (moteur)
+	enum PositionsLongitudinalesGlissiereCoffre {COFFRE_OUVERT = 0, COFFRE_FERME, NBR_POSITIONS_LONGITUDINALES_COFFRE};
+	static const int tableauPositionsLongitudinalesGlissiereCoffre[NBR_POSITIONS_LONGITUDINALES_COFFRE] = {0,0}; // TDB
+
+	// Positions possibles pour la moissoneuse (moteur)
 	enum PositionsMoissoneuse {MOISSONEUSE_ARRET_VERTICAL = 0, MOISSONEUSE_ARRET_HORIZONTAL, NBR_POSITIONS_MOISSONEUSE};
 	static const int tableauPositionsMoissoneuse[NBR_POSITIONS_MOISSONEUSE] = {0,0}; // TDB
+
+	// Position longitudinale la glissière pour attraper les lingots (moteur)
+	enum PositionsLongitudinalesGlissiereLingot	{PINCE_RANGEE = 0, PINCE_SORTIE, PINCE_MI_RENTREE, NBR_POSITIONS_LONGITUDINALES_PINCE};
+	static const int tableauPositionsLongitudinalesGlissiereLingot[NBR_POSITIONS_LONGITUDINALES_PINCE] = {0,0,0}; //ToBeDefined !!!
 
 }
 
