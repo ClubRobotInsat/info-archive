@@ -91,8 +91,8 @@ namespace Constantes2012
 	static const int tableauPositionsMoissoneuse[NBR_POSITIONS_MOISSONEUSE] = {0,0}; // TDB
 
 	// Position longitudinale la glissière pour attraper les lingots (moteur)
-	enum PositionsLongitudinalesGlissiereLingot	{PINCE_RANGEE = 0, PINCE_SORTIE, PINCE_MI_RENTREE, NBR_POSITIONS_LONGITUDINALES_PINCE};
-	static const int tableauPositionsLongitudinalesGlissiereLingot[NBR_POSITIONS_LONGITUDINALES_PINCE] = {0,0,0}; //ToBeDefined !!!
+	enum PositionsLongitudinalesGlissiereLingot	{GLISSIERE_RANGEE = 0, GLISSIERE_SORTIE, GLISSIERE_MI_RANGEE, NBR_POSITIONS_LONGITUDINALES_GLISSIERE};
+	static const int tableauPositionsLongitudinalesGlissiereLingot[NBR_POSITIONS_LONGITUDINALES_GLISSIERE] = {0,0,0}; //ToBeDefined !!!
 
 }
 
