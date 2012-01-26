@@ -101,6 +101,7 @@ namespace Constantes2012
 
   	static const int deltaPositionServo = 20; // > resolution sur les valeurs de position des servos
   	static const int deltaPositionMoteur = 70; // > resolution sur les valeurs de position des moteurs (TODO : mettre la bonne valeur)
+  	static const int vitesseRotationMoissoneuse = 4000; // > Vitesse de rotation de la moissoneuse (TODO : TDB !)
 }
 
 #endif //CONSTANTES_2012_H
