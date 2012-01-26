@@ -67,7 +67,7 @@ namespace Constantes2012
   static const int positionServosCaleGauche[POSITION_SERVO_CALE_NBR] = {0,200,500}; //TBD
   static const int positionServosCaleDroit[POSITION_SERVO_CALE_NBR] = {0,200,500}; //TBD
 	enum PositionServoCoffre {POSITION_SERVO_COFFRE_OUVERT = 0, POSITION_SERVO_COFFRE_FERME, POSITION_SERVO_COFFRE_NBR};
-  static const int positionServoCoffre[POSITION_SERVO_COFFRE_NBR] = {0,500}; //TBD
+  static const int positionServoCoffre[POSITION_SERVO_COFFRE_NBR] = {0,1000}; //TBD
 
 	///
 	// Indice des différents servo de ramassage lingot et carte dans le tab de positions
@@ -81,10 +81,10 @@ namespace Constantes2012
 
 	// Position des servos CarteEtLingotTotem
 	enum PositionServosCarteEtLingotTotem {POSITION_SERVO_CARTE_LINGOT_OUVERT = 0, POSITION_SERVO_CARTE_LINGOT_MILIEU, POSITION_SERVO_CARTE_LINGOT_FERME, POSITION_SERVO_CARTE_LINGOT_NBR};
-  static const int positionsServosTotemGauche[POSITION_SERVO_CARTE_LINGOT_NBR] = {0,200,500}; // TBD
-  static const int positionsServosTotemDroit[POSITION_SERVO_CARTE_LINGOT_NBR] = {0,200,500}; // TBD
-  static const int positionsServosPinceCarte[POSITION_SERVO_CARTE_LINGOT_NBR] = {0,200,500};
-  static const int positionsServosBrasCarte[POSITION_SERVO_CARTE_LINGOT_NBR] = {0,200,500};
+  static const int positionsServosTotemGauche[POSITION_SERVO_CARTE_LINGOT_NBR] = {0,200,1000}; // TBD
+  static const int positionsServosTotemDroit[POSITION_SERVO_CARTE_LINGOT_NBR] = {0,200,1000}; // TBD
+  static const int positionsServosPinceCarte[POSITION_SERVO_CARTE_LINGOT_NBR] = {0,200,1000};
+  static const int positionsServosBrasCarte[POSITION_SERVO_CARTE_LINGOT_NBR] = {0,200,1000};
 
 	//////////////////////////////////////////// Moteurs ///////////////////////////////////////////////////////
 	// Positions possibles pour la plaque vidant le coffre (moteur)
