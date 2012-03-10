@@ -47,10 +47,10 @@ namespace Constantes2012
 
 	// Position des servos PieceTotem
 	enum PositionServosPieceTotem {POSITION_SERVO_TOTEM_OUVERT = 0, POSITION_SERVO_TOTEM_MOITIE, POSITION_SERVO_TOTEM_FERME, POSITION_SERVO_TOTEM_NBR};
-  static const int positionServosHautGauche[POSITION_SERVO_TOTEM_NBR] = {0,200,500}; //TBD
-  static const int positionServosHautDroit[POSITION_SERVO_TOTEM_NBR] = {0,200,500}; //TBD
-  static const int positionServosBasGauche[POSITION_SERVO_TOTEM_NBR] = {0,200,500}; //TBD
-  static const int positionServosBasDroit[POSITION_SERVO_TOTEM_NBR] = {0,200,500}; //TBD
+	static const int positionServosHautGauche[POSITION_SERVO_TOTEM_NBR] = {0,200,500}; //TBD
+	static const int positionServosHautDroit[POSITION_SERVO_TOTEM_NBR] = {0,200,500}; //TBD
+	static const int positionServosBasGauche[POSITION_SERVO_TOTEM_NBR] = {0,200,500}; //TBD
+	static const int positionServosBasDroit[POSITION_SERVO_TOTEM_NBR] = {0,200,500}; //TBD
 
 
 	///
@@ -64,10 +64,10 @@ namespace Constantes2012
 
 	// Position des servos CoffreCale
 	enum PositionServosCale {POSITION_SERVO_CALE_OUVERT = 0, POSITION_SERVO_CALE_MOITIE, POSITION_SERVO_CALE_FERME, POSITION_SERVO_CALE_NBR};
-  static const int positionServosCaleGauche[POSITION_SERVO_CALE_NBR] = {0,200,500}; //TBD
-  static const int positionServosCaleDroit[POSITION_SERVO_CALE_NBR] = {0,200,500}; //TBD
+	static const int positionServosCaleGauche[POSITION_SERVO_CALE_NBR] = {0,200,500}; //TBD
+	static const int positionServosCaleDroit[POSITION_SERVO_CALE_NBR] = {0,200,500}; //TBD
 	enum PositionServoCoffre {POSITION_SERVO_COFFRE_OUVERT = 0, POSITION_SERVO_COFFRE_FERME, POSITION_SERVO_COFFRE_NBR};
-  static const int positionServoCoffre[POSITION_SERVO_COFFRE_NBR] = {0,1000}; //TBD
+	static const int positionServoCoffre[POSITION_SERVO_COFFRE_NBR] = {0,1000}; //TBD
 
 	///
 	// Indice des différents servo de ramassage lingot et carte dans le tab de positions
@@ -81,23 +81,23 @@ namespace Constantes2012
 
 	// Position des servos CarteEtLingotTotem
 	enum PositionServosCarteEtLingotTotem {POSITION_SERVO_CARTE_LINGOT_OUVERT = 0, POSITION_SERVO_CARTE_LINGOT_MILIEU, POSITION_SERVO_CARTE_LINGOT_FERME, POSITION_SERVO_CARTE_LINGOT_NBR};
-  static const int positionsServosTotemGauche[POSITION_SERVO_CARTE_LINGOT_NBR] = {0,200,1000}; // TBD
-  static const int positionsServosTotemDroit[POSITION_SERVO_CARTE_LINGOT_NBR] = {0,200,1000}; // TBD
-  static const int positionsServosPinceCarte[POSITION_SERVO_CARTE_LINGOT_NBR] = {0,200,1000};
-  static const int positionsServosBrasCarte[POSITION_SERVO_CARTE_LINGOT_NBR] = {0,200,1000};
+	static const int positionsServosTotemGauche[POSITION_SERVO_CARTE_LINGOT_NBR] = {0,200,1000}; // TBD
+	static const int positionsServosTotemDroit[POSITION_SERVO_CARTE_LINGOT_NBR] = {0,200,1000}; // TBD
+	static const int positionsServosPinceCarte[POSITION_SERVO_CARTE_LINGOT_NBR] = {0,200,1000};
+	static const int positionsServosBrasCarte[POSITION_SERVO_CARTE_LINGOT_NBR] = {0,200,1000};
 
 	//////////////////////////////////////////// Moteurs ///////////////////////////////////////////////////////
 	// Positions possibles pour la plaque vidant le coffre (moteur)
 	enum PositionsLongitudinalesGlissiereCoffre {COFFRE_OUVERT = 0, COFFRE_FERME, NBR_POSITIONS_LONGITUDINALES_COFFRE};
-  static const int tableauPositionsLongitudinalesGlissiereCoffre[NBR_POSITIONS_LONGITUDINALES_COFFRE] = {0,20000}; // TDB
+	static const int tableauPositionsLongitudinalesGlissiereCoffre[NBR_POSITIONS_LONGITUDINALES_COFFRE] = {0,20000}; // TDB
 
 	// Positions possibles pour la moissoneuse (moteur)
 	enum PositionsMoissoneuse {MOISSONEUSE_ARRET_VERTICAL = 0, MOISSONEUSE_ARRET_HORIZONTAL, NBR_POSITIONS_MOISSONEUSE};
-  static const int tableauPositionsMoissoneuse[NBR_POSITIONS_MOISSONEUSE] = {0,20000}; // TDB
+	static const int tableauPositionsMoissoneuse[NBR_POSITIONS_MOISSONEUSE] = {0,20000}; // TDB
 
 	// Position longitudinale la glissière pour attraper les lingots (moteur)
 	enum PositionsLongitudinalesGlissiereLingot	{GLISSIERE_RANGEE = 0, GLISSIERE_SORTIE, GLISSIERE_MI_RANGEE, NBR_POSITIONS_LONGITUDINALES_GLISSIERE};
-  static const int tableauPositionsLongitudinalesGlissiereLingot[NBR_POSITIONS_LONGITUDINALES_GLISSIERE] = {0,20000,30000}; //ToBeDefined !!!
+	static const int tableauPositionsLongitudinalesGlissiereLingot[NBR_POSITIONS_LONGITUDINALES_GLISSIERE] = {0,20000,30000}; //ToBeDefined !!!
 
   	static const int deltaPositionServo = 20; // > resolution sur les valeurs de position des servos
   	static const int deltaPositionMoteur = 70; // > resolution sur les valeurs de position des moteurs (TODO : mettre la bonne valeur)
