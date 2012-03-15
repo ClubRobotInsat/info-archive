@@ -59,13 +59,15 @@ namespace Constantes2012
 		SERVO_BRAS_CALE_DROITE				= 0,
 		SERVO_BRAS_CALE_GAUCHE				= 1,
 		SERVO_COFFRE						= 2,
-		SERVO_COFFRE_CALE_NBR				= 3
+		SERVO_COFFRE_AVANT					= 3,
+		SERVO_COFFRE_CALE_NBR				= 4
 	};
 
 	// Position des servos CoffreCale
 	enum PositionServosCale {POSITION_SERVO_CALE_OUVERT = 0, POSITION_SERVO_CALE_MOITIE, POSITION_SERVO_CALE_FERME, POSITION_SERVO_CALE_NBR};
 	static const int positionServosCaleGauche[POSITION_SERVO_CALE_NBR] = {0,200,500}; //TBD
 	static const int positionServosCaleDroit[POSITION_SERVO_CALE_NBR] = {0,200,500}; //TBD
+	static const int positionsServoCoffreAvant[POSITION_SERVO_CALE_NBR] = {0,200,500}; // TBD
 	enum PositionServoCoffre {POSITION_SERVO_COFFRE_OUVERT = 0, POSITION_SERVO_COFFRE_FERME, POSITION_SERVO_COFFRE_NBR};
 	static const int positionServoCoffre[POSITION_SERVO_COFFRE_NBR] = {0,1000}; //TBD
 
@@ -91,9 +93,9 @@ namespace Constantes2012
 	enum PositionsLongitudinalesGlissiereCoffre {COFFRE_OUVERT = 0, COFFRE_FERME, NBR_POSITIONS_LONGITUDINALES_COFFRE};
 	static const int tableauPositionsLongitudinalesGlissiereCoffre[NBR_POSITIONS_LONGITUDINALES_COFFRE] = {0,20000}; // TDB
 
-	// Positions possibles pour la moissoneuse (moteur)
+	/*// Positions possibles pour la moissoneuse (moteur)
 	enum PositionsMoissoneuse {MOISSONEUSE_ARRET_VERTICAL = 0, MOISSONEUSE_ARRET_HORIZONTAL, NBR_POSITIONS_MOISSONEUSE};
-	static const int tableauPositionsMoissoneuse[NBR_POSITIONS_MOISSONEUSE] = {0,20000}; // TDB
+	static const int tableauPositionsMoissoneuse[NBR_POSITIONS_MOISSONEUSE] = {0,20000}; // TDB */
 
 	// Position longitudinale la glissière pour attraper les lingots (moteur)
 	enum PositionsLongitudinalesGlissiereLingot	{GLISSIERE_RANGEE = 0, GLISSIERE_SORTIE, GLISSIERE_MI_RANGEE, NBR_POSITIONS_LONGITUDINALES_GLISSIERE};
@@ -101,7 +103,7 @@ namespace Constantes2012
 
   	static const int deltaPositionServo = 20; // > resolution sur les valeurs de position des servos
   	static const int deltaPositionMoteur = 70; // > resolution sur les valeurs de position des moteurs (TODO : mettre la bonne valeur)
-  	static const int vitesseRotationMoissoneuse = 4000; // > Vitesse de rotation de la moissoneuse (TODO : TDB !)
+  	//static const int vitesseRotationMoissoneuse = 4000; // > Vitesse de rotation de la moissoneuse (TODO : TDB !)
 }
 
 #endif //CONSTANTES_2012_H
