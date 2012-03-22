@@ -93,9 +93,9 @@ namespace Constantes2012
 	enum PositionsLongitudinalesGlissiereCoffre {COFFRE_OUVERT = 0, COFFRE_FERME, NBR_POSITIONS_LONGITUDINALES_COFFRE};
 	static const int tableauPositionsLongitudinalesGlissiereCoffre[NBR_POSITIONS_LONGITUDINALES_COFFRE] = {0,20000}; // TDB
 
-	/*// Positions possibles pour la moissoneuse (moteur)
+	// Positions possibles pour la moissoneuse (moteur)
 	enum PositionsMoissoneuse {MOISSONEUSE_ARRET_VERTICAL = 0, MOISSONEUSE_ARRET_HORIZONTAL, NBR_POSITIONS_MOISSONEUSE};
-	static const int tableauPositionsMoissoneuse[NBR_POSITIONS_MOISSONEUSE] = {0,20000}; // TDB */
+	static const int tableauPositionsMoissoneuse[NBR_POSITIONS_MOISSONEUSE] = {0,20000}; // TDB
 
 	// Position longitudinale la glissière pour attraper les lingots (moteur)
 	enum PositionsLongitudinalesGlissiereLingot	{GLISSIERE_RANGEE = 0, GLISSIERE_SORTIE, GLISSIERE_MI_RANGEE, NBR_POSITIONS_LONGITUDINALES_GLISSIERE};
@@ -103,7 +103,7 @@ namespace Constantes2012
 
   	static const int deltaPositionServo = 20; // > resolution sur les valeurs de position des servos
   	static const int deltaPositionMoteur = 70; // > resolution sur les valeurs de position des moteurs (TODO : mettre la bonne valeur)
-  	//static const int vitesseRotationMoissoneuse = 4000; // > Vitesse de rotation de la moissoneuse (TODO : TDB !)
+  	static const int vitesseRotationMoissoneuse = 4000; // > Vitesse de rotation de la moissoneuse (TODO : TDB !)
 }
 
 #endif //CONSTANTES_2012_H
