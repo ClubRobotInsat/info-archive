@@ -79,13 +79,13 @@ namespace Constantes2012
 	};
 
 	//rack de constantes qui concerne les servos listés comme autres
-	enum PositionsServosAutres {POSITION_SERVO_AUTRES_OUVERT=0, POSITION_SERVO_AUTRES_MOITIE, POSITION_SERVO_AUTRES_FERME, POSITION_SERVO_AUTRES_NBR};
-	static const int positionsServoPinceCarte[POSITION_SERVOS_AUTRES_NBR] = {0,200,1000};
-	static const int positionsServoBrasCarte[POSITION_SERVOS_AUTRES_NBR] = {0,200,1000};
-	static const int positionsServoBenneAvant[POSITION_SERVOS_AUTRES_NBR] = {0,200,1000};
+	enum PositionServosAutres {POSITION_SERVO_AUTRES_OUVERT=0, POSITION_SERVO_AUTRES_MOITIE, POSITION_SERVO_AUTRES_FERME, POSITION_SERVOS_AUTRES_NBR};
+	static const int positionServoPinceCarte[POSITION_SERVOS_AUTRES_NBR] = {0,200,1000};
+	static const int positionServoBrasCarte[POSITION_SERVOS_AUTRES_NBR] = {0,200,1000};
+	static const int positionServoBenneAvant[POSITION_SERVOS_AUTRES_NBR] = {0,200,1000};
 	// Spécial pour le coffre (que ouvert ou fermé)
 	enum PositionsServoCoffre {POSITION_SERVO_COFFRE_OUVERT=0, POSITION_SERVO_COFFRE_FERME, POSITION_SERVO_COFFRE_NBR};
-	static const int positionsServoCoffre[POSITION_SERVO_COFFRE_NBR] = {0,200,1000};
+	static const int positionsServoCoffre[POSITION_SERVO_COFFRE_NBR] = {0,200};
 
 	//////////////////////////////////////////// Moteurs ///////////////////////////////////////////////////////
 	// Positions possibles pour la plaque vidant le coffre (moteur)
