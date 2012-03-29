@@ -69,22 +69,21 @@ namespace Constantes2012
 	static const int positionServosBasGauche[POSITION_SERVO_AG_NBR] = {0,200,500}; //TBD
 	static const int positionServosCaleGauche[POSITION_SERVO_AG_NBR] = {0,200,500}; //TBD
 
+	//ID des servos apartenant à la carte servo côté droit
+	enum ServosAutres {
+			SERVO_PINCE_CARTE					=0,
+			SERVO_BRAS_CARTE					=1,
+			SERVO_BENNE_ARRIERE					=2,
+			SERVO_BENNE_AVANT					=3,
+			SERVOS_AUTRES_NBR					=4
+		};
 
-	///
-	// Indice des différents servo de ramassage lingot et carte dans le tab de positions
-	enum ServosCarteEtLingotTotem {
-		SERVO_PINCE_CARTE					= 0,
-		SERVO_BRAS_CARTE 					= 1,
-		SERVO_BRAS_PINCE_TOTEM_DROIT		= 2,
-		SERVO_BRAS_PINCE_TOTEM_GAUCHE		= 3,
-		SERVO_CARTE_ET_LINGOT_TOTEM_NBR		= 4
-	};
-
-	// Position des servos CarteEtLingotTotem
-	enum PositionServosCarteEtLingotTotem {POSITION_SERVO_CARTE_LINGOT_OUVERT = 0, POSITION_SERVO_CARTE_LINGOT_MILIEU, POSITION_SERVO_CARTE_LINGOT_FERME, POSITION_SERVO_CARTE_LINGOT_NBR};
-	static const int positionsServosTotemGauche[POSITION_SERVO_CARTE_LINGOT_NBR] = {0,200,1000}; // TBD
-	static const int positionsServosPinceCarte[POSITION_SERVO_CARTE_LINGOT_NBR] = {0,200,1000};
-	static const int positionsServosBrasCarte[POSITION_SERVO_CARTE_LINGOT_NBR] = {0,200,1000};
+		//rack de constantes qui concerne les servos listés comme autres
+		enum PositionsServosAutres {POSITION_SERVO_PINCE_CARTE=0, POSITION_SERVO_BRAS_CARTE, POSITION_SERVO_BENNE_ARRIERE, POSITION_SERVO_BENNE_AVANT, POSITION_SERVOS_AUTRES_NBR};
+		static const int positionsServoPinceCarte[POSITION_SERVOS_AUTRES_NBR] = {0,200,1000};
+		static const int positionsServoBrasCarte[POSITION_SERVOS_AUTRES_NBR] = {0,200,1000};
+		static const int positionsServoBenneArriere[POSITION_SERVOS_AUTRES_NBR] = {0,200,1000};
+		static const int positionsServoBenneArriere[POSITION_SERVOS_AUTRES_NBR] = {0,200,1000};
 
 	//////////////////////////////////////////// Moteurs ///////////////////////////////////////////////////////
 	// Positions possibles pour la plaque vidant le coffre (moteur)
