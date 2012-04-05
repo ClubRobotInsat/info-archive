@@ -47,10 +47,10 @@ namespace Constantes2012
 
 	// Position des servos Avant Droit
 	enum PositionServosAvantDroit {POSITION_SERVO_AD_OUVERT = 0, POSITION_SERVO_AD_MOITIE, POSITION_SERVO_AD_FERME, POSITION_SERVO_AD_NBR};
-	static const int positionServosHautDroit[POSITION_SERVO_AD_NBR] = {0,200,500}; //TBD
-	static const int positionsServosPinceTotemDroit[POSITION_SERVO_AD_NBR] = {0,200,1000}; // TBD
-	static const int positionServosBasDroit[POSITION_SERVO_AD_NBR] = {0,200,500}; //TBD
-  	static const int positionServosCaleDroit[POSITION_SERVO_AD_NBR] = {0,200,1000}; //TBD
+        static const int positionServosHautDroit[POSITION_SERVO_AD_NBR] = {2400,1500,800}; //TBD
+        static const int positionsServosPinceTotemDroit[POSITION_SERVO_AD_NBR] = {0,200,1000}; // TBD // enlevé
+        static const int positionServosBasDroit[POSITION_SERVO_AD_NBR] = {2400,1000,800}; //TBD
+        static const int positionServosCaleDroit[POSITION_SERVO_AD_NBR] = {1500,1000,700}; //TBD
 
 	///
 	// Indice des différents servo de dépose dans le tab de positions
@@ -64,10 +64,10 @@ namespace Constantes2012
 
 	// Position des servos Avant Gauche
 	enum PositionServosAvantGauche {POSITION_SERVO_AG_OUVERT = 0, POSITION_SERVO_AG_MOITIE, POSITION_SERVO_AG_FERME, POSITION_SERVO_AG_NBR};
-	static const int positionServosHautGauche[POSITION_SERVO_AG_NBR] = {0,200,500}; //TBD
-	static const int positionsServosPinceTotemGauche[POSITION_SERVO_AG_NBR] = {0,200,1000}; // TBD
-	static const int positionServosBasGauche[POSITION_SERVO_AG_NBR] = {0,200,500}; //TBD
-  	static const int positionServosCaleGauche[POSITION_SERVO_AG_NBR] = {0,200,1000}; //TBD
+        static const int positionServosHautGauche[POSITION_SERVO_AG_NBR] = {0,200,500}; //TBD // repond pas
+        static const int positionsServosPinceTotemGauche[POSITION_SERVO_AG_NBR] = {0,200,1000}; // TBD // cramé
+        static const int positionServosBasGauche[POSITION_SERVO_AG_NBR] = {450,1000,1800}; //TBD
+        static const int positionServosCaleGauche[POSITION_SERVO_AG_NBR] = {2450,2000,1570}; //TBD
 
 	//ID des servos apartenant à la carte servo côté droit
 	enum ServosAutres {
@@ -80,12 +80,12 @@ namespace Constantes2012
 
 	//rack de constantes qui concerne les servos listés comme autres
 	enum PositionServosAutres {POSITION_SERVO_AUTRES_OUVERT=0, POSITION_SERVO_AUTRES_MOITIE, POSITION_SERVO_AUTRES_FERME, POSITION_SERVOS_AUTRES_NBR};
-	static const int positionServoPinceCarte[POSITION_SERVOS_AUTRES_NBR] = {0,200,1000};
-	static const int positionServoBrasCarte[POSITION_SERVOS_AUTRES_NBR] = {0,200,1000};
-	static const int positionServoBenneAvant[POSITION_SERVOS_AUTRES_NBR] = {0,200,1000};
+        static const int positionServoPinceCarte[POSITION_SERVOS_AUTRES_NBR] = {750,1000,1500};
+        static const int positionServoBrasCarte[POSITION_SERVOS_AUTRES_NBR] = {1500,1800,2150};
+        static const int positionServoBenneAvant[POSITION_SERVOS_AUTRES_NBR] = {1600,1000,1300};  // non réglé encore car meca pb
 	// Spécial pour le coffre (que ouvert ou fermé)
 	enum PositionsServoCoffre {POSITION_SERVO_COFFRE_OUVERT=0, POSITION_SERVO_COFFRE_FERME, POSITION_SERVO_COFFRE_NBR};
-	static const int positionsServoCoffre[POSITION_SERVO_COFFRE_NBR] = {0,200};
+        static const int positionsServoCoffre[POSITION_SERVO_COFFRE_NBR] = {750,1500};
 
 	//////////////////////////////////////////// Moteurs ///////////////////////////////////////////////////////
 	// Positions possibles pour la plaque vidant le coffre (moteur)
