@@ -38,28 +38,28 @@ namespace Constantes2012
 	///////////////////////////////////// Numéro des servos /////////////////////////////////////////////
 	// Indice des différents servo de ramassage dans le tableau de positions
 	enum ServosAvantDroit {
-		SERVO_HAUT_DROIT 					= 0,
-		SERVO_PINCE_TOTEM_DROIT				= 1,
-		SERVO_BAS_DROIT						= 2,
-		SERVO_BRAS_CALE_DROIT				= 3,
-		SERVO_AD_NBR						= 4
+    SERVO_BAS_DROIT             = 0,
+    SERVO_PINCE_TOTEM_DROIT     = 1,
+    SERVO_BRAS_CALE_DROIT       = 2,
+    SERVO_HAUT_DROIT            = 3,
+    SERVO_AD_NBR                = 4
 	};
 
 	// Position des servos Avant Droit
 	enum PositionServosAvantDroit {POSITION_SERVO_AD_OUVERT = 0, POSITION_SERVO_AD_MOITIE, POSITION_SERVO_AD_FERME, POSITION_SERVO_AD_NBR};
         static const int positionServosHautDroit[POSITION_SERVO_AD_NBR] = {2400,1500,800}; //TBD
         static const int positionsServosPinceTotemDroit[POSITION_SERVO_AD_NBR] = {2105,2050,1944}; // TBD // enlevé
-        static const int positionServosBasDroit[POSITION_SERVO_AD_NBR] = {2400,1000,800}; //TBD
+        static const int positionServosBasDroit[POSITION_SERVO_AD_NBR] = {1000,1500,2200}; //TBD
         static const int positionServosCaleDroit[POSITION_SERVO_AD_NBR] = {1500,1000,687}; //TBD
 
 	///
 	// Indice des différents servo de dépose dans le tab de positions
 	enum ServosAvantGauche {
-		SERVO_HAUT_GAUCHE 					= 0,
-		SERVO_PINCE_TOTEM_GAUCHE			= 1,
-		SERVO_BAS_GAUCHE					= 2,
-		SERVO_BRAS_CALE_GAUCHE				= 3,
-		SERVO_AG_NBR						= 4
+    SERVO_BAS_GAUCHE            = 0,
+    SERVO_PINCE_TOTEM_GAUCHE    = 1,
+    SERVO_BRAS_CALE_GAUCHE      = 2,
+    SERVO_HAUT_GAUCHE           = 3,
+    SERVO_AG_NBR                = 4
 	};
 
 	// Position des servos Avant Gauche
@@ -71,11 +71,11 @@ namespace Constantes2012
 
 	//ID des servos apartenant à la carte servo côté droit
 	enum ServosAutres {
-			SERVO_PINCE_CARTE					=0,
-			SERVO_BRAS_CARTE					=1,
-			SERVO_COFFRE						=2,
-			SERVO_BENNE_AVANT					=3,
-			SERVOS_AUTRES_NBR					=4
+      SERVO_BRAS_CARTE					= 0,
+      SERVO_PINCE_CARTE					= 1,
+      SERVO_BENNE_AVANT         		= 2,
+      SERVO_COFFRE              		= 3,
+      SERVOS_AUTRES_NBR					= 4
 	};
 
 	//rack de constantes qui concerne les servos listés comme autres
