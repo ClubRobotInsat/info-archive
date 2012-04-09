@@ -64,7 +64,7 @@ namespace Constantes2012
 
 	// Position des servos Avant Gauche
 	enum PositionServosAvantGauche {POSITION_SERVO_AG_OUVERT = 0, POSITION_SERVO_AG_MOITIE, POSITION_SERVO_AG_FERME, POSITION_SERVO_AG_NBR};
-        static const int positionServosHautGauche[POSITION_SERVO_AG_NBR] = {0,200,500}; //TBD // repond pas
+		static const int positionServosHautGauche[POSITION_SERVO_AG_NBR] = {400,1000,1700}; //TBD // repond pas
         static const int positionsServosPinceTotemGauche[POSITION_SERVO_AG_NBR] = {680,730,788}; // TBD // cramé
         static const int positionServosBasGauche[POSITION_SERVO_AG_NBR] = {450,1000,1800}; //TBD
         static const int positionServosCaleGauche[POSITION_SERVO_AG_NBR] = {2450,2000,1570}; //TBD
