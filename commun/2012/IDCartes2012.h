@@ -17,7 +17,7 @@ namespace IDCartes2012
                 ID_CARTE_SERVOS_NOVA_AVANT_DROIT                = 6,
                 ID_CARTE_SERVOS_NOVA_AVANT_GAUCHE               = 7,
                 ID_CARTE_SERVOS_AUTRES                          = 8,
-                ID_CARTE_POS_ADV                                = 11,
+                ID_CARTE_EVITEMENT                              = 11,
                 ID_CARTE_ALIMENTATION                           = 12,
                 ID_CARTE_DEBUG_DESSIN                     		= 13,
                 ID_CARTE_DEBUG                            		= 14
