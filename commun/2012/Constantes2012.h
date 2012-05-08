@@ -69,7 +69,7 @@ namespace Constantes2012
         static const int positionServosHautGauche[POSITION_SERVO_AG_NBR] = {600,1580,2159}; //TBD // repond pas
         static const int positionsServosPinceTotemGauche[POSITION_SERVO_AG_NBR] = {680,730,788}; // TBD // cramé
         static const int positionServosBasGauche[POSITION_SERVO_AG_NBR] = {450,1600,1800}; //TBD
-        static const int positionServosCaleGauche[POSITION_SERVO_AG_NBR] = {2450,2100,1570}; //TBD
+        static const int positionServosCaleGauche[POSITION_SERVO_AG_NBR] = {600,1100,1396}; //TBD
 
 	//ID des servos apartenant à la carte servo côté droit
 	enum ServosAutres {
@@ -82,7 +82,7 @@ namespace Constantes2012
 
 	//rack de constantes qui concerne les servos listés comme autres
 	enum PositionServosAutres {POSITION_SERVO_AUTRES_OUVERT=0, POSITION_SERVO_AUTRES_MOITIE, POSITION_SERVO_AUTRES_FERME, POSITION_SERVOS_AUTRES_NBR};
-        static const int positionServoPinceCarte[POSITION_SERVOS_AUTRES_NBR] = {600,1000,1500};
+        static const int positionServoPinceCarte[POSITION_SERVOS_AUTRES_NBR] = {600,1600,1700};
         static const int positionServoBrasCarte[POSITION_SERVOS_AUTRES_NBR] = {1500,1800,2150};
         static const int positionServoBenneAvant[POSITION_SERVOS_AUTRES_NBR] = {1580,1400,1300};  // non réglé encore car meca pb
 	// Spécial pour le coffre (que ouvert ou fermé)
