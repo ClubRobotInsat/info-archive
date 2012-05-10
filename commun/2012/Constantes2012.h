@@ -51,7 +51,7 @@ namespace Constantes2012
 	enum PositionServosAvantDroit {POSITION_SERVO_AD_OUVERT = 0, POSITION_SERVO_AD_MOITIE, POSITION_SERVO_AD_FERME, POSITION_SERVO_AD_NBR};
         static const int positionServosHautDroit[POSITION_SERVO_AD_NBR] = {2400,1350,800}; //TBD
         static const int positionsServosPinceTotemDroit[POSITION_SERVO_AD_NBR] = {2200,1950,1000};
-        static const int positionServosBasDroit[POSITION_SERVO_AD_NBR] = {600,2000,2400}; //TBD : Step 1 ok
+        static const int positionServosBasDroit[POSITION_SERVO_AD_NBR] = {600,2000,2000}; //TBD : Step 1 ok
         static const int positionServosCaleDroit[POSITION_SERVO_AD_NBR] = {1500,720,687}; //TBD
 
 	///
@@ -68,7 +68,7 @@ namespace Constantes2012
 	enum PositionServosAvantGauche {POSITION_SERVO_AG_OUVERT = 0, POSITION_SERVO_AG_MOITIE, POSITION_SERVO_AG_FERME, POSITION_SERVO_AG_NBR};
         static const int positionServosHautGauche[POSITION_SERVO_AG_NBR] = {600,1580,2159}; //TBD // repond pas
         static const int positionsServosPinceTotemGauche[POSITION_SERVO_AG_NBR] = {900,1250,2100}; // TBD // cramé
-        static const int positionServosBasGauche[POSITION_SERVO_AG_NBR] = {450,1600,1800}; //TBD
+        static const int positionServosBasGauche[POSITION_SERVO_AG_NBR] = {450,1600,1550}; //TBD
         static const int positionServosCaleGauche[POSITION_SERVO_AG_NBR] = {600,1100,1396}; //TBD
 
 	//ID des servos apartenant à la carte servo côté droit
