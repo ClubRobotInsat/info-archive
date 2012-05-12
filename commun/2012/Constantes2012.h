@@ -30,8 +30,8 @@ namespace Constantes2012
 {
 	// Numeros des contacteurs et les roles associes
 	enum NumContacteur	{
-		CONTACTEUR_TIRETTE 										= 0,
-		CONTACTEUR_CHOIX_EQUIPE                                 = 1,
+		CONTACTEUR_TIRETTE 										= 1,
+		CONTACTEUR_CHOIX_EQUIPE                                 = 0,
 		CONTACTEUR_PETIT_ROBOT									= 2,
 		CONTACTEUR_CATA_ROBOTS                                  = 3,
 		CONTACTEUR_CATA_EXT                                     = 4
