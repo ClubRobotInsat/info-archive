@@ -82,7 +82,7 @@ namespace Constantes2012
 
 	//rack de constantes qui concerne les servos listés comme autres
 	enum PositionServosAutres {POSITION_SERVO_AUTRES_OUVERT=0, POSITION_SERVO_AUTRES_MOITIE, POSITION_SERVO_AUTRES_FERME, POSITION_SERVOS_AUTRES_NBR};
-        static const int positionServoPinceCarte[POSITION_SERVOS_AUTRES_NBR] = {600,1600,1700};
+        static const int positionServoPinceCarte[POSITION_SERVOS_AUTRES_NBR] = {600,1600,1600};
         static const int positionServoBrasCarte[POSITION_SERVOS_AUTRES_NBR] = {1500,1800,2150};
         static const int positionServoBenneAvant[POSITION_SERVOS_AUTRES_NBR] = {1580,1400,1300};  // non réglé encore car meca pb
 	// Spécial pour le coffre (que ouvert ou fermé)
