@@ -52,7 +52,7 @@ namespace Constantes2012
         static const int positionServosHautDroit[POSITION_SERVO_AD_NBR] = {2400,1350,800}; //TBD
         static const int positionsServosPinceTotemDroit[POSITION_SERVO_AD_NBR] = {2200,1950,1000};
         static const int positionServosBasDroit[POSITION_SERVO_AD_NBR] = {600,2000,2000}; //TBD : Step 1 ok
-        static const int positionServosCaleDroit[POSITION_SERVO_AD_NBR] = {1500,720,687}; //TBD
+        static const int positionServosCaleDroit[POSITION_SERVO_AD_NBR] = {1500,1100,687}; //TBD
 
 	///
 	// Indice des différents servo de dépose dans le tab de positions
@@ -69,7 +69,7 @@ namespace Constantes2012
         static const int positionServosHautGauche[POSITION_SERVO_AG_NBR] = {600,1580,2159}; //TBD // repond pas
         static const int positionsServosPinceTotemGauche[POSITION_SERVO_AG_NBR] = {900,1250,2100}; // TBD // cramé
         static const int positionServosBasGauche[POSITION_SERVO_AG_NBR] = {450,1600,1550}; //TBD
-        static const int positionServosCaleGauche[POSITION_SERVO_AG_NBR] = {600,1100,1396}; //TBD
+        static const int positionServosCaleGauche[POSITION_SERVO_AG_NBR] = {600,1000,1396}; //TBD
 
 	//ID des servos apartenant à la carte servo côté droit
 	enum ServosAutres {
