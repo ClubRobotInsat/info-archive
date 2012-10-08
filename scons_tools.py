@@ -186,6 +186,12 @@ def createEnvironment(libs_list=[], force_debug=False):
 			env.Append(LIBPATH=[root_dir + '/robot/2012/Hyperion/librobot2012'])
 			env.Append(LIBS=['Robot2012'])
 
+		elif lib == 'Robot2012APP':
+			env.Append(CPPPATH=[root_dir + '/robot/2012/Hyperion/tp_app',
+					    root_dir + '/robot/Cartes'])
+			env.Append(LIBPATH=[root_dir + '/robot/2012/Hyperion/tp_app'])
+			env.Append(LIBS=['Robot2012APP'])
+
 		elif lib == 'Webcam':
 			env.Append(CPPPATH=[root_dir + '/webcam'])
 			env.Append(LIBPATH=[root_dir + '/webcam'])
