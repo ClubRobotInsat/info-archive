@@ -230,6 +230,9 @@ def createEnvironment(libs_list=[], force_debug=False):
 
 			if sys.platform == 'win32':
 				env.Append(LIBS=['glfw', 'opengl32', 'glu32'])
+			elif sys.platform == 'darwin':
+				env.Append(LIBS=['glfw', 'm', 'pthread'])
+				env.Append(FRAMEWORKS=['Cocoa', 'OpenGL', 'GLUT', 'IOKit'])
 			else:
 				env.Append(LIBS=['glfw', 'GL', 'GLU', 'm', 'X11', 'pthread', 'Xrandr'])
 				env.Append(LIBPATH=['/usr/X11R6/lib'])
