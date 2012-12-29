@@ -48,9 +48,7 @@ def getRootDir():
 # - 'Strategie'
 # - 'Cartes'
 # - 'Outils'
-# - 'Robot2008'
-# - 'Robot2009'
-# - 'Robot2010'
+# - 'Robot2008', 'Robot2009', 'Robot2010', 'RobotAtlas2011', 'RobotTitan2011', 'Robot2012', 'Robot2012APP', 'Robot2013'
 # - 'Webcam'
 # - 'Webcam2009'
 # - 'Webcam2010'
@@ -59,6 +57,8 @@ def getRootDir():
 # - 'boost_python'
 # - 'gtk'
 # - 'zbar'
+# - 'libfreenect'
+# - 'freeglut'
 def createEnvironment(libs_list=[], force_debug=False):
 	vars = Variables()
 	for line in sconsHelp:
@@ -274,4 +274,13 @@ def createEnvironment(libs_list=[], force_debug=False):
 		elif lib == 'zbar':
 			if sys.platform == 'linux2' and str(ARGUMENTS.get('zbar')) == '1':
 				env.ParseConfig('pkg-config zbar --libs --cflags')
+		elif lib == 'libfreenect':
+			if sys.platform == 'linux2' and str(ARGUMENTS.get('libfreenect')) == '1':
+				env.Append(CPPPATH=[root_dir + '/libfreenect/include'])
+				env.Append(LIBPATH=[root_dir + '/libfreenect/src'])
+				env.Append(LIBS=['usb-1.0', 'Xmu', 'Xi', 'freenect'])
+		elif lib == 'freeglut':
+			if sys.platform == 'linux2':
+				env.Append(LIBS=['glut', 'GL', 'GLU', 'm', 'X11', 'pthread', 'Xrandr'])
+				env.Append(LIBPATH=['/usr/X11R6/lib'])
 	return env
