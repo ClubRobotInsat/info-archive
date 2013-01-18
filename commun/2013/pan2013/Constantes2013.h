@@ -5,31 +5,8 @@
 
 #include <iostream>
 
-/********** COULEURS ************/
 
-/*enum CouleurRobot {
-	COULEUR_ROBOT_BLEU	 = 0,
-	COULEUR_ROBOT_ROUGE  = 1
-};
-
-// Pour permettre l'affichage d'une Couleur
-inline std::ostream& operator<<(std::ostream& os, const CouleurRobot& couleur)
-{
-	switch(couleur)
-	{
-	case COULEUR_ROBOT_ROUGE:
-		os << "Rouge";
-		break;
-	case COULEUR_ROBOT_BLEU:
-		os << "Bleu";
-		break;
-	}
-
-	return os;
-}*/
-// JERK : Ce qui est au dessus est dans constantes COMMUNES
-
-namespace Constantes2013Pan
+namespace ConstantesPan2013
 {
     
     /***********************************/
@@ -58,15 +35,15 @@ namespace Constantes2013Pan
     //Index des positions dans le tableau
 	enum PositionServosBras {
         SERVO_OUVRE_CADEAU = 0,
-        SERVO_MILIEU,
+        SERVO_MILIEU_BRAS,
         SERVO_SOUFFLE_BOUGIE,
         SERVO_RANGE,
         SERVO_BRAS_NBR_POSITIONS
     };
     //Index des positions dans le tableau
     enum PositionServosRamasse {
-        //SERVO_RAMASSE = 0,					JERK : impossible, ce nom existe déjà (cf enum servos)
-        //SERVO_MILIEU,							JERK : pareil (cf enum PositionServosBras)
+        SERVO_BAS = 0,
+        SERVO_MILIEU,
         SERVO_RELEVE,
         SERVO_RAMASSE_NBR_POSITIONS
     };
@@ -80,7 +57,7 @@ namespace Constantes2013Pan
     //Position des servos
     static const int positionServosBrasDroit[SERVO_BRAS_NBR_POSITIONS] =    {2400,1350,800, 500};
     static const int positionsServosBrasGauche[SERVO_BRAS_NBR_POSITIONS] =  {2200,1950,1000, 500};
-    static const int positionServosRamasse[SERVO_RAMASSE_NBR_POSITIONS] =   {/*600,2000,*/ 1000};
+    static const int positionServosRamasse[SERVO_RAMASSE_NBR_POSITIONS] =   {600,2000, 1000};
     static const int positionServosEjecte[SERVO_EJECTE_NBR_POSITIONS] =     {1500,1100};
 
     
