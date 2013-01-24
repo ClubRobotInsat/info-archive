@@ -40,13 +40,13 @@ namespace ConstantesChronos2013
 	enum PositionBras {POSITION_BRAS_OUVERT = 0, POSITION_BRAS_MOITIE, POSITION_BRAS_FERME, POSITION_BRAS_NBR};
 
 	// angles des positions des servos et moteur asservi (en valeur interne du servo)
-	static const int positionServoGAscG[POSITION_PINCE_ASC_NBR] = {1000, 1150, 1250};
+	static const int positionServoGAscG[POSITION_PINCE_ASC_NBR] = {1010, 1610, 2000};
 	static const int positionServoDAscG[POSITION_PINCE_ASC_NBR] = {2000, 1610,  1010};
 	static const int positionServoGAscD[POSITION_PINCE_ASC_NBR] = {2000, 1610,  1010};
-	static const int positionServoDAscD[POSITION_PINCE_ASC_NBR] = {2000, 1610,  1010};
+	static const int positionServoDAscD[POSITION_PINCE_ASC_NBR] = {1010, 1610,  2000};
 
 	// angles des positions des servos et moteur asservi (en valeur interne du servo)
-	static const int positionServoBrasGHaut[POSITION_BRAS_NBR] = {1000, 1150, 1250};
+	static const int positionServoBrasGHaut[POSITION_BRAS_NBR] = {2000, 1610, 1010};
 	static const int positionServoBrasDHaut[POSITION_BRAS_NBR] = {2000, 1610,  1010};
 	static const int positionServoBrasGBas[POSITION_BRAS_NBR] = {2000, 1610,  1010};
 	static const int positionServoBrasDBas[POSITION_BRAS_NBR] = {2000, 1610,  1010};
