@@ -17,6 +17,13 @@ namespace ConstantesChronos2013
 		CONTACTEUR_CATA_EXT                                     = 4
 	};
 
+	enum NumContacteurAsc{
+		CONTACTEUR_GAUCHE_ASCG	=0,
+		CONTACTEUR_DROIT_ASCG	=1,
+		CONTACTEUR_GAUCHE_ASCD 	= 2,
+		CONTACTEUR_DROIT_ASCD	= 3
+	};
+
 	// Indice des différents servo de ramassage dans le tableau de positions
 	enum ServosAsc {
 		SERVO_G_ASC_D        	= 0,
