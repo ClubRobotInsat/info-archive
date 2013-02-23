@@ -10,16 +10,13 @@ namespace ConstantesChronos2013
 
 	// Numeros des contacteurs et les roles associes
 	enum NumContacteur	{
-		CONTACTEUR_TIRETTE 										= 1,
-		CONTACTEUR_CHOIX_EQUIPE                                 = 0,
-		CONTACTEUR_PETIT_ROBOT									= 2,
-		CONTACTEUR_CATA_ROBOTS                                  = 3,
-		CONTACTEUR_CATA_EXT                                     = 4
+		CONTACTEUR_TIRETTE 			= 1,
+		CONTACTEUR_CHOIX_EQUIPE     = 0
 	};
 
 	enum NumContacteurAsc{
-		CONTACTEUR_GAUCHE_ASCG	=0,
-		CONTACTEUR_DROIT_ASCG	=1,
+		CONTACTEUR_GAUCHE_ASCG	= 0,
+		CONTACTEUR_DROIT_ASCG	= 1,
 		CONTACTEUR_GAUCHE_ASCD 	= 2,
 		CONTACTEUR_DROIT_ASCD	= 3
 	};
@@ -43,8 +40,17 @@ namespace ConstantesChronos2013
 	};
 
 	// Numeros des positions des servos et moteur asservi et les roles associes
-	enum PositionPinceAsc {POSITION_PINCE_ASC_OUVERTE = 0, POSITION_PINCE_ASC_BLOCAGE, POSITION_PINCE_ASC_FERMEE, POSITION_PINCE_ASC_NBR};
-	enum PositionBras {POSITION_BRAS_OUVERT = 0, POSITION_BRAS_MOITIE, POSITION_BRAS_FERME, POSITION_BRAS_NBR};
+	enum PositionServosPinceAsc {
+        POSITION_PINCE_ASC_OUVERTE = 0,
+        POSITION_PINCE_ASC_BLOCAGE,
+        POSITION_PINCE_ASC_FERMEE,
+        POSITION_PINCE_ASC_NBR};
+    
+	enum PositionServosBras {
+        POSITION_BRAS_HAUT = 0,
+        POSITION_BRAS_SOUFFLE_BOUGIE,
+        POSITION_BRAS_RANGE,
+        POSITION_BRAS_NBR};
 
 	// angles des positions des servos et moteur asservi (en valeur interne du servo)
 	static const int positionServoGAscG[POSITION_PINCE_ASC_NBR] = {1010, 1610, 2000};
@@ -59,6 +65,7 @@ namespace ConstantesChronos2013
 	static const int positionServoBrasDBas[POSITION_BRAS_NBR] = {2000, 1610,  1010};
 
 	//////////////////////////////////////////// Moteurs ///////////////////////////////////////////////////////
+    
 	// Positions possibles pour l'ascenseur gauche et droit
 	enum PositionsAsc {ASC_BAS = 0, ASC_MILIEU, ASC_HAUT, NBR_POSITIONS_ASC};
 	static const int tableauPositionsAscGauche[NBR_POSITIONS_ASC] = {0,20000, 40000}; // TDB
