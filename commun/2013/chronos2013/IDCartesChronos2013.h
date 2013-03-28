@@ -14,7 +14,7 @@ enum IdCarteChronos
     ID_CARTE_ASSERVISSEMENT_ASCENSEUR_DROIT			= 3,
     ID_CARTE_SERVOS_ASCENSEUR		                = 4,
     ID_CARTE_SERVOS_BRAS			                = 5,
-    ID_CARTE_CONTACTEURS_ASC		                    = 6,
+    ID_CARTE_CONTACTEURS_ASC		                = 6,
     ID_CARTE_IHM				                    = 7,
     ID_CARTE_EVITEMENT                              = 8,
     ID_CARTE_ALIMENTATION                           = 9,

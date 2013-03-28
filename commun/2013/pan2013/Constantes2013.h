@@ -55,7 +55,7 @@ namespace ConstantesPan2013
     };
     
     //Position des servos
-    static const int positionServosBrasDroit[SERVO_BRAS_NBR_POSITIONS] =    {2400,1350,800, 500};
+    static const int positionsServosBrasDroit[SERVO_BRAS_NBR_POSITIONS] =    {2400,1350,800, 500};
     static const int positionsServosBrasGauche[SERVO_BRAS_NBR_POSITIONS] =  {2200,1950,1000, 500};
     static const int positionServosRamasse[SERVO_RAMASSE_NBR_POSITIONS] =   {600,2000, 1000};
     static const int positionServosEjecte[SERVO_EJECTE_NBR_POSITIONS] =     {1500,1100};
