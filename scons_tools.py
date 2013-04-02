@@ -254,6 +254,13 @@ def createEnvironment(libs_list=[], force_debug=False):
 				env.Append(LIBPATH=[root_dir + '/robot/python/lib-win32', root_dir + '/robot/boost/lib-win32'])
 				env.Append(LIBS=['boost_python-mgw34-mt-1_35', 'python25'])
 
+			elif sys.platform == 'darwin' and str(ARGUMENTS.get('python')) == '1':
+				env.Append(CPPPATH=['/usr/local/include'])
+				env.Append(LIBPATH=['/usr/local/lib', '/opt/local/lib'])
+				env.Append(LIBS=['boost_python-mt', 'vte'])
+				env.ParseConfig('python-config --includes')
+				env.ParseConfig('python-config --libs')
+                    
 			elif sys.platform == 'linux2' and str(ARGUMENTS.get('python')) == '1':
 				env.Append(LIBPATH=[root_dir + '/robot/boost/lib'])
 				# NB : les headers de Boost.Python utilises sont ceux de /usr/include
