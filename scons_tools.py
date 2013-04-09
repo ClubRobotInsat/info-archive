@@ -106,8 +106,9 @@ def createEnvironment(libs_list=[], force_debug=False):
 				env.Append(CPPPATH=[root_dir + '/robot/pthreads-win32/include'])
 				env.Append(LIBPATH=[root_dir + '/robot/pthreads-win32/lib'])
 				env.Append(LIBS=['pthreadGC2'])
-			else:
-				env.Append(LIBS=['pthread'])
+			#else:
+				#env.Append(LIBS=['pthread'])
+				#env.Append(CPPFLAGS=['-L/usr/lib/i386-linux-gnu/'])
 
 		elif lib == 'sockets':
 			if sys.platform == 'win32':
@@ -282,7 +283,7 @@ def createEnvironment(libs_list=[], force_debug=False):
 			if sys.platform == 'linux2' and str(ARGUMENTS.get('zbar')) == '1':
 				env.ParseConfig('pkg-config zbar --libs --cflags')
 		elif lib == 'libfreenect':
-			if sys.platform == 'linux2' and str(ARGUMENTS.get('libfreenect')) == '1':
+			if sys.platform == 'linux2': #and str(ARGUMENTS.get('libfreenect')) == '1':
 				env.Append(CPPPATH=[root_dir + '/libfreenect/include'])
 				env.Append(LIBPATH=[root_dir + '/libfreenect/src'])
 				env.Append(LIBS=['usb-1.0', 'Xmu', 'Xi', 'freenect'])
