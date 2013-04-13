@@ -10,8 +10,8 @@ enum IdCarteChronos
 {
     ID_CARTE_CAN_USB                                = 0,
     ID_CARTE_DEPLACEMENT                            = 1,
-    ID_CARTE_ASSERVISSEMENT_ASCENSEUR_GAUCHE 		= 2,
-    ID_CARTE_ASSERVISSEMENT_ASCENSEUR_DROIT			= 3,
+    ID_CARTE_ASSERVISSEMENT_ASCENSEUR_GAUCHE 		= 3,
+    ID_CARTE_ASSERVISSEMENT_ASCENSEUR_DROIT			= 2,
     ID_CARTE_SERVOS_ASCENSEUR		                = 4,
     ID_CARTE_SERVOS_BRAS			                = 5,
     ID_CARTE_CONTACTEURS_ASC		                = 6,

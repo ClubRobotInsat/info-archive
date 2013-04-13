@@ -53,10 +53,10 @@ namespace ConstantesChronos2013
         POSITION_BRAS_NBR};
 
 	// angles des positions des servos et moteur asservi (en valeur interne du servo)
-	static const int positionServoGAscD[POSITION_PINCE_ASC_NBR] = {900, 640, 1480};
-	static const int positionServoGAscG[POSITION_PINCE_ASC_NBR] = {1290, 1000, 600};
-	static const int positionServoDAscD[POSITION_PINCE_ASC_NBR] = {1420, 1710, 2160};
-	static const int positionServoDAscG[POSITION_PINCE_ASC_NBR] = {1270, 1000, 1750};
+	static const int positionServoGAscD[POSITION_PINCE_ASC_NBR] = {690, 640, 1430};
+	static const int positionServoGAscG[POSITION_PINCE_ASC_NBR] = {1050, 1000, 600};        //OK
+	static const int positionServoDAscD[POSITION_PINCE_ASC_NBR] = {1660, 1710, 2160};
+	static const int positionServoDAscG[POSITION_PINCE_ASC_NBR] = {1050, 1000, 2000};
 
 	// angles des positions des servos et moteur asservi (en valeur interne du servo)
 	static const int positionServoBrasGHaut[POSITION_BRAS_NBR] = {1400, 1597, 2390};
@@ -67,9 +67,15 @@ namespace ConstantesChronos2013
 	//////////////////////////////////////////// Moteurs ///////////////////////////////////////////////////////
     
 	// Positions possibles pour l'ascenseur gauche et droit
-	enum PositionsAsc {ASC_BAS = 0, ASC_MILIEU, ASC_HAUT, NBR_POSITIONS_ASC};
-	static const int tableauPositionsAscGauche[NBR_POSITIONS_ASC] = {0,20000, 40000}; // TDB
-	static const int tableauPositionsAscDroit[NBR_POSITIONS_ASC] = {0,20000, 40000}; // TDB
+	enum PositionsAsc {
+        ASC_HAUT = 0,
+        ASC_MILIEU,
+        ASC_BAS,
+        NBR_POSITIONS_ASC
+    };
+	
+    static const int tableauPositionsAscGauche[NBR_POSITIONS_ASC] = {0, -5000, -19000}; // TDB
+	static const int tableauPositionsAscDroit[NBR_POSITIONS_ASC] = {0, -5000, -19000}; // TDB
 
 
 }
