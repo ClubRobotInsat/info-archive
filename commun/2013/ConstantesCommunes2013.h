@@ -9,8 +9,8 @@
 namespace Constantes2013
 {
 enum CouleurRobot {
-	COULEUR_ROBOT_ROUGE = 0,
-	COULEUR_ROBOT_BLEU = 1
+	COULEUR_ROBOT_ROUGE = 1,
+	COULEUR_ROBOT_BLEU = 0
 };
 
 // Pour permettre l'affichage d'une Couleur :
