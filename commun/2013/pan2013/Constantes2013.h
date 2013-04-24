@@ -25,9 +25,9 @@ namespace ConstantesPan2013
     
     //ID des servos
 	enum Servos {
-		SERVO_BRAS_DROIT            = 0,
+		SERVO_BRAS_DROIT            = 2,
 		SERVO_BRAS_GAUCHE           = 1,
-		SERVO_RAMASSE               = 2,
+		SERVO_RAMASSE               = 0,
 		SERVO_EJECTE                = 3,
         SERVO_NBR                   = 4
 	};
@@ -55,7 +55,7 @@ namespace ConstantesPan2013
     };
     
     //Position des servos
-    static const int positionsServosBrasDroit[SERVO_BRAS_NBR_POSITIONS] =    {2400,1350,800, 500};
+    static const int positionsServosBrasDroit[SERVO_BRAS_NBR_POSITIONS] =   {2400,1350,800, 500};
     static const int positionsServosBrasGauche[SERVO_BRAS_NBR_POSITIONS] =  {2200,1950,1000, 500};
     static const int positionServosRamasse[SERVO_RAMASSE_NBR_POSITIONS] =   {600,2000, 1000};
     static const int positionServosEjecte[SERVO_EJECTE_NBR_POSITIONS] =     {1500,1100};
