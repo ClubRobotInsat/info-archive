@@ -106,9 +106,9 @@ def createEnvironment(libs_list=[], force_debug=False):
 				env.Append(CPPPATH=[root_dir + '/robot/pthreads-win32/include'])
 				env.Append(LIBPATH=[root_dir + '/robot/pthreads-win32/lib'])
 				env.Append(LIBS=['pthreadGC2'])
-			#else:
-				#env.Append(LIBS=['pthread'])
-				#env.Append(CPPFLAGS=['-L/usr/lib/i386-linux-gnu/'])
+			else:
+				env.Append(LIBS=['pthread'])
+				env.Append(CPPFLAGS=['-L/usr/lib/i386-linux-gnu/'])
 
 		elif lib == 'sockets':
 			if sys.platform == 'win32':
@@ -224,6 +224,11 @@ def createEnvironment(libs_list=[], force_debug=False):
 			env.Append(CPPPATH=[root_dir + '/webcam/2010/libWebcam2010'])
 			env.Append(LIBPATH=[root_dir + '/webcam/2010/libWebcam2010'])
 			env.Append(LIBS=['Webcam2010'])
+
+		elif lib == 'Webcam2013':
+			env.Append(CPPPATH=[root_dir + '/webcam/2013/libWebcam2013'])
+			env.Append(LIBPATH=[root_dir + '/webcam/2013/libWebcam2013'])
+			env.Append(LIBS=['Webcam2013'])
 
 		elif lib == 'glfw':
 			env.Append(CPPPATH=[root_dir + '/simulateur/GLFW/include'])
