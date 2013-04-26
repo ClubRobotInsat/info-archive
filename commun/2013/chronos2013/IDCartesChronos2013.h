@@ -17,9 +17,9 @@ enum IdCarteChronos
     ID_CARTE_CONTACTEURS_ASC		                = 6,
     ID_CARTE_IHM				                    = 7,
     ID_CARTE_EVITEMENT                              = 8,
-    ID_CARTE_ALIMENTATION                           = 9,
+    ID_CARTE_PNEUMATIQUE                            = 9,
     ID_CARTE_DEBUG_DESSIN                     		= 10,
-    ID_CARTE_DEBUG                            		= 11
+    //ID_CARTE_DEBUG                            		= 11
 };
 }
 #endif
