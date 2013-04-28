@@ -54,10 +54,14 @@ namespace ConstantesChronos2013
         POSITION_BRAS_NBR};
 
 	// angles des positions des servos et moteur asservi (en valeur interne du servo)
-	static const int positionServoGAscD[POSITION_PINCE_ASC_NBR] = {980, 880, 780, 1430};
-	static const int positionServoGAscG[POSITION_PINCE_ASC_NBR] = {1200, 1100, 1000, 600};        //OK
-	static const int positionServoDAscD[POSITION_PINCE_ASC_NBR] = {1510, 1610, 1710, 2160};
-	static const int positionServoDAscG[POSITION_PINCE_ASC_NBR] = {1200, 1150, 1000, 2000};
+	//static const int positionServoGAscD[POSITION_PINCE_ASC_NBR] = {980, 880, 780, 1430};
+	static const int positionServoGAscD[POSITION_PINCE_ASC_NBR] = {980, 880, 750, 1430};
+	//static const int positionServoGAscG[POSITION_PINCE_ASC_NBR] = {1200, 1100, 1000, 600};        //OK
+	static const int positionServoGAscG[POSITION_PINCE_ASC_NBR] = {1200, 1100, 900, 600};
+	//static const int positionServoDAscD[POSITION_PINCE_ASC_NBR] = {1510, 1610, 1710, 2160};
+	static const int positionServoDAscD[POSITION_PINCE_ASC_NBR] = {1510, 1610, 1750, 2160};
+	//static const int positionServoDAscG[POSITION_PINCE_ASC_NBR] = {1500, 1600, 1750, 980};
+	static const int positionServoDAscG[POSITION_PINCE_ASC_NBR] = {1500, 1700, 1900, 980};
 
 	// angles des positions des servos et moteur asservi (en valeur interne du servo)
 	static const int positionServoBrasGHaut[POSITION_BRAS_NBR] = {1400, 1597, 2390};
