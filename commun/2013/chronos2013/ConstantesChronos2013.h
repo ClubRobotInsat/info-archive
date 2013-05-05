@@ -23,8 +23,8 @@ namespace ConstantesChronos2013
 
 	// Indice des différents servo de ramassage dans le tableau de positions
 	enum ServosAsc {
-		SERVO_G_ASC_D        	= 0,
-		SERVO_G_ASC_G     		= 1,
+        SERVO_G_ASC_G     		= 0,
+		SERVO_G_ASC_D        	= 1,
 		SERVO_D_ASC_D      		= 2,
 		SERVO_D_ASC_G        	= 3,
 		SERVO_ASC_NBR         	= 4
@@ -55,19 +55,19 @@ namespace ConstantesChronos2013
 
 	// angles des positions des servos et moteur asservi (en valeur interne du servo)
 	//static const int positionServoGAscD[POSITION_PINCE_ASC_NBR] = {980, 880, 780, 1430};
-	static const int positionServoGAscD[POSITION_PINCE_ASC_NBR] = {980, 880, 750, 1430};
-	//static const int positionServoGAscG[POSITION_PINCE_ASC_NBR] = {1200, 1100, 1000, 600};        //OK
-	static const int positionServoGAscG[POSITION_PINCE_ASC_NBR] = {1200, 1100, 900, 600};
+	static const int positionServoGAscD[POSITION_PINCE_ASC_NBR] = {1050, 880, 715, 1430};
+	//static const int positionServoGAscG[POSITION_PINCE_ASC_NBR] = {1200, 1100, 1000, 600};
+	static const int positionServoGAscG[POSITION_PINCE_ASC_NBR] = {900, 1100, 1200, 1600};
 	//static const int positionServoDAscD[POSITION_PINCE_ASC_NBR] = {1510, 1610, 1710, 2160};
-	static const int positionServoDAscD[POSITION_PINCE_ASC_NBR] = {1510, 1610, 1750, 2160};
+	static const int positionServoDAscD[POSITION_PINCE_ASC_NBR] = {1400, 1600, 1700, 2160};
 	//static const int positionServoDAscG[POSITION_PINCE_ASC_NBR] = {1500, 1600, 1750, 980};
-	static const int positionServoDAscG[POSITION_PINCE_ASC_NBR] = {1500, 1700, 1900, 980};
+	static const int positionServoDAscG[POSITION_PINCE_ASC_NBR] = {1500, 1700, 1800, 980};
 
 	// angles des positions des servos et moteur asservi (en valeur interne du servo)
-	static const int positionServoBrasGHaut[POSITION_BRAS_NBR] = {1400, 1597, 2390};
-	static const int positionServoBrasDHaut[POSITION_BRAS_NBR] = {848, 1000,  1813};
+	static const int positionServoBrasGHaut[POSITION_BRAS_NBR] = {1075, 1175, 1980};
+	static const int positionServoBrasDHaut[POSITION_BRAS_NBR] = {848, 1000,  1793};
 	static const int positionServoBrasGBas[POSITION_BRAS_NBR] = {1407, 1637,  2355};
-	static const int positionServoBrasDBas[POSITION_BRAS_NBR] = {912, 1162,  1962};
+	static const int positionServoBrasDBas[POSITION_BRAS_NBR] = {912, 1162,  1942};
 
 	//////////////////////////////////////////// Moteurs ///////////////////////////////////////////////////////
     
@@ -80,8 +80,8 @@ namespace ConstantesChronos2013
         NBR_POSITIONS_ASC
     };
 	
-    static const int tableauPositionsAscGauche[NBR_POSITIONS_ASC] = {0, -3000, -16000, -19000}; // TDB
-	static const int tableauPositionsAscDroit[NBR_POSITIONS_ASC] = {0, -3000, -16000, -19000}; // TDB
+    static const int tableauPositionsAscGauche[NBR_POSITIONS_ASC] = {0, -3000, -15500, -19000};
+	static const int tableauPositionsAscDroit[NBR_POSITIONS_ASC] = {0, -3000, -15500, -19000};
 
 
 }
