@@ -294,8 +294,17 @@ def createEnvironment(libs_list=[], force_debug=False):
 			if sys.platform == 'linux2' and str(ARGUMENTS.get('zbar')) == '1':
 				env.ParseConfig('pkg-config zbar --libs --cflags')
 		elif lib == 'libfreenect':
-			if sys.platform == 'linux2': #and str(ARGUMENTS.get('libfreenect')) == '1':
+			if sys.platform == 'linux2':
 				env.Append(CPPPATH=[root_dir + '/libfreenect/include'])
+				env.Append(LIBPATH=[root_dir + '/libfreenect/src'])
+				env.Append(LIBS=['usb-1.0', 'Xmu', 'Xi', 'freenect'])
+		elif lib == 'libfreenect_sync':
+			if sys.platform == 'linux2':
+				env.Append(CPPPATH=[root_dir + '/libfreenect/wrappers/c_sync/'])
+				env.Append(LIBPATH=[root_dir + '/libfreenect/wrappers/c_sync/'])
+				env.Append(LIBS=['freenect_sync'])
+				
+				# On depend de libfreenect
 				env.Append(LIBPATH=[root_dir + '/libfreenect/src'])
 				env.Append(LIBS=['usb-1.0', 'Xmu', 'Xi', 'freenect'])
 		elif lib == 'freeglut':

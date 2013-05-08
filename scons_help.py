@@ -11,7 +11,8 @@ sconsHelp = [
 	['nobuiltin',   'Utiliser les librairies deja installees sur le systeme pour le simulateur'],
 	['libv4l1',     'Utiliser la libv4l1 pour la webcam sous Linux (encapsule V4L2 dans des appels V4L1-style)'],
 	['zbar',        'Utiliser la librairie ZBar (sous Linux) pour lire des codes barre avec la webcam'],
-	['shadow_maps', 'Ajouter le support des shadow maps dans le simu (nécessite GLEW)']
+	['shadow_maps', 'Ajouter le support des shadow maps dans le simu (nécessite GLEW)'],
+	['fakenect',    'Utiliser FakeNect a la place de libfreenect (il faut remplir la variable d\'environnement FAKENECT_PATH pour preciser ou se trouve le dump)']
 ]
 
 if __name__ == "__main__":
