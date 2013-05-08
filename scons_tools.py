@@ -306,7 +306,8 @@ def createEnvironment(libs_list=[], force_debug=False):
 				env.Append(LIBS=['freenect_sync'])
 				
 				# On depend de libfreenect
-				env.Append(LIBPATH=[root_dir + '/libfreenect/src'])
+				env.Append(
+				LIBPATH=[root_dir + '/libfreenect/src'])
 				env.Append(LIBS=['freenect', 'usb-1.0', 'Xmu', 'Xi'])
 		elif lib == 'freeglut':
 			if sys.platform == 'linux2':
