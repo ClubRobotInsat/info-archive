@@ -297,16 +297,17 @@ def createEnvironment(libs_list=[], force_debug=False):
 			if sys.platform == 'linux2':
 				env.Append(CPPPATH=[root_dir + '/libfreenect/include'])
 				env.Append(LIBPATH=[root_dir + '/libfreenect/src'])
-				env.Append(LIBS=['usb-1.0', 'Xmu', 'Xi', 'freenect'])
+				env.Append(LIBS=['freenect', 'usb-1.0', 'Xmu', 'Xi'])
 		elif lib == 'libfreenect_sync':
 			if sys.platform == 'linux2':
-				env.Append(CPPPATH=[root_dir + '/libfreenect/wrappers/c_sync/'])
-				env.Append(LIBPATH=[root_dir + '/libfreenect/wrappers/c_sync/'])
+				env.Append(CPPPATH=[root_dir + '/libfreenect/include'])
+				env.Append(CPPPATH=[root_dir + '/libfreenect/wrappers/c_sync'])
+				env.Append(LIBPATH=[root_dir + '/libfreenect/wrappers/c_sync'])
 				env.Append(LIBS=['freenect_sync'])
 				
 				# On depend de libfreenect
 				env.Append(LIBPATH=[root_dir + '/libfreenect/src'])
-				env.Append(LIBS=['usb-1.0', 'Xmu', 'Xi', 'freenect'])
+				env.Append(LIBS=['freenect', 'usb-1.0', 'Xmu', 'Xi'])
 		elif lib == 'freeglut':
 			if sys.platform == 'linux2':
 				env.Append(LIBS=['glut', 'GL', 'GLU', 'm', 'X11', 'pthread', 'Xrandr'])
