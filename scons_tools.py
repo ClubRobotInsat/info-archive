@@ -91,6 +91,8 @@ def createEnvironment(libs_list=[], force_debug=False):
 		env.Append(CPPDEFINES=['WIN32', 'WIN32_LEAN_AND_MEAN'])
 
 	env.Append(CCFLAGS=['-Wall'])
+	# Décomenter la ligne ci-dessous pour utiliser C++11
+	#env.Append(CXXFLAGS=['-std=c++11'])
 
 	# Si "scons debug=1", alors on ajoute l'option "-g"
 	if ARGUMENTS.get('debug', 0) or force_debug:

@@ -5,6 +5,15 @@
 
 #include <iostream>
 
+#if __cplusplus < 201103L
+
+// Petit hack qui permet l'initialisation de constantes statiques dans une classe en C++11.
+// Les constantes doivent êtres déclarées avec constexpr à la place de const, mot clé qui n'existe pas dans les standards précédents.
+// À utiliser tant que tout le monde ne compilera pas avec la version 2011 du standard.
+
+#define constexpr const
+
+#endif
 
 namespace Constantes2013
 {
