@@ -1,0 +1,7 @@
+# info/commun/SConstruct
+
+import sys
+sys.path.append('..')
+from scons_tools import *
+
+SConscript('2014/SConstruct')

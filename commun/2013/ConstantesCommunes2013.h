@@ -5,8 +5,6 @@
 
 #include <iostream>
 
-#include "../Cpp11Compat.h"
-
 namespace Constantes2013
 {
 enum CouleurRobot {

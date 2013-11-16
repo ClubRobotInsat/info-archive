@@ -1,0 +1,17 @@
+# commun/2014/SConstruct
+
+import sys
+sys.path.append('.')
+from scons_tools import *
+
+env = createEnvironment([])
+
+src_list = Split("""
+ConstantesCommunes2014.cpp
+Robot_grand/Constantes2014.cpp
+Robot_petit/Constantes2014.cpp
+""")
+
+# Rajouter les autres sources au fur et a mesure
+
+env.StaticLibrary('Constantes2014', src_list)

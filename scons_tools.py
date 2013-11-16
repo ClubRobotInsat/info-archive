@@ -92,7 +92,8 @@ def createEnvironment(libs_list=[], force_debug=False):
 
 	env.Append(CCFLAGS=['-Wall'])
 	# Décomenter la ligne ci-dessous pour utiliser C++11
-	#env.Append(CXXFLAGS=['-std=c++11'])
+	env.Append(CXXFLAGS=['-std=c++11'])
+	#env.Append(CXXFLAGS=['-v'])
 
 	# Si "scons debug=1", alors on ajoute l'option "-g"
 	if ARGUMENTS.get('debug', 0) or force_debug:
@@ -207,6 +208,17 @@ def createEnvironment(libs_list=[], force_debug=False):
 			env.Append(LIBPATH=[root_dir + '/robot/2013/Pan/librobot2013'])
 			env.Append(LIBS=['RobotPan2013'])
 
+		elif lib == 'Robot2014':
+			env.Append(CPPPATH=[root_dir + '/robot/2014/Robot_grand/librobot2014',
+			    			root_dir + '/robot/Cartes'])
+			env.Append(LIBPATH=[root_dir + '/robot/2014/Robot_grand/librobot2014', root_dir + '/commun/2014'])
+			env.Append(LIBS=['Robot2014', 'Constantes2014'])
+
+		elif lib == 'RobotPan2014':
+			env.Append(CPPPATH=[root_dir + '/robot/2014/Robot_petit/librobot2014',
+			    			root_dir + '/robot/Cartes'])
+			env.Append(LIBPATH=[root_dir + '/robot/2014/Robot_petit/librobot2014', root_dir + '/commun/2014'])
+			env.Append(LIBS=['RobotPan2014', 'Constantes2014'])
 		elif lib == 'Webcam':
 			env.Append(CPPPATH=[root_dir + '/webcam'])
 			env.Append(LIBPATH=[root_dir + '/webcam'])
