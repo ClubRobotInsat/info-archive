@@ -94,6 +94,7 @@ def createEnvironment(libs_list=[], force_debug=False):
 	# Décomenter la ligne ci-dessous pour utiliser C++11
 	env.Append(CXXFLAGS=['-std=c++11'])
 	#env.Append(CXXFLAGS=['-v'])
+	env.Append(CXXFLAGS=['-ferror-limit=100'])
 
 	# Si "scons debug=1", alors on ajoute l'option "-g"
 	if ARGUMENTS.get('debug', 0) or force_debug:
