@@ -3,6 +3,35 @@
 #ifndef CONSTANTES_2014_H
 #define CONSTANTES_2014_H
 
+
+#ifdef TARGET_SIMULATEUR
+
+#include "../../../simulateur/simulateur/Robot/Carte.h"
+#include "../../../simulateur/cartes/CarteDeplacement2009.h"
+#include "../../../simulateur/cartes/CarteContacteurs2007.h"
+#include "../../../simulateur/cartes/CarteIHM.h"
+#include "../../../simulateur/cartes/CarteServosNova2009.h"
+#include "../../../simulateur/cartes/CarteAsservissement2009.h"
+#include "../../../simulateur/cartes/CarteDebug2011.h"
+#include "../../../simulateur/cartes/CarteDebugDessin.h"
+#include "../../../simulateur/cartes/CartePneumatique2013.h"
+#include "../../../simulateur/cartes/CarteDetectAdv2009.h"
+
+#else
+
+#include "../../../robot/Robot/Carte.h"
+#include "../../../robot/Cartes/CarteDeplacement2009.h"
+#include "../../../robot/Cartes/CarteContacteurs2007.h"
+#include "../../../robot/Cartes/CarteIHM.h"
+#include "../../../robot/Cartes/CarteServosNova2009.h"
+#include "../../../robot/Cartes/CarteAsservissement2009.h"
+#include "../../../robot/Cartes/CarteDebug2011.h"
+#include "../../../robot/Cartes/CarteDebugDessin.h"
+#include "../../../robot/Cartes/CartePneumatique.h"
+#include "../../../robot/Cartes/CarteDetectAdv2009.h"
+
+#endif
+
 namespace ConstantesChronos2014 {
 	
 	// Numeros des contacteurs et les roles associes
@@ -80,7 +109,79 @@ namespace ConstantesChronos2014 {
 	extern const int tableauPositionsAscGauche[NBR_POSITIONS_ASC];
 	extern const int tableauPositionsAscDroit[NBR_POSITIONS_ASC];
 	
+	namespace IdCarteChronos {
+		enum {
+			//ID_CARTE_CAN_USB = 0,
+			PREMIER_ID_CARTE = 0,
+			ID_CARTE_DEPLACEMENT = PREMIER_ID_CARTE,
+			ID_CARTE_ASSERVISSEMENT_ASCENSEUR_GAUCHE = 3,
+			ID_CARTE_ASSERVISSEMENT_ASCENSEUR_DROIT = 2,
+			ID_CARTE_SERVOS_ASCENSEUR = 4,
+			ID_CARTE_SERVOS_BRAS = 5,
+			ID_CARTE_CONTACTEURS_ASC = 6,
+			ID_CARTE_IHM = 7,
+			ID_CARTE_EVITEMENT = 8,
+			ID_CARTE_PNEUMATIQUE = 9,
+			ID_CARTE_DEBUG_DESSIN = 10,
+			DERNIER_ID_CARTE
+			//ID_CARTE_DEBUG = 11
+		};
+	}
+	using namespace IdCarteChronos;
 	
+	template<int ID_CARTE>
+	struct CarteChronos {
+
+	};
+	
+	/*template<>
+	struct CarteChronos<ID_CARTE_CAN_USB> {
+		typedef int type;
+	};*/
+	template<>
+	struct CarteChronos<ID_CARTE_DEPLACEMENT> {
+		typedef CarteDeplacement2009 type;
+		static constexpr char const *name = "Carte déplacement";
+	};
+	template<>
+	struct CarteChronos<ID_CARTE_ASSERVISSEMENT_ASCENSEUR_DROIT> {
+		typedef CarteAsservissement2009 type;
+	};
+	template<>
+	struct CarteChronos<ID_CARTE_ASSERVISSEMENT_ASCENSEUR_GAUCHE> {
+		typedef CarteAsservissement2009 type;
+	};
+	template<>
+	struct CarteChronos<ID_CARTE_EVITEMENT> {
+		typedef CarteDetectAdv2009 type;
+	};
+	template<>
+	struct CarteChronos<ID_CARTE_IHM> {
+		typedef CarteIHM type;
+	};
+	template<>
+	struct CarteChronos<ID_CARTE_CONTACTEURS_ASC> {
+		typedef CarteContacteurs2007 type;
+	};
+	template<>
+	struct CarteChronos<ID_CARTE_SERVOS_ASCENSEUR> {
+		typedef CarteServosNova2009 type;
+	};
+	template<>
+	struct CarteChronos<ID_CARTE_SERVOS_BRAS> {
+		typedef CarteServosNova2009 type;
+	};
+	template<>
+	struct CarteChronos<ID_CARTE_PNEUMATIQUE> {
+#ifdef TARGET_SIMULATEUR
+		typedef CartePneumatique2013 CartePneumatique;
+#endif
+		typedef CartePneumatique type;
+	};
+	template<>
+	struct CarteChronos<ID_CARTE_DEBUG_DESSIN> {
+		typedef CarteDebugDessin type;
+	};
 }
 #endif
 

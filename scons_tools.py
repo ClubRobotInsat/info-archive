@@ -93,6 +93,7 @@ def createEnvironment(libs_list=[], force_debug=False):
 	env.Append(CCFLAGS=['-Wall'])
 	# Décomenter la ligne ci-dessous pour utiliser C++11
 	env.Append(CXXFLAGS=['-std=c++11'])
+	#env.Append(CXXFLAGS=['-ferror-limit=100'])
 
 	# Si "scons debug=1", alors on ajoute l'option "-g"
 	if ARGUMENTS.get('debug', 0) or force_debug:
@@ -135,14 +136,14 @@ def createEnvironment(libs_list=[], force_debug=False):
 			if sys.platform == 'win32':
 				env.Append(LIBS=['ws2_32'])
 
-			env.Append(CPPPATH=[root_dir + '/robot/Outils',
-								root_dir + '/robot/Outils/Clock',
-								root_dir + '/robot/Outils/debug',
-								root_dir + '/robot/Outils/log',
-								root_dir + '/robot/Outils/MathToolbox',
-								root_dir + '/robot/Outils/tga',
-								root_dir + '/robot/Outils/sockets'])
-			env.Append(LIBPATH=[root_dir + '/robot/Outils'])
+			env.Append(CPPPATH=[root_dir + '/Outils',
+								root_dir + '/Outils/Clock',
+								root_dir + '/Outils/debug',
+								root_dir + '/Outils/log',
+								root_dir + '/Outils/MathToolbox',
+								root_dir + '/Outils/tga',
+								root_dir + '/Outils/sockets'])
+			env.Append(LIBPATH=[root_dir + '/Outils'])
 			env.Append(LIBS=['Outils'])
 
 			# Ajout de GTK+, si demandé, pour CGTKwin

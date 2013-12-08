@@ -5,7 +5,7 @@
 
 #include <iostream>
 
-namespace ConstantesTitan2011
+namespace ConstantesTitan2011_2
 {
 
 enum TypeObjet{

@@ -1,0 +1,9 @@
+# SConstruct
+
+src_list = Split("""
+	main.cpp
+	MathUtilities.cpp
+""")
+
+env = Environment()
+env.Program('test_maths', src_list)
