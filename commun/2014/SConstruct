@@ -8,7 +8,7 @@ env = createEnvironment([])
 
 src_list = Split("""
 ConstantesCommunes2014.cpp
-Tumai/Constantes2014.cpp
+Toumai/Constantes2014.cpp
 Lucy/Constantes2014.cpp
 """)
 
