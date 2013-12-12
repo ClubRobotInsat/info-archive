@@ -1,4 +1,4 @@
-// IDCartes2014.h - les IDs des cartes
+// IDCartesLucy2014.h - les IDs des cartes
 // En-tête utilisé par le simu et par l'IE
 
 #ifndef IDCARTES_2014_LUCY_H
