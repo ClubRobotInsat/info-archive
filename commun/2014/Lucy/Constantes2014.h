@@ -3,7 +3,7 @@
 #ifndef CONSTANTES_2013_H
 #define CONSTANTES_2013_H
 
-namespace ConstantesPan2014 {
+namespace ConstantesLucy2014 {
 	
 	/***********************************/
 	/********** CONTACTEURS ************/

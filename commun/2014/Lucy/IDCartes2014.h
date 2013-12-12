@@ -1,10 +1,10 @@
 // IDCartes2014.h - les IDs des cartes
 // En-tête utilisé par le simu et par l'IE
 
-#ifndef IDCARTES_2014_PAN_H
-#define IDCARTES_2014_PAN_H
+#ifndef IDCARTES_2014_LUCY_H
+#define IDCARTES_2014_LUCY_H
 
-namespace IDCartes2014 {
+namespace IDCartesLucy2014 {
 	enum IdCarte {
 		ID_CARTE_CAN_USB                    = 0,
 		ID_CARTE_DEPLACEMENT                = 1,

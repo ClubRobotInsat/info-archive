@@ -9,7 +9,7 @@ namespace Constantes2014 {
 	
 	enum CouleurRobot {
 		COULEUR_ROBOT_ROUGE = 1,
-		COULEUR_ROBOT_BLEU = 0
+		COULEUR_ROBOT_JAUNE = 0
 	};
 	
 	// Pour permettre l'affichage d'une Couleur :
@@ -20,7 +20,7 @@ namespace Constantes2014 {
 			case COULEUR_ROBOT_ROUGE:
 			os << "rouge";
 			break;
-			case COULEUR_ROBOT_BLEU:
+			case COULEUR_ROBOT_JAUNE:
 			os << "bleu";
 			break;
 		}

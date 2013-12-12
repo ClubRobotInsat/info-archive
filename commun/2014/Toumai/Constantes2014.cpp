@@ -2,7 +2,7 @@
 
 #include "Constantes2014.h"
 
-namespace ConstantesChronos2014 {
+namespace ConstantesToumai2014 {
 	// angles des positions des servos et moteur asservi (en valeur interne du servo)
 	const int positionServoGAscD[POSITION_PINCE_ASC_NBR] = {1050, 900, 715, 1430};
 	const int positionServoGAscG[POSITION_PINCE_ASC_NBR] = {900, 1050, 1200, 1800};

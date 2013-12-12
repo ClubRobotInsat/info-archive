@@ -32,7 +32,7 @@
 
 #endif
 
-namespace ConstantesChronos2014 {
+namespace ConstantesToumai2014 {
 	
 	// Numeros des contacteurs et les roles associes
 	enum NumContacteur	{
@@ -109,7 +109,7 @@ namespace ConstantesChronos2014 {
 	extern const int tableauPositionsAscGauche[NBR_POSITIONS_ASC];
 	extern const int tableauPositionsAscDroit[NBR_POSITIONS_ASC];
 	
-	namespace IdCarteChronos {
+	namespace IDCartesToumai2014 {
 		enum {
 			//ID_CARTE_CAN_USB = 0,
 			PREMIER_ID_CARTE = 0,
@@ -127,59 +127,59 @@ namespace ConstantesChronos2014 {
 			//ID_CARTE_DEBUG = 11
 		};
 	}
-	using namespace IdCarteChronos;
+	using namespace IDCartesToumai2014;
 	
 	template<int ID_CARTE>
-	struct CarteChronos {
+	struct CarteToumai {
 
 	};
 	
 	/*template<>
-	struct CarteChronos<ID_CARTE_CAN_USB> {
+	struct CarteToumai<ID_CARTE_CAN_USB> {
 		typedef int type;
 	};*/
 	template<>
-	struct CarteChronos<ID_CARTE_DEPLACEMENT> {
+	struct CarteToumai<ID_CARTE_DEPLACEMENT> {
 		typedef CarteDeplacement2009 type;
 		static constexpr char const *name = "Carte déplacement";
 	};
 	template<>
-	struct CarteChronos<ID_CARTE_ASSERVISSEMENT_ASCENSEUR_DROIT> {
+	struct CarteToumai<ID_CARTE_ASSERVISSEMENT_ASCENSEUR_DROIT> {
 		typedef CarteAsservissement2009 type;
 	};
 	template<>
-	struct CarteChronos<ID_CARTE_ASSERVISSEMENT_ASCENSEUR_GAUCHE> {
+	struct CarteToumai<ID_CARTE_ASSERVISSEMENT_ASCENSEUR_GAUCHE> {
 		typedef CarteAsservissement2009 type;
 	};
 	template<>
-	struct CarteChronos<ID_CARTE_EVITEMENT> {
+	struct CarteToumai<ID_CARTE_EVITEMENT> {
 		typedef CarteDetectAdv2009 type;
 	};
 	template<>
-	struct CarteChronos<ID_CARTE_IHM> {
+	struct CarteToumai<ID_CARTE_IHM> {
 		typedef CarteIHM type;
 	};
 	template<>
-	struct CarteChronos<ID_CARTE_CONTACTEURS_ASC> {
+	struct CarteToumai<ID_CARTE_CONTACTEURS_ASC> {
 		typedef CarteContacteurs2007 type;
 	};
 	template<>
-	struct CarteChronos<ID_CARTE_SERVOS_ASCENSEUR> {
+	struct CarteToumai<ID_CARTE_SERVOS_ASCENSEUR> {
 		typedef CarteServosNova2009 type;
 	};
 	template<>
-	struct CarteChronos<ID_CARTE_SERVOS_BRAS> {
+	struct CarteToumai<ID_CARTE_SERVOS_BRAS> {
 		typedef CarteServosNova2009 type;
 	};
 	template<>
-	struct CarteChronos<ID_CARTE_PNEUMATIQUE> {
+	struct CarteToumai<ID_CARTE_PNEUMATIQUE> {
 #ifdef TARGET_SIMULATEUR
 		typedef CartePneumatique2013 CartePneumatique;
 #endif
 		typedef CartePneumatique type;
 	};
 	template<>
-	struct CarteChronos<ID_CARTE_DEBUG_DESSIN> {
+	struct CarteToumai<ID_CARTE_DEBUG_DESSIN> {
 		typedef CarteDebugDessin type;
 	};
 }
