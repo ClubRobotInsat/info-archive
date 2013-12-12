@@ -8,8 +8,8 @@ env = createEnvironment([])
 
 src_list = Split("""
 ConstantesCommunes2014.cpp
-Robot_grand/Constantes2014.cpp
-Robot_petit/Constantes2014.cpp
+Tumai/Constantes2014.cpp
+Lucy/Constantes2014.cpp
 """)
 
 # Rajouter les autres sources au fur et a mesure
