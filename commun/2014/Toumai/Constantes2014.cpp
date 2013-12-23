@@ -11,9 +11,9 @@ namespace ConstantesToumai2014 {
 	
 	// angles des positions des servos et moteur asservi (en valeur interne du servo)
 	const int positionServoBrasGHaut[POSITION_BRAS_NBR] = {1075, 1195, 2000};
-	const int positionServoBrasDHaut[POSITION_BRAS_NBR] = {848, 1020,  1793};
-	const int positionServoBrasGBas[POSITION_BRAS_NBR] = {1407, 1657,  2355};
-	const int positionServoBrasDBas[POSITION_BRAS_NBR] = {912, 1182,  1942};
+	const int positionServoBrasDHaut[POSITION_BRAS_NBR] = {848, 1020, 1793};
+	const int positionServoBrasGBas[POSITION_BRAS_NBR] = {1407, 1657, 2355};
+	const int positionServoBrasDBas[POSITION_BRAS_NBR] = {912, 1182, 1942};
 	
 	//////////////////////////////////////////// Moteurs ///////////////////////////////////////////////////////
 	const int tableauPositionsAscGauche[NBR_POSITIONS_ASC] = {0, -3000, -15500, -19000};

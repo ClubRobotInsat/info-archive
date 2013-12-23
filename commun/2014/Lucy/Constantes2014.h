@@ -33,9 +33,9 @@ namespace ConstantesLucy2014 {
 	/********** CONTACTEURS ************/
 	/***********************************/
 	
-	enum NumContacteurs	{
-		CONTACTEUR_TIRETTE 			= 1,
-		CONTACTEUR_COULEUR          = 0,
+	enum NumContacteurs {
+		CONTACTEUR_TIRETTE = 1,
+		CONTACTEUR_COULEUR = 0,
 	};
 	
 	
@@ -45,11 +45,11 @@ namespace ConstantesLucy2014 {
 	
 	//ID des servos
 	enum Servos {
-		SERVO_BRAS_DROIT            = 1,
-		SERVO_BRAS_GAUCHE           = 2,
-		SERVO_RAMASSE               = 0,
-		SERVO_EJECTE                = 3,
-		SERVO_NBR                   = 4
+		SERVO_BRAS_DROIT = 1,
+		SERVO_BRAS_GAUCHE = 2,
+		SERVO_RAMASSE = 0,
+		SERVO_EJECTE = 3,
+		SERVO_NBR = 4
 	};
 	
 	//Index des positions dans le tableau
@@ -79,7 +79,7 @@ namespace ConstantesLucy2014 {
 	/************ MOTEURS **************/
 	/***********************************/
 	
-	enum VitesseRotation{
+	enum VitesseRotation {
 		ARRET = 0,
 		CASE_1,
 		CASE_2,
@@ -92,22 +92,22 @@ namespace ConstantesLucy2014 {
 	extern const bool SENS_EJECTION;
 	
 	//Vitesse de rotation du moteur du lanceur
-  	extern const int vitessesRotationLanceur[LANCEUR_NBR_VITESSES];
+	extern const int vitessesRotationLanceur[LANCEUR_NBR_VITESSES];
 	
 	namespace IDCartesLucy2014 {
 		enum {
-			ID_CARTE_CAN_USB                    = 0,
-			ID_CARTE_DEPLACEMENT                = 1,
-			ID_CARTE_CONTACTEURS                = 3,
-			ID_CARTE_SERVOS                     = 4,
-			ID_CARTE_EVITEMENT                  = 8,
-			ID_CARTE_DEBUG_DESSIN				= 6,
-			ID_CARTE_IHM						= 7,
-			ID_CARTE_POMPE						= 9
+			ID_CARTE_CAN_USB = 0,
+			ID_CARTE_DEPLACEMENT = 1,
+			ID_CARTE_CONTACTEURS = 3,
+			ID_CARTE_SERVOS = 4,
+			ID_CARTE_EVITEMENT = 8,
+			ID_CARTE_DEBUG_DESSIN = 6,
+			ID_CARTE_IHM = 7,
+			ID_CARTE_POMPE = 9
 		};
 	}
 	using namespace IDCartesLucy2014;
-
+	
 	template<int ID_CARTE>
 	struct CarteLucy {
 		
@@ -145,7 +145,7 @@ namespace ConstantesLucy2014 {
 	struct CarteLucy<ID_CARTE_DEBUG_DESSIN> {
 		typedef CarteDebugDessin type;
 	};
-
+	
 }
 
 #endif //CONSTANTES_2013_H

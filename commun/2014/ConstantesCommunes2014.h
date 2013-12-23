@@ -13,10 +13,8 @@ namespace Constantes2014 {
 	};
 	
 	// Pour permettre l'affichage d'une Couleur :
-	inline std::ostream& operator<<(std::ostream& os, const CouleurRobot& couleur)
-	{
-		switch(couleur)
-		{
+	inline std::ostream& operator<<(std::ostream& os, const CouleurRobot& couleur) {
+		switch(couleur) {
 			case COULEUR_ROBOT_ROUGE:
 			os << "rouge";
 			break;

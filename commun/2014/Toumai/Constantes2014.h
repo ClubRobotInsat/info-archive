@@ -35,34 +35,34 @@
 namespace ConstantesToumai2014 {
 	
 	// Numeros des contacteurs et les roles associes
-	enum NumContacteur	{
-		CONTACTEUR_TIRETTE 			= 1,
-		CONTACTEUR_CHOIX_EQUIPE     = 0
+	enum NumContacteur {
+		CONTACTEUR_TIRETTE = 1,
+		CONTACTEUR_CHOIX_EQUIPE = 0
 	};
 	
 	enum NumContacteurAsc{
-		CONTACTEUR_GAUCHE_ASCG	= 0,
-		CONTACTEUR_DROIT_ASCG	= 1,
-		CONTACTEUR_GAUCHE_ASCD 	= 2,
-		CONTACTEUR_DROIT_ASCD	= 3
+		CONTACTEUR_GAUCHE_ASCG = 0,
+		CONTACTEUR_DROIT_ASCG = 1,
+		CONTACTEUR_GAUCHE_ASCD = 2,
+		CONTACTEUR_DROIT_ASCD = 3
 	};
 	
 	// Indice des différents servo de ramassage dans le tableau de positions
 	enum ServosAsc {
-		SERVO_G_ASC_G     		= 0,
-		SERVO_G_ASC_D        	= 1,
-		SERVO_D_ASC_D      		= 2,
-		SERVO_D_ASC_G        	= 3,
-		SERVO_ASC_NBR         	= 4
+		SERVO_G_ASC_G = 0,
+		SERVO_G_ASC_D = 1,
+		SERVO_D_ASC_D = 2,
+		SERVO_D_ASC_G = 3,
+		SERVO_ASC_NBR = 4
 	};
 	
 	// Indice des différents servo de ramassage dans le tableau de positions
 	enum ServosBras {
-		SERVO_BRAS_G_HAUT       	= 0,
-		SERVO_BRAS_D_HAUT     		= 1,
-		SERVO_BRAS_G_BAS      		= 2,
-		SERVO_BRAS_D_BAS        	= 3,
-		SERVO_BRAS_NBR  	       	= 4
+		SERVO_BRAS_G_HAUT = 0,
+		SERVO_BRAS_D_HAUT = 1,
+		SERVO_BRAS_G_BAS = 2,
+		SERVO_BRAS_D_BAS = 3,
+		SERVO_BRAS_NBR = 4
 	};
 	
 	// Numeros des positions des servos et moteur asservi et les roles associes
@@ -131,13 +131,13 @@ namespace ConstantesToumai2014 {
 	
 	template<int ID_CARTE>
 	struct CarteToumai {
-
+		
 	};
 	
 	/*template<>
-	struct CarteToumai<ID_CARTE_CAN_USB> {
-		typedef int type;
-	};*/
+	 struct CarteToumai<ID_CARTE_CAN_USB> {
+	 typedef int type;
+	 };*/
 	template<>
 	struct CarteToumai<ID_CARTE_DEPLACEMENT> {
 		typedef CarteDeplacement2009 type;
