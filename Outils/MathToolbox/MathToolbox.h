@@ -4,6 +4,6 @@
 #define MATH_TOOLBOX_H
 
 #include "MathUtilities.h"
-#include "Vecteur.h"
+#include "Vector.h"
 
 #endif // MATH_TOOLBOX_H
