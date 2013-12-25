@@ -6,13 +6,8 @@
 #include <math.h>
 
 template <class T>
-Vector4<T>::Vector4()
-: x(coords[0]), y(coords[1]), z(coords[2]), w(coords[3]),
-r(coords[0]), g(coords[1]), b(coords[2]), a(coords[3]) {
-	x = T(0);
-	y = T(0);
-	z = T(0);
-	w = T(1); // MEME pour les Vector4ub (Cf juste en-dessous...)
+Vector4<T>::Vector4() : x(T(0)), y(T(0)), z(T(0)), w(T(1)) {
+	
 }
 
 // TODO : on ne laisse pas cette partie-là parce que sinon, erreur de link avec GCC 4
@@ -30,43 +25,25 @@ r(coords[0]), g(coords[1]), b(coords[2]), a(coords[3]) {
 //}
 
 template <class T>
-Vector4<T>::Vector4(const T& x, const T& y, const T& z, const T& w)
-: x(coords[0]), y(coords[1]), z(coords[2]), w(coords[3]),
-r(coords[0]), g(coords[1]), b(coords[2]), a(coords[3]) {
-	this->x = x;
-	this->y = y;
-	this->z = z;
-	this->w = w;
+Vector4<T>::Vector4(const T& xx, const T& yy, const T& zz, const T& ww) : x(xx), y(yy), z(zz), w(ww) {
+	
 }
 
 template <class T>
 template <class T_scalar>
-Vector4<T>::Vector4(const T_scalar& s)
-: x(coords[0]), y(coords[1]), z(coords[2]), w(coords[3]),
-r(coords[0]), g(coords[1]), b(coords[2]), a(coords[3]) {
-	this->x = s;
-	this->y = s;
-	this->z = s;
-	this->w = s;
+Vector4<T>::Vector4(const T_scalar& s) : x(s), y(s), z(s), w(s) {
+	
 }
 
 template <class T>
-Vector4<T>::Vector4(const Vector4<T>& ref)
-: x(coords[0]), y(coords[1]), z(coords[2]), w(coords[3]),
-r(coords[0]), g(coords[1]), b(coords[2]), a(coords[3]) {
-	*this = ref;
+Vector4<T>::Vector4(const Vector4<T>& ref) : x(ref.x), y(ref.y), z(ref.z), w(ref.w) {
+	
 }
 
 template <class T>
 template <class T_2>
-Vector4<T>::Vector4(const Vector4<T_2>& ref)
-: x(coords[0]), y(coords[1]), z(coords[2]), w(coords[3]),
-r(coords[0]), g(coords[1]), b(coords[2]), a(coords[3]) {
-	*this = ref;
-}
-
-template <class T>
-Vector4<T>::~Vector4() {
+Vector4<T>::Vector4(const Vector4<T_2>& ref) : x(ref.x), y(ref.y), z(ref.z), w(ref.w) {
+	
 }
 
 // Affectation suivant un autre vecteur

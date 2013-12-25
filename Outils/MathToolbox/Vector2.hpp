@@ -6,42 +6,30 @@
 #include <math.h>
 
 template <class T>
-Vector2<T>::Vector2()
-: x(coords[0]), y(coords[1]) {
-	x = T(0);
-	y = T(0);
+Vector2<T>::Vector2() : x(T(0)), y(T(0)) {
+	
 }
 
 template <class T>
-Vector2<T>::Vector2(const T& x, const T& y)
-: x(coords[0]), y(coords[1]) {
-	this->x = x;
-	this->y = y;
+Vector2<T>::Vector2(const T& xx, const T& yy) : x(xx), y(yy) {
+	
 }
 
 template <class T>
 template <class T_scalar>
-Vector2<T>::Vector2(const T_scalar& s)
-: x(coords[0]), y(coords[1]) {
-	this->x = s;
-	this->y = s;
+Vector2<T>::Vector2(const T_scalar& s) : x(s), y(s) {
+	
 }
 
 template <class T>
-Vector2<T>::Vector2(const Vector2<T>& ref)
-: x(coords[0]), y(coords[1]) {
-	*this = ref;
+Vector2<T>::Vector2(const Vector2<T>& ref) : x(ref.x), y(ref.y) {
+	
 }
 
 template <class T>
 template <class T_2>
-Vector2<T>::Vector2(const Vector2<T_2>& ref)
-: x(coords[0]), y(coords[1]) {
-	*this = ref;
-}
-
-template <class T>
-Vector2<T>::~Vector2() {
+Vector2<T>::Vector2(const Vector2<T_2>& ref) : x(ref.x), y(ref.y) {
+	
 }
 
 // Affectation suivant un autre vecteur

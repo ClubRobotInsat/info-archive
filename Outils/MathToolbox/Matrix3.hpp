@@ -10,7 +10,7 @@ Matrix3<T>::Matrix3() {
 template <class T>
 template <class T_scalar>
 Matrix3<T>::Matrix3(const Vector3<T_scalar>& v1, const Vector3<T_scalar>& v2,
-		 const Vector3<T_scalar>& v3, bool column_vectors) {
+		    const Vector3<T_scalar>& v3, bool column_vectors) {
 	if(column_vectors) {
 		values[0]=v1.x; values[1]=v1.y; values[2]=v1.z;
 		values[3]=v2.x; values[4]=v2.y; values[5]=v2.z;
@@ -39,11 +39,6 @@ template <class T>
 template <class T_scalar>
 Matrix3<T>::Matrix3(const Matrix3<T_scalar>& ref) {
 	*this = ref;
-}
-
-// Destructeur
-template <class T>
-Matrix3<T>::~Matrix3() {
 }
 
 // Opérateur d'affectation
@@ -278,9 +273,9 @@ Matrix3<T> Matrix3<T>::getInverse() {
 	T& m33=values[8];
 	
 	Matrix3<T> result(
-			 Vector3<T>((m22*m33 - m23*m32), -(m12*m33 - m13*m32), (m12*m23 - m13*m22)),
-			 Vector3<T>(-(m21*m33 - m23*m31), (m11*m33 - m13*m31), -(m11*m23 - m13*m21)),
-			 Vector3<T>((m21*m32 - m22*m31), -(m11*m32 - m12*m31), (m11*m22 - m12*m21)),false);
+			  Vector3<T>((m22*m33 - m23*m32), -(m12*m33 - m13*m32), (m12*m23 - m13*m22)),
+			  Vector3<T>(-(m21*m33 - m23*m31), (m11*m33 - m13*m31), -(m11*m23 - m13*m21)),
+			  Vector3<T>((m21*m32 - m22*m31), -(m11*m32 - m12*m31), (m11*m22 - m12*m21)),false);
 	
 	T det = m11*result.values[0] + m12*result.values[1] + m13*result.values[2];
 	return (result/det);

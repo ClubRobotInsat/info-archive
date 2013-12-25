@@ -3,13 +3,12 @@
 
 #include "getMSTime.h"
 
-class Clock
-{
+class Clock {
 public:
 	Clock();
-	unsigned int GetElapsedTime() const;	/// Retourne le temps écoulé depuis la dernière réinitialisation
-	void Reset();	 /// Réinitialise le chrono
-
+	unsigned int GetElapsedTime() const; /// Retourne le temps écoulé depuis la dernière réinitialisation
+	void Reset(); /// Réinitialise le chrono
+	
 private:
 	unsigned int startTime;
 };

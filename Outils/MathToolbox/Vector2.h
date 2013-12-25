@@ -15,9 +15,18 @@
 template <class T>
 class Vector2 {
 public:
-	T coords[2];
-	T& x;
-	T& y;
+	union {
+		struct{T r, g;};
+		struct{T s, t;};
+		struct{T x, y;};
+	};
+	
+	T &operator[](std::size_t i) {
+		return (&x)[i];
+	}
+	T const &operator[](std::size_t i) const {
+		return (&x)[i];
+	}
 	
 public:
 	// Constructeurs
@@ -33,12 +42,7 @@ public:
 	template <class T_2>
 	Vector2(const Vector2<T_2>& ref); // de copie 2
 	
-	// Destructeur
-	virtual ~Vector2();
-	
-	// Cast
-	operator T* () {return this->coords;}
-	operator const T* () const {return (const T*)(this->coords);}
+	~Vector2() = default;
 	
 	// Affectation suivant un autre vecteur
 	template <class T_2>
@@ -104,6 +108,16 @@ public:
 	// Rotation du vecteur
 	inline Vector2<T> &rotate(double angle);
 };
+
+template <typename T>
+bool operator==(Vector2<T> const &v1, Vector2<T> const &v2) {
+	return v1.x == v2.x && v1.y == v2.y;
+}
+
+template <typename T>
+bool operator!=(Vector2<T> const &v1, Vector2<T> const &v2) {
+	return !(v1 == v2);
+}
 
 // Multiplication par un scalaire (s * v)
 template <class T, class T_scalar>

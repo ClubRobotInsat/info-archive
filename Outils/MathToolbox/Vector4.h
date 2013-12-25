@@ -11,17 +11,18 @@
 template <class T>
 class Vector4 {
 public:
-	T coords[4];
+	union {
+		struct{T r, g, b, a;};
+		struct{T s, t, p, q;};
+		struct{T x, y, z, w;};
+	};
 	
-	T& x;
-	T& y;
-	T& z;
-	T& w;
-	
-	T& r;
-	T& g;
-	T& b;
-	T& a;
+	T &operator[](std::size_t i) {
+		return (&x)[i];
+	}
+	T const &operator[](std::size_t i) const {
+		return (&x)[i];
+	}
 	
 public:
 	// Constructeurs
@@ -38,11 +39,7 @@ public:
 	Vector4(const Vector4<T_2>& ref); // de copie 2
 	
 	// Destructeur
-	virtual ~Vector4();
-	
-	// Cast
-	operator T* () {return this->coords;}
-	operator const T* () const {return (const T*)(this->coords);}
+	~Vector4() = default;
 	
 	// Affectation suivant un autre vecteur
 	template <class T_2>
@@ -102,6 +99,16 @@ public:
 	// Calcul de la norme au carré (plus rapide)
 	inline T squaredNorm() const;
 };
+
+template <typename T>
+bool operator==(Vector4<T> const &v1, Vector4<T> const &v2) {
+	return v1.x == v2.x && v1.y == v2.y && v1.z == v2.z && v1.w == v2.w;
+}
+
+template <typename T>
+bool operator!=(Vector4<T> const &v1, Vector4<T> const &v2) {
+	return !(v1 == v2);
+}
 
 // Multiplication par un scalaire (s * v)
 template <class T, class T_scalar>

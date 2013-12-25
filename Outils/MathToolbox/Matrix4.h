@@ -35,11 +35,7 @@ public:
 	Matrix4(const Matrix4<T_scalar>& ref);
 	
 	// Destructeur
-	virtual ~Matrix4();
-	
-	// Cast
-	operator T* () {return this->values;}
-	operator const T* () const {return (const T*)(this->values);}
+	~Matrix4() = default;
 	
 	// Opérateur d'affectation
 	template <class T_scalar>

@@ -2,19 +2,16 @@
 
 #include "Clock.h"
 
-Clock::Clock()
-{
+Clock::Clock() {
 	Reset();
 }
 
 
-unsigned int Clock::GetElapsedTime() const
-{
+unsigned int Clock::GetElapsedTime() const {
 	return (getMSTime() - startTime);
 }
 
 
-void Clock::Reset()
-{
+void Clock::Reset() {
 	startTime = getMSTime();
 }

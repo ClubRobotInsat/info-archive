@@ -6,45 +6,30 @@
 #include <math.h>
 
 template <class T>
-Vector3<T>::Vector3()
-: x(coords[0]), y(coords[1]), z(coords[2]), r(coords[0]), g(coords[1]), b(coords[2]) {
-	x = T(0);
-	y = T(0);
-	z = T(0);
+Vector3<T>::Vector3() : x(T(0)), y(T(0)), z(T(0)) {
+	
 }
 
 template <class T>
-Vector3<T>::Vector3(const T& x, const T& y, const T& z)
-: x(coords[0]), y(coords[1]), z(coords[2]), r(coords[0]), g(coords[1]), b(coords[2]) {
-	this->x = x;
-	this->y = y;
-	this->z = z;
+Vector3<T>::Vector3(const T& x, const T& y, const T& z) : x(x), y(y), z(z) {
+	
 }
 
 template <class T>
 template <class T_scalar>
-Vector3<T>::Vector3(const T_scalar& s)
-: x(coords[0]), y(coords[1]), z(coords[2]), r(coords[0]), g(coords[1]), b(coords[2]) {
-	this->x = s;
-	this->y = s;
-	this->z = s;
+Vector3<T>::Vector3(const T_scalar& s) : x(s), y(s), z(s) {
+	
 }
 
 template <class T>
-Vector3<T>::Vector3(const Vector3<T>& ref)
-: x(coords[0]), y(coords[1]), z(coords[2]), r(coords[0]), g(coords[1]), b(coords[2]) {
-	*this = ref;
+Vector3<T>::Vector3(const Vector3<T>& ref) : x(ref.x), y(ref.y), z(ref.z) {
+	
 }
 
 template <class T>
 template <class T_2>
-Vector3<T>::Vector3(const Vector3<T_2>& ref)
-: x(coords[0]), y(coords[1]), z(coords[2]), r(coords[0]), g(coords[1]), b(coords[2]) {
-	*this = ref;
-}
-
-template <class T>
-Vector3<T>::~Vector3() {
+Vector3<T>::Vector3(const Vector3<T_2>& ref) : x(ref.x), y(ref.y), z(ref.z) {
+	
 }
 
 // Affectation suivant un autre vecteur

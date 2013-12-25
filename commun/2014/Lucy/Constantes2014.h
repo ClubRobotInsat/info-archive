@@ -123,6 +123,10 @@ namespace ConstantesLucy2014 {
 		static constexpr char const *name = "Carte déplacement";
 	};
 	template<>
+	struct CarteLucy<ID_CARTE_SERVOS> {
+		typedef CarteServosNova2009 type;
+	};
+	template<>
 	struct CarteLucy<ID_CARTE_EVITEMENT> {
 		typedef CarteDetectAdv2009 type;
 	};

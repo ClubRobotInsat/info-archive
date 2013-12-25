@@ -2,14 +2,13 @@
 
 #include <time.h>
 #ifdef WIN32
-#  include <windows.h>
+# include <windows.h>
 #else
-#  include <sys/time.h>
-#  include <sys/timeb.h>
+# include <sys/time.h>
+# include <sys/timeb.h>
 #endif
 
-inline unsigned int getMSTime()
-{
+inline long getMSTime() {
 #ifdef WIN32
 	return GetTickCount();
 #else

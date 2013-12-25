@@ -42,8 +42,8 @@ template <class T>
 template <class T_scalar>
 Transform<T>& Transform<T>::operator=(const Matrix4<T_scalar>& mat) {
 	this->rotation = Matrix3<T>(Vector3<T>(mat[0],mat[1],mat[2]),
-				 Vector3<T>(mat[4],mat[5],mat[6]),
-				 Vector3<T>(mat[8],mat[9],mat[10]));
+				    Vector3<T>(mat[4],mat[5],mat[6]),
+				    Vector3<T>(mat[8],mat[9],mat[10]));
 	this->position = Vector3<T>(mat[12], mat[13], mat[14]);
 	return *this;
 }
@@ -126,8 +126,8 @@ template <class T_scalar>
 Transform<T> Transform<T>::operator*(const Matrix4<T_scalar>& ref) const {
 	Transform<T> result=*this;
 	result.rotation*=Matrix3<T>(Vector3<T>(ref.values[0],ref.values[1],ref.values[2]),
-				 Vector3<T>(ref.values[4],ref.values[5],ref.values[6]),
-				 Vector3<T>(ref.values[8],ref.values[9],ref.values[10]));
+				    Vector3<T>(ref.values[4],ref.values[5],ref.values[6]),
+				    Vector3<T>(ref.values[8],ref.values[9],ref.values[10]));
 	
 	result.position+=Vector3<T>(ref.values[12],ref.values[13],ref.values[14]);
 	return result;
@@ -138,8 +138,8 @@ template <class T_scalar>
 Transform<T> Transform<T>::operator*(const T_scalar ref[16]) const {
 	Transform<T> result=*this;
 	result.rotation*=Matrix3<T>(Vector3<T>(ref[0],ref[1],ref[2]),
-				 Vector3<T>(ref[4],ref[5],ref[6]),
-				 Vector3<T>(ref[8],ref[9],ref[10]));
+				    Vector3<T>(ref[4],ref[5],ref[6]),
+				    Vector3<T>(ref[8],ref[9],ref[10]));
 	
 	result.position+=Vector3<T>(ref[12],ref[13],ref[14]);
 	return result;
@@ -163,8 +163,8 @@ void Transform<T>::rotate(Vector3<T_scalar> axis,T_scalar2 value) {
 	float xz=axis.x*axis.z;
 	
 	Matrix3<T_scalar> rot(Vector3<T_scalar>((axis.x*axis.x*(ic)+c), (xy*(ic)-axis.z*s), (xz*(ic)+axis.y*s) ),
-			 Vector3<T_scalar>((xy*(ic)+axis.z*s), (axis.y*axis.y*(ic)+c), (yz*(ic)-axis.x*s) ),
-			 Vector3<T_scalar>((xz*(ic)-axis.y*s), (yz*(ic)+axis.x*s), (axis.z*axis.z*(ic)+c) ),false);
+			      Vector3<T_scalar>((xy*(ic)+axis.z*s), (axis.y*axis.y*(ic)+c), (yz*(ic)-axis.x*s) ),
+			      Vector3<T_scalar>((xz*(ic)-axis.y*s), (yz*(ic)+axis.x*s), (axis.z*axis.z*(ic)+c) ),false);
 	
 	rotation=rot*rotation;
 }

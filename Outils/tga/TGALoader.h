@@ -8,11 +8,11 @@
 #define TGA_LOADER_H
 
 // Configuration:
-//#define TGA_LOADER_INCLUDE_GLEW	// Define this if the project uses GLEW,
-									// for including GL/glew.h before GL/gl.h
+//#define TGA_LOADER_INCLUDE_GLEW // Define this if the project uses GLEW,
+// for including GL/glew.h before GL/gl.h
 #define TGA_OPENGL_SUPPORT
-#define TGA_USE_LOG_H	// Define this to use log/Log.h for logging (logError(), etc)
-//#define TGA_USE_LOG_IOSTREAM	// Define this to use std::cout/std::cerr for logging
+#define TGA_USE_LOG_H // Define this to use log/Log.h for logging (logError(), etc)
+//#define TGA_USE_LOG_IOSTREAM // Define this to use std::cout/std::cerr for logging
 
 // ---------------------------------------------------------------------
 #ifdef TGA_LOADER_INCLUDE_GLEW
@@ -23,6 +23,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <memory>
 
 #ifdef TGA_OPENGL_SUPPORT
 #ifdef WIN32
@@ -37,17 +38,14 @@
 #endif
 #endif // defined TGA_OPENGL_SUPPORT
 
-enum TGAErrorCode
-{
+enum TGAErrorCode {
 	TGA_OK,
 	TGA_FILE_NOT_FOUND,
 	TGA_UNSUPPORTED_TYPE,
-	TGA_NOT_ENOUGH_MEMORY
 };
 
 #ifdef TGA_OPENGL_SUPPORT
-enum TGAFiltering
-{
+enum TGAFiltering {
 	TGA_NO_FILTER,
 	TGA_LINEAR,
 	TGA_BILINEAR,
@@ -58,58 +56,50 @@ enum TGAFiltering
 };
 #endif
 
-class TGALoader
-{
-private:
-	unsigned char* data;
-	bool loaded;
-	unsigned int width, height;
-	unsigned int bpp;	// Bytes Per Pixel : 0, 3 or 4
-
+class TGALoader {
 public:
 	TGALoader();
 	TGALoader(const TGALoader& ref);
-	TGALoader(const char* path, TGAErrorCode* error=nullptr);
+	TGALoader(std::string const &path, TGAErrorCode* error=nullptr);
 	virtual ~TGALoader();
-	TGAErrorCode loadFile(const char* path);
-	TGAErrorCode loadFromData(unsigned char *data);
-
+	TGAErrorCode loadFile(std::string const &path);
+	TGAErrorCode loadFromData(unsigned char const *data);
+	
 	TGALoader& operator=(const TGALoader& ref);
-
+	
 	// Convert an error to an explicit string
 	static std::string errorToString(TGAErrorCode error);
-
+	
 #ifdef TGA_OPENGL_SUPPORT
 	GLuint sendToOpenGL(TGAFiltering filtering=TGA_NO_FILTER);
-
+	
 	void sendToOpenGLWithID(GLuint ID, TGAFiltering filtering=TGA_NO_FILTER);
-
-	TGAErrorCode loadOpenGLTexture(const char* path, GLuint* pID=nullptr,
-		TGAFiltering filtering=TGA_NO_FILTER);
-
-	TGAErrorCode loadOpenGLTextureWithID(const char* path, GLuint ID,
-		TGAFiltering filtering=TGA_NO_FILTER);
-
-	TGAErrorCode loadOpenGLTextureFromData(unsigned char *data, GLuint* pID=nullptr,
-		TGAFiltering filtering=TGA_NO_FILTER);
-
-	TGAErrorCode loadOpenGLTextureFromDataWithID(unsigned char *data, GLuint ID,
-		TGAFiltering filtering=TGA_NO_FILTER);
-
+	
+	TGAErrorCode loadOpenGLTexture(std::string const &path, GLuint* pID=nullptr, TGAFiltering filtering=TGA_NO_FILTER);
+	
+	TGAErrorCode loadOpenGLTextureWithID(std::string const &path, GLuint ID, TGAFiltering filtering=TGA_NO_FILTER);
+	
+	TGAErrorCode loadOpenGLTextureFromData(unsigned char *data, GLuint* pID=nullptr, TGAFiltering filtering=TGA_NO_FILTER);
+	
+	TGAErrorCode loadOpenGLTextureFromDataWithID(unsigned char *data, GLuint ID, TGAFiltering filtering=TGA_NO_FILTER);
+	
 #endif
-
-	void free();
-
-	inline unsigned char* getData() {return data;}
-	inline bool isLoaded() {return loaded;}
-	inline unsigned int getHeight() {return height;}
-	inline unsigned int getWidth() {return width;}
-	inline unsigned int getBpp() {return bpp;}
+	
+	inline unsigned char const *getData() const {return _data.get();}
+	inline bool isLoaded() const {return _data ? true : false;}
+	inline unsigned int getHeight() const {return _height;}
+	inline unsigned int getWidth() const {return _width;}
+	inline unsigned int getBpp() const {return _bpp;}
+	
+private:
+	std::unique_ptr<unsigned char[]> _data;
+	unsigned int _width, _height;
+	unsigned int _bpp; // Bytes Per Pixel : 0, 3 or 4
+	
 };
 
 // Overloading << for printing error codes using iostream
-inline std::ostream& operator<<(std::ostream& os, const TGAErrorCode& error)
-{
+inline std::ostream& operator<<(std::ostream& os, const TGAErrorCode& error) {
 	return os << TGALoader::errorToString(error);
 }
 

@@ -5,59 +5,44 @@
 // Version 2.1
 
 #include "TGALoader.h"
+#include <vector>
 
 #ifdef TGA_USE_LOG_H
 #include "../log/Log.h"
 #endif
 
-TGALoader::TGALoader()
-: data(nullptr), loaded(false), width(0), height(0), bpp(0)
-{
+TGALoader::TGALoader() : _data(), _width(0), _height(0), _bpp(0) {
 }
 
-TGALoader::TGALoader(const TGALoader& ref)
-: loaded(ref.loaded), width(ref.width), height(ref.height), bpp(ref.bpp)
-{
-	if(loaded)
-	{
-		data = new unsigned char[width*height*bpp];
-		for(unsigned int i=0; i<width*height*bpp ; i++)
-			data[i] = ref.data[i];
+TGALoader::TGALoader(const TGALoader& ref) : _width(ref._width), _height(ref._height), _bpp(ref._bpp) {
+	if(ref._data) {
+		_data.reset(new unsigned char[_width*_height*_bpp]);
+		std::copy(ref._data.get(), ref._data.get() + _width*_height*_bpp, _data.get());
 	}
+}
+
+TGALoader::TGALoader(std::string const &path, TGAErrorCode* error) : _data(), _width(0), _height(0), _bpp(0) {
+	if(!error)
+		loadFile(path);
 	else
-		data = nullptr;
+		*error = loadFile(path);
 }
 
-TGALoader::TGALoader(const char* path, TGAErrorCode* error)
-: data(nullptr), loaded(false), width(0), height(0), bpp(0)
-{
-	if (error == nullptr) loadFile(path);
-	else *error = loadFile(path);
+TGALoader::~TGALoader() {
+
 }
 
-TGALoader::~TGALoader()
-{
-	this->free();
-}
-
-TGAErrorCode TGALoader::loadFile(const char* path)
-{
-	unsigned char header[18];
-	std::ifstream file((const char*)path, std::ios::in | std::ios::binary);
-	unsigned int i=0, j=0;
-	bool origin_non_bottoleft=false;	// Indicates if the origin of the image is
-										// bottom left (default) or top left.
-
+TGAErrorCode TGALoader::loadFile(std::string const &path) {
+	std::ifstream file(path, std::ios::binary);
+	
 #ifdef TGA_USE_LOG_H
 	logInfo("loading \"", path, "\"...");
 #endif
-
 #ifdef TGA_USE_LOG_IOSTREAM
-	cout << "loading \"" << path << "\"..." << endl;
+	std::cout << "loading \"" << path << "\"..." << std::endl;
 #endif
-
-	if (!file)
-	{
+	
+	if(!file) {
 #ifdef TGA_USE_LOG_H
 		logFailed(TGA_FILE_NOT_FOUND);
 #endif
@@ -66,459 +51,241 @@ TGAErrorCode TGALoader::loadFile(const char* path)
 #endif
 		return TGA_FILE_NOT_FOUND;
 	}
-
-	file.read((char*)header, 18);
-
-	this->free();
-
-	width = ((unsigned int)header[13] << 8) + (unsigned int)header[12];
-	height = ((unsigned int)header[15] << 8) + (unsigned int)header[14];
-	bpp = ((unsigned int)header[16])>>3;	// (x>>3 is the same as x/8)
-
-	// Bit 5 from byte 17
-	origin_non_bottoleft = ((header[17] & 0x20) == 0x20 ? true : false);
-
-	if ((data = (unsigned char*)malloc(height*width*bpp)) == nullptr)
-	{
-		loaded = false;
-#ifdef TGA_USE_LOG_H
-		logFailed(TGA_NOT_ENOUGH_MEMORY);
-#endif
-#ifdef TGA_USE_LOG_IOSTREAM
-		cerr << "TGA_NOT_ENOUGH_MEMORY" << endl;
-#endif
-		return TGA_NOT_ENOUGH_MEMORY;
-	}
-
-	// Put the file pointer after the header (18 first bytes) and after the
-	// identification field, which size is indicated in header[0].
-	file.seekg(18+(long)header[0], std::ios::beg);
-
-	// header[2] determines the type of image:
-	// 1  -> uncompressed, uses a palette
-	// 2  -> uncompressed, true colors
-	// 9  -> RLE compressed, uses a palette
-	// 10 -> RLE compressed, doesn't use a palette
-	// Other image types are not supported.
-
-	// TYPE 2 - uncompressed, true colors, 24 or 32 bits
-	if (header[2] == 2 && (bpp == 3 || bpp == 4))
-	{
-		for(i=0 ; i<width*height*bpp ; i+=bpp)
-		{
-			data[i+2] = file.get();					// R
-			data[i+1] = file.get();					// G
-			data[i] = file.get();						// B
-			if(bpp == 4) data[i+3] = file.get();	// A
-		}
-	}
-
-	// TYPE 10 - RLE, true colors, 24 or 32 bits
-	else if (header[2] == 10 && (bpp == 3 || bpp == 4))
-	{
-		unsigned char packet_header, red, green, blue, alpha=0;
-		unsigned int nb_pixels;	// Number of pixels represented by one packet
-		for(i=0 ; i<width*height*bpp ; i += nb_pixels*bpp)
-		{
-			packet_header = file.get();
-			nb_pixels = (unsigned int)(packet_header & 0x7F) + 1;
-
-			// RLE packet:
-			if ((packet_header & 0x80) == 0x80)
-			{
-				blue = file.get();
-				green = file.get();
-				red = file.get();
-				if(bpp == 4) alpha = file.get();
-
-				for(j=0 ; j<nb_pixels*bpp ; j += bpp)
-				{
-					data[i+j] = red;
-					data[i+j+1] = green;
-					data[i+j+2] = blue;
-					if(bpp == 4) data[i+j+3] = alpha;
-				}
-			}
-			// Raw packet:
-			else
-			{
-				for(j=0 ; j<nb_pixels*bpp ; j+=bpp)
-				{
-					data[i+j+2] = file.get();					// B
-					data[i+j+1] = file.get();					// G
-					data[i+j] = file.get();					// R
-					if(bpp == 4) data[i+j+3] = file.get();	// A
-				}
-			}
-		}
-	}
-
-	// For images of an unsupported type, return an error and load nothing
-	else
-	{
-		::free(data);
-		data = nullptr;
-		loaded = false;
-#ifdef TGA_USE_LOG_H
-		logFailed(TGA_UNSUPPORTED_TYPE);
-#endif
-#ifdef TGA_USE_LOG_IOSTREAM
-		cerr << TGA_UNSUPPORTED_TYPE << endl;
-#endif
-		return TGA_UNSUPPORTED_TYPE;
-	}
-
-	// Flip vertically for images where the origin is in the top left
-	if (origin_non_bottoleft)
-	{
-		unsigned char temp;
-		for(i=0 ; i<height/2 ; i++)
-		{
-			for(j=0 ; j<width*bpp ; j++)
-			{
-				temp = data[i*width*bpp + j];
-				data[i*width*bpp + j] = data[(height-i-1)*width*bpp + j];
-				data[(height-i-1)*width*bpp + j] = temp;
-			}
-		}
-	}
-
-	loaded = true;
-	file.close();
-
-#ifdef TGA_USE_LOG_H
-	logSuccess(TGA_OK);
-#endif
-#ifdef TGA_USE_LOG_IOSTREAM
-	cout << TGA_OK << endl;
-#endif
-	return TGA_OK;
+		
+	std::istreambuf_iterator<char> begin(file), end;
+	std::vector<char> fileContent(begin, end);
+	
+	return this->loadFromData(reinterpret_cast<unsigned char *>(&fileContent[0]));
 }
 
 
-TGAErrorCode TGALoader::loadFromData(unsigned char *data)
-{
-	unsigned int i=0, j=0, pos_data=0;
-	bool origin_non_bottoleft=false;	// Indicates if the origin of the image is
-										// at bottom-left (default) or top-left
-
+TGAErrorCode TGALoader::loadFromData(unsigned char const *imageData) {
 #ifdef TGA_USE_LOG_H
 	logInfo("loading from data...");
 #endif
 #ifdef TGA_USE_LOG_IOSTREAM
-	cout << "loading from data..." << endl;
+	std::cout << "loading from data..." << std::endl;
 #endif
-
-	this->free();
-
-	width = ((unsigned int)data[13] << 8) + (unsigned int)data[12];
-	height = ((unsigned int)data[15] << 8) + (unsigned int)data[14];
-	bpp = ((unsigned int)data[16])>>3;	// (x>>3 is the same as x/8)
-
-	// Bit 5 from byte 17
-	origin_non_bottoleft = ((data[17] & 0x20) == 0x20 ? true : false);
-
-	if ((this->data = (unsigned char*)malloc(height*width*bpp)) == nullptr)
-	{
-		loaded = false;
-#ifdef TGA_USE_LOG_H
-		logFailed(TGA_NOT_ENOUGH_MEMORY);
-#endif
-#ifdef TGA_USE_LOG_IOSTREAM
-		cerr << TGA_NOT_ENOUGH_MEMORY << endl;
-#endif
-		return TGA_NOT_ENOUGH_MEMORY;
-	}
-
+		
+	_width = ((unsigned int)imageData[13] << 8) + (unsigned int)imageData[12];
+	_height = ((unsigned int)imageData[15] << 8) + (unsigned int)imageData[14];
+	_bpp = ((unsigned int)imageData[16]) / 8;
+	
+	// Indicates if the origin of the image is
+	// at bottom-left (default) or top-left
+	bool const origin_non_bottoleft = (imageData[17] & 0x20) == 0x20;
+	
+	_data.reset(new unsigned char[_height * _width * _bpp]);
+	
 	// Put the file pointer after the header (18 first bytes) and after the
 	// identification field, which size is indicated in header[0].
-	pos_data = 18+(unsigned int)data[0];
-
+	size_t pos_data = 18+(unsigned int)imageData[0];
+	
 	// data[2] determines the type of image:
-	// 1  -> uncompressed, uses a palette
-	// 2  -> uncompressed, true colors
-	// 9  -> RLE compressed, uses a palette
+	// 1 -> uncompressed, uses a palette
+	// 2 -> uncompressed, true colors
+	// 9 -> RLE compressed, uses a palette
 	// 10 -> RLE compressed, doesn't use a palette
 	// Other image types are not supported.
-
+	
 	// TYPE 2 - uncompressed, true colors, 24 or 32 bits
-	if (data[2] == 2 && (bpp == 3 || bpp == 4))
-	{
-		for(i=0 ; i<width*height*bpp ; i+=bpp)
-		{
-			this->data[i+2] = data[pos_data]; pos_data++;					// R
-			this->data[i+1] =data[pos_data]; pos_data++;					// G
-			this->data[i] = data[pos_data]; pos_data++;						// B
-			if(bpp == 4) { this->data[i+3] = data[pos_data]; pos_data++;	} // A
+	if(imageData[2] == 2 && (_bpp == 3 || _bpp == 4)) {
+		for(int i=0 ; i<_width*_height*_bpp ; i+=_bpp) {
+			this->_data[i+2] = imageData[pos_data++]; // R
+			this->_data[i+1] = imageData[pos_data++]; // G
+			this->_data[i] = imageData[pos_data++]; // B
+			if(_bpp == 4)
+				this->_data[i+3] = imageData[pos_data++]; // A
 		}
 	}
-
+	
 	// TYPE 10 - RLE, true colors, 24 or 32 bits
-	else if (data[2] == 10 && (bpp == 3 || bpp == 4))
-	{
+	else if(imageData[2] == 10 && (_bpp == 3 || _bpp == 4)) {
 		unsigned char packet_header, red, green, blue, alpha=0;
-		unsigned int nb_pixels;	// Number of pixels represented by one packet
-		for(i=0 ; i<width*height*bpp ; i += nb_pixels*bpp)
-		{
-			packet_header = data[pos_data]; pos_data++;
+		unsigned int nb_pixels; // Number of pixels represented by one packet
+		for(int i=0 ; i<_width*_height*_bpp ; i += nb_pixels*_bpp) {
+			packet_header = imageData[pos_data++];
 			nb_pixels = (unsigned int)(packet_header & 0x7F) + 1;
-
+			
 			// RLE packet:
-			if ((packet_header & 0x80) == 0x80)
-			{
-				blue = data[pos_data]; pos_data++;
-				green = data[pos_data]; pos_data++;
-				red = data[pos_data]; pos_data++;
-				if(bpp == 4) { alpha = data[pos_data]; pos_data++; }
-
-				for(j=0 ; j<nb_pixels*bpp ; j += bpp)
-				{
-					this->data[i+j] = red;
-					this->data[i+j+1] = green;
-					this->data[i+j+2] = blue;
-					if(bpp == 4) this->data[i+j+3] = alpha;
+			if((packet_header & 0x80) == 0x80) {
+				blue = imageData[pos_data++];
+				green = imageData[pos_data++];
+				red = imageData[pos_data++];
+				if(_bpp == 4)
+					alpha = imageData[pos_data++];
+				
+				for(int j=0 ; j<nb_pixels*_bpp ; j += _bpp) {
+					_data[i+j] = red;
+					_data[i+j+1] = green;
+					_data[i+j+2] = blue;
+					if(_bpp == 4)
+						_data[i+j+3] = alpha;
 				}
 			}
 			// Raw packet:
-			else
-			{
-				for(j=0 ; j<nb_pixels*bpp ; j+=bpp)
-				{
-					this->data[i+j+2] = data[pos_data]; pos_data++;					// B
-					this->data[i+j+1] = data[pos_data]; pos_data++;					// G
-					this->data[i+j] = data[pos_data]; pos_data++;					// R
-					if(bpp == 4) { this->data[i+j+3] = data[pos_data]; pos_data++; }	// A
+			else {
+				for(int j=0 ; j<nb_pixels*_bpp ; j+=_bpp) {
+					_data[i+j+2] = imageData[pos_data++]; // B
+					_data[i+j+1] = imageData[pos_data++]; // G
+					_data[i+j] = imageData[pos_data++]; // R
+					if(_bpp == 4)
+						_data[i+j+3] = imageData[pos_data++]; // A
 				}
 			}
 		}
 	}
-
+	
 	// For images of an unsupported type, return an error and load nothing
-	else
-	{
-		::free(this->data);
-		this->data = nullptr;
-		loaded = false;
+	else {
+		_data.reset();
 #ifdef TGA_USE_LOG_H
 		logFailed(TGA_UNSUPPORTED_TYPE);
 #endif
 #ifdef TGA_USE_LOG_IOSTREAM
-		cerr << TGA_UNSUPPORTED_TYPE << endl;
+		std::cerr << TGA_UNSUPPORTED_TYPE << std::endl;
 #endif
 		return TGA_UNSUPPORTED_TYPE;
 	}
-
+	
 	// Flip vertically for images where the origin is in the top left
-	if (origin_non_bottoleft)
-	{
-		unsigned char temp;
-		for(i=0 ; i<height/2 ; i++)
-		{
-			for(j=0 ; j<width*bpp ; j++)
-			{
-				temp = data[i*width*bpp + j];
-				this->data[i*width*bpp + j] = data[(height-i-1)*width*bpp + j];
-				this->data[(height-i-1)*width*bpp + j] = temp;
+	if(origin_non_bottoleft) {
+		for(int i=0 ; i<_height/2 ; i++) {
+			for(int j=0 ; j<_width*_bpp ; j++) {
+				std::swap(_data[i*_width*_bpp + j], _data[(_height-i-1)*_width*_bpp + j]);
 			}
 		}
 	}
-
-	loaded = true;
-
+		
 #ifdef TGA_USE_LOG_H
 	logSuccess(TGA_OK);
 #endif
 #ifdef TGA_USE_LOG_IOSTREAM
-	cout << TGA_OK << endl;
+	std::cout << TGA_OK << std::endl;
 #endif
 	return TGA_OK;
 }
 
-TGALoader& TGALoader::operator=(const TGALoader& ref)
-{
-	loaded = ref.loaded;
-	width = ref.width;
-	height = ref.height;
-	bpp = ref.bpp;
+TGALoader& TGALoader::operator=(const TGALoader& ref) {
+	TGALoader newLoader(ref);
+	std::swap(newLoader, *this);
 
-	if(loaded)
-	{
-		data = new unsigned char[width*height*bpp];
-		for(unsigned int i=0; i<width*height*bpp ; i++)
-			data[i] = ref.data[i];
-	}
-	else
-		data = nullptr;
 	return *this;
 }
 
 // Convert an error to an explicit string
-std::string TGALoader::errorToString(TGAErrorCode error)
-{
-	switch(error)
-	{
-	case TGA_OK:
-		return "TGA image loaded";
-		break;
-	case TGA_FILE_NOT_FOUND:
-		return "file not found";
-		break;
-	case TGA_UNSUPPORTED_TYPE:
-		return "unsupported type";
-		break;
-	case TGA_NOT_ENOUGH_MEMORY:
-		return "not enough memory";
-		break;
-	default:
-		return "unknown TGA error...";
-		break;
+std::string TGALoader::errorToString(TGAErrorCode error) {
+	switch(error) {
+		case TGA_OK:
+			return "TGA image loaded";
+			break;
+		case TGA_FILE_NOT_FOUND:
+			return "file not found";
+			break;
+		case TGA_UNSUPPORTED_TYPE:
+			return "unsupported type";
+			break;
+		default:
+			return "unknown TGA error...";
+			break;
 	}
 }
 
 #ifdef TGA_OPENGL_SUPPORT
 
-GLuint TGALoader::sendToOpenGL(TGAFiltering filtering //=TGA_NO_FILTER
-							   )
-{
+GLuint TGALoader::sendToOpenGL(TGAFiltering filtering) {
 	GLuint result = 0;
-	if(loaded)
-	{
+	if(this->isLoaded()) {
 		glGenTextures(1, &result);
 		sendToOpenGLWithID(result, filtering);
 	}
 	return result;
 }
 
-void TGALoader::sendToOpenGLWithID(	GLuint ID,
-									TGAFiltering filtering	//=TGA_NO_FILTER
-									)
-{
-	if (loaded)
-	{
+void TGALoader::sendToOpenGLWithID( GLuint ID, TGAFiltering filtering) {
+	if(this->isLoaded()) {
 		glBindTexture(GL_TEXTURE_2D, ID);
 		gluBuild2DMipmaps(
-			GL_TEXTURE_2D,
-			bpp,
-			width,
-			height,
-			(bpp == 3 ? GL_RGB : GL_RGBA),
-			GL_UNSIGNED_BYTE,
-			data);
-
-		if (filtering == TGA_NO_FILTER)
-		{
+				  GL_TEXTURE_2D,
+				  _bpp,
+				  _width,
+				  _height,
+				  (_bpp == 3 ? GL_RGB : GL_RGBA),
+				  GL_UNSIGNED_BYTE,
+				  &_data[0]);
+		
+		if(filtering == TGA_NO_FILTER) {
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		}
-		else if (filtering == TGA_LINEAR)
-		{
+		else if(filtering == TGA_LINEAR) {
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		}
-		else if (filtering == TGA_BILINEAR)
-		{
+		else if(filtering == TGA_BILINEAR) {
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
-				GL_LINEAR_MIPMAP_NEAREST);
+					GL_LINEAR_MIPMAP_NEAREST);
 		}
-		else if (filtering == TGA_TRILINEAR)
-		{
+		else if(filtering == TGA_TRILINEAR) {
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
-				GL_LINEAR_MIPMAP_LINEAR);
+					GL_LINEAR_MIPMAP_LINEAR);
 		}
 #ifdef GL_TEXTURE_MAX_ANISOTROPY_EXT
-		else if (filtering == TGA_ANISOTROPIC)
-		{
+		else if(filtering == TGA_ANISOTROPIC) {
 			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 2.0f) ;
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
-				GL_LINEAR_MIPMAP_LINEAR);
+					GL_LINEAR_MIPMAP_LINEAR);
 		}
 #endif
-
+		
 		// NB: the application should do this, not the TGA loader...
 		//glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 	}
 }
 
-TGAErrorCode TGALoader::loadOpenGLTexture(
-		const char* path,
-		GLuint* pID, //=nullptr
-		TGAFiltering filtering //=TGA_NO_FILTER
-		)
-{
+TGAErrorCode TGALoader::loadOpenGLTexture(std::string const &path, GLuint* pID, TGAFiltering filtering ) {
 	TGAErrorCode ret = loadFile(path);
-	if(ret == TGA_OK)
-	{
+	if(ret == TGA_OK) {
+		if(pID)
+			*pID = sendToOpenGL(filtering);
+		else
+			sendToOpenGL(filtering);
+		_data.release();
+	}
+	return ret;
+}
+
+TGAErrorCode TGALoader::loadOpenGLTextureWithID(std::string const &path, GLuint ID, TGAFiltering filtering) {
+	TGAErrorCode ret = loadFile(path);
+	if(ret == TGA_OK) {
+		sendToOpenGLWithID(ID, filtering);
+		_data.release();
+	}
+	return ret;
+}
+
+TGAErrorCode TGALoader::loadOpenGLTextureFromData(unsigned char* data, GLuint* pID, TGAFiltering filtering) {
+	TGAErrorCode ret = loadFromData(data);
+	if(ret == TGA_OK) {
 		if(pID != nullptr)
 			(*pID) = sendToOpenGL(filtering);
 		else
 			sendToOpenGL(filtering);
-		this->free();
+		_data.release();
 	}
 	return ret;
 }
 
-TGAErrorCode TGALoader::loadOpenGLTextureWithID(
-		const char* path,
-		GLuint ID,
-		TGAFiltering filtering //=TGA_NO_FILTER
-		)
-{
-	TGAErrorCode ret = loadFile(path);
-	if(ret == TGA_OK)
-	{
-		sendToOpenGLWithID(ID, filtering);
-		this->free();
-	}
-	return ret;
-}
-
-TGAErrorCode TGALoader::loadOpenGLTextureFromData(
-		unsigned char* data,
-		GLuint* pID, //=nullptr
-		TGAFiltering filtering //=TGA_NO_FILTER
-		)
-{
+TGAErrorCode TGALoader::loadOpenGLTextureFromDataWithID(unsigned char* data, GLuint ID, TGAFiltering filtering) {
 	TGAErrorCode ret = loadFromData(data);
-	if(ret == TGA_OK)
-	{
-		if(pID != nullptr)
-			(*pID) = sendToOpenGL(filtering);
-		else
-			sendToOpenGL(filtering);
-		this->free();
-	}
-	return ret;
-}
-
-TGAErrorCode TGALoader::loadOpenGLTextureFromDataWithID(
-		unsigned char* data,
-		GLuint ID,
-		TGAFiltering filtering //=TGA_NO_FILTER
-		)
-{
-	TGAErrorCode ret = loadFromData(data);
-	if(ret == TGA_OK)
-	{
+	if(ret == TGA_OK) {
 		sendToOpenGLWithID(ID, filtering);
-		this->free();
+		_data.release();
 	}
 	return ret;
 }
 
-#endif	// defined TGA_OPENGL_SUPPORT
-
-void TGALoader::free()
-{
-	if (loaded)
-	{
-		::free(data);
-		data = nullptr;
-		loaded = false;
-		height = 0;
-		width = 0;
-		bpp = 0;
-	}
-}
+#endif // defined TGA_OPENGL_SUPPORT

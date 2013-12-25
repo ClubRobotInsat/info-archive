@@ -10,7 +10,7 @@ Matrix4<T>::Matrix4() {
 template <class T>
 template <class T_scalar>
 Matrix4<T>::Matrix4(const Vector4<T_scalar>& v1, const Vector4<T_scalar>& v2,
-		 const Vector4<T_scalar>& v3, const Vector4<T_scalar>& v4, bool column_vectors) {
+		    const Vector4<T_scalar>& v3, const Vector4<T_scalar>& v4, bool column_vectors) {
 	if(column_vectors) {
 		values[0]=v1.x; values[1]=v1.y; values[2]=v1.z; values[3]=v1.w;
 		values[4]=v2.x; values[5]=v2.y; values[6]=v2.z; values[7]=v2.w;
@@ -64,11 +64,6 @@ template <class T>
 template <class T_scalar>
 Matrix4<T>::Matrix4(const Matrix4<T_scalar>& ref) {
 	*this = ref;
-}
-
-// Destructeur
-template <class T>
-Matrix4<T>::~Matrix4() {
 }
 
 // Opérateur d'affectation
