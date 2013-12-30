@@ -3,15 +3,15 @@
 #include "Clock.h"
 
 Clock::Clock() {
-	Reset();
+	this->reset();
 }
 
 
-unsigned int Clock::GetElapsedTime() const {
-	return (getMSTime() - startTime);
+unsigned int Clock::getElapsedTime() const {
+	return (getMSTime() - _startTime);
 }
 
 
-void Clock::Reset() {
-	startTime = getMSTime();
+void Clock::reset() {
+	_startTime = getMSTime();
 }

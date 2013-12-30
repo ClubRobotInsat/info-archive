@@ -6,11 +6,11 @@
 class Clock {
 public:
 	Clock();
-	unsigned int GetElapsedTime() const; /// Retourne le temps écoulé depuis la dernière réinitialisation
-	void Reset(); /// Réinitialise le chrono
+	unsigned int getElapsedTime() const; /// Retourne le temps écoulé depuis la dernière réinitialisation
+	void reset(); /// Réinitialise le chrono
 	
 private:
-	unsigned int startTime;
+	unsigned int _startTime;
 };
 
 #endif

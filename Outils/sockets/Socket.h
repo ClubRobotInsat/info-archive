@@ -65,10 +65,10 @@ public:
 	static void CleanUp();
 	
 	// Accesseurs
-	int GetFD() {return m_fd;}
+	int getFD() {return m_fd;}
 	bool IsCreated() {return m_fd > 0;}
-	SockState GetState() {return m_state;}
-	SockProtocol GetProtocol() {return m_protocol;}
+	SockState getState() {return m_state;}
+	SockProtocol getProtocol() {return m_protocol;}
 	
 	// Connexion a un serveur :
 	// -server_adress : addresse du serveur auquel on se connecte

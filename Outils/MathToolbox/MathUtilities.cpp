@@ -2,7 +2,7 @@
 
 #include "MathUtilities.h"
 
-// Conversions d'angles degr�s <-> radians
+// Conversions d'angles degrés <-> radians
 double DegToRad(double angleDeg) {
 	return (M_PI*angleDeg) / 180.0;
 }
