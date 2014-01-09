@@ -22,6 +22,8 @@
 #include <unistd.h>
 #endif
 
+#include <cstdint>
+
 // Enumeration des etats ou peut etre une Socket.
 enum SockState {
 	SOCK_FREE=0,

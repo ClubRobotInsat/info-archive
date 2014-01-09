@@ -79,9 +79,9 @@ public:
 	
 	TGAErrorCode loadOpenGLTextureWithID(std::string const &path, GLuint ID, TGAFiltering filtering=TGA_NO_FILTER);
 	
-	TGAErrorCode loadOpenGLTextureFromData(unsigned char *data, GLuint* pID=nullptr, TGAFiltering filtering=TGA_NO_FILTER);
+	TGAErrorCode loadOpenGLTextureFromData(std::uint8_t *data, GLuint* pID=nullptr, TGAFiltering filtering=TGA_NO_FILTER);
 	
-	TGAErrorCode loadOpenGLTextureFromDataWithID(unsigned char *data, GLuint ID, TGAFiltering filtering=TGA_NO_FILTER);
+	TGAErrorCode loadOpenGLTextureFromDataWithID(std::uint8_t *data, GLuint ID, TGAFiltering filtering=TGA_NO_FILTER);
 	
 #endif
 	
