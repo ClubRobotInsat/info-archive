@@ -9,8 +9,7 @@ Matrix3<T>::Matrix3() {
 // Constructeur à partir de 3 vecteurs
 template <class T>
 template <class T_scalar>
-Matrix3<T>::Matrix3(const Vector3<T_scalar>& v1, const Vector3<T_scalar>& v2,
-		    const Vector3<T_scalar>& v3, bool column_vectors) {
+Matrix3<T>::Matrix3(const Vector3<T_scalar>& v1, const Vector3<T_scalar>& v2, const Vector3<T_scalar>& v3, bool column_vectors) {
 	if(column_vectors) {
 		values[0]=v1.x; values[1]=v1.y; values[2]=v1.z;
 		values[3]=v2.x; values[4]=v2.y; values[5]=v2.z;

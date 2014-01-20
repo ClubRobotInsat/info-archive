@@ -2,7 +2,7 @@
 
 #include "Log.h"
 #include <iostream>
-#include <string.h>
+#include <cstring>
 
 // Empty definitions for disabled logging
 #ifndef ENABLE_LOGGING

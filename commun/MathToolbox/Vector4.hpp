@@ -3,7 +3,7 @@
 // 2008 par Funto
 // Version 1.0
 
-#include <math.h>
+#include <cmath>
 
 template <class T>
 Vector4<T>::Vector4() : x(T(0)), y(T(0)), z(T(0)), w(T(1)) {

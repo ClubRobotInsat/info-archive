@@ -136,14 +136,14 @@ def createEnvironment(libs_list=[], force_debug=False):
 			if sys.platform == 'win32':
 				env.Append(LIBS=['ws2_32'])
 
-			env.Append(CPPPATH=[root_dir + '/Outils',
-								root_dir + '/Outils/Clock',
-								root_dir + '/Outils/debug',
-								root_dir + '/Outils/log',
-								root_dir + '/Outils/MathToolbox',
-								root_dir + '/Outils/tga',
-								root_dir + '/Outils/sockets'])
-			env.Append(LIBPATH=[root_dir + '/Outils'])
+			env.Append(CPPPATH=[root_dir + '/commun',
+								root_dir + '/commun/Clock',
+								root_dir + '/commun/debug',
+								root_dir + '/commun/log',
+								root_dir + '/commun/MathToolbox',
+								root_dir + '/commun/tga',
+								root_dir + '/commun/sockets'])
+			env.Append(LIBPATH=[root_dir + '/commun'])
 			env.Append(LIBS=['Outils'])
 
 			# Ajout de GTK+, si demandé, pour CGTKwin

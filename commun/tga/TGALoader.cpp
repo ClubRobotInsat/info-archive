@@ -29,7 +29,7 @@ TGALoader::TGALoader(std::string const &path, TGAErrorCode* error) : _data(), _w
 }
 
 TGALoader::~TGALoader() {
-
+	
 }
 
 TGAErrorCode TGALoader::loadFile(std::string const &path) {
@@ -51,7 +51,7 @@ TGAErrorCode TGALoader::loadFile(std::string const &path) {
 #endif
 		return TGA_FILE_NOT_FOUND;
 	}
-		
+	
 	std::istreambuf_iterator<char> begin(file), end;
 	std::vector<char> fileContent(begin, end);
 	
@@ -66,7 +66,7 @@ TGAErrorCode TGALoader::loadFromData(unsigned char const *imageData) {
 #ifdef TGA_USE_LOG_IOSTREAM
 	std::cout << "loading from data..." << std::endl;
 #endif
-		
+	
 	_width = ((unsigned int)imageData[13] << 8) + (unsigned int)imageData[12];
 	_height = ((unsigned int)imageData[15] << 8) + (unsigned int)imageData[14];
 	_bpp = ((unsigned int)imageData[16]) / 8;
@@ -156,7 +156,7 @@ TGAErrorCode TGALoader::loadFromData(unsigned char const *imageData) {
 			}
 		}
 	}
-		
+	
 #ifdef TGA_USE_LOG_H
 	logSuccess(TGA_OK);
 #endif
@@ -169,7 +169,7 @@ TGAErrorCode TGALoader::loadFromData(unsigned char const *imageData) {
 TGALoader& TGALoader::operator=(const TGALoader& ref) {
 	TGALoader newLoader(ref);
 	std::swap(newLoader, *this);
-
+	
 	return *this;
 }
 
@@ -205,14 +205,7 @@ GLuint TGALoader::sendToOpenGL(TGAFiltering filtering) {
 void TGALoader::sendToOpenGLWithID( GLuint ID, TGAFiltering filtering) {
 	if(this->isLoaded()) {
 		glBindTexture(GL_TEXTURE_2D, ID);
-		gluBuild2DMipmaps(
-				  GL_TEXTURE_2D,
-				  _bpp,
-				  _width,
-				  _height,
-				  (_bpp == 3 ? GL_RGB : GL_RGBA),
-				  GL_UNSIGNED_BYTE,
-				  &_data[0]);
+		gluBuild2DMipmaps(GL_TEXTURE_2D, _bpp, _width,  _height, (_bpp == 3 ? GL_RGB : GL_RGBA), GL_UNSIGNED_BYTE, &_data[0]);
 		
 		if(filtering == TGA_NO_FILTER) {
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
