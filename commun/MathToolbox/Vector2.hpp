@@ -136,12 +136,10 @@ T Vector2<T>::operator*(const Vector2<T>& v) const {
 
 // Normalisation + renvoi de la valeur de la norme
 template <class T>
-double Vector2<T>::normalize() {
+void Vector2<T>::normalize() {
 	double norm = sqrtf(x*x + y*y);
 	x = T(double(x) / norm);
 	y = T(double(y) / norm);
-	
-	return norm;
 }
 
 // Calcul de la norme

@@ -166,14 +166,12 @@ T Vector4<T>::operator*(const Vector4<T>& v) const {
 
 // Normalisation + renvoi de la valeur de la norme
 template <class T>
-double Vector4<T>::normalize() {
+void Vector4<T>::normalize() {
 	double norm = sqrtf(x*x + y*y + z*z + w*w);
 	x = T(double(x) / norm);
 	y = T(double(y) / norm);
 	z = T(double(z) / norm);
 	w = T(double(w) / norm);
-	
-	return norm;
 }
 
 // Calcul de la norme

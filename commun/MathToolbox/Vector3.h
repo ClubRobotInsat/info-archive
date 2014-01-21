@@ -98,7 +98,7 @@ public:
 	inline T operator*(const Vector3<T>& v) const;
 	
 	// Normalisation + renvoi de la valeur de la norme
-	inline double normalize();
+	inline void normalize();
 	
 	// Calcul de la norme
 	inline double norm() const;

@@ -6,10 +6,10 @@
 #include "Vector3.h"
 #include "Matrix3.h"
 #include "Matrix4.h"
-#include "Trigo.h"
+//#include "Trigo.h"
 #include <iostream>
 
-#define TRANSFORM_OPENGL_SUPPORT
+//#define TRANSFORM_OPENGL_SUPPORT
 
 #ifdef TRANSFORM_OPENGL_SUPPORT
 #include <GL/glew.h>

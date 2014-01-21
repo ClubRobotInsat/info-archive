@@ -1,5 +1,5 @@
 // Transform.hpp
-#include "Plane.h"
+//#include "Plane.h"
 
 // Constructeur
 template <class T>

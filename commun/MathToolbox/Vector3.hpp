@@ -168,13 +168,11 @@ T Vector3<T>::operator*(const Vector3<T>& v) const {
 
 // Normalisation + renvoi de la valeur de la norme
 template <class T>
-double Vector3<T>::normalize() {
+void Vector3<T>::normalize() {
 	double norm = sqrtf(x*x + y*y + z*z);
 	x = T(double(x) / norm);
 	y = T(double(y) / norm);
 	z = T(double(z) / norm);
-	
-	return norm;
 }
 
 // Calcul de la norme
