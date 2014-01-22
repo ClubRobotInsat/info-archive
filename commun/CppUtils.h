@@ -13,6 +13,7 @@
 
 namespace std {
 	// Pallie à l'absence de std::make_unique dans C++11, à venir dans C++14 cependant.
+	// Source : http://stackoverflow.com/a/13512344/1276072
 	
 	template <typename T, typename... Args>
 	unique_ptr<T> make_unique_helper(false_type, Args&&... args) {
