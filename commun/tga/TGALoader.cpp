@@ -90,7 +90,7 @@ TGAErrorCode TGALoader::loadFromData(unsigned char const *imageData) {
 	
 	// TYPE 2 - uncompressed, true colors, 24 or 32 bits
 	if(imageData[2] == 2 && (_bpp == 3 || _bpp == 4)) {
-		for(int i=0 ; i<_width*_height*_bpp ; i+=_bpp) {
+		for(unsigned int i=0 ; i<_width*_height*_bpp ; i+=_bpp) {
 			this->_data[i+2] = imageData[pos_data++]; // R
 			this->_data[i+1] = imageData[pos_data++]; // G
 			this->_data[i] = imageData[pos_data++]; // B
@@ -103,7 +103,7 @@ TGAErrorCode TGALoader::loadFromData(unsigned char const *imageData) {
 	else if(imageData[2] == 10 && (_bpp == 3 || _bpp == 4)) {
 		unsigned char packet_header, red, green, blue, alpha=0;
 		unsigned int nb_pixels; // Number of pixels represented by one packet
-		for(int i=0 ; i<_width*_height*_bpp ; i += nb_pixels*_bpp) {
+		for(unsigned int i=0 ; i<_width*_height*_bpp ; i += nb_pixels*_bpp) {
 			packet_header = imageData[pos_data++];
 			nb_pixels = (unsigned int)(packet_header & 0x7F) + 1;
 			
@@ -115,7 +115,7 @@ TGAErrorCode TGALoader::loadFromData(unsigned char const *imageData) {
 				if(_bpp == 4)
 					alpha = imageData[pos_data++];
 				
-				for(int j=0 ; j<nb_pixels*_bpp ; j += _bpp) {
+				for(unsigned int j=0 ; j<nb_pixels*_bpp ; j += _bpp) {
 					_data[i+j] = red;
 					_data[i+j+1] = green;
 					_data[i+j+2] = blue;
@@ -125,7 +125,7 @@ TGAErrorCode TGALoader::loadFromData(unsigned char const *imageData) {
 			}
 			// Raw packet:
 			else {
-				for(int j=0 ; j<nb_pixels*_bpp ; j+=_bpp) {
+				for(unsigned int j=0 ; j<nb_pixels*_bpp ; j+=_bpp) {
 					_data[i+j+2] = imageData[pos_data++]; // B
 					_data[i+j+1] = imageData[pos_data++]; // G
 					_data[i+j] = imageData[pos_data++]; // R
@@ -150,8 +150,8 @@ TGAErrorCode TGALoader::loadFromData(unsigned char const *imageData) {
 	
 	// Flip vertically for images where the origin is in the top left
 	if(origin_non_bottoleft) {
-		for(int i=0 ; i<_height/2 ; i++) {
-			for(int j=0 ; j<_width*_bpp ; j++) {
+		for(unsigned int i=0 ; i<_height/2 ; i++) {
+			for(unsigned int j=0 ; j<_width*_bpp ; j++) {
 				std::swap(_data[i*_width*_bpp + j], _data[(_height-i-1)*_width*_bpp + j]);
 			}
 		}
