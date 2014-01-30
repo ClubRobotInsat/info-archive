@@ -34,70 +34,96 @@
 
 namespace ConstantesToumai2014 {
 	
+	/////////////////// CONTACTEURS ///////////////////
 	// Numeros des contacteurs et les roles associes
 	enum NumContacteur {
 		CONTACTEUR_TIRETTE = 1,
 		CONTACTEUR_CHOIX_EQUIPE = 0
 	};
 	
-	enum NumContacteurAsc{
+	enum NumContacteurAsc {
 		CONTACTEUR_GAUCHE_ASCG = 0,
 		CONTACTEUR_DROIT_ASCG = 1,
 		CONTACTEUR_GAUCHE_ASCD = 2,
 		CONTACTEUR_DROIT_ASCD = 3
 	};
 	
-	// Indice des différents servo de ramassage dans le tableau de positions
-	enum ServosAsc {
-		SERVO_G_ASC_G = 0,
-		SERVO_G_ASC_D = 1,
-		SERVO_D_ASC_D = 2,
-		SERVO_D_ASC_G = 3,
-		SERVO_ASC_NBR = 4
+	/////////////////// SERVOS ///////////////////
+	// Indice des servos
+	enum ServosCarte1 {
+		SERVO_GRIFFE_FRUIT 			= 0,
+		SERVO_PANIER_FRUIT 			= 1,
+		SERVO_PINCE_SAISIE 			= 2,
+		SERVO_PINCE_RETOURNEMENT 	= 3,
+		SERVO_1_NBR 				= 4
 	};
 	
-	// Indice des différents servo de ramassage dans le tableau de positions
-	enum ServosBras {
-		SERVO_BRAS_G_HAUT = 0,
-		SERVO_BRAS_D_HAUT = 1,
-		SERVO_BRAS_G_BAS = 2,
-		SERVO_BRAS_D_BAS = 3,
-		SERVO_BRAS_NBR = 4
+	enum ServosCarte2 {
+		SERVO_T_VENTOUSE	= 0,
+		SERVO_SERPE_BAS 	= 1,
+		SERVO_VIDE_FEU		= 2,
+		SERVO_2_NBR 		= 3
+	};
+
+	// Position des servos
+	enum PositionGriffeFruit {
+		POSITION_GRIFFE_HORIZ = 0,
+		POSITION_GRIFFE_RANGE,
+		POSITION_GRIFFE_SAISIE,
+		POSITION_GRIFFE_NBR
 	};
 	
-	// Numeros des positions des servos et moteur asservi et les roles associes
-	enum PositionServosPinceAsc {
-		POSITION_PINCE_ASC_OUVERTE = 0,
-		POSITION_PINCE_ASC_EMPILE,
-		POSITION_PINCE_ASC_BLOCAGE,
-		POSITION_PINCE_ASC_RANGE,
-		POSITION_PINCE_ASC_NBR};
+	enum PositionPanierFruit {
+		POSITION_PANIER_HORIZ = 0,
+		POSITION_PANIER_VERTICALE,
+		POSITION_PANIER_DECHARGEMENT,
+		POSITION_PANIER_TRANSPORT,
+		POSITION_PANIER_NBR
+	};
 	
-	enum PositionServosBras {
-		POSITION_BRAS_HAUT = 0,
-		POSITION_BRAS_SOUFFLE_BOUGIE,
-		POSITION_BRAS_RANGE,
-		POSITION_BRAS_NBR};
+	enum PositionPinceSaisie {
+		POSITION_PINCE_S_OUVERTE = 0,
+		POSITION_PINCE_S_FERMEE,
+		POSITION_PINCE_S_NBR
+	};
+
+	enum PositionPinceRetournement {
+		POSITION_PINCE_R_RECTO = 0,
+		POSITION_PINCE_R_VERSO,
+		POSITION_PINCE_R_NBR
+	};
+
+	enum PositionTVentouse{
+		POSITION_T_VENTOUSE_OUT = 0,
+		POSITION_T_VENTOUSE_IN,
+		POSITION_T_VENTOUSE_NBR
+	};
+
+
+	enum PositionSerpeBas {
+		POSITION_SERPE_BAS_RENTRE = 0,
+		POSITION_SERPE_BAS_TRIANGLE,
+		POSITION_SERPE_BAS_FOYER,
+		POSITION_SERPE_BAS_NBR
+	};
+
+	enum PositionVideFeu {
+		POSITION_VIDE_FEU_RENTRE = 0,
+		POSITION_VIDE_FEU_SORTIE,
+		POSITION_VIDE_FEU_NBR
+	};
+
+	// Déclaration des positions
+	extern const int positionGriffeFruit[POSITION_GRIFFE_NBR];
+	extern const int positionPanierFruit[POSITION_PANIER_NBR];
+	extern const int positionPinceSaisie[POSITION_PINCE_S_NBR];
+	extern const int positionPinceRetournement[POSITION_PINCE_R_NBR];
+	extern const int positionTVentouse[POSITION_T_VENTOUSE_NBR];
+	extern const int positionSerpeBas[POSITION_SERPE_BAS_NBR];
+	extern const int positionVideFeu[POSITION_VIDE_FEU_NBR];
 	
-	// angles des positions des servos et moteur asservi (en valeur interne du servo)
-	//static const int positionServoGAscD[POSITION_PINCE_ASC_NBR] = {980, 880, 780, 1430};
-	extern const int positionServoGAscD[POSITION_PINCE_ASC_NBR];
-	//static const int positionServoGAscG[POSITION_PINCE_ASC_NBR] = {1200, 1100, 1000, 600};
-	extern const int positionServoGAscG[POSITION_PINCE_ASC_NBR];
-	//static const int positionServoDAscD[POSITION_PINCE_ASC_NBR] = {1510, 1610, 1710, 2160};
-	extern const int positionServoDAscD[POSITION_PINCE_ASC_NBR];
-	//static const int positionServoDAscG[POSITION_PINCE_ASC_NBR] = {1500, 1600, 1750, 980};
-	extern const int positionServoDAscG[POSITION_PINCE_ASC_NBR];
-	
-	// angles des positions des servos et moteur asservi (en valeur interne du servo)
-	extern const int positionServoBrasGHaut[POSITION_BRAS_NBR];
-	extern const int positionServoBrasDHaut[POSITION_BRAS_NBR];
-	extern const int positionServoBrasGBas[POSITION_BRAS_NBR];
-	extern const int positionServoBrasDBas[POSITION_BRAS_NBR];
-	
-	//////////////////////////////////////////// Moteurs ///////////////////////////////////////////////////////
-	
-	// Positions possibles pour l'ascenseur gauche et droit
+	/////////////////// MOTEURS ///////////////////
+	// Position des moteurs
 	enum PositionsAsc {
 		ASC_HAUT = 0,
 		ASC_MILIEU,
@@ -106,23 +132,24 @@ namespace ConstantesToumai2014 {
 		NBR_POSITIONS_ASC
 	};
 	
-	extern const int tableauPositionsAscGauche[NBR_POSITIONS_ASC];
-	extern const int tableauPositionsAscDroit[NBR_POSITIONS_ASC];
+	// Déclaration des positions
+	extern const int tableauPositionsAsc[NBR_POSITIONS_ASC];
 	
+	/////////////////// CARTES ///////////////////
 	namespace IDCartesToumai2014 {
 		enum {
 			//ID_CARTE_CAN_USB = 0,
-			PREMIER_ID_CARTE = 0,
-			ID_CARTE_DEPLACEMENT = PREMIER_ID_CARTE,
-			ID_CARTE_ASSERVISSEMENT_ASCENSEUR_GAUCHE = 3,
+			PREMIER_ID_CARTE 						= 0,
+			ID_CARTE_DEPLACEMENT 					= PREMIER_ID_CARTE,
+			ID_CARTE_ASSERVISSEMENT_ASCENSEUR_GAUCHE= 3,
 			ID_CARTE_ASSERVISSEMENT_ASCENSEUR_DROIT = 2,
-			ID_CARTE_SERVOS_ASCENSEUR = 4,
-			ID_CARTE_SERVOS_BRAS = 5,
-			ID_CARTE_CONTACTEURS_ASC = 6,
-			ID_CARTE_IHM = 7,
-			ID_CARTE_EVITEMENT = 8,
-			ID_CARTE_PNEUMATIQUE = 9,
-			ID_CARTE_DEBUG_DESSIN = 10,
+			ID_CARTE_SERVOS_ASCENSEUR 				= 4,
+			ID_CARTE_SERVOS_BRAS 					= 5,
+			ID_CARTE_CONTACTEURS_ASC 				= 6,
+			ID_CARTE_IHM 							= 7,
+			ID_CARTE_EVITEMENT 						= 8,
+			ID_CARTE_PNEUMATIQUE 					= 9,
+			ID_CARTE_DEBUG_DESSIN 					= 10,
 			DERNIER_ID_CARTE
 			//ID_CARTE_DEBUG = 11
 		};
@@ -130,9 +157,7 @@ namespace ConstantesToumai2014 {
 	using namespace IDCartesToumai2014;
 	
 	template<int ID_CARTE>
-	struct CarteToumai {
-		
-	};
+	struct CarteToumai {};
 	
 	/*template<>
 	 struct CarteToumai<ID_CARTE_CAN_USB> {

@@ -1,4 +1,4 @@
-// Constantes2013.h
+// Constantes2014.h
 
 #ifndef CONSTANTES_LUCY_2014_H
 #define CONSTANTES_LUCY_2014_H
@@ -45,73 +45,44 @@ namespace ConstantesLucy2014 {
 	
 	//ID des servos
 	enum Servos {
-		SERVO_BRAS_DROIT = 1,
-		SERVO_BRAS_GAUCHE = 2,
-		SERVO_RAMASSE = 0,
-		SERVO_EJECTE = 3,
-		SERVO_NBR = 4
+		SERVO_CATAPULTE 	= 0,
+		SERVO_LANCE_G 		= 1,
+		SERVO_LANCE_D 		= 2,
+		SERVO_NBR
 	};
 	
 	//Index des positions dans le tableau
-	enum PositionServosBras {
-		SERVO_OUVRE_CADEAU = 0,
-		SERVO_MILIEU_BRAS,
-		SERVO_SOUFFLE_BOUGIE,
-		SERVO_RANGE,
-		SERVO_BRAS_NBR_POSITIONS
-	};
-	
-	//Index des positions dans le tableau
-	enum PositionServosRamasse {
-		SERVO_BAS = 0,
-		SERVO_MILIEU,
-		SERVO_RELEVE,
-		SERVO_RAMASSE_NBR_POSITIONS
+	enum PositionServos {
+		SERVO_LUCY_RENTRE = 0,
+		SERVO_LUCY_SORTIE,
+		SERVO_LUCY_NBR
 	};
 	
 	//Position des servos
-	extern const int positionsServosBrasGauche[SERVO_BRAS_NBR_POSITIONS];
-	extern const int positionsServosBrasDroit[SERVO_BRAS_NBR_POSITIONS];
-	extern const int positionServosRamasse[SERVO_RAMASSE_NBR_POSITIONS];
-	
+	extern const int positionsServoCatapulte[SERVO_LUCY_NBR];
+	extern const int positionsServoLanceG[SERVO_LUCY_NBR];
+	extern const int positionsServoLanceD[SERVO_LUCY_NBR];
 	
 	/***********************************/
-	/************ MOTEURS **************/
+	/************ CARTES ***************/
 	/***********************************/
-	
-	enum VitesseRotation {
-		ARRET = 0,
-		CASE_1,
-		CASE_2,
-		CASE_3,
-		CASE_4,
-		CASE_5,
-		LANCEUR_NBR_VITESSES
-	};
-	
-	extern const bool SENS_EJECTION;
-	
-	//Vitesse de rotation du moteur du lanceur
-	extern const int vitessesRotationLanceur[LANCEUR_NBR_VITESSES];
 	
 	namespace IDCartesLucy2014 {
 		enum {
-			ID_CARTE_CAN_USB = 0,
-			ID_CARTE_DEPLACEMENT = 1,
-			ID_CARTE_CONTACTEURS = 3,
-			ID_CARTE_SERVOS = 4,
-			ID_CARTE_EVITEMENT = 8,
-			ID_CARTE_DEBUG_DESSIN = 6,
-			ID_CARTE_IHM = 7,
-			ID_CARTE_POMPE = 9
+			ID_CARTE_CAN_USB 			= 0,
+			ID_CARTE_DEPLACEMENT 		= 1,
+			ID_CARTE_CONTACTEURS 		= 3,
+			ID_CARTE_SERVOS 			= 4,
+			ID_CARTE_EVITEMENT 			= 8,
+			ID_CARTE_DEBUG_DESSIN 		= 6,
+			ID_CARTE_IHM 				= 7,
+			ID_CARTE_POMPE 				= 9
 		};
 	}
 	using namespace IDCartesLucy2014;
 	
 	template<int ID_CARTE>
-	struct CarteLucy {
-		
-	};
+	struct CarteLucy {};
 	
 	/*template<>
 	 struct CarteToumai<ID_CARTE_CAN_USB> {
@@ -152,5 +123,5 @@ namespace ConstantesLucy2014 {
 	
 }
 
-#endif //CONSTANTES_2013_H
+#endif
 
