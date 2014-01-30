@@ -92,7 +92,7 @@ def createEnvironment(libs_list=[], force_debug=False):
 
 	env.Append(CCFLAGS=['-Wall'])
 	env.Append(CXXFLAGS=['-std=c++11'])
-	env.Append(CXXFLAGS=['-ferror-limit=0'])
+	#env.Append(CXXFLAGS=['-ferror-limit=0'])
 
 	# Si "scons debug=1", alors on ajoute l'option "-g"
 	if ARGUMENTS.get('debug', 0) or force_debug:
