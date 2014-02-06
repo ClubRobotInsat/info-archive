@@ -37,32 +37,43 @@ namespace ConstantesToumai2014 {
 	/////////////////// CONTACTEURS ///////////////////
 	// Numeros des contacteurs et les roles associes
 	enum NumContacteur {
-		CONTACTEUR_TIRETTE = 1,
-		CONTACTEUR_CHOIX_EQUIPE = 0
-	};
-	
-	enum NumContacteurAsc {
-		CONTACTEUR_GAUCHE_ASCG = 0,
-		CONTACTEUR_DROIT_ASCG = 1,
-		CONTACTEUR_GAUCHE_ASCD = 2,
-		CONTACTEUR_DROIT_ASCD = 3
+		CONTACTEUR_CHOIX_EQUIPE 	= 0,
+		CONTACTEUR_TIRETTE 			= 1,
+		CONTACTEUR_SERPE 			= 2,
+		CONTACTEUR_TRIANGLE_SOL 	= 3,
+		CONTACTEUR_SHARP_1 			= 4,
+		CONTACTEUR_SHARP_2 			= 5,
+		CONTACTEUR_RETOURNEMENT 	= 6,
+		CONTACTEUR_SAISIE 			= 7,
+		CONTACTEUR_VENTOUSE 		= 8
 	};
 	
 	/////////////////// SERVOS ///////////////////
 	// Indice des servos
 	enum ServosCarte1 {
-		SERVO_GRIFFE_FRUIT 			= 0,
-		SERVO_PANIER_FRUIT 			= 1,
-		SERVO_PINCE_SAISIE 			= 2,
-		SERVO_PINCE_RETOURNEMENT 	= 3,
-		SERVO_1_NBR 				= 4
+		CARTE1_GRIFFE_FRUIT 		= 0,
+		CARTE1_PANIER_FRUIT 		= 1,
+		CARTE1_PINCE_SAISIE 		= 2,
+		CARTE1_PINCE_RETOURNEMENT 	= 3,
+		CARTE1_1_NBR 				= 4
 	};
 	
 	enum ServosCarte2 {
-		SERVO_T_VENTOUSE	= 0,
-		SERVO_SERPE_BAS 	= 1,
-		SERVO_VIDE_FEU		= 2,
-		SERVO_2_NBR 		= 3
+		CARTE1_T_VENTOUSE	= 0,
+		CARTE1_SERPE_BAS 	= 1,
+		CARTE1_VIDE_FEU		= 2,
+		CARTE1_2_NBR 		= 3
+	};
+
+	enum Servos {
+		SERVO_GRIFFE_FRUIT = 0,
+		SERVO_PANIER_FRUIT,
+		SERVO_PINCE_SAISIE,
+		SERVO_PINCE_RETOURNEMENT,
+		SERVO_T_VENTOUSE,
+		SERVO_SERPE_BAS,
+		SERVO_VIDE_FEU,
+		SERVO_NBR
 	};
 
 	// Position des servos
@@ -94,8 +105,8 @@ namespace ConstantesToumai2014 {
 	};
 
 	enum PositionTVentouse{
-		POSITION_T_VENTOUSE_OUT = 0,
-		POSITION_T_VENTOUSE_IN,
+		POSITION_T_VENTOUSE_IN = 0,
+		POSITION_T_VENTOUSE_OUT,
 		POSITION_T_VENTOUSE_NBR
 	};
 
@@ -125,10 +136,12 @@ namespace ConstantesToumai2014 {
 	/////////////////// MOTEURS ///////////////////
 	// Position des moteurs
 	enum PositionsAsc {
-		ASC_HAUT = 0,
-		ASC_MILIEU,
-		ASC_MAGIC,
-		ASC_BAS,
+		ASC_FOYER_1 = 0,
+		ASC_FOYER_2,
+		ASC_FOYER_3,
+		ASC_FEU_SOL,
+		ASC_BASCULE_FEU,
+		ASC_PINCE,
 		NBR_POSITIONS_ASC
 	};
 	
@@ -141,11 +154,10 @@ namespace ConstantesToumai2014 {
 			//ID_CARTE_CAN_USB = 0,
 			PREMIER_ID_CARTE 						= 0,
 			ID_CARTE_DEPLACEMENT 					= PREMIER_ID_CARTE,
-			ID_CARTE_ASSERVISSEMENT_ASCENSEUR_GAUCHE= 3,
-			ID_CARTE_ASSERVISSEMENT_ASCENSEUR_DROIT = 2,
-			ID_CARTE_SERVOS_ASCENSEUR 				= 4,
-			ID_CARTE_SERVOS_BRAS 					= 5,
-			ID_CARTE_CONTACTEURS_ASC 				= 6,
+			ID_CARTE_ASSERVISSEMENT_ASCENSEUR		= 3,
+			ID_CARTE_SERVOS_1 						= 4,
+			ID_CARTE_SERVOS_2	 					= 5,
+			ID_CARTE_CONTACTEURS	 				= 6,
 			ID_CARTE_IHM 							= 7,
 			ID_CARTE_EVITEMENT 						= 8,
 			ID_CARTE_PNEUMATIQUE 					= 9,
@@ -169,11 +181,7 @@ namespace ConstantesToumai2014 {
 		static constexpr char const *name = "Carte déplacement";
 	};
 	template<>
-	struct CarteToumai<ID_CARTE_ASSERVISSEMENT_ASCENSEUR_DROIT> {
-		typedef CarteAsservissement2009 type;
-	};
-	template<>
-	struct CarteToumai<ID_CARTE_ASSERVISSEMENT_ASCENSEUR_GAUCHE> {
+	struct CarteToumai<ID_CARTE_ASSERVISSEMENT_ASCENSEUR> {
 		typedef CarteAsservissement2009 type;
 	};
 	template<>
@@ -185,15 +193,15 @@ namespace ConstantesToumai2014 {
 		typedef CarteIHM type;
 	};
 	template<>
-	struct CarteToumai<ID_CARTE_CONTACTEURS_ASC> {
+	struct CarteToumai<ID_CARTE_CONTACTEURS> {
 		typedef CarteContacteurs2007 type;
 	};
 	template<>
-	struct CarteToumai<ID_CARTE_SERVOS_ASCENSEUR> {
+	struct CarteToumai<ID_CARTE_SERVOS_1> {
 		typedef CarteServosNova2009 type;
 	};
 	template<>
-	struct CarteToumai<ID_CARTE_SERVOS_BRAS> {
+	struct CarteToumai<ID_CARTE_SERVOS_2> {
 		typedef CarteServosNova2009 type;
 	};
 	template<>
