@@ -106,10 +106,10 @@ namespace ConstantesToumai2014 {
 
 	enum PositionTVentouse{
 		POSITION_T_VENTOUSE_IN = 0,
+		POSITION_T_VENTOUSE_MID,
 		POSITION_T_VENTOUSE_OUT,
 		POSITION_T_VENTOUSE_NBR
 	};
-
 
 	enum PositionSerpeBas {
 		POSITION_SERPE_BAS_RENTRE = 0,
