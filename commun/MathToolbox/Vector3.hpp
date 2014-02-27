@@ -22,6 +22,11 @@ Vector3<T>::Vector3(const T_scalar& s) : x(s), y(s), z(s) {
 }
 
 template <class T>
+template <class T_scalar>
+Vector3<T>::Vector3(T_scalar const *s) : x(s[0]), y(s[1]), z(s[2]) {
+}
+
+template <class T>
 Vector3<T>::Vector3(const Vector3<T>& ref) : x(ref.x), y(ref.y), z(ref.z) {
 	
 }

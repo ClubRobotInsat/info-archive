@@ -14,6 +14,9 @@
 #include <string>
 #include <map>
 
+#define LOG_NOINFO
+#define LOG_NOSUCCESS
+
 #ifdef LOG_USE_GLEW
 #include <GL/glew.h>
 #endif
@@ -43,8 +46,18 @@ inline void logDebug9(...) {}
 
 #else // if ENABLE_LOGGING is enabled :
 
+#ifndef LOG_NOINFO
 #define logInfo(...) Log::write(LOG_INFO, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__)
+#else
+#define logInfo(...)
+#endif
+
+#ifndef LOG_NOSUCCESS
 #define logSuccess(...) Log::write(LOG_SUCCESS, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__)
+#else
+#define logSuccess(...)
+#endif
+
 #define logFailed(...) Log::write(LOG_FAILED, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__)
 #define logWarn(...) Log::write(LOG_WARN, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__)
 #define logError(...) Log::write(LOG_ERROR, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__)

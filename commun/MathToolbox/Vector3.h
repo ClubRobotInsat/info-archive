@@ -32,6 +32,9 @@ public:
 	template <class T_scalar>
 	Vector3(const T_scalar& s); // à partir d'un seul scalaire
 	
+	template <class T_scalar>
+	Vector3(T_scalar const *s); // à partir d'un vecteur
+
 	Vector3(const Vector3<T>& ref); // de copie 1
 	
 	template <class T_2>
