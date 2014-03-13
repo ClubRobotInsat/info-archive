@@ -54,7 +54,7 @@ namespace ConstantesLucy2014 {
 	//Index des positions dans le tableau
 	enum PositionServos {
 		SERVO_LUCY_RENTRE = 0,
-		SERVO_LUCY_SORTIE,
+		SERVO_LUCY_SORTI,
 		SERVO_LUCY_NBR
 	};
 	
