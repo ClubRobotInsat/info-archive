@@ -24,6 +24,7 @@
 #include "../../../robot/Cartes/CarteDebugDessin.h"
 #include "../../../robot/Cartes/CartePneumatique.h"
 #include "../../../robot/Cartes/CarteDetectAdv2009.h"
+#include "../../../robot/Cartes/CarteIO2014.h"
 
 #endif
 
@@ -76,7 +77,8 @@ namespace ConstantesLucy2014 {
 			ID_CARTE_EVITEMENT 			= 8,
 			ID_CARTE_DEBUG_DESSIN 		= 6,
 			ID_CARTE_IHM 				= 7,
-			ID_CARTE_POMPE 				= 9
+			ID_CARTE_POMPE 				= 9,
+			ID_CARTE_IO					=10
 		};
 	}
 	using namespace IDCartesLucy2014;
@@ -120,7 +122,10 @@ namespace ConstantesLucy2014 {
 	struct CarteLucy<ID_CARTE_DEBUG_DESSIN> {
 		typedef CarteDebugDessin type;
 	};
-	
+	template<>
+	struct CarteLucy<ID_CARTE_IO> {
+		typedef CarteIO2014 type;
+	};
 }
 
 #endif
