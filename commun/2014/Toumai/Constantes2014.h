@@ -150,7 +150,7 @@ namespace ConstantesToumai2014 {
 	namespace IDCartesToumai2014 {
 		enum {
 			//ID_CARTE_CAN_USB = 0,
-			PREMIER_ID_CARTE 						= 0,
+			PREMIER_ID_CARTE 						= 1,
 			ID_CARTE_DEPLACEMENT 					= PREMIER_ID_CARTE,
 			ID_CARTE_ASSERVISSEMENT_ASCENSEUR		= 3,
 			ID_CARTE_SERVOS_1 						= 4,
