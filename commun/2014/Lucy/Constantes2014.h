@@ -122,10 +122,12 @@ namespace ConstantesLucy2014 {
 	struct CarteLucy<ID_CARTE_DEBUG_DESSIN> {
 		typedef CarteDebugDessin type;
 	};
+#ifndef TARGET_SIMULATEUR
 	template<>
 	struct CarteLucy<ID_CARTE_IO> {
 		typedef CarteIO2014 type;
 	};
+#endif
 }
 
 #endif
