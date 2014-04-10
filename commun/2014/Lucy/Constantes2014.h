@@ -46,9 +46,9 @@ namespace ConstantesLucy2014 {
 	
 	//ID des servos
 	enum Servos {
-		SERVO_CATAPULTE 	= 0,
-		SERVO_LANCE_G 		= 1,
-		SERVO_LANCE_D 		= 2,
+		SERVO_CATAPULTE 	= 1,
+		SERVO_LANCE_G 		= 2,
+		SERVO_LANCE_D 		= 0,
 		SERVO_NBR
 	};
 	

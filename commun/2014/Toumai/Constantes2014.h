@@ -49,20 +49,21 @@ namespace ConstantesToumai2014 {
 	/////////////////// SERVOS ///////////////////
 	// Indice des servos
 	enum ServosCarte1 {
-		CARTE1_GRIFFE_FRUIT 		= 0,
-		CARTE1_PANIER_FRUIT 		= 1,
-		CARTE1_PINCE_SAISIE 		= 2,
-		CARTE1_PINCE_RETOURNEMENT 	= 3,
-		CARTE1_1_NBR 				= 4
+		CARTE1_GRIFFE_FRUIT 		= 1,
+		CARTE1_PANIER_FRUIT 		= 2,
+		CARTE1_PINCE_SAISIE 		= 3,
+		CARTE1_PINCE_RETOURNEMENT 	= 0,
+		CARTE1_NBR 					= 4
 	};
 	
 	enum ServosCarte2 {
-		CARTE1_T_VENTOUSE	= 0,
-		CARTE1_SERPE_BAS 	= 1,
-		CARTE1_VIDE_FEU		= 2,
-		CARTE1_2_NBR 		= 3
+		CARTE2_T_VENTOUSE	= 2,
+		CARTE2_SERPE_BAS 	= 1,
+		CARTE2_VIDE_FEU		= 0,
+		CARTE2_NBR 			= 3
 	};
 
+	// TODO : corriger les types de servos dans les fonctions
 	enum Servos {
 		SERVO_GRIFFE_FRUIT = 0,
 		SERVO_PANIER_FRUIT,
@@ -76,9 +77,9 @@ namespace ConstantesToumai2014 {
 
 	// Position des servos
 	enum PositionGriffeFruit {
-		POSITION_GRIFFE_HORIZ = 0,
-		POSITION_GRIFFE_RANGE,
-		POSITION_GRIFFE_SAISIE,
+		POSITION_GRIFFE_INTERMEDIAIRE = 0,
+		POSITION_GRIFFE_FERME,
+		POSITION_GRIFFE_OUVERT,
 		POSITION_GRIFFE_NBR
 	};
 	
