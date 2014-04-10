@@ -11,9 +11,6 @@
 #include "../log/Log.h"
 #endif
 
-TGALoader::TGALoader() : _data(), _width(0), _height(0), _bpp(0) {
-}
-
 TGALoader::TGALoader(const TGALoader& ref) : _width(ref._width), _height(ref._height), _bpp(ref._bpp) {
 	if(ref._data) {
 		_data.reset(new unsigned char[_width*_height*_bpp]);
@@ -21,15 +18,11 @@ TGALoader::TGALoader(const TGALoader& ref) : _width(ref._width), _height(ref._he
 	}
 }
 
-TGALoader::TGALoader(std::string const &path, TGAErrorCode* error) : _data(), _width(0), _height(0), _bpp(0) {
+TGALoader::TGALoader(std::string const &path, TGAErrorCode* error) {
 	if(!error)
 		loadFile(path);
 	else
 		*error = loadFile(path);
-}
-
-TGALoader::~TGALoader() {
-	
 }
 
 TGAErrorCode TGALoader::loadFile(std::string const &path) {

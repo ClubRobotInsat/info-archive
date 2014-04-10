@@ -58,10 +58,10 @@ enum TGAFiltering {
 
 class TGALoader {
 public:
-	TGALoader();
+	TGALoader() = default;
 	TGALoader(const TGALoader& ref);
 	TGALoader(std::string const &path, TGAErrorCode* error=nullptr);
-	virtual ~TGALoader();
+	virtual ~TGALoader() = default;
 	TGAErrorCode loadFile(std::string const &path);
 	TGAErrorCode loadFromData(unsigned char const *data);
 	
@@ -93,9 +93,8 @@ public:
 	
 private:
 	std::unique_ptr<unsigned char[]> _data;
-	unsigned int _width, _height;
-	unsigned int _bpp; // Bytes Per Pixel : 0, 3 or 4
-	
+	unsigned int _width = 0, _height = 0;
+	unsigned int _bpp = 0; // Bytes Per Pixel : 0, 3 or 4
 };
 
 // Overloading << for printing error codes using iostream
