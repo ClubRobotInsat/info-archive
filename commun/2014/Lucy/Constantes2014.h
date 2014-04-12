@@ -3,6 +3,7 @@
 #ifndef CONSTANTES_LUCY_2014_H
 #define CONSTANTES_LUCY_2014_H
 
+
 #ifdef TARGET_SIMULATEUR
 
 #include "../../../simulateur/simulateur/Robot/Carte.h"
@@ -76,7 +77,7 @@ namespace ConstantesLucy2014 {
 			ID_CARTE_SERVOS 			= 4,
 			ID_CARTE_EVITEMENT 			= 8,
 			ID_CARTE_DEBUG_DESSIN 		= 6,
-			ID_CARTE_IHM 				= 7,
+			//ID_CARTE_IHM 				= 7,
 			ID_CARTE_POMPE 				= 9,
 			ID_CARTE_IO					=10
 		};
@@ -103,10 +104,10 @@ namespace ConstantesLucy2014 {
 	struct CarteLucy<ID_CARTE_EVITEMENT> {
 		typedef CarteDetectAdv2009 type;
 	};
-	template<>
-	struct CarteLucy<ID_CARTE_IHM> {
-		typedef CarteIHM type;
-	};
+//	template<>
+//	struct CarteLucy<ID_CARTE_IHM> {
+//		typedef CarteIHM type;
+//	};
 	template<>
 	struct CarteLucy<ID_CARTE_CONTACTEURS> {
 		typedef CarteContacteurs2007 type;
