@@ -7,6 +7,8 @@
 
 namespace Constantes2014 {
 	enum CouleurRobot {
+		//Valeur d'initialisation, qui permet de déctecter si la lecture du capteur couleur a déconné.
+		COULEUR_ROBOT_UNDEF = 2,
 		COULEUR_ROBOT_ROUGE = 1,
 		COULEUR_ROBOT_JAUNE = 0
 	};
@@ -19,6 +21,9 @@ namespace Constantes2014 {
 				break;
 			case COULEUR_ROBOT_JAUNE:
 				os << "bleu";
+				break;
+			case COULEUR_ROBOT_UNDEF:
+				os << "non initialise";
 				break;
 		}
 		

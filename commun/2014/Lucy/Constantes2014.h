@@ -37,7 +37,9 @@ namespace ConstantesLucy2014 {
 	
 	enum NumContacteurs {
 		CONTACTEUR_TIRETTE = 1,
-		CONTACTEUR_COULEUR = 0,
+		CONTACTEUR_COULEUR = 2,
+		CONTACTEUR_FRESQUE_GAUCHE = 4,
+		CONTACTEUR_FRESQUE_DROITE = 6
 	};
 	
 	
@@ -73,13 +75,13 @@ namespace ConstantesLucy2014 {
 		enum {
 			ID_CARTE_CAN_USB 			= 0,
 			ID_CARTE_DEPLACEMENT 		= 1,
-			ID_CARTE_CONTACTEURS 		= 3,
+			//ID_CARTE_CONTACTEURS 		= 3,
 			ID_CARTE_SERVOS 			= 4,
 			ID_CARTE_EVITEMENT 			= 8,
 			ID_CARTE_DEBUG_DESSIN 		= 6,
 			//ID_CARTE_IHM 				= 7,
-			ID_CARTE_POMPE 				= 9,
-			ID_CARTE_IO					=10
+			//ID_CARTE_POMPE 				= 9,
+			ID_CARTE_IO					=3
 		};
 	}
 	using namespace IDCartesLucy2014;
@@ -107,18 +109,18 @@ namespace ConstantesLucy2014 {
 //	template<>
 //	struct CarteLucy<ID_CARTE_IHM> {
 //		typedef CarteIHM type;
+////	};
+//	template<>
+//	struct CarteLucy<ID_CARTE_CONTACTEURS> {
+//		typedef CarteContacteurs2007 type;
 //	};
-	template<>
-	struct CarteLucy<ID_CARTE_CONTACTEURS> {
-		typedef CarteContacteurs2007 type;
-	};
-	template<>
-	struct CarteLucy<ID_CARTE_POMPE> {
-#ifdef TARGET_SIMULATEUR
-		typedef CartePneumatique2013 CartePneumatique;
-#endif
-		typedef CartePneumatique type;
-	};
+//	template<>
+//	struct CarteLucy<ID_CARTE_POMPE> {
+//#ifdef TARGET_SIMULATEUR
+//		typedef CartePneumatique2013 CartePneumatique;
+//#endif
+//		typedef CartePneumatique type;
+//	};
 	template<>
 	struct CarteLucy<ID_CARTE_DEBUG_DESSIN> {
 		typedef CarteDebugDessin type;
