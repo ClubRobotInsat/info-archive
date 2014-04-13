@@ -27,6 +27,7 @@
 #include "../../../robot/Cartes/CarteDebugDessin.h"
 #include "../../../robot/Cartes/CartePneumatique.h"
 #include "../../../robot/Cartes/CarteDetectAdv2009.h"
+#include "../../../robot/Cartes/CartePneumatique2014.h"
 
 #endif
 
@@ -61,18 +62,6 @@ namespace ConstantesToumai2014 {
 		CARTE2_SERPE_BAS 	= 1,
 		CARTE2_VIDE_FEU		= 0,
 		CARTE2_NBR 			= 3
-	};
-
-	// TODO : corriger les types de servos dans les fonctions
-	enum Servos {
-		SERVO_GRIFFE_FRUIT = 0,
-		SERVO_PANIER_FRUIT,
-		SERVO_PINCE_SAISIE,
-		SERVO_PINCE_RETOURNEMENT,
-		SERVO_T_VENTOUSE,
-		SERVO_SERPE_BAS,
-		SERVO_VIDE_FEU,
-		SERVO_NBR
 	};
 
 	// Position des servos
@@ -153,14 +142,14 @@ namespace ConstantesToumai2014 {
 			//ID_CARTE_CAN_USB = 0,
 			PREMIER_ID_CARTE 						= 1,
 			ID_CARTE_DEPLACEMENT 					= PREMIER_ID_CARTE,
-			ID_CARTE_ASSERVISSEMENT_ASCENSEUR		= 3,
+			ID_CARTE_ASSERVISSEMENT_ASCENSEUR		= 2,
 			ID_CARTE_SERVOS_1 						= 4,
 			ID_CARTE_SERVOS_2	 					= 5,
 			ID_CARTE_CONTACTEURS	 				= 6,
 			ID_CARTE_IHM 							= 7,
 			ID_CARTE_EVITEMENT 						= 8,
 			ID_CARTE_PNEUMATIQUE 					= 9,
-			ID_CARTE_DEBUG_DESSIN 					= 10,
+//			ID_CARTE_DEBUG_DESSIN 					= 10,
 			DERNIER_ID_CARTE
 			//ID_CARTE_DEBUG = 11
 		};
@@ -206,14 +195,15 @@ namespace ConstantesToumai2014 {
 	template<>
 	struct CarteToumai<ID_CARTE_PNEUMATIQUE> {
 #ifdef TARGET_SIMULATEUR
+		// TODO : fixme : changed to 2014, no pb?
 		typedef CartePneumatique2013 CartePneumatique;
 #endif
-		typedef CartePneumatique type;
+		typedef CartePneumatique2014 type;
 	};
-	template<>
-	struct CarteToumai<ID_CARTE_DEBUG_DESSIN> {
-		typedef CarteDebugDessin type;
-	};
+//	template<>
+//	struct CarteToumai<ID_CARTE_DEBUG_DESSIN> {
+//		typedef CarteDebugDessin type;
+//	};
 }
 #endif
 

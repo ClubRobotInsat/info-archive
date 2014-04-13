@@ -8,10 +8,10 @@ namespace ConstantesToumai2014 {
 	// TODO : tester la position de transport
 	const int positionPanierFruit[POSITION_PANIER_NBR] 			= {1570, 2400, 1350, 1700};
 
-	const int positionPinceSaisie[POSITION_PINCE_S_NBR] 		= {1300, 1690};
-	const int positionPinceRetournement[POSITION_PINCE_R_NBR] 	= {600, 2400};
+	const int positionPinceSaisie[POSITION_PINCE_S_NBR] 		= {1300, 1710/*1690*/};
+	const int positionPinceRetournement[POSITION_PINCE_R_NBR] 	= {600, 2490};
 	const int positionTVentouse[POSITION_T_VENTOUSE_NBR] 		= {840, 1460, 2350};
-	const int positionSerpeBas[POSITION_SERPE_BAS_NBR] 			= {1950, 1460, 600};
+	const int positionSerpeBas[POSITION_SERPE_BAS_NBR] 			= {1950, 1730, 600};
 	const int positionVideFeu[POSITION_VIDE_FEU_NBR] 			= {1990, 1340};
 
 	// Moteurs

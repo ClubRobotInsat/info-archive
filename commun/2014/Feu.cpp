@@ -26,5 +26,4 @@ Constantes2014::CouleurRobot const Feu::changeColor(Constantes2014::CouleurRobot
 		return Constantes2014::CouleurRobot::COULEUR_ROBOT_ROUGE;
 	else
 		return Constantes2014::CouleurRobot::COULEUR_ROBOT_JAUNE;
-
 }
