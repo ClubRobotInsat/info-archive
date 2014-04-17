@@ -81,7 +81,7 @@ namespace ConstantesLucy2014 {
 			ID_CARTE_DEBUG_DESSIN 		= 6,
 			//ID_CARTE_IHM 				= 7,
 			//ID_CARTE_POMPE 				= 9,
-			ID_CARTE_IO					=3
+			ID_CARTE_IO					= 3
 		};
 	}
 	using namespace IDCartesLucy2014;
