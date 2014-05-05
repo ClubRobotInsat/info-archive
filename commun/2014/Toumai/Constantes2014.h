@@ -15,6 +15,8 @@
 #include "../../../simulateur/cartes/CarteDebugDessin.h"
 #include "../../../simulateur/cartes/CartePneumatique2013.h"
 #include "../../../simulateur/cartes/CarteDetectAdv2009.h"
+#include "../../../robot/Cartes/CarteIO2014.h"
+
 
 #else
 
@@ -28,6 +30,7 @@
 #include "../../../robot/Cartes/CartePneumatique.h"
 #include "../../../robot/Cartes/CarteDetectAdv2009.h"
 #include "../../../robot/Cartes/CartePneumatique2014.h"
+#include "../../../robot/Cartes/CarteIO2014.h"
 
 #endif
 
@@ -182,7 +185,7 @@ namespace ConstantesToumai2014 {
 	};
 	template<>
 	struct CarteToumai<ID_CARTE_CONTACTEURS> {
-		typedef CarteContacteurs2007 type;
+		typedef CarteIO2014 type;
 	};
 	template<>
 	struct CarteToumai<ID_CARTE_SERVOS_1> {
