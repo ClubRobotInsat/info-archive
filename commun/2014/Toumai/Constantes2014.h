@@ -39,12 +39,15 @@ namespace ConstantesToumai2014 {
 	/////////////////// CONTACTEURS ///////////////////
 	// Numeros des contacteurs et les roles associes
 	enum NumContacteur {
-		CONTACTEUR_CHOIX_EQUIPE 	= 0,
-		CONTACTEUR_TIRETTE 			= 1,
-		CONTACTEUR_SERPE 			= 2,
-		CONTACTEUR_TRIANGLE_SOL 	= 3,
-		CONTACTEUR_SHARP_1 			= 4,
-		CONTACTEUR_SHARP_2 			= 5,
+		//todo definir en fonction du code élec
+		//choix équipe : bon numéro
+		CONTACTEUR_CHOIX_EQUIPE 	= 2,
+		CONTACTEUR_TIRETTE 			= 10,
+		CONTACTEUR_SERPE 			= 3,
+		//triangle sol : bon numéro
+		CONTACTEUR_TRIANGLE_SOL 	= 4,
+		CONTACTEUR_SHARP_1 			= 5,
+		CONTACTEUR_SHARP_2 			= 1,
 		CONTACTEUR_RETOURNEMENT 	= 6,
 		CONTACTEUR_SAISIE 			= 7,
 		CONTACTEUR_VENTOUSE 		= 8
@@ -115,6 +118,11 @@ namespace ConstantesToumai2014 {
 		POSITION_VIDE_FEU_NBR
 	};
 
+	enum PositionsMaxAscenseur {
+		ASC_MAX_HAUT = 0,
+		ASC_MAX_BAS
+	};
+
 	// Déclaration des positions
 	extern const int positionGriffeFruit[POSITION_GRIFFE_NBR];
 	extern const int positionPanierFruit[POSITION_PANIER_NBR];
@@ -132,6 +140,8 @@ namespace ConstantesToumai2014 {
 		ASC_FOYER_3,
 		ASC_FEU_SOL,
 		ASC_BASCULE_FEU,
+		// position utile pour le passage de feu en amenuisant les frottements
+		ASC_PINCE_MIN,
 		ASC_PINCE,
 		NBR_POSITIONS_ASC
 	};
