@@ -37,9 +37,9 @@ namespace ConstantesLucy2014 {
 	
 	enum NumContacteurs {
 		CONTACTEUR_TIRETTE = 1,
-		CONTACTEUR_COULEUR = 2,
-		CONTACTEUR_FRESQUE_GAUCHE = 4,
-		CONTACTEUR_FRESQUE_DROITE = 6
+		CONTACTEUR_COULEUR = 3,
+		CONTACTEUR_FRESQUE_GAUCHE = 6,
+		CONTACTEUR_FRESQUE_DROITE = 5
 	};
 	
 	
@@ -78,10 +78,10 @@ namespace ConstantesLucy2014 {
 			//ID_CARTE_CONTACTEURS 		= 3,
 			ID_CARTE_SERVOS 			= 4,
 			ID_CARTE_EVITEMENT 			= 8,
-			ID_CARTE_DEBUG_DESSIN 		= 6,
+			ID_CARTE_DEBUG_DESSIN 		= 3,
 			//ID_CARTE_IHM 				= 7,
-			//ID_CARTE_POMPE 				= 9,
-			ID_CARTE_IO					= 3
+			//ID_CARTE_POMPE 			= 9,
+			ID_CARTE_IO					= 6
 		};
 	}
 	using namespace IDCartesLucy2014;
