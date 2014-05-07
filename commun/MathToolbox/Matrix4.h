@@ -186,6 +186,8 @@ public:
 		Result[9] = c3.y;
 		Result[10] = c3.z;
 		
+		Result[15] = 1;
+
 		return Result;
 	}
 };

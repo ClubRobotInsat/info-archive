@@ -100,7 +100,7 @@ public:
 	// Produit scalaire
 	inline T operator*(const Vector3<T>& v) const;
 	
-	// Normalisation + renvoi de la valeur de la norme
+	// Normalisation
 	inline void normalize();
 	
 	// Calcul de la norme

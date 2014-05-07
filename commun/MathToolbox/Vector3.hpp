@@ -171,7 +171,7 @@ T Vector3<T>::operator*(const Vector3<T>& v) const {
 	return this->x * v.x + this->y * v.y + this->z * v.z;
 }
 
-// Normalisation + renvoi de la valeur de la norme
+// Normalisation
 template <class T>
 void Vector3<T>::normalize() {
 	double norm = sqrtf(x*x + y*y + z*z);

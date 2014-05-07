@@ -14,8 +14,8 @@
 #include <string>
 #include <map>
 
-#define LOG_NOINFO
-#define LOG_NOSUCCESS
+//#define LOG_NOINFO
+//#define LOG_NOSUCCESS
 
 #ifdef LOG_USE_GLEW
 #include <GL/glew.h>

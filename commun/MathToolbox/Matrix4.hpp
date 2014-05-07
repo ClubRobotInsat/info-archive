@@ -459,7 +459,7 @@ std::ostream& operator<<(std::ostream& os, const Matrix4<T>& mat) {
 	Vector4<T> r3 = mat.getRow(2);
 	Vector4<T> r4 = mat.getRow(3);
 	
-	os << r1 << std::endl << r2 << std::endl << r3 << std::endl << r4 << std::endl;
+	os << r1 << '\n' << r2 << '\n' << r3 << '\n' << r4;
 	
 	return os;
 }

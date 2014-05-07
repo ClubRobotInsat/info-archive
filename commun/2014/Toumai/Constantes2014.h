@@ -9,13 +9,13 @@
 #include "../../../simulateur/simulateur/Robot/Carte.h"
 #include "../../../simulateur/cartes/CarteDeplacement2009.h"
 #include "../../../simulateur/cartes/CarteContacteurs2007.h"
-#include "../../../simulateur/cartes/CarteIHM.h"
 #include "../../../simulateur/cartes/CarteServosNova2009.h"
 #include "../../../simulateur/cartes/CarteAsservissement2009.h"
 #include "../../../simulateur/cartes/CarteDebugDessin.h"
 #include "../../../simulateur/cartes/CartePneumatique2013.h"
 #include "../../../simulateur/cartes/CarteDetectAdv2009.h"
-#include "../../../robot/Cartes/CarteIO2014.h"
+#include "../../../simulateur/Cartes/CartePneumatique2014.h"
+#include "../../../simulateur/Cartes/CarteIO2014.h"
 
 
 #else
@@ -23,7 +23,6 @@
 #include "../../../robot/Robot/Carte.h"
 #include "../../../robot/Cartes/CarteDeplacement2009.h"
 #include "../../../robot/Cartes/CarteContacteurs2007.h"
-#include "../../../robot/Cartes/CarteIHM.h"
 #include "../../../robot/Cartes/CarteServosNova2009.h"
 #include "../../../robot/Cartes/CarteAsservissement2009.h"
 #include "../../../robot/Cartes/CarteDebugDessin.h"
@@ -158,8 +157,7 @@ namespace ConstantesToumai2014 {
 			ID_CARTE_ASSERVISSEMENT_ASCENSEUR		= 2,
 			ID_CARTE_SERVOS_1 						= 4,
 			ID_CARTE_SERVOS_2	 					= 5,
-			ID_CARTE_CONTACTEURS	 				= 6,
-			ID_CARTE_IHM 							= 7,
+			ID_CARTE_IO 				= 6,
 			ID_CARTE_EVITEMENT 						= 8,
 			ID_CARTE_PNEUMATIQUE 					= 9,
 //			ID_CARTE_DEBUG_DESSIN 					= 10,
@@ -190,11 +188,7 @@ namespace ConstantesToumai2014 {
 		typedef CarteDetectAdv2009 type;
 	};
 	template<>
-	struct CarteToumai<ID_CARTE_IHM> {
-		typedef CarteIHM type;
-	};
-	template<>
-	struct CarteToumai<ID_CARTE_CONTACTEURS> {
+	struct CarteToumai<ID_CARTE_IO> {
 		typedef CarteIO2014 type;
 	};
 	template<>
@@ -207,10 +201,6 @@ namespace ConstantesToumai2014 {
 	};
 	template<>
 	struct CarteToumai<ID_CARTE_PNEUMATIQUE> {
-#ifdef TARGET_SIMULATEUR
-		// TODO : fixme : changed to 2014, no pb?
-		typedef CartePneumatique2013 CartePneumatique;
-#endif
 		typedef CartePneumatique2014 type;
 	};
 //	template<>

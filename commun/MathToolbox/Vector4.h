@@ -127,7 +127,7 @@ inline T dot(const Vector4<T>& v1, const Vector4<T>& v2) {
 // Affichage avec iostream
 template <class T>
 inline std::ostream& operator<<(std::ostream& os, const Vector4<T>& v) {
-	os << "[" << (int)v.x << ", " << (int)v.y << ", " << (int)v.z << ", " << (int)v.w << "]";
+	os << "[" << v.x << ", " << v.y << ", " << v.z << ", " << v.w << "]";
 	return os;
 }
 

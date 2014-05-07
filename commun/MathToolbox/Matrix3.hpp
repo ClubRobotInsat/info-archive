@@ -331,7 +331,7 @@ std::ostream& operator<<(std::ostream& os, const Matrix3<T>& mat) {
 	Vector3<T> r2 = mat.getRow(1);
 	Vector3<T> r3 = mat.getRow(2);
 	
-	os << r1 << std::endl << r2 << std::endl << r3 << std::endl;
+	os << r1 << '\n' << r2 << '\n' << r3;
 	
 	return os;
 }
