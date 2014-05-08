@@ -14,8 +14,8 @@
 #include "../../../simulateur/cartes/CarteDebugDessin.h"
 #include "../../../simulateur/cartes/CartePneumatique2013.h"
 #include "../../../simulateur/cartes/CarteDetectAdv2009.h"
-#include "../../../simulateur/Cartes/CartePneumatique2014.h"
-#include "../../../simulateur/Cartes/CarteIO2014.h"
+#include "../../../simulateur/cartes/CartePneumatique2014.h"
+#include "../../../simulateur/cartes/CarteIO2014.h"
 
 
 #else
@@ -139,6 +139,7 @@ namespace ConstantesToumai2014 {
 		ASC_FOYER_3,
 		ASC_FEU_SOL,
 		ASC_BASCULE_FEU,
+		ASC_TIRER_TRIANGLE,
 		// position utile pour le passage de feu en amenuisant les frottements
 		ASC_PINCE_MIN,
 		ASC_PINCE,
@@ -157,7 +158,7 @@ namespace ConstantesToumai2014 {
 			ID_CARTE_ASSERVISSEMENT_ASCENSEUR		= 2,
 			ID_CARTE_SERVOS_1 						= 4,
 			ID_CARTE_SERVOS_2	 					= 5,
-			ID_CARTE_IO 				= 6,
+			ID_CARTE_IO 							= 6,
 			ID_CARTE_EVITEMENT 						= 8,
 			ID_CARTE_PNEUMATIQUE 					= 9,
 //			ID_CARTE_DEBUG_DESSIN 					= 10,

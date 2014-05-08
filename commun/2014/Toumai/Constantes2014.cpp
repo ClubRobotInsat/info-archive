@@ -15,6 +15,6 @@ namespace ConstantesToumai2014 {
 	const int positionVideFeu[POSITION_VIDE_FEU_NBR] 			= {1990, 1340};
 
 	// Moteurs
-	const int tableauPositionsAsc[NBR_POSITIONS_ASC] = {13889, 19078, 24661, 30671, 24000, 2000, 0};
+	const int tableauPositionsAsc[NBR_POSITIONS_ASC] = {13889, 19078, 24661, 30671, 24000, 17000, 2000, 0};
 }
 
