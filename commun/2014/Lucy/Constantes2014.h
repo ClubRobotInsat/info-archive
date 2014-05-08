@@ -95,11 +95,13 @@ namespace ConstantesLucy2014 {
 	template<int ID_CARTE>
 	struct CarteLucy {};
 	
+#ifndef TARGET_SIMULATEUR
 	template<>
-	 struct CarteLucy<ID_CARTE_CAN_USB> {
-	 typedef CarteCAN_USB type;
-	 };
-
+	struct CarteLucy<ID_CARTE_CAN_USB> {
+		typedef CarteCAN_USB type;
+	};
+#endif
+	
 	template<>
 	struct CarteLucy<ID_CARTE_DEPLACEMENT> {
 		typedef CarteDeplacement2009 type;
@@ -109,17 +111,17 @@ namespace ConstantesLucy2014 {
 	struct CarteLucy<ID_CARTE_SERVOS> {
 		typedef CarteServosNova2009 type;
 	};
-
+	
 	template<>
 	struct CarteLucy<ID_CARTE_EVITEMENT> {
 		typedef CarteDetectAdv2009 type;
 	};
-
+	
 	template<>
 	struct CarteLucy<ID_CARTE_DEBUG_DESSIN> {
 		typedef CarteDebugDessin type;
 	};
-
+	
 #ifndef TARGET_SIMULATEUR
 	template<>
 	struct CarteLucy<ID_CARTE_IO> {
