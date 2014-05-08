@@ -26,6 +26,7 @@
 #include "../../../robot/Cartes/CartePneumatique.h"
 #include "../../../robot/Cartes/CarteDetectAdv2009.h"
 #include "../../../robot/Cartes/CarteIO2014.h"
+#include "../../../robot/Cartes/CarteCAN_USB.h"
 
 #endif
 
@@ -94,10 +95,11 @@ namespace ConstantesLucy2014 {
 	template<int ID_CARTE>
 	struct CarteLucy {};
 	
-	/*template<>
-	 struct CarteToumai<ID_CARTE_CAN_USB> {
-	 typedef int type;
-	 };*/
+	template<>
+	 struct CarteLucy<ID_CARTE_CAN_USB> {
+	 typedef CarteCAN_USB type;
+	 };
+
 	template<>
 	struct CarteLucy<ID_CARTE_DEPLACEMENT> {
 		typedef CarteDeplacement2009 type;
@@ -107,29 +109,17 @@ namespace ConstantesLucy2014 {
 	struct CarteLucy<ID_CARTE_SERVOS> {
 		typedef CarteServosNova2009 type;
 	};
+
 	template<>
 	struct CarteLucy<ID_CARTE_EVITEMENT> {
 		typedef CarteDetectAdv2009 type;
 	};
-//	template<>
-//	struct CarteLucy<ID_CARTE_IHM> {
-//		typedef CarteIHM type;
-////	};
-//	template<>
-//	struct CarteLucy<ID_CARTE_CONTACTEURS> {
-//		typedef CarteContacteurs2007 type;
-//	};
-//	template<>
-//	struct CarteLucy<ID_CARTE_POMPE> {
-//#ifdef TARGET_SIMULATEUR
-//		typedef CartePneumatique2013 CartePneumatique;
-//#endif
-//		typedef CartePneumatique type;
-//	};
+
 	template<>
 	struct CarteLucy<ID_CARTE_DEBUG_DESSIN> {
 		typedef CarteDebugDessin type;
 	};
+
 #ifndef TARGET_SIMULATEUR
 	template<>
 	struct CarteLucy<ID_CARTE_IO> {
