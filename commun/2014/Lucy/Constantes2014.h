@@ -42,6 +42,11 @@ namespace ConstantesLucy2014 {
 		CONTACTEUR_FRESQUE_DROITE = 5
 	};
 	
+	enum idFresques {
+		FRESQUE_DROITE = 0,
+		FRESQUE_GAUCHE
+	};
+
 	
 	/***********************************/
 	/************ SERVOS ***************/
