@@ -30,6 +30,7 @@
 #include "../../../robot/Cartes/CarteDetectAdv2009.h"
 #include "../../../robot/Cartes/CartePneumatique2014.h"
 #include "../../../robot/Cartes/CarteIO2014.h"
+#include "../../../robot/Cartes/CarteCAN_USB.h"
 
 #endif
 
@@ -152,7 +153,7 @@ namespace ConstantesToumai2014 {
 	/////////////////// CARTES ///////////////////
 	namespace IDCartesToumai2014 {
 		enum {
-			//ID_CARTE_CAN_USB = 0,
+			ID_CARTE_CAN_USB = 0,
 			PREMIER_ID_CARTE 						= 1,
 			ID_CARTE_DEPLACEMENT 					= PREMIER_ID_CARTE,
 			ID_CARTE_ASSERVISSEMENT_ASCENSEUR		= 2,
@@ -175,6 +176,12 @@ namespace ConstantesToumai2014 {
 	 struct CarteToumai<ID_CARTE_CAN_USB> {
 	 typedef int type;
 	 };*/
+
+	template<>
+		struct CarteToumai<ID_CARTE_CAN_USB> {
+			typedef CarteCAN_USB type;
+	};
+
 	template<>
 	struct CarteToumai<ID_CARTE_DEPLACEMENT> {
 		typedef CarteDeplacement2009 type;
