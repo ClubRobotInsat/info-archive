@@ -39,18 +39,17 @@ namespace ConstantesToumai2014 {
 	/////////////////// CONTACTEURS ///////////////////
 	// Numeros des contacteurs et les roles associes
 	enum NumContacteur {
-		//todo definir en fonction du code élec
-		//choix équipe : bon numéro
 		CONTACTEUR_CHOIX_EQUIPE 	= 2,
-		CONTACTEUR_TIRETTE 			= 10,
+		CONTACTEUR_TIRETTE 			= 6,
 		CONTACTEUR_SERPE 			= 3,
-		//triangle sol : bon numéro
 		CONTACTEUR_TRIANGLE_SOL 	= 4,
-		CONTACTEUR_SHARP_1 			= 5,
-		CONTACTEUR_SHARP_2 			= 1,
-		CONTACTEUR_RETOURNEMENT 	= 6,
-		CONTACTEUR_SAISIE 			= 7,
-		CONTACTEUR_VENTOUSE 		= 8
+		CONTACTEUR_SHARP_HAUT		= 7,
+		CONTACTEUR_SHARP_BAS		= 9,
+		CONTACTEUR_RETOURNEMENT 	= 1,
+		CONTACTEUR_SAISIE 			= 5,
+		// Contact à l'inverse ==> si 'true' alors pas de feu
+		CONTACTEUR_VENTOUSE 		= 10,
+		CONTACTEUR_RESERVOIR_FEU	= 11
 	};
 	
 	/////////////////// SERVOS ///////////////////
