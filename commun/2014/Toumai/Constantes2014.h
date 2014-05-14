@@ -171,12 +171,6 @@ namespace ConstantesToumai2014 {
 	template<int ID_CARTE>
 	struct CarteToumai {};
 	
-	/*template<>
-	 struct CarteToumai<ID_CARTE_CAN_USB> {
-	 typedef int type;
-	 };*/
-
-	
 #ifndef TARGET_SIMULATEUR
 	template<>
 		struct CarteToumai<ID_CARTE_CAN_USB> {
