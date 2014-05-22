@@ -13,6 +13,8 @@
 #include <sstream>
 #include <string>
 #include <map>
+#include <mutex>
+#include <thread>
 
 //#define LOG_NOINFO
 //#define LOG_NOSUCCESS
@@ -155,10 +157,12 @@ private:
 	};
 	
 private:
+	static std::mutex _logMutex;
 	static OutputMask output;
 	static bool opened;
 	static std::ostream* p_stream[OUTPUT_COUNT];
 	static std::ofstream file;
+	static std::map<std::thread::id, ThreadInfo> _threadInfos;
 #ifdef LOG_ENABLE_GLFW_THREADS
 	// If we use GLFW's threading support, we manage a table of informations for each thread.
 	static std::map<GLFWthread, ThreadInfo> thread_infos;
@@ -282,9 +286,12 @@ void Log::write( LogType type, const char* file_path, int line, const char* func
 		const T0& arg0, const T1& arg1, const T2& arg2, const T3& arg3, const T4& arg4,
 		const T5& arg5, const T6& arg6, const T7& arg7, const T8& arg8, const T9& arg9, const T10& arg10) {
 	// If the log has not been previously opened, we open it as a color terminal log.
+	std::lock_guard<std::mutex> lock(_logMutex);
+
 	if(!opened)
 		open(TERMINAL);
-	
+
+
 #ifdef LOG_ENABLE_GLFW_THREADS
 	glfwLockMutex(Log::mutex);
 	
@@ -296,7 +303,13 @@ void Log::write( LogType type, const char* file_path, int line, const char* func
 	else
 		current_indent = it->second.indent;
 #endif
-	
+
+	auto it = _threadInfos.find(std::this_thread::get_id());
+	if(it == _threadInfos.end()) // If not found, current indent is 0
+		current_indent = 0;
+	else
+		current_indent = it->second.indent;
+
 	// Get the file's name from its path
 	const char* file_name = getFileNameFromPath(file_path);
 	

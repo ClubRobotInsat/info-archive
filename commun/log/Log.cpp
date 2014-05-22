@@ -31,12 +31,10 @@ bool Log::opened = false;
 std::ostream* Log::p_stream[Log::OUTPUT_COUNT];
 std::ofstream Log::file;
 
-#ifndef LOG_ENABLE_GLFW_THREADS
 int Log::current_indent = 0;
-#else
-std::map<GLFWthread, Log::ThreadInfo> Log::thread_infos;
-GLFWmutex Log::mutex;
-#endif
+std::map<std::thread::id, Log::ThreadInfo> Log::_threadInfos;
+std::mutex Log::_logMutex;
+
 
 void Log::open(OutputMask output, const std::string& filename, bool desync_with_stdio) {
 	if(opened) {
