@@ -84,10 +84,10 @@ namespace ConstantesLucy2014 {
 			//ID_CARTE_CONTACTEURS 		= 3,
 			ID_CARTE_SERVOS 			= 4,
 			ID_CARTE_EVITEMENT 			= 8,
-			ID_CARTE_DEBUG_DESSIN 		= 3,
+			//ID_CARTE_DEBUG_DESSIN 		= 3,
 			//ID_CARTE_IHM 				= 7,
 			//ID_CARTE_POMPE 			= 9,
-			ID_CARTE_IO					= 6
+			ID_CARTE_IO					= 3
 		};
 	}
 	using namespace IDCartesLucy2014;
