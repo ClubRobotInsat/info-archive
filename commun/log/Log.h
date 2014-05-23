@@ -297,7 +297,7 @@ inline void Log::write( LogType type, const char* file_path, int line, const cha
 	if(!opened) {
 		open(TERMINAL);
 		lock.unlock();
-		LogError("Le log n'a pas été ouvert en utilisant les arguments du programme !\n Veuillez insérer a ligne \"Log::writeLog::open(argc, argv, false);\" en début du main.\n\n");
+		std::cerr << ("Le log n'a pas été ouvert en utilisant les arguments du programme !\n Veuillez insérer a ligne \"Log::writeLog::open(argc, argv, false);\" en début du main.\n\n") << std::endl;
 		lock.lock();
 	}
 
