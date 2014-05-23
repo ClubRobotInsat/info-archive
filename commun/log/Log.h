@@ -125,13 +125,13 @@ enum LogType {
 // Terminal :
 void writeTermFormattedString(std::ostream* p_stream, const std::string& str);
 void resetTerm(std::ostream* p_stream);
-void doTermFormatting(std::string* msg, LogType type);
+void doTermFormatting(std::string &msg, LogType type);
 
 // HTML :
-void doHTMLFormatting(std::string* msg, LogType type);
+void doHTMLFormatting(std::string &msg, LogType type);
 
 // RTF :
-void doRTFFormatting(std::string* msg, LogType type);
+void doRTFFormatting(std::string &msg, LogType type);
 
 #endif // ENABLE_LOGGING
 
@@ -158,7 +158,7 @@ private:
 	
 private:
 	static std::mutex _logMutex;
-	static OutputMask output;
+	static OutputMask _output;
 	static bool opened;
 	static std::ostream* p_stream[OUTPUT_COUNT];
 	static std::ofstream file;
@@ -191,76 +191,12 @@ public:
 	}
 #else
 	
-	// "REAL" write()
-	template <class T0, class T1, class T2, class T3, class T4, class T5, class T6, class T7, class T8, class T9, class T10>
-	static void write( LogType type, const char* file_path, int line, const char* function_name,
-			  const T0& arg0, const T1& arg1, const T2& arg2, const T3& arg3, const T4& arg4,
-			  const T5& arg5, const T6& arg6, const T7& arg7, const T8& arg8, const T9& arg9, const T10& arg10);
-	
-	// Wrappers aroud the "real" write()
-	template <class T0>
-	static void write( LogType type, const char* file_path, int line, const char* function_name,
-			  const T0& arg0) {
-		write(type, file_path, line, function_name, arg0, "", "", "", "", "", "", "", "", "", "");
-	}
-	
-	template <class T0, class T1>
-	static void write( LogType type, const char* file_path, int line, const char* function_name,
-			  const T0& arg0, const T1& arg1) {
-		write(type, file_path, line, function_name, arg0, arg1, "", "", "", "", "", "", "", "", "");
-	}
-	
-	template <class T0, class T1, class T2>
-	static void write( LogType type, const char* file_path, int line, const char* function_name,
-			  const T0& arg0, const T1& arg1, const T2& arg2) {
-		write(type, file_path, line, function_name, arg0, arg1, arg2, "", "", "", "", "", "", "", "");
-	}
-	
-	template <class T0, class T1, class T2, class T3>
-	static void write( LogType type, const char* file_path, int line, const char* function_name,
-			  const T0& arg0, const T1& arg1, const T2& arg2, const T3& arg3) {
-		write(type, file_path, line, function_name, arg0, arg1, arg2, arg3, "", "", "", "", "", "", "");
-	}
-	
-	template <class T0, class T1, class T2, class T3, class T4>
-	static void write( LogType type, const char* file_path, int line, const char* function_name,
-			  const T0& arg0, const T1& arg1, const T2& arg2, const T3& arg3, const T4& arg4) {
-		write(type, file_path, line, function_name, arg0, arg1, arg2, arg3, arg4, "", "","", "", "", "");
-	}
-	
-	template <class T0, class T1, class T2, class T3, class T4, class T5>
-	static void write( LogType type, const char* file_path, int line, const char* function_name,
-			  const T0& arg0, const T1& arg1, const T2& arg2, const T3& arg3, const T4& arg4, const T5& arg5) {
-		write(type, file_path, line, function_name, arg0, arg1, arg2, arg3, arg4, arg5, "", "", "", "", "");
-	}
-	
-	template <class T0, class T1, class T2, class T3, class T4, class T5, class T6>
-	static void write( LogType type, const char* file_path, int line, const char* function_name,
-			  const T0& arg0, const T1& arg1, const T2& arg2, const T3& arg3, const T4& arg4, const T5& arg5,
-			  const T6& arg6) {
-		write(type, file_path, line, function_name, arg0, arg1, arg2, arg3, arg4, arg5, arg6, "", "", "", "");
-	}
-	
-	template <class T0, class T1, class T2, class T3, class T4, class T5, class T6, class T7>
-	static void write( LogType type, const char* file_path, int line, const char* function_name,
-			  const T0& arg0, const T1& arg1, const T2& arg2, const T3& arg3, const T4& arg4, const T5& arg5,
-			  const T6& arg6, const T7& arg7) {
-		write(type, file_path, line, function_name, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, "", "", "");
-	}
-	
-	template <class T0, class T1, class T2, class T3, class T4, class T5, class T6, class T7, class T8>
-	static void write( LogType type, const char* file_path, int line, const char* function_name,
-			  const T0& arg0, const T1& arg1, const T2& arg2, const T3& arg3, const T4& arg4, const T5& arg5,
-			  const T6& arg6, const T7& arg7, const T8& arg8) {
-		write(type, file_path, line, function_name, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, "", "");
-	}
-	
-	template <class T0, class T1, class T2, class T3, class T4, class T5, class T6, class T7, class T8, class T9>
-	static void write( LogType type, const char* file_path, int line, const char* function_name,
-			  const T0& arg0, const T1& arg1, const T2& arg2, const T3& arg3, const T4& arg4, const T5& arg5,
-			  const T6& arg6, const T7& arg7, const T8& arg8, const T9& arg9) {
-		write(type, file_path, line, function_name, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, "");
-	}
+	template <typename... Args>
+	static void write( LogType type, const char* file_path, int line, const char* function_name, Args &&... args);
+
+	template <typename T, typename... Args>
+	static void writeInternal( LogType type, int outputIndex, std::stringstream &stream, T &&arg, Args &&... args);
+	static void writeInternal( LogType type, int outputIndex, std::stringstream &stream);
 #endif
 };
 
@@ -271,7 +207,7 @@ struct LogIndent {
 };
 
 // Handy function, wrapper for all doXXXFormatting() ones
-static inline void doFormatting(std::string* msg, LogType type, Log::Output output) {
+static inline void doFormatting(std::string &msg, LogType type, Log::Output output) {
 	if(output == Log::TERMINAL)
 		doTermFormatting(msg, type);
 	else if(output == Log::HTML)
@@ -280,29 +216,90 @@ static inline void doFormatting(std::string* msg, LogType type, Log::Output outp
 		doRTFFormatting(msg, type);
 }
 
+template <typename T, typename... Args>
+inline void Log::writeInternal( LogType type, int outputIndex, std::stringstream &stream, T &&arg, Args &&... args) {
+	stream << arg;
+	Log::writeInternal(type, outputIndex, stream, std::forward<Args>(args)...);
+}
+
+inline void Log::writeInternal( LogType type, int outputIndex, std::stringstream &stream) {
+	stream << std::flush;
+	std::string msg_first_part = stream.str();
+	std::string msg_second_part;
+
+	Output const cur_output = static_cast<Output>(1 << outputIndex);
+	switch(type) {
+		case LOG_INFO:
+			doFormatting(msg_first_part, LOG_INFO, cur_output);
+			break;
+		case LOG_SUCCESS:
+			doFormatting(msg_first_part, LOG_INFO, cur_output);
+
+			msg_second_part = "[OK]";
+			doFormatting(msg_second_part, LOG_SUCCESS, cur_output);
+			break;
+		case LOG_FAILED:
+			doFormatting(msg_first_part, LOG_INFO, cur_output);
+
+			msg_second_part = "[FAILED]";
+			doFormatting(msg_second_part, LOG_FAILED, cur_output);
+			break;
+		case LOG_WARN:
+			doFormatting(msg_first_part, LOG_WARN, cur_output);
+			break;
+		case LOG_ERROR:
+			doFormatting(msg_first_part, LOG_ERROR, cur_output);
+			break;
+
+		default: // LOG_DEBUG_X
+			doFormatting(msg_first_part, type, cur_output);
+			break;
+	}
+
+	// Finally write the message
+	std::string indentation = "";
+	if(cur_output == TERMINAL) {
+		for(int i=0 ; i<current_indent ; i++)
+			indentation += " ";
+		(*p_stream[outputIndex]) << indentation;
+		writeTermFormattedString(p_stream[outputIndex], msg_first_part);
+		writeTermFormattedString(p_stream[outputIndex], msg_second_part);
+
+		resetTerm(p_stream[outputIndex]); // If the terminal was used, reset its colors before the final newline,
+		(*p_stream[outputIndex]) << std::endl;
+	}
+	else if(cur_output == HTML) {
+		char str_nb_pixels[100] = "";
+		sprintf(str_nb_pixels, "%d", current_indent*30);
+
+		indentation = std::string("<span style=\"margin-left:") + std::string(str_nb_pixels) + "px;\">";
+
+		(*p_stream[outputIndex]) << indentation << msg_first_part << msg_second_part << " <br/>" << "</span>" << std::flush;
+	}
+	else if(cur_output == RTF) {
+		for(int i=0 ; i<current_indent ; i++)
+			indentation += "\\tab";
+		(*p_stream[outputIndex]) << indentation << msg_first_part << msg_second_part << "\\par" << std::flush;
+	}
+	else {// TXT or TERMINAL_NO_COLOR
+		for(int i=0 ; i<current_indent ; i++)
+			indentation += " ";
+		(*p_stream[outputIndex]) << indentation << msg_first_part << msg_second_part << std::endl;
+	}
+}
+
 // write() implementation :
-template <class T0, class T1, class T2, class T3, class T4, class T5, class T6, class T7, class T8, class T9, class T10>
-void Log::write( LogType type, const char* file_path, int line, const char* function_name,
-		const T0& arg0, const T1& arg1, const T2& arg2, const T3& arg3, const T4& arg4,
-		const T5& arg5, const T6& arg6, const T7& arg7, const T8& arg8, const T9& arg9, const T10& arg10) {
+template <typename... Args>
+inline void Log::write( LogType type, const char* file_path, int line, const char* function_name, Args &&... args) {
 	// If the log has not been previously opened, we open it as a color terminal log.
-	std::lock_guard<std::mutex> lock(_logMutex);
+	std::unique_lock<std::mutex> lock(_logMutex);
 
-	if(!opened)
+	if(!opened) {
 		open(TERMINAL);
-
-
-#ifdef LOG_ENABLE_GLFW_THREADS
-	glfwLockMutex(Log::mutex);
-	
-	// We look for the current indentation
-	int current_indent;
-	std::map<GLFWthread, ThreadInfo>::iterator it = thread_infos.find(glfwGetThreadID());
-	if(it == thread_infos.end()) // If not found, current indent is 0
-		current_indent = 0;
-	else
-		current_indent = it->second.indent;
-#endif
+		lock.unlock();
+		LogError("Le log n'a pas été ouvert en utilisant les arguments du programme !\n Veuillez insérer a ligne \"Log::writeLog::open(argc, argv, false);\" en début du main.\n\n");
+		lock.lock();
+	}
 
 	auto it = _threadInfos.find(std::this_thread::get_id());
 	if(it == _threadInfos.end()) // If not found, current indent is 0
@@ -314,123 +311,14 @@ void Log::write( LogType type, const char* file_path, int line, const char* func
 	const char* file_name = getFileNameFromPath(file_path);
 	
 	for(int output_index=0 ; output_index < OUTPUT_COUNT ; output_index++) {
-		const Output cur_output = (Output)(1<<output_index);
-		if(!(Log::output & (OutputMask)cur_output))
+		if(!(Log::_output & (OutputMask)(1 << output_index)))
 			continue;
 		
 		std::stringstream ss;
-		std::string msg_first_part = "";
-		std::string msg_second_part = "";
-		
-		// According to the type of message, prepare the formatted strings msg_first_part and msg_second_part which
-		// will be written
-		switch(type) {
-			case LOG_INFO:
-				ss << "[" << file_name << ":" << line << " in " << function_name << "] : "
-				<< arg0 << arg1 << arg2 << arg3 << arg4 << arg5 << arg6 << arg7 << arg8 << arg9 << arg10 << std::flush;
-				msg_first_part = ss.str();
-				doFormatting(&msg_first_part, LOG_INFO, cur_output);
-				break;
-			case LOG_SUCCESS:
-				ss << "[" << file_name << ":" << line << " in " << function_name << "] : "
-				<< arg0 << arg1 << arg2 << arg3 << arg4 << arg5 << arg6 << arg7 << arg8 << arg9 << arg10
-				<< " : " << std::flush;
-				msg_first_part = ss.str();
-				doFormatting(&msg_first_part, LOG_INFO, cur_output);
-				
-				msg_second_part = "[OK]";
-				doFormatting(&msg_second_part, LOG_SUCCESS, cur_output);
-				break;
-			case LOG_FAILED:
-				ss << "[" << file_name << ":" << line << " in " << function_name << "] : "
-				<< arg0 << arg1 << arg2 << arg3 << arg4 << arg5 << arg6 << arg7 << arg8 << arg9 << arg10
-				<< " : " << std::flush;
-				msg_first_part = ss.str();
-				doFormatting(&msg_first_part, LOG_INFO, cur_output);
-				
-				msg_second_part = "[FAILED]";
-				doFormatting(&msg_second_part, LOG_FAILED, cur_output);
-				break;
-			case LOG_WARN:
-				ss << "[" << file_name << ":" << line << " in " << function_name << "] : WARNING : "
-				<< arg0 << arg1 << arg2 << arg3 << arg4 << arg5 << arg6 << arg7 << arg8 << arg9 << arg10 << std::flush;
-				msg_first_part = ss.str();
-				doFormatting(&msg_first_part, LOG_WARN, cur_output);
-				break;
-			case LOG_ERROR:
-				ss << "[" << file_name << ":" << line << " in " << function_name << "] : ERROR : "
-				<< arg0 << arg1 << arg2 << arg3 << arg4 << arg5 << arg6 << arg7 << arg8 << arg9 << arg10 << std::flush;
-				msg_first_part = ss.str();
-				doFormatting(&msg_first_part, LOG_ERROR, cur_output);
-				break;
-				
-			default: // LOG_DEBUG_X
-				ss << "[" << file_name << ":" << line << " in " << function_name << "] : DEBUG "
-				<< int(type) - int(LOG_DEBUG_0) << " : "
-				<< arg0 << arg1 << arg2 << arg3 << arg4 << arg5 << arg6 << arg7 << arg8 << arg9 << arg10 << std::flush;
-				msg_first_part = ss.str();
-				doFormatting(&msg_first_part, type, cur_output);
-				break;
-		}
-		
-		// If GLFW threads are used, write the thread's name if not "", followed by its ID.
-#ifdef LOG_ENABLE_GLFW_THREADS
-		{
-			std::string str_temp;
-			std::stringstream ss2;
-			GLFWthread id = glfwGetThreadID();
-			std::map<GLFWthread, ThreadInfo>::iterator it = thread_infos.find(id);
-			
-			if( it != thread_infos.end() &&
-			   it->second.name != "")
-				ss2 << "[" << it->second.name << ":" << (unsigned)id << "] ";
-			else
-				ss2 << "[" << (unsigned)id << "] ";
-			
-			str_temp = ss2.str();
-			doFormatting(&str_temp, LOG_INFO, cur_output);
-			if(cur_output == TERMINAL)
-				writeTermFormattedString(p_stream[output_index], str_temp);
-			else
-				(*p_stream[output_index]) << str_temp;
-		}
-#endif
-		
-		// Finally write the message
-		std::string indentation = "";
-		if(cur_output == TERMINAL) {
-			for(int i=0 ; i<current_indent ; i++)
-				indentation += " ";
-			(*p_stream[output_index]) << indentation;
-			writeTermFormattedString(p_stream[output_index], msg_first_part);
-			writeTermFormattedString(p_stream[output_index], msg_second_part);
-			
-			resetTerm(p_stream[output_index]); // If the terminal was used, reset its colors before the final newline,
-			(*p_stream[output_index]) << std::endl;
-		}
-		else if(cur_output == HTML) {
-			char str_nb_pixels[100] = "";
-			sprintf(str_nb_pixels, "%d", current_indent*30);
-			
-			indentation = std::string("<span style=\"margin-left:") + std::string(str_nb_pixels) + "px;\">";
-			
-			(*p_stream[output_index]) << indentation << msg_first_part << msg_second_part << " <br/>" << "</span>" << std::flush;
-		}
-		else if(cur_output == RTF) {
-			for(int i=0 ; i<current_indent ; i++)
-				indentation += "\\tab";
-			(*p_stream[output_index]) << indentation << msg_first_part << msg_second_part << "\\par" << std::flush;
-		}
-		else {// TXT or TERMINAL_NO_COLOR
-			for(int i=0 ; i<current_indent ; i++)
-				indentation += " ";
-			(*p_stream[output_index]) << indentation << msg_first_part << msg_second_part << std::endl;
-		}
+
+		ss << "[" << file_name << ":" << line << " in " << function_name << "] : ";
+		Log::writeInternal(type, output_index, ss, std::forward<Args>(args)...);
 	}
-	
-#ifdef LOG_ENABLE_GLFW_THREADS
-	glfwUnlockMutex(Log::mutex);
-#endif
 }
 
 #endif // LOG_H

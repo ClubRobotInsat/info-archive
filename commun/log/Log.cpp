@@ -26,7 +26,7 @@ inline void Log::write( LogType type,
 #include "LogRTFContents.h"
 
 // Static variables implementation
-Log::OutputMask Log::output = Log::TERMINAL;
+Log::OutputMask Log::_output = Log::TERMINAL;
 bool Log::opened = false;
 std::ostream* Log::p_stream[Log::OUTPUT_COUNT];
 std::ofstream Log::file;
@@ -54,13 +54,13 @@ void Log::open(OutputMask output, const std::string& filename, bool desync_with_
 	std::ios_base::sync_with_stdio(!desync_with_stdio);
 	
 	Log::opened = true;
-	Log::output = output;
+	Log::_output = output;
 	
 	memset(Log::p_stream, 0, sizeof(Log::p_stream));
 	
 	for(int output_index=0 ; output_index < OUTPUT_COUNT ; output_index++) {
 		Output cur_output = (Output)(1<<output_index);
-		if(!(Log::output & cur_output))
+		if(!(Log::_output & cur_output))
 			continue;
 		switch(cur_output) {
 			case TERMINAL:
@@ -78,8 +78,8 @@ void Log::open(OutputMask output, const std::string& filename, bool desync_with_
 			case TXT:
 				file.open(filename);
 				if(!file.is_open()) {
-					Log::output = TERMINAL;
-					logError("impossible to open the text file ", filename.c_str());
+					Log::_output = TERMINAL;
+					std::cerr << "impossible to open the text file " << filename.c_str();
 					return;
 				}
 				
@@ -88,8 +88,8 @@ void Log::open(OutputMask output, const std::string& filename, bool desync_with_
 			case HTML:
 				file.open(filename);
 				if(!file.is_open()) {
-					Log::output = TERMINAL;
-					logError("impossible to open the HTML file ", filename.c_str());
+					Log::_output = TERMINAL;
+					std::cerr << "impossible to open the HTML file " << filename.c_str();
 					return;
 				}
 				
@@ -100,8 +100,8 @@ void Log::open(OutputMask output, const std::string& filename, bool desync_with_
 			case RTF:
 				file.open(filename);
 				if(!file.is_open()) {
-					Log::output = TERMINAL;
-					logError("impossible to open the RTF file ", filename.c_str());
+					Log::_output = TERMINAL;
+					std::cerr << "impossible to open the RTF file " << filename.c_str();
 					return;
 				}
 				
@@ -123,7 +123,7 @@ void Log::open(int argc, char* argv[], bool desync_with_stdio) {
 	}
 	
 	// Default value : output to terminal
-	output = TERMINAL;
+	_output = TERMINAL;
 	memset(Log::p_stream, 0, sizeof(Log::p_stream));
 	p_stream[0] = &std::cout;
 	
@@ -192,24 +192,24 @@ void Log::close() {
 		glfwDestroyMutex(Log::mutex);
 #endif
 		
-		switch(output) {
+		switch(_output) {
 			case TERMINAL:
 			case TERMINAL_NO_COLOR:
 				break;
 			case TXT:
-				Log::output = TERMINAL;
+				Log::_output = TERMINAL;
 				Log::p_stream[0] = &std::cout;
 				Log::file.close();
 				break;
 			case HTML:
 				(*p_stream[HTML]) << html_end << std::flush;
-				Log::output = TERMINAL;
+				Log::_output = TERMINAL;
 				Log::p_stream[0] = &std::cout;
 				Log::file.close();
 				break;
 			case RTF:
 				(*p_stream[RTF]) << rtf_end << std::flush;
-				Log::output = TERMINAL;
+				Log::_output = TERMINAL;
 				Log::p_stream[0] = &std::cout;
 				Log::file.close();
 				break;

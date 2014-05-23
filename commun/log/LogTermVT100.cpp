@@ -58,7 +58,7 @@ void resetTerm(std::ostream* p_stream) {
 	(*p_stream) << (char)0x1B << "[0;;m";
 }
 
-void doTermFormatting(std::string* msg, LogType type) {
+void doTermFormatting(std::string &msg, LogType type) {
 	const TermFormat& format = term_formats[type];
 	
 	char str_beginning[64] = "";
@@ -67,7 +67,7 @@ void doTermFormatting(std::string* msg, LogType type) {
 		int(format.attr),
 		int(format.front_color)+30,
 		int(format.back_color)+40);
-	*msg = std::string(str_beginning) + *msg;
+	msg = std::string(str_beginning) + msg;
 }
 #endif // !defined WIN32
 
