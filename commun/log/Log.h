@@ -4,7 +4,7 @@
 #define LOG_H
 
 #define ENABLE_LOGGING
-#define DISABLE_DEBUG_LOGGING // If defined, disables only logDebugXXX() macros.
+//#define DISABLE_DEBUG_LOGGING // If defined, disables only logDebugXXX() macros.
 
 #include <iostream>
 #include <fstream>
