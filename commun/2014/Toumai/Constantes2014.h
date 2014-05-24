@@ -20,7 +20,7 @@
 
 #else
 
-#include "../../../robot/Robot/Carte.h"
+#include "../../../robot/Cartes/Carte.h"
 #include "../../../robot/Cartes/CarteDeplacement2009.h"
 #include "../../../robot/Cartes/CarteContacteurs2007.h"
 #include "../../../robot/Cartes/CarteServosNova2009.h"
