@@ -31,7 +31,7 @@ struct RTFFormat {
 static RTFFormat rtf_formats[] = { {false, RTF_BLACK, RTF_WHITE}, // info {true, RTF_GREEN, RTF_WHITE}, // success {true, RTF_RED, RTF_WHITE}, // failed {true, RTF_WHITE, RTF_ORANGE}, // warn {true, RTF_WHITE, RTF_RED}, // error {true, RTF_WHITE, RTF_GREEN}, // debug0 {true, RTF_WHITE, RTF_BLUE}, // debug1 {true, RTF_WHITE, RTF_MAGENTA}, // debug2 {true, RTF_WHITE, RTF_CYAN}, // debug3 {true, RTF_WHITE, RTF_DARK_GREY}, // debug4 {true, RTF_YELLOW, RTF_GREEN}, // debug5 {true, RTF_YELLOW, RTF_BLUE}, // debug6 {true, RTF_YELLOW, RTF_MAGENTA},// debug7 {true, RTF_YELLOW, RTF_CYAN}, // debug8 {true, RTF_YELLOW, RTF_DARK_GREY} // debug9
 };
 
-void doRTFFormatting(std::string &msg, LogType type) {
+void Log::doRTFFormatting(std::string &msg, LogType type) {
 	const RTFFormat& format = rtf_formats[type];
 	
 	std::string str_beginning = format.bold ? "\\b" : "";

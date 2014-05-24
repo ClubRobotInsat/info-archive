@@ -20,7 +20,7 @@ static const char* css_classes[] = {
 	"debug9",
 };
 
-void doHTMLFormatting(std::string &msg, LogType type) {
+void Log::doHTMLFormatting(std::string &msg, LogType type) {
 	const char* css_class = css_classes[type];
 	msg = std::string("<span class=\"") + std::string(css_class) + "\">" + msg + "</span>";
 }

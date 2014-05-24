@@ -50,15 +50,15 @@ static const TermFormat term_formats[] = {
 };
 
 // Useless in the vt100/xterm implementation, but necessary for the Windows version.
-void writeTermFormattedString(std::ostream* p_stream, const std::string& str) {
-	(*p_stream) << str;
+void Log::writeTermFormattedString(std::ostream &p_stream, const std::string& str) {
+	p_stream << str;
 }
 
-void resetTerm(std::ostream* p_stream) {
-	(*p_stream) << (char)0x1B << "[0;;m";
+void Log::resetTerm(std::ostream &p_stream) {
+	p_stream << (char)0x1B << "[0;;m";
 }
 
-void doTermFormatting(std::string &msg, LogType type) {
+void Log::doTermFormatting(std::string &msg, LogType type) {
 	const TermFormat& format = term_formats[type];
 	
 	char str_beginning[64] = "";
