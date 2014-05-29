@@ -16,6 +16,6 @@ namespace ConstantesToumai2014 {
 
 	// Moteurs
 	const int tableauPositionsAsc[NBR_POSITIONS_ASC] =
-			{14200, 20000, 24500, 30671, 21500, /*17000*/17500, 2000, 0};
+			{/*14200*/15000, 20000, 24500, 30671, 21500, /*17000*/17500, 2000, 0};
 }
 
