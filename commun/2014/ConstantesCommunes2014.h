@@ -17,10 +17,10 @@ namespace Constantes2014 {
 	inline std::ostream& operator<<(std::ostream& os, const CouleurRobot& couleur) {
 		switch(couleur) {
 			case COULEUR_ROBOT_ROUGE:
-				os << "rouge";
+				os << "ROUGE";
 				break;
 			case COULEUR_ROBOT_JAUNE:
-				os << "bleu";
+				os << "JAUNE";
 				break;
 			case COULEUR_ROBOT_UNDEF:
 				os << "non initialise";
