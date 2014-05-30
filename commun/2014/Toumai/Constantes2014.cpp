@@ -10,12 +10,12 @@ namespace ConstantesToumai2014 {
 
 	const int positionPinceSaisie[POSITION_PINCE_S_NBR] 		= {1300, 1790};
 	const int positionPinceRetournement[POSITION_PINCE_R_NBR] 	= {575, 2490};
-	const int positionTVentouse[POSITION_T_VENTOUSE_NBR] 		= {780, 1430, 2310};
+	const int positionTVentouse[POSITION_T_VENTOUSE_NBR] 		= {790, 1430, 2310};
 	const int positionSerpeBas[POSITION_SERPE_BAS_NBR] 			= {1950, 1730, 580};
 	const int positionVideFeu[POSITION_VIDE_FEU_NBR] 			= {1980, 1340};
 
 	// Moteurs
 	const int tableauPositionsAsc[NBR_POSITIONS_ASC] =
-			{/*14200*/15000, 20000, 24500, 30671, 21500, /*17000*/17500, 2000, 0};
+			{/*14200*/15000, 20000, 24500, /*30671*/31000, 21500, /*17000*/17500, 2000, 0};
 }
 
