@@ -91,7 +91,10 @@ def createEnvironment(libs_list=[], force_debug=False):
 		env.Append(CPPDEFINES=['WIN32', 'WIN32_LEAN_AND_MEAN'])
 
 	env.Append(CCFLAGS=['-Wall'])
-	env.Append(CXXFLAGS=['-std=c++11'])
+	#env.Append(CXXFLAGS=['-std=c++11'])
+	env.Append(CXXFLAGS=['-std=c++11', '-m32'])
+	env.Append(LINKFLAGS=['-m32'])
+	#env.Append(LIBS=['libusb-1.0'])
 	if sys.platform == 'darwin':
 		env.Append(CXXFLAGS=['-ferror-limit=0'])
 
@@ -219,6 +222,7 @@ def createEnvironment(libs_list=[], force_debug=False):
 			    			root_dir + '/robot/Cartes'])
 			env.Append(LIBPATH=[root_dir + '/robot/2014/Lucy/librobot2014', root_dir + '/commun/2014'])
 			env.Append(LIBS=['RobotLucy2014', 'Constantes2014'])
+
 		elif lib == 'Webcam':
 			env.Append(CPPPATH=[root_dir + '/webcam'])
 			env.Append(LIBPATH=[root_dir + '/webcam'])
