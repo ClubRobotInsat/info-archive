@@ -23,6 +23,7 @@
 #endif
 
 #include <cstdint>
+#include <utility>
 
 // Enumeration des etats ou peut etre une Socket.
 enum SockState {
@@ -38,76 +39,66 @@ enum SockProtocol {
 };
 
 class Socket {
-private:
-#ifdef WIN32
-	SOCKET m_fd;
-#else
-	int m_fd;
-#endif
-	SockState m_state;
-	SockProtocol m_protocol;
-	sockaddr_in m_addr;
-	
 public:
 	Socket();
 	Socket(const Socket& ref);
 	~Socket();
 	
 	// Operateur d'affectation
-	Socket& operator=(const Socket& ref);
+	Socket& operator=(Socket ref);
 	
 	// Fonctions correspondant aux constructeur/destructeur : toutes les autres methodes
 	// doivent etre placees entre les appels a ces 2 methodes.
-	bool Create(SockProtocol protocol=SOCK_TCP);
-	void Destroy();
+	bool create(SockProtocol protocol = SOCK_TCP);
+	void destroy();
 	
 	// Methodes statiques pour la compatibilite avec les WinSockets : a appeler au
 	// debut et a la fin du programme.
-	static bool Init();
-	static void CleanUp();
+	static bool init();
+	static void cleanUp();
 	
 	// Accesseurs
-	int getFD() {return m_fd;}
-	bool IsCreated() {return m_fd > 0;}
-	SockState getState() {return m_state;}
-	SockProtocol getProtocol() {return m_protocol;}
+	int getFD() {return _fd;}
+	bool isCreated() {return _fd > 0;}
+	SockState getState() {return _state;}
+	SockProtocol getProtocol() {return _protocol;}
 	
 	// Connexion a un serveur :
 	// -server_adress : addresse du serveur auquel on se connecte
 	// -port : numero du port utilise
-	bool Connect(const char* server_adress, int port);
+	bool connect(const char* server_adress, int port);
 	
 	// Envoi de donnees (d'un client vers un serveur) :
 	// -data : pointeur vers les donnees
 	// -nb_bytes : taille des donnees a envoyer, en octets
-	int Send(const void* data, int nb_bytes);
+	int send(const void* data, int nb_bytes);
 	
 	// Envoi de donnees (d'un serveur vers un client) :
 	// -client_socket : pointeur vers la Socket correspondant au client a qui envoyer
 	// les donnees (obtenu via Accept())
 	// -data : pointeur vers les donnees
 	// -nb_bytes : taille des donnees a envoyer, en octets
-	int Send(Socket* client_socket, const void* data, int nb_bytes);
+	int send(Socket* client_socket, const void* data, int nb_bytes);
 	
 	// Reception de donnees (donnees allant d'un serveur vers un client) :
 	// -buffer : pointeur vers l'endroit ou l'on doit stocker les donnees
 	// -max_bytes : taille du buffer en octets, nombre maximal de donnees pouvant
 	// etre retournees
-	int Receive(void* buffer, int max_bytes);
+	int receive(void* buffer, int max_bytes);
 	
 	// Reception de donnees (donnees allant d'un client vers un serveur) :
 	// -client_socket : socket du client qui nous envoie les donnees
 	// -buffer : pointeur vers l'endroit ou l'on doit stocker les donnees
 	// -max_bytes : taille du buffer en octets, nombre maximal de donnees pouvant
 	// etre retournees
-	int Receive(Socket* client_socket, void* buffer, int max_bytes);
+	int receive(Socket* client_socket, void* buffer, int max_bytes);
 	
 	// Envoi d'un paquet (d'un client vers un serveur) :
 	// -data : pointeur vers les donnees
 	// -nb_bytes : taille des donnees a envoyer, en octets
 	// A la difference de Send(), on rajoute un header de 4 octets indiquant la taille
 	// du paquet. Un SendMsg() correspond a un ReceiveMsg().
-	bool SendMsg(const void* data, int nb_bytes);
+	bool sendMsg(const void* data, int nb_bytes);
 	
 	// Envoi d'un paquet (d'un serveur vers un client) :
 	// -client_socket : pointeur vers la Socket correspondant au client a qui envoyer
@@ -116,14 +107,14 @@ public:
 	// -nb_bytes : taille des donnees a envoyer, en octets
 	// A la difference de Send(), on rajoute un header de 4 octets indiquant la taille
 	// du paquet. Un SendMsg() correspond a un ReceiveMsg().
-	bool SendMsg(Socket* client_socket, const void* data, int nb_bytes);
+	bool sendMsg(Socket* client_socket, const void* data, int nb_bytes);
 	
 	// Reception d'un paquet (donnees allant d'un serveur vers un client) :
 	// -buffer : pointeur vers l'endroit ou l'on doit stocker les donnees
 	// -max_bytes : taille du buffer en octets, nombre maximal de donnees pouvant
 	// etre retournees
 	// Correspond a un SendMsg()
-	int ReceiveMsg(void* buffer, int max_bytes);
+	int receiveMsg(void* buffer, int max_bytes);
 	
 	// Reception d'un paquet (donnees allant d'un client vers un serveur) :
 	// -client_socket : socket du client qui nous envoie les donnees
@@ -131,33 +122,52 @@ public:
 	// -max_bytes : taille du buffer en octets, nombre maximal de donnees pouvant
 	// etre retournees
 	// Correspond a un SendMsg()
-	int ReceiveMsg(Socket* client_socket, void* buffer, int max_bytes);
+	int receiveMsg(Socket* client_socket, void* buffer, int max_bytes);
 	
 	// Pareil que ReceiveMsg mais ces fonctions allouent la memoire necessaire
 	// pour le buffer de reception avec new[].
-	int ReceiveNewMsg(void** buffer);
-	int ReceiveNewMsg(Socket* client_socket, void** buffer);
+	int receiveNewMsg(void** buffer);
+	int receiveNewMsg(Socket* client_socket, void** buffer);
 	
 	// Pour un client : renvoie true si le serveur nous a envoye un message, qui
 	// est dans la file d'attente, sinon renvoie false.
-	bool WaitsForAMessage();
+	bool waitsForAMessage();
 	
 	// Pour un serveur : renvoie true si le client specifie nous a envoye un message,
 	// qui est donc dans la file d'attente, sinon renvoie false.
 	// -client_socket : client susceptible de nous avoir envoye un message.
-	bool WaitsForAMessageFrom(Socket* client_socket);
+	bool waitsForAMessageFrom(Socket* client_socket);
 	
 	// Mise sur ecoute (pour un serveur) :
 	// -port : numero du port a ecouter
 	// -max_queue : nombre maximum de clients pouvant attendre dans une file
-	bool Listen(int port, int max_queue=10);
+	bool listen(int port, int max_queue=10);
 	
 	// Acceptation d'un nouveau client (pour un serveur)
 	// -sock_client : pointeur vers la socket correspondant au nouveau client accepte
-	bool Accept(Socket* sock_client);
+	bool accept(Socket* sock_client);
 	
 	// Ferme la connexion
-	void ShutDown();
+	void shutDown();
+
+    friend void swap(Socket &first, Socket &second) {
+        using std::swap;
+
+        swap(first._state, second._state);
+        swap(first._protocol, second._protocol);
+        swap(first._addr, second._addr);
+        swap(first._fd, second._fd);
+    }
+
+private:
+#ifdef WIN32
+	SOCKET _fd = 0;
+#else
+	int _fd = 0;
+#endif
+	SockState _state = SOCK_FREE;
+	SockProtocol _protocol = SOCK_TCP;
+	sockaddr_in _addr = {};
 };
 
 #endif // SOCKET_H

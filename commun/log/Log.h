@@ -10,7 +10,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#include <map>
+#include <unordered_map>
 #include <mutex>
 #include <thread>
 
@@ -54,7 +54,9 @@ enum LogType {
 class Log {
 public:
 	enum Output {
-		TERMINAL,
+		OUTPUT_FIRST,
+
+		TERMINAL = OUTPUT_FIRST,
 		TERMINAL_NO_COLOR,
 		TXT,
 		HTML,
@@ -65,7 +67,11 @@ public:
 
 	static void open(Output output, const std::string& filename = "", bool desync_with_stdio=true);
 	static void open(int argc, char* argv[], bool desync_with_stdio=true);
+
+	// Close a log output
 	static void close(Output output);
+	// Close all log outputs; not required to be called, as it is automatically invoked at program shutdown
+	static void closeAll();
 	static void indent(int value=1);
 	
 	static void setThreadName(const std::string& name) { _threadInfos[std::this_thread::get_id()]._name = name;}
@@ -87,7 +93,7 @@ private:
 	static std::ofstream _RTFfile;
 	static std::ofstream _HTMLfile;
 	static std::ofstream _TXTfile;
-	static std::map<std::thread::id, ThreadInfo> _threadInfos;
+	static std::unordered_map<std::thread::id, ThreadInfo> _threadInfos;
 
 	template <typename T, typename... Args>
 	static void writeInternal( LogType type, Output outputIndex, std::stringstream &stream, T &&arg, Args &&... args);

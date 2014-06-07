@@ -18,10 +18,18 @@ void Log::close(Log::Output) {}
 // When logging is enabled :
 #else
 
+namespace {
+	struct LogCloser {
+		~LogCloser() {
+			Log::closeAll();
+		}
+	};
+}
+
 // Static variables implementation
 std::ostream* Log::_p_stream[Log::OUTPUT_COUNT] = {};
 
-std::map<std::thread::id, Log::ThreadInfo> Log::_threadInfos;
+std::unordered_map<std::thread::id, Log::ThreadInfo> Log::_threadInfos;
 std::mutex Log::_logMutex;
 std::ofstream Log::_RTFfile;
 std::ofstream Log::_HTMLfile;
@@ -49,7 +57,10 @@ void Log::open(int argc, char* argv[], bool desync_with_stdio) {
 	// --log=stderr
 	// --log=my_file.rtf
 	// --log=my_file.html or --log=my_file.htm
-	
+
+	// Wrapper qui va appeler automatiquement Log::closeAll à la fin du programme à travers son destructeur
+	static LogCloser logCloser;
+
 	static const char str_ref[] = "--log=";
 	static const int str_ref_len = int(strlen(str_ref));
 	bool found = false;
@@ -148,7 +159,6 @@ void Log::open(Log::Output output, const std::string& filename, bool desync_with
 	_opened = true;
 }
 
-
 void Log::close(Output output) {
 	if(Log::_p_stream[output]) {
 		switch(output) {
@@ -169,6 +179,12 @@ void Log::close(Output output) {
 			case OUTPUT_COUNT:
 				break;
 		}
+	}
+}
+
+void Log::closeAll() {
+	for(Output o = OUTPUT_FIRST; o != OUTPUT_COUNT; o = static_cast<Log::Output>(static_cast<int>(o) + 1)) {
+		Log::close(o);
 	}
 }
 

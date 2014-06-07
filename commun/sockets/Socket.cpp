@@ -8,12 +8,12 @@
 #include <cstdio>
 #include <cassert>
 
-Socket::Socket() :
-m_fd(0), m_state(SOCK_FREE), m_protocol(SOCK_TCP), m_addr() {
+Socket::Socket() {
+
 }
 
-Socket::Socket(const Socket& ref) : m_fd(ref.m_fd), m_state(ref.m_state), m_protocol(ref.m_protocol),
-m_addr(ref.m_addr) {
+Socket::Socket(const Socket& ref) : _fd(ref._fd), _state(ref._state), _protocol(ref._protocol), _addr(ref._addr) {
+
 }
 
 Socket::~Socket() {
@@ -21,29 +21,26 @@ Socket::~Socket() {
 	// en appelant Destroy() directement.
 }
 
-Socket& Socket::operator=(const Socket& ref) {
-	m_fd = ref.m_fd;
-	m_state = ref.m_state;
-	m_protocol = ref.m_protocol;
-	memcpy((void*)&m_addr, (const void*)&ref.m_addr, sizeof(struct sockaddr_in));
-	
+Socket& Socket::operator=(Socket ref) {
+	std::swap(*this, ref);
+
 	return *this;
 }
 
-bool Socket::Create(SockProtocol protocol) {
-	Destroy(); // Si la socket etait deja creee, on la detruit avant.
+bool Socket::create(SockProtocol protocol) {
+	destroy(); // Si la socket etait deja creee, on la detruit avant.
 	
 	if(protocol != SOCK_TCP) {
 		fprintf(stderr, "Erreur : protocole non implemente\n");
 		return false;
 	}
 	
-	m_fd = socket(AF_INET, SOCK_STREAM, 0); // AF_INET : internet; SOCK_STREAM : par flux; 0 : protocol (TCP)
+	_fd = socket(AF_INET, SOCK_STREAM, 0); // AF_INET : internet; SOCK_STREAM : par flux; 0 : protocol (TCP)
 	
 #ifdef WIN32
-	if(m_fd == INVALID_SOCKET)
+	if(_fd == INVALID_SOCKET)
 #else
-		if(m_fd < 0)
+		if(_fd < 0)
 #endif
 		{
 			return false;
@@ -52,27 +49,27 @@ bool Socket::Create(SockProtocol protocol) {
 	return true;
 }
 
-void Socket::Destroy() {
+void Socket::destroy() {
 #ifdef WIN32
-	if(m_fd == INVALID_SOCKET || m_fd == 0) return;
+	if(_fd == INVALID_SOCKET || _fd == 0) return;
 #else
-	if(m_fd <= 0) return;
+	if(_fd <= 0) return;
 #endif
 	
-	ShutDown();
+	shutDown();
 #ifdef WIN32
-	closesocket(m_fd);
+	closesocket(_fd);
 #else
-	shutdown(m_fd, 2);
-	close(m_fd);
+	shutdown(_fd, 2);
+	close(_fd);
 #endif
 	
-	m_fd = 0;
-	m_state = SOCK_FREE;
-	m_protocol = SOCK_TCP;
+	_fd = 0;
+	_state = SOCK_FREE;
+	_protocol = SOCK_TCP;
 }
 
-bool Socket::Init() {
+bool Socket::init() {
 #ifdef WIN32
 	WSAData data;
 	int error_code = WSAStartup(MAKEWORD(1, 1), &data);
@@ -85,18 +82,18 @@ bool Socket::Init() {
 	return true;
 }
 
-void Socket::CleanUp() {
+void Socket::cleanUp() {
 #ifdef WIN32
 	WSACleanup();
 #endif
 }
 
 // Connexion au serveur
-bool Socket::Connect(const char* server_name, int port) {
+bool Socket::connect(const char* server_name, int port) {
 #ifdef WIN32
-	if(m_fd == INVALID_SOCKET || m_fd == 0) return false;
+	if(_fd == INVALID_SOCKET || _fd == 0) return false;
 #else
-	if(m_fd <= 0) return false;
+	if(_fd <= 0) return false;
 #endif
 	
 	hostent* hostinfo;
@@ -107,75 +104,75 @@ bool Socket::Connect(const char* server_name, int port) {
 		return false;
 	
 	
-	// On remplit la structure m_addr
-	m_addr.sin_family = AF_INET; // Adresse de type internet : on doit toujours mettre ca
-	m_addr.sin_port = htons(port); // Port
-	m_addr.sin_addr = *(struct in_addr*) hostinfo->h_addr; // Adresse IP du serveur
-	memset(&(m_addr.sin_zero), 0, 8); // On met le reste (8 octets) a 0
+	// On remplit la structure _addr
+	_addr.sin_family = AF_INET; // Adresse de type internet : on doit toujours mettre ca
+	_addr.sin_port = htons(port); // Port
+	_addr.sin_addr = *(struct in_addr*) hostinfo->h_addr; // Adresse IP du serveur
+	memset(&(_addr.sin_zero), 0, 8); // On met le reste (8 octets) a 0
 	
-	if(connect(m_fd, (struct sockaddr*)&m_addr, sizeof(struct sockaddr_in)) < 0)
-		m_state = SOCK_FREE;
+	if(::connect(_fd, (struct sockaddr*)&_addr, sizeof(struct sockaddr_in)) < 0)
+		_state = SOCK_FREE;
 	else
-		m_state = SOCK_CONNECTED;
+		_state = SOCK_CONNECTED;
 	
-	return m_state == SOCK_CONNECTED;
+	return _state == SOCK_CONNECTED;
 }
 
 // Envoi de donnees (d'un client vers un serveur) :
-int Socket::Send(const void* data, int nb_bytes) {
-	if(m_state != SOCK_CONNECTED) return -1;
+int Socket::send(const void* data, int nb_bytes) {
+	if(_state != SOCK_CONNECTED) return -1;
 	
 #ifdef WIN32
-	return send(m_fd, (const char*)data, nb_bytes, 0);
+	return ::send(_fd, (const char*)data, nb_bytes, 0);
 #elif __APPLE__
-	return send(m_fd, data, nb_bytes, SO_NOSIGPIPE);
+	return ::send(_fd, data, nb_bytes, SO_NOSIGPIPE);
 #else
 	// NB : MSG_NOSIGNAL ne vaut que pour Linux, pas meme pour MacOS X !
-	return send(m_fd, data, nb_bytes, MSG_NOSIGNAL);
+	return ::send(_fd, data, nb_bytes, MSG_NOSIGNAL);
 #endif
 }
 
 // Envoi de donnees (d'un serveur vers un client) :
-int Socket::Send(Socket* client_socket, const void* data, int nb_bytes) {
-	if(m_state != SOCK_LISTENING) return -1;
+int Socket::send(Socket* client_socket, const void* data, int nb_bytes) {
+	if(_state != SOCK_LISTENING) return -1;
 	
 #ifdef WIN32
-	return send(client_socket->m_fd, (const char*)data, nb_bytes, 0);
+	return ::send(client_socket->_fd, (const char*)data, nb_bytes, 0);
 #elif __APPLE__
 	// NB : SO_NOSIGPIPE pour MacOS X !
-	return send(client_socket->m_fd, data, nb_bytes, SO_NOSIGPIPE);
+	return ::send(client_socket->_fd, data, nb_bytes, SO_NOSIGPIPE);
 #else
 	// NB : MSG_NOSIGNAL ne vaut que pour Linux, pas meme pour MacOS X !
-	return send(client_socket->m_fd, data, nb_bytes, MSG_NOSIGNAL);
+	return ::send(client_socket->_fd, data, nb_bytes, MSG_NOSIGNAL);
 #endif
 }
 
 // Reception de donnees (donnees allant d'un serveur vers un client) :
-int Socket::Receive(void* buffer, int max_bytes) {
-	if(m_state != SOCK_CONNECTED) return -1;
+int Socket::receive(void* buffer, int max_bytes) {
+	if(_state != SOCK_CONNECTED) return -1;
 	
 #ifdef WIN32
-	return recv(m_fd, (char*)buffer, max_bytes, 0);
+	return recv(_fd, (char*)buffer, max_bytes, 0);
 #else
-	return recv(m_fd, buffer, max_bytes, 0);
+	return recv(_fd, buffer, max_bytes, 0);
 #endif
 }
 
 // Reception de donnees (donnees allant d'un client vers un serveur) :
-int Socket::Receive(Socket* client_socket, void* buffer, int max_bytes) {
-	if(m_state != SOCK_LISTENING) return -1;
+int Socket::receive(Socket* client_socket, void* buffer, int max_bytes) {
+	if(_state != SOCK_LISTENING) return -1;
 	
 #ifdef WIN32
-	return recv(client_socket->m_fd, (char*)buffer, max_bytes, 0);
+	return recv(client_socket->_fd, (char*)buffer, max_bytes, 0);
 #else
-	return recv(client_socket->m_fd, buffer, max_bytes, 0);
+	return recv(client_socket->_fd, buffer, max_bytes, 0);
 #endif
 }
 
 // Envoi d'un paquet (d'un client vers un serveur)
 // A la difference de Send(), on rajoute un header de 4 octets indiquant la taille
 // du paquet. Un SendMsg() correspond a un ReceiveMsg().
-bool Socket::SendMsg(const void* data, int nb_bytes) {
+bool Socket::sendMsg(const void* data, int nb_bytes) {
 	unsigned char header[4] = {
 		(unsigned char) ((nb_bytes >> 0*8) & 0xFF),
 		(unsigned char) ((nb_bytes >> 1*8) & 0xFF),
@@ -184,10 +181,10 @@ bool Socket::SendMsg(const void* data, int nb_bytes) {
 	
 	int remaining = nb_bytes;
 	
-	if(Send((const void*)header, 4) <= 0) return false;
+	if(send((const void*)header, 4) <= 0) return false;
 	
 	while(remaining != 0)
-		remaining = remaining - Send((void*)(&((std::uint8_t *)data)[nb_bytes-remaining]), remaining);
+		remaining = remaining - send((void*)(&((std::uint8_t *)data)[nb_bytes-remaining]), remaining);
 	
 	return true;
 }
@@ -195,7 +192,7 @@ bool Socket::SendMsg(const void* data, int nb_bytes) {
 // Envoi d'un paquet (d'un serveur vers un client)
 // A la difference de Send(), on rajoute un header de 4 octets indiquant la taille
 // du paquet. Un SendMsg() correspond a un ReceiveMsg().
-bool Socket::SendMsg(Socket* client_socket, const void* data, int nb_bytes) {
+bool Socket::sendMsg(Socket* client_socket, const void* data, int nb_bytes) {
 	std::uint8_t header[4] = {
 		(std::uint8_t) ((nb_bytes >> 0*8) & 0xFF),
 		(std::uint8_t) ((nb_bytes >> 1*8) & 0xFF),
@@ -205,11 +202,11 @@ bool Socket::SendMsg(Socket* client_socket, const void* data, int nb_bytes) {
 	int remaining = nb_bytes;
 	
 	int n = 0;
-	if((n = Send(client_socket, (const void*)header, 4)) <= 0)
+	if((n = this->send(client_socket, (const void*)header, 4)) <= 0)
 		return false;
 	
 	while(remaining != 0) {
-		n = Send(client_socket, (void*)(&((std::uint8_t *)data)[nb_bytes-remaining]), remaining);
+		n = this->send(client_socket, (void*)(&((std::uint8_t *)data)[nb_bytes-remaining]), remaining);
 		if(n <= 0)
 			return false;
 		
@@ -221,7 +218,7 @@ bool Socket::SendMsg(Socket* client_socket, const void* data, int nb_bytes) {
 
 // Reception d'un paquet (donnees allant d'un serveur vers un client)
 // Correspond a un SendMsg()
-int Socket::ReceiveMsg(void* buffer, int max_bytes) {
+int Socket::receiveMsg(void* buffer, int max_bytes) {
 	unsigned char header[4];
 	int nb_bytes=0; // Nombre d'octets dans le paquet
 	int bytes_to_read; // Nombre d'octets a lire effectivement
@@ -229,7 +226,7 @@ int Socket::ReceiveMsg(void* buffer, int max_bytes) {
 	std::uint8_t * discarded_bytes=nullptr; // Buffer contenant les donnees du paquet non lues dans buffer
 	// lorsque la taille de buffer est trop petite pour contenir tout le paquet
 	
-	int received = Receive((void*)header, 4); // Lecture du header
+	int received = this->receive((void*)header, 4); // Lecture du header
 	
 	// Cas ou l'on n'a pas recu assez d'octets pour avoir un header complet :
 	if(received < 4)
@@ -245,7 +242,7 @@ int Socket::ReceiveMsg(void* buffer, int max_bytes) {
 	
 	// On lit les octets qui doivent etre lus dans buffer
 	while(remaining != 0)
-		remaining = remaining - Receive((void*)(&((std::uint8_t *)buffer)[bytes_to_read-remaining]), remaining);
+		remaining = remaining - this->receive((void*)(&((std::uint8_t *)buffer)[bytes_to_read-remaining]), remaining);
 	
 	// Si une partie du paquet ne doit pas etre lue dans buffer (max_bytes trop petit), on la lit dans
 	// discarded_bytes et on les detruit.
@@ -254,7 +251,7 @@ int Socket::ReceiveMsg(void* buffer, int max_bytes) {
 		bytes_to_read = remaining;
 		discarded_bytes = new unsigned char[bytes_to_read * sizeof(unsigned char)];
 		while(remaining != 0)
-			remaining = remaining - Receive((void*)(&((std::uint8_t *)discarded_bytes)[bytes_to_read-remaining]), remaining);
+			remaining = remaining - this->receive((void*)(&((std::uint8_t *)discarded_bytes)[bytes_to_read-remaining]), remaining);
 		delete [] discarded_bytes;
 	}
 	
@@ -263,7 +260,7 @@ int Socket::ReceiveMsg(void* buffer, int max_bytes) {
 
 // Reception d'un paquet (donnees allant d'un client vers un serveur)
 // Correspond a un Sendmsg()
-int Socket::ReceiveMsg(Socket* client_socket, void* buffer, int max_bytes) {
+int Socket::receiveMsg(Socket* client_socket, void* buffer, int max_bytes) {
 	unsigned char header[4];
 	int nb_bytes=0; // Nombre d'octets dans le paquet
 	int bytes_to_read; // Nombre d'octets a lire effectivement
@@ -271,7 +268,7 @@ int Socket::ReceiveMsg(Socket* client_socket, void* buffer, int max_bytes) {
 	std::uint8_t * discarded_bytes=nullptr; // Buffer contenant les donnees du paquet non lues dans buffer
 	// lorsque la taille de buffer est trop petite pour contenir tout le paquet
 	
-	int received = Receive(client_socket, (void*)header, 4); // Lecture du header
+	int received = receive(client_socket, (void*)header, 4); // Lecture du header
 	
 	// Cas ou l'on n'a pas recu assez d'octets pour avoir un header complet :
 	if(received < 4)
@@ -287,7 +284,7 @@ int Socket::ReceiveMsg(Socket* client_socket, void* buffer, int max_bytes) {
 	
 	// On lit les octets qui doivent etre lus dans buffer
 	while(remaining != 0)
-		remaining = remaining - Receive(client_socket, (void*)(&((std::uint8_t *)buffer)[bytes_to_read-remaining]), remaining);
+		remaining = remaining - receive(client_socket, (void*)(&((std::uint8_t *)buffer)[bytes_to_read-remaining]), remaining);
 	
 	// Si une partie du paquet ne doit pas etre lue dans buffer (max_bytes trop petit), on la lit dans
 	// discarded_bytes et on les detruit.
@@ -296,7 +293,7 @@ int Socket::ReceiveMsg(Socket* client_socket, void* buffer, int max_bytes) {
 		bytes_to_read = remaining;
 		discarded_bytes = new unsigned char[bytes_to_read * sizeof(unsigned char)];
 		while(remaining != 0)
-			remaining = remaining - Receive(client_socket, (void*)(&((std::uint8_t *)discarded_bytes)[bytes_to_read-remaining]), remaining);
+			remaining = remaining - this->receive(client_socket, (void*)(&((std::uint8_t *)discarded_bytes)[bytes_to_read-remaining]), remaining);
 		delete [] discarded_bytes;
 	}
 	
@@ -305,7 +302,7 @@ int Socket::ReceiveMsg(Socket* client_socket, void* buffer, int max_bytes) {
 
 // Pareil que ReceiveMsg mais alloue la memoire necessaire
 // pour le buffer de reception avec new[].
-int Socket::ReceiveNewMsg(void** buffer) {
+int Socket::receiveNewMsg(void** buffer) {
 	unsigned char header[4];
 	int nb_bytes=0; // Nombre d'octets dans le paquet
 	int remaining;
@@ -313,7 +310,7 @@ int Socket::ReceiveNewMsg(void** buffer) {
 	
 	assert(buffer != nullptr);
 	
-	int received = Receive((void*)header, 4); // Lecture du header
+	int received = this->receive((void*)header, 4); // Lecture du header
 	
 	// Cas ou l'on n'a pas recu assez d'octets pour avoir un header complet :
 	if(received < 4)
@@ -330,7 +327,7 @@ int Socket::ReceiveNewMsg(void** buffer) {
 	// On lit les octets qui doivent etre lus :
 	remaining = nb_bytes;
 	while(remaining != 0)
-		remaining = remaining - Receive((void*)(&ptr[nb_bytes-remaining]), remaining);
+		remaining = remaining - this->receive((void*)(&ptr[nb_bytes-remaining]), remaining);
 	
 	// On renvoie l'adresse et la taille du nouveau buffer
 	*buffer = ptr;
@@ -341,7 +338,7 @@ int Socket::ReceiveNewMsg(void** buffer) {
 
 // Pareil que ReceiveMsg mais alloue la memoire necessaire
 // pour le buffer de reception avec new[].
-int Socket::ReceiveNewMsg(Socket* client_socket, void** buffer) {
+int Socket::receiveNewMsg(Socket* client_socket, void** buffer) {
 	unsigned char header[4];
 	int nb_bytes=0; // Nombre d'octets dans le paquet
 	int remaining;
@@ -349,7 +346,7 @@ int Socket::ReceiveNewMsg(Socket* client_socket, void** buffer) {
 	
 	assert(buffer != nullptr);
 	
-	int received = Receive(client_socket, (void*)header, 4); // Lecture du header
+	int received = this->receive(client_socket, (void*)header, 4); // Lecture du header
 	
 	// Cas ou l'on n'a pas recu assez d'octets pour avoir un header complet :
 	if(received < 4)
@@ -366,7 +363,7 @@ int Socket::ReceiveNewMsg(Socket* client_socket, void** buffer) {
 	// On lit les octets qui doivent etre lus :
 	remaining = nb_bytes;
 	while(remaining != 0)
-		remaining = remaining - Receive(client_socket, (void*)(&ptr[nb_bytes-remaining]), remaining);
+		remaining = remaining - this->receive(client_socket, (void*)(&ptr[nb_bytes-remaining]), remaining);
 	
 	// On renvoie l'adresse et la taille du nouveau buffer
 	*buffer = ptr;
@@ -376,13 +373,13 @@ int Socket::ReceiveNewMsg(Socket* client_socket, void** buffer) {
 
 // Pour un client : renvoie true si le serveur nous a envoye un message, qui
 // est dans la file d'attente, sinon renvoie false.
-bool Socket::WaitsForAMessage() {
+bool Socket::waitsForAMessage() {
 	// On cree un fd_set, c'est a dire une liste des FDs a tester. On ne met en fait
 	// dans cette liste que notre FD.
 	fd_set set;
 	
 	FD_ZERO(&set);
-	FD_SET(m_fd, &set);
+	FD_SET(_fd, &set);
 	
 	// Le timeout du fd_set que l'on a cree est de 0s et 0 micro-seconde, ce qui signifie que
 	// select() rendra la main immediatement.
@@ -390,81 +387,81 @@ bool Socket::WaitsForAMessage() {
 	
 	// On fait un select(), qui permet de savoir si les FDs du fd_set ont un message
 	// da la file d'attente.
-	if(select(m_fd+1, &set, nullptr, nullptr, &timeout) < 0) {
+	if(select(_fd+1, &set, nullptr, nullptr, &timeout) < 0) {
 		fprintf(stderr, "Erreur : select() renvoie -1\n");
 		return false;
 	}
 	
-	return (FD_ISSET(m_fd, &set) != 0);
+	return (FD_ISSET(_fd, &set) != 0);
 }
 
 // Pour un serveur : renvoie true si le client specifie nous a envoye un message,
 // qui est donc dans la file d'attente, sinon renvoie false.
-bool Socket::WaitsForAMessageFrom(Socket* client_socket) {
+bool Socket::waitsForAMessageFrom(Socket* client_socket) {
 	// Pour les explications, Cf au-dessus
 	fd_set set;
 	
 	FD_ZERO(&set);
-	FD_SET(client_socket->m_fd, &set);
+	FD_SET(client_socket->_fd, &set);
 	
 	struct timeval timeout = {0, 0};
 	
-	if(select(client_socket->m_fd+1, &set, nullptr, nullptr, &timeout) < 0) {
+	if(select(client_socket->_fd+1, &set, nullptr, nullptr, &timeout) < 0) {
 		fprintf(stderr, "Erreur : select() renvoie -1\n");
 		return false;
 	}
 	
-	return (FD_ISSET(client_socket->m_fd, &set) != 0);
+	return (FD_ISSET(client_socket->_fd, &set) != 0);
 }
 
 // Mise sur ecoute (pour un serveur) :
-bool Socket::Listen(int port, int max_queue) {
-	// On remplit la structure m_addr, qui correspond a l'adresse du serveur (nous)
-	m_addr.sin_family = AF_INET; // Adresse de type internet : on doit toujours mettre ca
-	m_addr.sin_port = htons(port); // Port
-	m_addr.sin_addr.s_addr = htonl(INADDR_ANY); // On ecoute tout le monde, quelle que soit son adresse IP
-	memset(&(m_addr.sin_zero), 0, 8); // On met le reste (8 octets) a 0
+bool Socket::listen(int port, int max_queue) {
+	// On remplit la structure _addr, qui correspond a l'adresse du serveur (nous)
+	_addr.sin_family = AF_INET; // Adresse de type internet : on doit toujours mettre ca
+	_addr.sin_port = htons(port); // Port
+	_addr.sin_addr.s_addr = htonl(INADDR_ANY); // On ecoute tout le monde, quelle que soit son adresse IP
+	memset(&(_addr.sin_zero), 0, 8); // On met le reste (8 octets) a 0
 	
 	// On associe la socket a un port et a une adresse, definis dans server_addr :
-	if(bind(m_fd, (struct sockaddr*)&m_addr, sizeof(struct sockaddr_in)) < 0) {
+	if(bind(_fd, (struct sockaddr*)&_addr, sizeof(struct sockaddr_in)) < 0) {
 		fprintf(stderr, "Erreur lors de l'association de la socket avec l'adresse\n");
-		m_state = SOCK_FREE;
+		_state = SOCK_FREE;
 	}
 	else {
 		// On se met sur ecoute
-		if(listen(m_fd, max_queue) < 0) {
+		if(listen(_fd, max_queue) < 0) {
 			fprintf(stderr, "Erreur lors de la mise sur ecoute\n");
-			m_state = SOCK_FREE;
+			_state = SOCK_FREE;
 		}
 		else
-			m_state = SOCK_LISTENING;
+			_state = SOCK_LISTENING;
 	}
 	
-	return m_state == SOCK_LISTENING;
+	return _state == SOCK_LISTENING;
 }
 
 // Acceptation d'un nouveau client (pour un serveur)
-bool Socket::Accept(Socket* sock_client) {
-	// On remplit la structure m_addr, qui correspond a l'adresse du serveur (nous)
-	sock_client->m_addr.sin_family = AF_INET; // Adresse de type internet : on doit toujours mettre ca
-	sock_client->m_addr.sin_port = 0; // Port
-	sock_client->m_addr.sin_addr.s_addr = htons(INADDR_ANY); // On ecoute tout le monde, quelle que soit son adresse IP
-	memset(&(sock_client->m_addr.sin_zero), 0, 8); // On met le reste (8 octets) a 0
+bool Socket::accept(Socket* sock_client) {
+	// On remplit la structure _addr, qui correspond a l'adresse du serveur (nous)
+	sock_client->_addr.sin_family = AF_INET; // Adresse de type internet : on doit toujours mettre ca
+	sock_client->_addr.sin_port = 0; // Port
+	sock_client->_addr.sin_addr.s_addr = htons(INADDR_ANY); // On ecoute tout le monde, quelle que soit son adresse IP
+	memset(&(sock_client->_addr.sin_zero), 0, 8); // On met le reste (8 octets) a 0
 	
 #ifdef WIN32
 	int sin_size = sizeof(struct sockaddr_in);
 #else
 	socklen_t sin_size = sizeof(struct sockaddr_in);
 #endif
-	sock_client->m_fd = accept(m_fd, (struct sockaddr*)&(sock_client->m_addr), &sin_size);
+	sock_client->_fd = ::accept(_fd, (struct sockaddr*)&(sock_client->_addr), &sin_size);
 	
 #ifdef WIN32
-	if(sock_client->m_fd != INVALID_SOCKET)
+	if(sock_client->_fd != INVALID_SOCKET)
 #else
-		if(sock_client->m_fd != -1)
+		if(sock_client->_fd != -1)
 #endif
 		{
-			sock_client->m_state = SOCK_ACCEPTED;
+			sock_client->_state = SOCK_ACCEPTED;
 			return true;
 		}
 		else {
@@ -473,9 +470,9 @@ bool Socket::Accept(Socket* sock_client) {
 }
 
 // Ferme la connexion
-void Socket::ShutDown() {
-	if(m_state != SOCK_FREE) {
-		shutdown(m_fd, 2);
-		m_state = SOCK_FREE;
+void Socket::shutDown() {
+	if(_state != SOCK_FREE) {
+		shutdown(_fd, 2);
+		_state = SOCK_FREE;
 	}
 }

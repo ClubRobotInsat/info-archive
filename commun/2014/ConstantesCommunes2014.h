@@ -6,6 +6,10 @@
 #include <iostream>
 
 namespace Constantes2014 {
+	enum {
+		TCPIP_PORT_PAR_DEFAUT = 1234
+	};
+
 	enum CouleurRobot {
 		//Valeur d'initialisation, qui permet de déctecter si la lecture du capteur couleur a déconné.
 		COULEUR_ROBOT_UNDEF = 2,
