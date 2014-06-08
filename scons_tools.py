@@ -91,10 +91,13 @@ def createEnvironment(libs_list=[], force_debug=False):
 		env.Append(CPPDEFINES=['WIN32', 'WIN32_LEAN_AND_MEAN'])
 
 	env.Append(CCFLAGS=['-Wall'])
-	env.Append(CXXFLAGS=['-std=c++11'])
-	#env.Append(CXXFLAGS=['-std=c++11', '-m32'])
-	#env.Append(LINKFLAGS=['-m32'])
-	#env.Append(LIBS=['libusb-1.0'])
+
+	if sys.platform == 'darwin':
+		env.Append(CXXFLAGS=['-std=c++11'])
+	else:
+		env.Append(CXXFLAGS=['-std=c++11', '-m32'])
+		env.Append(LINKFLAGS=['-m32'])
+
 	if sys.platform == 'darwin':
 		env.Append(CXXFLAGS=['-ferror-limit=0'])
 

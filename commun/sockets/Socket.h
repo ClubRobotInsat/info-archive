@@ -40,23 +40,9 @@ enum SockProtocol {
 
 class Socket {
 public:
-	Socket();
-	Socket(const Socket& ref);
+	Socket(SockProtocol protocol);
 	~Socket();
-	
-	// Operateur d'affectation
-	Socket& operator=(Socket ref);
-	
-	// Fonctions correspondant aux constructeur/destructeur : toutes les autres methodes
-	// doivent etre placees entre les appels a ces 2 methodes.
-	bool create(SockProtocol protocol = SOCK_TCP);
-	void destroy();
-	
-	// Methodes statiques pour la compatibilite avec les WinSockets : a appeler au
-	// debut et a la fin du programme.
-	static bool init();
-	static void cleanUp();
-	
+
 	// Accesseurs
 	int getFD() {return _fd;}
 	bool isCreated() {return _fd > 0;}
@@ -78,7 +64,7 @@ public:
 	// les donnees (obtenu via Accept())
 	// -data : pointeur vers les donnees
 	// -nb_bytes : taille des donnees a envoyer, en octets
-	int send(Socket* client_socket, const void* data, int nb_bytes);
+	int send(Socket &client_socket, const void* data, int nb_bytes);
 	
 	// Reception de donnees (donnees allant d'un serveur vers un client) :
 	// -buffer : pointeur vers l'endroit ou l'on doit stocker les donnees
@@ -91,7 +77,7 @@ public:
 	// -buffer : pointeur vers l'endroit ou l'on doit stocker les donnees
 	// -max_bytes : taille du buffer en octets, nombre maximal de donnees pouvant
 	// etre retournees
-	int receive(Socket* client_socket, void* buffer, int max_bytes);
+	int receive(Socket &client_socket, void* buffer, int max_bytes);
 	
 	// Envoi d'un paquet (d'un client vers un serveur) :
 	// -data : pointeur vers les donnees
@@ -107,7 +93,7 @@ public:
 	// -nb_bytes : taille des donnees a envoyer, en octets
 	// A la difference de Send(), on rajoute un header de 4 octets indiquant la taille
 	// du paquet. Un SendMsg() correspond a un ReceiveMsg().
-	bool sendMsg(Socket* client_socket, const void* data, int nb_bytes);
+	bool sendMsg(Socket &client_socket, const void* data, int nb_bytes);
 	
 	// Reception d'un paquet (donnees allant d'un serveur vers un client) :
 	// -buffer : pointeur vers l'endroit ou l'on doit stocker les donnees
@@ -122,12 +108,12 @@ public:
 	// -max_bytes : taille du buffer en octets, nombre maximal de donnees pouvant
 	// etre retournees
 	// Correspond a un SendMsg()
-	int receiveMsg(Socket* client_socket, void* buffer, int max_bytes);
+	int receiveMsg(Socket &client_socket, void* buffer, int max_bytes);
 	
 	// Pareil que ReceiveMsg mais ces fonctions allouent la memoire necessaire
 	// pour le buffer de reception avec new[].
 	int receiveNewMsg(void** buffer);
-	int receiveNewMsg(Socket* client_socket, void** buffer);
+	int receiveNewMsg(Socket &client_socket, void** buffer);
 	
 	// Pour un client : renvoie true si le serveur nous a envoye un message, qui
 	// est dans la file d'attente, sinon renvoie false.
@@ -136,7 +122,7 @@ public:
 	// Pour un serveur : renvoie true si le client specifie nous a envoye un message,
 	// qui est donc dans la file d'attente, sinon renvoie false.
 	// -client_socket : client susceptible de nous avoir envoye un message.
-	bool waitsForAMessageFrom(Socket* client_socket);
+	bool waitsForAMessageFrom(Socket &client_socket);
 	
 	// Mise sur ecoute (pour un serveur) :
 	// -port : numero du port a ecouter
@@ -145,28 +131,22 @@ public:
 	
 	// Acceptation d'un nouveau client (pour un serveur)
 	// -sock_client : pointeur vers la socket correspondant au nouveau client accepte
-	bool accept(Socket* sock_client);
+	bool accept(Socket &sock_client);
 	
 	// Ferme la connexion
 	void shutDown();
 
-    friend void swap(Socket &first, Socket &second) {
-        using std::swap;
-
-        swap(first._state, second._state);
-        swap(first._protocol, second._protocol);
-        swap(first._addr, second._addr);
-        swap(first._fd, second._fd);
-    }
-
 private:
+	Socket(const Socket& ref) = delete;
+	Socket& operator=(Socket ref) = delete;
+
 #ifdef WIN32
 	SOCKET _fd = 0;
 #else
 	int _fd = 0;
 #endif
 	SockState _state = SOCK_FREE;
-	SockProtocol _protocol = SOCK_TCP;
+	SockProtocol _protocol;
 	sockaddr_in _addr = {};
 };
 
