@@ -66,6 +66,9 @@ bool estDansIntervalOuvert(T val, T bMin, T bMax) {
  * Dernière façon de créer un angleRad : appeler une des fonctions static angleRad::makeFromRad ou angleRad::makeFromDeg.
  * La première interprète la valeur du paramètre en radians, la 3e va le convertir de degrés vers radians.
  *
+ * La conversion en scalaire est permise, avec quelque chose comme double a = [un angleRad]; ou (double)[un angleRad]
+ * Les types supportés sont tous les scalaires, donc les char, short, int long, long long (signés ou non) et les float, double, long double.
+ *
  * class angleRad {
  *	angleRad(angleRad const &);
  *	static angleRad makeFromRad(nombre n);
@@ -98,6 +101,9 @@ bool estDansIntervalOuvert(T val, T bMin, T bMax) {
  *
  * Dernière façon de créer une distanceMm : appeler une des fonctions static distanceMm::makeFromMm, distanceMm::makeFromCm, distanceMm::makeFromDm ou distanceMm::makeFromM.
  * La 1ère interprète le paramètre en millimètres, la 2e en centimètres, la 3e en décimètres et la 4e en mètres.
+ *
+ * La conversion en scalaire est permise, avec quelque chose comme double d = [une distanceMm]; ou (double)[une distanceMm]
+ * Les types supportés sont tous les scalaires, donc les char, short, int long, long long (signés ou non) et les float, double, long double.
  *
  * class distanceMm {
  *	distanceMm(distanceMm const &);
