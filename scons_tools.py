@@ -92,11 +92,14 @@ def createEnvironment(libs_list=[], force_debug=False):
 
 	env.Append(CCFLAGS=['-Wall'])
 
-	if sys.platform == 'darwin':
-		env.Append(CXXFLAGS=['-std=c++11'])
-	else:
-		env.Append(CXXFLAGS=['-std=c++11', '-m32'])
-		env.Append(LINKFLAGS=['-m32'])
+	cxxflags = ['-std=c++11']
+	linkflags = []
+	if ARGUMENTS.get('arch', 32) == 32:
+		cxxflags.append('-m32')
+		linkflags.append('-m32')
+
+	env.Append(CXXFLAGS=cxxflags)
+	env.Append(LINKFLAGS=linkflags)
 
 	if sys.platform == 'darwin':
 		env.Append(CXXFLAGS=['-ferror-limit=0'])
