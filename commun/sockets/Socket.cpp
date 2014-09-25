@@ -375,7 +375,7 @@ bool Socket::listen(int port, int max_queue) {
 	_addr.sin_family = AF_INET; // Adresse de type internet : on doit toujours mettre ca
 	_addr.sin_port = htons(port); // Port
 	_addr.sin_addr.s_addr = htonl(INADDR_ANY); // On ecoute tout le monde, quelle que soit son adresse IP
-	memset(&(_addr.sin_zero), 0, 8); // On met le reste (8 octets) a 0
+	memset(&(_addr.sin_zero), 0, sizeof(_addr.sin_zero)); // On met le reste (8 octets) a 0
 
 	// On associe la socket a un port et a une adresse, definis dans server_addr :
 	if(bind(_fd, (struct sockaddr*)&_addr, sizeof(struct sockaddr_in)) < 0) {
@@ -384,7 +384,7 @@ bool Socket::listen(int port, int max_queue) {
 	}
 	else {
 		// On se met sur ecoute
-		if(listen(_fd, max_queue) < 0) {
+		if(::listen(_fd, max_queue) < 0) {
 			fprintf(stderr, "Erreur lors de la mise sur ecoute\n");
 			_state = SOCK_FREE;
 		}

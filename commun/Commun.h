@@ -18,6 +18,7 @@
 
 #include <memory>
 #include <type_traits>
+#include <thread>
 
 namespace std {
 	// Pallie à l'absence de std::make_unique dans C++11, à venir dans C++14 cependant.
@@ -39,6 +40,14 @@ namespace std {
 	unique_ptr<T> make_unique(Args&&... args) {
 		return make_unique_helper<T>(is_array<T>(), forward<Args>(args)...);
 	}
+}
+
+inline void setThreadName(char const *name) {
+#if defined(__LINUX__)
+	pthread_setname_np(pthread_self(), name);
+#elsif defined(__APPLE__) 
+	pthread_setname_np(name);
+#endif
 }
 
 #endif

@@ -30,6 +30,11 @@ int main() {
 	cout << d << endl;
 	cout << v1 * v2 << endl;
 	cout << Det(v1, v2, v3) << endl;
+
+	/*auto val = 3_rad + 4_PI;
+	val + 34_deg;
+
+	auto 3_m + 4_cm;*/
 	
 	return 0;
 }
