@@ -94,7 +94,7 @@ def createEnvironment(libs_list=[], force_debug=False):
 
 	cxxflags = ['-std=c++11']
 	linkflags = []
-	if ARGUMENTS.get('arch', 32) == 32:
+	if ARGUMENTS.get('arch', "32") == "32":
 		cxxflags.append('-m32')
 		linkflags.append('-m32')
 
