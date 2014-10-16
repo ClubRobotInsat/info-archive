@@ -78,7 +78,7 @@ std::uint8_t Trame::demultiplexId(MuxedIdAndCmd const &idAndCmd) {
 
 std::uint8_t Trame::demultiplexCmd(MuxedIdAndCmd const &idAndCmd) {
 	std::uint16_t muxedVal = (std::uint16_t(idAndCmd.second) << 8) | std::uint16_t(idAndCmd.first);
-	return std::uint8_t(muxedVal & ~(1 << BITS_CMD_TRAME));
+	return std::uint8_t(muxedVal & 0xF);
 }
 
 Trame::MuxedIdAndCmd Trame::multiplexIdAndCmd(std::uint8_t id, std::uint8_t cmd) {
