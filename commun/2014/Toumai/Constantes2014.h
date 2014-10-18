@@ -16,6 +16,7 @@
 #include "../../../simulateur/cartes/CarteDetectAdv2009.h"
 #include "../../../simulateur/cartes/CartePneumatique2014.h"
 #include "../../../simulateur/cartes/CarteIO2014.h"
+#include "../../../simulateur/cartes/CarteCAN_USB.h"
 
 
 #else
@@ -171,13 +172,10 @@ namespace ConstantesToumai2014 {
 	template<int ID_CARTE>
 	struct CarteToumai {};
 	
-#ifndef TARGET_SIMULATEUR
 	template<>
 		struct CarteToumai<ID_CARTE_CAN_USB> {
 			typedef CarteCAN_USB type;
 	};
-#endif
-
 	template<>
 	struct CarteToumai<ID_CARTE_DEPLACEMENT> {
 		typedef CarteDeplacement2009 type;

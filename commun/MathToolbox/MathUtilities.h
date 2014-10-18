@@ -128,6 +128,10 @@ bool estDansIntervalOuvert(T val, T bMin, T bMax) {
 template<typename T, typename ValType>
 class numericValue {
 public:
+	numericValue() {
+		_val = ValType();
+	}
+
 	numericValue(T const &v) {
 		_val = v._val;
 	}
@@ -144,6 +148,15 @@ public:
 
 	T &operator=(T v) {
 		std::swap(static_cast<T &>(*this), v);
+		return static_cast<T &>(*this);
+	}
+
+	T &operator-() {
+		_val = -_val;
+		return static_cast<T &>(*this);
+	}
+
+	T &operator+() {
 		return static_cast<T &>(*this);
 	}
 
