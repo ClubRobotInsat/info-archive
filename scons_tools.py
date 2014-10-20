@@ -98,6 +98,9 @@ def createEnvironment(libs_list=[], force_debug=False):
 		cxxflags.append('-m32')
 		linkflags.append('-m32')
 
+	if ARGUMENTS.get('color', "0") == "1":
+		cxxflags.append('-fcolor-diagnostics')
+
 	env.Append(CXXFLAGS=cxxflags)
 	env.Append(LINKFLAGS=linkflags)
 

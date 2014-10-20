@@ -2,6 +2,7 @@
 
 #include "Trame.h"
 #include <sstream>
+#include <iomanip>
 
 Trame::Trame(std::uint8_t id, std::uint8_t cmd, std::uint8_t nbDonnees, std::uint8_t const donnees[]) : _num_paquet(0) {
 	this->addBytes(nbDonnees, donnees);
@@ -95,16 +96,18 @@ std::ostream & operator <<(std::ostream & o, const Trame &t) {
 // convertir la tramme en chaine de caractere courte et en hexa
 std::string Trame::toString() const {
 	std::ostringstream oss;
-	
+
+	oss << std::hex;
+
 	oss << "[id=";
-	oss << std::hex << (int)_id;
+	oss << std::setfill('0') << std::setw(2) << (int)_id;
 	oss << ":";
 	oss << "cmd=";
-	oss << std::hex << (int)_cmd;
+	oss << std::setfill('0') << std::setw(2) << (int)_cmd;
 	oss << ":";
 	oss << "donnees=";
 	for(std::uint8_t numDonnee = 0; numDonnee < _donnees.size(); ++numDonnee) {
-		oss << std::hex << (int) _donnees[numDonnee];
+		oss << std::setfill('0') << std::setw(2) << (int)_donnees[numDonnee];
 		if(numDonnee == _donnees.size()-1)
 			oss << "]";
 		else

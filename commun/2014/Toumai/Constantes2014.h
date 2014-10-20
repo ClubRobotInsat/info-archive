@@ -35,6 +35,23 @@
 
 #endif
 
+struct IDCartesToumai2014 {
+	enum {
+		CAN_USB = 0,
+		PREMIER_ID_CARTE 						= 1,
+		DEPLACEMENT 					= PREMIER_ID_CARTE,
+		ASSERVISSEMENT_ASCENSEUR		= 2,
+		SERVOS_1 						= 4,
+		SERVOS_2	 					= 5,
+		IO 							= 6,
+		EVITEMENT 						= 8,
+		PNEUMATIQUE 					= 9,
+		DEBUG_DESSIN 					= 10,
+		DERNIER_ID_CARTE
+		//ID_CARTE_DEBUG = 11
+	};
+};
+
 namespace ConstantesToumai2014 {
 	
 	/////////////////// CONTACTEURS ///////////////////
@@ -149,66 +166,49 @@ namespace ConstantesToumai2014 {
 	
 	// Déclaration des positions
 	extern const int tableauPositionsAsc[NBR_POSITIONS_ASC];
-	
+
 	/////////////////// CARTES ///////////////////
-	namespace IDCartesToumai2014 {
-		enum {
-			ID_CARTE_CAN_USB = 0,
-			PREMIER_ID_CARTE 						= 1,
-			ID_CARTE_DEPLACEMENT 					= PREMIER_ID_CARTE,
-			ID_CARTE_ASSERVISSEMENT_ASCENSEUR		= 2,
-			ID_CARTE_SERVOS_1 						= 4,
-			ID_CARTE_SERVOS_2	 					= 5,
-			ID_CARTE_IO 							= 6,
-			ID_CARTE_EVITEMENT 						= 8,
-			ID_CARTE_PNEUMATIQUE 					= 9,
-//			ID_CARTE_DEBUG_DESSIN 					= 10,
-			DERNIER_ID_CARTE
-			//ID_CARTE_DEBUG = 11
-		};
-	}
-	using namespace IDCartesToumai2014;
-	
+
 	template<int ID_CARTE>
 	struct CarteToumai {};
 	
 	template<>
-		struct CarteToumai<ID_CARTE_CAN_USB> {
+		struct CarteToumai<IDCartesToumai2014::CAN_USB> {
 			typedef CarteCAN_USB type;
 	};
 	template<>
-	struct CarteToumai<ID_CARTE_DEPLACEMENT> {
+	struct CarteToumai<IDCartesToumai2014::DEPLACEMENT> {
 		typedef CarteDeplacement2009 type;
 		static constexpr char const *name = "Carte déplacement";
 	};
 	template<>
-	struct CarteToumai<ID_CARTE_ASSERVISSEMENT_ASCENSEUR> {
+	struct CarteToumai<IDCartesToumai2014::ASSERVISSEMENT_ASCENSEUR> {
 		typedef CarteAsservissement2009 type;
 	};
 	template<>
-	struct CarteToumai<ID_CARTE_EVITEMENT> {
+	struct CarteToumai<IDCartesToumai2014::EVITEMENT> {
 		typedef CarteDetectAdv2009 type;
 	};
 	template<>
-	struct CarteToumai<ID_CARTE_IO> {
+	struct CarteToumai<IDCartesToumai2014::IO> {
 		typedef CarteIO2014 type;
 	};
 	template<>
-	struct CarteToumai<ID_CARTE_SERVOS_1> {
+	struct CarteToumai<IDCartesToumai2014::SERVOS_1> {
 		typedef CarteServosNova2009 type;
 	};
 	template<>
-	struct CarteToumai<ID_CARTE_SERVOS_2> {
+	struct CarteToumai<IDCartesToumai2014::SERVOS_2> {
 		typedef CarteServosNova2009 type;
 	};
 	template<>
-	struct CarteToumai<ID_CARTE_PNEUMATIQUE> {
+	struct CarteToumai<IDCartesToumai2014::PNEUMATIQUE> {
 		typedef CartePneumatique2014 type;
 	};
-//	template<>
-//	struct CarteToumai<ID_CARTE_DEBUG_DESSIN> {
-//		typedef CarteDebugDessin type;
-//	};
+	template<>
+	struct CarteToumai<IDCartesToumai2014::DEBUG_DESSIN> {
+		typedef CarteDebugDessin type;
+	};
 }
 #endif
 

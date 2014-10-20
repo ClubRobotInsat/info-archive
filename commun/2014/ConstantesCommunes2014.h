@@ -16,6 +16,15 @@ namespace Constantes2014 {
 		COULEUR_ROBOT_ROUGE = 1,
 		COULEUR_ROBOT_JAUNE = 0
 	};
+
+	inline CouleurRobot operator!(CouleurRobot const &c) {
+		if(c == CouleurRobot::COULEUR_ROBOT_ROUGE)
+			return CouleurRobot::COULEUR_ROBOT_JAUNE;
+		else if(c == CouleurRobot::COULEUR_ROBOT_JAUNE)
+			return CouleurRobot::COULEUR_ROBOT_ROUGE;
+		
+		return c;
+	}
 	
 	// Pour permettre l'affichage d'une Couleur :
 	inline std::ostream& operator<<(std::ostream& os, const CouleurRobot& couleur) {

@@ -14,6 +14,7 @@
 #include "../../../simulateur/cartes/CarteDebugDessin.h"
 #include "../../../simulateur/cartes/CartePneumatique2013.h"
 #include "../../../simulateur/cartes/CarteDetectAdv2009.h"
+#include "../../../simulateur/cartes/CarteCAN_USB.h"
 
 #else
 
@@ -29,6 +30,20 @@
 #include "../../../robot/Cartes/CarteCAN_USB.h"
 
 #endif
+
+struct IDCartesLucy2014 {
+	enum {
+		CAN_USB 			= 0,
+		DEPLACEMENT 		= 1,
+		CONTACTEURS 		= 3,
+		SERVOS 			= 4,
+		EVITEMENT 			= 8,
+		DEBUG_DESSIN 		= 5,
+		IHM 				= 7,
+		POMPE 			= 9,
+		IO					= 3
+	};
+};
 
 namespace ConstantesLucy2014 {
 	
@@ -60,7 +75,7 @@ namespace ConstantesLucy2014 {
 		SERVO_LANCE_D 		= 0,
 		SERVO_NBR
 	};
-	
+
 	//Index des positions dans le tableau
 	enum PositionServos {
 		SERVO_LUCY_RENTRE = 0,
@@ -76,55 +91,37 @@ namespace ConstantesLucy2014 {
 	/***********************************/
 	/************ CARTES ***************/
 	/***********************************/
-	
-	namespace IDCartesLucy2014 {
-		enum {
-			ID_CARTE_CAN_USB 			= 0,
-			ID_CARTE_DEPLACEMENT 		= 1,
-			//ID_CARTE_CONTACTEURS 		= 3,
-			ID_CARTE_SERVOS 			= 4,
-			ID_CARTE_EVITEMENT 			= 8,
-			ID_CARTE_DEBUG_DESSIN 		= 5,
-			//ID_CARTE_IHM 				= 7,
-			//ID_CARTE_POMPE 			= 9,
-			ID_CARTE_IO					= 3
-		};
-	}
-	using namespace IDCartesLucy2014;
-	
 	template<int ID_CARTE>
 	struct CarteLucy {};
 	
-#ifndef TARGET_SIMULATEUR
 	template<>
-	struct CarteLucy<ID_CARTE_CAN_USB> {
+	struct CarteLucy<IDCartesLucy2014::CAN_USB> {
 		typedef CarteCAN_USB type;
 	};
-#endif
-	
+
 	template<>
-	struct CarteLucy<ID_CARTE_DEPLACEMENT> {
+	struct CarteLucy<IDCartesLucy2014::DEPLACEMENT> {
 		typedef CarteDeplacement2009 type;
 		static constexpr char const *name = "Carte déplacement";
 	};
 	template<>
-	struct CarteLucy<ID_CARTE_SERVOS> {
+	struct CarteLucy<IDCartesLucy2014::SERVOS> {
 		typedef CarteServosNova2009 type;
 	};
 	
 	template<>
-	struct CarteLucy<ID_CARTE_EVITEMENT> {
+	struct CarteLucy<IDCartesLucy2014::EVITEMENT> {
 		typedef CarteDetectAdv2009 type;
 	};
 	
 	template<>
-	struct CarteLucy<ID_CARTE_DEBUG_DESSIN> {
+	struct CarteLucy<IDCartesLucy2014::DEBUG_DESSIN> {
 		typedef CarteDebugDessin type;
 	};
 	
 #ifndef TARGET_SIMULATEUR
 	template<>
-	struct CarteLucy<ID_CARTE_IO> {
+	struct CarteLucy<IDCartesLucy2014::IO> {
 		typedef CarteIO2014 type;
 	};
 #endif

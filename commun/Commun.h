@@ -43,9 +43,9 @@ namespace std {
 }
 
 inline void setThreadName(char const *name) {
-#if defined(__LINUX__)
+#if __LINUX__
 	pthread_setname_np(pthread_self(), name);
-#elsif defined(__APPLE__) 
+#elif __APPLE__
 	pthread_setname_np(name);
 #endif
 }
