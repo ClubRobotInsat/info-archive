@@ -108,7 +108,7 @@ def createEnvironment(libs_list=[], force_debug=False):
 		env.Append(CXXFLAGS=['-ferror-limit=0'])
 
 	# Si "scons debug=1", alors on ajoute l'option "-g"
-	if ARGUMENTS.get('debug', 0) or force_debug:
+	if (ARGUMENTS.get('debug', "0") != "0") or force_debug:
 		env.Append(CCFLAGS=['-g'])
 		env.Append(CPPDEFINES=['DEBUG'])
 	else:

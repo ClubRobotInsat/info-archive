@@ -139,7 +139,7 @@ public:
 	numericValue(T const &v) : _val(v._val) {}
 
 	template<typename U = ValueType>
-	constexpr U value() const {
+	CONDITIONAL_CONSTEXPR U value() const {
 		if(_val > std::numeric_limits<U>::max() || _val < std::numeric_limits<U>::lowest()) {
 			logError("<ACHTUNG !>");
 			logError("Le type vers lequel est convertie la grandeur physique ne peut pas représenter la valeur actuelle de la grandeur !");
