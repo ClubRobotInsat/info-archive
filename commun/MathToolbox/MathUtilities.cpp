@@ -2,22 +2,7 @@
 
 #include "MathUtilities.h"
 
-// Conversions d'angles degrés <-> radians
-double DegToRad(double angleDeg) {
-	return (M_PI*angleDeg) / 180.0;
-}
-
-double RadToDeg(double angleRad) {
-	return M_1_PI*(angleRad * 180.0);
-}
-
-double ToMoinsPiPi(double angle) {
-	float temp = fmod(angle, 2 * M_PI);
-	
-	if(temp >= M_PI)
-		temp -= 2.0 * M_PI;
-	if(temp < -M_PI)
-		temp += 2.0 * M_PI;
-	
-	return temp;
-}
+// Instanciations explicites du code, facilite la vérification d'erreur
+template class numericValue<angleRad, angleRad::ValueType>;
+template class numericValue<distanceMm, distanceMm::ValueType>;
+template class numericValue<distanceMm2, distanceMm2::ValueType>;

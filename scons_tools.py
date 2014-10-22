@@ -92,7 +92,7 @@ def createEnvironment(libs_list=[], force_debug=False):
 
 	env.Append(CCFLAGS=['-Wall'])
 
-	cxxflags = ['-std=c++11']
+	cxxflags = ['-std=c++1y']
 	linkflags = []
 	if ARGUMENTS.get('arch', "32") == "32":
 		cxxflags.append('-m32')

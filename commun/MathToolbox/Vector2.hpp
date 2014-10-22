@@ -6,7 +6,7 @@
 #include <cmath>
 
 template <class T>
-Vector2<T>::Vector2() : x(T(0)), y(T(0)) {
+Vector2<T>::Vector2() : x(T()), y(T()) {
 	
 }
 
@@ -128,12 +128,6 @@ Vector2<T> Vector2<T>::operator/(const T_scalar& s) const {
 	return Vector2<T>(this->x / s, this->y / s);
 }
 
-// Produit scalaire
-template <class T>
-T Vector2<T>::operator*(const Vector2<T>& v) const {
-	return this->x * v.x + this->y * v.y;
-}
-
 // Normalisation + renvoi de la valeur de la norme
 template <class T>
 void Vector2<T>::normalize() {
@@ -144,32 +138,21 @@ void Vector2<T>::normalize() {
 
 // Calcul de la norme
 template <class T>
-double Vector2<T>::norm() const {
-	return sqrtf(x*x + y*y);
-}
-
-// Calcul de la norme au carré (plus rapide)
-template <class T>
-T Vector2<T>::squaredNorm() const {
-	return x*x + y*y;
-}
-
-// Calcul de l'angle
-template <class T>
-double Vector2<T>::angle() const {
-	return atan2(y, x);
+T Vector2<T>::norm() const {
+	return sqrt(x*x + y*y);
 }
 
 // Rotation du vecteur
 template <class T>
-Vector2<T> &Vector2<T>::rotate(double angle) {
+template <class U>
+Vector2<T> &Vector2<T>::rotate(U angle) {
 	// On multiplie par la matrice :
 	// (cos(theta), -sin(theta) )
 	// (sin(theta), cos(theta) )
 	
-	double cos_angle = cos(angle);
-	double sin_angle = sin(angle);
-	double old_x = x;
+	auto cos_angle = cos(angle);
+	auto sin_angle = sin(angle);
+	T old_x = x;
 	
 	x = cos_angle*old_x - sin_angle*y;
 	y = sin_angle*old_x + cos_angle*y;

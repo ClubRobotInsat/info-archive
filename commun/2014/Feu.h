@@ -8,7 +8,8 @@
 #ifndef FOYER_H_
 #define FOYER_H_
 
-#include "ConstantesCommunes2014.h"
+#include "../../commun/2014/ConstantesCommunes2014.h"
+#include "../../commun/MathToolbox/MathToolbox.h"
 
 class Feu {
 public:
@@ -19,29 +20,24 @@ public:
 		HORIZONTAL 	// Base dans le sens de la longueur de la table
 	} SensFeu;
 
-	Feu(int x, int y, SensFeu sens, int level);
+	Feu(distanceMm x, distanceMm y, SensFeu sens, int level);
 	virtual ~Feu();
-
-	/// Utils
-	Constantes2014::CouleurRobot const changeColor(Constantes2014::CouleurRobot c) const;
 
 	/// Getters
 	// Const = accessible depuis un objet "Feu" constant.
-	int getPosX() const {return _x;}
-	int getPosY() const {return _y;}
+	Vector2mm getPosition() const {return _position;}
 	int getLevel() const {return _level;}
 	SensFeu getSens() const {return _sens;}
 	Constantes2014::CouleurRobot getCouleurTop() const {return _couleurTop;}
 	Constantes2014::CouleurRobot getCouleurRight() const {return _couleurRight;}
-	Constantes2014::CouleurRobot getCouleurLeft() const {return changeColor(_couleurRight);}
+	Constantes2014::CouleurRobot getCouleurLeft() const {return !_couleurRight;}
 	Constantes2014::CouleurRobot getCouleurUp() const {return _couleurUp;}
-	Constantes2014::CouleurRobot getCouleurDown() const {return changeColor(_couleurUp);}
+	Constantes2014::CouleurRobot getCouleurDown() const {return !_couleurUp;}
 	bool isCollected() const {return _collected;}
 
 	/// Setters
 	// Pas const = pas accessibles depuis un objet "Feu" constant car modifie ses attributs
-	void setPosX(int pos) {_x = pos;}
-	void setPosY(int pos) {_y = pos;}
+	void setPosition(Vector2mm const &pos) {_position = pos;}
 	void setLevel(int level) {_level = level;}
 	void setSens(SensFeu sens) {_sens = sens;}
 	void setCouleurTop(Constantes2014::CouleurRobot couleur) {_couleurTop = couleur;}
@@ -51,7 +47,7 @@ public:
 	void setCollected(bool collected) const {_collected = collected;}
 
 private:
-	int _x, _y;
+	Vector2mm _position;
 	// niveau en hauteur : 0 = sol, 1, 2, 3 = empilé
 	int _level;
 	SensFeu _sens;

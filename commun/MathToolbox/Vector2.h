@@ -91,22 +91,31 @@ public:
 	inline Vector2<T> operator/(const T_scalar& s) const;
 	
 	// Produit scalaire
-	inline T operator*(const Vector2<T>& v) const;
-	
+	// Bug de Clang dans sa version 3.5 au moins, qui butte sur la résolution automatique de type de fonctions (avec génération des symboles de debug), faut lui expliquer
+	auto operator*(const Vector2<T>& v) -> decltype(x * v.x) const {
+		return this->x * v.x + this->y * v.y;
+	}
+
 	// Normalisation + renvoi de la valeur de la norme
 	inline void normalize();
 	
 	// Calcul de la norme
-	inline double norm() const;
+	inline T norm() const;
 	
 	// Calcul de la norme au carré (plus rapide)
-	inline T squaredNorm() const;
+	inline auto squaredNorm() -> decltype(x * x) const {
+		return *this * *this;
+	}
 	
 	// Calcul de l'angle
-	inline double angle() const;
-	
+	// Bug de Clang dans sa version 3.5 au moins, qui butte sur la résolution automatique de type de fonctions (avec génération des symboles de debug), faut lui expliquer
+	auto angle() -> decltype(atan2(y, x)) const {
+		return atan2(y, x);
+	}
+
 	// Rotation du vecteur
-	inline Vector2<T> &rotate(double angle);
+	template<typename U>
+	inline Vector2<T> &rotate(U angle);
 };
 
 template <typename T>

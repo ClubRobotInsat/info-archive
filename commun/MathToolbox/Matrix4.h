@@ -148,7 +148,7 @@ public:
 	template <class U>
 	static Matrix4<T> rotationMatrix(Vector3<U> axis, U angleDegrees) {
 		axis.normalize();
-		T a = DegToRad(angleDegrees);
+		T a = angleDegrees * M_PI / 180;
 		
 		T c = cos(a);
 		T s = sin(a);
