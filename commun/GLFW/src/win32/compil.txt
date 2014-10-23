@@ -1,0 +1,21 @@
+gcc -c -I. -I.. -Wall -Os -o enable.o ..\\enable.c
+gcc -c -I. -I.. -Wall -Os -o fullscreen.o ..\\fullscreen.c
+gcc -c -I. -I.. -Wall -Os -o glext.o ..\\glext.c
+gcc -c -I. -I.. -Wall -O3 -ffast-math -o image.o ..\\image.c
+gcc -c -I. -I.. -Wall -Os -o init.o ..\\init.c
+gcc -c -I. -I.. -Wall -Os -o input.o ..\\input.c
+gcc -c -I. -I.. -Wall -Os -o joystick.o ..\\joystick.c
+gcc -c -I. -I.. -Wall -Os -o stream.o ..\\stream.c
+gcc -c -I. -I.. -Wall -O3 -ffast-math -o tga.o ..\\tga.c
+gcc -c -I. -I.. -Wall -Os -o thread.o ..\\thread.c
+gcc -c -I. -I.. -Wall -Os -o time.o ..\\time.c
+gcc -c -I. -I.. -Wall -Os -o window.o ..\\window.c
+gcc -c -I. -I.. -Wall -Os -o win32_enable.o win32_enable.c
+gcc -c -I. -I.. -Wall -Os -o win32_fullscreen.o win32_fullscreen.c
+gcc -c -I. -I.. -Wall -Os -o win32_glext.o win32_glext.c
+gcc -c -I. -I.. -Wall -Os -o win32_init.o win32_init.c
+gcc -c -I. -I.. -Wall -Os -o win32_joystick.o win32_joystick.c
+gcc -c -I. -I.. -Wall -Os -o win32_thread.o win32_thread.c
+gcc -c -I. -I.. -Wall -Os -o win32_time.o win32_time.c
+gcc -c -I. -I.. -Wall -Os -o win32_window.o win32_window.c
+ar -rcs libglfw.a enable.o fullscreen.o glext.o image.o init.o input.o joystick.o stream.o tga.o thread.o time.o window.o win32_enable.o win32_fullscreen.o win32_glext.o win32_init.o win32_joystick.o win32_thread.o win32_time.o win32_window.o

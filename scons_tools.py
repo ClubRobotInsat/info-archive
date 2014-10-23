@@ -264,8 +264,7 @@ def createEnvironment(libs_list=[], force_debug=False):
 			env.Append(LIBS=['Webcam2013'])
 
 		elif lib == 'glfw':
-			env.Append(CPPPATH=[root_dir + '/simulateur/GLFW/include'])
-			env.Append(LIBPATH=[root_dir + '/simulateur/GLFW/lib'])
+			env.Append(LIBPATH=[root_dir + '/commun/GLFW/lib'])
 
 			if sys.platform == 'win32':
 				env.Append(LIBS=['glfw', 'opengl32', 'glu32'])

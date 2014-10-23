@@ -1,0 +1,10 @@
+import os
+import sys
+
+if os.name == 'posix':
+	if  sys.platform == 'darwin':
+		SConscript('cocoa/SConstruct')
+	else:
+		SConscript('x11/SConstruct')
+else:
+	SConscript('win32/SConstruct')

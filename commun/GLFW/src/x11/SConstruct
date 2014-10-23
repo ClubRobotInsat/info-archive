@@ -1,0 +1,41 @@
+import sys
+sys.path.append('../../..')
+from scons_tools import *
+
+#---------------------------------------------
+# Liste des sources
+#---------------------------------------------
+sources = Split("""
+	../enable.c
+	../fullscreen.c
+	../glext.c
+	../image.c
+	../init.c
+	../input.c
+	../joystick.c
+	../stream.c
+	../tga.c
+	../thread.c
+	../time.c
+	../window.c
+	x11_enable.c
+	x11_fullscreen.c
+	x11_glext.c
+	x11_init.c
+	x11_joystick.c
+	x11_keysym2unicode.c
+	x11_thread.c
+	x11_time.c
+	x11_window.c
+""")
+
+#---------------------------------------------
+# options de l'environement
+#---------------------------------------------
+env = createEnvironment([])
+env.Append(CPPPATH=['.','..'], CPPDEFINES=['_GLFW_HAS_PTHREAD'])
+
+#---------------------------------------------
+# generation de la library
+#---------------------------------------------
+env.StaticLibrary('../../lib/glfw', sources)
