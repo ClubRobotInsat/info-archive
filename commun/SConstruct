@@ -10,7 +10,6 @@ SConscript('GLFW/SConstruct')
 env = createEnvironment(['gtk', 'pthreads', 'sockets'])
 
 src_list = Split("""
-Clock/Clock.cpp
 debug/CGTKwin.cpp
 MathToolbox/MathUtilities.cpp
 log/Log.cpp
