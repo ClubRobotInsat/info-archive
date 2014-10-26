@@ -14,6 +14,7 @@
 #include "../../../simulateur/cartes/CarteDebugDessin.h"
 #include "../../../simulateur/cartes/CartePneumatique2013.h"
 #include "../../../simulateur/cartes/CarteDetectAdv2009.h"
+#include "../../../simulateur/cartes/CarteIO2014.h"
 #include "../../../simulateur/cartes/CarteCAN_USB.h"
 
 #else
@@ -31,43 +32,56 @@
 
 #endif
 
-struct IDCartesLucy2014 {
-	enum {
-		CAN_USB 			= 0,
-		DEPLACEMENT 		= 1,
-		CONTACTEURS 		= 3,
-		SERVOS 			= 4,
-		EVITEMENT 			= 8,
-		DEBUG_DESSIN 		= 5,
-		IHM 				= 7,
-		POMPE 			= 9,
-		IO					= 3
-	};
-};
+#define STRUCT_NAMESPACE(STRUCT_NAME, NAMESPACE_NAME, ...) \
+struct STRUCT_NAME __VA_ARGS__; \
+namespace NAMESPACE_NAME __VA_ARGS__
 
-namespace ConstantesLucy2014 {
-	
+#define EXPLICIT_INSTANCIATION(SCOPE1, SCOPE2, ...) \
+template<> struct SCOPE1::__VA_ARGS__ \
+template<> struct SCOPE2::__VA_ARGS__
+
+
+// Définit la struct IDCartesLucy2014, et le namespace IDCartesLucy2014Namespace.
+// Les 2 ont le même contenu, la struct peut être utilisée en paramètre template et le namespace peut être mis dans un using namespace.
+STRUCT_NAMESPACE(IDCartesLucy2014, IDCartesLucy2014Namespace,
+				 {
+					 enum {
+						 CAN_USB 			= 0,
+						 DEPLACEMENT 		= 1,
+						 CONTACTEURS 		= 3,
+						 SERVOS 			= 4,
+						 EVITEMENT 			= 8,
+						 DEBUG_DESSIN 		= 5,
+						 IHM 				= 7,
+						 POMPE 				= 9,
+						 IO					= 3
+					 };
+				 }
+				 )
+
+// Le contenu de ce namespace va être ajouté enrichi d'autres éléments plus bas, et son contenu final sera copié dans une struct ConstantesLucy2014.
+namespace ConstantesLucy2014Namespace {
 	/***********************************/
 	/********** CONTACTEURS ************/
 	/***********************************/
-	
+
 	enum NumContacteurs {
 		CONTACTEUR_TIRETTE = 1,
 		CONTACTEUR_COULEUR = 3,
 		CONTACTEUR_FRESQUE_GAUCHE = 6,
 		CONTACTEUR_FRESQUE_DROITE = 5
 	};
-	
+
 	enum idFresques {
 		FRESQUE_DROITE = 0,
 		FRESQUE_GAUCHE
 	};
 
-	
+
 	/***********************************/
 	/************ SERVOS ***************/
 	/***********************************/
-	
+
 	//ID des servos
 	enum Servos {
 		SERVO_CATAPULTE 	= 1,
@@ -82,50 +96,64 @@ namespace ConstantesLucy2014 {
 		SERVO_LUCY_SORTI,
 		SERVO_LUCY_NBR
 	};
-	
-	//Position des servos
-	extern const int positionsServoCatapulte[SERVO_LUCY_NBR];
-	extern const int positionsServoLanceG[SERVO_LUCY_NBR];
-	extern const int positionsServoLanceD[SERVO_LUCY_NBR];
-	
-	/***********************************/
-	/************ CARTES ***************/
-	/***********************************/
-	template<int ID_CARTE>
-	struct CarteLucy {};
-	
-	template<>
-	struct CarteLucy<IDCartesLucy2014::CAN_USB> {
-		typedef CarteCAN_USB type;
-	};
-
-	template<>
-	struct CarteLucy<IDCartesLucy2014::DEPLACEMENT> {
-		typedef CarteDeplacement2009 type;
-		static constexpr char const *name = "Carte déplacement";
-	};
-	template<>
-	struct CarteLucy<IDCartesLucy2014::SERVOS> {
-		typedef CarteServosNova2009 type;
-	};
-	
-	template<>
-	struct CarteLucy<IDCartesLucy2014::EVITEMENT> {
-		typedef CarteDetectAdv2009 type;
-	};
-	
-	template<>
-	struct CarteLucy<IDCartesLucy2014::DEBUG_DESSIN> {
-		typedef CarteDebugDessin type;
-	};
-	
-#ifndef TARGET_SIMULATEUR
-	template<>
-	struct CarteLucy<IDCartesLucy2014::IO> {
-		typedef CarteIO2014 type;
-	};
-#endif
 }
+
+// Définit la struct ConstantesLucy2014, et le namespace ConstantesLucy2014Namespace.
+// Les 2 ont le même contenu, la struct peut être utilisée en paramètre template et le namespace peut être mis dans un using namespace.
+STRUCT_NAMESPACE(ConstantesLucy2014, ConstantesLucy2014Namespace,
+				 {
+					 using NumContacteurs = ConstantesLucy2014Namespace::NumContacteurs;
+					 using idFresques = ConstantesLucy2014Namespace::idFresques;
+					 using Servos = ConstantesLucy2014Namespace::Servos;
+					 using PositionServos = ConstantesLucy2014Namespace::PositionServos;
+					 
+					 //Position des servos
+					 const int positionsServoCatapulte[PositionServos::SERVO_LUCY_NBR] = {1350, 1500};
+					 const int positionsServoLanceG[PositionServos::SERVO_LUCY_NBR] = {1760, 1900};
+					 const int positionsServoLanceD[PositionServos::SERVO_LUCY_NBR] = {1900, 2150};
+
+					 /***********************************/
+					 /************ CARTES ***************/
+					 /***********************************/
+					 template<int ID_CARTE>
+					 struct CarteInfo {};
+				 }
+				 )
+
+EXPLICIT_INSTANCIATION(ConstantesLucy2014, ConstantesLucy2014Namespace,
+					   CarteInfo<IDCartesLucy2014::CAN_USB> {
+						   typedef CarteCAN_USB type;
+					   };
+					   )
+
+EXPLICIT_INSTANCIATION(ConstantesLucy2014, ConstantesLucy2014Namespace,
+					   CarteInfo<IDCartesLucy2014::DEPLACEMENT> {
+						   typedef CarteDeplacement2009 type;
+						   static constexpr char const *name = "Carte déplacement";
+					   };)
+EXPLICIT_INSTANCIATION(ConstantesLucy2014, ConstantesLucy2014Namespace,
+					   CarteInfo<IDCartesLucy2014::SERVOS> {
+						   typedef CarteServosNova2009 type;
+					   };
+					   )
+
+EXPLICIT_INSTANCIATION(ConstantesLucy2014, ConstantesLucy2014Namespace,
+					   CarteInfo<IDCartesLucy2014::EVITEMENT> {
+						   typedef CarteDetectAdv2009 type;
+					   };
+					   )
+
+EXPLICIT_INSTANCIATION(ConstantesLucy2014, ConstantesLucy2014Namespace,
+					   CarteInfo<IDCartesLucy2014::DEBUG_DESSIN> {
+						   typedef CarteDebugDessin type;
+					   };
+					   )
+
+EXPLICIT_INSTANCIATION(ConstantesLucy2014, ConstantesLucy2014Namespace,
+					   CarteInfo<IDCartesLucy2014::IO> {
+						   typedef CarteIO2014 type;
+					   };
+					   )
 
 #endif
 

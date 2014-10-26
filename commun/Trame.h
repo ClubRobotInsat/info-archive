@@ -11,6 +11,34 @@
 #include <string>
 #include <cstdint>
 
+class Byte {
+public:
+	explicit constexpr Byte(std::uint8_t val) : _value(val) {}
+	constexpr Byte(Byte const &) = default;
+	constexpr bool operator==(Byte const &b) const { return _value == b._value; }
+	constexpr bool operator==(std::uint8_t b) const { return _value == b; }
+
+	constexpr std::uint8_t value() const { return _value; }
+	constexpr operator std::uint8_t() const { return _value; }
+
+private:
+	std::uint8_t _value;
+};
+
+inline std::ostream &operator<<(std::ostream &s, Byte const &b) {
+	// Moche, mais comme ça on touche pas aux flags du flux (std::hex etc.)
+	static char const lookup[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+	std::uint8_t low = b.value() & 0x0F, high = (b.value() & 0xF0) >> 4;
+
+	s << "0x" << lookup[high] << lookup[low];
+
+	return s;
+}
+
+inline constexpr Byte operator"" _b(unsigned long long value) {
+	return Byte(value);
+}
+
 class Trame {
 public:
 	/// Valeurs constantes de certains octets des trames
@@ -63,7 +91,7 @@ public:
 	// lève ErreurIdCarteTropGrand si l'id de la carte est trop grand
 	// lève ErreurNumCommandeTropGrand si la commande est 0xFtrop grande
 	explicit Trame(std::uint8_t id, std::uint8_t cmd, std::uint8_t nbDonnees, std::uint8_t const donnees[]);
-	explicit Trame(std::uint8_t id, std::uint8_t cmd, std::uint8_t donnees) : Trame(id, cmd, 1, &donnees) { }
+	explicit Trame(std::uint8_t id, std::uint8_t cmd, std::uint8_t donnee) : Trame(id, cmd, 1, &donnee) { }
 
 	Trame(Trame const &t) = default;
 	Trame(Trame &&t) = default;
@@ -131,6 +159,8 @@ private:
 
 	template<typename T, typename... Args>
 	void addDonneesInternal(T &&value, Args &&... values);
+	template<typename... Args>
+	void addDonneesInternal(Byte const &value, Args &&... values);
 
 	// numéro de la carte à qui est adressée cette trame
 	std::uint8_t _id = 0;
@@ -177,8 +207,19 @@ void Trame::addDonneesInternal(T &&value, Args &&... values) {
 	if(this->getNbDonnees() + sizeof(T) > Trame::DONNEES_TRAME_MAX)
 		throw ErreurTropDeDonnees(this->getNbDonnees() + sizeof(T));
 
-	std::uint8_t * pointer = reinterpret_cast<std::uint8_t *>(&value);
+	auto pointer = reinterpret_cast<std::uint8_t const *>(&value);
 	_donnees.insert(_donnees.end(), pointer, pointer + sizeof(T));
+
+	this->addDonneesInternal(values...);
+}
+
+template<typename... Args>
+void Trame::addDonneesInternal(Byte const &value, Args &&... values) {
+	if(this->getNbDonnees() + 1 > Trame::DONNEES_TRAME_MAX)
+		throw ErreurTropDeDonnees(this->getNbDonnees() + 1);
+
+	auto byte = value.value();
+	_donnees.insert(_donnees.end(), &byte, &byte + 1);
 
 	this->addDonneesInternal(values...);
 }

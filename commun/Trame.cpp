@@ -97,17 +97,15 @@ std::ostream & operator <<(std::ostream & o, const Trame &t) {
 std::string Trame::toString() const {
 	std::ostringstream oss;
 
-	oss << std::hex;
-
 	oss << "[id=";
-	oss << std::setfill('0') << std::setw(2) << (int)_id;
+	oss << int(_id);
 	oss << ":";
 	oss << "cmd=";
-	oss << std::setfill('0') << std::setw(2) << (int)_cmd;
+	oss << Byte(_cmd);
 	oss << ":";
 	oss << "donnees=";
 	for(std::uint8_t numDonnee = 0; numDonnee < _donnees.size(); ++numDonnee) {
-		oss << std::setfill('0') << std::setw(2) << (int)_donnees[numDonnee];
+		oss << Byte(_donnees[numDonnee]);
 		if(numDonnee == _donnees.size()-1)
 			oss << "]";
 		else
@@ -119,9 +117,9 @@ std::string Trame::toString() const {
 // convertir la tramme en chaine de caractere lisible et decimal
 std::string Trame::toStringLong() const {
 	std::ostringstream oss;
-	oss << "id=" << (int) _id << " cmd=" << std::hex << (int) _cmd << " donnees={";
+	oss << "id=" << int(_id) << " cmd=" << Byte(_cmd) << " donnees={";
 	for(std::uint8_t numDonnee = 0; numDonnee < _donnees.size(); ++numDonnee)
-		oss << (int) _donnees[numDonnee] << ',';
+		oss << (int)_donnees[numDonnee] << ',';
 	oss << '}';
 	return oss.str();
 }

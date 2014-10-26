@@ -35,25 +35,35 @@
 
 #endif
 
-struct IDCartesToumai2014 {
-	enum {
-		CAN_USB = 0,
-		PREMIER_ID_CARTE 						= 1,
-		DEPLACEMENT 					= PREMIER_ID_CARTE,
-		ASSERVISSEMENT_ASCENSEUR		= 2,
-		SERVOS_1 						= 4,
-		SERVOS_2	 					= 5,
-		IO 							= 6,
-		EVITEMENT 						= 8,
-		PNEUMATIQUE 					= 9,
-		DEBUG_DESSIN 					= 10,
-		DERNIER_ID_CARTE
-		//ID_CARTE_DEBUG = 11
-	};
-};
+#define STRUCT_NAMESPACE(STRUCT_NAME, NAMESPACE_NAME, ...) \
+struct STRUCT_NAME __VA_ARGS__; \
+namespace NAMESPACE_NAME __VA_ARGS__
 
-namespace ConstantesToumai2014 {
-	
+#define EXPLICIT_INSTANCIATION(SCOPE1, SCOPE2, ...) \
+template<> struct SCOPE1::__VA_ARGS__ \
+template<> struct SCOPE2::__VA_ARGS__
+
+// Définit la structure
+STRUCT_NAMESPACE(IDCartesToumai2014, IDCartesToumai2014Namespace,
+				 {
+					 enum {
+						 CAN_USB 						= 0,
+						 PREMIER_ID_CARTE 				= 1,
+						 DEPLACEMENT 					= PREMIER_ID_CARTE,
+						 ASSERVISSEMENT_ASCENSEUR		= 2,
+						 SERVOS_1 						= 4,
+						 SERVOS_2	 					= 5,
+						 IO 								= 6,
+						 EVITEMENT 						= 8,
+						 PNEUMATIQUE 					= 9,
+						 DEBUG_DESSIN 					= 10,
+						 DERNIER_ID_CARTE
+						 //ID_CARTE_DEBUG = 11
+					 };
+				 }
+				 )
+
+namespace ConstantesToumai2014Namespace {
 	/////////////////// CONTACTEURS ///////////////////
 	// Numeros des contacteurs et les roles associes
 	enum NumContacteur {
@@ -69,7 +79,7 @@ namespace ConstantesToumai2014 {
 		CONTACTEUR_VENTOUSE 		= 10,
 		CONTACTEUR_RESERVOIR_FEU	= 11
 	};
-	
+
 	/////////////////// SERVOS ///////////////////
 	// Indice des servos
 	enum ServosCarte1 {
@@ -79,7 +89,7 @@ namespace ConstantesToumai2014 {
 		CARTE1_PINCE_RETOURNEMENT 	= 0,
 		CARTE1_NBR 					= 4
 	};
-	
+
 	enum ServosCarte2 {
 		CARTE2_T_VENTOUSE	= 2,
 		CARTE2_SERPE_BAS 	= 1,
@@ -94,7 +104,7 @@ namespace ConstantesToumai2014 {
 		POSITION_GRIFFE_OUVERT,
 		POSITION_GRIFFE_NBR
 	};
-	
+
 	enum PositionPanierFruit {
 		POSITION_PANIER_HORIZ = 0,
 		POSITION_PANIER_VERTICALE,
@@ -102,7 +112,7 @@ namespace ConstantesToumai2014 {
 		POSITION_PANIER_TRANSPORT,
 		POSITION_PANIER_NBR
 	};
-	
+
 	enum PositionPinceSaisie {
 		POSITION_PINCE_S_OUVERTE = 0,
 		POSITION_PINCE_S_FERMEE,
@@ -139,16 +149,6 @@ namespace ConstantesToumai2014 {
 		ASC_MAX_HAUT = 0,
 		ASC_MAX_BAS
 	};
-
-	// Déclaration des positions
-	extern const int positionGriffeFruit[POSITION_GRIFFE_NBR];
-	extern const int positionPanierFruit[POSITION_PANIER_NBR];
-	extern const int positionPinceSaisie[POSITION_PINCE_S_NBR];
-	extern const int positionPinceRetournement[POSITION_PINCE_R_NBR];
-	extern const int positionTVentouse[POSITION_T_VENTOUSE_NBR];
-	extern const int positionSerpeBas[POSITION_SERPE_BAS_NBR];
-	extern const int positionVideFeu[POSITION_VIDE_FEU_NBR];
-	
 	/////////////////// MOTEURS ///////////////////
 	// Position des moteurs
 	enum PositionsAsc {
@@ -163,52 +163,90 @@ namespace ConstantesToumai2014 {
 		ASC_PINCE,
 		NBR_POSITIONS_ASC
 	};
-	
-	// Déclaration des positions
-	extern const int tableauPositionsAsc[NBR_POSITIONS_ASC];
-
-	/////////////////// CARTES ///////////////////
-
-	template<int ID_CARTE>
-	struct CarteToumai {};
-	
-	template<>
-		struct CarteToumai<IDCartesToumai2014::CAN_USB> {
-			typedef CarteCAN_USB type;
-	};
-	template<>
-	struct CarteToumai<IDCartesToumai2014::DEPLACEMENT> {
-		typedef CarteDeplacement2009 type;
-		static constexpr char const *name = "Carte déplacement";
-	};
-	template<>
-	struct CarteToumai<IDCartesToumai2014::ASSERVISSEMENT_ASCENSEUR> {
-		typedef CarteAsservissement2009 type;
-	};
-	template<>
-	struct CarteToumai<IDCartesToumai2014::EVITEMENT> {
-		typedef CarteDetectAdv2009 type;
-	};
-	template<>
-	struct CarteToumai<IDCartesToumai2014::IO> {
-		typedef CarteIO2014 type;
-	};
-	template<>
-	struct CarteToumai<IDCartesToumai2014::SERVOS_1> {
-		typedef CarteServosNova2009 type;
-	};
-	template<>
-	struct CarteToumai<IDCartesToumai2014::SERVOS_2> {
-		typedef CarteServosNova2009 type;
-	};
-	template<>
-	struct CarteToumai<IDCartesToumai2014::PNEUMATIQUE> {
-		typedef CartePneumatique2014 type;
-	};
-	template<>
-	struct CarteToumai<IDCartesToumai2014::DEBUG_DESSIN> {
-		typedef CarteDebugDessin type;
-	};
 }
+
+STRUCT_NAMESPACE(ConstantesToumai2014, ConstantesToumai2014Namespace,
+				 {
+					 using NumContacteur = ConstantesToumai2014Namespace::NumContacteur;
+					 using ServosCarte1 = ConstantesToumai2014Namespace::ServosCarte1;
+					 using ServosCarte2 = ConstantesToumai2014Namespace::ServosCarte2;
+					 using PositionGriffeFruit = ConstantesToumai2014Namespace::PositionGriffeFruit;
+					 using PositionPanierFruit = ConstantesToumai2014Namespace::PositionPanierFruit;
+					 using PositionPinceSaisie = ConstantesToumai2014Namespace::PositionPinceSaisie;
+					 using PositionPinceRetournement = ConstantesToumai2014Namespace::PositionPinceRetournement;
+					 using PositionTVentouse = ConstantesToumai2014Namespace::PositionTVentouse;
+					 using PositionSerpeBas = ConstantesToumai2014Namespace::PositionSerpeBas;
+					 using PositionVideFeu = ConstantesToumai2014Namespace::PositionVideFeu;
+					 using PositionsMaxAscenseur = ConstantesToumai2014Namespace::PositionsMaxAscenseur;
+					 using PositionsAsc = ConstantesToumai2014Namespace::PositionsAsc;
+
+					 // Déclaration des positions
+					 const int positionGriffeFruit[PositionGriffeFruit::POSITION_GRIFFE_NBR] = {950, 800, 1220};
+					 const int positionPanierFruit[PositionPanierFruit::POSITION_PANIER_NBR] = {1570, 2400, 1350, 1700};
+					 const int positionPinceSaisie[PositionPinceSaisie::POSITION_PINCE_S_NBR] = {1300, 1790};
+					 const int positionPinceRetournement[PositionPinceRetournement::POSITION_PINCE_R_NBR] = {575, 2490};
+					 const int positionTVentouse[PositionTVentouse::POSITION_T_VENTOUSE_NBR] = {790, 1430, 2310};
+					 const int positionSerpeBas[PositionSerpeBas::POSITION_SERPE_BAS_NBR] = {1950, 1730, 580};
+					 const int positionVideFeu[PositionVideFeu::POSITION_VIDE_FEU_NBR] = {1980, 1340};
+
+					 // Déclaration des positions
+					 const int tableauPositionsAsc[PositionsAsc::NBR_POSITIONS_ASC] = {/*14200*/15000, 20000, 24500, /*30671*/31000, 21500, /*17000*/17500, 2000, 0};
+
+					 /////////////////// CARTES ///////////////////
+
+					 template<int ID_CARTE>
+					 struct CarteInfo {};
+
+					 //using namespace Constantes;
+				 };
+				 )
+
+EXPLICIT_INSTANCIATION(ConstantesToumai2014, ConstantesToumai2014Namespace,
+					   CarteInfo<IDCartesToumai2014::CAN_USB> {
+						   typedef CarteCAN_USB type;
+					   };
+					   )
+EXPLICIT_INSTANCIATION(ConstantesToumai2014, ConstantesToumai2014Namespace,
+					   CarteInfo<IDCartesToumai2014::DEPLACEMENT> {
+						   typedef CarteDeplacement2009 type;
+					   };
+					   )
+EXPLICIT_INSTANCIATION(ConstantesToumai2014, ConstantesToumai2014Namespace,
+					   CarteInfo<IDCartesToumai2014::ASSERVISSEMENT_ASCENSEUR> {
+						   typedef CarteAsservissement2009 type;
+					   };
+					   )
+EXPLICIT_INSTANCIATION(ConstantesToumai2014, ConstantesToumai2014Namespace,
+					   CarteInfo<IDCartesToumai2014::EVITEMENT> {
+						   typedef CarteDetectAdv2009 type;
+					   };
+					   )
+EXPLICIT_INSTANCIATION(ConstantesToumai2014, ConstantesToumai2014Namespace,
+					   CarteInfo<IDCartesToumai2014::IO> {
+						   typedef CarteIO2014 type;
+					   };
+					   )
+EXPLICIT_INSTANCIATION(ConstantesToumai2014, ConstantesToumai2014Namespace,
+					   CarteInfo<IDCartesToumai2014::SERVOS_1> {
+						   typedef CarteServosNova2009 type;
+					   };
+					   )
+EXPLICIT_INSTANCIATION(ConstantesToumai2014, ConstantesToumai2014Namespace,
+					   CarteInfo<IDCartesToumai2014::SERVOS_2> {
+						   typedef CarteServosNova2009 type;
+					   };
+					   )
+EXPLICIT_INSTANCIATION(ConstantesToumai2014, ConstantesToumai2014Namespace,
+					   CarteInfo<IDCartesToumai2014::PNEUMATIQUE> {
+						   typedef CartePneumatique2014 type;
+					   };
+					   )
+EXPLICIT_INSTANCIATION(ConstantesToumai2014, ConstantesToumai2014Namespace,
+					   CarteInfo<IDCartesToumai2014::DEBUG_DESSIN> {
+						   typedef CarteDebugDessin type;
+					   };
+					   )
+
+
 #endif
 

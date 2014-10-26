@@ -1,5 +1,5 @@
-#ifndef _CLOCK_H
-#define _CLOCK_H
+#ifndef _CLOCK_H_H
+#define _CLOCK_H_H
 
 #include <chrono>
 #include <iostream>
