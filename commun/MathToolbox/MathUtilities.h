@@ -280,7 +280,7 @@ public:
 	}
 
 	static inline constexpr angleRad makeFromRad(long double rad) { return angleRad(rad); }
-	static inline constexpr angleRad makeFromMilliRad(long double millirad) { return angleRad(millirad * 1000); }
+	static inline constexpr angleRad makeFromMilliRad(long double millirad) { return angleRad(millirad / 1000); }
 	static inline constexpr angleRad makeFromDeg(long double deg) {
 		return angleRad(deg / 180 * M_PI);
 	}

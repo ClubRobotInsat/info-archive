@@ -32,6 +32,8 @@
 
 #endif
 
+#include "../../Enum.h"
+
 #define STRUCT_NAMESPACE(STRUCT_NAME, NAMESPACE_NAME, ...) \
 struct STRUCT_NAME __VA_ARGS__; \
 namespace NAMESPACE_NAME __VA_ARGS__
@@ -43,19 +45,26 @@ template<> struct SCOPE2::__VA_ARGS__
 
 // Définit la struct IDCartesLucy2014, et le namespace IDCartesLucy2014Namespace.
 // Les 2 ont le même contenu, la struct peut être utilisée en paramètre template et le namespace peut être mis dans un using namespace.
+namespace IDCartesLucy2014Namespace {
+	ENUM_NO_IMPL(IDCartes,
+				 CAN_USB 			/*= 0*/,
+				 DEPLACEMENT 		/*= 1*/,
+				 PLACEHOLDER2,
+				 CONTACTEURS 		/*= 3*/,
+				 SERVOS 			/*= 4*/,
+				 DEBUG_DESSIN 		/*= 5*/,
+				 IO					/*= 6*/,
+				 IHM 				/*= 7*/,
+				 EVITEMENT 			/*= 8*/,
+				 POMPE 				/*= 9*/
+	);
+}
+
+ENUM_IMPL(IDCartes, IDCartesLucy2014Namespace);
+
 STRUCT_NAMESPACE(IDCartesLucy2014, IDCartesLucy2014Namespace,
 				 {
-					 enum {
-						 CAN_USB 			= 0,
-						 DEPLACEMENT 		= 1,
-						 CONTACTEURS 		= 3,
-						 SERVOS 			= 4,
-						 EVITEMENT 			= 8,
-						 DEBUG_DESSIN 		= 5,
-						 IHM 				= 7,
-						 POMPE 				= 9,
-						 IO					= 3
-					 };
+					 using IDCartes = IDCartesLucy2014Namespace::IDCartes;
 				 }
 				 )
 
@@ -121,36 +130,36 @@ STRUCT_NAMESPACE(ConstantesLucy2014, ConstantesLucy2014Namespace,
 				 )
 
 EXPLICIT_INSTANCIATION(ConstantesLucy2014, ConstantesLucy2014Namespace,
-					   CarteInfo<IDCartesLucy2014::CAN_USB> {
+					   CarteInfo<IDCartesLucy2014Namespace::CAN_USB> {
 						   typedef CarteCAN_USB type;
 					   };
 					   )
 
 EXPLICIT_INSTANCIATION(ConstantesLucy2014, ConstantesLucy2014Namespace,
-					   CarteInfo<IDCartesLucy2014::DEPLACEMENT> {
+					   CarteInfo<IDCartesLucy2014Namespace::DEPLACEMENT> {
 						   typedef CarteDeplacement2009 type;
 						   static constexpr char const *name = "Carte déplacement";
 					   };)
 EXPLICIT_INSTANCIATION(ConstantesLucy2014, ConstantesLucy2014Namespace,
-					   CarteInfo<IDCartesLucy2014::SERVOS> {
+					   CarteInfo<IDCartesLucy2014Namespace::SERVOS> {
 						   typedef CarteServosNova2009 type;
 					   };
 					   )
 
 EXPLICIT_INSTANCIATION(ConstantesLucy2014, ConstantesLucy2014Namespace,
-					   CarteInfo<IDCartesLucy2014::EVITEMENT> {
+					   CarteInfo<IDCartesLucy2014Namespace::EVITEMENT> {
 						   typedef CarteDetectAdv2009 type;
 					   };
 					   )
 
 EXPLICIT_INSTANCIATION(ConstantesLucy2014, ConstantesLucy2014Namespace,
-					   CarteInfo<IDCartesLucy2014::DEBUG_DESSIN> {
+					   CarteInfo<IDCartesLucy2014Namespace::DEBUG_DESSIN> {
 						   typedef CarteDebugDessin type;
 					   };
 					   )
 
 EXPLICIT_INSTANCIATION(ConstantesLucy2014, ConstantesLucy2014Namespace,
-					   CarteInfo<IDCartesLucy2014::IO> {
+					   CarteInfo<IDCartesLucy2014Namespace::IO> {
 						   typedef CarteIO2014 type;
 					   };
 					   )

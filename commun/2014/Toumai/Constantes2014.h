@@ -35,6 +35,8 @@
 
 #endif
 
+#include "../../Enum.h"
+
 #define STRUCT_NAMESPACE(STRUCT_NAME, NAMESPACE_NAME, ...) \
 struct STRUCT_NAME __VA_ARGS__; \
 namespace NAMESPACE_NAME __VA_ARGS__
@@ -43,23 +45,28 @@ namespace NAMESPACE_NAME __VA_ARGS__
 template<> struct SCOPE1::__VA_ARGS__ \
 template<> struct SCOPE2::__VA_ARGS__
 
-// Définit la structure
+namespace IDCartesToumai2014Namespace {
+	ENUM_NO_IMPL(IDCartes,
+		CAN_USB 						/*= 0*/,
+		DEPLACEMENT 					/*= 1*/,
+		ASSERVISSEMENT_ASCENSEUR		/*= 2*/,
+		PLACEHOLDER3,
+		SERVOS_1 						/*= 4*/,
+		SERVOS_2	 					/*= 5*/,
+		IO 								/*= 6*/,
+		PLACEHOLDER7,
+		EVITEMENT 						/*= 8*/,
+		PNEUMATIQUE 					/*= 9*/,
+		DEBUG_DESSIN 					/*= 10*/
+		//ID_CARTE_DEBUG = 11
+	);
+}
+
+ENUM_IMPL(IDCartes, IDCartesToumai2014Namespace);
+
 STRUCT_NAMESPACE(IDCartesToumai2014, IDCartesToumai2014Namespace,
 				 {
-					 enum {
-						 CAN_USB 						= 0,
-						 PREMIER_ID_CARTE 				= 1,
-						 DEPLACEMENT 					= PREMIER_ID_CARTE,
-						 ASSERVISSEMENT_ASCENSEUR		= 2,
-						 SERVOS_1 						= 4,
-						 SERVOS_2	 					= 5,
-						 IO 								= 6,
-						 EVITEMENT 						= 8,
-						 PNEUMATIQUE 					= 9,
-						 DEBUG_DESSIN 					= 10,
-						 DERNIER_ID_CARTE
-						 //ID_CARTE_DEBUG = 11
-					 };
+					 using IDCartes = IDCartesToumai2014Namespace::IDCartes;
 				 }
 				 )
 
@@ -202,47 +209,47 @@ STRUCT_NAMESPACE(ConstantesToumai2014, ConstantesToumai2014Namespace,
 				 )
 
 EXPLICIT_INSTANCIATION(ConstantesToumai2014, ConstantesToumai2014Namespace,
-					   CarteInfo<IDCartesToumai2014::CAN_USB> {
+					   CarteInfo<IDCartesToumai2014Namespace::CAN_USB> {
 						   typedef CarteCAN_USB type;
 					   };
 					   )
 EXPLICIT_INSTANCIATION(ConstantesToumai2014, ConstantesToumai2014Namespace,
-					   CarteInfo<IDCartesToumai2014::DEPLACEMENT> {
+					   CarteInfo<IDCartesToumai2014Namespace::DEPLACEMENT> {
 						   typedef CarteDeplacement2009 type;
 					   };
 					   )
 EXPLICIT_INSTANCIATION(ConstantesToumai2014, ConstantesToumai2014Namespace,
-					   CarteInfo<IDCartesToumai2014::ASSERVISSEMENT_ASCENSEUR> {
+					   CarteInfo<IDCartesToumai2014Namespace::ASSERVISSEMENT_ASCENSEUR> {
 						   typedef CarteAsservissement2009 type;
 					   };
 					   )
 EXPLICIT_INSTANCIATION(ConstantesToumai2014, ConstantesToumai2014Namespace,
-					   CarteInfo<IDCartesToumai2014::EVITEMENT> {
+					   CarteInfo<IDCartesToumai2014Namespace::EVITEMENT> {
 						   typedef CarteDetectAdv2009 type;
 					   };
 					   )
 EXPLICIT_INSTANCIATION(ConstantesToumai2014, ConstantesToumai2014Namespace,
-					   CarteInfo<IDCartesToumai2014::IO> {
+					   CarteInfo<IDCartesToumai2014Namespace::IO> {
 						   typedef CarteIO2014 type;
 					   };
 					   )
 EXPLICIT_INSTANCIATION(ConstantesToumai2014, ConstantesToumai2014Namespace,
-					   CarteInfo<IDCartesToumai2014::SERVOS_1> {
+					   CarteInfo<IDCartesToumai2014Namespace::SERVOS_1> {
 						   typedef CarteServosNova2009 type;
 					   };
 					   )
 EXPLICIT_INSTANCIATION(ConstantesToumai2014, ConstantesToumai2014Namespace,
-					   CarteInfo<IDCartesToumai2014::SERVOS_2> {
+					   CarteInfo<IDCartesToumai2014Namespace::SERVOS_2> {
 						   typedef CarteServosNova2009 type;
 					   };
 					   )
 EXPLICIT_INSTANCIATION(ConstantesToumai2014, ConstantesToumai2014Namespace,
-					   CarteInfo<IDCartesToumai2014::PNEUMATIQUE> {
+					   CarteInfo<IDCartesToumai2014Namespace::PNEUMATIQUE> {
 						   typedef CartePneumatique2014 type;
 					   };
 					   )
 EXPLICIT_INSTANCIATION(ConstantesToumai2014, ConstantesToumai2014Namespace,
-					   CarteInfo<IDCartesToumai2014::DEBUG_DESSIN> {
+					   CarteInfo<IDCartesToumai2014Namespace::DEBUG_DESSIN> {
 						   typedef CarteDebugDessin type;
 					   };
 					   )

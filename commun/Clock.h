@@ -49,15 +49,14 @@ inline constexpr auto operator"" _s(unsigned long long duration) {
 }
 
 typedef std::chrono::duration<long long, std::nano> dureeS;
-//typedef std::chrono::time_point<std::chrono::high_resolution_clock> date;
 
 inline std::ostream &operator<<(std::ostream &s, dureeS const &d) {
 	if(d >= 1_s)
-		s << d.count() << "s";
+		s << d.count() / 1000000000 << "s";
 	else if(d >= 1_ms)
-		s << d.count() << "ms";
+		s << d.count() / 1000000 << "ms";
 	else if(d >= 1_us)
-		s << d.count() << "us";
+		s << d.count() / 1000 << "us";
 	else
 		s << d.count() << "ns";
 
