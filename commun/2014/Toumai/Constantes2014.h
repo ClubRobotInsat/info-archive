@@ -37,15 +37,7 @@
 
 #include "../../Enum.h"
 
-#define STRUCT_NAMESPACE(STRUCT_NAME, NAMESPACE_NAME, ...) \
-struct STRUCT_NAME __VA_ARGS__; \
-namespace NAMESPACE_NAME __VA_ARGS__
-
-#define EXPLICIT_INSTANCIATION(SCOPE1, SCOPE2, ...) \
-template<> struct SCOPE1::__VA_ARGS__ \
-template<> struct SCOPE2::__VA_ARGS__
-
-namespace IDCartesToumai2014Namespace {
+namespace IDCartesToumai2014 {
 	ENUM_NO_IMPL(IDCartes,
 		CAN_USB 						/*= 0*/,
 		DEPLACEMENT 					/*= 1*/,
@@ -62,15 +54,15 @@ namespace IDCartesToumai2014Namespace {
 	);
 }
 
-ENUM_IMPL(IDCartes, IDCartesToumai2014Namespace);
+ENUM_IMPL(IDCartes, IDCartesToumai2014);
 
-STRUCT_NAMESPACE(IDCartesToumai2014, IDCartesToumai2014Namespace,
+STRUCT_NAMESPACE(IDCartesToumai2014Type, IDCartesToumai2014,
 				 {
-					 using IDCartes = IDCartesToumai2014Namespace::IDCartes;
+					 using IDCartes = IDCartesToumai2014::IDCartes;
 				 }
 				 )
 
-namespace ConstantesToumai2014Namespace {
+namespace ConstantesToumai2014 {
 	/////////////////// CONTACTEURS ///////////////////
 	// Numeros des contacteurs et les roles associes
 	enum NumContacteur {
@@ -172,32 +164,32 @@ namespace ConstantesToumai2014Namespace {
 	};
 }
 
-STRUCT_NAMESPACE(ConstantesToumai2014, ConstantesToumai2014Namespace,
+STRUCT_NAMESPACE(ConstantesToumai2014Type, ConstantesToumai2014,
 				 {
-					 using NumContacteur = ConstantesToumai2014Namespace::NumContacteur;
-					 using ServosCarte1 = ConstantesToumai2014Namespace::ServosCarte1;
-					 using ServosCarte2 = ConstantesToumai2014Namespace::ServosCarte2;
-					 using PositionGriffeFruit = ConstantesToumai2014Namespace::PositionGriffeFruit;
-					 using PositionPanierFruit = ConstantesToumai2014Namespace::PositionPanierFruit;
-					 using PositionPinceSaisie = ConstantesToumai2014Namespace::PositionPinceSaisie;
-					 using PositionPinceRetournement = ConstantesToumai2014Namespace::PositionPinceRetournement;
-					 using PositionTVentouse = ConstantesToumai2014Namespace::PositionTVentouse;
-					 using PositionSerpeBas = ConstantesToumai2014Namespace::PositionSerpeBas;
-					 using PositionVideFeu = ConstantesToumai2014Namespace::PositionVideFeu;
-					 using PositionsMaxAscenseur = ConstantesToumai2014Namespace::PositionsMaxAscenseur;
-					 using PositionsAsc = ConstantesToumai2014Namespace::PositionsAsc;
+					 using NumContacteur = ConstantesToumai2014::NumContacteur;
+					 using ServosCarte1 = ConstantesToumai2014::ServosCarte1;
+					 using ServosCarte2 = ConstantesToumai2014::ServosCarte2;
+					 using PositionGriffeFruit = ConstantesToumai2014::PositionGriffeFruit;
+					 using PositionPanierFruit = ConstantesToumai2014::PositionPanierFruit;
+					 using PositionPinceSaisie = ConstantesToumai2014::PositionPinceSaisie;
+					 using PositionPinceRetournement = ConstantesToumai2014::PositionPinceRetournement;
+					 using PositionTVentouse = ConstantesToumai2014::PositionTVentouse;
+					 using PositionSerpeBas = ConstantesToumai2014::PositionSerpeBas;
+					 using PositionVideFeu = ConstantesToumai2014::PositionVideFeu;
+					 using PositionsMaxAscenseur = ConstantesToumai2014::PositionsMaxAscenseur;
+					 using PositionsAsc = ConstantesToumai2014::PositionsAsc;
 
 					 // Déclaration des positions
-					 const int positionGriffeFruit[PositionGriffeFruit::POSITION_GRIFFE_NBR] = {950, 800, 1220};
-					 const int positionPanierFruit[PositionPanierFruit::POSITION_PANIER_NBR] = {1570, 2400, 1350, 1700};
-					 const int positionPinceSaisie[PositionPinceSaisie::POSITION_PINCE_S_NBR] = {1300, 1790};
-					 const int positionPinceRetournement[PositionPinceRetournement::POSITION_PINCE_R_NBR] = {575, 2490};
-					 const int positionTVentouse[PositionTVentouse::POSITION_T_VENTOUSE_NBR] = {790, 1430, 2310};
-					 const int positionSerpeBas[PositionSerpeBas::POSITION_SERPE_BAS_NBR] = {1950, 1730, 580};
-					 const int positionVideFeu[PositionVideFeu::POSITION_VIDE_FEU_NBR] = {1980, 1340};
+					 static constexpr int positionGriffeFruit[PositionGriffeFruit::POSITION_GRIFFE_NBR] = {950, 800, 1220};
+					 static constexpr int positionPanierFruit[PositionPanierFruit::POSITION_PANIER_NBR] = {1570, 2400, 1350, 1700};
+					 static constexpr int positionPinceSaisie[PositionPinceSaisie::POSITION_PINCE_S_NBR] = {1300, 1790};
+					 static constexpr int positionPinceRetournement[PositionPinceRetournement::POSITION_PINCE_R_NBR] = {575, 2490};
+					 static constexpr int positionTVentouse[PositionTVentouse::POSITION_T_VENTOUSE_NBR] = {790, 1430, 2310};
+					 static constexpr int positionSerpeBas[PositionSerpeBas::POSITION_SERPE_BAS_NBR] = {1950, 1730, 580};
+					 static constexpr int positionVideFeu[PositionVideFeu::POSITION_VIDE_FEU_NBR] = {1980, 1340};
 
 					 // Déclaration des positions
-					 const int tableauPositionsAsc[PositionsAsc::NBR_POSITIONS_ASC] = {/*14200*/15000, 20000, 24500, /*30671*/31000, 21500, /*17000*/17500, 2000, 0};
+					 static constexpr int tableauPositionsAsc[PositionsAsc::NBR_POSITIONS_ASC] = {/*14200*/15000, 20000, 24500, /*30671*/31000, 21500, /*17000*/17500, 2000, 0};
 
 					 /////////////////// CARTES ///////////////////
 
@@ -208,48 +200,48 @@ STRUCT_NAMESPACE(ConstantesToumai2014, ConstantesToumai2014Namespace,
 				 };
 				 )
 
-EXPLICIT_INSTANCIATION(ConstantesToumai2014, ConstantesToumai2014Namespace,
-					   CarteInfo<IDCartesToumai2014Namespace::CAN_USB> {
+EXPLICIT_INSTANCIATION(ConstantesToumai2014Type, ConstantesToumai2014,
+					   CarteInfo<IDCartesToumai2014::CAN_USB> {
 						   typedef CarteCAN_USB type;
 					   };
 					   )
-EXPLICIT_INSTANCIATION(ConstantesToumai2014, ConstantesToumai2014Namespace,
-					   CarteInfo<IDCartesToumai2014Namespace::DEPLACEMENT> {
+EXPLICIT_INSTANCIATION(ConstantesToumai2014Type, ConstantesToumai2014,
+					   CarteInfo<IDCartesToumai2014::DEPLACEMENT> {
 						   typedef CarteDeplacement2009 type;
 					   };
 					   )
-EXPLICIT_INSTANCIATION(ConstantesToumai2014, ConstantesToumai2014Namespace,
-					   CarteInfo<IDCartesToumai2014Namespace::ASSERVISSEMENT_ASCENSEUR> {
+EXPLICIT_INSTANCIATION(ConstantesToumai2014Type, ConstantesToumai2014,
+					   CarteInfo<IDCartesToumai2014::ASSERVISSEMENT_ASCENSEUR> {
 						   typedef CarteAsservissement2009 type;
 					   };
 					   )
-EXPLICIT_INSTANCIATION(ConstantesToumai2014, ConstantesToumai2014Namespace,
-					   CarteInfo<IDCartesToumai2014Namespace::EVITEMENT> {
+EXPLICIT_INSTANCIATION(ConstantesToumai2014Type, ConstantesToumai2014,
+					   CarteInfo<IDCartesToumai2014::EVITEMENT> {
 						   typedef CarteDetectAdv2009 type;
 					   };
 					   )
-EXPLICIT_INSTANCIATION(ConstantesToumai2014, ConstantesToumai2014Namespace,
-					   CarteInfo<IDCartesToumai2014Namespace::IO> {
+EXPLICIT_INSTANCIATION(ConstantesToumai2014Type, ConstantesToumai2014,
+					   CarteInfo<IDCartesToumai2014::IO> {
 						   typedef CarteIO2014 type;
 					   };
 					   )
-EXPLICIT_INSTANCIATION(ConstantesToumai2014, ConstantesToumai2014Namespace,
-					   CarteInfo<IDCartesToumai2014Namespace::SERVOS_1> {
+EXPLICIT_INSTANCIATION(ConstantesToumai2014Type, ConstantesToumai2014,
+					   CarteInfo<IDCartesToumai2014::SERVOS_1> {
 						   typedef CarteServosNova2009 type;
 					   };
 					   )
-EXPLICIT_INSTANCIATION(ConstantesToumai2014, ConstantesToumai2014Namespace,
-					   CarteInfo<IDCartesToumai2014Namespace::SERVOS_2> {
+EXPLICIT_INSTANCIATION(ConstantesToumai2014Type, ConstantesToumai2014,
+					   CarteInfo<IDCartesToumai2014::SERVOS_2> {
 						   typedef CarteServosNova2009 type;
 					   };
 					   )
-EXPLICIT_INSTANCIATION(ConstantesToumai2014, ConstantesToumai2014Namespace,
-					   CarteInfo<IDCartesToumai2014Namespace::PNEUMATIQUE> {
+EXPLICIT_INSTANCIATION(ConstantesToumai2014Type, ConstantesToumai2014,
+					   CarteInfo<IDCartesToumai2014::PNEUMATIQUE> {
 						   typedef CartePneumatique2014 type;
 					   };
 					   )
-EXPLICIT_INSTANCIATION(ConstantesToumai2014, ConstantesToumai2014Namespace,
-					   CarteInfo<IDCartesToumai2014Namespace::DEBUG_DESSIN> {
+EXPLICIT_INSTANCIATION(ConstantesToumai2014Type, ConstantesToumai2014,
+					   CarteInfo<IDCartesToumai2014::DEBUG_DESSIN> {
 						   typedef CarteDebugDessin type;
 					   };
 					   )

@@ -9,6 +9,21 @@
 #define Club_Robot_Enum_h
 
 
+/*
+ * Permet de créer un namespace et une structure avec le même contenu.
+ * Pas super super propre, mais on peut faire un using namespace avec le namepace, et passer la structure en paramètre template avec la struct.
+ */
+
+#define STRUCT_NAMESPACE(STRUCT_NAME, NAMESPACE_NAME, ...) \
+struct STRUCT_NAME __VA_ARGS__; \
+namespace NAMESPACE_NAME __VA_ARGS__
+
+#define EXPLICIT_INSTANCIATION(SCOPE1, SCOPE2, ...) \
+template<> struct SCOPE1::__VA_ARGS__ \
+template<> struct SCOPE2::__VA_ARGS__
+
+
+
 /* 
  * Un peu de magie noire pour permettre de récupérer une valeur d'enum sous forme de chaîne de caracères
  * ENUM(MonEnum,

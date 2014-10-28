@@ -34,18 +34,9 @@
 
 #include "../../Enum.h"
 
-#define STRUCT_NAMESPACE(STRUCT_NAME, NAMESPACE_NAME, ...) \
-struct STRUCT_NAME __VA_ARGS__; \
-namespace NAMESPACE_NAME __VA_ARGS__
-
-#define EXPLICIT_INSTANCIATION(SCOPE1, SCOPE2, ...) \
-template<> struct SCOPE1::__VA_ARGS__ \
-template<> struct SCOPE2::__VA_ARGS__
-
-
-// Définit la struct IDCartesLucy2014, et le namespace IDCartesLucy2014Namespace.
+// Définit la struct IDCartesLucy2014Type, et le namespace IDCartesLucy2014.
 // Les 2 ont le même contenu, la struct peut être utilisée en paramètre template et le namespace peut être mis dans un using namespace.
-namespace IDCartesLucy2014Namespace {
+namespace IDCartesLucy2014 {
 	ENUM_NO_IMPL(IDCartes,
 				 CAN_USB 			/*= 0*/,
 				 DEPLACEMENT 		/*= 1*/,
@@ -60,16 +51,16 @@ namespace IDCartesLucy2014Namespace {
 	);
 }
 
-ENUM_IMPL(IDCartes, IDCartesLucy2014Namespace);
+ENUM_IMPL(IDCartes, IDCartesLucy2014);
 
-STRUCT_NAMESPACE(IDCartesLucy2014, IDCartesLucy2014Namespace,
+STRUCT_NAMESPACE(IDCartesLucy2014Type, IDCartesLucy2014,
 				 {
-					 using IDCartes = IDCartesLucy2014Namespace::IDCartes;
+					 using IDCartes = IDCartesLucy2014::IDCartes;
 				 }
 				 )
 
-// Le contenu de ce namespace va être ajouté enrichi d'autres éléments plus bas, et son contenu final sera copié dans une struct ConstantesLucy2014.
-namespace ConstantesLucy2014Namespace {
+// Le contenu de ce namespace va être ajouté enrichi d'autres éléments plus bas, et son contenu final sera copié dans une struct ConstantesLucy2014Type.
+namespace ConstantesLucy2014 {
 	/***********************************/
 	/********** CONTACTEURS ************/
 	/***********************************/
@@ -107,19 +98,19 @@ namespace ConstantesLucy2014Namespace {
 	};
 }
 
-// Définit la struct ConstantesLucy2014, et le namespace ConstantesLucy2014Namespace.
+// Définit la struct ConstantesLucy2014Type, et le namespace ConstantesLucy2014.
 // Les 2 ont le même contenu, la struct peut être utilisée en paramètre template et le namespace peut être mis dans un using namespace.
-STRUCT_NAMESPACE(ConstantesLucy2014, ConstantesLucy2014Namespace,
+STRUCT_NAMESPACE(ConstantesLucy2014Type, ConstantesLucy2014,
 				 {
-					 using NumContacteurs = ConstantesLucy2014Namespace::NumContacteurs;
-					 using idFresques = ConstantesLucy2014Namespace::idFresques;
-					 using Servos = ConstantesLucy2014Namespace::Servos;
-					 using PositionServos = ConstantesLucy2014Namespace::PositionServos;
+					 using NumContacteurs = ConstantesLucy2014::NumContacteurs;
+					 using idFresques = ConstantesLucy2014::idFresques;
+					 using Servos = ConstantesLucy2014::Servos;
+					 using PositionServos = ConstantesLucy2014::PositionServos;
 					 
 					 //Position des servos
-					 const int positionsServoCatapulte[PositionServos::SERVO_LUCY_NBR] = {1350, 1500};
-					 const int positionsServoLanceG[PositionServos::SERVO_LUCY_NBR] = {1760, 1900};
-					 const int positionsServoLanceD[PositionServos::SERVO_LUCY_NBR] = {1900, 2150};
+					 static constexpr int positionsServoCatapulte[PositionServos::SERVO_LUCY_NBR] = {1350, 1500};
+					 static constexpr int positionsServoLanceG[PositionServos::SERVO_LUCY_NBR] = {1760, 1900};
+					 static constexpr int positionsServoLanceD[PositionServos::SERVO_LUCY_NBR] = {1900, 2150};
 
 					 /***********************************/
 					 /************ CARTES ***************/
@@ -129,37 +120,37 @@ STRUCT_NAMESPACE(ConstantesLucy2014, ConstantesLucy2014Namespace,
 				 }
 				 )
 
-EXPLICIT_INSTANCIATION(ConstantesLucy2014, ConstantesLucy2014Namespace,
-					   CarteInfo<IDCartesLucy2014Namespace::CAN_USB> {
+EXPLICIT_INSTANCIATION(ConstantesLucy2014Type, ConstantesLucy2014,
+					   CarteInfo<IDCartesLucy2014::CAN_USB> {
 						   typedef CarteCAN_USB type;
 					   };
 					   )
 
-EXPLICIT_INSTANCIATION(ConstantesLucy2014, ConstantesLucy2014Namespace,
-					   CarteInfo<IDCartesLucy2014Namespace::DEPLACEMENT> {
+EXPLICIT_INSTANCIATION(ConstantesLucy2014Type, ConstantesLucy2014,
+					   CarteInfo<IDCartesLucy2014::DEPLACEMENT> {
 						   typedef CarteDeplacement2009 type;
 						   static constexpr char const *name = "Carte déplacement";
 					   };)
-EXPLICIT_INSTANCIATION(ConstantesLucy2014, ConstantesLucy2014Namespace,
-					   CarteInfo<IDCartesLucy2014Namespace::SERVOS> {
+EXPLICIT_INSTANCIATION(ConstantesLucy2014Type, ConstantesLucy2014,
+					   CarteInfo<IDCartesLucy2014::SERVOS> {
 						   typedef CarteServosNova2009 type;
 					   };
 					   )
 
-EXPLICIT_INSTANCIATION(ConstantesLucy2014, ConstantesLucy2014Namespace,
-					   CarteInfo<IDCartesLucy2014Namespace::EVITEMENT> {
+EXPLICIT_INSTANCIATION(ConstantesLucy2014Type, ConstantesLucy2014,
+					   CarteInfo<IDCartesLucy2014::EVITEMENT> {
 						   typedef CarteDetectAdv2009 type;
 					   };
 					   )
 
-EXPLICIT_INSTANCIATION(ConstantesLucy2014, ConstantesLucy2014Namespace,
-					   CarteInfo<IDCartesLucy2014Namespace::DEBUG_DESSIN> {
+EXPLICIT_INSTANCIATION(ConstantesLucy2014Type, ConstantesLucy2014,
+					   CarteInfo<IDCartesLucy2014::DEBUG_DESSIN> {
 						   typedef CarteDebugDessin type;
 					   };
 					   )
 
-EXPLICIT_INSTANCIATION(ConstantesLucy2014, ConstantesLucy2014Namespace,
-					   CarteInfo<IDCartesLucy2014Namespace::IO> {
+EXPLICIT_INSTANCIATION(ConstantesLucy2014Type, ConstantesLucy2014,
+					   CarteInfo<IDCartesLucy2014::IO> {
 						   typedef CarteIO2014 type;
 					   };
 					   )

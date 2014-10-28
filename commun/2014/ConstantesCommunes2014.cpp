@@ -2,6 +2,6 @@
 
 #include "ConstantesCommunes2014.h"
 
-const int Constantes2014::deltaPositionServo = 20; // > resolution sur les valeurs de position des servos
-const int Constantes2014::deltaPositionMoteur = 70; // > resolution sur les valeurs de position des moteurs (TODO : mettre la bonne valeur)
-
+constexpr int Constantes2014Type::deltaPositionServo;
+constexpr int Constantes2014Type::deltaPositionMoteur;
+constexpr std::uint16_t Constantes2014Type::TCPIP_PORT_PAR_DEFAUT;

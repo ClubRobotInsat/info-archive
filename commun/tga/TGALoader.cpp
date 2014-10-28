@@ -37,7 +37,7 @@ TGAErrorCode TGALoader::loadFile(std::string const &path) {
 	
 	if(!file) {
 #ifdef TGA_USE_LOG_H
-		logFailed(std::string("TGA_FILE_NOT_FOUND : ") + path);
+		logFailed("TGA_FILE_NOT_FOUND : ", path);
 #endif
 #ifdef TGA_USE_LOG_IOSTREAM
 		cerr << "TGA_FILE_NOT_FOUND : " << path << endl;
