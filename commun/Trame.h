@@ -13,7 +13,7 @@
 
 class Byte {
 public:
-	explicit constexpr Byte(std::uint8_t val) : _value(val) {}
+	constexpr Byte(std::uint8_t val) : _value(val) {}
 	constexpr Byte(Byte const &) = default;
 	constexpr bool operator==(Byte const &b) const { return _value == b._value; }
 	constexpr bool operator==(std::uint8_t b) const { return _value == b; }

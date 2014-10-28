@@ -10,19 +10,11 @@ Vector4<T>::Vector4() : x(T(0)), y(T(0)), z(T(0)), w(T(1)) {
 	
 }
 
-// TODO : on ne laisse pas cette partie-là parce que sinon, erreur de link avec GCC 4
-// lorsque 2 fichiers .cpp incluent Vector4.h...
-// cas particulier pour les unsigned char : w = 255
-//template <>
-//Vector4<unsigned char>::Vector4()
-//: x(coords[0]), y(coords[1]), z(coords[2]), w(coords[3]),
-// r(coords[0]), g(coords[1]), b(coords[2]), a(coords[3])
-//{
-// x = 0x00;
-// y = 0x00;
-// z = 0x00;
-// w = 0xFF;
-//}
+// Cas particulier pour les unsigned char : w = 255
+template <>
+inline Vector4<unsigned char>::Vector4() : x(0), y(0), z(0), w(255) {
+
+}
 
 template <class T>
 Vector4<T>::Vector4(const T& xx, const T& yy, const T& zz, const T& ww) : x(xx), y(yy), z(zz), w(ww) {

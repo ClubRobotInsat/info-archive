@@ -27,10 +27,10 @@ namespace Utils {
 	// Fonctions utilisées par getNumbersArray()
 	// Lisent un nombre à partir d'une chaîne de caractères le représentant
 	template<typename T>
-	inline typename std::enable_if<std::is_scalar<T>::value, T>::type strToNumber(std::string const &str) {
-		T ret = {};
-		std::istringstream s(str);
+	inline std::enable_if_t<std::is_scalar<T>::value, T> strToNumber(std::string const &str) {
+		T ret;
 
+		std::istringstream s(str);
 		s >> ret;
 
 		return ret;
@@ -92,33 +92,21 @@ namespace Utils {
 			}
 		}
 	}
-	
-	template <class T>
-	inline void transposeMatrix(T* m) {
-		std::swap(m[1], m[4]);
-		std::swap(m[2], m[8]);
-		std::swap(m[3], m[12]);
-		std::swap(m[6], m[9]);
-		std::swap(m[7], m[13]);
-		std::swap(m[11], m[14]);
-	}
-	
+
 	// fonction qui transforme n'importe quel type en string si l'opérateur << est défini
 	template<typename T>
-	std::string toString( const T & Value )
-	{
+	std::string toString(T const &value) {
 		// utiliser un flux de sortie pour créer la chaîne
 		std::ostringstream oss;
 		// écrire la valeur dans le flux
-		oss << Value;
+		oss << value;
 		// renvoyer une string
 		return oss.str();
 	}
 	
 	template<>
-	inline std::string toString<unsigned char>( const unsigned char & Value )
-	{
-		return toString<int>((int)Value);
+	inline std::string toString<std::uint8_t>(std::uint8_t const &value) {
+		return toString<int>(static_cast<std::uint8_t>(value));
 	}
 };
 

@@ -135,7 +135,7 @@ return namespace::name##StringMap[e];\
 template<>\
 inline std::map<namespace::name, char const *> const &getEnumValues() { return namespace::name##StringMap; }\
 template<namespace::name e>\
-inline char const *toString() {\
+char const *toString() {\
 return std::get<std::pair<GetNewType<namespace::name, e, static_cast<int>(e)>, char const *>>(namespace::name##TemplateTuple).second;\
 }
 

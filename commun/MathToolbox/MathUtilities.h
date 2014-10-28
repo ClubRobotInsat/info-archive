@@ -184,25 +184,25 @@ public:
 	}
 
 	template<typename U>
-	CONDITIONAL_CONSTEXPR typename std::enable_if<std::is_arithmetic<U>::value, T &>::type
+	CONDITIONAL_CONSTEXPR std::enable_if_t<std::is_arithmetic<U>::value, T &>
 	operator*=(U val) {
 		_val *= val;
 		return static_cast<T &>(*this);
 	}
 	template<typename U>
-	constexpr friend typename std::enable_if<std::is_arithmetic<U>::value, T>::type
+	constexpr friend std::enable_if_t<std::is_arithmetic<U>::value, T>
 	operator*(T const &v1, U val) {
 		return T(v1._val * val);
 	}
 
 	template<typename U>
-	CONDITIONAL_CONSTEXPR typename std::enable_if<std::is_arithmetic<U>::value, T &>::type
+	CONDITIONAL_CONSTEXPR std::enable_if_t<std::is_arithmetic<U>::value, T &>
 	operator/=(U val) {
 		_val /= val;
 		return static_cast<T &>(*this);
 	}
 	template<typename U>
-	constexpr friend typename std::enable_if<std::is_arithmetic<U>::value, T>::type
+	constexpr friend std::enable_if_t<std::is_arithmetic<U>::value, T>
 	operator/(T const &v1, U val) {
 		return T(v1._val / val);
 	}
@@ -265,7 +265,7 @@ protected:
 };
 
 template <typename T, typename Scalar>
-inline typename std::enable_if<std::is_base_of<numericValue<T, typename T::ValueType>, T>::value && std::is_scalar<Scalar>::value, T>::type
+inline std::enable_if_t<std::is_base_of<numericValue<T, typename T::ValueType>, T>::value && std::is_scalar<Scalar>::value, T>
 operator*(Scalar s, T const &num) {
 	return num * s;
 }

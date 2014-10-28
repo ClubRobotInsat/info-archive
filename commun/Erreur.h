@@ -9,7 +9,7 @@ class Erreur : public std::exception {
 public:
 	
 	// constructeur par defaut (avec un message vide)
-	Erreur() : msg("") {}
+	Erreur() : msg() {}
 	
 	// constructeur avec un message
 	Erreur(std::string msg) : msg(msg) {}
