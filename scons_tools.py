@@ -100,13 +100,16 @@ def createEnvironment(libs_list=[], force_debug=False):
 
 	if ARGUMENTS.get('color', "0") == "1":
 		cxxflags.append('-fcolor-diagnostics')
+
+	if sys.platform == 'darwin':
+		cxxflags.append('-ferror-limit=0')
 		cxxflags.append('-Wno-deprecated-declarations')
+		env.Append(CCFLAGS=['-Wno-deprecated-declarations'])
+		env['CXX']='clang++';
+		env['CC']='clang';
 
 	env.Append(CXXFLAGS=cxxflags)
 	env.Append(LINKFLAGS=linkflags)
-
-	if sys.platform == 'darwin':
-		env.Append(CXXFLAGS=['-ferror-limit=0'])
 
 	# Si "scons debug=1", alors on ajoute l'option "-g"
 	if (ARGUMENTS.get('debug', "0") != "0") or force_debug:
