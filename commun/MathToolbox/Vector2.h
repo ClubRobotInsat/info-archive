@@ -92,12 +92,12 @@ public:
 	
 	// Produit scalaire
 	// Bug de Clang dans sa version 3.5, qui butte sur la résolution automatique de type de fonctions (avec génération des symboles de debug), faut lui expliquer
-	auto operator*(const Vector2<T>& v)
+	auto operator*(const Vector2<T>& v) const
 #if __clang__
 	// Bug de g++ dans sa version 4.9, segfault à la compilation avec cette ligne
  		-> decltype(x * v.x)
 #endif
-		 const {
+	{
 		return this->x * v.x + this->y * v.y;
 	}
 

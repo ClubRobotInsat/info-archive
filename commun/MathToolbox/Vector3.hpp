@@ -6,7 +6,7 @@
 #include <cmath>
 
 template <class T>
-Vector3<T>::Vector3() : x(T(0)), y(T(0)), z(T(0)) {
+Vector3<T>::Vector3() : x(T()), y(T()), z(T()) {
 	
 }
 
@@ -86,20 +86,6 @@ Vector3<T>& Vector3<T>::operator-=(const Vector3<T_2>& v) {
 	return *this;
 }
 
-// Affectation-produit vectoriel
-template <class T>
-template <class T_2>
-Vector3<T>& Vector3<T>::operator^=(const Vector3<T_2>& v) {
-	T old_x = this->x;
-	T old_y = this->y;
-	
-	this->x = this->y * v.z - this->z * v.y;
-	this->y = - (old_x * v.z - this->z * v.x);
-	this->z = old_x * v.y - old_y * v.x;
-	
-	return *this;
-}
-
 // Affectation-multiplication par un scalaire
 template <class T>
 template <class T_scalar>
@@ -140,35 +126,11 @@ Vector3<T> Vector3<T>::operator-(const Vector3<T_2>& v) const {
 	return Vector3<T>(this->x - v.x, this->y - v.y, this->z - v.z);
 }
 
-// Produit vectoriel
-template <class T>
-template <class T_2>
-Vector3<T> Vector3<T>::operator^(const Vector3<T_2>& v) const {
-	Vector3<T> resultat;
-	resultat.x = this->y * v.z - this->z * v.y;
-	resultat.y = - (this->x * v.z - this->z * v.x);
-	resultat.z = this->x * v.y - this->y * v.x;
-	return resultat;
-}
-
-// Multiplication par un scalaire
-template <class T>
-template <class T_scalar>
-Vector3<T> Vector3<T>::operator*(const T_scalar& s) const {
-	return Vector3<T>(this->x * s, this->y * s, this->z * s);
-}
-
 // Division par un scalaire
 template <class T>
 template <class T_scalar>
 Vector3<T> Vector3<T>::operator/(const T_scalar& s) const {
 	return Vector3<T>(this->x / s, this->y / s, this->z / s);
-}
-
-// Produit scalaire
-template <class T>
-T Vector3<T>::operator*(const Vector3<T>& v) const {
-	return this->x * v.x + this->y * v.y + this->z * v.z;
 }
 
 // Normalisation
@@ -182,24 +144,30 @@ void Vector3<T>::normalize() {
 
 // Calcul de la norme
 template <class T>
-double Vector3<T>::norm() const {
-	return sqrtf(x*x + y*y + z*z);
-}
-
-// Calcul de la norme au carré (plus rapide)
-template <class T>
-T Vector3<T>::squaredNorm() const {
-	return x*x + y*y + z*z;
-}
-
-// Multiplication par un scalaire (s * v)
-template <class T, class T_scalar>
-Vector3<T> operator*(const T_scalar& s, const Vector3<T>& v) {
-	return Vector3<T>(v.x * s, v.y * s, v.z * s);
+T Vector3<T>::norm() const {
+	return sqrt(x*x + y*y + z*z);
 }
 
 // Division par un scalaire (s / v)
 template <class T, class T_scalar>
 Vector3<T> operator/(const T_scalar& s, const Vector3<T>& v) {
 	return Vector3<T>(v.x / s, v.y / s, v.z / s);
+}
+
+template<typename T>
+template<typename U, typename V>
+Vector3<T> Vector3<T>::rotate(Vector3<U> const &axis, V const &angle) const {
+	// axis must be a unit lenght vector
+
+	auto o = dot(axis, *this) * axis;
+	auto x = *this - o;
+
+	auto y = cross(axis, *this);
+
+	static_assert(std::is_same<decltype(o), decltype(x)>::value, "jjoi");
+	static_assert(std::is_same<decltype(x), decltype(y)>::value, "aaaazzzeeerrr");
+	static_assert(std::is_same<decltype(o), decltype(y)>::value, "caca");
+	static_assert(std::is_same<decltype(x.x.value()), long double>::value, "aaaazzzeeerrrPatate");
+
+	return o + cos(angle) * x + sin(angle) * y;
 }

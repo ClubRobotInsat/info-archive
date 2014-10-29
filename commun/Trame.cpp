@@ -103,7 +103,7 @@ std::string Trame::toString() const {
 	oss << "cmd=";
 	oss << Byte(_cmd);
 	oss << ":";
-	oss << "donnees=";
+	oss << "données=";
 	for(std::uint8_t numDonnee = 0; numDonnee < _donnees.size(); ++numDonnee) {
 		oss << Byte(_donnees[numDonnee]);
 		if(numDonnee == _donnees.size()-1)

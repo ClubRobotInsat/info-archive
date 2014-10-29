@@ -123,6 +123,11 @@ bool estDansIntervalOuvert(T val, T bMin, T bMax) {
  *
  */
 
+/*
+ * Masses :
+ * La même que celles au-dessus, gère les suffixe _g et _kg.
+ */
+
 // g++ même dans la version 4.9 ne se conforme pas au standard C++14 pour l'utilisation de fonctions constepxr
 #if __clang__
 #define CONDITIONAL_CONSTEXPR constexpr
@@ -375,6 +380,73 @@ distanceMm2::ValueType numericValue<distanceMm2, distanceMm2::ValueType>::value<
 	return _val;
 }
 
+class masseKg : public numericValue<masseKg, long double> {
+	friend class numericValue<masseKg, long double>;
+public:
+	using numericValue::ValueType;
+
+	friend std::ostream &operator<<(std::ostream &stream, masseKg const &v) {
+		return stream << v._val << " kg";
+	}
+
+	static constexpr masseKg makeFromKg(long double kg) { return masseKg(kg); }
+	static constexpr masseKg makeFromG(long double g) { return masseKg(g / 1000); }
+
+private:
+	using numericValue::numericValue;
+};
+
+template<>
+template<>
+constexpr
+inline masseKg::ValueType numericValue<masseKg, masseKg::ValueType>::value<masseKg::ValueType>() const {
+	return _val;
+}
+
+class dureeS : public numericValue<dureeS, long double> {
+	friend class numericValue<dureeS, long double>;
+public:
+	using numericValue::ValueType;
+
+	friend inline std::ostream &operator<<(std::ostream &s, dureeS const &d) {
+		if(d._val >= 1)
+			s << d._val << " s";
+		else if(d._val >= 1e3)
+			s << d._val * 1e3 << " ms";
+		else if(d._val >= 1e6)
+			s << d._val * 1e6 << " us";
+		else
+			s << d._val * 1e9 << " ns";
+
+		return s;
+	}
+
+	static constexpr dureeS makeFromNs(long double ns) { return dureeS(ns / 1e9); }
+	static constexpr dureeS makeFromUs(long double us) { return dureeS(us / 1e6); }
+	static constexpr dureeS makeFromMs(long double ms) { return dureeS(ms / 1e3); }
+	static constexpr dureeS makeFromS(long double s) { return dureeS(s); }
+
+private:
+	using numericValue::numericValue;
+};
+
+template<>
+template<>
+constexpr
+inline dureeS::ValueType numericValue<dureeS, dureeS::ValueType>::value<dureeS::ValueType>() const {
+	return _val;
+}
+
+
+template<>
+struct std::is_scalar<distanceMm> : public std::integral_constant<bool, true> {};
+template<>
+struct std::is_scalar<angleRad> : public std::integral_constant<bool, true> {};
+template<>
+struct std::is_scalar<masseKg> : public std::integral_constant<bool, true> {};
+template<>
+struct std::is_scalar<dureeS> : public std::integral_constant<bool, true> {};
+
 inline distanceMm sqrt(distanceMm2 const &d) {
 	return distanceMm::makeFromMm(std::sqrt(d.value()));
 }
@@ -446,6 +518,59 @@ inline constexpr distanceMm2 operator"" _mm2(long double dist) {
 inline constexpr distanceMm2 operator"" _mm2(unsigned long long dist) {
 	return distanceMm2::makeFromMm2(dist);
 }
+
+inline constexpr masseKg operator"" _g(long double g) {
+	return masseKg::makeFromG(g);
+}
+
+inline constexpr masseKg operator"" _g(unsigned long long g) {
+	return masseKg::makeFromG(g);
+}
+
+inline constexpr masseKg operator"" _kg(long double kg) {
+	return masseKg::makeFromKg(kg);
+}
+
+inline constexpr masseKg operator"" _kg(unsigned long long kg) {
+	return masseKg::makeFromKg(kg);
+}
+
+/*
+ * On définit ci-dessous les suffixes _ns, _us, _ms et _s pour créer des nano, micro, milli secondes et secondes.
+ */
+
+inline constexpr dureeS operator"" _ns(long double duration) {
+	return dureeS::makeFromNs(duration);
+}
+
+inline constexpr dureeS operator"" _ns(unsigned long long duration) {
+	return dureeS::makeFromNs(duration);
+}
+
+inline constexpr dureeS operator"" _us(long double duration) {
+	return dureeS::makeFromUs(duration);
+}
+
+inline constexpr dureeS operator"" _us(unsigned long long duration) {
+	return dureeS::makeFromUs(duration);
+}
+
+inline constexpr dureeS operator"" _ms(long double duration) {
+	return dureeS::makeFromMs(duration);
+}
+
+inline constexpr dureeS operator"" _ms(unsigned long long duration) {
+	return dureeS::makeFromMs(duration);
+}
+
+inline constexpr dureeS operator"" _s(long double duration) {
+	return dureeS::makeFromS(duration);
+}
+
+inline constexpr dureeS operator"" _s(unsigned long long duration) {
+	return dureeS::makeFromS(duration);
+}
+
 
 #endif
 

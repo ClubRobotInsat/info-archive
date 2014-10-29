@@ -100,6 +100,7 @@ def createEnvironment(libs_list=[], force_debug=False):
 
 	if ARGUMENTS.get('color', "0") == "1":
 		cxxflags.append('-fcolor-diagnostics')
+		cxxflags.append('-Wno-deprecated-declarations')
 
 	env.Append(CXXFLAGS=cxxflags)
 	env.Append(LINKFLAGS=linkflags)
@@ -121,7 +122,7 @@ def createEnvironment(libs_list=[], force_debug=False):
 				env.Append(CPPPATH=[root_dir + '/robot/pthreads-win32/include'])
 				env.Append(LIBPATH=[root_dir + '/robot/pthreads-win32/lib'])
 				env.Append(LIBS=['pthreadGC2'])
-			else:
+			elif sys.platform == 'linux2':
 				env.Append(LIBS=['pthread'])
 				env.Append(CPPFLAGS=['-L/usr/lib/i386-linux-gnu/'])
 
