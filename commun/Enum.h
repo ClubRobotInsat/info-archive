@@ -18,11 +18,11 @@
 struct STRUCT_NAME __VA_ARGS__; \
 namespace NAMESPACE_NAME __VA_ARGS__
 
-#define EXPLICIT_INSTANCIATION(SCOPE1, SCOPE2, ...) \
-template<> struct SCOPE1::__VA_ARGS__ \
-template<> struct SCOPE2::__VA_ARGS__
-
-
+#define EXPLICIT_INSTANCIATION(STRUCT, NAMESPACE, ...) \
+template<> struct STRUCT::__VA_ARGS__ \
+namespace NAMESPACE { \
+template<> struct __VA_ARGS__ \
+}
 
 /* 
  * Un peu de magie noire pour permettre de récupérer une valeur d'enum sous forme de chaîne de caracères

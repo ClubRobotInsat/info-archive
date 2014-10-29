@@ -437,15 +437,16 @@ inline dureeS::ValueType numericValue<dureeS, dureeS::ValueType>::value<dureeS::
 	return _val;
 }
 
-
-template<>
-struct std::is_scalar<distanceMm> : public std::integral_constant<bool, true> {};
-template<>
-struct std::is_scalar<angleRad> : public std::integral_constant<bool, true> {};
-template<>
-struct std::is_scalar<masseKg> : public std::integral_constant<bool, true> {};
-template<>
-struct std::is_scalar<dureeS> : public std::integral_constant<bool, true> {};
+namespace std {
+	template<>
+	struct is_scalar<distanceMm> : public std::integral_constant<bool, true> {};
+	template<>
+	struct is_scalar<angleRad> : public std::integral_constant<bool, true> {};
+	template<>
+	struct is_scalar<masseKg> : public std::integral_constant<bool, true> {};
+	template<>
+	struct is_scalar<dureeS> : public std::integral_constant<bool, true> {};
+}
 
 inline distanceMm sqrt(distanceMm2 const &d) {
 	return distanceMm::makeFromMm(std::sqrt(d.value()));
