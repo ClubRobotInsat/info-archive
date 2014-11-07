@@ -6,8 +6,6 @@
 #include <cmath>
 #include <iostream>
 #include <limits>
-#include "Vector2.h"
-#include "Vector3.h"
 #include "../log/Log.h"
 
 #ifndef M_PI
@@ -411,9 +409,9 @@ public:
 	friend inline std::ostream &operator<<(std::ostream &s, dureeS const &d) {
 		if(d._val >= 1)
 			s << d._val << " s";
-		else if(d._val >= 1e3)
+		else if(d._val >= 1e-3)
 			s << d._val * 1e3 << " ms";
-		else if(d._val >= 1e6)
+		else if(d._val >= 1e-6)
 			s << d._val * 1e6 << " us";
 		else
 			s << d._val * 1e9 << " ns";
@@ -430,11 +428,96 @@ private:
 	using numericValue::numericValue;
 };
 
+
 template<>
 template<>
 constexpr
 inline dureeS::ValueType numericValue<dureeS, dureeS::ValueType>::value<dureeS::ValueType>() const {
 	return _val;
+}
+
+class vitesseMm_s : public numericValue<vitesseMm_s, long double> {
+	friend class numericValue<vitesseMm_s, long double>;
+public:
+	using numericValue::ValueType;
+
+	friend inline std::ostream &operator<<(std::ostream &s, vitesseMm_s const &v) {
+		return s << v._val << " mm/s";
+
+		return s;
+	}
+
+	static constexpr vitesseMm_s makeFromM_s(long double m_s) { return vitesseMm_s(m_s * 1000); }
+	static constexpr vitesseMm_s makeFromDm_s(long double dm_s) { return vitesseMm_s(dm_s * 100); }
+	static constexpr vitesseMm_s makeFromCm_s(long double cm_s) { return vitesseMm_s(cm_s * 10); }
+	static constexpr vitesseMm_s makeFromMm_s(long double mm_s) { return vitesseMm_s(mm_s); }
+
+private:
+	using numericValue::numericValue;
+};
+
+template<>
+template<>
+constexpr
+inline vitesseMm_s::ValueType numericValue<vitesseMm_s, vitesseMm_s::ValueType>::value<vitesseMm_s::ValueType>() const {
+	return _val;
+}
+
+class vitesseRad_s : public numericValue<vitesseRad_s, long double> {
+	friend class numericValue<vitesseRad_s, long double>;
+public:
+	using numericValue::ValueType;
+
+	friend inline std::ostream &operator<<(std::ostream &s, vitesseRad_s const &v) {
+		return s << v._val << " rad/s";
+
+		return s;
+	}
+
+	static constexpr vitesseRad_s makeFromRad_s(long double rad_s) { return vitesseRad_s(rad_s); }
+	static constexpr vitesseRad_s makeFromDeg_s(long double deg_s) { return vitesseRad_s(deg_s * M_PI / 180); }
+
+private:
+	using numericValue::numericValue;
+};
+
+template<>
+template<>
+constexpr
+inline vitesseRad_s::ValueType numericValue<vitesseRad_s, vitesseRad_s::ValueType>::value<vitesseRad_s::ValueType>() const {
+	return _val;
+}
+
+inline vitesseMm_s operator/(distanceMm const &d, dureeS const &t) {
+	return vitesseMm_s::makeFromMm_s(d.value() / t.value());
+}
+
+inline dureeS operator/(distanceMm const &d, vitesseMm_s const &v) {
+	return dureeS::makeFromS(d.value() / v.value());
+}
+
+inline distanceMm operator*(vitesseMm_s const &v, dureeS const &t) {
+	return distanceMm::makeFromMm(v.value() * t.value());
+}
+
+inline distanceMm operator*(dureeS const &t, vitesseMm_s const &v) {
+	return distanceMm::makeFromMm(v.value() * t.value());
+}
+
+inline vitesseRad_s operator/(angleRad const &a, dureeS const &t) {
+	return vitesseRad_s::makeFromRad_s(a.value() / t.value());
+}
+
+inline dureeS operator/(angleRad const &a, vitesseRad_s const &v) {
+	return dureeS::makeFromS(a.value() / v.value());
+}
+
+inline angleRad operator*(vitesseRad_s const &a, dureeS const &t) {
+	return angleRad::makeFromRad(a.value() * t.value());
+}
+
+inline angleRad operator*(dureeS const &t, vitesseRad_s const &a) {
+	return angleRad::makeFromRad(a.value() * t.value());
 }
 
 namespace std {
@@ -446,6 +529,10 @@ namespace std {
 	struct is_scalar<masseKg> : public std::integral_constant<bool, true> {};
 	template<>
 	struct is_scalar<dureeS> : public std::integral_constant<bool, true> {};
+	template<>
+	struct is_scalar<vitesseMm_s> : public std::integral_constant<bool, true> {};
+	template<>
+	struct is_scalar<vitesseRad_s> : public std::integral_constant<bool, true> {};
 }
 
 inline distanceMm sqrt(distanceMm2 const &d) {
@@ -572,6 +659,53 @@ inline constexpr dureeS operator"" _s(unsigned long long duration) {
 	return dureeS::makeFromS(duration);
 }
 
+inline constexpr vitesseMm_s operator"" _mm_s(long double v) {
+	return vitesseMm_s::makeFromMm_s(v);
+}
+
+inline constexpr vitesseMm_s operator"" _mm_s(unsigned long long v) {
+	return vitesseMm_s::makeFromMm_s(v);
+}
+
+inline constexpr vitesseMm_s operator"" _cm_s(long double v) {
+	return vitesseMm_s::makeFromCm_s(v);
+}
+
+inline constexpr vitesseMm_s operator"" _cm_s(unsigned long long v) {
+	return vitesseMm_s::makeFromCm_s(v);
+}
+
+inline constexpr vitesseMm_s operator"" _dm_s(long double v) {
+	return vitesseMm_s::makeFromDm_s(v);
+}
+
+inline constexpr vitesseMm_s operator"" _dm_s(unsigned long long v) {
+	return vitesseMm_s::makeFromDm_s(v);
+}
+
+inline constexpr vitesseMm_s operator"" _m_s(long double v) {
+	return vitesseMm_s::makeFromM_s(v);
+}
+
+inline constexpr vitesseMm_s operator"" _m_s(unsigned long long v) {
+	return vitesseMm_s::makeFromM_s(v);
+}
+
+inline constexpr vitesseRad_s operator"" _rad_s(long double v) {
+	return vitesseRad_s::makeFromRad_s(v);
+}
+
+inline constexpr vitesseRad_s operator"" _rad_s(unsigned long long v) {
+	return vitesseRad_s::makeFromRad_s(v);
+}
+
+inline constexpr vitesseRad_s operator"" _deg_s(long double v) {
+	return vitesseRad_s::makeFromDeg_s(v);
+}
+
+inline constexpr vitesseRad_s operator"" _deg_s(unsigned long long v) {
+	return vitesseRad_s::makeFromDeg_s(v);
+}
 
 #endif
 

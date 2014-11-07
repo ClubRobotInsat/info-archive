@@ -90,7 +90,7 @@ def createEnvironment(libs_list=[], force_debug=False):
 		# On evite l'inclusion par windows.h de choses inutiles dont winsock.h (conflit avec winsock2.h)
 		env.Append(CPPDEFINES=['WIN32', 'WIN32_LEAN_AND_MEAN'])
 
-	env.Append(CCFLAGS=['-Wall'])
+	env.Append(CCFLAGS=['-Wall', '-Wunused-value', '-Wuninitialized'])
 
 	cxxflags = ['-std=c++1y']
 	linkflags = []
@@ -107,6 +107,11 @@ def createEnvironment(libs_list=[], force_debug=False):
 		env.Append(CCFLAGS=['-Wno-deprecated-declarations'])
 		env['CXX']='clang++';
 		env['CC']='clang';
+
+	cxxflags.append('-Werror=return-type')
+	cxxflags.append('-Werror=return-stack-address')
+	cxxflags.append('-Werror=unused-value')
+	cxxflags.append('-Werror=uninitialized')
 
 	env.Append(CXXFLAGS=cxxflags)
 	env.Append(LINKFLAGS=linkflags)

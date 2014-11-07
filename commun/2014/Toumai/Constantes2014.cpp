@@ -14,4 +14,4 @@ constexpr int ConstantesToumai2014Type::positionPinceRetournement[ConstantesToum
 constexpr int ConstantesToumai2014Type::positionTVentouse[ConstantesToumai2014Type::PositionTVentouse::POSITION_T_VENTOUSE_NBR];
 constexpr int ConstantesToumai2014Type::positionSerpeBas[ConstantesToumai2014Type::PositionSerpeBas::POSITION_SERPE_BAS_NBR];
 constexpr int ConstantesToumai2014Type::positionVideFeu[ConstantesToumai2014Type::PositionVideFeu::POSITION_VIDE_FEU_NBR];
-constexpr int ConstantesToumai2014Type::tableauPositionsAsc[ConstantesToumai2014Type::PositionsAsc::NBR_POSITIONS_ASC];
+constexpr angleRad ConstantesToumai2014Type::tableauPositionsAsc[ConstantesToumai2014Type::PositionsAsc::NBR_POSITIONS_ASC];

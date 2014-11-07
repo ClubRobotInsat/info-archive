@@ -36,6 +36,7 @@
 #endif
 
 #include "../../Enum.h"
+#include "../../MathToolbox/MathUtilities.h"
 
 namespace IDCartesToumai2014 {
 	ENUM_NO_IMPL(IDCartes,
@@ -189,7 +190,7 @@ STRUCT_NAMESPACE(ConstantesToumai2014Type, ConstantesToumai2014,
 					 static constexpr int positionVideFeu[PositionVideFeu::POSITION_VIDE_FEU_NBR] = {1980, 1340};
 
 					 // Déclaration des positions
-					 static constexpr int tableauPositionsAsc[PositionsAsc::NBR_POSITIONS_ASC] = {/*14200*/15000, 20000, 24500, /*30671*/31000, 21500, /*17000*/17500, 2000, 0};
+					 static constexpr angleRad tableauPositionsAsc[PositionsAsc::NBR_POSITIONS_ASC] = {/*14200*/15_rad, 20_rad, 24.5_rad, /*30671*/31_rad, 21.5_rad, /*17000*/17.5_rad, 2_rad, 0_rad};
 
 					 /////////////////// CARTES ///////////////////
 
