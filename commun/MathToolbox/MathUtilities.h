@@ -141,17 +141,6 @@ public:
 	constexpr numericValue() : _val(ValType()) {}
 	numericValue(T const &v) : _val(v._val) {}
 
-	template<typename U = ValueType>
-	CONDITIONAL_CONSTEXPR U value() const {
-		if(_val > std::numeric_limits<U>::max() || _val < std::numeric_limits<U>::lowest()) {
-			logError("<ACHTUNG !>");
-			logError("Le type vers lequel est convertie la grandeur physique ne peut pas représenter la valeur actuelle de la grandeur !");
-			logError("C'est grave ! FIXME !");
-			logError("</ACHTUNG !>");
-		}
-		return static_cast<U>(_val);
-	}
-
 	constexpr friend void swap(T &v1, T const &v2) {
 		using std::swap;
 		swap(v1._val, v2._val);
@@ -264,6 +253,17 @@ protected:
 #endif
 	constexpr numericValue(ValueType val) : _val(val) {}
 protected:
+	template<typename U = ValueType>
+	CONDITIONAL_CONSTEXPR U value() const {
+		if(_val > std::numeric_limits<U>::max() || _val < std::numeric_limits<U>::lowest()) {
+			logError("<ACHTUNG !>");
+			logError("Le type vers lequel est convertie la grandeur physique ne peut pas représenter la valeur actuelle de la grandeur !");
+			logError("C'est grave ! FIXME !");
+			logError("</ACHTUNG !>");
+		}
+		return static_cast<U>(_val);
+	}
+
 	ValueType _val;
 };
 
@@ -288,7 +288,20 @@ public:
 		return angleRad(deg / 180 * M_PI);
 	}
 
-	constexpr ValueType toDeg();
+	template<typename Rep = ValueType>
+	constexpr Rep toRad() const {
+		return (*this).value<Rep>();
+	}
+
+	template<typename Rep = ValueType>
+	constexpr Rep toDeg() const {
+		return (*this * 180 / M_PI).value<Rep>();
+	}
+
+	template<typename Rep = ValueType>
+	constexpr Rep toMilliRad() const {
+		return (*this * 1000).value<Rep>();
+	}
 
 	constexpr angleRad angleMod2Pi() const {
 		return ((*this % angleRad::makeFromRad(2 * M_PI)) + angleRad::makeFromRad(4 * M_PI)) % angleRad::makeFromRad(2 * M_PI);
@@ -309,17 +322,6 @@ private:
 	using numericValue::numericValue;
 };
 
-template<>
-template<>
-constexpr
-angleRad::ValueType numericValue<angleRad, angleRad::ValueType>::value<angleRad::ValueType>() const {
-	return _val;
-}
-
-constexpr angleRad::ValueType angleRad::toDeg() {
-	return this->value() * 180 / M_PI;
-}
-
 class distanceMm : public numericValue<distanceMm, long double> {
 	friend class numericValue<distanceMm, long double>;
 public:
@@ -327,6 +329,21 @@ public:
 
 	friend std::ostream &operator<<(std::ostream &stream, distanceMm const &v) {
 		return stream << v._val << " mm";
+	}
+
+	template<typename Rep = ValueType>
+	constexpr Rep toMm() const {
+		return (*this).value<Rep>();
+	}
+
+	template<typename Rep = ValueType>
+	constexpr Rep toM() const {
+		return (*this / 1000).value<Rep>();
+	}
+
+	template<typename Rep = ValueType>
+	constexpr Rep toDm() const {
+		return (*this / 100).value<Rep>();
 	}
 
 	friend angleRad atan2(distanceMm const &y, distanceMm const &x);
@@ -339,13 +356,6 @@ public:
 private:
 	using numericValue::numericValue;
 };
-
-template<>
-template<>
-constexpr
-inline distanceMm::ValueType numericValue<distanceMm, distanceMm::ValueType>::value<distanceMm::ValueType>() const {
-	return _val;
-}
 
 inline angleRad atan2(distanceMm const &y, distanceMm const &x) {
 	return angleRad::makeFromRad(std::atan2(y.value(), x.value()));
@@ -360,6 +370,16 @@ public:
 		return stream << v._val << " mm2";
 	}
 
+	template<typename Rep = ValueType>
+	constexpr Rep toM2() const {
+		return (*this / 1000000).value<Rep>();
+	}
+
+	template<typename Rep = ValueType>
+	constexpr Rep toMm2() const {
+		return (*this).value<Rep>();
+	}
+
 	friend distanceMm sqrt(distanceMm2 const &d);
 
 	static constexpr distanceMm2 makeFromMm2(long double mm2) { return distanceMm2(mm2); }
@@ -371,13 +391,6 @@ private:
 	using numericValue::numericValue;
 };
 
-template<>
-template<>
-inline constexpr
-distanceMm2::ValueType numericValue<distanceMm2, distanceMm2::ValueType>::value<distanceMm2::ValueType>() const {
-	return _val;
-}
-
 class masseKg : public numericValue<masseKg, long double> {
 	friend class numericValue<masseKg, long double>;
 public:
@@ -387,19 +400,17 @@ public:
 		return stream << v._val << " kg";
 	}
 
+	template<typename Rep = ValueType>
+	constexpr Rep toKg() const {
+		return (*this).value<Rep>();
+	}
+
 	static constexpr masseKg makeFromKg(long double kg) { return masseKg(kg); }
 	static constexpr masseKg makeFromG(long double g) { return masseKg(g / 1000); }
 
 private:
 	using numericValue::numericValue;
 };
-
-template<>
-template<>
-constexpr
-inline masseKg::ValueType numericValue<masseKg, masseKg::ValueType>::value<masseKg::ValueType>() const {
-	return _val;
-}
 
 class dureeS : public numericValue<dureeS, long double> {
 	friend class numericValue<dureeS, long double>;
@@ -419,6 +430,11 @@ public:
 		return s;
 	}
 
+	template<typename Rep = ValueType>
+	constexpr Rep toS() const {
+		return (*this).value<Rep>();
+	}
+
 	static constexpr dureeS makeFromNs(long double ns) { return dureeS(ns / 1e9); }
 	static constexpr dureeS makeFromUs(long double us) { return dureeS(us / 1e6); }
 	static constexpr dureeS makeFromMs(long double ms) { return dureeS(ms / 1e3); }
@@ -427,14 +443,6 @@ public:
 private:
 	using numericValue::numericValue;
 };
-
-
-template<>
-template<>
-constexpr
-inline dureeS::ValueType numericValue<dureeS, dureeS::ValueType>::value<dureeS::ValueType>() const {
-	return _val;
-}
 
 class vitesseMm_s : public numericValue<vitesseMm_s, long double> {
 	friend class numericValue<vitesseMm_s, long double>;
@@ -447,6 +455,21 @@ public:
 		return s;
 	}
 
+	template<typename Rep = ValueType>
+	constexpr Rep toMm_s() const {
+		return (*this).value<Rep>();
+	}
+
+	template<typename Rep = ValueType>
+	constexpr Rep toM_s() const {
+		return (*this / 1000).value<Rep>();
+	}
+
+	template<typename Rep = ValueType>
+	constexpr Rep toDm_s() const {
+		return (*this / 100).value<Rep>();
+	}
+
 	static constexpr vitesseMm_s makeFromM_s(long double m_s) { return vitesseMm_s(m_s * 1000); }
 	static constexpr vitesseMm_s makeFromDm_s(long double dm_s) { return vitesseMm_s(dm_s * 100); }
 	static constexpr vitesseMm_s makeFromCm_s(long double cm_s) { return vitesseMm_s(cm_s * 10); }
@@ -455,13 +478,6 @@ public:
 private:
 	using numericValue::numericValue;
 };
-
-template<>
-template<>
-constexpr
-inline vitesseMm_s::ValueType numericValue<vitesseMm_s, vitesseMm_s::ValueType>::value<vitesseMm_s::ValueType>() const {
-	return _val;
-}
 
 class vitesseRad_s : public numericValue<vitesseRad_s, long double> {
 	friend class numericValue<vitesseRad_s, long double>;
@@ -474,6 +490,16 @@ public:
 		return s;
 	}
 
+	template<typename Rep = ValueType>
+	constexpr Rep toRad_s() const {
+		return (*this).value<Rep>();
+	}
+
+	template<typename Rep = ValueType>
+	constexpr Rep toMilliRad_s() const {
+		return (*this * 1000).value<Rep>();
+	}
+
 	static constexpr vitesseRad_s makeFromRad_s(long double rad_s) { return vitesseRad_s(rad_s); }
 	static constexpr vitesseRad_s makeFromDeg_s(long double deg_s) { return vitesseRad_s(deg_s * M_PI / 180); }
 	static constexpr vitesseRad_s makeFromMilliRad_s(long double millirad_s) { return vitesseRad_s(millirad_s / 1000); }
@@ -482,43 +508,44 @@ private:
 	using numericValue::numericValue;
 };
 
-template<>
-template<>
-constexpr
-inline vitesseRad_s::ValueType numericValue<vitesseRad_s, vitesseRad_s::ValueType>::value<vitesseRad_s::ValueType>() const {
-	return _val;
-}
-
 inline vitesseMm_s operator/(distanceMm const &d, dureeS const &t) {
-	return vitesseMm_s::makeFromMm_s(d.value() / t.value());
+	return vitesseMm_s::makeFromM_s(d.toM() / t.toS());
 }
 
 inline dureeS operator/(distanceMm const &d, vitesseMm_s const &v) {
-	return dureeS::makeFromS(d.value() / v.value());
+	return dureeS::makeFromS(d.toM() / v.toM_s());
 }
 
 inline distanceMm operator*(vitesseMm_s const &v, dureeS const &t) {
-	return distanceMm::makeFromMm(v.value() * t.value());
+	return distanceMm::makeFromMm(v.toM_s() * t.toS());
 }
 
 inline distanceMm operator*(dureeS const &t, vitesseMm_s const &v) {
-	return distanceMm::makeFromMm(v.value() * t.value());
+	return distanceMm::makeFromMm(v.toM_s() * t.toS());
 }
 
 inline vitesseRad_s operator/(angleRad const &a, dureeS const &t) {
-	return vitesseRad_s::makeFromRad_s(a.value() / t.value());
+	return vitesseRad_s::makeFromRad_s(a.toRad() / t.toS());
 }
 
 inline dureeS operator/(angleRad const &a, vitesseRad_s const &v) {
-	return dureeS::makeFromS(a.value() / v.value());
+	return dureeS::makeFromS(a.toRad() / v.toRad_s());
 }
 
 inline angleRad operator*(vitesseRad_s const &a, dureeS const &t) {
-	return angleRad::makeFromRad(a.value() * t.value());
+	return angleRad::makeFromRad(a.toRad_s() * t.toS());
 }
 
 inline angleRad operator*(dureeS const &t, vitesseRad_s const &a) {
-	return angleRad::makeFromRad(a.value() * t.value());
+	return angleRad::makeFromRad(a.toRad_s() * t.toS());
+}
+
+inline distanceMm sqrt(distanceMm2 const &d) {
+	return distanceMm::makeFromM(std::sqrt(d.toM2()));
+}
+
+inline distanceMm2 operator*(distanceMm const &d1, distanceMm const &d2) {
+	return distanceMm2::makeFromM2(d1.toM() * d2.toM());
 }
 
 namespace std {
@@ -534,14 +561,6 @@ namespace std {
 	struct is_scalar<vitesseMm_s> : public std::integral_constant<bool, true> {};
 	template<>
 	struct is_scalar<vitesseRad_s> : public std::integral_constant<bool, true> {};
-}
-
-inline distanceMm sqrt(distanceMm2 const &d) {
-	return distanceMm::makeFromMm(std::sqrt(d.value()));
-}
-
-inline distanceMm2 operator*(distanceMm const &d1, distanceMm const &d2) {
-	return distanceMm2::makeFromMm2(d1.value() * d2.value());
 }
 
 inline constexpr angleRad operator"" _PI(long double val) {

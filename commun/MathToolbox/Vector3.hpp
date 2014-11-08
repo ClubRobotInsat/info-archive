@@ -164,10 +164,5 @@ Vector3<T> Vector3<T>::rotate(Vector3<U> const &axis, V const &angle) const {
 
 	auto y = cross(axis, *this);
 
-	static_assert(std::is_same<decltype(o), decltype(x)>::value, "jjoi");
-	static_assert(std::is_same<decltype(x), decltype(y)>::value, "aaaazzzeeerrr");
-	static_assert(std::is_same<decltype(o), decltype(y)>::value, "caca");
-	static_assert(std::is_same<decltype(x.x.value()), long double>::value, "aaaazzzeeerrrPatate");
-
 	return o + cos(angle) * x + sin(angle) * y;
 }

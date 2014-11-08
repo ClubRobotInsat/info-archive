@@ -10,7 +10,7 @@
 #include <unistd.h>
 #endif
 
-#define sleep(delay) std::this_thread::sleep_for(std::chrono::nanoseconds(static_cast<long long>((delay).value() * 1e9)))
+#define sleep(delay) std::this_thread::sleep_for(std::chrono::nanoseconds(static_cast<long long>((delay).toS() * 1e9)))
 
 class Clock {
 public:
