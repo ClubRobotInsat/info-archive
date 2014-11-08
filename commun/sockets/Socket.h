@@ -24,6 +24,7 @@
 
 #include <cstdint>
 #include <utility>
+#include <vector>
 
 // Enumeration des etats ou peut etre une Socket.
 enum SockState {
@@ -111,9 +112,8 @@ public:
 	int receiveMsg(Socket &client_socket, void* buffer, int max_bytes);
 	
 	// Pareil que ReceiveMsg mais ces fonctions allouent la memoire necessaire
-	// pour le buffer de reception avec new[].
-	int receiveNewMsg(void** buffer);
-	int receiveNewMsg(Socket &client_socket, void** buffer);
+	std::vector<std::uint8_t> receiveNewMsg();
+	std::vector<std::uint8_t> receiveNewMsg(Socket &client_socket);
 	
 	// Pour un client : renvoie true si le serveur nous a envoye un message, qui
 	// est dans la file d'attente, sinon renvoie false.

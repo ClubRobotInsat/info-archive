@@ -8,6 +8,7 @@
 #include <cstdio>
 #include <cassert>
 #include <stdexcept>
+#include <memory>
 
 Socket::Socket(SockProtocol protocol) : _protocol(protocol) {
 	if(protocol != SOCK_TCP) {
@@ -178,7 +179,6 @@ int Socket::receiveMsg(void* buffer, int max_bytes) {
 	int nb_bytes=0; // Nombre d'octets dans le paquet
 	int bytes_to_read; // Nombre d'octets a lire effectivement
 	int remaining;
-	std::uint8_t * discarded_bytes=nullptr; // Buffer contenant les donnees du paquet non lues dans buffer
 	// lorsque la taille de buffer est trop petite pour contenir tout le paquet
 
 	int received = this->receive((void*)header, 4); // Lecture du header
@@ -204,10 +204,9 @@ int Socket::receiveMsg(void* buffer, int max_bytes) {
 	if(nb_bytes > max_bytes) {
 		remaining = nb_bytes - bytes_to_read;
 		bytes_to_read = remaining;
-		discarded_bytes = new unsigned char[bytes_to_read * sizeof(unsigned char)];
+		auto discarded_bytes = std::make_unique<std::uint8_t[]>(bytes_to_read);
 		while(remaining != 0)
-			remaining = remaining - this->receive((void*)(&((std::uint8_t *)discarded_bytes)[bytes_to_read-remaining]), remaining);
-		delete [] discarded_bytes;
+			remaining = remaining - this->receive((void*)(&(discarded_bytes[bytes_to_read-remaining])), remaining);
 	}
 
 	return nb_bytes > max_bytes ? max_bytes : nb_bytes;
@@ -220,7 +219,6 @@ int Socket::receiveMsg(Socket &client_socket, void* buffer, int max_bytes) {
 	int nb_bytes=0; // Nombre d'octets dans le paquet
 	int bytes_to_read; // Nombre d'octets a lire effectivement
 	int remaining;
-	std::uint8_t * discarded_bytes=nullptr; // Buffer contenant les donnees du paquet non lues dans buffer
 	// lorsque la taille de buffer est trop petite pour contenir tout le paquet
 
 	int received = receive(client_socket, (void*)header, 4); // Lecture du header
@@ -246,30 +244,25 @@ int Socket::receiveMsg(Socket &client_socket, void* buffer, int max_bytes) {
 	if(nb_bytes > max_bytes) {
 		remaining = nb_bytes - bytes_to_read;
 		bytes_to_read = remaining;
-		discarded_bytes = new unsigned char[bytes_to_read * sizeof(unsigned char)];
+		auto discarded_bytes = std::make_unique<std::uint8_t[]>(bytes_to_read);
 		while(remaining != 0)
-			remaining = remaining - this->receive(client_socket, (void*)(&((std::uint8_t *)discarded_bytes)[bytes_to_read-remaining]), remaining);
-		delete [] discarded_bytes;
+			remaining = remaining - this->receive(client_socket, (void*)(&(discarded_bytes[bytes_to_read-remaining])), remaining);
 	}
 
 	return nb_bytes > max_bytes ? max_bytes : nb_bytes;
 }
 
 // Pareil que ReceiveMsg mais alloue la memoire necessaire
-// pour le buffer de reception avec new[].
-int Socket::receiveNewMsg(void** buffer) {
+std::vector<std::uint8_t> Socket::receiveNewMsg() {
 	unsigned char header[4];
 	int nb_bytes=0; // Nombre d'octets dans le paquet
 	int remaining;
-	std::uint8_t * ptr = nullptr;
-
-	assert(buffer != nullptr);
 
 	int received = this->receive((void*)header, 4); // Lecture du header
 
 	// Cas ou l'on n'a pas recu assez d'octets pour avoir un header complet :
 	if(received < 4)
-		return -1;
+		return {};
 
 	nb_bytes = ((int)(header[0]) << 0*8) +
 	((int)(header[1]) << 1*8) +
@@ -277,35 +270,28 @@ int Socket::receiveNewMsg(void** buffer) {
 	((int)(header[3]) << 3*8);
 
 	// On alloue de la memoire pour les donnees :
-	ptr = new unsigned char[nb_bytes];
+	std::vector<std::uint8_t> data(nb_bytes);
 
 	// On lit les octets qui doivent etre lus :
 	remaining = nb_bytes;
 	while(remaining != 0)
-		remaining = remaining - this->receive((void*)(&ptr[nb_bytes-remaining]), remaining);
+		remaining = remaining - this->receive((void*)(&data[nb_bytes-remaining]), remaining);
 
-	// On renvoie l'adresse et la taille du nouveau buffer
-	*buffer = ptr;
-
-	return nb_bytes;
+	return data;
 }
 
 
 // Pareil que ReceiveMsg mais alloue la memoire necessaire
-// pour le buffer de reception avec new[].
-int Socket::receiveNewMsg(Socket &client_socket, void** buffer) {
+std::vector<std::uint8_t> Socket::receiveNewMsg(Socket &client_socket) {
 	unsigned char header[4];
 	int nb_bytes=0; // Nombre d'octets dans le paquet
 	int remaining;
-	std::uint8_t * ptr = nullptr;
-
-	assert(buffer != nullptr);
 
 	int received = this->receive(client_socket, (void*)header, 4); // Lecture du header
 
 	// Cas ou l'on n'a pas recu assez d'octets pour avoir un header complet :
 	if(received < 4)
-		return -1;
+		return {};
 
 	nb_bytes = ((int)(header[0]) << 0*8) +
 	((int)(header[1]) << 1*8) +
@@ -313,17 +299,14 @@ int Socket::receiveNewMsg(Socket &client_socket, void** buffer) {
 	((int)(header[3]) << 3*8);
 
 	// On alloue de la memoire pour les donnees :
-	ptr = new unsigned char[nb_bytes];
+	std::vector<std::uint8_t> data(nb_bytes);
 
 	// On lit les octets qui doivent etre lus :
 	remaining = nb_bytes;
 	while(remaining != 0)
-		remaining = remaining - this->receive(client_socket, (void*)(&ptr[nb_bytes-remaining]), remaining);
+		remaining = remaining - this->receive(client_socket, (void*)(&data[nb_bytes-remaining]), remaining);
 
-	// On renvoie l'adresse et la taille du nouveau buffer
-	*buffer = ptr;
-
-	return nb_bytes;
+	return data;
 }
 
 // Pour un client : renvoie true si le serveur nous a envoye un message, qui

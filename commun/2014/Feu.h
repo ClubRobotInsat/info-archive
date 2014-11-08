@@ -20,7 +20,7 @@ public:
 		HORIZONTAL 	// Base dans le sens de la longueur de la table
 	} SensFeu;
 
-	Feu(distanceMm x, distanceMm y, SensFeu sens, int level);
+	Feu(distanceM x, distanceM y, SensFeu sens, int level);
 	virtual ~Feu();
 
 	/// Getters

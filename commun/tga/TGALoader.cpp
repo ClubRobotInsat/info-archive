@@ -13,7 +13,7 @@
 
 TGALoader::TGALoader(const TGALoader& ref) : _width(ref._width), _height(ref._height), _bpp(ref._bpp) {
 	if(ref._data) {
-		_data.reset(new unsigned char[_width*_height*_bpp]);
+		_data = std::make_unique<unsigned char[]>(_width*_height*_bpp);
 		std::copy(ref._data.get(), ref._data.get() + _width*_height*_bpp, _data.get());
 	}
 }
@@ -68,7 +68,7 @@ TGAErrorCode TGALoader::loadFromData(unsigned char const *imageData) {
 	// at bottom-left (default) or top-left
 	bool const origin_non_bottoleft = (imageData[17] & 0x20) == 0x20;
 	
-	_data.reset(new unsigned char[_height * _width * _bpp]);
+	_data = std::make_unique<unsigned char[]>(_height * _width * _bpp);
 	
 	// Put the file pointer after the header (18 first bytes) and after the
 	// identification field, which size is indicated in header[0].
