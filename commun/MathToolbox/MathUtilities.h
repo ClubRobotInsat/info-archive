@@ -152,11 +152,11 @@ public:
 	}
 
 	constexpr T operator-() const {
-		return T(-_val);
+		return T().setValue(-_val);
 	}
 
 	constexpr T operator+() const {
-		return T(_val);
+		return T().setValue(_val);
 	}
 
 	CONDITIONAL_CONSTEXPR T &operator+=(T const &val) {
@@ -164,7 +164,7 @@ public:
 		return static_cast<T &>(*this);
 	}
 	constexpr friend T operator+(T const &v1, T const &v2) {
-		return T(v1._val + v2._val);
+		return T().setValue(v1._val + v2._val);
 	}
 
 	CONDITIONAL_CONSTEXPR T &operator-=(T const &val) {
@@ -172,7 +172,7 @@ public:
 		return static_cast<T &>(*this);
 	}
 	constexpr friend T operator-(T const &v1, T const &v2) {
-		return T(v1._val - v2._val);
+		return T().setValue(v1._val - v2._val);
 	}
 
 	template<typename U>
@@ -184,7 +184,7 @@ public:
 	template<typename U>
 	constexpr friend std::enable_if_t<std::is_arithmetic<U>::value, T>
 	operator*(T const &v1, U val) {
-		return T(v1._val * val);
+		return T().setValue(v1._val * val);
 	}
 
 	template<typename U>
@@ -196,7 +196,7 @@ public:
 	template<typename U>
 	constexpr friend std::enable_if_t<std::is_arithmetic<U>::value, T>
 	operator/(T const &v1, U val) {
-		return T(v1._val / val);
+		return T().setValue(v1._val / val);
 	}
 
 	constexpr friend ValueType operator/(T const &v1, T const &v2) {
@@ -209,7 +209,7 @@ public:
 	}
 
 	constexpr friend T operator%(T const & v1, T val) {
-		return T(std::fmod(v1._val, val._val));
+		return T().setValue(std::fmod(v1._val, val._val));
 	}
 
 	constexpr friend bool operator==(T const &val1, T const &val2) {
@@ -247,11 +247,13 @@ public:
 		return std::sin(t._val);
 	}
 
-	// g++ jusqu'à la version 4.9 semble avoir un bug, qui fait qu'une classe friend ne peut pas accéder aux champs protected...
-#ifdef __clang__
-protected:
-#endif
-	constexpr numericValue(ValueType val) : _val(val) {}
+	template<bool implicit = false>
+	constexpr T &setValue(ValueType val) {
+		static_assert(!implicit, "Conversion implicite d'une valeur numerique en une grandeur physique interdite ! Toujours specifier l'unite !");
+		_val = val;
+		return static_cast<T &>(*this);
+	}
+
 protected:
 	template<typename U = ValueType>
 	CONDITIONAL_CONSTEXPR U value() const {
@@ -264,6 +266,15 @@ protected:
 		return static_cast<U>(_val);
 	}
 
+private:
+	constexpr numericValue(ValueType val) {
+		// true : erreur explicite, mais a l'inconvénient de déporter l'erreur dans ce fichier plutôt que là où l'erreur a été commise
+		// false : erreur pas très explicite (calling private constructor), mais localisée où l'erreur a été commise
+		this->setValue<false>(val);
+	}
+
+
+protected:
 	ValueType _val;
 };
 
@@ -273,6 +284,7 @@ operator*(Scalar s, T const &num) {
 	return num * s;
 }
 
+// Voir doc en haut du fichier
 class angleRad : public numericValue<angleRad, long double> {
 	friend class numericValue<angleRad, long double>;
 public:
@@ -282,10 +294,10 @@ public:
 		return stream << v._val << " rad";
 	}
 
-	static inline constexpr angleRad makeFromRad(long double rad) { return angleRad(rad); }
-	static inline constexpr angleRad makeFromMilliRad(long double millirad) { return angleRad(millirad / 1000); }
+	static inline constexpr angleRad makeFromRad(long double rad) { return angleRad().setValue(rad); }
+	static inline constexpr angleRad makeFromMilliRad(long double millirad) { return angleRad().setValue(millirad / 1000); }
 	static inline constexpr angleRad makeFromDeg(long double deg) {
-		return angleRad(deg / 180 * M_PI);
+		return angleRad().setValue(deg / 180 * M_PI);
 	}
 
 	template<typename Rep = ValueType>
@@ -322,6 +334,7 @@ private:
 	using numericValue::numericValue;
 };
 
+// Voir doc en haut du fichier
 class distanceMm : public numericValue<distanceMm, long double> {
 	friend class numericValue<distanceMm, long double>;
 public:
@@ -348,10 +361,10 @@ public:
 
 	friend angleRad atan2(distanceMm const &y, distanceMm const &x);
 
-	static constexpr distanceMm makeFromMm(long double mm) { return distanceMm(mm); }
-	static constexpr distanceMm makeFromCm(long double cm) { return distanceMm(cm * 10); }
-	static constexpr distanceMm makeFromDm(long double dm) { return distanceMm(dm * 100); }
-	static constexpr distanceMm makeFromM(long double m) { return distanceMm(m * 1000); }
+	static constexpr distanceMm makeFromMm(long double mm) { return distanceMm().setValue(mm); }
+	static constexpr distanceMm makeFromCm(long double cm) { return distanceMm().setValue(cm * 10); }
+	static constexpr distanceMm makeFromDm(long double dm) { return distanceMm().setValue(dm * 100); }
+	static constexpr distanceMm makeFromM(long double m) { return distanceMm().setValue(m * 1000); }
 
 private:
 	using numericValue::numericValue;
@@ -361,6 +374,7 @@ inline angleRad atan2(distanceMm const &y, distanceMm const &x) {
 	return angleRad::makeFromRad(std::atan2(y.value(), x.value()));
 }
 
+// Voir doc en haut du fichier
 class distanceMm2 : public numericValue<distanceMm2, long double> {
 	friend class numericValue<distanceMm2, long double>;
 public:
@@ -382,15 +396,16 @@ public:
 
 	friend distanceMm sqrt(distanceMm2 const &d);
 
-	static constexpr distanceMm2 makeFromMm2(long double mm2) { return distanceMm2(mm2); }
-	static constexpr distanceMm2 makeFromCm2(long double cm2) { return distanceMm2(cm2 * 100); }
-	static constexpr distanceMm2 makeFromDm2(long double dm2) { return distanceMm2(dm2 * 10000); }
-	static constexpr distanceMm2 makeFromM2(long double m2) { return distanceMm2(m2 * 1000000); }
+	static constexpr distanceMm2 makeFromMm2(long double mm2) { return distanceMm2().setValue(mm2); }
+	static constexpr distanceMm2 makeFromCm2(long double cm2) { return distanceMm2().setValue(cm2 * 100); }
+	static constexpr distanceMm2 makeFromDm2(long double dm2) { return distanceMm2().setValue(dm2 * 10000); }
+	static constexpr distanceMm2 makeFromM2(long double m2) { return distanceMm2().setValue(m2 * 1000000); }
 
 private:
 	using numericValue::numericValue;
 };
 
+// Voir doc en haut du fichier
 class masseKg : public numericValue<masseKg, long double> {
 	friend class numericValue<masseKg, long double>;
 public:
@@ -405,13 +420,14 @@ public:
 		return (*this).value<Rep>();
 	}
 
-	static constexpr masseKg makeFromKg(long double kg) { return masseKg(kg); }
-	static constexpr masseKg makeFromG(long double g) { return masseKg(g / 1000); }
+	static constexpr masseKg makeFromKg(long double kg) { return masseKg().setValue(kg); }
+	static constexpr masseKg makeFromG(long double g) { return masseKg().setValue(g / 1000); }
 
 private:
 	using numericValue::numericValue;
 };
 
+// Voir doc en haut du fichier
 class dureeS : public numericValue<dureeS, long double> {
 	friend class numericValue<dureeS, long double>;
 public:
@@ -435,15 +451,16 @@ public:
 		return (*this).value<Rep>();
 	}
 
-	static constexpr dureeS makeFromNs(long double ns) { return dureeS(ns / 1e9); }
-	static constexpr dureeS makeFromUs(long double us) { return dureeS(us / 1e6); }
-	static constexpr dureeS makeFromMs(long double ms) { return dureeS(ms / 1e3); }
-	static constexpr dureeS makeFromS(long double s) { return dureeS(s); }
+	static constexpr dureeS makeFromNs(long double ns) { return dureeS().setValue(ns / 1e9); }
+	static constexpr dureeS makeFromUs(long double us) { return dureeS().setValue(us / 1e6); }
+	static constexpr dureeS makeFromMs(long double ms) { return dureeS().setValue(ms / 1e3); }
+	static constexpr dureeS makeFromS(long double s) { return dureeS().setValue(s); }
 
 private:
 	using numericValue::numericValue;
 };
 
+// Voir doc en haut du fichier
 class vitesseMm_s : public numericValue<vitesseMm_s, long double> {
 	friend class numericValue<vitesseMm_s, long double>;
 public:
@@ -470,15 +487,16 @@ public:
 		return (*this / 100).value<Rep>();
 	}
 
-	static constexpr vitesseMm_s makeFromM_s(long double m_s) { return vitesseMm_s(m_s * 1000); }
-	static constexpr vitesseMm_s makeFromDm_s(long double dm_s) { return vitesseMm_s(dm_s * 100); }
-	static constexpr vitesseMm_s makeFromCm_s(long double cm_s) { return vitesseMm_s(cm_s * 10); }
-	static constexpr vitesseMm_s makeFromMm_s(long double mm_s) { return vitesseMm_s(mm_s); }
+	static constexpr vitesseMm_s makeFromM_s(long double m_s) { return vitesseMm_s().setValue(m_s * 1000); }
+	static constexpr vitesseMm_s makeFromDm_s(long double dm_s) { return vitesseMm_s().setValue(dm_s * 100); }
+	static constexpr vitesseMm_s makeFromCm_s(long double cm_s) { return vitesseMm_s().setValue(cm_s * 10); }
+	static constexpr vitesseMm_s makeFromMm_s(long double mm_s) { return vitesseMm_s().setValue(mm_s); }
 
 private:
 	using numericValue::numericValue;
 };
 
+// Voir doc en haut du fichier
 class vitesseRad_s : public numericValue<vitesseRad_s, long double> {
 	friend class numericValue<vitesseRad_s, long double>;
 public:
@@ -500,9 +518,9 @@ public:
 		return (*this * 1000).value<Rep>();
 	}
 
-	static constexpr vitesseRad_s makeFromRad_s(long double rad_s) { return vitesseRad_s(rad_s); }
-	static constexpr vitesseRad_s makeFromDeg_s(long double deg_s) { return vitesseRad_s(deg_s * M_PI / 180); }
-	static constexpr vitesseRad_s makeFromMilliRad_s(long double millirad_s) { return vitesseRad_s(millirad_s / 1000); }
+	static constexpr vitesseRad_s makeFromRad_s(long double rad_s) { return vitesseRad_s().setValue(rad_s); }
+	static constexpr vitesseRad_s makeFromDeg_s(long double deg_s) { return vitesseRad_s().setValue(deg_s * M_PI / 180); }
+	static constexpr vitesseRad_s makeFromMilliRad_s(long double millirad_s) { return vitesseRad_s().setValue(millirad_s / 1000); }
 
 private:
 	using numericValue::numericValue;
