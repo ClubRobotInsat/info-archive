@@ -476,6 +476,7 @@ public:
 
 	static constexpr vitesseRad_s makeFromRad_s(long double rad_s) { return vitesseRad_s(rad_s); }
 	static constexpr vitesseRad_s makeFromDeg_s(long double deg_s) { return vitesseRad_s(deg_s * M_PI / 180); }
+	static constexpr vitesseRad_s makeFromMilliRad_s(long double millirad_s) { return vitesseRad_s(millirad_s / 1000); }
 
 private:
 	using numericValue::numericValue;
