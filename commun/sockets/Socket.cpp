@@ -45,7 +45,7 @@ Socket::~Socket() {
 }
 
 // Connexion au serveur
-bool Socket::connect(const char* server_name, int port) {
+bool Socket::connect(const char* server_name, std::uint16_t port) {
 #ifdef WIN32
 	if(_fd == INVALID_SOCKET || _fd == 0) return false;
 #else
@@ -54,7 +54,7 @@ bool Socket::connect(const char* server_name, int port) {
 
 	hostent* hostinfo;
 	// Recupere l'adresse ip correspond a l'adresse du serveur
-	hostinfo = gethostbyname (server_name);
+	hostinfo = gethostbyname(server_name);
 	// Impossible de recuperer l'addresse IP <=> impossible de se connecter, on sort
 	if(hostinfo == nullptr)
 		return false;
@@ -75,7 +75,7 @@ bool Socket::connect(const char* server_name, int port) {
 }
 
 // Envoi de donnees (d'un client vers un serveur) :
-int Socket::send(const void* data, int nb_bytes) {
+ssize_t Socket::send(const void* data, std::size_t nb_bytes) {
 	if(_state != SOCK_CONNECTED) return -1;
 
 #ifdef WIN32
@@ -89,7 +89,7 @@ int Socket::send(const void* data, int nb_bytes) {
 }
 
 // Envoi de donnees (d'un serveur vers un client) :
-int Socket::send(Socket &client_socket, const void* data, int nb_bytes) {
+ssize_t Socket::send(Socket &client_socket, const void* data, size_t nb_bytes) {
 	if(_state != SOCK_LISTENING) return -1;
 
 #ifdef WIN32
@@ -104,7 +104,7 @@ int Socket::send(Socket &client_socket, const void* data, int nb_bytes) {
 }
 
 // Reception de donnees (donnees allant d'un serveur vers un client) :
-int Socket::receive(void* buffer, int max_bytes) {
+ssize_t Socket::receive(void* buffer, size_t max_bytes) {
 	if(_state != SOCK_CONNECTED) return -1;
 
 #ifdef WIN32
@@ -115,7 +115,7 @@ int Socket::receive(void* buffer, int max_bytes) {
 }
 
 // Reception de donnees (donnees allant d'un client vers un serveur) :
-int Socket::receive(Socket &client_socket, void* buffer, int max_bytes) {
+ssize_t Socket::receive(Socket &client_socket, void* buffer, size_t max_bytes) {
 	if(_state != SOCK_LISTENING) return -1;
 
 #ifdef WIN32
@@ -128,14 +128,14 @@ int Socket::receive(Socket &client_socket, void* buffer, int max_bytes) {
 // Envoi d'un paquet (d'un client vers un serveur)
 // A la difference de Send(), on rajoute un header de 4 octets indiquant la taille
 // du paquet. Un SendMsg() correspond a un ReceiveMsg().
-bool Socket::sendMsg(const void* data, int nb_bytes) {
-	unsigned char header[4] = {
-		(unsigned char) ((nb_bytes >> 0*8) & 0xFF),
-		(unsigned char) ((nb_bytes >> 1*8) & 0xFF),
-		(unsigned char) ((nb_bytes >> 2*8) & 0xFF),
-		(unsigned char) ((nb_bytes >> 3*8) & 0xFF)};
+bool Socket::sendMsg(const void* data, size_t nb_bytes) {
+	std::uint8_t header[4] = {
+		std::uint8_t((nb_bytes >> 0*8) & 0xFF),
+		std::uint8_t((nb_bytes >> 1*8) & 0xFF),
+		std::uint8_t((nb_bytes >> 2*8) & 0xFF),
+		std::uint8_t((nb_bytes >> 3*8) & 0xFF)};
 
-	int remaining = nb_bytes;
+	size_t remaining = nb_bytes;
 
 	if(send((const void*)header, 4) <= 0) return false;
 
@@ -148,16 +148,16 @@ bool Socket::sendMsg(const void* data, int nb_bytes) {
 // Envoi d'un paquet (d'un serveur vers un client)
 // A la difference de Send(), on rajoute un header de 4 octets indiquant la taille
 // du paquet. Un SendMsg() correspond a un ReceiveMsg().
-bool Socket::sendMsg(Socket &client_socket, const void* data, int nb_bytes) {
+bool Socket::sendMsg(Socket &client_socket, const void* data, size_t nb_bytes) {
 	std::uint8_t header[4] = {
-		(std::uint8_t) ((nb_bytes >> 0*8) & 0xFF),
-		(std::uint8_t) ((nb_bytes >> 1*8) & 0xFF),
-		(std::uint8_t) ((nb_bytes >> 2*8) & 0xFF),
-		(std::uint8_t) ((nb_bytes >> 3*8) & 0xFF)};
+		std::uint8_t((nb_bytes >> 0*8) & 0xFF),
+		std::uint8_t((nb_bytes >> 1*8) & 0xFF),
+		std::uint8_t((nb_bytes >> 2*8) & 0xFF),
+		std::uint8_t((nb_bytes >> 3*8) & 0xFF)};
 
-	int remaining = nb_bytes;
+	ssize_t remaining = nb_bytes;
 
-	int n = 0;
+	ssize_t n = 0;
 	if((n = this->send(client_socket, (const void*)header, 4)) <= 0)
 		return false;
 
@@ -174,14 +174,14 @@ bool Socket::sendMsg(Socket &client_socket, const void* data, int nb_bytes) {
 
 // Reception d'un paquet (donnees allant d'un serveur vers un client)
 // Correspond a un SendMsg()
-int Socket::receiveMsg(void* buffer, int max_bytes) {
-	unsigned char header[4];
-	int nb_bytes=0; // Nombre d'octets dans le paquet
-	int bytes_to_read; // Nombre d'octets a lire effectivement
-	int remaining;
+ssize_t Socket::receiveMsg(void* buffer, size_t max_bytes) {
+	std::uint8_t header[4];
+	size_t nb_bytes=0; // Nombre d'octets dans le paquet
+	size_t bytes_to_read; // Nombre d'octets à lire effectivement
+	size_t remaining;
 	// lorsque la taille de buffer est trop petite pour contenir tout le paquet
 
-	int received = this->receive((void*)header, 4); // Lecture du header
+	ssize_t received = this->receive((void*)header, 4); // Lecture du header
 
 	// Cas ou l'on n'a pas recu assez d'octets pour avoir un header complet :
 	if(received < 4)
@@ -214,14 +214,14 @@ int Socket::receiveMsg(void* buffer, int max_bytes) {
 
 // Reception d'un paquet (donnees allant d'un client vers un serveur)
 // Correspond a un Sendmsg()
-int Socket::receiveMsg(Socket &client_socket, void* buffer, int max_bytes) {
-	unsigned char header[4];
-	int nb_bytes=0; // Nombre d'octets dans le paquet
-	int bytes_to_read; // Nombre d'octets a lire effectivement
-	int remaining;
+ssize_t Socket::receiveMsg(Socket &client_socket, void* buffer, size_t max_bytes) {
+	std::uint8_t header[4];
+	size_t nb_bytes=0; // Nombre d'octets dans le paquet
+	size_t bytes_to_read; // Nombre d'octets a lire effectivement
+	size_t remaining;
 	// lorsque la taille de buffer est trop petite pour contenir tout le paquet
 
-	int received = receive(client_socket, (void*)header, 4); // Lecture du header
+	ssize_t received = receive(client_socket, (void*)header, 4); // Lecture du header
 
 	// Cas ou l'on n'a pas recu assez d'octets pour avoir un header complet :
 	if(received < 4)
@@ -254,11 +254,11 @@ int Socket::receiveMsg(Socket &client_socket, void* buffer, int max_bytes) {
 
 // Pareil que ReceiveMsg mais alloue la memoire necessaire
 std::vector<std::uint8_t> Socket::receiveNewMsg() {
-	unsigned char header[4];
-	int nb_bytes=0; // Nombre d'octets dans le paquet
-	int remaining;
+	std::uint8_t header[4];
+	size_t nb_bytes=0; // Nombre d'octets dans le paquet
+	size_t remaining;
 
-	int received = this->receive((void*)header, 4); // Lecture du header
+	ssize_t received = this->receive((void*)header, 4); // Lecture du header
 
 	// Cas ou l'on n'a pas recu assez d'octets pour avoir un header complet :
 	if(received < 4)
@@ -283,11 +283,11 @@ std::vector<std::uint8_t> Socket::receiveNewMsg() {
 
 // Pareil que ReceiveMsg mais alloue la memoire necessaire
 std::vector<std::uint8_t> Socket::receiveNewMsg(Socket &client_socket) {
-	unsigned char header[4];
-	int nb_bytes=0; // Nombre d'octets dans le paquet
-	int remaining;
+	std::uint8_t header[4];
+	size_t nb_bytes=0; // Nombre d'octets dans le paquet
+	size_t remaining;
 
-	int received = this->receive(client_socket, (void*)header, 4); // Lecture du header
+	size_t received = this->receive(client_socket, (void*)header, 4); // Lecture du header
 
 	// Cas ou l'on n'a pas recu assez d'octets pour avoir un header complet :
 	if(received < 4)
@@ -353,7 +353,7 @@ bool Socket::waitsForAMessageFrom(Socket &client_socket) {
 }
 
 // Mise sur ecoute (pour un serveur) :
-bool Socket::listen(int port, int max_queue) {
+bool Socket::listen(std::uint16_t port, int max_queue) {
 	// On remplit la structure _addr, qui correspond a l'adresse du serveur (nous)
 	_addr.sin_family = AF_INET; // Adresse de type internet : on doit toujours mettre ca
 	_addr.sin_port = htons(port); // Port

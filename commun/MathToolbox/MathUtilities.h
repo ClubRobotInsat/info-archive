@@ -155,6 +155,9 @@ public:
 
 	constexpr numericValue() : _val(ValType()) {}
 	numericValue(T const &v) : _val(v._val) {}
+	static constexpr T makeValue(ValueType v) {
+		return T(v);
+	}
 
 	constexpr friend void swap(T &v1, T const &v2) {
 		using std::swap;
@@ -167,11 +170,11 @@ public:
 	}
 
 	constexpr T operator-() const {
-		return T().setValue(-_val);
+		return makeValue(-_val);
 	}
 
 	constexpr T operator+() const {
-		return T().setValue(_val);
+		return makeValue(_val);
 	}
 
 	CONDITIONAL_CONSTEXPR T &operator+=(T const &val) {
@@ -179,7 +182,7 @@ public:
 		return static_cast<T &>(*this);
 	}
 	constexpr friend T operator+(T const &v1, T const &v2) {
-		return T().setValue(v1._val + v2._val);
+		return makeValue(v1._val + v2._val);
 	}
 
 	CONDITIONAL_CONSTEXPR T &operator-=(T const &val) {
@@ -187,7 +190,7 @@ public:
 		return static_cast<T &>(*this);
 	}
 	constexpr friend T operator-(T const &v1, T const &v2) {
-		return T().setValue(v1._val - v2._val);
+		return makeValue(v1._val - v2._val);
 	}
 
 	template<typename U>
@@ -199,7 +202,7 @@ public:
 	template<typename U>
 	constexpr friend std::enable_if_t<std::is_arithmetic<U>::value, T>
 	operator*(T const &v1, U val) {
-		return T().setValue(v1._val * val);
+		return makeValue(v1._val * val);
 	}
 
 	template<typename U>
@@ -211,7 +214,7 @@ public:
 	template<typename U>
 	constexpr friend std::enable_if_t<std::is_arithmetic<U>::value, T>
 	operator/(T const &v1, U val) {
-		return T().setValue(v1._val / val);
+		return makeValue(v1._val / val);
 	}
 
 	constexpr friend ValueType operator/(T const &v1, T const &v2) {
@@ -224,7 +227,7 @@ public:
 	}
 
 	constexpr friend T operator%(T const & v1, T val) {
-		return T().setValue(std::fmod(v1._val, val._val));
+		return makeValue(std::fmod(v1._val, val._val));
 	}
 
 	constexpr friend bool operator==(T const &val1, T const &val2) {
@@ -262,13 +265,6 @@ public:
 		return std::sin(t._val);
 	}
 
-	template<bool implicit = false>
-	constexpr T &setValue(ValueType val) {
-		static_assert(!implicit, "Conversion implicite d'une valeur numerique en une grandeur physique interdite ! Toujours specifier l'unite !");
-		_val = val;
-		return static_cast<T &>(*this);
-	}
-
 protected:
 	template<typename U = ValueType>
 	CONDITIONAL_CONSTEXPR U value() const {
@@ -281,23 +277,11 @@ protected:
 		return static_cast<U>(_val);
 	}
 
-private:
-	constexpr numericValue(ValueType val) {
-		// true : erreur explicite, mais a l'inconvénient de déporter l'erreur dans ce fichier plutôt que là où l'erreur a été commise
-		// false : erreur pas très explicite (calling private constructor), mais localisée où l'erreur a été commise
-		this->setValue<false>(val);
-	}
-
-
 protected:
+	constexpr numericValue(ValueType val) : _val(val) {}
+
 	ValueType _val;
 };
-
-template <typename T, typename Scalar>
-inline std::enable_if_t<std::is_base_of<numericValue<T, typename T::ValueType>, T>::value && std::is_scalar<Scalar>::value, T>
-operator*(Scalar s, T const &num) {
-	return num * s;
-}
 
 // Voir doc en haut du fichier
 class angleRad : public numericValue<angleRad, long double> {
@@ -309,10 +293,10 @@ public:
 		return s << v._val << " rad";
 	}
 
-	static inline constexpr angleRad makeFromRad(long double rad) { return angleRad().setValue(rad); }
-	static inline constexpr angleRad makeFromMilliRad(long double millirad) { return angleRad().setValue(millirad / 1000); }
+	static inline constexpr angleRad makeFromRad(long double rad) { return angleRad(rad); }
+	static inline constexpr angleRad makeFromMilliRad(long double millirad) { return angleRad(millirad / 1000); }
 	static inline constexpr angleRad makeFromDeg(long double deg) {
-		return angleRad().setValue(deg / 180 * M_PI);
+		return angleRad(deg / 180 * M_PI);
 	}
 
 	template<typename Rep = ValueType>
@@ -383,10 +367,10 @@ public:
 
 	friend angleRad atan2(distanceM const &y, distanceM const &x);
 
-	static constexpr distanceM makeFromMm(long double mm) { return distanceM().setValue(mm / 1000); }
-	static constexpr distanceM makeFromCm(long double cm) { return distanceM().setValue(cm / 100); }
-	static constexpr distanceM makeFromDm(long double dm) { return distanceM().setValue(dm / 10); }
-	static constexpr distanceM makeFromM(long double m) { return distanceM().setValue(m); }
+	static constexpr distanceM makeFromMm(long double mm) { return distanceM(mm / 1000); }
+	static constexpr distanceM makeFromCm(long double cm) { return distanceM(cm / 100); }
+	static constexpr distanceM makeFromDm(long double dm) { return distanceM(dm / 10); }
+	static constexpr distanceM makeFromM(long double m) { return distanceM(m); }
 
 private:
 	using numericValue::numericValue;
@@ -418,10 +402,10 @@ public:
 
 	friend distanceM sqrt(distanceM2 const &d);
 
-	static constexpr distanceM2 makeFromMm2(long double mm2) { return distanceM2().setValue(mm2 / 1000000); }
-	static constexpr distanceM2 makeFromCm2(long double cm2) { return distanceM2().setValue(cm2 / 10000); }
-	static constexpr distanceM2 makeFromDm2(long double dm2) { return distanceM2().setValue(dm2 / 100); }
-	static constexpr distanceM2 makeFromM2(long double m2) { return distanceM2().setValue(m2); }
+	static constexpr distanceM2 makeFromMm2(long double mm2) { return distanceM2(mm2 / 1000000); }
+	static constexpr distanceM2 makeFromCm2(long double cm2) { return distanceM2(cm2 / 10000); }
+	static constexpr distanceM2 makeFromDm2(long double dm2) { return distanceM2(dm2 / 100); }
+	static constexpr distanceM2 makeFromM2(long double m2) { return distanceM2(m2); }
 
 private:
 	using numericValue::numericValue;
@@ -442,8 +426,8 @@ public:
 		return (*this).value<Rep>();
 	}
 
-	static constexpr masseKg makeFromKg(long double kg) { return masseKg().setValue(kg); }
-	static constexpr masseKg makeFromG(long double g) { return masseKg().setValue(g / 1000); }
+	static constexpr masseKg makeFromKg(long double kg) { return masseKg(kg); }
+	static constexpr masseKg makeFromG(long double g) { return masseKg(g / 1000); }
 
 private:
 	using numericValue::numericValue;
@@ -473,10 +457,10 @@ public:
 		return (*this).value<Rep>();
 	}
 
-	static constexpr dureeS makeFromNs(long double ns) { return dureeS().setValue(ns / 1e9); }
-	static constexpr dureeS makeFromUs(long double us) { return dureeS().setValue(us / 1e6); }
-	static constexpr dureeS makeFromMs(long double ms) { return dureeS().setValue(ms / 1e3); }
-	static constexpr dureeS makeFromS(long double s) { return dureeS().setValue(s); }
+	static constexpr dureeS makeFromNs(long double ns) { return dureeS(ns / 1e9); }
+	static constexpr dureeS makeFromUs(long double us) { return dureeS(us / 1e6); }
+	static constexpr dureeS makeFromMs(long double ms) { return dureeS(ms / 1e3); }
+	static constexpr dureeS makeFromS(long double s) { return dureeS(s); }
 
 private:
 	using numericValue::numericValue;
@@ -514,10 +498,10 @@ public:
 		return (*this * 10).value<Rep>();
 	}
 
-	static constexpr vitesseM_s makeFromM_s(long double m_s) { return vitesseM_s().setValue(m_s); }
-	static constexpr vitesseM_s makeFromDm_s(long double dm_s) { return vitesseM_s().setValue(dm_s / 10); }
-	static constexpr vitesseM_s makeFromCm_s(long double cm_s) { return vitesseM_s().setValue(cm_s / 100); }
-	static constexpr vitesseM_s makeFromMm_s(long double mm_s) { return vitesseM_s().setValue(mm_s / 1000); }
+	static constexpr vitesseM_s makeFromM_s(long double m_s) { return vitesseM_s(m_s); }
+	static constexpr vitesseM_s makeFromDm_s(long double dm_s) { return vitesseM_s(dm_s / 10); }
+	static constexpr vitesseM_s makeFromCm_s(long double cm_s) { return vitesseM_s(cm_s / 100); }
+	static constexpr vitesseM_s makeFromMm_s(long double mm_s) { return vitesseM_s(mm_s / 1000); }
 
 private:
 	using numericValue::numericValue;
@@ -545,13 +529,34 @@ public:
 		return (*this * 1000).value<Rep>();
 	}
 
-	static constexpr vitesseRad_s makeFromRad_s(long double rad_s) { return vitesseRad_s().setValue(rad_s); }
-	static constexpr vitesseRad_s makeFromDeg_s(long double deg_s) { return vitesseRad_s().setValue(deg_s * M_PI / 180); }
-	static constexpr vitesseRad_s makeFromMilliRad_s(long double millirad_s) { return vitesseRad_s().setValue(millirad_s / 1000); }
+	static constexpr vitesseRad_s makeFromRad_s(long double rad_s) { return vitesseRad_s(rad_s); }
+	static constexpr vitesseRad_s makeFromDeg_s(long double deg_s) { return vitesseRad_s(deg_s * M_PI / 180); }
+	static constexpr vitesseRad_s makeFromMilliRad_s(long double millirad_s) { return vitesseRad_s(millirad_s / 1000); }
 
 private:
 	using numericValue::numericValue;
 };
+
+template <typename T, typename Scalar>
+inline std::enable_if_t<std::is_base_of<numericValue<T, typename T::ValueType>, T>::value && std::is_scalar<Scalar>::value, T>
+operator*(Scalar s, T const &num) {
+	return num * s;
+}
+
+namespace std {
+	template<>
+	struct is_scalar<distanceM> : public std::integral_constant<bool, true> {};
+	template<>
+	struct is_scalar<angleRad> : public std::integral_constant<bool, true> {};
+	template<>
+	struct is_scalar<masseKg> : public std::integral_constant<bool, true> {};
+	template<>
+	struct is_scalar<dureeS> : public std::integral_constant<bool, true> {};
+	template<>
+	struct is_scalar<vitesseM_s> : public std::integral_constant<bool, true> {};
+	template<>
+	struct is_scalar<vitesseRad_s> : public std::integral_constant<bool, true> {};
+}
 
 inline vitesseM_s operator/(distanceM const &d, dureeS const &t) {
 	return vitesseM_s::makeFromM_s(d.toM() / t.toS());
@@ -591,21 +596,6 @@ inline distanceM sqrt(distanceM2 const &d) {
 
 inline distanceM2 operator*(distanceM const &d1, distanceM const &d2) {
 	return distanceM2::makeFromM2(d1.toM() * d2.toM());
-}
-
-namespace std {
-	template<>
-	struct is_scalar<distanceM> : public std::integral_constant<bool, true> {};
-	template<>
-	struct is_scalar<angleRad> : public std::integral_constant<bool, true> {};
-	template<>
-	struct is_scalar<masseKg> : public std::integral_constant<bool, true> {};
-	template<>
-	struct is_scalar<dureeS> : public std::integral_constant<bool, true> {};
-	template<>
-	struct is_scalar<vitesseM_s> : public std::integral_constant<bool, true> {};
-	template<>
-	struct is_scalar<vitesseRad_s> : public std::integral_constant<bool, true> {};
 }
 
 inline constexpr angleRad operator"" _PI(long double val) {

@@ -59,7 +59,7 @@ def getRootDir():
 # - 'zbar'
 # - 'libfreenect'
 # - 'freeglut'
-def createEnvironment(libs_list=[], force_debug=False):
+def createEnvironmentWithErrors(libs_list=[], errors=[], force_debug=False):
 	vars = Variables()
 	for line in sconsHelp:
 		vars.AddVariables(BoolVariable(line[0], line[1], 0))
@@ -104,14 +104,15 @@ def createEnvironment(libs_list=[], force_debug=False):
 	if sys.platform == 'darwin':
 		cxxflags.append('-ferror-limit=0')
 		cxxflags.append('-Wno-deprecated-declarations')
+		cxxflags.append('-Werror=return-stack-address')
 		env.Append(CCFLAGS=['-Wno-deprecated-declarations'])
 		env['CXX']='clang++';
 		env['CC']='clang';
+	else:
+		cxxflags.append('-Werror=return-local-addr')
 
 	cxxflags.append('-Werror=return-type')
-	cxxflags.append('-Werror=return-stack-address')
-	cxxflags.append('-Werror=unused-value')
-	cxxflags.append('-Werror=uninitialized')
+	cxxflags = cxxflags + errors
 
 	env.Append(CXXFLAGS=cxxflags)
 	env.Append(LINKFLAGS=linkflags)
@@ -348,4 +349,11 @@ def createEnvironment(libs_list=[], force_debug=False):
 			if sys.platform == 'linux2':
 				env.Append(LIBS=['glut', 'GL', 'GLU', 'm', 'X11', 'pthread', 'Xrandr'])
 				env.Append(LIBPATH=['/usr/X11R6/lib'])
+	return env
+
+def createEnvironmentNoError(libs_list=[], force_debug=False):
+	return createEnvironmentWithErrors(libs_list, [], force_debug)
+
+def createEnvironment(libs_list=[], force_debug=False):
+	env = createEnvironmentWithErrors(libs_list, ['-Werror=unused-value', '-Werror=uninitialized'], force_debug)
 	return env

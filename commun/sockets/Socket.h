@@ -53,39 +53,39 @@ public:
 	// Connexion a un serveur :
 	// -server_adress : addresse du serveur auquel on se connecte
 	// -port : numero du port utilise
-	bool connect(const char* server_adress, int port);
+	bool connect(const char* server_adress, std::uint16_t port);
 	
 	// Envoi de donnees (d'un client vers un serveur) :
 	// -data : pointeur vers les donnees
 	// -nb_bytes : taille des donnees a envoyer, en octets
-	int send(const void* data, int nb_bytes);
+	ssize_t send(const void* data, std::size_t nb_bytes);
 	
 	// Envoi de donnees (d'un serveur vers un client) :
 	// -client_socket : pointeur vers la Socket correspondant au client a qui envoyer
 	// les donnees (obtenu via Accept())
 	// -data : pointeur vers les donnees
 	// -nb_bytes : taille des donnees a envoyer, en octets
-	int send(Socket &client_socket, const void* data, int nb_bytes);
+	ssize_t send(Socket &client_socket, const void* data, std::size_t nb_bytes);
 	
 	// Reception de donnees (donnees allant d'un serveur vers un client) :
 	// -buffer : pointeur vers l'endroit ou l'on doit stocker les donnees
 	// -max_bytes : taille du buffer en octets, nombre maximal de donnees pouvant
 	// etre retournees
-	int receive(void* buffer, int max_bytes);
+	ssize_t receive(void* buffer, std::size_t max_bytes);
 	
 	// Reception de donnees (donnees allant d'un client vers un serveur) :
 	// -client_socket : socket du client qui nous envoie les donnees
 	// -buffer : pointeur vers l'endroit ou l'on doit stocker les donnees
 	// -max_bytes : taille du buffer en octets, nombre maximal de donnees pouvant
 	// etre retournees
-	int receive(Socket &client_socket, void* buffer, int max_bytes);
+	ssize_t receive(Socket &client_socket, void* buffer, std::size_t max_bytes);
 	
 	// Envoi d'un paquet (d'un client vers un serveur) :
 	// -data : pointeur vers les donnees
 	// -nb_bytes : taille des donnees a envoyer, en octets
 	// A la difference de Send(), on rajoute un header de 4 octets indiquant la taille
 	// du paquet. Un SendMsg() correspond a un ReceiveMsg().
-	bool sendMsg(const void* data, int nb_bytes);
+	bool sendMsg(const void* data, std::size_t nb_bytes);
 	
 	// Envoi d'un paquet (d'un serveur vers un client) :
 	// -client_socket : pointeur vers la Socket correspondant au client a qui envoyer
@@ -94,14 +94,14 @@ public:
 	// -nb_bytes : taille des donnees a envoyer, en octets
 	// A la difference de Send(), on rajoute un header de 4 octets indiquant la taille
 	// du paquet. Un SendMsg() correspond a un ReceiveMsg().
-	bool sendMsg(Socket &client_socket, const void* data, int nb_bytes);
+	bool sendMsg(Socket &client_socket, const void* data, std::size_t nb_bytes);
 	
 	// Reception d'un paquet (donnees allant d'un serveur vers un client) :
 	// -buffer : pointeur vers l'endroit ou l'on doit stocker les donnees
 	// -max_bytes : taille du buffer en octets, nombre maximal de donnees pouvant
 	// etre retournees
 	// Correspond a un SendMsg()
-	int receiveMsg(void* buffer, int max_bytes);
+	ssize_t receiveMsg(void* buffer, std::size_t max_bytes);
 	
 	// Reception d'un paquet (donnees allant d'un client vers un serveur) :
 	// -client_socket : socket du client qui nous envoie les donnees
@@ -109,7 +109,7 @@ public:
 	// -max_bytes : taille du buffer en octets, nombre maximal de donnees pouvant
 	// etre retournees
 	// Correspond a un SendMsg()
-	int receiveMsg(Socket &client_socket, void* buffer, int max_bytes);
+	ssize_t receiveMsg(Socket &client_socket, void* buffer, std::size_t max_bytes);
 	
 	// Pareil que ReceiveMsg mais ces fonctions allouent la memoire necessaire
 	std::vector<std::uint8_t> receiveNewMsg();
@@ -127,7 +127,7 @@ public:
 	// Mise sur ecoute (pour un serveur) :
 	// -port : numero du port a ecouter
 	// -max_queue : nombre maximum de clients pouvant attendre dans une file
-	bool listen(int port, int max_queue=10);
+	bool listen(std::uint16_t port, int max_queue=10);
 	
 	// Acceptation d'un nouveau client (pour un serveur)
 	// -sock_client : pointeur vers la socket correspondant au nouveau client accepte
