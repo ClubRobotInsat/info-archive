@@ -106,8 +106,11 @@ def createEnvironmentWithErrors(libs_list=[], errors=[], force_debug=False):
 		cxxflags.append('-Wno-deprecated-declarations')
 		cxxflags.append('-Werror=return-stack-address')
 		env.Append(CCFLAGS=['-Wno-deprecated-declarations'])
-		env['CXX']='clang++';
-		env['CC']='clang';
+		env['CXX']='clang++'
+		env['CC']='clang'
+		#env["CC"] = os.getenv("CC") or env["CC"]
+		#env["CXX"] = os.getenv("CXX") or env["CXX"]
+		#env["ENV"].update(x for x in os.environ.items() if x[0].startswith("CCC_"))
 	else:
 		cxxflags.append('-Werror=return-local-addr')
 

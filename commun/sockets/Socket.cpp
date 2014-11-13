@@ -287,7 +287,7 @@ std::vector<std::uint8_t> Socket::receiveNewMsg(Socket &client_socket) {
 	size_t nb_bytes=0; // Nombre d'octets dans le paquet
 	size_t remaining;
 
-	size_t received = this->receive(client_socket, (void*)header, 4); // Lecture du header
+	ssize_t received = this->receive(client_socket, (void*)header, 4); // Lecture du header
 
 	// Cas ou l'on n'a pas recu assez d'octets pour avoir un header complet :
 	if(received < 4)
