@@ -245,6 +245,18 @@ def createEnvironmentWithErrors(libs_list=[], errors=[], force_debug=False):
 			env.Append(LIBPATH=[root_dir + '/robot/2014/Lucy/librobot2014', root_dir + '/commun/2014'])
 			env.Append(LIBS=['RobotLucy2014', 'Constantes2014'])
 
+		elif lib == 'RobotToumai2015':
+			env.Append(CPPPATH=[root_dir + '/robot/2015/Toumai/librobot2015',
+						root_dir + '/robot/Cartes'])
+		env.Append(LIBPATH=[root_dir + '/robot/2015/Toumai/librobot2014', root_dir + '/commun/2015'])
+			env.Append(LIBS=['RobotToumai2015', 'Constantes2015'])
+
+		elif lib == 'RobotLucy2015':
+			env.Append(CPPPATH=[root_dir + '/robot/2015/Lucy/librobot2015',
+							root_dir + '/robot/Cartes'])
+			env.Append(LIBPATH=[root_dir + '/robot/2015/Lucy/librobot2015', root_dir + '/commun/2015'])
+			env.Append(LIBS=['RobotLucy2015', 'Constantes2015'])
+
 		elif lib == 'Webcam':
 			env.Append(CPPPATH=[root_dir + '/webcam'])
 			env.Append(LIBPATH=[root_dir + '/webcam'])

@@ -1,7 +1,7 @@
-// Constantes2014.h
+// Constantes2015.h
 
-#ifndef CONSTANTES_TOUMAI_2014_H
-#define CONSTANTES_TOUMAI_2014_H
+#ifndef CONSTANTES_TOUMAI_2015_H
+#define CONSTANTES_TOUMAI_2015_H
 
 
 #ifdef TARGET_SIMULATEUR
@@ -14,8 +14,8 @@
 #include "../../../simulateur/cartes/CarteDebugDessin.h"
 #include "../../../simulateur/cartes/CartePneumatique2013.h"
 #include "../../../simulateur/cartes/CarteDetectAdv2009.h"
-#include "../../../simulateur/cartes/CartePneumatique2014.h"
-#include "../../../simulateur/cartes/CarteIO2014.h"
+#include "../../../simulateur/cartes/CartePneumatique2015.h"
+#include "../../../simulateur/cartes/CarteIO2015.h"
 #include "../../../simulateur/cartes/CarteCAN_USB.h"
 
 
@@ -29,8 +29,8 @@
 #include "../../../robot/Cartes/CarteDebugDessin.h"
 #include "../../../robot/Cartes/CartePneumatique.h"
 #include "../../../robot/Cartes/CarteDetectAdv2009.h"
-#include "../../../robot/Cartes/CartePneumatique2014.h"
-#include "../../../robot/Cartes/CarteIO2014.h"
+#include "../../../robot/Cartes/CartePneumatique2015.h"
+#include "../../../robot/Cartes/CarteIO2015.h"
 #include "../../../robot/Cartes/CarteCAN_USB.h"
 
 #endif
@@ -38,7 +38,7 @@
 #include "../../Enum.h"
 #include "../../MathToolbox/MathUtilities.h"
 
-namespace IDCartesToumai2014 {
+namespace IDCartesToumai2015 {
 	ENUM_NO_IMPL(IDCartes,
 		CAN_USB 						/*= 0*/,
 		DEPLACEMENT 					/*= 1*/,
@@ -55,15 +55,15 @@ namespace IDCartesToumai2014 {
 	);
 }
 
-ENUM_IMPL(IDCartes, IDCartesToumai2014);
+ENUM_IMPL(IDCartes, IDCartesToumai2015);
 
-STRUCT_NAMESPACE(IDCartesToumai2014Type, IDCartesToumai2014,
+STRUCT_NAMESPACE(IDCartesToumai2015Type, IDCartesToumai2015,
 				 {
-					 using IDCartes = IDCartesToumai2014::IDCartes;
+					 using IDCartes = IDCartesToumai2015::IDCartes;
 				 }
 				 )
 
-namespace ConstantesToumai2014 {
+namespace ConstantesToumai2015 {
 	/////////////////// CONTACTEURS ///////////////////
 	// Numeros des contacteurs et les roles associes
 	enum NumContacteur {
@@ -165,20 +165,20 @@ namespace ConstantesToumai2014 {
 	};
 }
 
-STRUCT_NAMESPACE(ConstantesToumai2014Type, ConstantesToumai2014,
+STRUCT_NAMESPACE(ConstantesToumai2015Type, ConstantesToumai2015,
 				 {
-					 using NumContacteur = ConstantesToumai2014::NumContacteur;
-					 using ServosCarte1 = ConstantesToumai2014::ServosCarte1;
-					 using ServosCarte2 = ConstantesToumai2014::ServosCarte2;
-					 using PositionGriffeFruit = ConstantesToumai2014::PositionGriffeFruit;
-					 using PositionPanierFruit = ConstantesToumai2014::PositionPanierFruit;
-					 using PositionPinceSaisie = ConstantesToumai2014::PositionPinceSaisie;
-					 using PositionPinceRetournement = ConstantesToumai2014::PositionPinceRetournement;
-					 using PositionTVentouse = ConstantesToumai2014::PositionTVentouse;
-					 using PositionSerpeBas = ConstantesToumai2014::PositionSerpeBas;
-					 using PositionVideFeu = ConstantesToumai2014::PositionVideFeu;
-					 using PositionsMaxAscenseur = ConstantesToumai2014::PositionsMaxAscenseur;
-					 using PositionsAsc = ConstantesToumai2014::PositionsAsc;
+					 using NumContacteur = ConstantesToumai2015::NumContacteur;
+					 using ServosCarte1 = ConstantesToumai2015::ServosCarte1;
+					 using ServosCarte2 = ConstantesToumai2015::ServosCarte2;
+					 using PositionGriffeFruit = ConstantesToumai2015::PositionGriffeFruit;
+					 using PositionPanierFruit = ConstantesToumai2015::PositionPanierFruit;
+					 using PositionPinceSaisie = ConstantesToumai2015::PositionPinceSaisie;
+					 using PositionPinceRetournement = ConstantesToumai2015::PositionPinceRetournement;
+					 using PositionTVentouse = ConstantesToumai2015::PositionTVentouse;
+					 using PositionSerpeBas = ConstantesToumai2015::PositionSerpeBas;
+					 using PositionVideFeu = ConstantesToumai2015::PositionVideFeu;
+					 using PositionsMaxAscenseur = ConstantesToumai2015::PositionsMaxAscenseur;
+					 using PositionsAsc = ConstantesToumai2015::PositionsAsc;
 
 					 // Déclaration des positions
 					 static constexpr int positionGriffeFruit[PositionGriffeFruit::POSITION_GRIFFE_NBR] = {950, 800, 1220};
@@ -201,48 +201,48 @@ STRUCT_NAMESPACE(ConstantesToumai2014Type, ConstantesToumai2014,
 				 };
 				 )
 
-EXPLICIT_INSTANCIATION(ConstantesToumai2014Type, ConstantesToumai2014,
-					   CarteInfo<IDCartesToumai2014::CAN_USB> {
+EXPLICIT_INSTANCIATION(ConstantesToumai2015Type, ConstantesToumai2015,
+					   CarteInfo<IDCartesToumai2015::CAN_USB> {
 						   typedef CarteCAN_USB type;
 					   };
 					   )
-EXPLICIT_INSTANCIATION(ConstantesToumai2014Type, ConstantesToumai2014,
-					   CarteInfo<IDCartesToumai2014::DEPLACEMENT> {
+EXPLICIT_INSTANCIATION(ConstantesToumai2015Type, ConstantesToumai2015,
+					   CarteInfo<IDCartesToumai2015::DEPLACEMENT> {
 						   typedef CarteDeplacement2009 type;
 					   };
 					   )
-EXPLICIT_INSTANCIATION(ConstantesToumai2014Type, ConstantesToumai2014,
-					   CarteInfo<IDCartesToumai2014::ASSERVISSEMENT_ASCENSEUR> {
+EXPLICIT_INSTANCIATION(ConstantesToumai2015Type, ConstantesToumai2015,
+					   CarteInfo<IDCartesToumai2015::ASSERVISSEMENT_ASCENSEUR> {
 						   typedef CarteAsservissement2009 type;
 					   };
 					   )
-EXPLICIT_INSTANCIATION(ConstantesToumai2014Type, ConstantesToumai2014,
-					   CarteInfo<IDCartesToumai2014::EVITEMENT> {
+EXPLICIT_INSTANCIATION(ConstantesToumai2015Type, ConstantesToumai2015,
+					   CarteInfo<IDCartesToumai2015::EVITEMENT> {
 						   typedef CarteDetectAdv2009 type;
 					   };
 					   )
-EXPLICIT_INSTANCIATION(ConstantesToumai2014Type, ConstantesToumai2014,
-					   CarteInfo<IDCartesToumai2014::IO> {
-						   typedef CarteIO2014 type;
+EXPLICIT_INSTANCIATION(ConstantesToumai2015Type, ConstantesToumai2015,
+					   CarteInfo<IDCartesToumai2015::IO> {
+						   typedef CarteIO2015 type;
 					   };
 					   )
-EXPLICIT_INSTANCIATION(ConstantesToumai2014Type, ConstantesToumai2014,
-					   CarteInfo<IDCartesToumai2014::SERVOS_1> {
+EXPLICIT_INSTANCIATION(ConstantesToumai2015Type, ConstantesToumai2015,
+					   CarteInfo<IDCartesToumai2015::SERVOS_1> {
 						   typedef CarteServosNova2009 type;
 					   };
 					   )
-EXPLICIT_INSTANCIATION(ConstantesToumai2014Type, ConstantesToumai2014,
-					   CarteInfo<IDCartesToumai2014::SERVOS_2> {
+EXPLICIT_INSTANCIATION(ConstantesToumai2015Type, ConstantesToumai2015,
+					   CarteInfo<IDCartesToumai2015::SERVOS_2> {
 						   typedef CarteServosNova2009 type;
 					   };
 					   )
-EXPLICIT_INSTANCIATION(ConstantesToumai2014Type, ConstantesToumai2014,
-					   CarteInfo<IDCartesToumai2014::PNEUMATIQUE> {
-						   typedef CartePneumatique2014 type;
+EXPLICIT_INSTANCIATION(ConstantesToumai2015Type, ConstantesToumai2015,
+					   CarteInfo<IDCartesToumai2015::PNEUMATIQUE> {
+						   typedef CartePneumatique2015 type;
 					   };
 					   )
-EXPLICIT_INSTANCIATION(ConstantesToumai2014Type, ConstantesToumai2014,
-					   CarteInfo<IDCartesToumai2014::DEBUG_DESSIN> {
+EXPLICIT_INSTANCIATION(ConstantesToumai2015Type, ConstantesToumai2015,
+					   CarteInfo<IDCartesToumai2015::DEBUG_DESSIN> {
 						   typedef CarteDebugDessin type;
 					   };
 					   )

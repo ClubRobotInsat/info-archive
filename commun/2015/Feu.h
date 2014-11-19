@@ -1,14 +1,14 @@
 /*
  * Feu.h
  *
- *  Created on: 13 mars 2014
+ *  Created on: 13 mars 2015
  *      Author: jerk
  */
 
 #ifndef FOYER_H_
 #define FOYER_H_
 
-#include "../../commun/2014/ConstantesCommunes2014.h"
+#include "../../commun/2015/ConstantesCommunes2015.h"
 #include "../../commun/MathToolbox/MathToolbox.h"
 
 class Feu {
@@ -28,11 +28,11 @@ public:
 	Vector2mm getPosition() const {return _position;}
 	int getLevel() const {return _level;}
 	SensFeu getSens() const {return _sens;}
-	Constantes2014::CouleurRobot getCouleurTop() const {return _couleurTop;}
-	Constantes2014::CouleurRobot getCouleurRight() const {return _couleurRight;}
-	Constantes2014::CouleurRobot getCouleurLeft() const {return !_couleurRight;}
-	Constantes2014::CouleurRobot getCouleurUp() const {return _couleurUp;}
-	Constantes2014::CouleurRobot getCouleurDown() const {return !_couleurUp;}
+	Constantes2015::CouleurRobot getCouleurTop() const {return _couleurTop;}
+	Constantes2015::CouleurRobot getCouleurRight() const {return _couleurRight;}
+	Constantes2015::CouleurRobot getCouleurLeft() const {return !_couleurRight;}
+	Constantes2015::CouleurRobot getCouleurUp() const {return _couleurUp;}
+	Constantes2015::CouleurRobot getCouleurDown() const {return !_couleurUp;}
 	bool isCollected() const {return _collected;}
 
 	/// Setters
@@ -40,9 +40,9 @@ public:
 	void setPosition(Vector2mm const &pos) {_position = pos;}
 	void setLevel(int level) {_level = level;}
 	void setSens(SensFeu sens) {_sens = sens;}
-	void setCouleurTop(Constantes2014::CouleurRobot couleur) {_couleurTop = couleur;}
-	void setCouleurRight(Constantes2014::CouleurRobot couleur) {_couleurRight = couleur;}
-	void setCouleurUp(Constantes2014::CouleurRobot couleur) {_couleurUp = couleur;}
+	void setCouleurTop(Constantes2015::CouleurRobot couleur) {_couleurTop = couleur;}
+	void setCouleurRight(Constantes2015::CouleurRobot couleur) {_couleurRight = couleur;}
+	void setCouleurUp(Constantes2015::CouleurRobot couleur) {_couleurUp = couleur;}
 	// Const car fait quelque chose sur un attribut mutable = modifiable par un objet "const"
 	void setCollected(bool collected) const {_collected = collected;}
 
@@ -52,11 +52,11 @@ private:
 	int _level;
 	SensFeu _sens;
 	// défini si pas debout
-	Constantes2014::CouleurRobot _couleurTop;
+	Constantes2015::CouleurRobot _couleurTop;
 	// défini si debout dans le sens vertical
-	Constantes2014::CouleurRobot _couleurRight;
+	Constantes2015::CouleurRobot _couleurRight;
 	// défini si debout dans le sens horizontal
-	Constantes2014::CouleurRobot _couleurUp;
+	Constantes2015::CouleurRobot _couleurUp;
 	// 0 si non ramassé
 	// Mutable = possible de le modifier depuis un objet "const"
 	mutable bool _collected;

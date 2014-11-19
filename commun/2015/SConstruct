@@ -1,4 +1,4 @@
-# commun/2014/SConstruct
+# commun/2015/SConstruct
 
 import sys
 sys.path.append('.')
@@ -7,12 +7,12 @@ from scons_tools import *
 env = createEnvironment([])
 
 src_list = Split("""
-ConstantesCommunes2014.cpp
-Toumai/Constantes2014.cpp
-Lucy/Constantes2014.cpp
+ConstantesCommunes2015.cpp
+Toumai/Constantes2015.cpp
+Lucy/Constantes2015.cpp
 Feu.cpp
 """)
 
 # Rajouter les autres sources au fur et a mesure
 
-env.StaticLibrary('Constantes2014', src_list)
+env.StaticLibrary('Constantes2015', src_list)
