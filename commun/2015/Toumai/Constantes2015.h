@@ -14,8 +14,8 @@
 #include "../../../simulateur/cartes/CarteDebugDessin.h"
 #include "../../../simulateur/cartes/CartePneumatique2013.h"
 #include "../../../simulateur/cartes/CarteDetectAdv2009.h"
-#include "../../../simulateur/cartes/CartePneumatique2015.h"
-#include "../../../simulateur/cartes/CarteIO2015.h"
+#include "../../../simulateur/cartes/CartePneumatique2014.h"
+#include "../../../simulateur/cartes/CarteIO2014.h"
 #include "../../../simulateur/cartes/CarteCAN_USB.h"
 
 
@@ -29,8 +29,8 @@
 #include "../../../robot/Cartes/CarteDebugDessin.h"
 #include "../../../robot/Cartes/CartePneumatique.h"
 #include "../../../robot/Cartes/CarteDetectAdv2009.h"
-#include "../../../robot/Cartes/CartePneumatique2015.h"
-#include "../../../robot/Cartes/CarteIO2015.h"
+#include "../../../robot/Cartes/CartePneumatique2014.h"
+#include "../../../robot/Cartes/CarteIO2014.h"
 #include "../../../robot/Cartes/CarteCAN_USB.h"
 
 #endif
@@ -223,7 +223,7 @@ EXPLICIT_INSTANCIATION(ConstantesToumai2015Type, ConstantesToumai2015,
 					   )
 EXPLICIT_INSTANCIATION(ConstantesToumai2015Type, ConstantesToumai2015,
 					   CarteInfo<IDCartesToumai2015::IO> {
-						   typedef CarteIO2015 type;
+						   typedef CarteIO2014 type;
 					   };
 					   )
 EXPLICIT_INSTANCIATION(ConstantesToumai2015Type, ConstantesToumai2015,
@@ -238,7 +238,7 @@ EXPLICIT_INSTANCIATION(ConstantesToumai2015Type, ConstantesToumai2015,
 					   )
 EXPLICIT_INSTANCIATION(ConstantesToumai2015Type, ConstantesToumai2015,
 					   CarteInfo<IDCartesToumai2015::PNEUMATIQUE> {
-						   typedef CartePneumatique2015 type;
+						   typedef CartePneumatique2014 type;
 					   };
 					   )
 EXPLICIT_INSTANCIATION(ConstantesToumai2015Type, ConstantesToumai2015,

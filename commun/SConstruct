@@ -5,6 +5,7 @@ sys.path.append('..')
 from scons_tools import *
 
 SConscript('2014/SConstruct')
+SConscript('2015/SConstruct')
 SConscript('GLFW/SConstruct')
 
 env = createEnvironment(['gtk', 'pthreads', 'sockets'])

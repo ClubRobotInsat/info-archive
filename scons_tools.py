@@ -248,7 +248,7 @@ def createEnvironmentWithErrors(libs_list=[], errors=[], force_debug=False):
 		elif lib == 'RobotToumai2015':
 			env.Append(CPPPATH=[root_dir + '/robot/2015/Toumai/librobot2015',
 						root_dir + '/robot/Cartes'])
-		env.Append(LIBPATH=[root_dir + '/robot/2015/Toumai/librobot2014', root_dir + '/commun/2015'])
+			env.Append(LIBPATH=[root_dir + '/robot/2015/Toumai/librobot2015', root_dir + '/commun/2015'])
 			env.Append(LIBS=['RobotToumai2015', 'Constantes2015'])
 
 		elif lib == 'RobotLucy2015':
