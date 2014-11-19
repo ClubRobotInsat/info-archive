@@ -5,6 +5,11 @@
 #include <type_traits>
 #include <thread>
 #include "Clock.h"
+#include "Enum.h"
+
+ENUM_CLASS(ResultatAction,
+		   REUSSI, RATE, BLOQUE_PAR_ADV, TIMEOUT, BLOQUE
+		   )
 
 inline void setThreadName(char const *name) {
 #if __LINUX__
