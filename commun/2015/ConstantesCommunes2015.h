@@ -10,7 +10,7 @@
 namespace Constantes2015 {
 	ENUM_NO_IMPL(CouleurRobot,
 					   COULEUR_ROBOT_JAUNE /*= 0*/,
-					   COULEUR_ROBOT_ROUGE /*= 1*/,
+					   COULEUR_ROBOT_VERT /*= 1*/,
 					   //Valeur d'initialisation, qui permet de déctecter si la lecture du capteur couleur a déconné.
 					   COULEUR_ROBOT_UNDEF /*= 2*/
 	);
@@ -28,10 +28,10 @@ STRUCT_NAMESPACE(Constantes2015Type, Constantes2015, {
 })
 
 inline Constantes2015::CouleurRobot operator!(Constantes2015::CouleurRobot const &c) {
-	if(c == Constantes2015::CouleurRobot::COULEUR_ROBOT_ROUGE)
+	if(c == Constantes2015::CouleurRobot::COULEUR_ROBOT_VERT)
 		return Constantes2015::CouleurRobot::COULEUR_ROBOT_JAUNE;
 	else if(c == Constantes2015::CouleurRobot::COULEUR_ROBOT_JAUNE)
-		return Constantes2015::CouleurRobot::COULEUR_ROBOT_ROUGE;
+		return Constantes2015::CouleurRobot::COULEUR_ROBOT_VERT;
 
 	return c;
 }
@@ -39,8 +39,8 @@ inline Constantes2015::CouleurRobot operator!(Constantes2015::CouleurRobot const
 // Pour permettre l'affichage d'une Couleur :
 inline std::ostream& operator<<(std::ostream& os, const Constantes2015::CouleurRobot& couleur) {
 	switch(couleur) {
-		case Constantes2015::COULEUR_ROBOT_ROUGE:
-			os << "ROUGE";
+		case Constantes2015::COULEUR_ROBOT_VERT:
+			os << "VERT";
 			break;
 		case Constantes2015::COULEUR_ROBOT_JAUNE:
 			os << "JAUNE";
