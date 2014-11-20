@@ -3,6 +3,8 @@
 #include "Trame.h"
 #include <sstream>
 #include <iomanip>
+#include "log/Log.h"
+#include <iostream>
 
 Trame::Trame(std::uint8_t id, std::uint8_t cmd, std::uint8_t nbDonnees, std::uint8_t const donnees[]) : _num_paquet(0) {
 	this->addBytes(nbDonnees, donnees);
