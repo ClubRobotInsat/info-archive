@@ -31,7 +31,7 @@ template<> struct __VA_ARGS__ \
  *   E2,
  *   E3)
  * va déclarer l'enum MonEnum, avec les valeurs E1, E2, E3.
- * On peu faire de même avec ENUM_CLASS -> enum class.
+ * On peut faire de même avec ENUM_CLASS -> enum class.
  * On peut ensuite énumérer les valeurs avec quelque chose du genre :
  * for(auto val : getEnumValues<MonEnum>()) {
  *   MonEnum e = val.first;
