@@ -35,8 +35,8 @@ enum SockState {
 };
 
 // Enumeration des protocoles : pour l'instant on en reste a TCP/IP ^^
-enum SockProtocol {
-	SOCK_TCP=0
+enum class SockProtocol {
+	TCP=0
 };
 
 class Socket {

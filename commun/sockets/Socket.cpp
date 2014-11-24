@@ -11,11 +11,6 @@
 #include <memory>
 
 Socket::Socket(SockProtocol protocol) : _protocol(protocol) {
-	if(protocol != SOCK_TCP) {
-		fprintf(stderr, "Erreur : protocole non implemente\n");
-		throw std::logic_error("Erreur : protocole non implemente\n");
-	}
-
 	_fd = socket(AF_INET, SOCK_STREAM, 0); // AF_INET : internet; SOCK_STREAM : par flux; 0 : protocol (TCP)
 
 	if(
