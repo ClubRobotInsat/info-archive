@@ -85,14 +85,14 @@ public:
 	
 #endif
 	
-	inline unsigned char const *getData() const {return _data.get();}
+	inline std::uint8_t const *getData() const {return _data.get();}
 	inline bool isLoaded() const {return _data ? true : false;}
 	inline unsigned int getHeight() const {return _height;}
 	inline unsigned int getWidth() const {return _width;}
 	inline unsigned int getBpp() const {return _bpp;}
 	
 private:
-	std::unique_ptr<unsigned char[]> _data;
+	std::unique_ptr<std::uint8_t[]> _data;
 	unsigned int _width = 0, _height = 0;
 	unsigned int _bpp = 0; // Bytes Per Pixel : 0, 3 or 4
 };

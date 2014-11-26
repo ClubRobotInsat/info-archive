@@ -11,6 +11,8 @@
 template <class T>
 class Vector3 {
 public:
+	typedef T value_type;
+
 	union {
 		struct{T r, g, b;};
 		struct{T s, t, p;};

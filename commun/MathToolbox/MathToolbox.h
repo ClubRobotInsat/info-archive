@@ -7,6 +7,6 @@
 #include "Vector.h"
 
 typedef Vector2<distanceM> Vector2mm;
-typedef Vector3<distanceM> Vector3mm;
+typedef Vector3<distanceM> Vector3m;
 
 #endif // MATH_TOOLBOX_H

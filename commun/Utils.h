@@ -44,9 +44,11 @@ namespace Utils {
 	// Fonction qui récupère dans numbersArray les nombres indiqués dans une chaîne
 	// de la forme "1.234 5.678" ou "1 5 4 3"
 	template <class T>
-	inline void getNumbersArray(const char* str, T* numbersArray, unsigned* pNbNumbers = nullptr) {
+	inline unsigned int getNumbersArray(const char* str, T* numbersArray) {
 		// Chaîne correspondant au nombre actuellement parcouru
 		char strCurrentNumber[32] = "";
+
+		int nbNum = 0;
 		
 		for(unsigned i=0, j=0, k=0 ; str[i] != '\0' ; i++) {
 			// Si le caractère parcouru est le dernier de str :
@@ -61,8 +63,7 @@ namespace Utils {
 				k++;
 				
 				// Mémorisation du nombre de flottants de numbersArray
-				if(pNbNumbers != nullptr)
-					*pNbNumbers = k;
+				nbNum = k;
 				
 				// Fin de la boucle
 				break;
@@ -91,6 +92,8 @@ namespace Utils {
 				j++;
 			}
 		}
+
+		return nbNum;
 	}
 
 	// fonction qui transforme n'importe quel type en string si l'opérateur << est défini

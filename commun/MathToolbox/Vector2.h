@@ -11,10 +11,13 @@
 #define VECTOR2_OPENGL_SUPPORT
 
 #include <iostream>
+#include <cmath>
 
 template <class T>
 class Vector2 {
 public:
+	typedef T value_type;
+
 	union {
 		struct{T r, g;};
 		struct{T s, t;};
