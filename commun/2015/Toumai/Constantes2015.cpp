@@ -7,11 +7,8 @@
 
 #include "Constantes2015.h"
 
-constexpr int ConstantesToumai2015Type::positionGriffeFruit[ConstantesToumai2015Type::PositionGriffeFruit::POSITION_GRIFFE_NBR];
-constexpr int ConstantesToumai2015Type::positionPanierFruit[ConstantesToumai2015Type::PositionPanierFruit::POSITION_PANIER_NBR];
-constexpr int ConstantesToumai2015Type::positionPinceSaisie[ConstantesToumai2015Type::PositionPinceSaisie::POSITION_PINCE_S_NBR];
-constexpr int ConstantesToumai2015Type::positionPinceRetournement[ConstantesToumai2015Type::PositionPinceRetournement::POSITION_PINCE_R_NBR];
-constexpr int ConstantesToumai2015Type::positionTVentouse[ConstantesToumai2015Type::PositionTVentouse::POSITION_T_VENTOUSE_NBR];
-constexpr int ConstantesToumai2015Type::positionSerpeBas[ConstantesToumai2015Type::PositionSerpeBas::POSITION_SERPE_BAS_NBR];
-constexpr int ConstantesToumai2015Type::positionVideFeu[ConstantesToumai2015Type::PositionVideFeu::POSITION_VIDE_FEU_NBR];
-constexpr angleRad ConstantesToumai2015Type::tableauPositionsAsc[ConstantesToumai2015Type::PositionsAsc::NBR_POSITIONS_ASC];
+constexpr distanceM ConstantesToumai2015Type::positionPince[ConstantesToumai2015Type::PositionPince::NBR];
+constexpr distanceM ConstantesToumai2015Type::positionCoude[ConstantesToumai2015Type::PositionCoude::NBR];
+constexpr distanceM ConstantesToumai2015Type::positionArriere[ConstantesToumai2015Type::PositionArriere::NBR];
+constexpr distanceM ConstantesToumai2015Type::positionBras[ConstantesToumai2015Type::PositionBras::NBR];
+constexpr angleRad ConstantesToumai2015Type::positionAscenseur[ConstantesToumai2015Type::PositionAscenseur::NBR];

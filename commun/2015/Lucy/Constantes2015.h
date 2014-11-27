@@ -54,10 +54,10 @@ namespace IDCartesLucy2015 {
 ENUM_IMPL(IDCartes, IDCartesLucy2015);
 
 STRUCT_NAMESPACE(IDCartesLucy2015Type, IDCartesLucy2015,
-				 {
-					 using IDCartes = IDCartesLucy2015::IDCartes;
-				 }
-				 )
+	{
+		using IDCartes = IDCartesLucy2015::IDCartes;
+	}
+)
 
 // Le contenu de ce namespace va être ajouté enrichi d'autres éléments plus bas, et son contenu final sera copié dans une struct ConstantesLucy2015Type.
 namespace ConstantesLucy2015 {
@@ -65,95 +65,95 @@ namespace ConstantesLucy2015 {
 	/********** CONTACTEURS ************/
 	/***********************************/
 
-	enum NumContacteurs {
-		CONTACTEUR_TIRETTE = 1,
-		CONTACTEUR_COULEUR = 3,
-		CONTACTEUR_FRESQUE_GAUCHE = 6,
-		CONTACTEUR_FRESQUE_DROITE = 5
+	struct _Contacteur {
+		enum type {
+			TIRETTE 		= 1,
+			COULEUR 		= 3
+		};
 	};
-
-	enum idFresques {
-		FRESQUE_DROITE = 0,
-		FRESQUE_GAUCHE
-	};
-
+	typedef _Contacteur::type Contacteur;
 
 	/***********************************/
 	/************ SERVOS ***************/
 	/***********************************/
 
-	//ID des servos
-	enum Servos {
-		SERVO_CATAPULTE 	= 1,
-		SERVO_LANCE_G 		= 2,
-		SERVO_LANCE_D 		= 0,
-		SERVO_NBR
+	// ID des servos
+	struct _Servo {
+		enum type {
+			CONTREPOIDS 	= 1,
+			TAPIS_D 		= 2,
+			TAPIS_G 		= 0,
+			NBR
+		};
 	};
+	typedef _Servo::type Servo;
 
-	//Index des positions dans le tableau
-	enum PositionServos {
-		SERVO_LUCY_RENTRE = 0,
-		SERVO_LUCY_SORTI,
-		SERVO_LUCY_NBR
+	// Index des positions dans le tableau
+	struct _PositionServo {
+		enum type {
+			OUVERT 		= 0,
+			FERME		= 1,
+			NBR
+		};
 	};
+	typedef _PositionServo::type PositionServo;
 }
 
 // Définit la struct ConstantesLucy2015Type, et le namespace ConstantesLucy2015.
 // Les 2 ont le même contenu, la struct peut être utilisée en paramètre template et le namespace peut être mis dans un using namespace.
 STRUCT_NAMESPACE(ConstantesLucy2015Type, ConstantesLucy2015,
-				 {
-					 using NumContacteurs = ConstantesLucy2015::NumContacteurs;
-					 using idFresques = ConstantesLucy2015::idFresques;
-					 using Servos = ConstantesLucy2015::Servos;
-					 using PositionServos = ConstantesLucy2015::PositionServos;
-					 
-					 //Position des servos
-					 static constexpr int positionsServoCatapulte[PositionServos::SERVO_LUCY_NBR] = {1350, 1500};
-					 static constexpr int positionsServoLanceG[PositionServos::SERVO_LUCY_NBR] = {1760, 1900};
-					 static constexpr int positionsServoLanceD[PositionServos::SERVO_LUCY_NBR] = {1900, 2150};
+	{
+		using Contacteur = ConstantesLucy2015::Contacteur;
+		using Servo = ConstantesLucy2015::Servo;
+		using PositionServo = ConstantesLucy2015::PositionServo;
 
-					 /***********************************/
-					 /************ CARTES ***************/
-					 /***********************************/
-					 template<int ID_CARTE>
-					 struct CarteInfo {};
-				 }
-				 )
+		//Position des servos
+		static constexpr distanceM positionsServoContrepoids[PositionServo::NBR] = {1350_mm, 1500_mm};
+		static constexpr distanceM positionsServoTapisD[PositionServo::NBR] = {1760_mm, 1900_mm};
+		static constexpr distanceM positionsServoTapisG[PositionServo::NBR] = {1900_mm, 2150_mm};
 
-EXPLICIT_INSTANCIATION(ConstantesLucy2015Type, ConstantesLucy2015,
-					   CarteInfo<IDCartesLucy2015::CAN_USB> {
-						   typedef CarteCAN_USB type;
-					   };
-					   )
+		/***********************************/
+		/************ CARTES ***************/
+		/***********************************/
+		template<int ID_CARTE>
+		struct CarteInfo {};
+	}
+)
 
 EXPLICIT_INSTANCIATION(ConstantesLucy2015Type, ConstantesLucy2015,
-					   CarteInfo<IDCartesLucy2015::DEPLACEMENT> {
-						   typedef CarteDeplacement2009 type;
-						   static constexpr char const *name = "Carte déplacement";
-					   };)
+	CarteInfo<IDCartesLucy2015::CAN_USB> {
+		typedef CarteCAN_USB type;
+	};
+)
 EXPLICIT_INSTANCIATION(ConstantesLucy2015Type, ConstantesLucy2015,
-					   CarteInfo<IDCartesLucy2015::SERVOS> {
-						   typedef CarteServosNova2009 type;
-					   };
-					   )
+	CarteInfo<IDCartesLucy2015::DEPLACEMENT> {
+		typedef CarteDeplacement2009 type;
+		static constexpr char const *name = "Carte déplacement";
+	};
+)
+EXPLICIT_INSTANCIATION(ConstantesLucy2015Type, ConstantesLucy2015,
+	CarteInfo<IDCartesLucy2015::SERVOS> {
+		typedef CarteServosNova2009 type;
+	};
+)
 
 EXPLICIT_INSTANCIATION(ConstantesLucy2015Type, ConstantesLucy2015,
-					   CarteInfo<IDCartesLucy2015::EVITEMENT> {
-						   typedef CarteDetectAdv2009 type;
-					   };
-					   )
+	CarteInfo<IDCartesLucy2015::EVITEMENT> {
+		typedef CarteDetectAdv2009 type;
+	};
+)
 
 EXPLICIT_INSTANCIATION(ConstantesLucy2015Type, ConstantesLucy2015,
-					   CarteInfo<IDCartesLucy2015::DEBUG_DESSIN> {
-						   typedef CarteDebugDessin type;
-					   };
-					   )
+	CarteInfo<IDCartesLucy2015::DEBUG_DESSIN> {
+		typedef CarteDebugDessin type;
+	};
+)
 
 EXPLICIT_INSTANCIATION(ConstantesLucy2015Type, ConstantesLucy2015,
-					   CarteInfo<IDCartesLucy2015::IO> {
-						   typedef CarteIO2014 type;
-					   };
-					   )
+	CarteInfo<IDCartesLucy2015::IO> {
+		typedef CarteIO2014 type;
+	};
+)
 
 #endif
 

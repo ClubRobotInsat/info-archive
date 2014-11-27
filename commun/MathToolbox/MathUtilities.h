@@ -622,6 +622,14 @@ inline constexpr angleRad operator"" _rad(unsigned long long rad) {
 	return angleRad::makeFromRad(rad);
 }
 
+inline constexpr angleRad operator"" _mrad(long double rad) {
+	return angleRad::makeFromMilliRad(rad);
+}
+
+inline constexpr angleRad operator"" _mrad(unsigned long long rad) {
+	return angleRad::makeFromMilliRad(rad);
+}
+
 inline constexpr distanceM operator"" _mm(long double dist) {
 	return distanceM::makeFromMm(dist);
 }

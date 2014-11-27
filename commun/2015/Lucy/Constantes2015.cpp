@@ -7,7 +7,6 @@
 
 #include "Constantes2015.h"
 
-
-constexpr int ConstantesLucy2015Type::positionsServoCatapulte[ConstantesLucy2015Type::PositionServos::SERVO_LUCY_NBR];
-constexpr int ConstantesLucy2015Type::positionsServoLanceG[ConstantesLucy2015Type::PositionServos::SERVO_LUCY_NBR];
-constexpr int ConstantesLucy2015Type::positionsServoLanceD[ConstantesLucy2015Type::PositionServos::SERVO_LUCY_NBR];
+constexpr distanceM ConstantesLucy2015Type::positionsServoContrepoids[ConstantesLucy2015Type::PositionServo::NBR];
+constexpr distanceM ConstantesLucy2015Type::positionsServoTapisD[ConstantesLucy2015Type::PositionServo::NBR];
+constexpr distanceM ConstantesLucy2015Type::positionsServoTapisG[ConstantesLucy2015Type::PositionServo::NBR];

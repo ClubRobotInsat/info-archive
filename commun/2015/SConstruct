@@ -10,7 +10,6 @@ src_list = Split("""
 ConstantesCommunes2015.cpp
 Toumai/Constantes2015.cpp
 Lucy/Constantes2015.cpp
-Feu.cpp
 """)
 
 # Rajouter les autres sources au fur et a mesure
