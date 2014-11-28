@@ -4,6 +4,8 @@
 #include <memory>
 #include <type_traits>
 #include <thread>
+#include <string>
+
 #include "Clock.h"
 #include "Enum.h"
 
@@ -18,5 +20,10 @@ inline void setThreadName(char const *name) {
 	pthread_setname_np(name);
 #endif
 }
+
+inline void setThreadName(std::string const &name) {
+	setThreadName(name.c_str());
+}
+
 
 #endif
