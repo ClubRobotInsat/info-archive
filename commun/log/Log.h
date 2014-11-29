@@ -32,6 +32,14 @@
 #define logDebug8(...) Log::write(LOG_DEBUG_8, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__)
 #define logDebug9(...) Log::write(LOG_DEBUG_9, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__)
 
+#define logRouge(...) logError(__VA_ARGS__)
+#define logVert(...) logDebug0(__VA_ARGS__)
+#define logBleu(...) logDebug1(__VA_ARGS__)
+#define logCyan(...) logDebug3(__VA_ARGS__)
+#define logMagenta(...) logDebug2(__VA_ARGS__)
+#define logJaune(...) logWarn(__VA_ARGS__)
+#define logNoir(...) logDebug4(__VA_ARGS__)
+
 enum LogType {
 	LOG_INFO,
 	LOG_SUCCESS,
