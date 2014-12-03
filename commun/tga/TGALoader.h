@@ -11,8 +11,6 @@
 //#define TGA_LOADER_INCLUDE_GLEW // Define this if the project uses GLEW,
 // for including GL/glew.h before GL/gl.h
 #define TGA_OPENGL_SUPPORT
-#define TGA_USE_LOG_H // Define this to use log/Log.h for logging (logError(), etc)
-//#define TGA_USE_LOG_IOSTREAM // Define this to use std::cout/std::cerr for logging
 
 // ---------------------------------------------------------------------
 #ifdef TGA_LOADER_INCLUDE_GLEW
@@ -24,6 +22,8 @@
 #include <fstream>
 #include <string>
 #include <memory>
+
+#include "../Enum.h"
 
 #ifdef TGA_OPENGL_SUPPORT
 #ifdef WIN32
@@ -38,11 +38,11 @@
 #endif
 #endif // defined TGA_OPENGL_SUPPORT
 
-enum TGAErrorCode {
+ENUM(TGAErrorCode,
 	TGA_OK,
 	TGA_FILE_NOT_FOUND,
-	TGA_UNSUPPORTED_TYPE,
-};
+	TGA_UNSUPPORTED_TYPE
+);
 
 #ifdef TGA_OPENGL_SUPPORT
 enum TGAFiltering {
@@ -66,9 +66,6 @@ public:
 	TGAErrorCode loadFromData(unsigned char const *data);
 	
 	TGALoader& operator=(const TGALoader& ref);
-	
-	// Convert an error to an explicit string
-	static std::string errorToString(TGAErrorCode error);
 	
 #ifdef TGA_OPENGL_SUPPORT
 	GLuint sendToOpenGL(TGAFiltering filtering=TGA_NO_FILTER);
@@ -99,7 +96,7 @@ private:
 
 // Overloading << for printing error codes using iostream
 inline std::ostream& operator<<(std::ostream& os, const TGAErrorCode& error) {
-	return os << TGALoader::errorToString(error);
+	return os << toString(error);
 }
 
 #endif // !defined TGA_LOADER_H

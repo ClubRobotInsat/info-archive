@@ -7,9 +7,7 @@
 #include "TGALoader.h"
 #include <vector>
 
-#ifdef TGA_USE_LOG_H
 #include "../log/Log.h"
-#endif
 
 TGALoader::TGALoader(const TGALoader& ref) : _width(ref._width), _height(ref._height), _bpp(ref._bpp) {
 	if(ref._data) {
@@ -28,20 +26,10 @@ TGALoader::TGALoader(std::string const &path, TGAErrorCode* error) {
 TGAErrorCode TGALoader::loadFile(std::string const &path) {
 	std::ifstream file(path, std::ios::binary);
 	
-#ifdef TGA_USE_LOG_H
 	logInfo("loading \"", path, "\"...");
-#endif
-#ifdef TGA_USE_LOG_IOSTREAM
-	std::cout << "loading \"" << path << "\"..." << std::endl;
-#endif
-	
+
 	if(!file) {
-#ifdef TGA_USE_LOG_H
 		logFailed("TGA_FILE_NOT_FOUND : ", path);
-#endif
-#ifdef TGA_USE_LOG_IOSTREAM
-		cerr << "TGA_FILE_NOT_FOUND : " << path << endl;
-#endif
 		return TGA_FILE_NOT_FOUND;
 	}
 	
@@ -53,13 +41,8 @@ TGAErrorCode TGALoader::loadFile(std::string const &path) {
 
 
 TGAErrorCode TGALoader::loadFromData(unsigned char const *imageData) {
-#ifdef TGA_USE_LOG_H
 	logInfo("loading from data...");
-#endif
-#ifdef TGA_USE_LOG_IOSTREAM
-	std::cout << "loading from data..." << std::endl;
-#endif
-	
+
 	_width = ((unsigned int)imageData[13] << 8) + (unsigned int)imageData[12];
 	_height = ((unsigned int)imageData[15] << 8) + (unsigned int)imageData[14];
 	_bpp = ((unsigned int)imageData[16]) / 8;
@@ -132,12 +115,7 @@ TGAErrorCode TGALoader::loadFromData(unsigned char const *imageData) {
 	// For images of an unsupported type, return an error and load nothing
 	else {
 		_data.reset();
-#ifdef TGA_USE_LOG_H
 		logFailed(TGA_UNSUPPORTED_TYPE);
-#endif
-#ifdef TGA_USE_LOG_IOSTREAM
-		std::cerr << TGA_UNSUPPORTED_TYPE << std::endl;
-#endif
 		return TGA_UNSUPPORTED_TYPE;
 	}
 	
@@ -150,12 +128,7 @@ TGAErrorCode TGALoader::loadFromData(unsigned char const *imageData) {
 		}
 	}
 	
-#ifdef TGA_USE_LOG_H
 	logSuccess(TGA_OK);
-#endif
-#ifdef TGA_USE_LOG_IOSTREAM
-	std::cout << TGA_OK << std::endl;
-#endif
 	return TGA_OK;
 }
 
@@ -164,24 +137,6 @@ TGALoader& TGALoader::operator=(const TGALoader& ref) {
 	std::swap(newLoader, *this);
 	
 	return *this;
-}
-
-// Convert an error to an explicit string
-std::string TGALoader::errorToString(TGAErrorCode error) {
-	switch(error) {
-		case TGA_OK:
-			return "TGA image loaded";
-			break;
-		case TGA_FILE_NOT_FOUND:
-			return "file not found";
-			break;
-		case TGA_UNSUPPORTED_TYPE:
-			return "unsupported type";
-			break;
-		default:
-			return "unknown TGA error...";
-			break;
-	}
 }
 
 #ifdef TGA_OPENGL_SUPPORT
