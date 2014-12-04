@@ -1,0 +1,46 @@
+#include "robot/Petri/Editor/Todo.txt"
+
++------------------------------------------------------------------------------+
+| Commun                                                                       |
++------------------------------------------------------------------------------+
+* Refactoring :
+  o Factorisation du code                                             [en cours]
+    # entre cartes simu et cartes robot                               [en cours]
+    # faire un header partagé info/élec                               [en cours]
+      x isoler les constantes communes
+
+* Recherche de bugs
+  o Synchronisation entre threads
+
++------------------------------------------------------------------------------+
+| Simu                                                                         |
++------------------------------------------------------------------------------+
+* Créer l'environnement 2015                                          [en cours]
+  o ajouter les modèles 3D                                            [en cours]
+  o ajouter les obstacles
+
+* Créer les actions 2015
+
+* Mettre à jour les cartes 2015
+
+
++------------------------------------------------------------------------------+
+| IA                                                                           |
++------------------------------------------------------------------------------+
+* Communication info-cartes
+  o revoir l'architecture pour valider la HAL
+  o Problèmes carte déplacement : ordres envoyés depuis 2 threads différents
+  o impossibilité d'identifier la source
+  o Lecture des valeurs retournées par la carte (dép terminé…) inutile, on ne
+      sait pas si c'est pour nous
+  o Empêcher les IA d'accéder aux cartes
+
+
+* Robustifier la communication IA <-> carte CAN USB (fenêtre glissante etc.)
+  o Créer un test exhaustif de la fiabilité de la commmunication
+
+* Réécrire le code de la Vigie
+
+* Mettre à jour les cartes
+
+* Mettre à jour les actions
