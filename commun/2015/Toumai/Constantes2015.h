@@ -44,8 +44,8 @@ namespace IDCartesToumai2015 {
 		DEPLACEMENT 					/*= 1*/,
 		ASSERVISSEMENT_ASCENSEUR		/*= 2*/,
 		PLACEHOLDER3,
-		SERVOS_1 						/*= 4*/,
-		SERVOS_2	 					/*= 5*/,
+		SERVOS_ASCENSEUR				/*= 4*/,
+		SERVOS_AUTRES					/*= 5*/,
 		IO 								/*= 6*/,
 		PLACEHOLDER7,
 		EVITEMENT 						/*= 8*/,
@@ -126,7 +126,7 @@ namespace ConstantesToumai2015 {
 
 	struct _PositionArriere {
 		enum type {
-			FERMEE		= 0,
+			FERME		= 0,
 			MILIEU		= 1,
 			OUVERT		= 2,
 			NBR
@@ -136,7 +136,7 @@ namespace ConstantesToumai2015 {
 
 	struct _PositionBras {
 		enum type {
-			FERMEE 		= 0,
+			FERME 		= 0,
 			DISTRIB		= 1,
 			OUVERT		= 2,
 			NBR
@@ -149,7 +149,7 @@ namespace ConstantesToumai2015 {
 	struct _PositionAscenseur {
 		enum type {
 			MAX_BAS		= 0,
-			RDC 		= 1,
+			ROULER 		= 1,
 			ETAGE1		= 2,
 			ETAGE2		= 3,
 			ETAGE3		= 4,
@@ -223,12 +223,12 @@ EXPLICIT_INSTANCIATION(ConstantesToumai2015Type, ConstantesToumai2015,
 	};
 )
 EXPLICIT_INSTANCIATION(ConstantesToumai2015Type, ConstantesToumai2015,
-	CarteInfo<IDCartesToumai2015::SERVOS_1> {
+	CarteInfo<IDCartesToumai2015::SERVOS_ASCENSEUR> {
 		typedef CarteServosNova2009 type;
 	};
 )
 EXPLICIT_INSTANCIATION(ConstantesToumai2015Type, ConstantesToumai2015,
-	CarteInfo<IDCartesToumai2015::SERVOS_2> {
+	CarteInfo<IDCartesToumai2015::SERVOS_AUTRES> {
 		typedef CarteServosNova2009 type;
 	};
 )
