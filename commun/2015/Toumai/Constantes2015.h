@@ -69,7 +69,12 @@ namespace ConstantesToumai2015 {
 	struct _Contacteur {
 		enum type {
 			CHOIX_EQUIPE= 2,
-			TIRETTE		= 6
+			TIRETTE		= 6,
+			// TODO:
+			LAMPE		= 10,
+			PIED 		= 11,
+			PINCE_D		= 12,
+			PINCE_G		= 13
 		};
 	};
 	typedef _Contacteur::type Contacteur;
@@ -100,9 +105,9 @@ namespace ConstantesToumai2015 {
 	// Position des servos
 	struct _PositionPince {
 		enum type {
-			FERMEE 		= 0,
-			BALLE		= 1,
-			MILIEU		= 2,
+			VERRE 		= 0,
+			LAMPE		= 1,
+			PIED		= 2,
 			OUVERT		= 3,
 			NBR
 		};
@@ -153,6 +158,15 @@ namespace ConstantesToumai2015 {
 		};
 	};
 	typedef _PositionAscenseur::type PositionAscenseur;
+
+	////////////////// UTILITAIRES ///////////////////
+	struct _Ascenseur {
+		enum type {
+			DROIT,
+			GAUCHE
+		};
+	};
+	typedef _Ascenseur::type Ascenseur;
 }
 
 STRUCT_NAMESPACE(ConstantesToumai2015Type, ConstantesToumai2015,
@@ -165,6 +179,7 @@ STRUCT_NAMESPACE(ConstantesToumai2015Type, ConstantesToumai2015,
 		using PositionArriere 	= ConstantesToumai2015::PositionArriere;
 		using PositionBras 		= ConstantesToumai2015::PositionBras;
 		using PositionAscenseur = ConstantesToumai2015::PositionAscenseur;
+		using Ascenseur 		= ConstantesToumai2015::Ascenseur;
 
 		// Déclaration des positions
 		static constexpr distanceM positionPince[PositionPince::NBR] = {950_mm, 800_mm, 1220_mm, 0_mm};
