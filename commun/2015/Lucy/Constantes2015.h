@@ -65,38 +65,29 @@ namespace ConstantesLucy2015 {
 	/********** CONTACTEURS ************/
 	/***********************************/
 
-	struct _Contacteur {
-		enum type {
-			TIRETTE 		= 1,
-			COULEUR 		= 3
-		};
+	enum class Contacteur {
+		TIRETTE 		= 1,
+		COULEUR 		= 3
 	};
-	typedef _Contacteur::type Contacteur;
 
 	/***********************************/
 	/************ SERVOS ***************/
 	/***********************************/
 
 	// ID des servos
-	struct _Servo {
-		enum type {
-			CONTREPOIDS 	= 1,
-			TAPIS_D 		= 2,
-			TAPIS_G 		= 0,
-			NBR
-		};
+	enum class Servo {
+		CONTREPOIDS 	= 1,
+		TAPIS_D 		= 2,
+		TAPIS_G 		= 0,
+		NBR
 	};
-	typedef _Servo::type Servo;
 
 	// Index des positions dans le tableau
-	struct _PositionServo {
-		enum type {
-			OUVERT 		= 0,
-			FERME		= 1,
-			NBR
-		};
+	enum class PositionServo {
+		OUVERT 		= 0,
+		FERME		= 1,
+		NBR
 	};
-	typedef _PositionServo::type PositionServo;
 }
 
 // Définit la struct ConstantesLucy2015Type, et le namespace ConstantesLucy2015.
@@ -108,9 +99,9 @@ STRUCT_NAMESPACE(ConstantesLucy2015Type, ConstantesLucy2015,
 		using PositionServo = ConstantesLucy2015::PositionServo;
 
 		//Position des servos
-		static constexpr distanceM positionsServoContrepoids[PositionServo::NBR] = {1350_mm, 1500_mm};
-		static constexpr distanceM positionsServoTapisD[PositionServo::NBR] = {1760_mm, 1900_mm};
-		static constexpr distanceM positionsServoTapisG[PositionServo::NBR] = {1900_mm, 2150_mm};
+		static constexpr distanceM positionsServoContrepoids[enumToInt(PositionServo::NBR)] = {1350_mm, 1500_mm};
+		static constexpr distanceM positionsServoTapisD[enumToInt(PositionServo::NBR)] = {1760_mm, 1900_mm};
+		static constexpr distanceM positionsServoTapisG[enumToInt(PositionServo::NBR)] = {1900_mm, 2150_mm};
 
 		/***********************************/
 		/************ CARTES ***************/

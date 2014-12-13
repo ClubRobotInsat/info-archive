@@ -8,6 +8,14 @@
 #ifndef Club_Robot_Enum_h
 #define Club_Robot_Enum_h
 
+#include <type_traits>
+
+template<typename Enum>
+std::enable_if_t<std::is_enum<Enum>::value, int>
+constexpr enumToInt(Enum e) {
+	return static_cast<int>(e);
+}
+
 
 /*
  * Permet de créer un namespace et une structure avec le même contenu.

@@ -66,107 +66,80 @@ STRUCT_NAMESPACE(IDCartesToumai2015Type, IDCartesToumai2015,
 namespace ConstantesToumai2015 {
 	/////////////////// CONTACTEURS ///////////////////
 	// Numeros des contacteurs et les roles associes
-	struct _Contacteur {
-		enum type {
-			CHOIX_EQUIPE= 2,
-			TIRETTE		= 6,
-			// TODO:
-			LAMPE		= 10,
-			PIED 		= 11,
-			PINCE_D		= 12,
-			PINCE_G		= 13
-		};
+	enum class Contacteur {
+		CHOIX_EQUIPE= 2,
+		TIRETTE		= 6,
+		// TODO:
+		LAMPE		= 10,
+		PIED 		= 11,
+		PINCE_D		= 12,
+		PINCE_G		= 13
 	};
-	typedef _Contacteur::type Contacteur;
 
 	/////////////////// SERVOS ///////////////////
 	// Indice des servos
-	struct _ServoAscenseur {
-		enum type {
-			PINCE_D 	= 0,
-			PINCE_G 	= 1,
-			COUDE_D 	= 2,
-			COUDE_G	 	= 3,
-			NBR
-		};
+	enum class ServoAscenseur {
+		PINCE_D 	= 0,
+		PINCE_G 	= 1,
+		COUDE_D 	= 2,
+		COUDE_G	 	= 3,
+		NBR
 	};
-	typedef _ServoAscenseur::type ServoAscenseur;
 
-	struct _Servo {
-		enum type {
-			ARRIERE		= 0,
-			BRAS_D	 	= 1,
-			BRAS_G		= 2,
-			NBR
-		};
+	enum class Servo {
+		ARRIERE		= 0,
+		BRAS_D	 	= 1,
+		BRAS_G		= 2,
+		NBR
 	};
-	typedef _Servo::type Servo;
 
 	// Position des servos
-	struct _PositionPince {
-		enum type {
-			VERRE 		= 0,
-			LAMPE		= 1,
-			PIED		= 2,
-			OUVERT		= 3,
-			NBR
-		};
+	enum class PositionPince {
+		VERRE 		= 0,
+		LAMPE		= 1,
+		PIED		= 2,
+		OUVERT		= 3,
+		NBR
 	};
-	typedef _PositionPince::type PositionPince;
 
-	struct _PositionCoude {
-		enum type {
-			ROBOT 		= 0,
-			GOBELET		= 1,
-			MILIEU		= 2,
-			NBR
-		};
+	enum class PositionCoude {
+		ROBOT 		= 0,
+		GOBELET		= 1,
+		MILIEU		= 2,
+		NBR
 	};
-	typedef _PositionCoude::type PositionCoude;
 
-	struct _PositionArriere {
-		enum type {
-			FERME		= 0,
-			MILIEU		= 1,
-			OUVERT		= 2,
-			NBR
-		};
+	enum class PositionArriere {
+		FERME		= 0,
+		MILIEU		= 1,
+		OUVERT		= 2,
+		NBR
 	};
-	typedef _PositionArriere::type PositionArriere;
 
-	struct _PositionBras {
-		enum type {
-			FERME 		= 0,
-			DISTRIB		= 1,
-			OUVERT		= 2,
-			NBR
-		};
+	enum class PositionBras {
+		FERME 		= 0,
+		DISTRIB		= 1,
+		OUVERT		= 2,
+		NBR
 	};
-	typedef _PositionBras::type PositionBras;
 
 	/////////////////// MOTEURS ///////////////////
 	// Position des moteurs
-	struct _PositionAscenseur {
-		enum type {
-			MAX_BAS		= 0,
-			ROULER 		= 1,
-			ETAGE1		= 2,
-			ETAGE2		= 3,
-			ETAGE3		= 4,
-			MAX_HAUT	= 5,
-			NBR
-		};
+	enum class PositionAscenseur {
+		MAX_BAS		= 0,
+		ROULER 		= 1,
+		ETAGE1		= 2,
+		ETAGE2		= 3,
+		ETAGE3		= 4,
+		MAX_HAUT	= 5,
+		NBR
 	};
-	typedef _PositionAscenseur::type PositionAscenseur;
 
 	////////////////// UTILITAIRES ///////////////////
-	struct _Ascenseur {
-		enum type {
-			DROIT,
-			GAUCHE
-		};
+	enum class Ascenseur {
+		DROIT,
+		GAUCHE
 	};
-	typedef _Ascenseur::type Ascenseur;
 }
 
 STRUCT_NAMESPACE(ConstantesToumai2015Type, ConstantesToumai2015,
@@ -182,13 +155,13 @@ STRUCT_NAMESPACE(ConstantesToumai2015Type, ConstantesToumai2015,
 		using Ascenseur 		= ConstantesToumai2015::Ascenseur;
 
 		// Déclaration des positions
-		static constexpr distanceM positionPince[PositionPince::NBR] = {950_mm, 800_mm, 1220_mm, 0_mm};
-		static constexpr distanceM positionCoude[PositionCoude::NBR] = {1570_mm, 2400_mm, 1350_mm};
-		static constexpr distanceM positionArriere[PositionArriere::NBR] = {1300_mm, 1790_mm, 0_mm};
-		static constexpr distanceM positionBras[PositionBras::NBR] = {575_mm, 2490_mm, 0_mm};
+		static constexpr distanceM positionPince[enumToInt(PositionPince::NBR)] = {950_mm, 800_mm, 1220_mm, 0_mm};
+		static constexpr distanceM positionCoude[enumToInt(PositionCoude::NBR)] = {1570_mm, 2400_mm, 1350_mm};
+		static constexpr distanceM positionArriere[enumToInt(PositionArriere::NBR)] = {1300_mm, 1790_mm, 0_mm};
+		static constexpr distanceM positionBras[enumToInt(PositionBras::NBR)] = {575_mm, 2490_mm, 0_mm};
 
 		// Déclaration des positions
-		static constexpr angleRad positionAscenseur[PositionAscenseur::NBR] = {790_mrad, 1430_mrad, 2310_mrad, 0_mrad, 0_mrad, 0_mrad};
+		static constexpr angleRad positionAscenseur[enumToInt(PositionAscenseur::NBR)] = {790_mrad, 1430_mrad, 2310_mrad, 0_mrad, 0_mrad, 0_mrad};
 
 		/////////////////// CARTES ///////////////////
 
@@ -225,11 +198,13 @@ EXPLICIT_INSTANCIATION(ConstantesToumai2015Type, ConstantesToumai2015,
 EXPLICIT_INSTANCIATION(ConstantesToumai2015Type, ConstantesToumai2015,
 	CarteInfo<IDCartesToumai2015::SERVOS_ASCENSEUR> {
 		typedef CarteServosNova2009 type;
+		typedef ConstantesToumai2015::ServoAscenseur Servo;
 	};
 )
 EXPLICIT_INSTANCIATION(ConstantesToumai2015Type, ConstantesToumai2015,
 	CarteInfo<IDCartesToumai2015::SERVOS_AUTRES> {
 		typedef CarteServosNova2009 type;
+		typedef ConstantesToumai2015::Servo Servo;
 	};
 )
 EXPLICIT_INSTANCIATION(ConstantesToumai2015Type, ConstantesToumai2015,
