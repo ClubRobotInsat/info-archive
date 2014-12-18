@@ -10,7 +10,7 @@
 #include "Enum.h"
 
 ENUM_CLASS(ResultatAction,
-		   REUSSI, RATE, BLOQUE_PAR_ADV, TIMEOUT, BLOQUE
+		   REUSSI, RATE, BLOQUE, BLOQUE_PAR_ADV, TIMEOUT
 		   )
 
 inline void setThreadName(char const *name) {

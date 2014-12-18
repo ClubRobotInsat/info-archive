@@ -6,7 +6,7 @@
 #include "MathUtilities.h"
 #include "Vector.h"
 
-typedef Vector2<distanceM> Vector2mm;
+typedef Vector2<distanceM> Vector2m;
 typedef Vector3<distanceM> Vector3m;
 
 #endif // MATH_TOOLBOX_H

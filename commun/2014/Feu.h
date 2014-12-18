@@ -25,7 +25,7 @@ public:
 
 	/// Getters
 	// Const = accessible depuis un objet "Feu" constant.
-	Vector2mm getPosition() const {return _position;}
+	Vector2m getPosition() const {return _position;}
 	int getLevel() const {return _level;}
 	SensFeu getSens() const {return _sens;}
 	Constantes2014::CouleurRobot getCouleurTop() const {return _couleurTop;}
@@ -37,7 +37,7 @@ public:
 
 	/// Setters
 	// Pas const = pas accessibles depuis un objet "Feu" constant car modifie ses attributs
-	void setPosition(Vector2mm const &pos) {_position = pos;}
+	void setPosition(Vector2m const &pos) {_position = pos;}
 	void setLevel(int level) {_level = level;}
 	void setSens(SensFeu sens) {_sens = sens;}
 	void setCouleurTop(Constantes2014::CouleurRobot couleur) {_couleurTop = couleur;}
