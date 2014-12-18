@@ -42,8 +42,8 @@ namespace IDCartesToumai2015 {
 	ENUM_NO_IMPL(IDCartes,
 		CAN_USB 						/*= 0*/,
 		DEPLACEMENT 					/*= 1*/,
-		ASSERVISSEMENT_ASCENSEUR		/*= 2*/,
-		PLACEHOLDER3,
+		ASSERVISSEMENT_ASCENSEUR_D		/*= 2*/,
+		ASSERVISSEMENT_ASCENSEUR_G		/*= 3*/,
 		SERVOS_ASCENSEUR				/*= 4*/,
 		SERVOS_AUTRES					/*= 5*/,
 		IO 								/*= 6*/,
@@ -155,10 +155,10 @@ STRUCT_NAMESPACE(ConstantesToumai2015Type, ConstantesToumai2015,
 		using Ascenseur 		= ConstantesToumai2015::Ascenseur;
 
 		// Déclaration des positions
-		static constexpr distanceM positionPince[enumToInt(PositionPince::NBR)] = {950_mm, 800_mm, 1220_mm, 0_mm};
-		static constexpr distanceM positionCoude[enumToInt(PositionCoude::NBR)] = {1570_mm, 2400_mm, 1350_mm};
-		static constexpr distanceM positionArriere[enumToInt(PositionArriere::NBR)] = {1300_mm, 1790_mm, 0_mm};
-		static constexpr distanceM positionBras[enumToInt(PositionBras::NBR)] = {575_mm, 2490_mm, 0_mm};
+		static constexpr angleRad positionPince[enumToInt(PositionPince::NBR)] = {950_mrad, 800_mrad, 1220_mrad, 0_mrad};
+		static constexpr angleRad positionCoude[enumToInt(PositionCoude::NBR)] = {1570_mrad, 2400_mrad, 1350_mrad};
+		static constexpr angleRad positionArriere[enumToInt(PositionArriere::NBR)] = {1300_mrad, 1790_mrad, 0_mrad};
+		static constexpr angleRad positionBras[enumToInt(PositionBras::NBR)] = {575_mrad, 2490_mrad, 0_mrad};
 
 		// Déclaration des positions
 		static constexpr angleRad positionAscenseur[enumToInt(PositionAscenseur::NBR)] = {790_mrad, 1430_mrad, 2310_mrad, 0_mrad, 0_mrad, 0_mrad};
@@ -181,7 +181,12 @@ EXPLICIT_INSTANCIATION(ConstantesToumai2015Type, ConstantesToumai2015,
 	};
 )
 EXPLICIT_INSTANCIATION(ConstantesToumai2015Type, ConstantesToumai2015,
-	CarteInfo<IDCartesToumai2015::ASSERVISSEMENT_ASCENSEUR> {
+	CarteInfo<IDCartesToumai2015::ASSERVISSEMENT_ASCENSEUR_D> {
+		typedef CarteAsservissement2009 type;
+	};
+)
+EXPLICIT_INSTANCIATION(ConstantesToumai2015Type, ConstantesToumai2015,
+	CarteInfo<IDCartesToumai2015::ASSERVISSEMENT_ASCENSEUR_G> {
 		typedef CarteAsservissement2009 type;
 	};
 )

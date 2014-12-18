@@ -38,16 +38,16 @@
 // Les 2 ont le même contenu, la struct peut être utilisée en paramètre template et le namespace peut être mis dans un using namespace.
 namespace IDCartesLucy2015 {
 	ENUM_NO_IMPL(IDCartes,
-				 CAN_USB 			/*= 0*/,
-				 DEPLACEMENT 		/*= 1*/,
-				 PLACEHOLDER2,
-				 CONTACTEURS 		/*= 3*/,
-				 SERVOS 			/*= 4*/,
-				 DEBUG_DESSIN 		/*= 5*/,
-				 IO					/*= 6*/,
-				 IHM 				/*= 7*/,
-				 EVITEMENT 			/*= 8*/,
-				 POMPE 				/*= 9*/
+		 CAN_USB 			/*= 0*/,
+		 DEPLACEMENT 		/*= 1*/,
+		 PLACEHOLDER2,
+		 CONTACTEURS 		/*= 3*/,
+		 SERVOS 			/*= 4*/,
+		 DEBUG_DESSIN 		/*= 5*/,
+		 IO					/*= 6*/,
+		 IHM 				/*= 7*/,
+		 EVITEMENT 			/*= 8*/,
+		 POMPE 				/*= 9*/
 	);
 }
 
@@ -98,10 +98,9 @@ STRUCT_NAMESPACE(ConstantesLucy2015Type, ConstantesLucy2015,
 		using Servo = ConstantesLucy2015::Servo;
 		using PositionServo = ConstantesLucy2015::PositionServo;
 
-		//Position des servos
-		static constexpr distanceM positionsServoContrepoids[enumToInt(PositionServo::NBR)] = {1350_mm, 1500_mm};
-		static constexpr distanceM positionsServoTapisD[enumToInt(PositionServo::NBR)] = {1760_mm, 1900_mm};
-		static constexpr distanceM positionsServoTapisG[enumToInt(PositionServo::NBR)] = {1900_mm, 2150_mm};
+		// Position des servos
+		static constexpr angleRad positionContrepoids[enumToInt(PositionServo::NBR)] = {1350_mrad, 1500_mrad};
+		static constexpr angleRad positionTapis[enumToInt(PositionServo::NBR)] = {1760_mrad, 1900_mrad};
 
 		/***********************************/
 		/************ CARTES ***************/
@@ -125,6 +124,7 @@ EXPLICIT_INSTANCIATION(ConstantesLucy2015Type, ConstantesLucy2015,
 EXPLICIT_INSTANCIATION(ConstantesLucy2015Type, ConstantesLucy2015,
 	CarteInfo<IDCartesLucy2015::SERVOS> {
 		typedef CarteServosNova2009 type;
+		typedef ConstantesLucy2015::Servo Servo;
 	};
 )
 
