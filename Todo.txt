@@ -19,8 +19,6 @@
   o ajouter les modèles 3D                                            [en cours]
   o ajouter les obstacles
 
-* Créer les actions 2015
-
 * Mettre à jour les cartes 2015
 
 
@@ -29,11 +27,6 @@
 +------------------------------------------------------------------------------+
 * Communication info-cartes
   o revoir l'architecture pour valider la HAL
-  o Problèmes carte déplacement : ordres envoyés depuis 2 threads différents
-  o impossibilité d'identifier la source
-  o Lecture des valeurs retournées par la carte (dép terminé…) inutile, on ne
-      sait pas si c'est pour nous
-  o Empêcher les IA d'accéder aux cartes
 
 
 * Robustifier la communication IA <-> carte CAN USB (fenêtre glissante etc.)
@@ -44,3 +37,11 @@
 * Mettre à jour les cartes
 
 * Mettre à jour les actions
+
++------------------------------------------------------------------------------+
+| Divers                                                                       |
++------------------------------------------------------------------------------+
+* Pour Jérôme :
+  o positionnerServoBloquant récursif, pourquoi ?
+  o modeOffset, c'est quoi ?
+
