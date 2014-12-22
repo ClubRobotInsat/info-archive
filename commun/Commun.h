@@ -25,5 +25,4 @@ inline void setThreadName(std::string const &name) {
 	setThreadName(name.c_str());
 }
 
-
 #endif
