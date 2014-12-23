@@ -148,7 +148,7 @@ bool estDansIntervalOuvert(T val, T bMin, T bMax) {
 #define CONDITIONAL_CONSTEXPR
 #endif
 
-template<typename T, typename ValType>
+template<typename T, typename ValType = double>
 class numericValue {
 public:
 	using ValueType = ValType;
@@ -157,6 +157,10 @@ public:
 	numericValue(T const &v) : _val(v._val) {}
 	static constexpr T makeValue(ValueType v) {
 		return T(v);
+	}
+
+	static constexpr T max() {
+		return T(std::numeric_limits<ValueType>::max());
 	}
 
 	constexpr friend void swap(T &v1, T const &v2) {
@@ -284,8 +288,8 @@ protected:
 };
 
 // Voir doc en haut du fichier
-class angleRad : public numericValue<angleRad, long double> {
-	friend class numericValue<angleRad, long double>;
+class angleRad : public numericValue<angleRad> {
+	friend class numericValue<angleRad>;
 public:
 	using numericValue::ValueType;
 
@@ -334,8 +338,8 @@ private:
 };
 
 // Voir doc en haut du fichier
-class distanceM : public numericValue<distanceM, long double> {
-	friend class numericValue<distanceM, long double>;
+class distanceM : public numericValue<distanceM> {
+	friend class numericValue<distanceM>;
 public:
 	using numericValue::ValueType;
 
@@ -371,6 +375,7 @@ public:
 	static constexpr distanceM makeFromCm(long double cm) { return distanceM(cm / 100); }
 	static constexpr distanceM makeFromDm(long double dm) { return distanceM(dm / 10); }
 	static constexpr distanceM makeFromM(long double m) { return distanceM(m); }
+	static constexpr distanceM makeFromKm(long double km) { return distanceM(km * 1000); }
 
 private:
 	using numericValue::numericValue;
@@ -381,8 +386,8 @@ inline angleRad atan2(distanceM const &y, distanceM const &x) {
 }
 
 // Voir doc en haut du fichier
-class distanceM2 : public numericValue<distanceM2, long double> {
-	friend class numericValue<distanceM2, long double>;
+class distanceM2 : public numericValue<distanceM2> {
+	friend class numericValue<distanceM2>;
 public:
 	using numericValue::ValueType;
 
@@ -412,8 +417,8 @@ private:
 };
 
 // Voir doc en haut du fichier
-class masseKg : public numericValue<masseKg, long double> {
-	friend class numericValue<masseKg, long double>;
+class masseKg : public numericValue<masseKg> {
+	friend class numericValue<masseKg>;
 public:
 	using numericValue::ValueType;
 
@@ -434,8 +439,8 @@ private:
 };
 
 // Voir doc en haut du fichier
-class dureeS : public numericValue<dureeS, long double> {
-	friend class numericValue<dureeS, long double>;
+class dureeS : public numericValue<dureeS> {
+	friend class numericValue<dureeS>;
 public:
 	using numericValue::ValueType;
 
@@ -467,8 +472,8 @@ private:
 };
 
 // Voir doc en haut du fichier
-class vitesseM_s : public numericValue<vitesseM_s, long double> {
-	friend class numericValue<vitesseM_s, long double>;
+class vitesseM_s : public numericValue<vitesseM_s> {
+	friend class numericValue<vitesseM_s>;
 public:
 	using numericValue::ValueType;
 
@@ -508,8 +513,8 @@ private:
 };
 
 // Voir doc en haut du fichier
-class vitesseRad_s : public numericValue<vitesseRad_s, long double> {
-	friend class numericValue<vitesseRad_s, long double>;
+class vitesseRad_s : public numericValue<vitesseRad_s> {
+	friend class numericValue<vitesseRad_s>;
 public:
 	using numericValue::ValueType;
 
@@ -660,6 +665,14 @@ inline constexpr distanceM operator"" _m(long double dist) {
 
 inline constexpr distanceM operator"" _m(unsigned long long dist) {
 	return distanceM::makeFromM(dist);
+}
+
+inline constexpr distanceM operator"" _km(long double dist) {
+	return distanceM::makeFromKm(dist);
+}
+
+inline constexpr distanceM operator"" _km(unsigned long long dist) {
+	return distanceM::makeFromKm(dist);
 }
 
 inline constexpr distanceM2 operator"" _mm2(long double dist) {
