@@ -6,6 +6,7 @@
 #include <cmath>
 #include <iostream>
 #include <limits>
+#include <chrono>
 #include "../log/Log.h"
 
 #ifndef M_PI
@@ -460,6 +461,10 @@ public:
 	template<typename Rep = ValueType>
 	constexpr Rep toS() const {
 		return (*this).value<Rep>();
+	}
+
+	std::chrono::nanoseconds toSystemDelay() const {
+		return std::chrono::nanoseconds(static_cast<long long>(this->toS() * 1e9));
 	}
 
 	static constexpr dureeS makeFromNs(long double ns) { return dureeS(ns / 1e9); }
