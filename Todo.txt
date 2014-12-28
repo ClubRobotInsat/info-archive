@@ -12,15 +12,6 @@
 * Recherche de bugs
   o Synchronisation entre threads
 
-+------------------------------------------------------------------------------+
-| Simu                                                                         |
-+------------------------------------------------------------------------------+
-* Créer l'environnement 2015                                          [en cours]
-  o ajouter les modèles 3D                                            [en cours]
-  o ajouter les obstacles
-
-* Mettre à jour les cartes 2015
-
 
 +------------------------------------------------------------------------------+
 | IA                                                                           |
@@ -36,10 +27,40 @@
 * Déplacement
   o Sens déplacement allerA
 
-+------------------------------------------------------------------------------+
-| Divers                                                                       |
-+------------------------------------------------------------------------------+
+* Constantes
+  o Regroupement des constantes : y'en a partout (Constantes2015, Robot2015, Strategie2015…)
+
+* Envisager une conception plus OO pour les robots (CarteDeplacement etc.)
+
 * Pour Jérôme :
   o positionnerServoBloquant récursif, pourquoi ?
   o modeOffset, c'est quoi ?
+
+* Pour l'équipe élec : Réglages précision CarteDeplacement
+
++------------------------------------------------------------------------------+
+| Simu                                                                         |
++------------------------------------------------------------------------------+
+* Créer l'environnement 2015                                          [en cours]
+  o ajouter les modèles 3D                                            [en cours]
+  o ajouter les obstacles
+
+* Mettre à jour les cartes 2015
+
+* Envisager l'utilisation de shaders pour l'affichage
+  o Boulot
+  o Boulot
+  o Encore boulot
+
+* Affichage d'infos de débug
+
+* Amélioration des performances des collisions
+
+* Chargement de textures un peu plus OO
+
+* Utilisation de la classe Socket de Commun
+
++------------------------------------------------------------------------------+
+| Divers                                                                       |
++------------------------------------------------------------------------------+
 
