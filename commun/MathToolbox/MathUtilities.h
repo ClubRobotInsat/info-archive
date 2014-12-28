@@ -38,6 +38,10 @@ bool estDansIntervalOuvert(T val, T bMin, T bMax) {
 	return (val > bMin) && (val < bMax);
 }
 
+using std::abs;
+using std::atan2;
+using std::sqrt;
+
 /*
  * Les grandeurs physiques suivantes comportent toutes les fonctionnalités suivantes :
  *  Constructeur de copie
@@ -345,9 +349,9 @@ public:
 	using numericValue::ValueType;
 
 	friend std::ostream &operator<<(std::ostream &s, distanceM const &d) {
-		if(d._val >= 1)
+		if(abs(d._val) >= 1)
 			s << d._val << " m";
-		else if(d._val >= 1e-2)
+		else if(abs(d._val) >= 1e-2)
 			s << d._val * 1e2 << " cm";
 		else
 			s << d._val * 1e3 << " mm";
@@ -446,11 +450,11 @@ public:
 	using numericValue::ValueType;
 
 	friend inline std::ostream &operator<<(std::ostream &s, dureeS const &d) {
-		if(d._val >= 1)
+		if(abs(d._val) >= 1)
 			s << d._val << " s";
-		else if(d._val >= 1e-3)
+		else if(abs(d._val) >= 1e-3)
 			s << d._val * 1e3 << " ms";
-		else if(d._val >= 1e-6)
+		else if(abs(d._val) >= 1e-6)
 			s << d._val * 1e6 << " us";
 		else
 			s << d._val * 1e9 << " ns";
@@ -483,9 +487,9 @@ public:
 	using numericValue::ValueType;
 
 	friend inline std::ostream &operator<<(std::ostream &s, vitesseM_s const &v) {
-		if(v._val >= 1)
+		if(abs(v._val) >= 1)
 			s << v._val << " m/s";
-		else if(v._val >= 1e-2)
+		else if(abs(v._val) >= 1e-2)
 			s << v._val * 1e2 << " cm/s";
 		else
 			s << v._val * 1e3 << " mm/s";

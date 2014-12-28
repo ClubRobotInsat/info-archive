@@ -6,6 +6,7 @@
 #include <iostream>
 #include <cstdint>
 #include "../Enum.h"
+#include "../MathToolbox/MathToolbox.h"
 
 namespace Constantes2015 {
 	ENUM_NO_IMPL(CouleurRobot,
@@ -25,6 +26,12 @@ STRUCT_NAMESPACE(Constantes2015Type, Constantes2015, {
 
 	static constexpr int deltaPositionServo = 20; // > resolution sur les valeurs de position des servos
 	static constexpr int deltaPositionMoteur = 70; // > resolution sur les valeurs de position des moteurs (TODO : mettre la bonne valeur)
+
+	static constexpr dureeS TIMEOUT_DEPLACEMENT_DEFAULT = 10_s;
+	static constexpr vitesseM_s VITESSE_LINEAIRE_DEFAULT = 40_cm_s;
+	static constexpr vitesseRad_s VITESSE_ANGULAIRE_DEFAULT = 3_rad_s;
+	static constexpr distanceM PRECISION_LINEAIRE_DEFAULT = 5_cm;
+	static constexpr angleRad PRECISION_ANGULAIRE_DEFAULT = 0.075_rad;
 })
 
 inline Constantes2015::CouleurRobot operator!(Constantes2015::CouleurRobot const &c) {

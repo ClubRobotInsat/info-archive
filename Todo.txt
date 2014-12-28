@@ -25,9 +25,6 @@
 +------------------------------------------------------------------------------+
 | IA                                                                           |
 +------------------------------------------------------------------------------+
-* Communication info-cartes
-  o revoir l'architecture pour valider la HAL
-
 
 * Robustifier la communication IA <-> carte CAN USB (fenêtre glissante etc.)
   o Créer un test exhaustif de la fiabilité de la commmunication
@@ -36,7 +33,8 @@
 
 * Mettre à jour les cartes
 
-* Mettre à jour les actions
+* Déplacement
+  o Sens déplacement allerA
 
 +------------------------------------------------------------------------------+
 | Divers                                                                       |

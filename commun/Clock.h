@@ -26,9 +26,9 @@ public:
 		return *this;
 	}
 
-	void swap(DateTemps &d) {
+	friend void swap(DateTemps &d1, DateTemps &d2) {
 		using std::swap;
-		std::swap(_value, d._value);
+		std::swap(d1._value, d2._value);
 	}
 
 	static DateTemps now() {
