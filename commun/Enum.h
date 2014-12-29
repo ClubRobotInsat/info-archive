@@ -9,6 +9,7 @@
 #define Club_Robot_Enum_h
 
 #include <type_traits>
+#include <iostream>
 
 template<typename Enum>
 std::enable_if_t<std::is_enum<Enum>::value, int>
@@ -136,15 +137,19 @@ template<> struct __VA_ARGS__ \
 static std::map<name, char const *> name##StringMap{TO_ASSOC_LIST(name, __VA_ARGS__)};\
 static auto const name##TemplateTuple = make_named_enum<name, NAMESPACIZE_LIST(name, __VA_ARGS__)>(STRINGIFY_LIST(__VA_ARGS__));
 
-#define ENUM_IMPL(name, namespace)\
-inline char const * toString(namespace::name e) {\
-return namespace::name##StringMap[e];\
+#define ENUM_IMPL(name, Namespace)\
+inline char const * toString(Namespace::name e) {\
+return Namespace::name##StringMap[e];\
 } \
 template<>\
-inline std::map<namespace::name, char const *> const &getEnumValues() { return namespace::name##StringMap; }\
-template<namespace::name e>\
+inline std::map<Namespace::name, char const *> const &getEnumValues() { return Namespace::name##StringMap; }\
+template<Namespace::name e>\
 char const *toString() {\
-return std::get<std::pair<GetNewType<namespace::name, e, static_cast<int>(e)>, char const *>>(namespace::name##TemplateTuple).second;\
+return std::get<std::pair<GetNewType<Namespace::name, e, static_cast<int>(e)>, char const *>>(Namespace::name##TemplateTuple).second;\
+} \
+inline std::ostream &operator<<(std::ostream &s, Namespace::name e) { \
+s << toString(e); \
+return s; \
 }
 
 #define ENUM_GEN_IMPL(attrib, name, ...) ENUM_GEN_NO_IMPL(attrib, name, __VA_ARGS__)\

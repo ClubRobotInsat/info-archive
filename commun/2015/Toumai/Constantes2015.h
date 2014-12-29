@@ -37,6 +37,7 @@
 
 #include "../../Enum.h"
 #include "../../MathToolbox/MathUtilities.h"
+#include "../ConstantesCommunes2015.h"
 
 namespace IDCartesToumai2015 {
 	ENUM_NO_IMPL(IDCartes,
@@ -162,6 +163,15 @@ STRUCT_NAMESPACE(ConstantesToumai2015Type, ConstantesToumai2015,
 
 		// Déclaration des positions
 		static constexpr angleRad positionAscenseur[enumToInt(PositionAscenseur::NBR)] = {790_mrad, 1430_mrad, 2310_mrad, 0_mrad, 0_mrad, 0_mrad};
+
+		// On reprend par défaut les mêmes valeur que la partie commune aux 2 robots, à changer si nécessaire
+		static constexpr dureeS TIMEOUT_DEPLACEMENT_DEFAUT = Constantes2015::TIMEOUT_DEPLACEMENT_DEFAUT;
+		static constexpr vitesseM_s VITESSE_LINEAIRE_DEFAUT = Constantes2015::VITESSE_LINEAIRE_DEFAUT;
+		static constexpr vitesseRad_s VITESSE_ANGULAIRE_DEFAUT = Constantes2015::VITESSE_ANGULAIRE_DEFAUT;
+		static constexpr distanceM PRECISION_LINEAIRE_DEFAUT = Constantes2015::PRECISION_LINEAIRE_DEFAUT;
+		static constexpr angleRad PRECISION_ANGULAIRE_DEFAUT = Constantes2015::PRECISION_ANGULAIRE_DEFAUT;
+
+		static constexpr distanceM RAYON_ROTATION_ROBOT = 230.0_mm;
 
 		/////////////////// CARTES ///////////////////
 

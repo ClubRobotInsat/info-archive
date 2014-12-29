@@ -9,11 +9,11 @@
 #include "../MathToolbox/MathToolbox.h"
 
 namespace Constantes2015 {
-	ENUM_NO_IMPL(CouleurRobot,
-					   COULEUR_ROBOT_JAUNE /*= 0*/,
-					   COULEUR_ROBOT_VERT /*= 1*/,
+	ENUM_CLASS_NO_IMPL(CouleurRobot,
+					   Jaune /*= 0*/,
+					   Vert /*= 1*/,
 					   //Valeur d'initialisation, qui permet de déctecter si la lecture du capteur couleur a déconné.
-					   COULEUR_ROBOT_UNDEF /*= 2*/
+					   Undef /*= 2*/
 	);
 }
 
@@ -27,37 +27,30 @@ STRUCT_NAMESPACE(Constantes2015Type, Constantes2015, {
 	static constexpr int deltaPositionServo = 20; // > resolution sur les valeurs de position des servos
 	static constexpr int deltaPositionMoteur = 70; // > resolution sur les valeurs de position des moteurs (TODO : mettre la bonne valeur)
 
-	static constexpr dureeS TIMEOUT_DEPLACEMENT_DEFAULT = 10_s;
-	static constexpr vitesseM_s VITESSE_LINEAIRE_DEFAULT = 40_cm_s;
-	static constexpr vitesseRad_s VITESSE_ANGULAIRE_DEFAULT = 3_rad_s;
-	static constexpr distanceM PRECISION_LINEAIRE_DEFAULT = 5_cm;
-	static constexpr angleRad PRECISION_ANGULAIRE_DEFAULT = 0.075_rad;
+	static constexpr dureeS TIMEOUT_DEPLACEMENT_DEFAUT = 10_s;
+	static constexpr vitesseM_s VITESSE_LINEAIRE_DEFAUT = 80_cm_s;
+	static constexpr vitesseRad_s VITESSE_ANGULAIRE_DEFAUT = 3.25_rad_s;
+	static constexpr distanceM PRECISION_LINEAIRE_DEFAUT = 5_cm;
+	static constexpr angleRad PRECISION_ANGULAIRE_DEFAUT = 0.075_rad;
+
+	static constexpr vitesseM_s VITESSE_LINEAIRE_EVITEMENT = 20_cm_s;
+	static constexpr vitesseRad_s VITESSE_ANGULAIRE_EVITEMENT = 1_rad_s;
+
+	static constexpr vitesseM_s VITESSE_LINEAIRE_RECALAGE = 20_cm_s;
+
+	static constexpr int NOMBRE_BLOCAGE_LOGICIEL_MAX = 5;
+	static constexpr int NOMBRE_BLOCAGE_PHYSIQUE_MAX = 5;
+
+	static constexpr dureeS DUREE_MATCH = 90_s;
 })
 
 inline Constantes2015::CouleurRobot operator!(Constantes2015::CouleurRobot const &c) {
-	if(c == Constantes2015::CouleurRobot::COULEUR_ROBOT_VERT)
-		return Constantes2015::CouleurRobot::COULEUR_ROBOT_JAUNE;
-	else if(c == Constantes2015::CouleurRobot::COULEUR_ROBOT_JAUNE)
-		return Constantes2015::CouleurRobot::COULEUR_ROBOT_VERT;
+	if(c == Constantes2015::CouleurRobot::Vert)
+		return Constantes2015::CouleurRobot::Jaune;
+	else if(c == Constantes2015::CouleurRobot::Jaune)
+		return Constantes2015::CouleurRobot::Vert;
 
 	return c;
-}
-
-// Pour permettre l'affichage d'une Couleur :
-inline std::ostream& operator<<(std::ostream& os, const Constantes2015::CouleurRobot& couleur) {
-	switch(couleur) {
-		case Constantes2015::COULEUR_ROBOT_VERT:
-			os << "VERT";
-			break;
-		case Constantes2015::COULEUR_ROBOT_JAUNE:
-			os << "JAUNE";
-			break;
-		case Constantes2015::COULEUR_ROBOT_UNDEF:
-			os << "non initialise";
-			break;
-	}
-
-	return os;
 }
 
 #endif //CONSTANTES_COMMUNES_2015_H

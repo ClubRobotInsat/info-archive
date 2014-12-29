@@ -450,7 +450,11 @@ public:
 	using numericValue::ValueType;
 
 	friend inline std::ostream &operator<<(std::ostream &s, dureeS const &d) {
-		if(abs(d._val) >= 1)
+		if(abs(d._val) >= 3600)
+			s << d._val << " h";
+		else if(abs(d._val) >= 60)
+			s << d._val << " min";
+		else if(abs(d._val) >= 1)
 			s << d._val << " s";
 		else if(abs(d._val) >= 1e-3)
 			s << d._val * 1e3 << " ms";
@@ -742,6 +746,22 @@ inline constexpr dureeS operator"" _s(long double duration) {
 
 inline constexpr dureeS operator"" _s(unsigned long long duration) {
 	return dureeS::makeFromS(duration);
+}
+
+inline constexpr dureeS operator"" _min(long double duration) {
+	return dureeS::makeFromS(duration * 60);
+}
+
+inline constexpr dureeS operator"" _min(unsigned long long duration) {
+	return dureeS::makeFromS(duration * 60);
+}
+
+inline constexpr dureeS operator"" _h(long double duration) {
+	return dureeS::makeFromS(duration * 3600);
+}
+
+inline constexpr dureeS operator"" _h(unsigned long long duration) {
+	return dureeS::makeFromS(duration * 3600);
 }
 
 inline constexpr vitesseM_s operator"" _mm_s(long double v) {

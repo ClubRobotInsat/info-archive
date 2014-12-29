@@ -94,9 +94,4 @@ private:
 	unsigned int _bpp = 0; // Bytes Per Pixel : 0, 3 or 4
 };
 
-// Overloading << for printing error codes using iostream
-inline std::ostream& operator<<(std::ostream& os, const TGAErrorCode& error) {
-	return os << toString(error);
-}
-
 #endif // !defined TGA_LOADER_H
