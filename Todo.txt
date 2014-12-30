@@ -24,9 +24,6 @@
 
 * Mettre à jour les cartes
 
-* Déplacement
-  o Sens déplacement allerA
-
 * Constantes
   o Regroupement des constantes : y'en a partout (Constantes2015, Robot2015, Strategie2015…)
 
@@ -36,7 +33,7 @@
   o positionnerServoBloquant récursif, pourquoi ?
   o modeOffset, c'est quoi ?
 
-* Pour l'équipe élec : Réglages précision CarteDeplacement
+* Pour l'équipe élec : Fonctionnement CarteDeplacement
 
 +------------------------------------------------------------------------------+
 | Simu                                                                         |

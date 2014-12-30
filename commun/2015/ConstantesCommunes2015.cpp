@@ -21,3 +21,6 @@ constexpr dureeS Constantes2015Type::DUREE_MATCH;
 
 constexpr int Constantes2015Type::NOMBRE_BLOCAGE_LOGICIEL_MAX;
 constexpr int Constantes2015Type::NOMBRE_BLOCAGE_PHYSIQUE_MAX;
+
+constexpr distanceM Constantes2015Type::LARGEUR_TABLE;
+constexpr distanceM Constantes2015Type::HAUTEUR_TABLE;

@@ -42,6 +42,9 @@ STRUCT_NAMESPACE(Constantes2015Type, Constantes2015, {
 	static constexpr int NOMBRE_BLOCAGE_PHYSIQUE_MAX = 5;
 
 	static constexpr dureeS DUREE_MATCH = 90_s;
+
+	static constexpr distanceM LARGEUR_TABLE = 3_m;
+	static constexpr distanceM HAUTEUR_TABLE = 2_m;
 })
 
 inline Constantes2015::CouleurRobot operator!(Constantes2015::CouleurRobot const &c) {
