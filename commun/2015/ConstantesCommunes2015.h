@@ -24,8 +24,8 @@ STRUCT_NAMESPACE(Constantes2015Type, Constantes2015, {
 
 	static constexpr std::uint16_t TCPIP_PORT_PAR_DEFAUT = 1234;
 
-	static constexpr int deltaPositionServo = 20; // > resolution sur les valeurs de position des servos
-	static constexpr int deltaPositionMoteur = 70; // > resolution sur les valeurs de position des moteurs (TODO : mettre la bonne valeur)
+	static constexpr int deltaPositionServo = 20; // > résolution sur les valeurs de position des servos
+	static constexpr int deltaPositionMoteur = 70; // > résolution sur les valeurs de position des moteurs (TODO : mettre la bonne valeur)
 
 	static constexpr dureeS TIMEOUT_DEPLACEMENT_DEFAUT = 10_s;
 	static constexpr vitesseM_s VITESSE_LINEAIRE_DEFAUT = 80_cm_s;

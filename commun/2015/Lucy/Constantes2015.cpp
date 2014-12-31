@@ -17,3 +17,4 @@ constexpr distanceM ConstantesLucy2015Type::PRECISION_LINEAIRE_DEFAUT;
 constexpr angleRad ConstantesLucy2015Type::PRECISION_ANGULAIRE_DEFAUT;
 
 constexpr distanceM ConstantesLucy2015Type::RAYON_ROTATION_ROBOT;
+const Vector3m ConstantesLucy2015Type::TAILLE_ROBOT = {25_cm, 30_cm, 21_cm};

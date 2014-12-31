@@ -172,6 +172,7 @@ STRUCT_NAMESPACE(ConstantesToumai2015Type, ConstantesToumai2015,
 		static constexpr angleRad PRECISION_ANGULAIRE_DEFAUT = Constantes2015::PRECISION_ANGULAIRE_DEFAUT;
 
 		static constexpr distanceM RAYON_ROTATION_ROBOT = 230.0_mm;
+		static const Vector3m TAILLE_ROBOT;
 
 		/////////////////// CARTES ///////////////////
 

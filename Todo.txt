@@ -12,6 +12,7 @@
 * Recherche de bugs
   o Synchronisation entre threads
 
+* Mise à jour wiki (beaucoup de boulot, pas urgent (été 2015))
 
 +------------------------------------------------------------------------------+
 | IA                                                                           |
