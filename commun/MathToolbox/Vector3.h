@@ -27,9 +27,9 @@ public:
 	}
 public:
 	// Constructeurs
-	Vector3(); // par défaut
+	constexpr Vector3(); // par défaut
 	
-	Vector3(const T& x, const T& y, const T& z); // à partir des coordonnées
+	constexpr Vector3(const T& x, const T& y, const T& z); // à partir des coordonnées
 	
 	template <class T_scalar>
 	Vector3(const T_scalar& s); // à partir d'un seul scalaire

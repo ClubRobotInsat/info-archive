@@ -110,7 +110,7 @@ STRUCT_NAMESPACE(ConstantesLucy2015Type, ConstantesLucy2015,
 		static constexpr angleRad PRECISION_ANGULAIRE_DEFAUT = Constantes2015::PRECISION_ANGULAIRE_DEFAUT;
 
 		static constexpr distanceM RAYON_ROTATION_ROBOT = 230_mm;
-		static const Vector3m TAILLE_ROBOT;
+		static constexpr Vector3m TAILLE_ROBOT = {25_cm, 30_cm, 21_cm};
 
 		/***********************************/
 		/************ CARTES ***************/

@@ -6,12 +6,12 @@
 #include <cmath>
 
 template <class T>
-Vector2<T>::Vector2() : x(T()), y(T()) {
+constexpr Vector2<T>::Vector2() : x(T()), y(T()) {
 	
 }
 
 template <class T>
-Vector2<T>::Vector2(const T& xx, const T& yy) : x(xx), y(yy) {
+constexpr Vector2<T>::Vector2(const T& xx, const T& yy) : x(xx), y(yy) {
 	
 }
 

@@ -20,4 +20,4 @@ constexpr distanceM ConstantesToumai2015Type::PRECISION_LINEAIRE_DEFAUT;
 constexpr angleRad ConstantesToumai2015Type::PRECISION_ANGULAIRE_DEFAUT;
 
 constexpr distanceM ConstantesToumai2015Type::RAYON_ROTATION_ROBOT;
-const Vector3m ConstantesToumai2015Type::TAILLE_ROBOT = {20_cm, 30_cm, 20_cm};
+constexpr Vector3m ConstantesToumai2015Type::TAILLE_ROBOT;

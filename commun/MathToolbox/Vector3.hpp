@@ -6,12 +6,12 @@
 #include <cmath>
 
 template <class T>
-Vector3<T>::Vector3() : x(T()), y(T()), z(T()) {
+constexpr Vector3<T>::Vector3() : x(T()), y(T()), z(T()) {
 	
 }
 
 template <class T>
-Vector3<T>::Vector3(const T& x, const T& y, const T& z) : x(x), y(y), z(z) {
+constexpr Vector3<T>::Vector3(const T& x, const T& y, const T& z) : x(x), y(y), z(z) {
 	
 }
 

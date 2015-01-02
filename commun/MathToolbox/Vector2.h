@@ -33,9 +33,9 @@ public:
 	
 public:
 	// Constructeurs
-	Vector2(); // par défaut
+	constexpr Vector2(); // par défaut
 	
-	Vector2(const T& x, const T& y); // à partir des coordonnées
+	constexpr Vector2(const T& x, const T& y); // à partir des coordonnées
 	
 	template <class T_scalar>
 	Vector2(const T_scalar& s); // à partir d'un seul scalaire
