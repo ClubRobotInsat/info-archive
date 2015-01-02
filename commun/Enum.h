@@ -152,6 +152,24 @@ s << toString(e); \
 return s; \
 }
 
+#define ENUM_IMPL_EXPL(name, Namespace)\
+template<>\
+inline std::map<Namespace::name, char const *> const &getEnumValues() { return Namespace::name##StringMap; }\
+namespace Namespace { \
+inline char const * toString(Namespace::name e) {\
+return Namespace::name##StringMap[e];\
+} \
+template<Namespace::name e>\
+char const *toString() {\
+return std::get<std::pair<GetNewType<Namespace::name, e, static_cast<int>(e)>, char const *>>(Namespace::name##TemplateTuple).second;\
+} \
+inline std::ostream &operator<<(std::ostream &s, Namespace::name e) { \
+s << toString(e); \
+return s; \
+} \
+}
+
+
 #define ENUM_GEN_IMPL(attrib, name, ...) ENUM_GEN_NO_IMPL(attrib, name, __VA_ARGS__)\
 ENUM_IMPL(name, )
 

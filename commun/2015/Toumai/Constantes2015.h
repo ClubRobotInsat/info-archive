@@ -35,28 +35,28 @@
 
 #endif
 
+#include <type_traits>
 #include "../../Enum.h"
 #include "../../MathToolbox/MathUtilities.h"
 #include "../ConstantesCommunes2015.h"
 
 namespace IDCartesToumai2015 {
 	ENUM_NO_IMPL(IDCartes,
-		CAN_USB 						/*= 0*/,
-		DEPLACEMENT 					/*= 1*/,
-		ASSERVISSEMENT_ASCENSEUR_D		/*= 2*/,
-		ASSERVISSEMENT_ASCENSEUR_G		/*= 3*/,
-		SERVOS_ASCENSEUR				/*= 4*/,
-		SERVOS_AUTRES					/*= 5*/,
-		IO 								/*= 6*/,
-		PLACEHOLDER7,
-		EVITEMENT 						/*= 8*/,
-		PNEUMATIQUE 					/*= 9*/,
-		DEBUG_DESSIN 					/*= 10*/
+		CAN_USB,
+		DEPLACEMENT,
+		ASSERVISSEMENT_ASCENSEUR_D,
+		ASSERVISSEMENT_ASCENSEUR_G,
+		SERVOS_ASCENSEUR,
+		SERVOS_AUTRES,
+		IO,
+		EVITEMENT,
+		PNEUMATIQUE,
+		DEBUG_DESSIN
 		//ID_CARTE_DEBUG = 11
 	);
 }
 
-ENUM_IMPL(IDCartes, IDCartesToumai2015);
+ENUM_IMPL_EXPL(IDCartes, IDCartesToumai2015);
 
 STRUCT_NAMESPACE(IDCartesToumai2015Type, IDCartesToumai2015,
 	{
@@ -145,6 +145,9 @@ namespace ConstantesToumai2015 {
 
 STRUCT_NAMESPACE(ConstantesToumai2015Type, ConstantesToumai2015,
 	{
+		using ConstantesCommunes = Constantes2015Type;
+		using IDCartes = IDCartesToumai2015Type::IDCartes;
+		
 		using Contacteur 		= ConstantesToumai2015::Contacteur;
 		using ServoAscenseur 	= ConstantesToumai2015::ServoAscenseur;
 		using Servo 			= ConstantesToumai2015::Servo;
@@ -176,60 +179,60 @@ STRUCT_NAMESPACE(ConstantesToumai2015Type, ConstantesToumai2015,
 
 		/////////////////// CARTES ///////////////////
 
-		template<int ID_CARTE>
+		template<IDCartesToumai2015Type::IDCartes ID_CARTE>
 		struct CarteInfo {};
 	};
 )
 
 EXPLICIT_INSTANCIATION(ConstantesToumai2015Type, ConstantesToumai2015,
-	CarteInfo<IDCartesToumai2015::CAN_USB> {
+	CarteInfo<IDCartesToumai2015::CAN_USB> : public std::integral_constant<std::uint32_t, 0> {
 		typedef CarteCAN_USB type;
 	};
 )
 EXPLICIT_INSTANCIATION(ConstantesToumai2015Type, ConstantesToumai2015,
-	CarteInfo<IDCartesToumai2015::DEPLACEMENT> {
+	CarteInfo<IDCartesToumai2015::DEPLACEMENT> : public std::integral_constant<std::uint32_t, 1> {
 		typedef CarteDeplacement2009 type;
 	};
 )
 EXPLICIT_INSTANCIATION(ConstantesToumai2015Type, ConstantesToumai2015,
-	CarteInfo<IDCartesToumai2015::ASSERVISSEMENT_ASCENSEUR_D> {
+	CarteInfo<IDCartesToumai2015::ASSERVISSEMENT_ASCENSEUR_D> : public std::integral_constant<std::uint32_t, 2> {
 		typedef CarteAsservissement2009 type;
 	};
 )
 EXPLICIT_INSTANCIATION(ConstantesToumai2015Type, ConstantesToumai2015,
-	CarteInfo<IDCartesToumai2015::ASSERVISSEMENT_ASCENSEUR_G> {
+	CarteInfo<IDCartesToumai2015::ASSERVISSEMENT_ASCENSEUR_G> : public std::integral_constant<std::uint32_t, 3> {
 		typedef CarteAsservissement2009 type;
 	};
 )
 EXPLICIT_INSTANCIATION(ConstantesToumai2015Type, ConstantesToumai2015,
-	CarteInfo<IDCartesToumai2015::EVITEMENT> {
-		typedef CarteDetectAdv2009 type;
-	};
-)
-EXPLICIT_INSTANCIATION(ConstantesToumai2015Type, ConstantesToumai2015,
-	CarteInfo<IDCartesToumai2015::IO> {
-		typedef CarteIO2014 type;
-	};
-)
-EXPLICIT_INSTANCIATION(ConstantesToumai2015Type, ConstantesToumai2015,
-	CarteInfo<IDCartesToumai2015::SERVOS_ASCENSEUR> {
+	CarteInfo<IDCartesToumai2015::SERVOS_ASCENSEUR> : public std::integral_constant<std::uint32_t, 4> {
 		typedef CarteServosNova2009 type;
 		typedef ConstantesToumai2015::ServoAscenseur Servo;
 	};
 )
 EXPLICIT_INSTANCIATION(ConstantesToumai2015Type, ConstantesToumai2015,
-	CarteInfo<IDCartesToumai2015::SERVOS_AUTRES> {
+	CarteInfo<IDCartesToumai2015::SERVOS_AUTRES> : public std::integral_constant<std::uint32_t, 5> {
 		typedef CarteServosNova2009 type;
 		typedef ConstantesToumai2015::Servo Servo;
 	};
 )
 EXPLICIT_INSTANCIATION(ConstantesToumai2015Type, ConstantesToumai2015,
-	CarteInfo<IDCartesToumai2015::PNEUMATIQUE> {
+	CarteInfo<IDCartesToumai2015::IO> : public std::integral_constant<std::uint32_t, 6> {
+		typedef CarteIO2014 type;
+	};
+)
+EXPLICIT_INSTANCIATION(ConstantesToumai2015Type, ConstantesToumai2015,
+	CarteInfo<IDCartesToumai2015::EVITEMENT> : public std::integral_constant<std::uint32_t, 8> {
+		typedef CarteDetectAdv2009 type;
+	};
+)
+EXPLICIT_INSTANCIATION(ConstantesToumai2015Type, ConstantesToumai2015,
+	CarteInfo<IDCartesToumai2015::PNEUMATIQUE> : public std::integral_constant<std::uint32_t, 9> {
 		typedef CartePneumatique2014 type;
 	};
 )
 EXPLICIT_INSTANCIATION(ConstantesToumai2015Type, ConstantesToumai2015,
-	CarteInfo<IDCartesToumai2015::DEBUG_DESSIN> {
+	CarteInfo<IDCartesToumai2015::DEBUG_DESSIN> : public std::integral_constant<std::uint32_t, 10> {
 		typedef CarteDebugDessin type;
 	};
 )

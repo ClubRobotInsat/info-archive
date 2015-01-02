@@ -13,7 +13,7 @@
 #include "../../../simulateur/cartes/CarteServosNova2009.h"
 #include "../../../simulateur/cartes/CarteDebugDessin.h"
 #include "../../../simulateur/cartes/CartePneumatique2013.h"
-#include "../../../simulateur/cartes/CarteDetectAdv2009.h"
+#include "../../../simulateur/cartes/CarteDetectAdv2012.h"
 #include "../../../simulateur/cartes/CarteIO2014.h"
 #include "../../../simulateur/cartes/CarteCAN_USB.h"
 
@@ -32,27 +32,25 @@
 
 #endif
 
+#include <type_traits>
 #include "../../Enum.h"
+#include "../../MathToolbox/MathToolbox.h"
 #include "../ConstantesCommunes2015.h"
 
 // Définit la struct IDCartesLucy2015Type, et le namespace IDCartesLucy2015.
 // Les 2 ont le même contenu, la struct peut être utilisée en paramètre template et le namespace peut être mis dans un using namespace.
 namespace IDCartesLucy2015 {
 	ENUM_NO_IMPL(IDCartes,
-		 CAN_USB 			/*= 0*/,
-		 DEPLACEMENT 		/*= 1*/,
-		 PLACEHOLDER2,
-		 CONTACTEURS 		/*= 3*/,
-		 SERVOS 			/*= 4*/,
-		 DEBUG_DESSIN 		/*= 5*/,
-		 IO					/*= 6*/,
-		 IHM 				/*= 7*/,
-		 EVITEMENT 			/*= 8*/,
-		 POMPE 				/*= 9*/
+		 CAN_USB,
+		 DEPLACEMENT,
+		 SERVOS,
+		 DEBUG_DESSIN,
+		 IO,
+		 EVITEMENT
 	);
 }
 
-ENUM_IMPL(IDCartes, IDCartesLucy2015);
+ENUM_IMPL_EXPL(IDCartes, IDCartesLucy2015);
 
 STRUCT_NAMESPACE(IDCartesLucy2015Type, IDCartesLucy2015,
 	{
@@ -60,7 +58,7 @@ STRUCT_NAMESPACE(IDCartesLucy2015Type, IDCartesLucy2015,
 	}
 )
 
-// Le contenu de ce namespace va être ajouté enrichi d'autres éléments plus bas, et son contenu final sera copié dans une struct ConstantesLucy2015Type.
+// Le contenu de ce namespace va être enrichi d'autres éléments plus bas, et son contenu final sera copié dans une struct ConstantesLucy2015Type.
 namespace ConstantesLucy2015 {
 	/***********************************/
 	/********** CONTACTEURS ************/
@@ -95,6 +93,9 @@ namespace ConstantesLucy2015 {
 // Les 2 ont le même contenu, la struct peut être utilisée en paramètre template et le namespace peut être mis dans un using namespace.
 STRUCT_NAMESPACE(ConstantesLucy2015Type, ConstantesLucy2015,
 	{
+		using ConstantesCommunes = Constantes2015Type;
+		using IDCartes = IDCartesLucy2015Type::IDCartes;
+		
 		using Contacteur = ConstantesLucy2015::Contacteur;
 		using Servo = ConstantesLucy2015::Servo;
 		using PositionServo = ConstantesLucy2015::PositionServo;
@@ -115,46 +116,47 @@ STRUCT_NAMESPACE(ConstantesLucy2015Type, ConstantesLucy2015,
 		/***********************************/
 		/************ CARTES ***************/
 		/***********************************/
-		template<int ID_CARTE>
+		template<IDCartesLucy2015Type::IDCartes ID_CARTE>
 		struct CarteInfo {};
 	}
 )
 
 EXPLICIT_INSTANCIATION(ConstantesLucy2015Type, ConstantesLucy2015,
-	CarteInfo<IDCartesLucy2015::CAN_USB> {
+	CarteInfo<IDCartesLucy2015::CAN_USB> : public std::integral_constant<std::uint32_t, 0> {
 		typedef CarteCAN_USB type;
 	};
 )
 EXPLICIT_INSTANCIATION(ConstantesLucy2015Type, ConstantesLucy2015,
-	CarteInfo<IDCartesLucy2015::DEPLACEMENT> {
+	CarteInfo<IDCartesLucy2015::DEPLACEMENT> : public std::integral_constant<std::uint32_t, 1> {
 		typedef CarteDeplacement2009 type;
-		static constexpr char const *name = "Carte déplacement";
 	};
 )
 EXPLICIT_INSTANCIATION(ConstantesLucy2015Type, ConstantesLucy2015,
-	CarteInfo<IDCartesLucy2015::SERVOS> {
+	CarteInfo<IDCartesLucy2015::SERVOS> : public std::integral_constant<std::uint32_t, 4> {
 		typedef CarteServosNova2009 type;
 		typedef ConstantesLucy2015::Servo Servo;
 	};
 )
-
 EXPLICIT_INSTANCIATION(ConstantesLucy2015Type, ConstantesLucy2015,
-	CarteInfo<IDCartesLucy2015::EVITEMENT> {
-		typedef CarteDetectAdv2009 type;
-	};
-)
-
-EXPLICIT_INSTANCIATION(ConstantesLucy2015Type, ConstantesLucy2015,
-	CarteInfo<IDCartesLucy2015::DEBUG_DESSIN> {
+	CarteInfo<IDCartesLucy2015::DEBUG_DESSIN> : public std::integral_constant<std::uint32_t, 5> {
 		typedef CarteDebugDessin type;
 	};
 )
-
 EXPLICIT_INSTANCIATION(ConstantesLucy2015Type, ConstantesLucy2015,
-	CarteInfo<IDCartesLucy2015::IO> {
+	CarteInfo<IDCartesLucy2015::IO> : public std::integral_constant<std::uint32_t, 6> {
 		typedef CarteIO2014 type;
 	};
 )
+EXPLICIT_INSTANCIATION(ConstantesLucy2015Type, ConstantesLucy2015,
+	CarteInfo<IDCartesLucy2015::EVITEMENT> : public std::integral_constant<std::uint32_t, 8> {
+#ifdef TARGET_SIMULATEUR
+		typedef CarteDetectAdv2012 type;
+#else
+		typedef CarteDetectAdv2009 type;
+#endif
+	};
+)
+
 
 #endif
 
