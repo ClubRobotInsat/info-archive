@@ -105,6 +105,7 @@ def createEnvironmentWithErrors(libs_list=[], errors=[], force_debug=False):
 		cxxflags.append('-ferror-limit=0')
 		cxxflags.append('-Wno-deprecated-declarations')
 		cxxflags.append('-Werror=return-stack-address')
+		cxxflags.append('-Wsign-compare')
 		env.Append(CCFLAGS=['-Wno-deprecated-declarations'])
 		env['CXX']='clang++'
 		env['CC']='clang'

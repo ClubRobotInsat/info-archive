@@ -626,6 +626,8 @@ static int convertMacKeyCode( unsigned int macKeyCode )
 
 @end
 
+CFDictionaryRef CGDisplayBestModeForParametersAndRefreshRateWithProperty(int, ...);
+
 
 //************************************************************************
 //****               Platform implementation functions                ****
