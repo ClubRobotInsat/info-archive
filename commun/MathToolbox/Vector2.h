@@ -111,13 +111,23 @@ public:
 	inline T norm() const;
 	
 	// Calcul de la norme au carré (plus rapide)
-	inline auto squaredNorm() const -> decltype(x * x) const {
+	inline auto squaredNorm() const
+#if __clang__
+	// Bug de g++ dans sa version 4.9, segfault à la compilation avec cette ligne
+ 		-> decltype(x * x)
+#endif
+	{
 		return *this * *this;
 	}
 	
 	// Calcul de l'angle
 	// Bug de Clang dans sa version 3.5 au moins, qui butte sur la résolution automatique de type de fonctions (avec génération des symboles de debug), faut lui expliquer
-	auto angle() const -> decltype(atan2(y, x)) const {
+	auto angle() const
+#if __clang__
+	// Bug de g++ dans sa version 4.9, segfault à la compilation avec cette ligne
+	 -> decltype(atan2(y, x))
+#endif
+	{
 		return atan2(y, x);
 	}
 
