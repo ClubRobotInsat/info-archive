@@ -56,7 +56,7 @@ namespace IDCartesToumai2015 {
 	);
 }
 
-ENUM_IMPL_EXPL(IDCartes, IDCartesToumai2015);
+ENUM_IMPL(IDCartes, IDCartesToumai2015);
 
 STRUCT_NAMESPACE(IDCartesToumai2015Type, IDCartesToumai2015,
 	{

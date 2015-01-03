@@ -137,7 +137,7 @@ template<> struct __VA_ARGS__ \
 static std::map<name, char const *> name##StringMap{TO_ASSOC_LIST(name, __VA_ARGS__)};\
 static auto const name##TemplateTuple = make_named_enum<name, NAMESPACIZE_LIST(name, __VA_ARGS__)>(STRINGIFY_LIST(__VA_ARGS__));
 
-#define ENUM_IMPL(name, Namespace)\
+#define ENUM_IMPL2(name, Namespace)\
 inline char const * toString(Namespace::name e) {\
 return Namespace::name##StringMap[e];\
 } \
@@ -152,7 +152,7 @@ s << toString(e); \
 return s; \
 }
 
-#define ENUM_IMPL_EXPL(name, Namespace)\
+#define ENUM_IMPL(name, Namespace)\
 template<>\
 inline std::map<Namespace::name, char const *> const &getEnumValues() { return Namespace::name##StringMap; }\
 namespace Namespace { \
@@ -171,7 +171,7 @@ return s; \
 
 
 #define ENUM_GEN_IMPL(attrib, name, ...) ENUM_GEN_NO_IMPL(attrib, name, __VA_ARGS__)\
-ENUM_IMPL(name, )
+ENUM_IMPL2(name, )
 
 #define ENUM(...) ENUM_GEN_IMPL(, __VA_ARGS__)
 #define ENUM_CLASS(...) ENUM_GEN_IMPL(class, __VA_ARGS__)

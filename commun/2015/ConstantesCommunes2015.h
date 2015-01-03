@@ -17,7 +17,7 @@ namespace Constantes2015 {
 	);
 }
 
-ENUM_IMPL_EXPL(CouleurRobot, Constantes2015);
+ENUM_IMPL(CouleurRobot, Constantes2015);
 
 STRUCT_NAMESPACE(Constantes2015Type, Constantes2015, {
 	using CouleurRobot = Constantes2015::CouleurRobot;

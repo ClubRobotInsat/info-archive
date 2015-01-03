@@ -50,7 +50,7 @@ namespace IDCartesLucy2015 {
 	);
 }
 
-ENUM_IMPL_EXPL(IDCartes, IDCartesLucy2015);
+ENUM_IMPL(IDCartes, IDCartesLucy2015);
 
 STRUCT_NAMESPACE(IDCartesLucy2015Type, IDCartesLucy2015,
 	{
