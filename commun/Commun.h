@@ -7,7 +7,7 @@
 #include <string>
 
 #include "Clock.h"
-#include "Enum.h"
+#include "Enum/Enum.h"
 #include "Trame.h"
 #include "Utils.h"
 #include "MathToolbox/MathToolbox.h"

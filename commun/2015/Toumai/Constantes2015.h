@@ -18,7 +18,6 @@
 #include "../../../simulateur/cartes/CarteIO2014.h"
 #include "../../../simulateur/cartes/CarteCAN_USB.h"
 
-
 #else
 
 #include "../../../robot/Cartes/Carte.h"
@@ -36,12 +35,11 @@
 #endif
 
 #include <type_traits>
-#include "../../Enum.h"
-#include "../../MathToolbox/MathUtilities.h"
+#include "../../Commun.h"
 #include "../ConstantesCommunes2015.h"
 
 namespace IDCartesToumai2015 {
-	ENUM_NO_IMPL(IDCartes,
+	ENUM_NS(IDCartesToumai2015, IDCartes,
 		CAN_USB,
 		DEPLACEMENT,
 		ASSERVISSEMENT_ASCENSEUR_D,
@@ -55,8 +53,6 @@ namespace IDCartesToumai2015 {
 		//ID_CARTE_DEBUG = 11
 	);
 }
-
-ENUM_IMPL(IDCartes, IDCartesToumai2015);
 
 STRUCT_NAMESPACE(IDCartesToumai2015Type, IDCartesToumai2015,
 	{

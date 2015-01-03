@@ -33,14 +33,13 @@
 #endif
 
 #include <type_traits>
-#include "../../Enum.h"
-#include "../../MathToolbox/MathToolbox.h"
+#include "../../Commun.h"
 #include "../ConstantesCommunes2015.h"
 
 // Définit la struct IDCartesLucy2015Type, et le namespace IDCartesLucy2015.
 // Les 2 ont le même contenu, la struct peut être utilisée en paramètre template et le namespace peut être mis dans un using namespace.
 namespace IDCartesLucy2015 {
-	ENUM_NO_IMPL(IDCartes,
+	ENUM_NS(IDCartesLucy2015, IDCartes,
 		 CAN_USB,
 		 DEPLACEMENT,
 		 SERVOS,
@@ -49,8 +48,6 @@ namespace IDCartesLucy2015 {
 		 EVITEMENT
 	);
 }
-
-ENUM_IMPL(IDCartes, IDCartesLucy2015);
 
 STRUCT_NAMESPACE(IDCartesLucy2015Type, IDCartesLucy2015,
 	{

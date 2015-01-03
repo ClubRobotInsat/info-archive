@@ -23,7 +23,7 @@
 #include <string>
 #include <memory>
 
-#include "../Enum.h"
+#include "../Commun.h"
 
 #ifdef TGA_OPENGL_SUPPORT
 #ifdef WIN32

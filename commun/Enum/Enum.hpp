@@ -1,54 +1,20 @@
 //
-//  Enum.h
+//  Enum.hpp
 //  Club Robot
 //
-//  Created by Rémi on 27/10/2014.
+//  Created by Rémi on 03/01/2015.
 //
 
-#ifndef Club_Robot_Enum_h
-#define Club_Robot_Enum_h
-
-#include <type_traits>
-#include <iostream>
-
-template<typename Enum>
-std::enable_if_t<std::is_enum<Enum>::value, int>
-constexpr enumToInt(Enum e) {
-	return static_cast<int>(e);
-}
-
-
-/*
- * Permet de créer un namespace et une structure avec le même contenu.
- * Pas super super propre, mais on peut faire un using namespace avec le namepace, et passer la structure en paramètre template avec la struct.
+/**
+ * Un conseil étranger, passe ton chemin.
+ * Du début jusqu'à la fin des foreach, les macros servent à itérer sur un nombre variable d'éléments.
+ * Ce nombre variable est compris entre 0 et 100, je te laisse comprendre le motif pour permettre des itérations plus longues (modifier les macros _NUM_ARGS, NUM_ARGS et FOREACH_XXX
+ *
+ * Les macros STRIGIFY, NAMESPACIZE et TO_ASSOC sont des macros utilitaires qui permettent à partir d'un identificateur, en générer la version texte et la version qualifiée d'un namespace.
+ *
+ * Le reste consiste en des détails d'implémentation des fonctions getEnumValue et toString.
  */
 
-#define STRUCT_NAMESPACE(STRUCT_NAME, NAMESPACE_NAME, ...) \
-struct STRUCT_NAME __VA_ARGS__; \
-namespace NAMESPACE_NAME __VA_ARGS__
-
-#define EXPLICIT_INSTANCIATION(STRUCT, NAMESPACE, ...) \
-template<> struct STRUCT::__VA_ARGS__ \
-namespace NAMESPACE { \
-template<> struct __VA_ARGS__ \
-}
-
-/* 
- * Un peu de magie noire pour permettre de récupérer une valeur d'enum sous forme de chaîne de caracères
- * ENUM(MonEnum,
- * 	 E1,
- *   E2,
- *   E3)
- * va déclarer l'enum MonEnum, avec les valeurs E1, E2, E3.
- * On peut faire de même avec ENUM_CLASS -> enum class.
- * On peut ensuite énumérer les valeurs avec quelque chose du genre :
- * for(auto val : getEnumValues<MonEnum>()) {
- *   MonEnum e = val.first;
- *   std::cout << val.second << std::endl;
- *   std::cout << toString(e) << std::endl; // (Les deux affichages sont équivalents)
- */
-
-#include <map>
 
 #define _NUM_ARGS(X100, X99, X98, X97, X96, X95, X94, X93, X92, X91, X90, X89, X88, X87, X86, X85, X84, X83, X82, X81, X80, X79, X78, X77, X76, X75, X74, X73, X72, X71, X70, X69, X68, X67, X66, X65, X64, X63, X62, X61, X60, X59, X58, X57, X56, X55, X54, X53, X52, X51, X50, X49, X48, X47, X46, X45, X44, X43, X42, X41, X40, X39, X38, X37, X36, X35, X34, X33, X32, X31, X30, X29, X28, X27, X26, X25, X24, X23, X22, X21, X20, X19, X18, X17, X16, X15, X14, X13, X12, X11, X10, X9, X8, X7, X6, X5, X4, X3, X2, X1, N, ...)   N
 #define NUM_ARGS(...) _NUM_ARGS(__VA_ARGS__, 100, 99, 98, 97, 96, 95, 94, 93, 92, 91, 90, 89, 88, 87, 86, 85, 84, 83, 82, 81, 80, 79, 78, 77, 76, 75, 74, 73, 72, 71, 70, 69, 68, 67, 66, 65, 64, 63, 62, 61, 60, 59, 58, 57, 56, 55, 54, 53, 52, 51, 50, 49, 48, 47, 46, 45, 44, 43, 42, 41, 40, 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1)
@@ -123,83 +89,113 @@ template<> struct __VA_ARGS__ \
 #define FOREACH_62(name, M, LIST)  EXPAND(M (name, FIRSTARG LIST)), FOREACH_61(name, M, RESTARGS LIST)
 #define FOREACH_63(name, M, LIST)  EXPAND(M (name, FIRSTARG LIST)), FOREACH_62(name, M, RESTARGS LIST)
 #define FOREACH_64(name, M, LIST)  EXPAND(M (name, FIRSTARG LIST)), FOREACH_63(name, M, RESTARGS LIST)
+#define FOREACH_65(name, M, LIST)  EXPAND(M (name, FIRSTARG LIST)), FOREACH_64(name, M, RESTARGS LIST)
+#define FOREACH_66(name, M, LIST)  EXPAND(M (name, FIRSTARG LIST)), FOREACH_65(name, M, RESTARGS LIST)
+#define FOREACH_67(name, M, LIST)  EXPAND(M (name, FIRSTARG LIST)), FOREACH_66(name, M, RESTARGS LIST)
+#define FOREACH_68(name, M, LIST)  EXPAND(M (name, FIRSTARG LIST)), FOREACH_67(name, M, RESTARGS LIST)
+#define FOREACH_69(name, M, LIST)  EXPAND(M (name, FIRSTARG LIST)), FOREACH_68(name, M, RESTARGS LIST)
+#define FOREACH_70(name, M, LIST)  EXPAND(M (name, FIRSTARG LIST)), FOREACH_69(name, M, RESTARGS LIST)
+#define FOREACH_71(name, M, LIST)  EXPAND(M (name, FIRSTARG LIST)), FOREACH_70(name, M, RESTARGS LIST)
+#define FOREACH_72(name, M, LIST)  EXPAND(M (name, FIRSTARG LIST)), FOREACH_71(name, M, RESTARGS LIST)
+#define FOREACH_73(name, M, LIST)  EXPAND(M (name, FIRSTARG LIST)), FOREACH_72(name, M, RESTARGS LIST)
+#define FOREACH_74(name, M, LIST)  EXPAND(M (name, FIRSTARG LIST)), FOREACH_73(name, M, RESTARGS LIST)
+#define FOREACH_75(name, M, LIST)  EXPAND(M (name, FIRSTARG LIST)), FOREACH_74(name, M, RESTARGS LIST)
+#define FOREACH_76(name, M, LIST)  EXPAND(M (name, FIRSTARG LIST)), FOREACH_75(name, M, RESTARGS LIST)
+#define FOREACH_77(name, M, LIST)  EXPAND(M (name, FIRSTARG LIST)), FOREACH_76(name, M, RESTARGS LIST)
+#define FOREACH_78(name, M, LIST)  EXPAND(M (name, FIRSTARG LIST)), FOREACH_77(name, M, RESTARGS LIST)
+#define FOREACH_79(name, M, LIST)  EXPAND(M (name, FIRSTARG LIST)), FOREACH_78(name, M, RESTARGS LIST)
+#define FOREACH_80(name, M, LIST)  EXPAND(M (name, FIRSTARG LIST)), FOREACH_79(name, M, RESTARGS LIST)
+#define FOREACH_81(name, M, LIST)  EXPAND(M (name, FIRSTARG LIST)), FOREACH_80(name, M, RESTARGS LIST)
+#define FOREACH_82(name, M, LIST)  EXPAND(M (name, FIRSTARG LIST)), FOREACH_81(name, M, RESTARGS LIST)
+#define FOREACH_83(name, M, LIST)  EXPAND(M (name, FIRSTARG LIST)), FOREACH_82(name, M, RESTARGS LIST)
+#define FOREACH_84(name, M, LIST)  EXPAND(M (name, FIRSTARG LIST)), FOREACH_83(name, M, RESTARGS LIST)
+#define FOREACH_85(name, M, LIST)  EXPAND(M (name, FIRSTARG LIST)), FOREACH_84(name, M, RESTARGS LIST)
+#define FOREACH_86(name, M, LIST)  EXPAND(M (name, FIRSTARG LIST)), FOREACH_85(name, M, RESTARGS LIST)
+#define FOREACH_87(name, M, LIST)  EXPAND(M (name, FIRSTARG LIST)), FOREACH_86(name, M, RESTARGS LIST)
+#define FOREACH_88(name, M, LIST)  EXPAND(M (name, FIRSTARG LIST)), FOREACH_87(name, M, RESTARGS LIST)
+#define FOREACH_89(name, M, LIST)  EXPAND(M (name, FIRSTARG LIST)), FOREACH_88(name, M, RESTARGS LIST)
+#define FOREACH_90(name, M, LIST)  EXPAND(M (name, FIRSTARG LIST)), FOREACH_89(name, M, RESTARGS LIST)
+#define FOREACH_91(name, M, LIST)  EXPAND(M (name, FIRSTARG LIST)), FOREACH_90(name, M, RESTARGS LIST)
+#define FOREACH_92(name, M, LIST)  EXPAND(M (name, FIRSTARG LIST)), FOREACH_91(name, M, RESTARGS LIST)
+#define FOREACH_93(name, M, LIST)  EXPAND(M (name, FIRSTARG LIST)), FOREACH_92(name, M, RESTARGS LIST)
+#define FOREACH_94(name, M, LIST)  EXPAND(M (name, FIRSTARG LIST)), FOREACH_93(name, M, RESTARGS LIST)
+#define FOREACH_95(name, M, LIST)  EXPAND(M (name, FIRSTARG LIST)), FOREACH_94(name, M, RESTARGS LIST)
+#define FOREACH_96(name, M, LIST)  EXPAND(M (name, FIRSTARG LIST)), FOREACH_95(name, M, RESTARGS LIST)
+#define FOREACH_97(name, M, LIST)  EXPAND(M (name, FIRSTARG LIST)), FOREACH_96(name, M, RESTARGS LIST)
+#define FOREACH_98(name, M, LIST)  EXPAND(M (name, FIRSTARG LIST)), FOREACH_97(name, M, RESTARGS LIST)
+#define FOREACH_99(name, M, LIST)  EXPAND(M (name, FIRSTARG LIST)), FOREACH_98(name, M, RESTARGS LIST)
+#define FOREACH_100(name, M, LIST)  EXPAND(M (name, FIRSTARG LIST)), FOREACH_99(name, M, RESTARGS LIST)
 
 #define STRINGIFY(X)    				#X
 #define STRINGIFY2(X, Y)    			EXPAND (STRINGIFY Y)
-#define STRINGIFY_LIST(...)   			FOREACH(, STRINGIFY2, (__VA_ARGS__))
 #define NAMESPACIZE(X,Y)    			X::EXPAND Y
 #define NAMESPACIZE_LIST(name, ...)    	FOREACH(name, NAMESPACIZE, (__VA_ARGS__))
+
+#define TO_QUALIFIED(X,Y)    			X::EXPAND Y
+#define TO_QUALIFIED_LIST(name, ...)    FOREACH(name, TO_QUALIFIED, (__VA_ARGS__))
 
 #define TO_ASSOC(X,Y)    				{X::EXPAND Y, EXPAND (STRINGIFY Y)}
 #define TO_ASSOC_LIST(name, ...)    	FOREACH(name, TO_ASSOC, (__VA_ARGS__))
 
+
+
+
+/**
+ * Déclare et définit les objets stockant l'association enum/string, mais ne définit pas les fonctions permettant d'y accéder.
+ */
 #define ENUM_GEN_NO_IMPL(attrib, name, ...) enum attrib name {__VA_ARGS__};\
-static std::map<name, char const *> name##StringMap{TO_ASSOC_LIST(name, __VA_ARGS__)};\
-static auto const name##TemplateTuple = make_named_enum<name, NAMESPACIZE_LIST(name, __VA_ARGS__)>(STRINGIFY_LIST(__VA_ARGS__));
+static std::map<name, char const *> name##StringMap{TO_ASSOC_LIST(name, __VA_ARGS__)}; \
+static std::vector<name> name##EnumVector{TO_QUALIFIED_LIST(name, __VA_ARGS__)};
 
-#define ENUM_IMPL2(name, Namespace)\
-inline char const * toString(Namespace::name e) {\
-return Namespace::name##StringMap[e];\
-} \
-template<>\
-inline std::map<Namespace::name, char const *> const &getEnumValues() { return Namespace::name##StringMap; }\
-template<Namespace::name e>\
-char const *toString() {\
-return std::get<std::pair<GetNewType<Namespace::name, e, static_cast<int>(e)>, char const *>>(Namespace::name##TemplateTuple).second;\
-} \
-inline std::ostream &operator<<(std::ostream &s, Namespace::name e) { \
-s << toString(e); \
-return s; \
-}
-
-#define ENUM_IMPL(name, Namespace)\
-template<>\
-inline std::map<Namespace::name, char const *> const &getEnumValues() { return Namespace::name##StringMap; }\
-namespace Namespace { \
-inline char const * toString(Namespace::name e) {\
-return Namespace::name##StringMap[e];\
-} \
-template<Namespace::name e>\
-char const *toString() {\
-return std::get<std::pair<GetNewType<Namespace::name, e, static_cast<int>(e)>, char const *>>(Namespace::name##TemplateTuple).second;\
-} \
-inline std::ostream &operator<<(std::ostream &s, Namespace::name e) { \
-s << toString(e); \
-return s; \
-} \
-}
-
-
-#define ENUM_GEN_IMPL(attrib, name, ...) ENUM_GEN_NO_IMPL(attrib, name, __VA_ARGS__)\
-ENUM_IMPL2(name, )
-
-#define ENUM(...) ENUM_GEN_IMPL(, __VA_ARGS__)
-#define ENUM_CLASS(...) ENUM_GEN_IMPL(class, __VA_ARGS__)
-
-#define ENUM_NO_IMPL(...) ENUM_GEN_NO_IMPL(, __VA_ARGS__)
-#define ENUM_CLASS_NO_IMPL(...) ENUM_GEN_NO_IMPL(class, __VA_ARGS__)
-
+/**
+ * Fonction template donnant l'accès aux valeurs d'une enum. Elle est spécialisée pour toutes les enums déclarées avec les macros ENUM_...
+ */
 template<typename Enum>
-std::map<Enum, char const*> const &getEnumValues();
+std::vector<Enum> const &getEnumValues();
 
-
-template<typename T, T val, int indirection>
-struct GetNewType {
-	static constexpr T value = val;
-};
-
-template<typename T, T val>
-struct GetNewType<T, val, 0> {
-};
-
-template<typename T = void, T val = static_cast<T>(0), T ...vals>
-auto make_named_enum() {
-	return std::tuple<>();
+/**
+ * Définit les fonctions getEnumValue, toString et operator<<(std::ostream &) pour l'enum demandée.
+ * Cette définition se fait de manière automatique par les macros ENUM et ENUM_CLASS, il ne devrait pas avoir besoin d'utiliser cette macro manuellement ailleurs.
+ */
+#define ENUM_IMPL(name, Namespace)\
+inline char const *toString(Namespace::name e) {\
+return Namespace::name##StringMap[e];\
+} \
+inline std::ostream &operator<<(std::ostream &s, Namespace::name e) { \
+s << toString(e); \
+return s; \
+} \
+template<>\
+inline std::vector<Namespace::name> const &getEnumValues() { \
+return Namespace::name##EnumVector; \
 }
 
-template<typename T, T val, T ...vals, typename Arg, typename ...Args>
-auto make_named_enum(Arg string, Args&&...args) {
-	return std::tuple_cat(make_named_enum<T, vals...>(args...), std::make_tuple(std::make_pair(GetNewType<T, val, static_cast<int>(val)>(), string)));
-}
+/**
+ * Définit les fonctions getEnumValue, toString et operator<<(std::ostream &) pour l'enum demandée, déclarée dans le namespace donné.
+ * Cette définition se fait de manière automatique par les macros ENUM_NS et ENUM_CLASS_NS, il ne devrait pas avoir besoin d'utiliser cette macro manuellement ailleurs.
+ */
+#define ENUM_IMPL_NS(name, Namespace)\
+inline char const *toString(Namespace::name e) {\
+return Namespace::name##StringMap[e];\
+} \
+inline std::ostream &operator<<(std::ostream &s, Namespace::name e) { \
+s << toString(e); \
+return s; \
+} \
+} \
+template<>\
+inline std::vector<Namespace::name> const &getEnumValues() { \
+return Namespace::name##EnumVector; \
+} \
+namespace Namespace {
 
-#endif
+
+
+/**
+ * Définit les objets stockant l'association enum/string, et définit les fonctions permettant d'y accéder.
+ */
+#define ENUM_GEN_IMPL(attrib, name, ...) ENUM_GEN_NO_IMPL(attrib, name, __VA_ARGS__) \
+ENUM_IMPL(name,)
+
+#define ENUM_GEN_IMPL_NS(attrib, Namespace, name, ...) ENUM_GEN_NO_IMPL(attrib, name, __VA_ARGS__) \
+ENUM_IMPL_NS(name, Namespace)

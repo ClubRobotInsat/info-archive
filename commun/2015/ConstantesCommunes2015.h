@@ -5,19 +5,16 @@
 
 #include <iostream>
 #include <cstdint>
-#include "../Enum.h"
-#include "../MathToolbox/MathToolbox.h"
+#include "../Commun.h"
 
 namespace Constantes2015 {
-	ENUM_CLASS_NO_IMPL(CouleurRobot,
-					   Jaune /*= 0*/,
-					   Vert /*= 1*/,
-					   //Valeur d'initialisation, qui permet de déctecter si la lecture du capteur couleur a déconné.
-					   Undef /*= 2*/
+	ENUM_CLASS_NS(Constantes2015, CouleurRobot,
+				  Jaune,
+				  Vert,
+				  //Valeur d'initialisation, qui permet de déctecter si la lecture du capteur couleur a déconné.
+				  Undef
 	);
 }
-
-ENUM_IMPL(CouleurRobot, Constantes2015);
 
 STRUCT_NAMESPACE(Constantes2015Type, Constantes2015, {
 	using CouleurRobot = Constantes2015::CouleurRobot;
