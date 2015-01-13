@@ -30,12 +30,6 @@
 
 * Envisager une conception plus OO pour les robots (CarteDeplacement etc.)
 
-* Pour Jérôme :
-  o positionnerServoBloquant récursif, pourquoi ?
-  o modeOffset, c'est quoi ?
-
-* Pour Nicolas/Jérôme : Robot::synchroniserCAN bugguée ?
-
 * Pour l'équipe élec : Fonctionnement CarteDeplacement
 
 +------------------------------------------------------------------------------+

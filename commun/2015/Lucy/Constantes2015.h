@@ -47,11 +47,15 @@ namespace IDCartesLucy2015 {
 		 IO,
 		 EVITEMENT
 	);
+	ENUM_CLASS_NS(IDCartesLucy2015, IDCartesServo,
+				  SERVOS
+	);
 }
 
 STRUCT_NAMESPACE(IDCartesLucy2015Type, IDCartesLucy2015,
 	{
 		using IDCartes = IDCartesLucy2015::IDCartes;
+		using IDCartesServo = IDCartesLucy2015::IDCartesServo;
 	}
 )
 
@@ -92,7 +96,8 @@ STRUCT_NAMESPACE(ConstantesLucy2015Type, ConstantesLucy2015,
 	{
 		using ConstantesCommunes = Constantes2015Type;
 		using IDCartes = IDCartesLucy2015Type::IDCartes;
-		
+		using IDCartesServo = IDCartesLucy2015Type::IDCartesServo;
+
 		using Contacteur = ConstantesLucy2015::Contacteur;
 		using Servo = ConstantesLucy2015::Servo;
 		using PositionServo = ConstantesLucy2015::PositionServo;
@@ -115,7 +120,10 @@ STRUCT_NAMESPACE(ConstantesLucy2015Type, ConstantesLucy2015,
 		/***********************************/
 		template<IDCartesLucy2015Type::IDCartes ID_CARTE>
 		struct CarteInfo {};
-	}
+
+		template<IDCartesLucy2015Type::IDCartesServo ID_CARTE>
+		struct CarteServoInfo {};
+}
 )
 
 EXPLICIT_INSTANCIATION(ConstantesLucy2015Type, ConstantesLucy2015,
@@ -153,6 +161,14 @@ EXPLICIT_INSTANCIATION(ConstantesLucy2015Type, ConstantesLucy2015,
 #endif
 	};
 )
+
+EXPLICIT_INSTANCIATION(ConstantesLucy2015Type, ConstantesLucy2015,
+	CarteServoInfo<IDCartesLucy2015::IDCartesServo::SERVOS> : public ConstantesLucy2015Type::CarteInfo<IDCartesLucy2015::SERVOS> {
+		static auto const IDCarte = IDCartesLucy2015::SERVOS;
+		typedef ConstantesLucy2015::Servo Servo;
+	};
+)
+
 
 
 #endif
