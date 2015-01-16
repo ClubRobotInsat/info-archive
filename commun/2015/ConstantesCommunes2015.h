@@ -25,7 +25,7 @@ STRUCT_NAMESPACE(Constantes2015Type, Constantes2015, {
 	static constexpr int deltaPositionMoteur = 70; // > résolution sur les valeurs de position des moteurs (TODO : mettre la bonne valeur)
 
 	static constexpr dureeS TIMEOUT_DEPLACEMENT_DEFAUT = 10_s;
-	static constexpr vitesseM_s VITESSE_LINEAIRE_DEFAUT = 80_cm_s;
+	static constexpr vitesseM_s VITESSE_LINEAIRE_DEFAUT = 60_cm_s;
 	static constexpr vitesseRad_s VITESSE_ANGULAIRE_DEFAUT = 3.25_rad_s;
 	static constexpr distanceM PRECISION_LINEAIRE_DEFAUT = 5_cm;
 	static constexpr angleRad PRECISION_ANGULAIRE_DEFAUT = 0.075_rad;
