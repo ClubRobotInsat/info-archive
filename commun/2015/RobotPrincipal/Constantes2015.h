@@ -162,22 +162,22 @@ STRUCT_NAMESPACE(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
 		using Ascenseur 		= ConstantesPrincipal2015::Ascenseur;
 
 		// Déclaration des positions
-		static constexpr angleRad positionPince[enumToInt(PositionPince::NBR)] = {950_mrad, 800_mrad, 1220_mrad, 0_mrad};
-		static constexpr angleRad positionCoude[enumToInt(PositionCoude::NBR)] = {1570_mrad, 2400_mrad, 1350_mrad};
-		static constexpr angleRad positionArriere[enumToInt(PositionArriere::NBR)] = {1300_mrad, 1790_mrad, 0_mrad};
-		static constexpr angleRad positionBras[enumToInt(PositionBras::NBR)] = {575_mrad, 2490_mrad, 0_mrad};
+		static constexpr Angle positionPince[enumToInt(PositionPince::NBR)] = {950_mrad, 800_mrad, 1220_mrad, 0_mrad};
+		static constexpr Angle positionCoude[enumToInt(PositionCoude::NBR)] = {1570_mrad, 2400_mrad, 1350_mrad};
+		static constexpr Angle positionArriere[enumToInt(PositionArriere::NBR)] = {1300_mrad, 1790_mrad, 0_mrad};
+		static constexpr Angle positionBras[enumToInt(PositionBras::NBR)] = {575_mrad, 2490_mrad, 0_mrad};
 
 		// Déclaration des positions
-		static constexpr angleRad positionAscenseur[enumToInt(PositionAscenseur::NBR)] = {790_mrad, 1430_mrad, 2310_mrad, 0_mrad, 0_mrad, 0_mrad};
+		static constexpr Angle positionAscenseur[enumToInt(PositionAscenseur::NBR)] = {790_mrad, 1430_mrad, 2310_mrad, 0_mrad, 0_mrad, 0_mrad};
 
 		// On reprend par défaut les mêmes valeur que la partie commune aux 2 robots, à changer si nécessaire
-		static constexpr dureeS TIMEOUT_DEPLACEMENT_DEFAUT = Constantes2015::TIMEOUT_DEPLACEMENT_DEFAUT;
-		static constexpr vitesseM_s VITESSE_LINEAIRE_DEFAUT = Constantes2015::VITESSE_LINEAIRE_DEFAUT;
-		static constexpr vitesseRad_s VITESSE_ANGULAIRE_DEFAUT = Constantes2015::VITESSE_ANGULAIRE_DEFAUT;
-		static constexpr distanceM PRECISION_LINEAIRE_DEFAUT = Constantes2015::PRECISION_LINEAIRE_DEFAUT;
-		static constexpr angleRad PRECISION_ANGULAIRE_DEFAUT = Constantes2015::PRECISION_ANGULAIRE_DEFAUT;
+		static constexpr Duree TIMEOUT_DEPLACEMENT_DEFAUT = Constantes2015::TIMEOUT_DEPLACEMENT_DEFAUT;
+		static constexpr VitesseLineaire VITESSE_LINEAIRE_DEFAUT = Constantes2015::VITESSE_LINEAIRE_DEFAUT;
+		static constexpr VitesseAngulaire VITESSE_ANGULAIRE_DEFAUT = Constantes2015::VITESSE_ANGULAIRE_DEFAUT;
+		static constexpr Distance PRECISION_LINEAIRE_DEFAUT = Constantes2015::PRECISION_LINEAIRE_DEFAUT;
+		static constexpr Angle PRECISION_ANGULAIRE_DEFAUT = Constantes2015::PRECISION_ANGULAIRE_DEFAUT;
 
-		static constexpr distanceM RAYON_ROTATION_ROBOT = 230.0_mm;
+		static constexpr Distance RAYON_ROTATION_ROBOT = 230.0_mm;
 		static constexpr Vector3m TAILLE_ROBOT = {20_cm, 30_cm, 20_cm};
 
 		/////////////////// CARTES ///////////////////

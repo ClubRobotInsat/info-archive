@@ -7,14 +7,14 @@
 
 #include "Constantes2015.h"
 
-constexpr angleRad ConstantesSecondaire2015Type::positionContrepoids[enumToInt(ConstantesSecondaire2015Type::PositionServo::NBR)];
-constexpr angleRad ConstantesSecondaire2015Type::positionTapis[enumToInt(ConstantesSecondaire2015Type::PositionServo::NBR)];
+constexpr Angle ConstantesSecondaire2015Type::positionContrepoids[enumToInt(ConstantesSecondaire2015Type::PositionServo::NBR)];
+constexpr Angle ConstantesSecondaire2015Type::positionTapis[enumToInt(ConstantesSecondaire2015Type::PositionServo::NBR)];
 
-constexpr dureeS ConstantesSecondaire2015Type::TIMEOUT_DEPLACEMENT_DEFAUT;
-constexpr vitesseM_s ConstantesSecondaire2015Type::VITESSE_LINEAIRE_DEFAUT;
-constexpr vitesseRad_s ConstantesSecondaire2015Type::VITESSE_ANGULAIRE_DEFAUT;
-constexpr distanceM ConstantesSecondaire2015Type::PRECISION_LINEAIRE_DEFAUT;
-constexpr angleRad ConstantesSecondaire2015Type::PRECISION_ANGULAIRE_DEFAUT;
+constexpr Duree ConstantesSecondaire2015Type::TIMEOUT_DEPLACEMENT_DEFAUT;
+constexpr VitesseLineaire ConstantesSecondaire2015Type::VITESSE_LINEAIRE_DEFAUT;
+constexpr VitesseAngulaire ConstantesSecondaire2015Type::VITESSE_ANGULAIRE_DEFAUT;
+constexpr Distance ConstantesSecondaire2015Type::PRECISION_LINEAIRE_DEFAUT;
+constexpr Angle ConstantesSecondaire2015Type::PRECISION_ANGULAIRE_DEFAUT;
 
-constexpr distanceM ConstantesSecondaire2015Type::RAYON_ROTATION_ROBOT;
+constexpr Distance ConstantesSecondaire2015Type::RAYON_ROTATION_ROBOT;
 constexpr Vector3m ConstantesSecondaire2015Type::TAILLE_ROBOT;

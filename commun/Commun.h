@@ -16,6 +16,8 @@
 #include "sockets/Socket.h"
 #include "tga/TGALoader.h"
 
+#include "Units/Units.h"
+
 
 ENUM_CLASS(ResultatAction,
 		   REUSSI, RATE, BLOQUE, BLOQUE_PAR_ADV, TIMEOUT

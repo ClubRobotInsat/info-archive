@@ -103,16 +103,16 @@ STRUCT_NAMESPACE(ConstantesSecondaire2015Type, ConstantesSecondaire2015,
 		using PositionServo = ConstantesSecondaire2015::PositionServo;
 
 		// Position des servos
-		static constexpr angleRad positionContrepoids[enumToInt(PositionServo::NBR)] = {1350_mrad, 1500_mrad};
-		static constexpr angleRad positionTapis[enumToInt(PositionServo::NBR)] = {1760_mrad, 1900_mrad};
+		static constexpr Angle positionContrepoids[enumToInt(PositionServo::NBR)] = {1350_mrad, 1500_mrad};
+		static constexpr Angle positionTapis[enumToInt(PositionServo::NBR)] = {1760_mrad, 1900_mrad};
 
-		static constexpr dureeS TIMEOUT_DEPLACEMENT_DEFAUT = Constantes2015::TIMEOUT_DEPLACEMENT_DEFAUT;
-		static constexpr vitesseM_s VITESSE_LINEAIRE_DEFAUT = Constantes2015::VITESSE_LINEAIRE_DEFAUT;
-		static constexpr vitesseRad_s VITESSE_ANGULAIRE_DEFAUT = Constantes2015::VITESSE_ANGULAIRE_DEFAUT;
-		static constexpr distanceM PRECISION_LINEAIRE_DEFAUT = Constantes2015::PRECISION_LINEAIRE_DEFAUT;
-		static constexpr angleRad PRECISION_ANGULAIRE_DEFAUT = Constantes2015::PRECISION_ANGULAIRE_DEFAUT;
+		static constexpr Duree TIMEOUT_DEPLACEMENT_DEFAUT = Constantes2015::TIMEOUT_DEPLACEMENT_DEFAUT;
+		static constexpr VitesseLineaire VITESSE_LINEAIRE_DEFAUT = Constantes2015::VITESSE_LINEAIRE_DEFAUT;
+		static constexpr VitesseAngulaire VITESSE_ANGULAIRE_DEFAUT = Constantes2015::VITESSE_ANGULAIRE_DEFAUT;
+		static constexpr Distance PRECISION_LINEAIRE_DEFAUT = Constantes2015::PRECISION_LINEAIRE_DEFAUT;
+		static constexpr Angle PRECISION_ANGULAIRE_DEFAUT = Constantes2015::PRECISION_ANGULAIRE_DEFAUT;
 
-		static constexpr distanceM RAYON_ROTATION_ROBOT = 230_mm;
+		static constexpr Distance RAYON_ROTATION_ROBOT = 230_mm;
 		static constexpr Vector3m TAILLE_ROBOT = {25_cm, 30_cm, 21_cm};
 
 		/***********************************/

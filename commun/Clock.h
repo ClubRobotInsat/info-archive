@@ -1,9 +1,8 @@
 #ifndef _CLOCK_H_H
 #define _CLOCK_H_H
 
-#include <chrono>
 #include <iostream>
-#include "MathToolbox/MathUtilities.h"
+#include "Units/Duree.h"
 
 #ifndef _WIN32
 // Cet en-tête définit une fonction sleep. Pour ne pas foirer la compilation en substituant la macro ci-après, on inclut le header d'abord.
@@ -43,8 +42,8 @@ public:
 		return DateTemps(DateTempsClock::now() + std::chrono::hours(24) * 365 * 100);
 	}
 
-	DateTemps &operator-=(dureeS const &d);
-	DateTemps &operator+=(dureeS const &d);
+	DateTemps &operator-=(Duree const &d);
+	DateTemps &operator+=(Duree const &d);
 
 	DateTempsType value() const {
 		return _value;
@@ -78,25 +77,25 @@ inline bool operator>=(DateTemps const &d1, DateTemps const &d2) {
 	return !(d1 < d2);
 }
 
-inline dureeS operator-(DateTemps const &d1, DateTemps const &d2) {
+inline Duree operator-(DateTemps const &d1, DateTemps const &d2) {
 	auto delta = std::chrono::duration_cast<std::chrono::nanoseconds>(d1.value() - d2.value());
-	return dureeS::makeFromNs(delta.count());
+	return Duree::makeFromNs(delta.count());
 }
 
-inline DateTemps operator-(DateTemps const &d1, dureeS const &d2) {
+inline DateTemps operator-(DateTemps const &d1, Duree const &d2) {
 	return DateTemps(d1.value() - d2.toSystemDelay());
 }
 
-inline DateTemps operator+(DateTemps const &d1, dureeS const &d2) {
+inline DateTemps operator+(DateTemps const &d1, Duree const &d2) {
 	return DateTemps(d1.value() + d2.toSystemDelay());
 }
 
-inline DateTemps &DateTemps::operator-=(dureeS const &d) {
+inline DateTemps &DateTemps::operator-=(Duree const &d) {
 	*this = *this - d;
 	return *this;
 }
 
-inline DateTemps &DateTemps::operator+=(dureeS const &d) {
+inline DateTemps &DateTemps::operator+=(Duree const &d) {
 	*this = *this + d;
 	return *this;
 }
@@ -108,9 +107,9 @@ public:
 	}
 
 	// Retourne le temps écoulé depuis la dernière réinitialisation
-	dureeS getElapsedTime() const {
+	Duree getElapsedTime() const {
 		auto val = std::chrono::duration_cast<std::chrono::nanoseconds>(DateTemps::DateTempsClock::now() - _startTime);
-		return dureeS::makeFromNs(val.count());
+		return Duree::makeFromNs(val.count());
 	}
 
 	// Réinitialise le chrono

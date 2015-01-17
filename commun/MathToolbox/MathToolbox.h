@@ -8,7 +8,9 @@
 #include "Matrix3.h"
 #include "Matrix4.h"
 
-typedef Vector2<distanceM> Vector2m;
-typedef Vector3<distanceM> Vector3m;
+#include "../Units/Units.h"
+
+typedef Vector2<Distance> Vector2m;
+typedef Vector3<Distance> Vector3m;
 
 #endif // MATH_TOOLBOX_H
