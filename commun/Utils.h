@@ -108,8 +108,8 @@ namespace Utils {
 	}
 	
 	template<>
-	inline std::string toString<std::uint8_t>(std::uint8_t const &value) {
-		return toString<int>(static_cast<std::uint8_t>(value));
+	inline std::string toString<uint8_t>(uint8_t const &value) {
+		return toString<int>(static_cast<uint8_t>(value));
 	}
 };
 

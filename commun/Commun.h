@@ -5,6 +5,7 @@
 #include <type_traits>
 #include <thread>
 #include <string>
+#include <cstdint>
 
 #include "Clock.h"
 #include "Enum/Enum.h"
@@ -31,5 +32,14 @@ inline void setThreadName(char const *name) {
 inline void setThreadName(std::string const &name) {
 	setThreadName(name.c_str());
 }
+
+using std::uint8_t;
+using std::int8_t;
+using std::uint16_t;
+using std::int16_t;
+using std::uint32_t;
+using std::int32_t;
+using std::uint64_t;
+using std::int64_t;
 
 #endif

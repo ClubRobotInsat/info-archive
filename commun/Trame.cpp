@@ -6,61 +6,61 @@
 #include "log/Log.h"
 #include <iostream>
 
-Trame::Trame(std::uint8_t id, std::uint8_t cmd, std::uint8_t nbDonnees, std::uint8_t const donnees[]) : _num_paquet(0) {
+Trame::Trame(uint8_t id, uint8_t cmd, uint8_t nbDonnees, uint8_t const donnees[]) : _num_paquet(0) {
 	this->addBytes(nbDonnees, donnees);
 	this->setId(id);
 	this->setCmd(cmd);
 }
 
-std::uint8_t Trame::getId() const {
+uint8_t Trame::getId() const {
 	return _id;
 }
 
-std::uint8_t Trame::getCmd() const {
+uint8_t Trame::getCmd() const {
 	return _cmd;
 }
 
-std::uint8_t Trame::getNbDonnees() const {
+uint8_t Trame::getNbDonnees() const {
 	return _donnees.size();
 }
 
-std::uint8_t Trame::getNumPaquet() const {
+uint8_t Trame::getNumPaquet() const {
 	return _num_paquet;
 }
 
-std::uint8_t const *Trame::getDonnees() const {
+uint8_t const *Trame::getDonnees() const {
 	return &_donnees[0];
 }
 
-void Trame::setNumPaquet(std::uint8_t num_paquet) {
+void Trame::setNumPaquet(uint8_t num_paquet) {
 	_num_paquet = num_paquet;
 }
 
-void Trame::setCmd(std::uint8_t cmd) {
+void Trame::setCmd(uint8_t cmd) {
 	if(_cmd >= NUM_CMD_MAX)
 		throw ErreurNumCommandeTropGrand(cmd);
 	_cmd = cmd;
 }
 
-void Trame::setId(std::uint8_t id) {
+void Trame::setId(uint8_t id) {
 	if(_id >= NB_CARTES_MAX)
 		throw ErreurIdCarteTropGrand(id);
 	_id = id;
 }
 
-void Trame::addBytes(std::uint8_t nbDonnees, std::uint8_t const donnees[]) {
+void Trame::addBytes(uint8_t nbDonnees, uint8_t const donnees[]) {
 	if(nbDonnees + this->getNbDonnees() > Trame::DONNEES_TRAME_MAX)
 		throw ErreurTropDeDonnees(nbDonnees);
 
 	_donnees.insert(_donnees.end(), donnees, donnees + nbDonnees);
 }
 
-void Trame::setDonnees(std::uint8_t nbDonnees, std::uint8_t const donnees[]) {
+void Trame::setDonnees(uint8_t nbDonnees, uint8_t const donnees[]) {
 	_donnees.clear();
 	this->addBytes(nbDonnees, donnees);
 }
 
-void Trame::set(std::uint8_t numero, std::uint8_t bit, bool valeur) {
+void Trame::set(uint8_t numero, uint8_t bit, bool valeur) {
 	// lève ErreurNumeroDonneeTropGrand si numero trop grand
 	// lève ErreurNumeroBitTropGrand si bit trop grand
 	if(numero >= _donnees.size())
@@ -74,19 +74,19 @@ void Trame::set(std::uint8_t numero, std::uint8_t bit, bool valeur) {
 		_donnees[numero] &= ~(1 << bit);
 }
 
-std::uint8_t Trame::demultiplexId(MuxedIdAndCmd const &idAndCmd) {
-	std::uint16_t muxedVal = (std::uint16_t(idAndCmd.second) << 8) | std::uint16_t(idAndCmd.first);
-	return std::uint8_t((muxedVal >> BITS_CMD_TRAME) & ~(1 << BITS_ID_TRAME));
+uint8_t Trame::demultiplexId(MuxedIdAndCmd const &idAndCmd) {
+	uint16_t muxedVal = (uint16_t(idAndCmd.second) << 8) | uint16_t(idAndCmd.first);
+	return uint8_t((muxedVal >> BITS_CMD_TRAME) & ~(1 << BITS_ID_TRAME));
 }
 
-std::uint8_t Trame::demultiplexCmd(MuxedIdAndCmd const &idAndCmd) {
-	std::uint16_t muxedVal = (std::uint16_t(idAndCmd.second) << 8) | std::uint16_t(idAndCmd.first);
-	return std::uint8_t(muxedVal & 0xF);
+uint8_t Trame::demultiplexCmd(MuxedIdAndCmd const &idAndCmd) {
+	uint16_t muxedVal = (uint16_t(idAndCmd.second) << 8) | uint16_t(idAndCmd.first);
+	return uint8_t(muxedVal & 0xF);
 }
 
-Trame::MuxedIdAndCmd Trame::multiplexIdAndCmd(std::uint8_t id, std::uint8_t cmd) {
-	std::uint16_t muxedVal = (std::uint16_t(id) << BITS_CMD_TRAME) | std::uint16_t(cmd);
-	return std::make_pair(std::uint8_t(muxedVal & 0xFF), std::uint8_t((muxedVal >> 8) & 0xFF));
+Trame::MuxedIdAndCmd Trame::multiplexIdAndCmd(uint8_t id, uint8_t cmd) {
+	uint16_t muxedVal = (uint16_t(id) << BITS_CMD_TRAME) | uint16_t(cmd);
+	return std::make_pair(uint8_t(muxedVal & 0xFF), uint8_t((muxedVal >> 8) & 0xFF));
 }
 
 // afficher la trame sur le flux de sortie
@@ -106,7 +106,7 @@ std::string Trame::toString() const {
 	oss << Byte(_cmd);
 	oss << ":";
 	oss << "données=";
-	for(std::uint8_t numDonnee = 0; numDonnee < _donnees.size(); ++numDonnee) {
+	for(uint8_t numDonnee = 0; numDonnee < _donnees.size(); ++numDonnee) {
 		oss << Byte(_donnees[numDonnee]);
 		if(numDonnee == _donnees.size()-1)
 			oss << "]";
@@ -120,7 +120,7 @@ std::string Trame::toString() const {
 std::string Trame::toStringLong() const {
 	std::ostringstream oss;
 	oss << "id=" << int(_id) << " cmd=" << Byte(_cmd) << " donnees={";
-	for(std::uint8_t numDonnee = 0; numDonnee < _donnees.size(); ++numDonnee)
+	for(uint8_t numDonnee = 0; numDonnee < _donnees.size(); ++numDonnee)
 		oss << (int)_donnees[numDonnee] << ',';
 	oss << '}';
 	return oss.str();

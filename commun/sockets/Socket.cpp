@@ -40,7 +40,7 @@ Socket::~Socket() {
 }
 
 // Connexion au serveur
-bool Socket::connect(const char* server_name, std::uint16_t port) {
+bool Socket::connect(const char* server_name, uint16_t port) {
 #ifdef WIN32
 	if(_fd == INVALID_SOCKET || _fd == 0) return false;
 #else
@@ -124,18 +124,18 @@ ssize_t Socket::receive(Socket &client_socket, void* buffer, size_t max_bytes) {
 // A la difference de Send(), on rajoute un header de 4 octets indiquant la taille
 // du paquet. Un SendMsg() correspond a un ReceiveMsg().
 bool Socket::sendMsg(const void* data, size_t nb_bytes) {
-	std::uint8_t header[4] = {
-		std::uint8_t((nb_bytes >> 0*8) & 0xFF),
-		std::uint8_t((nb_bytes >> 1*8) & 0xFF),
-		std::uint8_t((nb_bytes >> 2*8) & 0xFF),
-		std::uint8_t((nb_bytes >> 3*8) & 0xFF)};
+	uint8_t header[4] = {
+		uint8_t((nb_bytes >> 0*8) & 0xFF),
+		uint8_t((nb_bytes >> 1*8) & 0xFF),
+		uint8_t((nb_bytes >> 2*8) & 0xFF),
+		uint8_t((nb_bytes >> 3*8) & 0xFF)};
 
 	size_t remaining = nb_bytes;
 
 	if(send((const void*)header, 4) <= 0) return false;
 
 	while(remaining != 0)
-		remaining = remaining - send((void*)(&((std::uint8_t *)data)[nb_bytes-remaining]), remaining);
+		remaining = remaining - send((void*)(&((uint8_t *)data)[nb_bytes-remaining]), remaining);
 
 	return true;
 }
@@ -144,11 +144,11 @@ bool Socket::sendMsg(const void* data, size_t nb_bytes) {
 // A la difference de Send(), on rajoute un header de 4 octets indiquant la taille
 // du paquet. Un SendMsg() correspond a un ReceiveMsg().
 bool Socket::sendMsg(Socket &client_socket, const void* data, size_t nb_bytes) {
-	std::uint8_t header[4] = {
-		std::uint8_t((nb_bytes >> 0*8) & 0xFF),
-		std::uint8_t((nb_bytes >> 1*8) & 0xFF),
-		std::uint8_t((nb_bytes >> 2*8) & 0xFF),
-		std::uint8_t((nb_bytes >> 3*8) & 0xFF)};
+	uint8_t header[4] = {
+		uint8_t((nb_bytes >> 0*8) & 0xFF),
+		uint8_t((nb_bytes >> 1*8) & 0xFF),
+		uint8_t((nb_bytes >> 2*8) & 0xFF),
+		uint8_t((nb_bytes >> 3*8) & 0xFF)};
 
 	ssize_t remaining = nb_bytes;
 
@@ -157,7 +157,7 @@ bool Socket::sendMsg(Socket &client_socket, const void* data, size_t nb_bytes) {
 		return false;
 
 	while(remaining != 0) {
-		n = this->send(client_socket, (void*)(&((std::uint8_t *)data)[nb_bytes-remaining]), remaining);
+		n = this->send(client_socket, (void*)(&((uint8_t *)data)[nb_bytes-remaining]), remaining);
 		if(n <= 0)
 			return false;
 
@@ -170,7 +170,7 @@ bool Socket::sendMsg(Socket &client_socket, const void* data, size_t nb_bytes) {
 // Reception d'un paquet (donnees allant d'un serveur vers un client)
 // Correspond a un SendMsg()
 ssize_t Socket::receiveMsg(void* buffer, size_t max_bytes) {
-	std::uint8_t header[4];
+	uint8_t header[4];
 	size_t nb_bytes=0; // Nombre d'octets dans le paquet
 	size_t bytes_to_read; // Nombre d'octets à lire effectivement
 	size_t remaining;
@@ -192,14 +192,14 @@ ssize_t Socket::receiveMsg(void* buffer, size_t max_bytes) {
 
 	// On lit les octets qui doivent etre lus dans buffer
 	while(remaining != 0)
-		remaining = remaining - this->receive((void*)(&((std::uint8_t *)buffer)[bytes_to_read-remaining]), remaining);
+		remaining = remaining - this->receive((void*)(&((uint8_t *)buffer)[bytes_to_read-remaining]), remaining);
 
 	// Si une partie du paquet ne doit pas etre lue dans buffer (max_bytes trop petit), on la lit dans
 	// discarded_bytes et on les detruit.
 	if(nb_bytes > max_bytes) {
 		remaining = nb_bytes - bytes_to_read;
 		bytes_to_read = remaining;
-		auto discarded_bytes = std::make_unique<std::uint8_t[]>(bytes_to_read);
+		auto discarded_bytes = std::make_unique<uint8_t[]>(bytes_to_read);
 		while(remaining != 0)
 			remaining = remaining - this->receive((void*)(&(discarded_bytes[bytes_to_read-remaining])), remaining);
 	}
@@ -210,7 +210,7 @@ ssize_t Socket::receiveMsg(void* buffer, size_t max_bytes) {
 // Reception d'un paquet (donnees allant d'un client vers un serveur)
 // Correspond a un Sendmsg()
 ssize_t Socket::receiveMsg(Socket &client_socket, void* buffer, size_t max_bytes) {
-	std::uint8_t header[4];
+	uint8_t header[4];
 	size_t nb_bytes=0; // Nombre d'octets dans le paquet
 	size_t bytes_to_read; // Nombre d'octets a lire effectivement
 	size_t remaining;
@@ -232,14 +232,14 @@ ssize_t Socket::receiveMsg(Socket &client_socket, void* buffer, size_t max_bytes
 
 	// On lit les octets qui doivent etre lus dans buffer
 	while(remaining != 0)
-		remaining = remaining - receive(client_socket, (void*)(&((std::uint8_t *)buffer)[bytes_to_read-remaining]), remaining);
+		remaining = remaining - receive(client_socket, (void*)(&((uint8_t *)buffer)[bytes_to_read-remaining]), remaining);
 
 	// Si une partie du paquet ne doit pas etre lue dans buffer (max_bytes trop petit), on la lit dans
 	// discarded_bytes et on les detruit.
 	if(nb_bytes > max_bytes) {
 		remaining = nb_bytes - bytes_to_read;
 		bytes_to_read = remaining;
-		auto discarded_bytes = std::make_unique<std::uint8_t[]>(bytes_to_read);
+		auto discarded_bytes = std::make_unique<uint8_t[]>(bytes_to_read);
 		while(remaining != 0)
 			remaining = remaining - this->receive(client_socket, (void*)(&(discarded_bytes[bytes_to_read-remaining])), remaining);
 	}
@@ -248,8 +248,8 @@ ssize_t Socket::receiveMsg(Socket &client_socket, void* buffer, size_t max_bytes
 }
 
 // Pareil que ReceiveMsg mais alloue la memoire necessaire
-std::vector<std::uint8_t> Socket::receiveNewMsg() {
-	std::uint8_t header[4];
+std::vector<uint8_t> Socket::receiveNewMsg() {
+	uint8_t header[4];
 	size_t nb_bytes=0; // Nombre d'octets dans le paquet
 	size_t remaining;
 
@@ -265,7 +265,7 @@ std::vector<std::uint8_t> Socket::receiveNewMsg() {
 	((int)(header[3]) << 3*8);
 
 	// On alloue de la memoire pour les donnees :
-	std::vector<std::uint8_t> data(nb_bytes);
+	std::vector<uint8_t> data(nb_bytes);
 
 	// On lit les octets qui doivent etre lus :
 	remaining = nb_bytes;
@@ -277,8 +277,8 @@ std::vector<std::uint8_t> Socket::receiveNewMsg() {
 
 
 // Pareil que ReceiveMsg mais alloue la memoire necessaire
-std::vector<std::uint8_t> Socket::receiveNewMsg(Socket &client_socket) {
-	std::uint8_t header[4];
+std::vector<uint8_t> Socket::receiveNewMsg(Socket &client_socket) {
+	uint8_t header[4];
 	size_t nb_bytes=0; // Nombre d'octets dans le paquet
 	size_t remaining;
 
@@ -294,7 +294,7 @@ std::vector<std::uint8_t> Socket::receiveNewMsg(Socket &client_socket) {
 	((int)(header[3]) << 3*8);
 
 	// On alloue de la memoire pour les donnees :
-	std::vector<std::uint8_t> data(nb_bytes);
+	std::vector<uint8_t> data(nb_bytes);
 
 	// On lit les octets qui doivent etre lus :
 	remaining = nb_bytes;
@@ -348,7 +348,7 @@ bool Socket::waitsForAMessageFrom(Socket &client_socket) {
 }
 
 // Mise sur ecoute (pour un serveur) :
-bool Socket::listen(std::uint16_t port, int max_queue) {
+bool Socket::listen(uint16_t port, int max_queue) {
 	// On remplit la structure _addr, qui correspond a l'adresse du serveur (nous)
 	_addr.sin_family = AF_INET; // Adresse de type internet : on doit toujours mettre ca
 	_addr.sin_port = htons(port); // Port

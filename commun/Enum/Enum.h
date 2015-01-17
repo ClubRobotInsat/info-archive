@@ -14,8 +14,8 @@
 /**
  * Convertit une valeur d'une enum (enum Enum ou enum class Enum) vers la valeur entière correspondante.
  * Une énumération définie avec un certain type entier sera convertie vers ce même type entier :
- * enum MonEnum : std::uint8_t { MaValeur = 42};
- * alors enumToInt(MaValeur) sera un std::uint8_t de valeur 42.
+ * enum MonEnum : uint8_t { MaValeur = 42};
+ * alors enumToInt(MaValeur) sera un uint8_t de valeur 42.
  * @param e L'instance du type énuméré à convertir
  * @return La valeur entière correspondant à l'enum passée en paramètre
  */

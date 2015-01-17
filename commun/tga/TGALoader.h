@@ -76,20 +76,20 @@ public:
 	
 	TGAErrorCode loadOpenGLTextureWithID(std::string const &path, GLuint ID, TGAFiltering filtering=TGA_NO_FILTER);
 	
-	TGAErrorCode loadOpenGLTextureFromData(std::uint8_t *data, GLuint* pID=nullptr, TGAFiltering filtering=TGA_NO_FILTER);
+	TGAErrorCode loadOpenGLTextureFromData(uint8_t *data, GLuint* pID=nullptr, TGAFiltering filtering=TGA_NO_FILTER);
 	
-	TGAErrorCode loadOpenGLTextureFromDataWithID(std::uint8_t *data, GLuint ID, TGAFiltering filtering=TGA_NO_FILTER);
+	TGAErrorCode loadOpenGLTextureFromDataWithID(uint8_t *data, GLuint ID, TGAFiltering filtering=TGA_NO_FILTER);
 	
 #endif
 	
-	inline std::uint8_t const *getData() const {return _data.get();}
+	inline uint8_t const *getData() const {return _data.get();}
 	inline bool isLoaded() const {return _data ? true : false;}
 	inline unsigned int getHeight() const {return _height;}
 	inline unsigned int getWidth() const {return _width;}
 	inline unsigned int getBpp() const {return _bpp;}
 	
 private:
-	std::unique_ptr<std::uint8_t[]> _data;
+	std::unique_ptr<uint8_t[]> _data;
 	unsigned int _width = 0, _height = 0;
 	unsigned int _bpp = 0; // Bytes Per Pixel : 0, 3 or 4
 };

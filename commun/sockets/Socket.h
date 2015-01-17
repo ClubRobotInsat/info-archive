@@ -53,7 +53,7 @@ public:
 	// Connexion a un serveur :
 	// -server_adress : addresse du serveur auquel on se connecte
 	// -port : numero du port utilise
-	bool connect(const char* server_adress, std::uint16_t port);
+	bool connect(const char* server_adress, uint16_t port);
 	
 	// Envoi de donnees (d'un client vers un serveur) :
 	// -data : pointeur vers les donnees
@@ -112,8 +112,8 @@ public:
 	ssize_t receiveMsg(Socket &client_socket, void* buffer, std::size_t max_bytes);
 	
 	// Pareil que ReceiveMsg mais ces fonctions allouent la memoire necessaire
-	std::vector<std::uint8_t> receiveNewMsg();
-	std::vector<std::uint8_t> receiveNewMsg(Socket &client_socket);
+	std::vector<uint8_t> receiveNewMsg();
+	std::vector<uint8_t> receiveNewMsg(Socket &client_socket);
 	
 	// Pour un client : renvoie true si le serveur nous a envoye un message, qui
 	// est dans la file d'attente, sinon renvoie false.
@@ -127,7 +127,7 @@ public:
 	// Mise sur ecoute (pour un serveur) :
 	// -port : numero du port a ecouter
 	// -max_queue : nombre maximum de clients pouvant attendre dans une file
-	bool listen(std::uint16_t port, int max_queue=10);
+	bool listen(uint16_t port, int max_queue=10);
 	
 	// Acceptation d'un nouveau client (pour un serveur)
 	// -sock_client : pointeur vers la socket correspondant au nouveau client accepte

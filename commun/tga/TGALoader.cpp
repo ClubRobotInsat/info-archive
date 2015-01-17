@@ -36,7 +36,7 @@ TGAErrorCode TGALoader::loadFile(std::string const &path) {
 	std::istreambuf_iterator<char> begin(file), end;
 	std::vector<char> fileContent(begin, end);
 	
-	return this->loadFromData(reinterpret_cast<std::uint8_t *>(&fileContent[0]));
+	return this->loadFromData(reinterpret_cast<uint8_t *>(&fileContent[0]));
 }
 
 
@@ -208,7 +208,7 @@ TGAErrorCode TGALoader::loadOpenGLTextureWithID(std::string const &path, GLuint 
 	return ret;
 }
 
-TGAErrorCode TGALoader::loadOpenGLTextureFromData(std::uint8_t * data, GLuint* pID, TGAFiltering filtering) {
+TGAErrorCode TGALoader::loadOpenGLTextureFromData(uint8_t * data, GLuint* pID, TGAFiltering filtering) {
 	TGAErrorCode ret = loadFromData(data);
 	if(ret == TGA_OK) {
 		if(pID != nullptr)
@@ -220,7 +220,7 @@ TGAErrorCode TGALoader::loadOpenGLTextureFromData(std::uint8_t * data, GLuint* p
 	return ret;
 }
 
-TGAErrorCode TGALoader::loadOpenGLTextureFromDataWithID(std::uint8_t * data, GLuint ID, TGAFiltering filtering) {
+TGAErrorCode TGALoader::loadOpenGLTextureFromDataWithID(uint8_t * data, GLuint ID, TGAFiltering filtering) {
 	TGAErrorCode ret = loadFromData(data);
 	if(ret == TGA_OK) {
 		sendToOpenGLWithID(ID, filtering);

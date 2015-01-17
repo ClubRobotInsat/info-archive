@@ -127,33 +127,33 @@ STRUCT_NAMESPACE(ConstantesLucy2015Type, ConstantesLucy2015,
 )
 
 EXPLICIT_INSTANCIATION(ConstantesLucy2015Type, ConstantesLucy2015,
-	CarteInfo<IDCartesLucy2015::CAN_USB> : public std::integral_constant<std::uint32_t, 0> {
+	CarteInfo<IDCartesLucy2015::CAN_USB> : public std::integral_constant<uint32_t, 0> {
 		typedef CarteCAN_USB type;
 	};
 )
 EXPLICIT_INSTANCIATION(ConstantesLucy2015Type, ConstantesLucy2015,
-	CarteInfo<IDCartesLucy2015::DEPLACEMENT> : public std::integral_constant<std::uint32_t, 1> {
+	CarteInfo<IDCartesLucy2015::DEPLACEMENT> : public std::integral_constant<uint32_t, 1> {
 		typedef CarteDeplacement2009 type;
 	};
 )
 EXPLICIT_INSTANCIATION(ConstantesLucy2015Type, ConstantesLucy2015,
-	CarteInfo<IDCartesLucy2015::SERVOS> : public std::integral_constant<std::uint32_t, 4> {
+	CarteInfo<IDCartesLucy2015::SERVOS> : public std::integral_constant<uint32_t, 4> {
 		typedef CarteServosNova2009 type;
 		typedef ConstantesLucy2015::Servo Servo;
 	};
 )
 EXPLICIT_INSTANCIATION(ConstantesLucy2015Type, ConstantesLucy2015,
-	CarteInfo<IDCartesLucy2015::DEBUG_DESSIN> : public std::integral_constant<std::uint32_t, 5> {
+	CarteInfo<IDCartesLucy2015::DEBUG_DESSIN> : public std::integral_constant<uint32_t, 5> {
 		typedef CarteDebugDessin type;
 	};
 )
 EXPLICIT_INSTANCIATION(ConstantesLucy2015Type, ConstantesLucy2015,
-	CarteInfo<IDCartesLucy2015::IO> : public std::integral_constant<std::uint32_t, 6> {
+	CarteInfo<IDCartesLucy2015::IO> : public std::integral_constant<uint32_t, 6> {
 		typedef CarteIO2014 type;
 	};
 )
 EXPLICIT_INSTANCIATION(ConstantesLucy2015Type, ConstantesLucy2015,
-	CarteInfo<IDCartesLucy2015::EVITEMENT> : public std::integral_constant<std::uint32_t, 8> {
+	CarteInfo<IDCartesLucy2015::EVITEMENT> : public std::integral_constant<uint32_t, 8> {
 #ifdef TARGET_SIMULATEUR
 		typedef CarteDetectAdv2012 type;
 #else

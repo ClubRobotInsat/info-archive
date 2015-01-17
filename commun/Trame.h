@@ -13,22 +13,22 @@
 
 class Byte {
 public:
-	constexpr Byte(std::uint8_t val) : _value(val) {}
+	constexpr Byte(uint8_t val) : _value(val) {}
 	constexpr Byte(Byte const &) = default;
 	constexpr bool operator==(Byte const &b) const { return _value == b._value; }
-	constexpr bool operator==(std::uint8_t b) const { return _value == b; }
+	constexpr bool operator==(uint8_t b) const { return _value == b; }
 
-	constexpr std::uint8_t value() const { return _value; }
-	constexpr operator std::uint8_t() const { return _value; }
+	constexpr uint8_t value() const { return _value; }
+	constexpr operator uint8_t() const { return _value; }
 
 private:
-	std::uint8_t _value;
+	uint8_t _value;
 };
 
 inline std::ostream &operator<<(std::ostream &s, Byte const &b) {
 	// Moche, mais comme ça on touche pas aux flags du flux (std::hex etc.)
 	static char const lookup[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
-	std::uint8_t low = b.value() & 0x0F, high = (b.value() & 0xF0) >> 4;
+	uint8_t low = b.value() & 0x0F, high = (b.value() & 0xF0) >> 4;
 
 	s << "0x" << lookup[high] << lookup[low];
 
@@ -60,22 +60,22 @@ public:
 	};
 	
 	// erreur l'indice de la carte est trop grand
-	class ErreurIdCarteTropGrand : public Erreur { public: ErreurIdCarteTropGrand(std::uint8_t id):Erreur("L'id "+Utils::toString(id)+" n'est pas un id valide"){} };
+	class ErreurIdCarteTropGrand : public Erreur { public: ErreurIdCarteTropGrand(uint8_t id):Erreur("L'id "+Utils::toString(id)+" n'est pas un id valide"){} };
 
 	// erreur si une trame n'est pas traitée
 	class ErreurTrameNonTraitee : public Erreur { public: ErreurTrameNonTraitee(const Trame & t):Erreur("La trame "+ t.toString() +" n'a pas été traitée"){} };
 
 	// erreur si le numero de la donnée est trop grand
-	class ErreurNumeroDonneeTropGrand : public Erreur { public: ErreurNumeroDonneeTropGrand(std::uint8_t num) : Erreur("Le nombre de données dans la trame est trop petit pour accéder au numero " + Utils::toString(num)){} };
+	class ErreurNumeroDonneeTropGrand : public Erreur { public: ErreurNumeroDonneeTropGrand(uint8_t num) : Erreur("Le nombre de données dans la trame est trop petit pour accéder au numero " + Utils::toString(num)){} };
 
 	// erreur si la quantité de données est trop grande
-	class ErreurTropDeDonnees : public Erreur { public: ErreurTropDeDonnees(std::uint8_t num) : Erreur("Trop de données dans la trame : " + Utils::toString(num)){} };
+	class ErreurTropDeDonnees : public Erreur { public: ErreurTropDeDonnees(uint8_t num) : Erreur("Trop de données dans la trame : " + Utils::toString(num)){} };
 
 	// erreur si le numero du bit dans l'octet est trop grand
-	class ErreurNumeroBitTropGrand : public Erreur { public: ErreurNumeroBitTropGrand(std::uint8_t num) : Erreur("Le numero du bit " + Utils::toString((short)num) + " est invalide : il doit être comprit entre 0 et 7 inclu "){} };
+	class ErreurNumeroBitTropGrand : public Erreur { public: ErreurNumeroBitTropGrand(uint8_t num) : Erreur("Le numero du bit " + Utils::toString((short)num) + " est invalide : il doit être comprit entre 0 et 7 inclu "){} };
 
 	// erreur si la distance entre la camera au centre d'observation est négative
-	class ErreurNumCommandeTropGrand : public Erreur { public: ErreurNumCommandeTropGrand(std::uint8_t num) : Erreur("Le numéro de commande demandé n'existe pas : " + Utils::toString(num)){} };
+	class ErreurNumCommandeTropGrand : public Erreur { public: ErreurNumCommandeTropGrand(uint8_t num) : Erreur("Le numéro de commande demandé n'existe pas : " + Utils::toString(num)){} };
 
 public:
 	// constructeur : état par défaut, id = cmd = numPaquet = 0, pas de données
@@ -84,14 +84,14 @@ public:
 	// constructeur : sans données
 	// lève ErreurIdCarteTropGrand si l'id de la carte est trop grand
 	// lève ErreurNumCommandeTropGrand si la commande est trop grande
-	explicit Trame(std::uint8_t id, std::uint8_t cmd) : Trame(id, cmd, 0, nullptr) { }
+	explicit Trame(uint8_t id, uint8_t cmd) : Trame(id, cmd, 0, nullptr) { }
 
 	// constructeur, avec plusieurs données pour le 1er et une seule pour le 2e
 	// lève ErreurIdCarteTropGrand si l'id de la carte est trop grand
 	// lève ErreurIdCarteTropGrand si l'id de la carte est trop grand
 	// lève ErreurNumCommandeTropGrand si la commande est 0xFtrop grande
-	explicit Trame(std::uint8_t id, std::uint8_t cmd, std::uint8_t nbDonnees, std::uint8_t const donnees[]);
-	explicit Trame(std::uint8_t id, std::uint8_t cmd, std::uint8_t donnee) : Trame(id, cmd, 1, &donnee) { }
+	explicit Trame(uint8_t id, uint8_t cmd, uint8_t nbDonnees, uint8_t const donnees[]);
+	explicit Trame(uint8_t id, uint8_t cmd, uint8_t donnee) : Trame(id, cmd, 1, &donnee) { }
 
 	Trame(Trame const &t) = default;
 	Trame(Trame &&t) = default;
@@ -100,46 +100,46 @@ public:
 	virtual ~Trame() = default;
 	
 	// accesseur
-	std::uint8_t getId() const;
-	std::uint8_t getCmd() const;
-	std::uint8_t getNbDonnees() const;
-	std::uint8_t getNumPaquet() const;
+	uint8_t getId() const;
+	uint8_t getCmd() const;
+	uint8_t getNbDonnees() const;
+	uint8_t getNumPaquet() const;
 
-	std::uint8_t const *getDonnees() const;
+	uint8_t const *getDonnees() const;
 
 	// Récupération de sizeof(T) octets à partir de l'octet numero
-	template<typename T = std::uint8_t>
-	T getDonnee(std::uint8_t numero) const;
+	template<typename T = uint8_t>
+	T getDonnee(uint8_t numero) const;
 
 	// Récupération d'un bit de l'octet numero
-	bool getDonneeBool(std::uint8_t numero, std::uint8_t bit);
+	bool getDonneeBool(uint8_t numero, uint8_t bit);
 
-	void addByte(std::uint8_t value) { this->addDonnees(value); }
-	void addBytes(std::uint8_t count, std::uint8_t const bytes[]);
+	void addByte(uint8_t value) { this->addDonnees(value); }
+	void addBytes(uint8_t count, uint8_t const bytes[]);
 
 	template<typename... Args>
 	void addDonnees(Args &&... values);
 
 	// Affecte une valeur à un bit de l'octet numero
-	void set(std::uint8_t numero, std::uint8_t bit, bool valeur); // lève ErreurNumeroDonneeTropGrand et ErreurNumeroBitTropGrand
+	void set(uint8_t numero, uint8_t bit, bool valeur); // lève ErreurNumeroDonneeTropGrand et ErreurNumeroBitTropGrand
 
-	void setNumPaquet(std::uint8_t num_paquet);
-	void setCmd(std::uint8_t cmd);
-	void setId(std::uint8_t id);
-	void setDonnees(std::uint8_t nbDonnees, std::uint8_t const donnees[]);
-	void setDonnee(std::uint8_t donnee) { this->setDonnees(1, &donnee); }
+	void setNumPaquet(uint8_t num_paquet);
+	void setCmd(uint8_t cmd);
+	void setId(uint8_t id);
+	void setDonnees(uint8_t nbDonnees, uint8_t const donnees[]);
+	void setDonnee(uint8_t donnee) { this->setDonnees(1, &donnee); }
 
 	// Les 11 bits d'en-tête d'une trame CAN, regroupés en 2 fois 8 bits, dans l'ordre .first et .second
-	using MuxedIdAndCmd = std::pair<std::uint8_t, std::uint8_t>;
+	using MuxedIdAndCmd = std::pair<uint8_t, uint8_t>;
 
 	// Ces 2 fonctions vont permettre l'extraction de l'ID ou de la commande depuis les 11 bits d'en-tête d'une trame CAN (regroupés en 2 fois 8 bits).
-	static std::uint8_t demultiplexId(MuxedIdAndCmd const &idAndCmd);
-	static std::uint8_t demultiplexId(std::uint8_t first, std::uint8_t second) { return demultiplexId(MuxedIdAndCmd(first, second)); }
-	static std::uint8_t demultiplexCmd(MuxedIdAndCmd const &idAndCmd);
-	static std::uint8_t demultiplexCmd(std::uint8_t first, std::uint8_t second) { return demultiplexCmd(MuxedIdAndCmd(first, second)); }
+	static uint8_t demultiplexId(MuxedIdAndCmd const &idAndCmd);
+	static uint8_t demultiplexId(uint8_t first, uint8_t second) { return demultiplexId(MuxedIdAndCmd(first, second)); }
+	static uint8_t demultiplexCmd(MuxedIdAndCmd const &idAndCmd);
+	static uint8_t demultiplexCmd(uint8_t first, uint8_t second) { return demultiplexCmd(MuxedIdAndCmd(first, second)); }
 
 	// Retourne les 2 octets contenant les 11 bits d'en-tête CAN, à partir de l'ID de carte et de la commande
-	static MuxedIdAndCmd multiplexIdAndCmd(std::uint8_t id, std::uint8_t cmd);
+	static MuxedIdAndCmd multiplexIdAndCmd(uint8_t id, uint8_t cmd);
 
 	// afficher la trame sur le flux de sortie
 	friend std::ostream & operator <<(std::ostream &, const Trame &);
@@ -163,32 +163,32 @@ private:
 	void addDonneesInternal(Byte const &value, Args &&... values);
 
 	// numéro de la carte à qui est adressée cette trame
-	std::uint8_t _id = 0;
+	uint8_t _id = 0;
 	
 	// numéro de la commande
-	std::uint8_t _cmd = 0;
+	uint8_t _cmd = 0;
 	
 	// numéro de paquet (pour les ack)
-	std::uint8_t _num_paquet = 0;
+	uint8_t _num_paquet = 0;
 	
 	// tableau des données
-	std::vector<std::uint8_t> _donnees;
+	std::vector<uint8_t> _donnees;
 };
 
 template<typename T>
-T Trame::getDonnee(std::uint8_t numero) const {
+T Trame::getDonnee(uint8_t numero) const {
 	static_assert(sizeof(T) <= DONNEES_TRAME_MAX, "Le type demandé ne peut pas contenir dans une trame !");
 	if(numero + sizeof(T) > _donnees.size())
 		throw ErreurNumeroDonneeTropGrand(numero);
 		
 	T value;
-	std::uint8_t *pointer = reinterpret_cast<std::uint8_t *>(&value);
+	uint8_t *pointer = reinterpret_cast<uint8_t *>(&value);
 	std::copy(&_donnees[numero], &_donnees[numero + sizeof(T)], pointer);
 	
 	return value;
 }
 
-inline bool Trame::getDonneeBool(std::uint8_t numero, std::uint8_t bit) {
+inline bool Trame::getDonneeBool(uint8_t numero, uint8_t bit) {
 	if(numero >= _donnees.size())
 		throw ErreurNumeroDonneeTropGrand(numero);
 	if(bit >= 8)
@@ -207,7 +207,7 @@ void Trame::addDonneesInternal(T &&value, Args &&... values) {
 	if(this->getNbDonnees() + sizeof(T) > Trame::DONNEES_TRAME_MAX)
 		throw ErreurTropDeDonnees(this->getNbDonnees() + sizeof(T));
 
-	auto pointer = reinterpret_cast<std::uint8_t const *>(&value);
+	auto pointer = reinterpret_cast<uint8_t const *>(&value);
 	_donnees.insert(_donnees.end(), pointer, pointer + sizeof(T));
 
 	this->addDonneesInternal(values...);
