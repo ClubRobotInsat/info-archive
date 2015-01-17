@@ -48,7 +48,7 @@ def getRootDir():
 # - 'Strategie'
 # - 'Cartes'
 # - 'Outils'
-# - 'Robot2008', 'Robot2009', 'Robot2010', 'RobotAtlas2011', 'RobotTitan2011', 'Robot2012', 'Robot2012APP', 'Robot2013', 'RobotToumai2014', 'RobotLucy2014'
+# - 'Robot2008', 'Robot2009', 'Robot2010', 'RobotAtlas2011', 'RobotTitan2011', 'Robot2012', 'Robot2012APP', 'Robot2013', 'RobotPrincipal2014', 'RobotSecondaire2014'
 # - 'Webcam'
 # - 'Webcam2009'
 # - 'Webcam2010'
@@ -234,29 +234,29 @@ def createEnvironmentWithErrors(libs_list=[], errors=[], force_debug=False):
 			env.Append(LIBPATH=[root_dir + '/robot/2013/Pan/librobot2013'])
 			env.Append(LIBS=['RobotPan2013'])
 
-		elif lib == 'RobotToumai2014':
-			env.Append(CPPPATH=[root_dir + '/robot/2014/Toumai/librobot2014',
+		elif lib == 'RobotPrincipal2014':
+			env.Append(CPPPATH=[root_dir + '/robot/2014/Principal/librobot2014',
 			    			root_dir + '/robot/Cartes'])
-			env.Append(LIBPATH=[root_dir + '/robot/2014/Toumai/librobot2014', root_dir + '/commun/2014'])
-			env.Append(LIBS=['RobotToumai2014', 'Constantes2014'])
+			env.Append(LIBPATH=[root_dir + '/robot/2014/Principal/librobot2014', root_dir + '/commun/2014'])
+			env.Append(LIBS=['RobotPrincipal2014', 'Constantes2014'])
 
-		elif lib == 'RobotLucy2014':
-			env.Append(CPPPATH=[root_dir + '/robot/2014/Lucy/librobot2014',
+		elif lib == 'RobotSecondaire2014':
+			env.Append(CPPPATH=[root_dir + '/robot/2014/Secondaire/librobot2014',
 			    			root_dir + '/robot/Cartes'])
-			env.Append(LIBPATH=[root_dir + '/robot/2014/Lucy/librobot2014', root_dir + '/commun/2014'])
-			env.Append(LIBS=['RobotLucy2014', 'Constantes2014'])
+			env.Append(LIBPATH=[root_dir + '/robot/2014/Secondaire/librobot2014', root_dir + '/commun/2014'])
+			env.Append(LIBS=['RobotSecondaire2014', 'Constantes2014'])
 
-		elif lib == 'RobotToumai2015':
-			env.Append(CPPPATH=[root_dir + '/robot/2015/Toumai/librobot2015',
+		elif lib == 'RobotPrincipal2015':
+			env.Append(CPPPATH=[root_dir + '/robot/2015/Principal/librobot2015',
 						root_dir + '/robot/Cartes'])
-			env.Append(LIBPATH=[root_dir + '/robot/2015/Toumai/librobot2015', root_dir + '/commun/2015'])
-			env.Append(LIBS=['RobotToumai2015', 'Constantes2015'])
+			env.Append(LIBPATH=[root_dir + '/robot/2015/Principal/librobot2015', root_dir + '/commun/2015'])
+			env.Append(LIBS=['RobotPrincipal2015', 'Constantes2015'])
 
-		elif lib == 'RobotLucy2015':
-			env.Append(CPPPATH=[root_dir + '/robot/2015/Lucy/librobot2015',
+		elif lib == 'RobotSecondaire2015':
+			env.Append(CPPPATH=[root_dir + '/robot/2015/Secondaire/librobot2015',
 							root_dir + '/robot/Cartes'])
-			env.Append(LIBPATH=[root_dir + '/robot/2015/Lucy/librobot2015', root_dir + '/commun/2015'])
-			env.Append(LIBS=['RobotLucy2015', 'Constantes2015'])
+			env.Append(LIBPATH=[root_dir + '/robot/2015/Secondaire/librobot2015', root_dir + '/commun/2015'])
+			env.Append(LIBS=['RobotSecondaire2015', 'Constantes2015'])
 
 		elif lib == 'Webcam':
 			env.Append(CPPPATH=[root_dir + '/webcam'])

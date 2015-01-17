@@ -1,7 +1,7 @@
 // Constantes2015.h
 
-#ifndef CONSTANTES_LUCY_2015_H
-#define CONSTANTES_LUCY_2015_H
+#ifndef CONSTANTES_SECONDAIRE_2015_H
+#define CONSTANTES_SECONDAIRE_2015_H
 
 
 #ifdef TARGET_SIMULATEUR
@@ -36,10 +36,10 @@
 #include "../../Commun.h"
 #include "../ConstantesCommunes2015.h"
 
-// Définit la struct IDCartesLucy2015Type, et le namespace IDCartesLucy2015.
+// Définit la struct IDCartesSecondaire2015Type, et le namespace IDCartesSecondaire2015.
 // Les 2 ont le même contenu, la struct peut être utilisée en paramètre template et le namespace peut être mis dans un using namespace.
-namespace IDCartesLucy2015 {
-	ENUM_NS(IDCartesLucy2015, IDCartes,
+namespace IDCartesSecondaire2015 {
+	ENUM_NS(IDCartesSecondaire2015, IDCartes,
 		 CAN_USB,
 		 DEPLACEMENT,
 		 SERVOS,
@@ -47,20 +47,20 @@ namespace IDCartesLucy2015 {
 		 IO,
 		 EVITEMENT
 	);
-	ENUM_CLASS_NS(IDCartesLucy2015, IDCartesServo,
+	ENUM_CLASS_NS(IDCartesSecondaire2015, IDCartesServo,
 				  SERVOS
 	);
 }
 
-STRUCT_NAMESPACE(IDCartesLucy2015Type, IDCartesLucy2015,
+STRUCT_NAMESPACE(IDCartesSecondaire2015Type, IDCartesSecondaire2015,
 	{
-		using IDCartes = IDCartesLucy2015::IDCartes;
-		using IDCartesServo = IDCartesLucy2015::IDCartesServo;
+		using IDCartes = IDCartesSecondaire2015::IDCartes;
+		using IDCartesServo = IDCartesSecondaire2015::IDCartesServo;
 	}
 )
 
-// Le contenu de ce namespace va être enrichi d'autres éléments plus bas, et son contenu final sera copié dans une struct ConstantesLucy2015Type.
-namespace ConstantesLucy2015 {
+// Le contenu de ce namespace va être enrichi d'autres éléments plus bas, et son contenu final sera copié dans une struct ConstantesSecondaire2015Type.
+namespace ConstantesSecondaire2015 {
 	/***********************************/
 	/********** CONTACTEURS ************/
 	/***********************************/
@@ -90,17 +90,17 @@ namespace ConstantesLucy2015 {
 	};
 }
 
-// Définit la struct ConstantesLucy2015Type, et le namespace ConstantesLucy2015.
+// Définit la struct ConstantesSecondaire2015Type, et le namespace ConstantesSecondaire2015.
 // Les 2 ont le même contenu, la struct peut être utilisée en paramètre template et le namespace peut être mis dans un using namespace.
-STRUCT_NAMESPACE(ConstantesLucy2015Type, ConstantesLucy2015,
+STRUCT_NAMESPACE(ConstantesSecondaire2015Type, ConstantesSecondaire2015,
 	{
 		using ConstantesCommunes = Constantes2015Type;
-		using IDCartes = IDCartesLucy2015Type::IDCartes;
-		using IDCartesServo = IDCartesLucy2015Type::IDCartesServo;
+		using IDCartes = IDCartesSecondaire2015Type::IDCartes;
+		using IDCartesServo = IDCartesSecondaire2015Type::IDCartesServo;
 
-		using Contacteur = ConstantesLucy2015::Contacteur;
-		using Servo = ConstantesLucy2015::Servo;
-		using PositionServo = ConstantesLucy2015::PositionServo;
+		using Contacteur = ConstantesSecondaire2015::Contacteur;
+		using Servo = ConstantesSecondaire2015::Servo;
+		using PositionServo = ConstantesSecondaire2015::PositionServo;
 
 		// Position des servos
 		static constexpr angleRad positionContrepoids[enumToInt(PositionServo::NBR)] = {1350_mrad, 1500_mrad};
@@ -118,42 +118,42 @@ STRUCT_NAMESPACE(ConstantesLucy2015Type, ConstantesLucy2015,
 		/***********************************/
 		/************ CARTES ***************/
 		/***********************************/
-		template<IDCartesLucy2015Type::IDCartes ID_CARTE>
+		template<IDCartesSecondaire2015Type::IDCartes ID_CARTE>
 		struct CarteInfo {};
 
-		template<IDCartesLucy2015Type::IDCartesServo ID_CARTE>
+		template<IDCartesSecondaire2015Type::IDCartesServo ID_CARTE>
 		struct CarteServoInfo {};
 }
 )
 
-EXPLICIT_INSTANCIATION(ConstantesLucy2015Type, ConstantesLucy2015,
-	CarteInfo<IDCartesLucy2015::CAN_USB> : public std::integral_constant<uint32_t, 0> {
+EXPLICIT_INSTANCIATION(ConstantesSecondaire2015Type, ConstantesSecondaire2015,
+	CarteInfo<IDCartesSecondaire2015::CAN_USB> : public std::integral_constant<uint32_t, 0> {
 		typedef CarteCAN_USB type;
 	};
 )
-EXPLICIT_INSTANCIATION(ConstantesLucy2015Type, ConstantesLucy2015,
-	CarteInfo<IDCartesLucy2015::DEPLACEMENT> : public std::integral_constant<uint32_t, 1> {
+EXPLICIT_INSTANCIATION(ConstantesSecondaire2015Type, ConstantesSecondaire2015,
+	CarteInfo<IDCartesSecondaire2015::DEPLACEMENT> : public std::integral_constant<uint32_t, 1> {
 		typedef CarteDeplacement2009 type;
 	};
 )
-EXPLICIT_INSTANCIATION(ConstantesLucy2015Type, ConstantesLucy2015,
-	CarteInfo<IDCartesLucy2015::SERVOS> : public std::integral_constant<uint32_t, 4> {
+EXPLICIT_INSTANCIATION(ConstantesSecondaire2015Type, ConstantesSecondaire2015,
+	CarteInfo<IDCartesSecondaire2015::SERVOS> : public std::integral_constant<uint32_t, 4> {
 		typedef CarteServosNova2009 type;
-		typedef ConstantesLucy2015::Servo Servo;
+		typedef ConstantesSecondaire2015::Servo Servo;
 	};
 )
-EXPLICIT_INSTANCIATION(ConstantesLucy2015Type, ConstantesLucy2015,
-	CarteInfo<IDCartesLucy2015::DEBUG_DESSIN> : public std::integral_constant<uint32_t, 5> {
+EXPLICIT_INSTANCIATION(ConstantesSecondaire2015Type, ConstantesSecondaire2015,
+	CarteInfo<IDCartesSecondaire2015::DEBUG_DESSIN> : public std::integral_constant<uint32_t, 5> {
 		typedef CarteDebugDessin type;
 	};
 )
-EXPLICIT_INSTANCIATION(ConstantesLucy2015Type, ConstantesLucy2015,
-	CarteInfo<IDCartesLucy2015::IO> : public std::integral_constant<uint32_t, 6> {
+EXPLICIT_INSTANCIATION(ConstantesSecondaire2015Type, ConstantesSecondaire2015,
+	CarteInfo<IDCartesSecondaire2015::IO> : public std::integral_constant<uint32_t, 6> {
 		typedef CarteIO2014 type;
 	};
 )
-EXPLICIT_INSTANCIATION(ConstantesLucy2015Type, ConstantesLucy2015,
-	CarteInfo<IDCartesLucy2015::EVITEMENT> : public std::integral_constant<uint32_t, 8> {
+EXPLICIT_INSTANCIATION(ConstantesSecondaire2015Type, ConstantesSecondaire2015,
+	CarteInfo<IDCartesSecondaire2015::EVITEMENT> : public std::integral_constant<uint32_t, 8> {
 #ifdef TARGET_SIMULATEUR
 		typedef CarteDetectAdv2012 type;
 #else
@@ -162,10 +162,10 @@ EXPLICIT_INSTANCIATION(ConstantesLucy2015Type, ConstantesLucy2015,
 	};
 )
 
-EXPLICIT_INSTANCIATION(ConstantesLucy2015Type, ConstantesLucy2015,
-	CarteServoInfo<IDCartesLucy2015::IDCartesServo::SERVOS> : public ConstantesLucy2015Type::CarteInfo<IDCartesLucy2015::SERVOS> {
-		static auto const IDCarte = IDCartesLucy2015::SERVOS;
-		typedef ConstantesLucy2015::Servo Servo;
+EXPLICIT_INSTANCIATION(ConstantesSecondaire2015Type, ConstantesSecondaire2015,
+	CarteServoInfo<IDCartesSecondaire2015::IDCartesServo::SERVOS> : public ConstantesSecondaire2015Type::CarteInfo<IDCartesSecondaire2015::SERVOS> {
+		static auto const IDCarte = IDCartesSecondaire2015::SERVOS;
+		typedef ConstantesSecondaire2015::Servo Servo;
 	};
 )
 
