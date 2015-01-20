@@ -158,6 +158,11 @@ def createEnvironmentWithErrors(libs_list=[], errors=[], force_debug=False):
 			env.Append(LIBPATH=[root_dir + '/robot/Cartes'])
 			env.Append(LIBS=['Cartes'])
 
+		elif lib == 'Petri':
+			env.Append(CPPPATH=[root_dir + '/robot/Petri'])
+			env.Append(LIBPATH=[root_dir + '/robot/Petri'])
+			env.Append(LIBS=['Petri'])
+
 		elif lib == 'Outils':
 			if sys.platform == 'win32':
 				env.Append(LIBS=['ws2_32'])
@@ -234,17 +239,17 @@ def createEnvironmentWithErrors(libs_list=[], errors=[], force_debug=False):
 			env.Append(LIBPATH=[root_dir + '/robot/2013/Pan/librobot2013'])
 			env.Append(LIBS=['RobotPan2013'])
 
-		elif lib == 'RobotPrincipal2014':
-			env.Append(CPPPATH=[root_dir + '/robot/2014/Principal/librobot2014',
+		elif lib == 'RobotToumai2014':
+			env.Append(CPPPATH=[root_dir + '/robot/2014/Toumai/librobot2014',
 			    			root_dir + '/robot/Cartes'])
-			env.Append(LIBPATH=[root_dir + '/robot/2014/Principal/librobot2014', root_dir + '/commun/2014'])
-			env.Append(LIBS=['RobotPrincipal2014', 'Constantes2014'])
+			env.Append(LIBPATH=[root_dir + '/robot/2014/Toumai/librobot2014', root_dir + '/commun/2014'])
+			env.Append(LIBS=['RobotToumai2014', 'Constantes2014'])
 
-		elif lib == 'RobotSecondaire2014':
-			env.Append(CPPPATH=[root_dir + '/robot/2014/Secondaire/librobot2014',
+		elif lib == 'RobotLucy2014':
+			env.Append(CPPPATH=[root_dir + '/robot/2014/Lucy/librobot2014',
 			    			root_dir + '/robot/Cartes'])
-			env.Append(LIBPATH=[root_dir + '/robot/2014/Secondaire/librobot2014', root_dir + '/commun/2014'])
-			env.Append(LIBS=['RobotSecondaire2014', 'Constantes2014'])
+			env.Append(LIBPATH=[root_dir + '/robot/2014/Lucy/librobot2014', root_dir + '/commun/2014'])
+			env.Append(LIBS=['RobotLucy2014', 'Constantes2014'])
 
 		elif lib == 'RobotPrincipal2015':
 			env.Append(CPPPATH=[root_dir + '/robot/2015/Principal/librobot2015',
