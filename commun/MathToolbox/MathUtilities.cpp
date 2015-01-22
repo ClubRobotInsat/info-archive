@@ -1,7 +1,7 @@
 // MathUtilities.cpp
 
-#include "MathUtilities.h"
 #include "../Units/Units.h"
+#include "MathUtilities.h"
 
 // Instanciations explicites du code, facilite la vérification d'erreur
 template class NumericValue<Angle, Angle::ValueType>;

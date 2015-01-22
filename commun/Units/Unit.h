@@ -8,7 +8,6 @@
 #define Unit_h
 
 #include <cmath>
-#include <iostream>
 #include <limits>
 #include "../log/Log.h"
 
@@ -177,21 +176,6 @@ public:
 	constexpr friend std::enable_if_t<std::is_arithmetic<U>::value, T>
 	operator*(T const &v1, U v2) {
 		return makeValue(v1._val * v2);
-	}
-
-	/**
-	 * Retourne le produit d'une sous-classe de NumericValue avec un nombre.
-	 * Le nombre ne doit pas représenter une grandeur physique (il doit être un simple scalaire).
-	 * En revanche, il doit correspondre au type trait std::scalar.
-	 *
-	 * @param v1 le premier facteur du produit
-	 * @param v2 le deuxième facteur du produit
-	 * @return une nouvelle instance de la sous-classe de NumericValue représentant la multiplication de l'instance courante par le paramètre
-	 */
-	template <typename T_, typename Scalar>
-	constexpr friend std::enable_if_t<std::is_base_of<NumericValue<T_, typename T_::ValueType>, T_>::value && std::is_scalar<Scalar>::value, T_>
-	operator*(Scalar s, T_ const &num) {
-		return num * s;
 	}
 
 	/**

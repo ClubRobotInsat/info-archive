@@ -95,4 +95,20 @@ inline Surface operator*(Distance const &d1, Distance const &d2) {
 	return Surface::makeFromM2(d1.toM() * d2.toM());
 }
 
+/**
+ * Retourne le produit d'une sous-classe de NumericValue avec un nombre.
+ * Le nombre ne doit pas représenter une grandeur physique (il doit être un simple scalaire).
+ * En revanche, il doit correspondre au type trait std::scalar.
+ *
+ * @param v1 le premier facteur du produit
+ * @param v2 le deuxième facteur du produit
+ * @return une nouvelle instance de la sous-classe de NumericValue représentant la multiplication de l'instance courante par le paramètre
+ */
+template <typename T_, typename Scalar>
+constexpr std::enable_if_t<std::is_base_of<NumericValue<T_, typename T_::ValueType>, T_>::value && std::is_scalar<Scalar>::value, T_>
+operator*(Scalar s, T_ const &num) {
+	return num * s;
+}
+
+
 #endif

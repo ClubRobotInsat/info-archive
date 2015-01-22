@@ -40,16 +40,17 @@
 
 namespace IDCartesPrincipal2015 {
 	ENUM_NS(IDCartesPrincipal2015, IDCartes,
-		CAN_USB,
-		DEPLACEMENT,
-		ASSERVISSEMENT_ASCENSEUR_D,
-		ASSERVISSEMENT_ASCENSEUR_G,
-		SERVOS_ASCENSEUR,
-		SERVOS_AUTRES,
-		IO,
-		EVITEMENT,
-		PNEUMATIQUE,
-		DEBUG_DESSIN
+		CAN_USB,						// 0
+		DEPLACEMENT,					// 1
+		ASSERVISSEMENT_ASCENSEUR_D,		// 2
+		ASSERVISSEMENT_ASCENSEUR_G,		// 3
+		SERVOS_ASCENSEUR,				// 4
+		SERVOS_AUTRES,					// 5
+		IO,								// 6
+		EVITEMENT,						// 7
+		/* PNEUMATIQUE */
+		HOLDER_8,						// 8
+		DEBUG_DESSIN					// 9
 		//ID_CARTE_DEBUG = 11
 	);
 
@@ -70,13 +71,15 @@ namespace ConstantesPrincipal2015 {
 	/////////////////// CONTACTEURS ///////////////////
 	// Numéros des contacteurs et les rôles associés
 	enum class Contacteur {
-		CHOIX_EQUIPE= 2,
-		TIRETTE		= 6,
-		// TODO:
-		LAMPE		= 10,
-		PIED 		= 11,
-		PINCE_D		= 12,
-		PINCE_G		= 13
+		CHOIX_EQUIPE	= 2,
+		TIRETTE			= 6,
+		// TODO: TBD
+		LAMPE_G			= 10,
+		LAMPE_D			= 11,
+		PIED_G 			= 12,
+		PIED_D			= 13,
+		PINCE_D			= 14,
+		PINCE_G			= 15
 	};
 
 	/////////////////// SERVOS ///////////////////
@@ -230,11 +233,13 @@ EXPLICIT_INSTANCIATION(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
 		typedef CarteDetectAdv2009 type;
 	};
 )
+/*
 EXPLICIT_INSTANCIATION(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
 	CarteInfo<IDCartesPrincipal2015::PNEUMATIQUE> : public std::integral_constant<uint32_t, 9> {
 		typedef CartePneumatique2014 type;
 	};
 )
+*/
 EXPLICIT_INSTANCIATION(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
 	CarteInfo<IDCartesPrincipal2015::DEBUG_DESSIN> : public std::integral_constant<uint32_t, 10> {
 		typedef CarteDebugDessin type;
@@ -253,6 +258,5 @@ EXPLICIT_INSTANCIATION(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
 		typedef ConstantesPrincipal2015::Servo Servo;
 	};
 )
-
 
 #endif
