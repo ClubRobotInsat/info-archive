@@ -41,6 +41,8 @@
 
 * Mettre à jour les cartes 2015
 
+* RessourceManager
+
 * Envisager l'utilisation de shaders pour l'affichage
   o Boulot
   o Boulot

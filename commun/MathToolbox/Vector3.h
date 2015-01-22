@@ -94,7 +94,7 @@ public:
 	inline T norm() const;
 
 	// Calcul de la norme au carré (plus rapide)
-	inline auto squaredNorm() -> decltype(x * x) const {
+	inline decltype(x * x) squaredNorm() const {
 		return dot(*this, *this);
 	}
 
