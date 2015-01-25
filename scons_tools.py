@@ -167,12 +167,11 @@ def createEnvironmentWithErrors(libs_list=[], errors=[], force_debug=False):
 			env.Append(LIBS=['Outils'])
 
 			if sys.platform == 'linux2':
-				env.Append(LINKFLAGS=['-Wl,--whole-archive', '-lPetri', '-Wl,--no-whole-archive'])
+				env.Append(LINKFLAGS=['-Wl,--whole-archive', '-L' + root_dir + '/robot/Petri', '-lPetri', '-Wl,--no-whole-archive'])
 			elif sys.platform == 'darwin':
 				env.Append(LINKFLAGS=['-Wl,-force_load,' + root_dir + '/robot/Petri/' + 'libPetri.a'])
-				env.Append(LIBS=['Petri'])
-			else:
-				env.Append(LIBS=['Petri'])
+
+			env.Append(LIBS=['Petri'])
 
 		elif lib == 'Outils':
 			if sys.platform == 'win32':
@@ -268,12 +267,11 @@ def createEnvironmentWithErrors(libs_list=[], errors=[], force_debug=False):
 			env.Append(LIBPATH=[root_dir + '/robot/2015/Principal/librobot2015', root_dir + '/commun/2015'])
 			env.Append(LIBS=['Constantes2015', 'dl'])
 			if sys.platform == 'linux2':
-				env.Append(LINKFLAGS=['-Wl,--whole-archive', '-lRobotPrincipal2015', '-Wl,--no-whole-archive'])
+				env.Append(LINKFLAGS=['-Wl,--whole-archive', '-L' + root_dir + '/robot/2015/Principal/librobot2015', '-lRobotPrincipal2015', '-Wl,--no-whole-archive'])
 			elif sys.platform == 'darwin':
 				env.Append(LINKFLAGS=['-Wl,-force_load,' + root_dir + '/robot/2015/Principal/libRobot2015/' + 'libRobotPrincipal2015.a'])
-				env.Append(LIBS=['RobotPrincipal2015'])
-			else:
-				env.Append(LIBS=['RobotPrincipal2015'])
+			
+			env.Append(LIBS=['RobotPrincipal2015'])
 
 		elif lib == 'RobotSecondaire2015':
 			env.Append(CPPPATH=[root_dir + '/robot/2015/Secondaire/librobot2015',
@@ -281,12 +279,11 @@ def createEnvironmentWithErrors(libs_list=[], errors=[], force_debug=False):
 			env.Append(LIBPATH=[root_dir + '/robot/2015/Secondaire/librobot2015', root_dir + '/commun/2015'])
 			env.Append(LIBS=['Constantes2015', 'dl'])
 			if sys.platform == 'linux2':
-				env.Append(LINKFLAGS=['-Wl,--whole-archive', '-lRobotSecondaire2015', '-Wl,--no-whole-archive'])
+				env.Append(LINKFLAGS=['-Wl,--whole-archive', '-L' + root_dir + '/robot/2015/Secondaire/librobot2015', '-lRobotSecondaire2015', '-Wl,--no-whole-archive'])
 			elif sys.platform == 'darwin':
 				env.Append(LINKFLAGS=['-Wl,-force_load,' + root_dir + '/robot/2015/Secondaire/libRobot2015/' + 'libRobotSecondaire2015.a'])
-				env.Append(LIBS=['RobotSecondaire2015'])
-			else:
-				env.Append(LIBS=['RobotSecondaire2015'])
+
+			env.Append(LIBS=['RobotSecondaire2015'])
 
 		elif lib == 'Webcam':
 			env.Append(CPPPATH=[root_dir + '/webcam'])
