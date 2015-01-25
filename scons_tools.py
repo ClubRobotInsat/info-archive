@@ -93,7 +93,7 @@ def createEnvironmentWithErrors(libs_list=[], errors=[], force_debug=False):
 	env.Append(CCFLAGS=['-Wall', '-Wunused-value', '-Wuninitialized'])
 
 	cxxflags = ['-std=c++1y']
-	linkflags = ['-Wl,-E']
+	linkflags = []
 	
 	if ARGUMENTS.get('arch', "32") == "32":
 		cxxflags.append('-m32')
@@ -115,6 +115,7 @@ def createEnvironmentWithErrors(libs_list=[], errors=[], force_debug=False):
 		#env["ENV"].update(x for x in os.environ.items() if x[0].startswith("CCC_"))
 	else:
 		cxxflags.append('-Werror=return-local-addr')
+		linkflags.append('-Wl,-E')
 
 	cxxflags.append('-Werror=return-type')
 	cxxflags = cxxflags + errors
@@ -164,7 +165,14 @@ def createEnvironmentWithErrors(libs_list=[], errors=[], force_debug=False):
 			env.Append(LIBPATH=[root_dir + '/robot/Petri', 
 			                    root_dir + '/commun'])
 			env.Append(LIBS=['Outils'])
-			env.Append(LINKFLAGS=['-Wl,--whole-archive', '-lPetri', '-Wl,--no-whole-archive'])
+
+			if sys.platform == 'linux2':
+				env.Append(LINKFLAGS=['-Wl,--whole-archive', '-lPetri', '-Wl,--no-whole-archive'])
+			elif sys.platform == 'darwin':
+				env.Append(LINKFLAGS=['-Wl,-force_load,' + root_dir + '/robot/Petri/' + 'libPetri.a'])
+				env.Append(LIBS=['Petri'])
+			else:
+				env.Append(LIBS=['Petri'])
 
 		elif lib == 'Outils':
 			if sys.platform == 'win32':
@@ -259,13 +267,26 @@ def createEnvironmentWithErrors(libs_list=[], errors=[], force_debug=False):
 						root_dir + '/robot/Cartes'])
 			env.Append(LIBPATH=[root_dir + '/robot/2015/Principal/librobot2015', root_dir + '/commun/2015'])
 			env.Append(LIBS=['Constantes2015', 'dl'])
-			env.Append(LINKFLAGS=['-Wl,--whole-archive', '-lRobotPrincipal2015', '-Wl,--no-whole-archive'])
+			if sys.platform == 'linux2':
+				env.Append(LINKFLAGS=['-Wl,--whole-archive', '-lRobotPrincipal2015', '-Wl,--no-whole-archive'])
+			elif sys.platform == 'darwin':
+				env.Append(LINKFLAGS=['-Wl,-force_load,' + root_dir + '/robot/2015/Principal/libRobot2015/' + 'libRobotPrincipal2015.a'])
+				env.Append(LIBS=['RobotPrincipal2015'])
+			else:
+				env.Append(LIBS=['RobotPrincipal2015'])
 
 		elif lib == 'RobotSecondaire2015':
 			env.Append(CPPPATH=[root_dir + '/robot/2015/Secondaire/librobot2015',
 							root_dir + '/robot/Cartes'])
 			env.Append(LIBPATH=[root_dir + '/robot/2015/Secondaire/librobot2015', root_dir + '/commun/2015'])
-			env.Append(LIBS=['RobotSecondaire2015', 'Constantes2015'])
+			env.Append(LIBS=['Constantes2015', 'dl'])
+			if sys.platform == 'linux2':
+				env.Append(LINKFLAGS=['-Wl,--whole-archive', '-lRobotSecondaire2015', '-Wl,--no-whole-archive'])
+			elif sys.platform == 'darwin':
+				env.Append(LINKFLAGS=['-Wl,-force_load,' + root_dir + '/robot/2015/Secondaire/libRobot2015/' + 'libRobotSecondaire2015.a'])
+				env.Append(LIBS=['RobotSecondaire2015'])
+			else:
+				env.Append(LIBS=['RobotSecondaire2015'])
 
 		elif lib == 'Webcam':
 			env.Append(CPPPATH=[root_dir + '/webcam'])
