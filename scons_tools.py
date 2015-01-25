@@ -93,7 +93,8 @@ def createEnvironmentWithErrors(libs_list=[], errors=[], force_debug=False):
 	env.Append(CCFLAGS=['-Wall', '-Wunused-value', '-Wuninitialized'])
 
 	cxxflags = ['-std=c++1y']
-	linkflags = []
+	linkflags = ['-Wl,-E']
+	
 	if ARGUMENTS.get('arch', "32") == "32":
 		cxxflags.append('-m32')
 		linkflags.append('-m32')
@@ -162,7 +163,8 @@ def createEnvironmentWithErrors(libs_list=[], errors=[], force_debug=False):
 			env.Append(CPPPATH=[root_dir + '/robot/Petri'])
 			env.Append(LIBPATH=[root_dir + '/robot/Petri', 
 			                    root_dir + '/commun'])
-			env.Append(LIBS=['Petri', 'Outils'])
+			env.Append(LIBS=['Outils'])
+			env.Append(LINKFLAGS=['-Wl,--whole-archive', '-lPetri', '-Wl,--no-whole-archive'])
 
 		elif lib == 'Outils':
 			if sys.platform == 'win32':
@@ -256,7 +258,8 @@ def createEnvironmentWithErrors(libs_list=[], errors=[], force_debug=False):
 			env.Append(CPPPATH=[root_dir + '/robot/2015/Principal/librobot2015',
 						root_dir + '/robot/Cartes'])
 			env.Append(LIBPATH=[root_dir + '/robot/2015/Principal/librobot2015', root_dir + '/commun/2015'])
-			env.Append(LIBS=['RobotPrincipal2015', 'Constantes2015', 'dl'])
+			env.Append(LIBS=['Constantes2015', 'dl'])
+			env.Append(LINKFLAGS=['-Wl,--whole-archive', '-lRobotPrincipal2015', '-Wl,--no-whole-archive'])
 
 		elif lib == 'RobotSecondaire2015':
 			env.Append(CPPPATH=[root_dir + '/robot/2015/Secondaire/librobot2015',
