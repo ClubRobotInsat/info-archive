@@ -63,6 +63,8 @@ def createEnvironmentWithErrors(libs_list=[], errors=[], force_debug=False):
 	vars = Variables()
 	for line in sconsHelp:
 		vars.AddVariables(BoolVariable(line[0], line[1], 0))
+
+	vars.AddVariables()
 	env = Environment(variables = vars)
 
 	# Generation du texte affiche lors du "scons --help", uniquement lors du premier appel a createEnvironment():
@@ -400,3 +402,12 @@ def createEnvironmentNoError(libs_list=[], force_debug=False):
 def createEnvironment(libs_list=[], force_debug=False):
 	env = createEnvironmentWithErrors(libs_list, ['-Werror=unused-value', '-Werror=uninitialized'], force_debug)
 	return env
+
+def compilePetriNet(petriNet):
+	root_dir = getRootDir()
+	from subprocess import call
+	if sys.platform == 'darwin':
+		os.environ['MACOSX_DEPLOYMENT_TARGET'] = ''
+	if call('mono "' + root_dir + '/robot/Petri/Editor/bin/Debug/Petri.exe" --compile "' + petriNet, shell=True) != 0:
+		Exit(1)
+
