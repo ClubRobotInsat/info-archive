@@ -1,5 +1,9 @@
 #include "robot/Petri/Editor/Todo.txt"
 
+Ascenser simu
+Affichage formes physiques simu
+Collisions simu
+
 +------------------------------------------------------------------------------+
 | Commun                                                                       |
 +------------------------------------------------------------------------------+
