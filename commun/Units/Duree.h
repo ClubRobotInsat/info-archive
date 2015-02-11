@@ -10,13 +10,17 @@
 #include "Unit.h"
 #include <chrono>
 
+using Duree = Unit<0, 0, 1, true>;
+
 /**
  * Classe représentant une grandeur de temps.
  */
-class Duree : public NumericValue<Duree> {
-	friend class NumericValue<Duree>;
+template<>
+class Unit<0, 0, 1, true> : public Unit<0, 0, 1, false> {
+	friend class Unit<0, 0, 1, false>;
 public:
-	using NumericValue::ValueType;
+	using Unit<0, 0, 1, false>::ValueType;
+	using Type = Unit<0, 0, 1, true>;
 
 	/**
 	 * Écrit la durée sur le flux.
@@ -24,7 +28,7 @@ public:
 	 * @param d la durée à écrire
 	 * @return le flux
 	 */
-	friend inline std::ostream &operator<<(std::ostream &s, Duree const &d) {
+	friend inline std::ostream &operator<<(std::ostream &s, Type const &d) {
 		if(abs(d._val) >= 3600)
 			s << d._val << " h";
 		else if(abs(d._val) >= 60)
@@ -46,14 +50,14 @@ public:
 	 * @param ns la valeur de durée en nanosecondes
 	 * @return une grandeur de durée avec la valeur spécifiée.
 	 */
-	static constexpr Duree makeFromNs(long double ns) { return Duree(ns / 1e9); }
+	static constexpr Type makeFromNs(long double ns) { return Type(ns / 1e9); }
 
 	/**
 	 * Créé une durée avec la valeur en microsecondes spécifiée.
 	 * @param us la valeur de durée en microsecondes
 	 * @return une grandeur de durée avec la valeur spécifiée.
 	 */
-	static constexpr Duree makeFromUs(long double us) { return Duree(us / 1e6); }
+	static constexpr Type makeFromUs(long double us) { return Type(us / 1e6); }
 
 	/**
 	 * Créé une durée avec la valeur en millisecondes spécifiée.
@@ -61,14 +65,14 @@ public:
 	 * @return une grandeur de durée avec la valeur spécifiée.
 	 */
 
-	static constexpr Duree makeFromMs(long double ms) { return Duree(ms / 1e3); }
+	static constexpr Type makeFromMs(long double ms) { return Type(ms / 1e3); }
 
 	/**
 	 * Créé une durée avec la valeur en secondes spécifiée.
 	 * @param s la valeur de durée en secondes
 	 * @return une grandeur de durée avec la valeur spécifiée.
 	 */
-	static constexpr Duree makeFromS(long double s) { return Duree(s); }
+	static constexpr Type makeFromS(long double s) { return Type(s); }
 
 	/**
 	 * Retourne la valeur stockée sous forme de secondes.
@@ -92,7 +96,7 @@ public:
 	}
 
 private:
-	using NumericValue::NumericValue;
+	using Unit<0, 0, 1, false>::Unit;
 };
 
 /**

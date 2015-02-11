@@ -1,8 +1,6 @@
 #include "robot/Petri/Editor/Todo.txt"
 
 Ascenser simu
-Affichage formes physiques simu
-Collisions simu
 
 +------------------------------------------------------------------------------+
 | Commun                                                                       |
@@ -17,6 +15,8 @@ Collisions simu
   o Synchronisation entre threads
 
 * Mise à jour wiki (beaucoup de boulot, pas urgent (été 2015))
+
+* Unités matricielles (douce utopie…)
 
 +------------------------------------------------------------------------------+
 | IA                                                                           |
@@ -59,6 +59,8 @@ Collisions simu
 * Chargement de textures un peu plus OO
 
 * Utilisation de la classe Socket de Commun
+
+* Affichage formes physiques simu
 
 +------------------------------------------------------------------------------+
 | Divers                                                                       |

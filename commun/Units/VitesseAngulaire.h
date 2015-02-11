@@ -9,13 +9,17 @@
 
 #include "Unit.h"
 
+using VitesseAngulaire = Unit<0, 0, -1, true>;
+
 /**
  * Classe représentant une grandeur de vitesse angulaire.
  */
-class VitesseAngulaire : public NumericValue<VitesseAngulaire> {
-	friend class NumericValue<VitesseAngulaire>;
+template<>
+class Unit<0, 0, -1, true> : public Unit<0, 0, -1, false> {
+	friend class Unit<0, 0, -1, false>;
 public:
-	using NumericValue::ValueType;
+	using Unit<0, 0, -1, false>::ValueType;
+	using Type = Unit<0, 0, -1, true>;
 
 	/**
 	 * Écrit la vitesse angulaire sur le flux.
@@ -23,8 +27,8 @@ public:
 	 * @param v la vitesse angulaire à écrire
 	 * @return le flux
 	 */
-	friend inline std::ostream &operator<<(std::ostream &s, VitesseAngulaire const &v) {
-		return s << v._val << " rad/s";
+	friend inline std::ostream &operator<<(std::ostream &s, Type const &v) {
+		return s << v._val << " s^-1";
 	}
 
 	/**
@@ -32,21 +36,21 @@ public:
 	 * @param rad_s la valeur de vitesse angulaire en radians par secondes
 	 * @return une grandeur de vitesse angulaire avec la valeur spécifiée.
 	 */
-	static constexpr VitesseAngulaire makeFromRad_s(long double rad_s) { return VitesseAngulaire(rad_s); }
+	static constexpr Type makeFromRad_s(long double rad_s) { return Type(rad_s); }
 
 	/**
 	 * Créé une vitesse angulaire avec la valeur en degrés par secondes spécifiée.
 	 * @param rad_s la valeur de vitesse angulaire en degrés par secondes
 	 * @return une grandeur de vitesse angulaire avec la valeur spécifiée.
 	 */
-	static constexpr VitesseAngulaire makeFromDeg_s(long double deg_s) { return VitesseAngulaire(deg_s * M_PI / 180); }
+	static constexpr Type makeFromDeg_s(long double deg_s) { return Type(deg_s * M_PI / 180); }
 
 	/**
 	 * Créé une vitesse angulaire avec la valeur en milliradians par secondes spécifiée.
 	 * @param rad_s la valeur de vitesse angulaire en milliradians par secondes
 	 * @return une grandeur de vitesse angulaire avec la valeur spécifiée.
 	 */
-	static constexpr VitesseAngulaire makeFromMilliRad_s(long double millirad_s) { return VitesseAngulaire(millirad_s / 1000); }
+	static constexpr Type makeFromMilliRad_s(long double millirad_s) { return Type(millirad_s / 1000); }
 
 	/**
 	 * Retourne la valeur stockée sous forme de radians par seconde.
@@ -71,7 +75,7 @@ public:
 	}
 
 private:
-	using NumericValue::NumericValue;
+	using Unit<0, 0, -1, false>::Unit;
 };
 
 /**

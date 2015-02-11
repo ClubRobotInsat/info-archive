@@ -9,13 +9,17 @@
 
 #include "Unit.h"
 
+using Distance = Unit<0, 1, 0, true>;
+
 /**
  * Classe représentant une grandeur de longueur.
  */
-class Distance : public NumericValue<Distance> {
-	friend class NumericValue<Distance>;
+template<>
+class Unit<0, 1, 0, true> : public Unit<0, 1, 0, false> {
+	friend class Unit<0, 1, 0, false>;
 public:
-	using NumericValue::ValueType;
+	using Unit<0, 1, 0, false>::ValueType;
+	using Type = Unit<0, 1, 0, true>;
 
 	/**
 	 * Écrit la longueur sur le flux.
@@ -23,7 +27,7 @@ public:
 	 * @param d la longueur à écrire
 	 * @return le flux
 	 */
-	friend std::ostream &operator<<(std::ostream &s, Distance const &d) {
+	friend std::ostream &operator<<(std::ostream &s, Type const &d) {
 		if(abs(d._val) >= 1)
 			s << d._val << " m";
 		else if(abs(d._val) >= 1e-2)
@@ -39,35 +43,35 @@ public:
 	 * @param mm la valeur de distance en millimètres
 	 * @return une grandeur de longueur avec la valeur spécifiée.
 	 */
-	static constexpr Distance makeFromMm(long double mm) { return Distance(mm / 1000); }
+	static constexpr Type makeFromMm(long double mm) { return Type(mm / 1000); }
 
 	/**
 	 * Créé une distance avec la valeur en centimètres spécifiée.
 	 * @param cm la valeur de distance en centimètres
 	 * @return une grandeur de longueur avec la valeur spécifiée.
 	 */
-	static constexpr Distance makeFromCm(long double cm) { return Distance(cm / 100); }
+	static constexpr Type makeFromCm(long double cm) { return Type(cm / 100); }
 
 	/**
 	 * Créé une distance avec la valeur en décimètres spécifiée.
 	 * @param dm la valeur de distance en décimètres
 	 * @return une grandeur de longueur avec la valeur spécifiée.
 	 */
-	static constexpr Distance makeFromDm(long double dm) { return Distance(dm / 10); }
+	static constexpr Type makeFromDm(long double dm) { return Type(dm / 10); }
 
 	/**
 	 * Créé une distance avec la valeur en mètres spécifiée.
 	 * @param m la valeur de distance en mètres
 	 * @return une grandeur de longueur avec la valeur spécifiée.
 	 */
-	static constexpr Distance makeFromM(long double m) { return Distance(m); }
+	static constexpr Type makeFromM(long double m) { return Type(m); }
 
 	/**
 	 * Créé une distance avec la valeur en kilomètres spécifiée.
 	 * @param km la valeur de distance en kilomètres
 	 * @return une grandeur de longueur avec la valeur spécifiée.
 	 */
-	static constexpr Distance makeFromKm(long double km) { return Distance(km * 1000); }
+	static constexpr Type makeFromKm(long double km) { return Type(km * 1000); }
 
 	/**
 	 * Retourne la valeur stockée sous forme de millimètres.
@@ -104,7 +108,7 @@ public:
 
 
 private:
-	using NumericValue::NumericValue;
+	using Unit<0, 1, 0, false>::Unit;
 };
 
 

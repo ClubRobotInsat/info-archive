@@ -9,14 +9,22 @@
 
 #include "Unit.h"
 
+using Angle = Unit<0, 0, 0, true>;
+
 /**
  * Classe représentant une grandeur d'angle.
  * Elle gère les radians et les degrés.
  */
-class Angle : public NumericValue<Angle> {
-	friend class NumericValue<Angle>;
+template<>
+class Unit<0, 0, 0, true> : public Unit<0, 0, 0, false> {
+	friend class Unit<0, 0, 0, false>;
 public:
-	using NumericValue::ValueType;
+	using Unit<0, 0, 0, false>::ValueType;
+	using Type = Unit<0, 0, 0, true>;
+
+	operator ValueType() const {
+		return _val;
+	}
 
 	/**
 	 * Écrit l'angle sur le flux.
@@ -24,8 +32,8 @@ public:
 	 * @param v l'angle à écrire
 	 * @return le flux
 	 */
-	friend std::ostream &operator<<(std::ostream &s, Angle const &v) {
-		return s << v._val << " rad";
+	friend std::ostream &operator<<(std::ostream &s, Type const &v) {
+		return s << v._val;
 	}
 
 	/**
@@ -33,22 +41,22 @@ public:
 	 * @param rad la valeur d'angle en radians
 	 * @return une grandeur d'angle avec la valeur spécifiée.
 	 */
-	static inline constexpr Angle makeFromRad(long double rad) { return Angle(rad); }
+	static inline constexpr Type makeFromRad(long double rad) { return Type(rad); }
 
 	/**
 	 * Créé un angle avec la valeur en milliradians spécifiée.
 	 * @param millirad la valeur d'angle en milliradians
 	 * @return une grandeur d'angle avec la valeur spécifiée.
 	 */
-	static inline constexpr Angle makeFromMilliRad(long double millirad) { return Angle(millirad / 1000); }
+	static inline constexpr Type makeFromMilliRad(long double millirad) { return Type(millirad / 1000); }
 
 	/**
 	 * Créé un angle avec la valeur en degrés spécifiée.
 	 * @param deg la valeur d'angle en degrés
 	 * @return une grandeur d'angle avec la valeur spécifiée.
 	 */
-	static inline constexpr Angle makeFromDeg(long double deg) {
-		return Angle(deg / 180 * M_PI);
+	static inline constexpr Type makeFromDeg(long double deg) {
+		return Type(deg / 180 * M_PI);
 	}
 
 	/**
@@ -88,27 +96,27 @@ public:
 	 * Retourne l'angle dans l'intervalle [0, 2π[.
 	 * @return une copie de l'instance avec pour valeur son angle dans l'intervalle [0,2π[
 	 */
-	constexpr Angle angleMod2Pi() const {
-		return ((*this % Angle::makeFromRad(2 * M_PI)) + Angle::makeFromRad(4 * M_PI)) % Angle::makeFromRad(2 * M_PI);
+	constexpr Type angleMod2Pi() const {
+		return ((*this % Type::makeFromRad(2 * M_PI)) + Type::makeFromRad(4 * M_PI)) % Type::makeFromRad(2 * M_PI);
 	}
 
 	/**
 	 * Retourne l'angle dans l'intervalle [-π, π[.
 	 * @return une copie de l'instance avec pour valeur son angle dans l'intervalle [-π,π[
 	 */
-	CONDITIONAL_CONSTEXPR Angle toMoinsPiPi() const {
+	CONDITIONAL_CONSTEXPR Type toMoinsPiPi() const {
 		auto mod2Pi = this->angleMod2Pi();
 
-		if(mod2Pi >= Angle::makeFromRad(M_PI))
-			mod2Pi -= Angle::makeFromRad(2 * M_PI);
-		else if(mod2Pi < Angle::makeFromRad(-M_PI))
-			mod2Pi += Angle::makeFromRad(2 * M_PI);
+		if(mod2Pi >= Type::makeFromRad(M_PI))
+			mod2Pi -= Type::makeFromRad(2 * M_PI);
+		else if(mod2Pi < Type::makeFromRad(-M_PI))
+			mod2Pi += Type::makeFromRad(2 * M_PI);
 
 		return mod2Pi;
 	}
 
 private:
-	using NumericValue::NumericValue;
+	using Unit<0, 0, 0, false>::Unit;
 };
 
 /**
@@ -141,6 +149,13 @@ inline constexpr Angle operator"" _mrad(unsigned long long rad) { return Angle::
 namespace std {
 	template<>
 	struct is_scalar<Angle> : public std::integral_constant<bool, true> {};
+}
+
+/**
+ * Retourne l'angle du vecteur (x, y)
+ */
+inline Angle atan2(Distance const &y, Distance const &x) {
+	return Angle::makeFromRad(std::atan2(y.toM(), x.toM()));
 }
 
 #endif

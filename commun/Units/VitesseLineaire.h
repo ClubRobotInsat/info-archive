@@ -9,13 +9,17 @@
 
 #include "Unit.h"
 
+using VitesseLineaire = Unit<0, 1, -1, true>;
+
 /**
  * Classe représentant une grandeur de vitesse linéaire.
  */
-class VitesseLineaire : public NumericValue<VitesseLineaire> {
-	friend class NumericValue<VitesseLineaire>;
+template<>
+class Unit<0, 1, -1, true> : public Unit<0, 1, -1, false> {
+	friend class Unit<0, 1, -1, false>;
 public:
-	using NumericValue::ValueType;
+	using Unit<0, 1, -1, false>::ValueType;
+	using Type = Unit<0, 1, -1, true>;
 
 	/**
 	 * Écrit la vitesse linéaire sur le flux.
@@ -23,7 +27,7 @@ public:
 	 * @param v la vitesse linéaire à écrire
 	 * @return le flux
 	 */
-	friend inline std::ostream &operator<<(std::ostream &s, VitesseLineaire const &v) {
+	friend inline std::ostream &operator<<(std::ostream &s, Type const &v) {
 		if(abs(v._val) >= 1)
 			s << v._val << " m/s";
 		else if(abs(v._val) >= 1e-2)
@@ -39,28 +43,28 @@ public:
 	 * @param m_s la valeur de vitesse linéaire en mètres par secondes
 	 * @return une grandeur de vitesse linéaire avec la valeur spécifiée.
 	 */
-	static constexpr VitesseLineaire makeFromM_s(long double m_s) { return VitesseLineaire(m_s); }
+	static constexpr Type makeFromM_s(long double m_s) { return Type(m_s); }
 
 	/**
 	 * Créé une vitesse linéaire avec la valeur en décimètres par secondes spécifiée.
 	 * @param dm_s la valeur de vitesse linéaire en décimètres par secondes
 	 * @return une grandeur de vitesse linéaire avec la valeur spécifiée.
 	 */
-	static constexpr VitesseLineaire makeFromDm_s(long double dm_s) { return VitesseLineaire(dm_s / 10); }
+	static constexpr Type makeFromDm_s(long double dm_s) { return Type(dm_s / 10); }
 
 	/**
 	 * Créé une vitesse linéaire avec la valeur en centimètres par secondes spécifiée.
 	 * @param cm_s la valeur de vitesse linéaire en centimètres par secondes
 	 * @return une grandeur de vitesse linéaire avec la valeur spécifiée.
 	 */
-	static constexpr VitesseLineaire makeFromCm_s(long double cm_s) { return VitesseLineaire(cm_s / 100); }
+	static constexpr Type makeFromCm_s(long double cm_s) { return Type(cm_s / 100); }
 
 	/**
 	 * Créé une vitesse linéaire avec la valeur en millimètres par secondes spécifiée.
 	 * @param mm_s la valeur de vitesse linéaire en millimètres par secondes
 	 * @return une grandeur de vitesse linéaire avec la valeur spécifiée.
 	 */
-	static constexpr VitesseLineaire makeFromMm_s(long double mm_s) { return VitesseLineaire(mm_s / 1000); }
+	static constexpr Type makeFromMm_s(long double mm_s) { return Type(mm_s / 1000); }
 
 	/**
 	 * Retourne la valeur stockée sous forme de millimètres par seconde.
@@ -96,7 +100,7 @@ public:
 	}
 
 private:
-	using NumericValue::NumericValue;
+	using Unit<0, 1, -1, false>::Unit;
 };
 
 /**

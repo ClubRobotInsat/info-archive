@@ -4,10 +4,10 @@
 #include "MathUtilities.h"
 
 // Instanciations explicites du code, facilite la vérification d'erreur
-template class NumericValue<Angle, Angle::ValueType>;
-template class NumericValue<Distance, Distance::ValueType>;
-template class NumericValue<Surface, Surface::ValueType>;
-template class NumericValue<Duree, Duree::ValueType>;
-template class NumericValue<Masse, Masse::ValueType>;
-template class NumericValue<VitesseLineaire, VitesseLineaire::ValueType>;
-template class NumericValue<VitesseAngulaire, VitesseAngulaire::ValueType>;
+template class Unit<1, 1, 1, true>;
+template class Unit<1, 1, 0, true>;
+template class Unit<1, 0, 1, true>;
+template class Unit<1, 0, 0, true>;
+template class Unit<0, 1, 1, true>;
+template class Unit<0, 1, 0, true>;
+template class Unit<0, 0, 1, true>;

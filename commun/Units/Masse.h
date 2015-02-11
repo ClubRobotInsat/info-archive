@@ -9,13 +9,17 @@
 
 #include "Unit.h"
 
+using Masse = Unit<1, 0, 0, true>;
+
 /**
  * Classe représentant une grandeur de masse.
  */
-class Masse : public NumericValue<Masse> {
-	friend class NumericValue<Masse>;
+template<>
+class Unit<1, 0, 0, true> : public Unit<1, 0, 0, false> {
+	friend class Unit<1, 0, 0, false>;
 public:
-	using NumericValue::ValueType;
+	using Unit<1, 0, 0, false>::ValueType;
+	using Type = Unit<1, 0, 0, true>;
 
 	/**
 	 * Écrit la masse sur le flux.
@@ -23,7 +27,7 @@ public:
 	 * @param v la masse à écrire
 	 * @return le flux
 	 */
-	friend std::ostream &operator<<(std::ostream &stream, Masse const &v) {
+	friend std::ostream &operator<<(std::ostream &stream, Type const &v) {
 		return stream << v._val << " kg";
 	}
 
@@ -32,14 +36,14 @@ public:
 	 * @param g la valeur de masse en grammes
 	 * @return une grandeur de masse avec la valeur spécifiée.
 	 */
-	static constexpr Masse makeFromG(long double g) { return Masse(g / 1000); }
+	static constexpr Type makeFromG(long double g) { return Type(g / 1000); }
 
 	/**
 	 * Créé une masse avec la valeur en kilogrammes spécifiée.
 	 * @param kg la valeur de masse en kilogrammes
 	 * @return une grandeur de masse avec la valeur spécifiée.
 	 */
-	static constexpr Masse makeFromKg(long double kg) { return Masse(kg); }
+	static constexpr Type makeFromKg(long double kg) { return Type(kg); }
 
 	/**
 	 * Retourne la valeur stockée sous forme de kilogrammes.
@@ -53,7 +57,7 @@ public:
 	}
 
 private:
-	using NumericValue::NumericValue;
+	using Unit<1, 0, 0, false>::Unit;
 };
 
 /**
