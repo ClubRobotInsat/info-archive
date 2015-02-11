@@ -22,7 +22,10 @@ using std::sqrt;
 #define CONDITIONAL_CONSTEXPR
 #endif
 
-class UnitBase {};
+class UnitBase {
+public:
+	using ValueType = double;
+};
 
 template<int Kg, int M, int S, bool spec>
 class Unit : public UnitBase {};
@@ -41,7 +44,7 @@ class Unit<Kg, M, S, false> : public UnitBase  {
 	template<int Kg1, int M1, int S1>
 	using DerivedType = Unit<Kg1, M1, S1, true>;
 public:
-	using ValueType = double;
+	using ValueType = UnitBase::ValueType;
 
 	/**
 	 * Constructeur par défaut.
@@ -164,6 +167,7 @@ public:
 		_val *= val;
 		return static_cast<DerivedType<Kg, M, S> &>(*this);
 	}
+
 	/**
 	 * Retourne le produit d'une grandeur physique avec un nombre.
 	 * Le nombre ne doit pas représenter une grandeur physique (il doit être un simple scalaire).
@@ -174,34 +178,16 @@ public:
 	 * @param v2 le deuxième facteur du produit
 	 * @return une nouvelle instance représentant la multiplication des deux paramètres
 	 */
-	template<typename U>
-	constexpr friend std::enable_if_t<!std::is_base_of<UnitBase, U>::value && std::is_arithmetic<U>::value, DerivedType<Kg, M, S>>
-	operator*(DerivedType<Kg, M, S> const &v1, U v2) {
-		return makeFromValue(v1._val * v2);
-	}
+	template<typename U, int Kg1, int M1, int S1>
+	constexpr friend std::enable_if_t<!std::is_base_of<UnitBase, U>::value && std::is_arithmetic<U>::value, Unit<Kg1, M1, S1, true>>
+	operator*(Unit<Kg1, M1, S1, true> const &v1, U v2);
 
 	/**
 	 * Pareil qu'au dessus
 	 */
-	template<typename U>
-	constexpr friend std::enable_if_t<!std::is_base_of<UnitBase, U>::value, DerivedType<Kg, M, S>>
-	operator*(U v1, DerivedType<Kg, M, S> const &v2) {
-		return v2 * v1;
-	}
-
-	/**
-	 * Retourne le produit d'une grandeur physique avec une autre grandeur physique.
-	 * Le type de retour est la grandeur physique correspondant (ex : vitesse * temps => distance)
-	 *
-	 * @param v1 le premier facteur du produit
-	 * @param v2 le deuxième facteur du produit
-	 * @return une nouvelle instance représentant la multiplication des deux paramètres
-	 */
-	template<int Kg1, int M1, int S1, int Kg2, int M2, int S2>
-	constexpr friend auto operator*(DerivedType<Kg1, M1, S1> const &t1, DerivedType<Kg2, M2, S2> const &t2) -> DerivedType<Kg1 + Kg2, M1 + M2, S1 + S2> {
-		return DerivedType<Kg1 + Kg2, M1 + M2, S1 + S2>::makeFromValue(t1._val * t2._val);
-	}
-
+	template<typename U, int Kg1, int M1, int S1>
+	constexpr friend Unit<Kg1, M1, S1, true>
+	operator*(U v1, Unit<Kg1, M1, S1, true> const &v2);
 	/**
 	 * Divise l'instance courante par la valeur du paramètre.
 	 * Le paramètre doit ne doit pas représenter une grandeur physique (il doit être un simple scalaire).
@@ -228,23 +214,6 @@ public:
 	constexpr friend std::enable_if_t<std::is_arithmetic<U>::value, DerivedType<Kg, M, S>>
 	operator/(DerivedType<Kg, M, S> const &v1, U v2) {
 		return makeFromValue(v1._val / v2);
-	}
-
-	/**
-	 * Retourne le quotient de deux grandeurs physiques. Le type de retour est la grandeur physique correspondant au quotient.
-	 *
-	 * @param v1 le dividende de la division
-	 * @param v2 le diviseur de la division
-	 * @return une nouvelle instance représentant la division des deux paramètres
-	 */
-	template<int Kg1, int M1, int S1, int Kg2, int M2, int S2>
-	constexpr friend auto operator/(DerivedType<Kg1, M1, S1> const &t1, DerivedType<Kg2, M2, S2> const &t2) -> DerivedType<Kg1 - Kg2, M1 - M2, S1 - S2> {
-		return DerivedType<Kg1 - Kg2, M1 - M2, S1 - S2>::makeFromValue(t1._val / t2._val);
-	}
-
-	template<int Kg1, int M1, int S1>
-	constexpr friend auto operator/(DerivedType<Kg1, M1, S1> const &t1, DerivedType<Kg1, M1, S1> const &t2) -> ValueType {
-		return t1._val / t2._val;
 	}
 
 	/**
@@ -355,7 +324,6 @@ public:
 		return std::sin(val._val);
 	}
 
-protected:
 	/**
 	 * Accède à la valeur numérique stockée par l'instance.
 	 * Accessible uniquement aux classes filles.
@@ -379,10 +347,37 @@ protected:
 		return static_cast<U>(_val);
 	}
 
+public:
 	constexpr Unit(float val) : _val(val) {}
 	
 	ValueType _val;
 };
+
+/**
+ * Retourne le produit d'une grandeur physique avec un nombre.
+ * Le nombre ne doit pas représenter une grandeur physique (il doit être un simple scalaire).
+ * En revanche, il doit correspondre au type trait std::is_arithmetic.
+ *
+ *
+ * @param v1 le premier facteur du produit
+ * @param v2 le deuxième facteur du produit
+ * @return une nouvelle instance représentant la multiplication des deux paramètres
+ */
+template<typename U, int Kg1, int M1, int S1>
+constexpr std::enable_if_t<!std::is_base_of<UnitBase, U>::value && std::is_arithmetic<U>::value, Unit<Kg1, M1, S1, true>>
+operator*(Unit<Kg1, M1, S1, true> const &v1, U v2) {
+	return Unit<Kg1, M1, S1, true>::makeFromValue(v1.value() * v2);
+}
+
+/**
+ * Pareil qu'au dessus
+ */
+template<typename U, int Kg1, int M1, int S1>
+constexpr Unit<Kg1, M1, S1, true>
+operator*(U v1, Unit<Kg1, M1, S1, true> const &v2) {
+	return v2 * v1;
+}
+
 
 template<int Kg, int M, int S>
 class Unit<Kg, M, S, true> : public Unit<Kg, M, S, false> {

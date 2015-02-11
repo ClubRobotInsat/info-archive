@@ -99,11 +99,4 @@ namespace std {
 	struct is_scalar<Surface> : public std::integral_constant<bool, true> {};
 }
 
-/**
- * Retourne la racine carrée de la surface d, c'est à dire la longueur du côté d'un carré de surface d
- */
-inline Distance sqrt(Surface const &d) {
-	return Distance::makeFromM(std::sqrt(d.toM2()));
-}
-
 #endif

@@ -151,11 +151,4 @@ namespace std {
 	struct is_scalar<Angle> : public std::integral_constant<bool, true> {};
 }
 
-/**
- * Retourne l'angle du vecteur (x, y)
- */
-inline Angle atan2(Distance const &y, Distance const &x) {
-	return Angle::makeFromRad(std::atan2(y.toM(), x.toM()));
-}
-
 #endif
