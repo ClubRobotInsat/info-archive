@@ -121,6 +121,11 @@ namespace ConstantesPrincipal2015 {
 		NBR
 	};
 
+	enum class Bras {
+		GAUCHE 		= 0,
+		DROIT		= 1,
+	};
+
 	enum class PositionBras {
 		FERME 		= 0,
 		DISTRIB		= 1,

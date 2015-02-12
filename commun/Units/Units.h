@@ -46,7 +46,6 @@ constexpr auto operator*(Unit<Kg1, M1, S1, true> const &t1, Unit<Kg2, M2, S2, tr
 	return Unit<Kg1 + Kg2, M1 + M2, S1 + S2, true>::makeFromValue(t1.value() * t2.value());
 }
 
-
 /**
  * Retourne le quotient de deux grandeurs physiques. Le type de retour est la grandeur physique correspondant au quotient.
  *
