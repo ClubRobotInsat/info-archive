@@ -148,7 +148,8 @@ namespace ConstantesPrincipal2015 {
 	////////////////// UTILITAIRES ///////////////////
 	enum class Ascenseur {
 		DROIT,
-		GAUCHE
+		GAUCHE,
+		NBR
 	};
 }
 
