@@ -30,9 +30,9 @@ public:
 	 */
 	friend inline std::ostream &operator<<(std::ostream &s, Type const &d) {
 		if(abs(d._val) >= 3600)
-			s << d._val << " h";
+			s << d._val / 3600 << " h";
 		else if(abs(d._val) >= 60)
-			s << d._val << " min";
+			s << d._val / 60 << " min";
 		else if(abs(d._val) >= 1)
 			s << d._val << " s";
 		else if(abs(d._val) >= 1e-3)
