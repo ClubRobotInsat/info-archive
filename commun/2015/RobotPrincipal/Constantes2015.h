@@ -100,7 +100,7 @@ namespace ConstantesPrincipal2015 {
 
 	// Position des servos
 	enum class PositionPince {
-		VERRE 		= 0,
+		GOBELET		= 0,
 		LAMPE		= 1,
 		PIED		= 2,
 		OUVERT		= 3,
