@@ -28,7 +28,7 @@ public:
 	 * @return le flux
 	 */
 	friend inline std::ostream &operator<<(std::ostream &s, Type const &v) {
-		return s << v._val << " s^-1";
+		return s << v._val << " s⁻¹";
 	}
 
 	/**

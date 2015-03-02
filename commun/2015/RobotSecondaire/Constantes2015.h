@@ -20,7 +20,7 @@
 #else
 
 #include "../../../robot/Cartes/Carte.h"
-#include "../../../robot/Cartes/CarteDeplacement2009.h"
+#include "../../../robot/2015/Commun/CarteDeplacement2015.h"
 #include "../../../robot/Cartes/CarteContacteurs2007.h"
 #include "../../../robot/Cartes/CarteIHM.h"
 #include "../../../robot/Cartes/CarteServosNova2009.h"
@@ -133,7 +133,11 @@ EXPLICIT_INSTANCIATION(ConstantesSecondaire2015Type, ConstantesSecondaire2015,
 )
 EXPLICIT_INSTANCIATION(ConstantesSecondaire2015Type, ConstantesSecondaire2015,
 	CarteInfo<IDCartesSecondaire2015::DEPLACEMENT> : public std::integral_constant<uint32_t, 1> {
+#ifdef TARGET_SIMULATEUR
 		typedef CarteDeplacement2009 type;
+#else
+		typedef CarteDeplacement2015 type;
+#endif
 	};
 )
 EXPLICIT_INSTANCIATION(ConstantesSecondaire2015Type, ConstantesSecondaire2015,
