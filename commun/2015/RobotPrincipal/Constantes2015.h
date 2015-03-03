@@ -146,7 +146,7 @@ namespace ConstantesPrincipal2015 {
 	};
 
 	////////////////// UTILITAIRES ///////////////////
-	enum class Ascenseur {
+	enum class CoteAscenseur {
 		DROIT,
 		GAUCHE,
 		NBR
@@ -167,7 +167,7 @@ STRUCT_NAMESPACE(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
 		using PositionArriere 	= ConstantesPrincipal2015::PositionArriere;
 		using PositionBras 		= ConstantesPrincipal2015::PositionBras;
 		using PositionAscenseur = ConstantesPrincipal2015::PositionAscenseur;
-		using Ascenseur 		= ConstantesPrincipal2015::Ascenseur;
+		using CoteAscenseur 	= ConstantesPrincipal2015::CoteAscenseur;
 
 		// Déclaration des positions
 		static constexpr Angle positionPince[enumToInt(PositionPince::NBR)] = {950_mrad, 800_mrad, 1220_mrad, 0_mrad};
