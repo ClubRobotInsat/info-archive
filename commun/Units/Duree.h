@@ -11,6 +11,7 @@
 #include <chrono>
 
 using Duree = Unit<0, 0, 1, true>;
+using TimePoint = Duree;
 
 /**
  * Classe représentant une grandeur de temps.

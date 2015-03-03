@@ -110,6 +110,8 @@ def createEnvironmentWithErrors(libs_list=[], errors=[], force_debug=False):
 		cxxflags.append('-Werror=return-stack-address')
 		cxxflags.append('-Wsign-compare')
 		env.Append(CCFLAGS=['-Wno-deprecated-declarations'])
+		env.Append(CPPPATH=['/usr/local/include'])
+		env.Append(LIBPATH=['/usr/local/lib'])
 		env['CXX']='clang++'
 		env['CC']='clang'
 		#env["CC"] = os.getenv("CC") or env["CC"]
@@ -394,6 +396,9 @@ def createEnvironmentWithErrors(libs_list=[], errors=[], force_debug=False):
 			if sys.platform == 'linux2':
 				env.Append(LIBS=['glut', 'GL', 'GLU', 'm', 'X11', 'pthread', 'Xrandr'])
 				env.Append(LIBPATH=['/usr/X11R6/lib'])
+		elif lib == 'usb-1.0':
+			env.Append(LIBS=['usb-1.0'])
+
 	return env
 
 def createEnvironmentNoError(libs_list=[], force_debug=False):
