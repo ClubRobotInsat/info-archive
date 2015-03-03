@@ -149,7 +149,6 @@ namespace ConstantesPrincipal2015 {
 	enum class CoteAscenseur {
 		DROIT,
 		GAUCHE,
-		NBR
 	};
 }
 
