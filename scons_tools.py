@@ -96,7 +96,27 @@ def createEnvironmentWithErrors(libs_list=[], errors=[], force_debug=False):
 
 	cxxflags = ['-std=c++1y']
 	linkflags = []
-	
+
+
+	compiler = ARGUMENTS.get('compiler', 'gcc')
+
+	if sys.platform == 'darwin':
+		compiler = "clang"
+		#env["CC"] = os.getenv("CC") or env["CC"]
+		#env["CXX"] = os.getenv("CXX") or env["CXX"]
+		#env["ENV"].update(x for x in os.environ.items() if x[0].startswith("CCC_"))
+
+	if compiler == 'gcc':
+		cxxflags.append('-Werror=return-local-addr')
+		linkflags.append('-Wl,-E')
+	elif compiler == "clang":
+		env['CXX']='clang++'
+		env['CC']='clang'
+		cxxflags.append('-Werror=return-stack-address')
+		cxxflags.append('-ferror-limit=0')
+		cxxflags.append('-Wno-deprecated-declarations')
+		cxxflags.append('-Wsign-compare')
+
 	if ARGUMENTS.get('arch', "32") == "32":
 		cxxflags.append('-m32')
 		linkflags.append('-m32')
@@ -104,22 +124,8 @@ def createEnvironmentWithErrors(libs_list=[], errors=[], force_debug=False):
 	if ARGUMENTS.get('color', "0") == "1":
 		cxxflags.append('-fcolor-diagnostics')
 
-	if sys.platform == 'darwin':
-		cxxflags.append('-ferror-limit=0')
-		cxxflags.append('-Wno-deprecated-declarations')
-		cxxflags.append('-Werror=return-stack-address')
-		cxxflags.append('-Wsign-compare')
-		env.Append(CCFLAGS=['-Wno-deprecated-declarations'])
-		env.Append(CPPPATH=['/usr/local/include'])
-		env.Append(LIBPATH=['/usr/local/lib'])
-		env['CXX']='clang++'
-		env['CC']='clang'
-		#env["CC"] = os.getenv("CC") or env["CC"]
-		#env["CXX"] = os.getenv("CXX") or env["CXX"]
-		#env["ENV"].update(x for x in os.environ.items() if x[0].startswith("CCC_"))
-	else:
-		cxxflags.append('-Werror=return-local-addr')
-		linkflags.append('-Wl,-E')
+
+
 
 	cxxflags.append('-Werror=return-type')
 	cxxflags = cxxflags + errors
@@ -143,7 +149,6 @@ def createEnvironmentWithErrors(libs_list=[], errors=[], force_debug=False):
 				env.Append(LIBS=['pthreadGC2'])
 			elif sys.platform == 'linux2':
 				env.Append(LIBS=['pthread'])
-				env.Append(CPPFLAGS=['-L/usr/lib/i386-linux-gnu/'])
 
 		elif lib == 'sockets':
 			if sys.platform == 'win32':
