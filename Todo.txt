@@ -5,6 +5,7 @@ Ascenser simu
 @équipe élec : clarifier le paramètre sens de pointerVers (côté simu, c'est soit le devant, soit le derrière qui pointe en fonction de sens)
 @équipe élec : étudier la possibilité de créer une consigne composite angle/coordonnées
 @équipe élec : sens rotation de la carte asservissement ascenseur toujours le même ?
+@équipe élec : déterminer l'unité des angles de servos
 
 
 TODO
@@ -36,23 +37,16 @@ Vérifier la valeur de retour de la carte IO pour la couleur
 
 * Réécrire le code de la Vigie
 
-* Mettre à jour les cartes
-
 * Constantes
   o Regroupement des constantes : y'en a partout (Constantes2015, Robot2015, Strategie2015…)
-
-* Envisager une conception plus OO pour les robots (CarteDeplacement etc.)
 
 * Pour l'équipe élec : Fonctionnement CarteDeplacement
 
 +------------------------------------------------------------------------------+
 | Simu                                                                         |
 +------------------------------------------------------------------------------+
-* Créer l'environnement 2015                                          [en cours]
-  o ajouter les modèles 3D                                            [en cours]
-  o ajouter les obstacles
-
-* Mettre à jour les cartes 2015
+* Servos robot secondaire
+* animation servos robot principal (bras + benne) ?
 
 * RessourceManager
 

@@ -347,7 +347,7 @@ public:
 		return static_cast<U>(_val);
 	}
 
-public:
+protected:
 	constexpr Unit(float val) : _val(val) {}
 	
 	ValueType _val;

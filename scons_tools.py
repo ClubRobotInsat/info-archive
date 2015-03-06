@@ -102,6 +102,8 @@ def createEnvironmentWithErrors(libs_list=[], errors=[], force_debug=False):
 
 	if sys.platform == 'darwin':
 		compiler = "clang"
+		env.Append(CPPPATH=['/usr/local/include'])
+		env.Append(LIBPATH=['/usr/local/lib'])
 		#env["CC"] = os.getenv("CC") or env["CC"]
 		#env["CXX"] = os.getenv("CXX") or env["CXX"]
 		#env["ENV"].update(x for x in os.environ.items() if x[0].startswith("CCC_"))
