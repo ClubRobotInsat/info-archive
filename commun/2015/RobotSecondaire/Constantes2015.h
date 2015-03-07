@@ -67,7 +67,7 @@ namespace ConstantesSecondaire2015 {
 
 	enum class Contacteur {
 		TIRETTE 		= 1,
-		COULEUR 		= 3
+		CHOIX_EQUIPE 	= 3
 	};
 
 	/***********************************/
