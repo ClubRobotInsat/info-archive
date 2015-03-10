@@ -396,8 +396,7 @@ def createEnvironmentWithErrors(libs_list=[], errors=[], force_debug=False):
 				env.Append(LIBS=['freenect_sync'])
 				
 				# On depend de libfreenect
-				env.Append(
-				LIBPATH=[root_dir + '/libfreenect/src'])
+				env.Append(LIBPATH=[root_dir + '/libfreenect/src'])
 				env.Append(LIBS=['freenect', 'usb-1.0', 'Xmu', 'Xi'])
 		elif lib == 'freeglut':
 			if sys.platform == 'linux2':
@@ -405,6 +404,80 @@ def createEnvironmentWithErrors(libs_list=[], errors=[], force_debug=False):
 				env.Append(LIBPATH=['/usr/X11R6/lib'])
 		elif lib == 'usb-1.0':
 			env.Append(LIBS=['usb-1.0'])
+		elif lib == 'lidar':
+			env.Append(LIBPATH=[root_dir + '/robot/Lidar/Driver'])
+			env.Append(LIBS=['lidar'])
+		elif lib == 'Graphique':
+			# Ajout d'OpenGL, GLU, GLFW et eventuellement GTK :
+
+			# - sous Windows :
+			if env['PLATFORM'] == 'win32':
+				# Si on n'utilise PAS les librairies fournies
+				if str(ARGUMENTS.get('nobuiltin', 0)) == '1':
+					pass
+				# Si on utilise les librairies fournies
+				else:
+					# GLFW
+					env.Append(LIBS=['glfw'])
+					env.Append(LIBPATH=[getRootDir() + '/commun/GLFW/lib'])
+
+				# les sockets sous Windows, OpenGL
+				env.Append(LIBS=['ws2_32', 'opengl32', 'glu32'])
+
+				# On desactive la fenetre de debug GTK :
+				env.Append(CPPDEFINES=['GTKWIN_DISABLE'])
+
+			# - sous Mac :
+			elif env['PLATFORM'] == 'darwin':
+				# Si on n'utilise PAS les librairies fournies
+				if str(ARGUMENTS.get('nobuiltin', 0)) == '1':
+					pass
+				# Si on utilise les librairies fournies
+				else:
+					# OpenGL, GLU et GLFW
+					env.Append(LIBS=['glfw'])
+					env.Append(FRAMEWORKS=['Cocoa', 'OpenGL', 'GLUT', 'IOKit'])
+					env.Append(LIBPATH=[getRootDir() + '/commun/GLFW/lib'])
+			# Si c'est demande, on linke avec GTK, sinon on desactive la fenetre de debug GTK
+			#~ if str(ARGUMENTS.get('gtk', 0)) == '1':
+			#~ env.ParseConfig('pkg-config gtk+-2.0 --libs --cflags')
+			#~ else:
+			#~ env.Append(CPPDEFINES=['GTKWIN_DISABLE'])
+
+				# ON DESACTIVE LA FENETRE GTK !
+				env.Append(CPPDEFINES=['GTKWIN_DISABLE'])
+
+				# Pour les shadow maps :
+				if ARGUMENTS.get('shadow_maps', 0):
+					env.ParseConfig('pkg-config glew --cflags --libs')
+					env.Append(CPPDEFINES=['USE_SHADOW_MAPS'])
+
+			# - sous Linux :
+			else:
+				# Si on n'utilise PAS les librairies fournies
+				if str(ARGUMENTS.get('nobuiltin', 0)) == '1':
+					env.ParseConfig('pkg-config libglfw bullet --libs --cflags')
+					env.Append(LIBS=['GLU'])
+				# Si on utilise les librairies fournies
+				else:
+					# OpenGL, GLU et GLFW
+					env.Append(LIBS=['glfw', 'GL', 'GLU', 'm', 'X11', 'pthread'])
+					env.Append(LIBPATH=[getRootDir() + '/commun/GLFW/lib'])
+
+			# Si c'est demande, on linke avec GTK, sinon on desactive la fenetre de debug GTK
+			#~ if str(ARGUMENTS.get('gtk', 0)) == '1':
+			#~ env.ParseConfig('pkg-config gtk+-2.0 --libs --cflags')
+			#~ else:
+			#~ env.Append(CPPDEFINES=['GTKWIN_DISABLE'])
+
+				# ON DESACTIVE LA FENETRE GTK !
+				env.Append(CPPDEFINES=['GTKWIN_DISABLE'])
+
+				# Pour les shadow maps :
+				if ARGUMENTS.get('shadow_maps', 0):
+					env.ParseConfig('pkg-config glew --cflags --libs')
+					env.Append(CPPDEFINES=['USE_SHADOW_MAPS'])
+
 
 	return env
 

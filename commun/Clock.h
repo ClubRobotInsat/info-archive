@@ -21,7 +21,7 @@ public:
 	DateTemps(DateTemps const &d) : _value(d.value()) {}
 
 	DateTemps &operator=(DateTemps d) {
-		std::swap(*this, d);
+		swap(*this, d);
 		return *this;
 	}
 
