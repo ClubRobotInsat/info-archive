@@ -108,7 +108,7 @@ namespace ConstantesPrincipal2015 {
 	};
 
 	enum class PositionCoude {
-		ROBOT 		= 0,
+		STOCKAGE 		= 0,
 		GOBELET		= 1,
 		MILIEU		= 2,
 		NBR
@@ -169,8 +169,8 @@ STRUCT_NAMESPACE(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
 		using CoteAscenseur 	= ConstantesPrincipal2015::CoteAscenseur;
 
 		// Déclaration des positions
-		static constexpr Angle positionPince[enumToInt(PositionPince::NBR)] = {950_mrad, 800_mrad, 1220_mrad, 0_mrad};
-		static constexpr Angle positionCoude[enumToInt(PositionCoude::NBR)] = {1570_mrad, 2400_mrad, 1350_mrad};
+		static constexpr Angle positionPince[enumToInt(PositionPince::NBR)] = {87.5_deg, 92.5_deg, 84.0_deg, 130_deg};
+		static constexpr Angle positionCoude[enumToInt(PositionCoude::NBR)] = {170_deg, 40_deg, 14_deg};
 		static constexpr Angle positionArriere[enumToInt(PositionArriere::NBR)] = {1300_mrad, 1790_mrad, 0_mrad};
 		static constexpr Angle positionBras[enumToInt(PositionBras::NBR)] = {575_mrad, 2490_mrad, 0_mrad};
 

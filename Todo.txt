@@ -6,6 +6,8 @@ Ascenser simu
 @équipe élec : étudier la possibilité de créer une consigne composite angle/coordonnées
 @équipe élec : valeurs angle servos
 
+@équipe méca : inverser servos bras droit
+
 
 TODO
 rétablir la lecture du capteur de couleur
