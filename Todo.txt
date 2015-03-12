@@ -5,7 +5,8 @@ Ascenser simu
 @équipe élec : clarifier le paramètre sens de pointerVers (côté simu, c'est soit le devant, soit le derrière qui pointe en fonction de sens)
 @équipe élec : étudier la possibilité de créer une consigne composite angle/coordonnées
 @équipe élec : sens rotation de la carte asservissement ascenseur toujours le même ?
-@équipe élec : déterminer l'unité des angles de servos
+@équipe élec : déterminer l'unité des angles de servos : OK a priori
+@équipe élec : valeurs angle servos
 
 
 TODO

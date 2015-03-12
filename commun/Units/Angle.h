@@ -22,10 +22,6 @@ public:
 	using Unit<0, 0, 0, false>::ValueType;
 	using Type = Unit<0, 0, 0, true>;
 
-	operator ValueType() const {
-		return _val;
-	}
-
 	/**
 	 * Écrit l'angle sur le flux.
 	 * @param s le flux sur lequel écrire l'angle.
