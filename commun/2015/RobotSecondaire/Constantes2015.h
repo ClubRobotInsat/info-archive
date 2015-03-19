@@ -61,6 +61,15 @@ STRUCT_NAMESPACE(IDCartesSecondaire2015Type, IDCartesSecondaire2015,
 
 // Le contenu de ce namespace va être enrichi d'autres éléments plus bas, et son contenu final sera copié dans une struct ConstantesSecondaire2015Type.
 namespace ConstantesSecondaire2015 {
+	enum {
+		ID_CARTE_CAN_USB = 0,
+		ID_CARTE_DEPLACEMENT = 1,
+		ID_CARTE_SERVOS = 2,
+		ID_CARTE_DEBUG_DESSIN = 3,
+		ID_CARTE_IO = 4,
+		ID_CARTE_EVITEMENT = 5
+	};
+
 	/***********************************/
 	/********** CONTACTEURS ************/
 	/***********************************/
@@ -127,12 +136,12 @@ STRUCT_NAMESPACE(ConstantesSecondaire2015Type, ConstantesSecondaire2015,
 )
 
 EXPLICIT_INSTANCIATION(ConstantesSecondaire2015Type, ConstantesSecondaire2015,
-	CarteInfo<IDCartesSecondaire2015::CAN_USB> : public std::integral_constant<uint32_t, 0> {
+	CarteInfo<IDCartesSecondaire2015::CAN_USB> : public std::integral_constant<uint32_t, ConstantesSecondaire2015::ID_CARTE_CAN_USB> {
 		typedef CarteCAN_USB type;
 	};
 )
 EXPLICIT_INSTANCIATION(ConstantesSecondaire2015Type, ConstantesSecondaire2015,
-	CarteInfo<IDCartesSecondaire2015::DEPLACEMENT> : public std::integral_constant<uint32_t, 1> {
+	CarteInfo<IDCartesSecondaire2015::DEPLACEMENT> : public std::integral_constant<uint32_t, ConstantesSecondaire2015::ID_CARTE_DEPLACEMENT> {
 #ifdef TARGET_SIMULATEUR
 		typedef CarteDeplacement2009 type;
 #else
@@ -141,23 +150,23 @@ EXPLICIT_INSTANCIATION(ConstantesSecondaire2015Type, ConstantesSecondaire2015,
 	};
 )
 EXPLICIT_INSTANCIATION(ConstantesSecondaire2015Type, ConstantesSecondaire2015,
-	CarteInfo<IDCartesSecondaire2015::SERVOS> : public std::integral_constant<uint32_t, 4> {
+	CarteInfo<IDCartesSecondaire2015::SERVOS> : public std::integral_constant<uint32_t, ConstantesSecondaire2015::ID_CARTE_SERVOS> {
 		typedef CarteServosNova2009 type;
 		typedef ConstantesSecondaire2015::Servo Servo;
 	};
 )
 EXPLICIT_INSTANCIATION(ConstantesSecondaire2015Type, ConstantesSecondaire2015,
-	CarteInfo<IDCartesSecondaire2015::DEBUG_DESSIN> : public std::integral_constant<uint32_t, 5> {
+	CarteInfo<IDCartesSecondaire2015::DEBUG_DESSIN> : public std::integral_constant<uint32_t, ConstantesSecondaire2015::ID_CARTE_DEBUG_DESSIN> {
 		typedef CarteDebugDessin type;
 	};
 )
 EXPLICIT_INSTANCIATION(ConstantesSecondaire2015Type, ConstantesSecondaire2015,
-	CarteInfo<IDCartesSecondaire2015::IO> : public std::integral_constant<uint32_t, 6> {
+	CarteInfo<IDCartesSecondaire2015::IO> : public std::integral_constant<uint32_t, ConstantesSecondaire2015::ID_CARTE_IO> {
 		typedef CarteIO2014 type;
 	};
 )
 EXPLICIT_INSTANCIATION(ConstantesSecondaire2015Type, ConstantesSecondaire2015,
-	CarteInfo<IDCartesSecondaire2015::EVITEMENT> : public std::integral_constant<uint32_t, 8> {
+	CarteInfo<IDCartesSecondaire2015::EVITEMENT> : public std::integral_constant<uint32_t, ConstantesSecondaire2015::ID_CARTE_EVITEMENT> {
 #ifdef TARGET_SIMULATEUR
 		typedef CarteDetectAdv2012 type;
 #else

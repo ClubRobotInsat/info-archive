@@ -39,6 +39,18 @@
 #include "../ConstantesCommunes2015.h"
 
 namespace IDCartesPrincipal2015 {
+	enum {
+		ID_CARTE_CAN_USB = 0,
+		ID_CARTE_DEPLACEMENT = 1,
+		ID_CARTE_ASSERVISSEMENT_ASCENSEUR_D = 4,
+		ID_CARTE_ASSERVISSEMENT_ASCENSEUR_G = 5,
+		ID_CARTE_SERVOS_ASCENSEUR = 6,
+		ID_CARTE_SERVOS_AUTRES = 7,
+		ID_CARTE_IO = 3,
+		ID_CARTE_EVITEMENT = 8,
+		ID_CARTE_DEBUG_DESSIN = 9
+	};
+
 	ENUM_NS(IDCartesPrincipal2015, IDCartes,
 		CAN_USB,
 		DEPLACEMENT,
@@ -198,12 +210,12 @@ STRUCT_NAMESPACE(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
 )
 
 EXPLICIT_INSTANCIATION(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
-	CarteInfo<IDCartesPrincipal2015::CAN_USB> : public std::integral_constant<uint32_t, 0> {
+	CarteInfo<IDCartesPrincipal2015::CAN_USB> : public std::integral_constant<uint32_t, IDCartesPrincipal2015::ID_CARTE_CAN_USB> {
 		typedef CarteCAN_USB type;
 	};
 )
 EXPLICIT_INSTANCIATION(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
-	CarteInfo<IDCartesPrincipal2015::DEPLACEMENT> : public std::integral_constant<uint32_t, 1> {
+	CarteInfo<IDCartesPrincipal2015::DEPLACEMENT> : public std::integral_constant<uint32_t, IDCartesPrincipal2015::ID_CARTE_DEPLACEMENT> {
 #ifdef TARGET_SIMULATEUR
 		typedef CarteDeplacement2009 type;
 #else
@@ -212,32 +224,32 @@ EXPLICIT_INSTANCIATION(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
 	};
 )
 EXPLICIT_INSTANCIATION(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
-	CarteInfo<IDCartesPrincipal2015::ASSERVISSEMENT_ASCENSEUR_D> : public std::integral_constant<uint32_t, 2> {
+	CarteInfo<IDCartesPrincipal2015::ASSERVISSEMENT_ASCENSEUR_D> : public std::integral_constant<uint32_t, IDCartesPrincipal2015::ID_CARTE_ASSERVISSEMENT_ASCENSEUR_D> {
 		typedef CarteAsservissement2009 type;
 	};
 )
 EXPLICIT_INSTANCIATION(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
-	CarteInfo<IDCartesPrincipal2015::ASSERVISSEMENT_ASCENSEUR_G> : public std::integral_constant<uint32_t, 3> {
+	CarteInfo<IDCartesPrincipal2015::ASSERVISSEMENT_ASCENSEUR_G> : public std::integral_constant<uint32_t, IDCartesPrincipal2015::ID_CARTE_ASSERVISSEMENT_ASCENSEUR_G> {
 		typedef CarteAsservissement2009 type;
 	};
 )
 EXPLICIT_INSTANCIATION(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
-	CarteInfo<IDCartesPrincipal2015::SERVOS_ASCENSEUR> : public std::integral_constant<uint32_t, 4> {
+	CarteInfo<IDCartesPrincipal2015::SERVOS_ASCENSEUR> : public std::integral_constant<uint32_t, IDCartesPrincipal2015::ID_CARTE_SERVOS_ASCENSEUR> {
 		typedef CarteServosNova2009 type;
 	};
 )
 EXPLICIT_INSTANCIATION(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
-	CarteInfo<IDCartesPrincipal2015::SERVOS_AUTRES> : public std::integral_constant<uint32_t, 5> {
+	CarteInfo<IDCartesPrincipal2015::SERVOS_AUTRES> : public std::integral_constant<uint32_t, IDCartesPrincipal2015::ID_CARTE_SERVOS_AUTRES> {
 		typedef CarteServosNova2009 type;
 	};
 )
 EXPLICIT_INSTANCIATION(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
-	CarteInfo<IDCartesPrincipal2015::IO> : public std::integral_constant<uint32_t, 6> {
+	CarteInfo<IDCartesPrincipal2015::IO> : public std::integral_constant<uint32_t, IDCartesPrincipal2015::ID_CARTE_IO> {
 		typedef CarteIO2014 type;
 	};
 )
 EXPLICIT_INSTANCIATION(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
-	CarteInfo<IDCartesPrincipal2015::EVITEMENT> : public std::integral_constant<uint32_t, 8> {
+	CarteInfo<IDCartesPrincipal2015::EVITEMENT> : public std::integral_constant<uint32_t, IDCartesPrincipal2015::ID_CARTE_EVITEMENT> {
 		typedef CarteDetectAdv2009 type;
 	};
 )
@@ -249,7 +261,7 @@ EXPLICIT_INSTANCIATION(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
 )
 */
 EXPLICIT_INSTANCIATION(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
-	CarteInfo<IDCartesPrincipal2015::DEBUG_DESSIN> : public std::integral_constant<uint32_t, 10> {
+	CarteInfo<IDCartesPrincipal2015::DEBUG_DESSIN> : public std::integral_constant<uint32_t, IDCartesPrincipal2015::ID_CARTE_DEBUG_DESSIN> {
 		typedef CarteDebugDessin type;
 	};
 )

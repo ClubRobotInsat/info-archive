@@ -4,7 +4,6 @@ Ascenser simu
 
 @équipe élec : clarifier le paramètre sens de pointerVers (côté simu, c'est soit le devant, soit le derrière qui pointe en fonction de sens)
 @équipe élec : étudier la possibilité de créer une consigne composite angle/coordonnées
-@équipe élec : valeurs angle servos
 
 @équipe méca : inverser servos bras droit
 
@@ -12,6 +11,7 @@ Ascenser simu
 TODO
 rétablir la lecture du capteur de couleur
 Vérifier la valeur de retour de la carte IO pour la couleur
+scons -c Pétri
 
 +------------------------------------------------------------------------------+
 | Commun                                                                       |
