@@ -12,6 +12,7 @@ TODO
 rétablir la lecture du capteur de couleur
 Vérifier la valeur de retour de la carte IO pour la couleur
 scons -c Pétri
+Le positionnerServoBloquant retourne timeout, vérifier le feedback
 
 +------------------------------------------------------------------------------+
 | Commun                                                                       |

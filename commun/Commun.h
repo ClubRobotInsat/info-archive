@@ -18,6 +18,7 @@
 
 #include "Units/Units.h"
 
+using namespace std::string_literals;
 
 ENUM_CLASS(ResultatAction,
 		   REUSSI, RATE, BLOQUE, BLOQUE_PAR_ADV, TIMEOUT
