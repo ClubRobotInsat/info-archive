@@ -1,22 +1,12 @@
 #ifndef _COMMUN_H_
 #define _COMMUN_H_
 
-#include <memory>
-#include <type_traits>
-#include <thread>
-#include <string>
-#include <cstdint>
-
-#include "Clock.h"
 #include "Enum/Enum.h"
-#include "Trame.h"
-#include "Utils.h"
-#include "MathToolbox/MathToolbox.h"
-#include "log/Log.h"
-#include "sockets/Socket.h"
-#include "tga/TGALoader.h"
-
 #include "Units/Units.h"
+#include "MathToolbox/MathToolbox.h"
+#include "Trame.h"
+#include "Clock.h"
+#include "Utils.h"
 
 using namespace std::string_literals;
 
