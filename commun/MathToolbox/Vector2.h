@@ -94,13 +94,7 @@ public:
 	inline Vector2<T> operator/(const T_scalar& s) const;
 	
 	// Produit scalaire
-	// Bug de Clang dans sa version 3.5, qui butte sur la résolution automatique de type de fonctions (avec génération des symboles de debug), faut lui expliquer
-	auto operator*(const Vector2<T>& v) const
-#if __clang__
-	// Bug de g++ dans sa version 4.9, segfault à la compilation avec cette ligne
- 		-> decltype(x * v.x)
-#endif
-	{
+	auto operator*(const Vector2<T>& v) const {
 		return this->x * v.x + this->y * v.y;
 	}
 
@@ -111,23 +105,12 @@ public:
 	inline T norm() const;
 	
 	// Calcul de la norme au carré (plus rapide)
-	inline auto squaredNorm() const
-#if __clang__
-	// Bug de g++ dans sa version 4.9, segfault à la compilation avec cette ligne
- 		-> decltype(x * x)
-#endif
-	{
+	inline auto squaredNorm() const {
 		return *this * *this;
 	}
 	
 	// Calcul de l'angle
-	// Bug de Clang dans sa version 3.5 au moins, qui butte sur la résolution automatique de type de fonctions (avec génération des symboles de debug), faut lui expliquer
-	auto angle() const
-#if __clang__
-	// Bug de g++ dans sa version 4.9, segfault à la compilation avec cette ligne
-	 -> decltype(atan2(y, x))
-#endif
-	{
+	auto angle() const {
 		return atan2(y, x);
 	}
 

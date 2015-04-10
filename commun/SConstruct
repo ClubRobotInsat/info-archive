@@ -18,7 +18,6 @@ log/LogHTML.cpp
 log/LogRTF.cpp
 log/LogTermVT100.cpp
 log/LogTermWindows.cpp
-tga/TGALoader.cpp
 sockets/Socket.cpp
 Trame.cpp
 """)
