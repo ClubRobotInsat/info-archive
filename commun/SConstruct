@@ -13,6 +13,7 @@ env = createEnvironment(['gtk', 'pthreads', 'sockets'])
 src_list = Split("""
 debug/CGTKwin.cpp
 MathToolbox/MathUtilities.cpp
+MathToolbox/MathToolbox.cpp
 log/Log.cpp
 log/LogHTML.cpp
 log/LogRTF.cpp

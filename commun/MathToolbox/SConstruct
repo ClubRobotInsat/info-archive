@@ -3,6 +3,7 @@
 src_list = Split("""
 	main.cpp
 	MathUtilities.cpp
+	MathToolbox.cpp
 """)
 
 env = Environment()

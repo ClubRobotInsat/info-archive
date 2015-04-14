@@ -9,12 +9,11 @@ set(OUTILS_SOURCE
 	log/LogRTF.cpp
 	log/LogTermVT100.cpp
 	sockets/Socket.cpp
-	Trame.cpp)
+	Trame.cpp
+	MathToolbox/MathToolbox.cpp
+)
 
 add_library(Outils STATIC ${OUTILS_SOURCE})
 target_link_libraries(Outils pthread)
 
-if (${TARGET} STREQUAL rasPi)
-else()
-  add_subdirectory(GLFW)
-endif()
+add_subdirectory(GLFW)
