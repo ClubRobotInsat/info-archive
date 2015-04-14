@@ -4,6 +4,6 @@ cd ./bin
 
 cmake -GNinja $@ ../
 
-/usr/local/bin/ninja
+ninja
 
 cd ..

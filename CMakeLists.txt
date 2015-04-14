@@ -1,8 +1,8 @@
-cmake_minimum_required(VERSION 3.2)
+cmake_minimum_required(VERSION 2.8)
 
 option(TARGET "Architecture cible" pc)
 option(COLOR "Sortie en couleur de la compilation" ON)
-
+set(BITS "32" CACHE . "Build en 32 ou 64 bits")
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y")
 if (CMAKE_CXX_COMPILER_ID STREQUAL Clang)
@@ -16,8 +16,15 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL Clang)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fno-color-diagnostics")
   endif()
 endif()
-message(STATUS "${CMAKE_CXX_FLAGS}")
-message(STATUS "${CMAKE_C_FLAGS}")
+
+if(${BITS} EQUAL 32)
+   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32")
+   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32")
+   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -m32")
+   set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -m32")
+   set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -m32")
+endif()
+ 
 
 include_directories(commun)
 add_subdirectory(commun)

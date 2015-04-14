@@ -25,6 +25,7 @@ if(APPLE)
 		src/cocoa/cocoa_window.m)
 elseif(UNIX)
 	include_directories(src/x11)
+	link_directories(/usr/X11R6/lib)
 	set(SOURCE ${SOURCE}
 		src/x11/x11_enable.c
 		src/x11/x11_fullscreen.c
