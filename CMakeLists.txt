@@ -2,9 +2,21 @@ cmake_minimum_required(VERSION 2.8)
 
 option(TARGET "Architecture cible" pc)
 option(COLOR "Sortie en couleur de la compilation" ON)
+option(DEBUG "Compilation avec les symboles de debug et sans optimisations" OFF)
 set(BITS "32" CACHE . "Build en 32 ou 64 bits")
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y")
+if(DEBUG)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0")
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -O0")
+else()
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2")
+	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lto")
+	set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -lto")
+	set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -lto")
+endif()
+
 if (CMAKE_CXX_COMPILER_ID STREQUAL Clang)
   if (COLOR)
     set(CMAKE_COLOR_MAKEFILE ON)
@@ -25,6 +37,9 @@ if(${BITS} EQUAL 32)
    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -m32")
 endif()
  
+# Il y a du code pour les ombres, apparamment. Ca a pas l'air de marcher.
+# debug/CGTK semble désactivé depuis un moment également.
+add_definitions(-DGTKWIN_DISABLE)
 
 include_directories(commun)
 add_subdirectory(commun)
@@ -35,5 +50,6 @@ if (${TARGET} STREQUAL "rasPi")
 else()
   add_subdirectory(simulateur)
 endif()
+
 
 
