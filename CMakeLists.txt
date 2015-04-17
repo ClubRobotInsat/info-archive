@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 
+project(root)
+
 option(TARGET "Architecture cible" pc)
 option(COLOR "Sortie en couleur de la compilation" ON)
 option(DEBUG "Compilation avec les symboles de debug et sans optimisations" OFF)
