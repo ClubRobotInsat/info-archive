@@ -172,15 +172,15 @@ def createEnvironmentWithErrors(libs_list=[], errors=[], force_debug=False):
 			env.Append(LIBS=['Cartes'])
 
 		elif lib == 'Petri':
-			env.Append(CPPPATH=[root_dir + '/robot/Petri'])
-			env.Append(LIBPATH=[root_dir + '/robot/Petri', 
+			env.Append(CPPPATH=[root_dir + '/../petri'])
+			env.Append(LIBPATH=[root_dir + '/robot',
 			                    root_dir + '/commun'])
 			env.Append(LIBS=['Outils'])
 
-			if sys.platform == 'linux2':
-				env.Append(LINKFLAGS=['-Wl,--whole-archive', '-L' + root_dir + '/robot/Petri', '-lPetri', '-Wl,--no-whole-archive'])
-			elif sys.platform == 'darwin':
-				env.Append(LINKFLAGS=['-Wl,-force_load,' + root_dir + '/robot/Petri/' + 'libPetri.a'])
+#if sys.platform == 'linux2':
+#				env.Append(LINKFLAGS=['-Wl,--whole-archive', '-L' + root_dir + '/robot/Petri', '-lPetri', '-Wl,--no-whole-archive'])
+#			elif sys.platform == 'darwin':
+#				env.Append(LINKFLAGS=['-Wl,-force_load,' + root_dir + '/robot/Petri/' + 'libPetri.a'])
 
 			env.Append(LIBS=['Petri'])
 
@@ -190,10 +190,12 @@ def createEnvironmentWithErrors(libs_list=[], errors=[], force_debug=False):
 
 			env.Append(CPPPATH=[root_dir + '/commun',
 								root_dir + '/commun/Clock',
+								root_dir + '/commun/Enum',
 								root_dir + '/commun/debug',
 								root_dir + '/commun/log',
 								root_dir + '/commun/MathToolbox',
 								root_dir + '/commun/tga',
+								root_dir + '/commun/Units',
 								root_dir + '/commun/sockets'])
 			env.Append(LIBPATH=[root_dir + '/commun'])
 			env.Append(LIBS=['Outils'])
@@ -493,6 +495,6 @@ def compilePetriNet(petriNet):
 	from subprocess import call
 	if sys.platform == 'darwin':
 		os.environ['MACOSX_DEPLOYMENT_TARGET'] = ''
-	if call('mono "' + root_dir + '/robot/Petri/Editor/bin/Debug/Petri.exe" --compile "' + petriNet, shell=True) != 0:
+	if call('mono "' + root_dir + '/../petri/Editor/bin/Debug/Petri.exe" --compile "' + petriNet, shell=True) != 0:
 		Exit(1)
 
