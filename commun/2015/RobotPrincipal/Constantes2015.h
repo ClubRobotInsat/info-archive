@@ -185,8 +185,8 @@ STRUCT_NAMESPACE(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
 		// Déclaration des positions
 		static constexpr Angle positionPince[enumToInt(PositionPince::NBR)] = {87.5_deg, 92.5_deg, 84.0_deg, 130_deg};
 		static constexpr Angle positionCoude[enumToInt(PositionCoude::NBR)] = {170_deg, 40_deg, 14_deg};
-		static constexpr Angle positionArriere[enumToInt(PositionArriere::NBR)] = {1300_mrad, 1790_mrad, 0_mrad};
-		static constexpr Angle positionBras[enumToInt(PositionBras::NBR)] = {575_mrad, 2490_mrad, 0_mrad};
+		static constexpr Angle positionArriere[enumToInt(PositionArriere::NBR)] = {0_deg, 80_deg, 110_deg};
+		static constexpr Angle positionBras[enumToInt(PositionBras::NBR)] = {150_deg, 57.5_deg, 30_deg};
 
 		// Déclaration des positions
 		static constexpr Angle positionAscenseur[enumToInt(PositionAscenseur::NBR)] = {790_mrad, 1430_mrad, 2310_mrad, 0_mrad, 0_mrad, 0_mrad};
