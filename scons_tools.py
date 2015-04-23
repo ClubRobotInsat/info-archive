@@ -121,6 +121,7 @@ def createEnvironmentWithErrors(libs_list=[], errors=[], force_debug=False):
 
 	if ARGUMENTS.get('arch', "32") == "32":
 		cxxflags.append('-m32')
+		env.Append(CCFLAGS=['-m32'])
 		linkflags.append('-m32')
 
 	if ARGUMENTS.get('color', "0") == "1":
@@ -409,6 +410,9 @@ def createEnvironmentWithErrors(libs_list=[], errors=[], force_debug=False):
 		elif lib == 'lidar':
 			env.Append(LIBPATH=[root_dir + '/robot/Lidar/Driver'])
 			env.Append(LIBS=['lidar'])
+		elif lib == 'COLLADA':
+			env.Append(LIBPATH=[root_dir + '/simulateur/simulateur/Objet3D'])
+			env.Append(LIBS=['COLLADA'])
 		elif lib == 'Graphique':
 			# Ajout d'OpenGL, GLU, GLFW et eventuellement GTK :
 
