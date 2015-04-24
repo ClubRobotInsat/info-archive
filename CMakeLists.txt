@@ -39,6 +39,19 @@ if(${BITS} EQUAL 32)
    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -m32")
 endif()
  
+function(compile_petri TARGET_NAME PATH_TO_DOC OUTPUT)
+	add_custom_command(
+		OUTPUT    ${OUTPUT}
+		COMMAND   mono
+		ARGS      ${root_SOURCE_DIR}/../petri/Editor/bin/Debug/Petri.exe --compile ${CMAKE_CURRENT_SOURCE_DIR}/${PATH_TO_DOC}
+		DEPENDS   ${PATH_TO_DOC}
+	)
+
+	add_custom_target(${TARGET_NAME} ALL
+		DEPENDS   ${OUTPUT}
+	)
+endfunction()
+
 # Il y a du code pour les ombres, apparamment. Ca a pas l'air de marcher.
 # debug/CGTK semble désactivé depuis un moment également.
 add_definitions(-DGTKWIN_DISABLE)
