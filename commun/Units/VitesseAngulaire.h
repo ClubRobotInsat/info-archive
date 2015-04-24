@@ -85,6 +85,12 @@ inline constexpr VitesseAngulaire operator"" _rad_s(long double v) { return Vite
 inline constexpr VitesseAngulaire operator"" _rad_s(unsigned long long v) { return VitesseAngulaire::makeFromRad_s(v); }
 
 /**
+ * Permet de créer une vitesse angulaire à partir d'une valeur littérale en milli-radians par seconde : 1_mrad_s, 2_mrad_s, 0.5_mrad_s …
+ */
+inline constexpr VitesseAngulaire operator"" _mrad_s(long double v) { return VitesseAngulaire::makeFromRad_s(v/1000); }
+inline constexpr VitesseAngulaire operator"" _mrad_s(unsigned long long v) { return VitesseAngulaire::makeFromRad_s(v/1000.0); }
+
+/**
  * Permet de créer une vitesse angulaire à partir d'une valeur littérale en degrés par seconde : 1_deg_s, 2_deg_s, 0.5_deg_s …
  */
 inline constexpr VitesseAngulaire operator"" _deg_s(long double v) { return VitesseAngulaire::makeFromDeg_s(v); }

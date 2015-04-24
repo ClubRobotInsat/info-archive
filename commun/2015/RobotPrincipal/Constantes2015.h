@@ -183,13 +183,13 @@ STRUCT_NAMESPACE(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
 		using CoteAscenseur 	= ConstantesPrincipal2015::CoteAscenseur;
 
 		// Déclaration des positions
-		static constexpr Angle positionPince[enumToInt(PositionPince::NBR)] = {87.5_deg, 92.5_deg, 84.0_deg, 130_deg};
+		static constexpr Angle positionPince[enumToInt(PositionPince::NBR)] = {87.5_deg, 92.5_deg, 77_deg, 130_deg};
 		static constexpr Angle positionCoude[enumToInt(PositionCoude::NBR)] = {170_deg, 40_deg, 14_deg};
 		static constexpr Angle positionArriere[enumToInt(PositionArriere::NBR)] = {0_deg, 80_deg, 110_deg};
 		static constexpr Angle positionBras[enumToInt(PositionBras::NBR)] = {150_deg, 57.5_deg, 30_deg};
 
 		// Déclaration des positions
-		static constexpr Angle positionAscenseur[enumToInt(PositionAscenseur::NBR)] = {790_mrad, 1430_mrad, 2310_mrad, 0_mrad, 0_mrad, 0_mrad};
+		static constexpr Angle positionAscenseur[enumToInt(PositionAscenseur::NBR)] = {0_deg, -300_deg, -750_deg, 0_deg, 0_deg, -1000_deg};
 
 		// On reprend par défaut les mêmes valeur que la partie commune aux 2 robots, à changer si nécessaire
 		static constexpr Duree TIMEOUT_DEPLACEMENT_DEFAUT = Constantes2015::TIMEOUT_DEPLACEMENT_DEFAUT;
