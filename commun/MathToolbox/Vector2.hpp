@@ -131,9 +131,9 @@ Vector2<T> Vector2<T>::operator/(const T_scalar& s) const {
 // Normalisation + renvoi de la valeur de la norme
 template <class T>
 void Vector2<T>::normalize() {
-	double norm = sqrtf(x*x + y*y);
-	x = T(double(x) / norm);
-	y = T(double(y) / norm);
+	auto norm = sqrt(x*x + y*y);
+	x = T(x / norm);
+	y = T(y / norm);
 }
 
 // Calcul de la norme
