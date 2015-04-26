@@ -24,3 +24,6 @@ constexpr int Constantes2015Type::NOMBRE_BLOCAGE_PHYSIQUE_MAX;
 
 constexpr Distance Constantes2015Type::LARGEUR_TABLE;
 constexpr Distance Constantes2015Type::HAUTEUR_TABLE;
+
+constexpr int Constantes2015Type::GRID_SIZE_X;
+constexpr int Constantes2015Type::GRID_SIZE_Y;

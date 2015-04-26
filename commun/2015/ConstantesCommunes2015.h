@@ -42,6 +42,9 @@ STRUCT_NAMESPACE(Constantes2015Type, Constantes2015, {
 
 	static constexpr Distance LARGEUR_TABLE = 3_m;
 	static constexpr Distance HAUTEUR_TABLE = 2_m;
+
+	static constexpr int GRID_SIZE_X = 300;
+	static constexpr int GRID_SIZE_Y = 200;
 })
 
 inline Constantes2015::CouleurRobot operator!(Constantes2015::CouleurRobot const &c) {
