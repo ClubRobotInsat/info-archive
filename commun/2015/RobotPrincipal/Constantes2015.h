@@ -122,7 +122,7 @@ namespace ConstantesPrincipal2015 {
 	};
 
 	enum class PositionCoude {
-		STOCKAGE 		= 0,
+		STOCKAGE 	= 0,
 		GOBELET		= 1,
 		MILIEU		= 2,
 		NBR
@@ -189,7 +189,7 @@ STRUCT_NAMESPACE(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
 		static constexpr Angle positionBras[enumToInt(PositionBras::NBR)] = {150_deg, 57.5_deg, 30_deg};
 
 		// Déclaration des positions
-		static constexpr Angle positionAscenseur[enumToInt(PositionAscenseur::NBR)] = {0_deg, -300_deg, -750_deg, 0_deg, 0_deg, -1000_deg};
+		static constexpr Angle positionAscenseur[enumToInt(PositionAscenseur::NBR)] = {0_deg, 300_deg, 750_deg, 0_deg, 0_deg, 1000_deg};
 
 		// On reprend par défaut les mêmes valeur que la partie commune aux 2 robots, à changer si nécessaire
 		static constexpr Duree TIMEOUT_DEPLACEMENT_DEFAUT = Constantes2015::TIMEOUT_DEPLACEMENT_DEFAUT;
