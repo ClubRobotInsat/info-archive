@@ -84,13 +84,14 @@ namespace ConstantesPrincipal2015 {
 	/////////////////// CONTACTEURS ///////////////////
 	// Numéros des contacteurs et les rôles associés
 	enum class Contacteur {
-		CHOIX_EQUIPE	= 2,
-		TIRETTE			= 6,
+		PIED_G 			= 1,
+		PIED_D			= 7,
+		CHOIX_EQUIPE	= 6, // TODO: à debug
+		TIRETTE			= 4, // TODO: à debug
+
 		// TODO: TBD
 		LAMPE_G			= 10,
 		LAMPE_D			= 11,
-		PIED_G 			= 12,
-		PIED_D			= 13,
 		PINCE_D			= 14,
 		PINCE_G			= 15
 	};
