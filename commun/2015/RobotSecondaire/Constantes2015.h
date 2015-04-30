@@ -123,6 +123,7 @@ STRUCT_NAMESPACE(ConstantesSecondaire2015Type, ConstantesSecondaire2015,
 
 		static constexpr Distance RAYON_ROTATION_ROBOT = 230_mm;
 		static constexpr Vector3m TAILLE_ROBOT = {25_cm, 30_cm, 21_cm};
+		static constexpr uint16_t TCPIP_PORT_SIMU_DEFAUT = 4321;
 
 		/***********************************/
 		/************ CARTES ***************/
