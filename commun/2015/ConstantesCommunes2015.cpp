@@ -5,6 +5,7 @@
 constexpr int Constantes2015Type::deltaPositionServo;
 constexpr int Constantes2015Type::deltaPositionMoteur;
 constexpr uint16_t Constantes2015Type::TCPIP_PORT_PAR_DEFAUT;
+constexpr uint16_t Constantes2015Type::TCPIP_PORT_SIMU_DEFAUT;
 
 constexpr Duree Constantes2015Type::TIMEOUT_DEPLACEMENT_DEFAUT;
 constexpr VitesseLineaire Constantes2015Type::VITESSE_LINEAIRE_DEFAUT;
