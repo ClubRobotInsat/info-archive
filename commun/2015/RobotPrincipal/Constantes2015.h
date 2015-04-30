@@ -200,7 +200,7 @@ STRUCT_NAMESPACE(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
 		static constexpr Angle PRECISION_ANGULAIRE_DEFAUT = Constantes2015::PRECISION_ANGULAIRE_DEFAUT;
 
 		static constexpr Distance RAYON_ROTATION_ROBOT = 230.0_mm;
-		static constexpr Vector3m TAILLE_ROBOT = {20_cm, 30_cm, 20_cm};
+		static constexpr Vector3m TAILLE_ROBOT = {30_cm, 30_cm, 40_cm};
 
 		/////////////////// CARTES ///////////////////
 
