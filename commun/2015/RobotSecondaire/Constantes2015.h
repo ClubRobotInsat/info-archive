@@ -92,9 +92,13 @@ namespace ConstantesSecondaire2015 {
 	};
 
 	// Index des positions dans le tableau
-	enum class PositionServo {
+	enum class PositionServoContrepoids {
 		OUVERT 		= 0,
-		FERME		= 1,
+		FERME 		= 1,
+		NBR
+	};
+	enum class PositionServoTapis {
+		OUVERT 		= 0,
 		NBR
 	};
 }
@@ -109,11 +113,12 @@ STRUCT_NAMESPACE(ConstantesSecondaire2015Type, ConstantesSecondaire2015,
 
 		using Contacteur = ConstantesSecondaire2015::Contacteur;
 		using Servo = ConstantesSecondaire2015::Servo;
-		using PositionServo = ConstantesSecondaire2015::PositionServo;
+		using PositionServoContrepoids = ConstantesSecondaire2015::PositionServoContrepoids;
+		using PositionServoTapis = ConstantesSecondaire2015::PositionServoTapis;
 
 		// Position des servos
-		static constexpr Angle positionContrepoids[enumToInt(PositionServo::NBR)] = {1350_mrad, 1500_mrad};
-		static constexpr Angle positionTapis[enumToInt(PositionServo::NBR)] = {1760_mrad, 1900_mrad};
+		static constexpr Angle positionContrepoids[enumToInt(PositionServoContrepoids::NBR)] = {1350_mrad, 1500_mrad};
+		static constexpr Angle positionTapis[enumToInt(PositionServoTapis::NBR)] = {80_deg};
 
 		static constexpr Duree TIMEOUT_DEPLACEMENT_DEFAUT = Constantes2015::TIMEOUT_DEPLACEMENT_DEFAUT;
 		static constexpr VitesseLineaire VITESSE_LINEAIRE_DEFAUT = Constantes2015::VITESSE_LINEAIRE_DEFAUT;

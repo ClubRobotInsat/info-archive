@@ -7,8 +7,8 @@
 
 #include "Constantes2015.h"
 
-constexpr Angle ConstantesSecondaire2015Type::positionContrepoids[enumToInt(ConstantesSecondaire2015Type::PositionServo::NBR)];
-constexpr Angle ConstantesSecondaire2015Type::positionTapis[enumToInt(ConstantesSecondaire2015Type::PositionServo::NBR)];
+constexpr Angle ConstantesSecondaire2015Type::positionContrepoids[enumToInt(ConstantesSecondaire2015Type::PositionServoContrepoids::NBR)];
+constexpr Angle ConstantesSecondaire2015Type::positionTapis[enumToInt(ConstantesSecondaire2015Type::PositionServoTapis::NBR)];
 
 constexpr Duree ConstantesSecondaire2015Type::TIMEOUT_DEPLACEMENT_DEFAUT;
 constexpr VitesseLineaire ConstantesSecondaire2015Type::VITESSE_LINEAIRE_DEFAUT;
