@@ -32,5 +32,7 @@ bool estDansIntervalOuvert(T val, T bMin, T bMax) {
 	return (val > bMin) && (val < bMax);
 }
 
+
+
 #endif
 

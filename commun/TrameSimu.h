@@ -15,9 +15,15 @@
  */
 class TrameSimu {
 public:
-	//static const
-	TrameSimu();
+	// Nombre d'octets en tête de trame dédiés à la commande
+	static const int NB_OCTETS_CMD;
+	TrameSimu(uint8_t cmd, long trameSize);
+
 	virtual ~TrameSimu();
+private:
+	uint8_t _cmd;
+	long _trameSize;
+
 };
 
 #endif /* COMMUN_TRAMESIMU_H_ */
