@@ -96,6 +96,10 @@ public:
 		return std::chrono::nanoseconds(static_cast<long long>(this->toS() * 1e9));
 	}
 
+	operator std::chrono::nanoseconds() const {
+		return this->toSystemDelay();
+	}
+
 private:
 	using Unit<0, 0, 1, false>::Unit;
 };

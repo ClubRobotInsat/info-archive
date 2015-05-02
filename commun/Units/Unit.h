@@ -9,7 +9,10 @@
 
 #include <cmath>
 #include <limits>
+
+#ifndef UNIT_NO_OVERFLOW_CHECK
 #include "../log/Log.h"
+#endif
 
 using std::abs;
 using std::atan2;
