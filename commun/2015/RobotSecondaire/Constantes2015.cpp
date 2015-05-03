@@ -11,6 +11,7 @@ constexpr Angle ConstantesSecondaire2015Type::positionContrepoids[enumToInt(Cons
 constexpr Angle ConstantesSecondaire2015Type::positionTapis[enumToInt(ConstantesSecondaire2015Type::PositionServoTapis::NBR)];
 
 constexpr Duree ConstantesSecondaire2015Type::TIMEOUT_DEPLACEMENT_DEFAUT;
+constexpr Duree ConstantesSecondaire2015Type::TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT;
 constexpr VitesseLineaire ConstantesSecondaire2015Type::VITESSE_LINEAIRE_DEFAUT;
 constexpr VitesseAngulaire ConstantesSecondaire2015Type::VITESSE_ANGULAIRE_DEFAUT;
 constexpr Distance ConstantesSecondaire2015Type::PRECISION_LINEAIRE_DEFAUT;

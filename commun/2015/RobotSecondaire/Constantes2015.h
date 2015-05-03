@@ -35,6 +35,7 @@
 #include <type_traits>
 #include "../../Commun.h"
 #include "../ConstantesCommunes2015.h"
+#include "../../../../CodeCommun/Informations_cartesElec.h"
 
 // Définit la struct IDCartesSecondaire2015Type, et le namespace IDCartesSecondaire2015.
 // Les 2 ont le même contenu, la struct peut être utilisée en paramètre template et le namespace peut être mis dans un using namespace.
@@ -63,11 +64,11 @@ STRUCT_NAMESPACE(IDCartesSecondaire2015Type, IDCartesSecondaire2015,
 namespace ConstantesSecondaire2015 {
 	enum {
 		ID_CARTE_CAN_USB = 0,
-		ID_CARTE_DEPLACEMENT = 1,
-		ID_CARTE_SERVOS = 2,
-		ID_CARTE_DEBUG_DESSIN = 3,
-		ID_CARTE_IO = 4,
-		ID_CARTE_EVITEMENT = 5
+		ID_CARTE_DEPLACEMENT = ID_CARTE_POLANSKI_DEPLACEMENT,
+		ID_CARTE_SERVOS = ID_CARTE_POLANSKI_SERVOS,
+		ID_CARTE_DEBUG_DESSIN = 10,
+		ID_CARTE_IO = ID_CARTE_POLANSKI_CAPTEURS,
+		ID_CARTE_EVITEMENT = ID_CARTE_POLANSKI_EVITEMENT
 	};
 
 	/***********************************/
@@ -75,7 +76,7 @@ namespace ConstantesSecondaire2015 {
 	/***********************************/
 
 	enum class Contacteur {
-		TIRETTE 		= 1,
+		TIRETTE 		= 2,
 		CHOIX_EQUIPE 	= 3
 	};
 
@@ -85,9 +86,9 @@ namespace ConstantesSecondaire2015 {
 
 	// ID des servos
 	enum class Servo {
-		TAPIS_G 		= 0,
-		CONTREPOIDS 	= 1,
-		TAPIS_D 		= 2,
+		TAPIS_G 		= ID_SERVO_POLANSKI_G,
+		CONTREPOIDS 	= 10,
+		TAPIS_D 		= ID_SERVO_POLANSKI_D,
 		NBR
 	};
 
@@ -121,6 +122,7 @@ STRUCT_NAMESPACE(ConstantesSecondaire2015Type, ConstantesSecondaire2015,
 		static constexpr Angle positionTapis[enumToInt(PositionServoTapis::NBR)] = {80_deg};
 
 		static constexpr Duree TIMEOUT_DEPLACEMENT_DEFAUT = Constantes2015::TIMEOUT_DEPLACEMENT_DEFAUT;
+        static constexpr Duree TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT = Constantes2015::TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT;
 		static constexpr VitesseLineaire VITESSE_LINEAIRE_DEFAUT = Constantes2015::VITESSE_LINEAIRE_DEFAUT;
 		static constexpr VitesseAngulaire VITESSE_ANGULAIRE_DEFAUT = Constantes2015::VITESSE_ANGULAIRE_DEFAUT;
 		static constexpr Distance PRECISION_LINEAIRE_DEFAUT = Constantes2015::PRECISION_LINEAIRE_DEFAUT;

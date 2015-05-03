@@ -14,6 +14,7 @@ constexpr Angle ConstantesPrincipal2015Type::positionBras[enumToInt(ConstantesPr
 constexpr Angle ConstantesPrincipal2015Type::positionAscenseur[enumToInt(ConstantesPrincipal2015Type::PositionAscenseur::NBR)];
 
 constexpr Duree ConstantesPrincipal2015Type::TIMEOUT_DEPLACEMENT_DEFAUT;
+constexpr Duree ConstantesPrincipal2015Type::TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT;
 constexpr VitesseLineaire ConstantesPrincipal2015Type::VITESSE_LINEAIRE_DEFAUT;
 constexpr VitesseAngulaire ConstantesPrincipal2015Type::VITESSE_ANGULAIRE_DEFAUT;
 constexpr Distance ConstantesPrincipal2015Type::PRECISION_LINEAIRE_DEFAUT;

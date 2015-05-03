@@ -7,6 +7,7 @@ constexpr int Constantes2015Type::deltaPositionMoteur;
 constexpr uint16_t Constantes2015Type::TCPIP_PORT_PAR_DEFAUT;
 
 constexpr Duree Constantes2015Type::TIMEOUT_DEPLACEMENT_DEFAUT;
+constexpr Duree Constantes2015Type::TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT;
 constexpr VitesseLineaire Constantes2015Type::VITESSE_LINEAIRE_DEFAUT;
 constexpr VitesseAngulaire Constantes2015Type::VITESSE_ANGULAIRE_DEFAUT;
 constexpr Distance Constantes2015Type::PRECISION_LINEAIRE_DEFAUT;
