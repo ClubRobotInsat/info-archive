@@ -184,8 +184,8 @@ STRUCT_NAMESPACE(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
 		using CoteAscenseur 	= ConstantesPrincipal2015::CoteAscenseur;
 
 		// Déclaration des positions
-		static constexpr Angle positionPince[enumToInt(PositionPince::NBR)] = {87.5_deg, 92.5_deg, 77_deg, 130_deg};
-		static constexpr Angle positionCoude[enumToInt(PositionCoude::NBR)] = {170_deg, 40_deg, 14_deg};
+		static constexpr Angle positionPince[enumToInt(PositionPince::NBR)] = {87.5_deg, 92.5_deg, 77_deg, /*130_deg*/150_deg};
+		static constexpr Angle positionCoude[enumToInt(PositionCoude::NBR)] = {170_deg, 40_deg, /*14_deg*/5_deg};
 		static constexpr Angle positionArriere[enumToInt(PositionArriere::NBR)] = {0_deg, 80_deg, 110_deg};
 		static constexpr Angle positionBras[enumToInt(PositionBras::NBR)] = {150_deg, 57.5_deg, 30_deg};
 
