@@ -11,7 +11,7 @@
 #include <limits>
 
 #ifndef UNIT_NO_OVERFLOW_CHECK
-#include "../log/Log.h"
+#include <iostream>
 #endif
 
 using std::abs;
@@ -341,10 +341,10 @@ public:
 	CONDITIONAL_CONSTEXPR U value() const {
 #ifndef UNIT_NO_OVERFLOW_CHECK
 		if(_val > std::numeric_limits<U>::max() || _val < std::numeric_limits<U>::lowest()) {
-			logError("<ACHTUNG !>");
-			logError("Le type vers lequel est convertie la grandeur physique ne peut pas représenter la valeur actuelle de la grandeur !");
-			logError("C'est grave ! FIXME !");
-			logError("</ACHTUNG !>");
+			std::cerr << "<ACHTUNG !>" << std::endl;
+			std::cerr << "Le type vers lequel est convertie la grandeur physique ne peut pas représenter la valeur actuelle de la grandeur !" << std::endl;
+			std::cerr << "C'est grave ! FIXME !" << std::endl;
+			std::cerr << "</ACHTUNG !>" << std::endl;
 		}
 #endif // UNIT_NO_OVERFLOW_CHECK
 		return static_cast<U>(_val);
