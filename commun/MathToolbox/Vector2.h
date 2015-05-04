@@ -6,8 +6,6 @@
 #ifndef VECTOR2_H
 #define VECTOR2_H
 
-#include <iostream>
-
 #define VECTOR2_OPENGL_SUPPORT
 
 #include <iostream>

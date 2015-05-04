@@ -27,9 +27,7 @@ public:
 	 * @param v la masse à écrire
 	 * @return le flux
 	 */
-	friend std::ostream &operator<<(std::ostream &stream, Type const &v) {
-		return stream << v._val << " kg";
-	}
+	friend std::ostream &operator<<(std::ostream &stream, Type const &v);
 
 	/**
 	 * Créé une masse avec la valeur en grammes spécifiée.

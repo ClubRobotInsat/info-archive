@@ -28,9 +28,7 @@ public:
 	 * @param v l'angle à écrire
 	 * @return le flux
 	 */
-	friend std::ostream &operator<<(std::ostream &s, Type const &v) {
-		return s << v._val;
-	}
+	friend std::ostream &operator<<(std::ostream &s, Type const &v);
 
 	/**
 	 * Créé un angle avec la valeur en radians spécifiée.

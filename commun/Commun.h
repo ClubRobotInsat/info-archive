@@ -7,12 +7,9 @@
 #include "Trame.h"
 #include "Clock.h"
 #include "Utils.h"
+#include "ResultatAction.h"
 
 using namespace std::string_literals;
-
-ENUM_CLASS(ResultatAction,
-		   REUSSI, RATE, BLOQUE, BLOQUE_PAR_ADV, TIMEOUT
-		   )
 
 inline void setThreadName(char const *name) {
 #if __LINUX__

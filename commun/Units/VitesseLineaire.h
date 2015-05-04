@@ -27,16 +27,7 @@ public:
 	 * @param v la vitesse linéaire à écrire
 	 * @return le flux
 	 */
-	friend inline std::ostream &operator<<(std::ostream &s, Type const &v) {
-		if(abs(v._val) >= 1)
-			s << v._val << " m/s";
-		else if(abs(v._val) >= 1e-2)
-			s << v._val * 1e2 << " cm/s";
-		else
-			s << v._val * 1e3 << " mm/s";
-
-		return s;
-	}
+	friend std::ostream &operator<<(std::ostream &s, Type const &v);
 
 	/**
 	 * Créé une vitesse linéaire avec la valeur en mètres par secondes spécifiée.

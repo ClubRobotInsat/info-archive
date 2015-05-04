@@ -3,8 +3,6 @@
 // 2008 par Funto
 // Version 1.0
 
-#include <cmath>
-
 template <class T>
 constexpr Vector2<T>::Vector2() : x(T()), y(T()) {
 	

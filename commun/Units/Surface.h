@@ -27,9 +27,7 @@ public:
 	 * @param v la surface à écrire
 	 * @return le flux
 	 */
-	friend std::ostream &operator<<(std::ostream &stream, Type const &v) {
-		return stream << v._val << " m2";
-	}
+	friend std::ostream &operator<<(std::ostream &stream, Type const &v);
 
 	/**
 	 * Créé une surface avec la valeur en millimètres carrés spécifiée.

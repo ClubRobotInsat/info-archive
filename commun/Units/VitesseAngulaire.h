@@ -27,9 +27,7 @@ public:
 	 * @param v la vitesse angulaire à écrire
 	 * @return le flux
 	 */
-	friend inline std::ostream &operator<<(std::ostream &s, Type const &v) {
-		return s << v._val << " s⁻¹";
-	}
+	friend std::ostream &operator<<(std::ostream &s, Type const &v);
 
 	/**
 	 * Créé une vitesse angulaire avec la valeur en radians par secondes spécifiée.

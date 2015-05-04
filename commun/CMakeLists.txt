@@ -8,6 +8,7 @@ set(OUTILS_SOURCE
 	log/LogHTML.cpp
 	log/LogRTF.cpp
 	log/LogTermVT100.cpp
+	Units/Units.cpp
 	sockets/Socket.cpp
 	Trame.cpp
 	MathToolbox/MathToolbox.cpp

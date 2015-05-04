@@ -27,16 +27,7 @@ public:
 	 * @param d la longueur à écrire
 	 * @return le flux
 	 */
-	friend std::ostream &operator<<(std::ostream &s, Type const &d) {
-		if(abs(d._val) >= 1)
-			s << d._val << " m";
-		else if(abs(d._val) >= 1e-2)
-			s << d._val * 1e2 << " cm";
-		else
-			s << d._val * 1e3 << " mm";
-
-		return s;
-	}
+	friend std::ostream &operator<<(std::ostream &s, Type const &d);
 
 	/**
 	 * Créé une distance avec la valeur en millimètres spécifiée.

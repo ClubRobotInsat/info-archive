@@ -29,22 +29,7 @@ public:
 	 * @param d la durée à écrire
 	 * @return le flux
 	 */
-	friend inline std::ostream &operator<<(std::ostream &s, Type const &d) {
-		if(abs(d._val) >= 3600)
-			s << d._val / 3600 << " h";
-		else if(abs(d._val) >= 60)
-			s << d._val / 60 << " min";
-		else if(abs(d._val) >= 1)
-			s << d._val << " s";
-		else if(abs(d._val) >= 1e-3)
-			s << d._val * 1e3 << " ms";
-		else if(abs(d._val) >= 1e-6)
-			s << d._val * 1e6 << " us";
-		else
-			s << d._val * 1e9 << " ns";
-
-		return s;
-	}
+	friend std::ostream &operator<<(std::ostream &s, Type const &d);
 
 	/**
 	 * Créé une durée avec la valeur en nanosecondes spécifiée.
