@@ -134,7 +134,7 @@ public:
 	bool accept(Socket &sock_client);
 	
 	// Ferme la connexion
-	void shutDown();
+	void shutdown();
 
 private:
 	Socket(const Socket& ref) = delete;

@@ -31,7 +31,7 @@ Socket::~Socket() {
 	if(_fd <= 0) return;
 #endif
 
-	shutDown();
+	shutdown();
 #ifdef WIN32
 	closesocket(_fd);
 #else
@@ -403,9 +403,9 @@ bool Socket::accept(Socket &sock_client) {
 }
 
 // Ferme la connexion
-void Socket::shutDown() {
+void Socket::shutdown() {
 	if(_state != SOCK_FREE) {
-		shutdown(_fd, 2);
+		::shutdown(_fd, 2);
 		_state = SOCK_FREE;
 	}
 }

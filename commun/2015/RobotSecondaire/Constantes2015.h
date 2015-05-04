@@ -117,10 +117,6 @@ STRUCT_NAMESPACE(ConstantesSecondaire2015Type, ConstantesSecondaire2015,
 		using PositionServoContrepoids = ConstantesSecondaire2015::PositionServoContrepoids;
 		using PositionServoTapis = ConstantesSecondaire2015::PositionServoTapis;
 
-		// Position des servos
-		static constexpr Angle positionContrepoids[enumToInt(PositionServoContrepoids::NBR)] = {1350_mrad, 1500_mrad};
-		static constexpr Angle positionTapis[enumToInt(PositionServoTapis::NBR)] = {80_deg};
-
 		static constexpr Duree TIMEOUT_DEPLACEMENT_DEFAUT = Constantes2015::TIMEOUT_DEPLACEMENT_DEFAUT;
         static constexpr Duree TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT = Constantes2015::TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT;
 		static constexpr VitesseLineaire VITESSE_LINEAIRE_DEFAUT = Constantes2015::VITESSE_LINEAIRE_DEFAUT;
@@ -142,6 +138,12 @@ STRUCT_NAMESPACE(ConstantesSecondaire2015Type, ConstantesSecondaire2015,
 		struct CarteServoInfo {};
 }
 )
+
+namespace ConstantesSecondaire2015 {
+	// Position des servos
+	extern Angle const positionContrepoids[enumToInt(PositionServoContrepoids::NBR)];
+	extern Angle const positionTapis[enumToInt(PositionServoTapis::NBR)];
+}
 
 EXPLICIT_INSTANCIATION(ConstantesSecondaire2015Type, ConstantesSecondaire2015,
 	CarteInfo<IDCartesSecondaire2015::CAN_USB> : public std::integral_constant<uint32_t, ConstantesSecondaire2015::ID_CARTE_CAN_USB> {

@@ -7,8 +7,10 @@
 
 #include "Constantes2015.h"
 
-constexpr Angle ConstantesSecondaire2015Type::positionContrepoids[enumToInt(ConstantesSecondaire2015Type::PositionServoContrepoids::NBR)];
-constexpr Angle ConstantesSecondaire2015Type::positionTapis[enumToInt(ConstantesSecondaire2015Type::PositionServoTapis::NBR)];
+namespace ConstantesSecondaire2015 {
+	Angle const positionContrepoids[enumToInt(PositionServoContrepoids::NBR)] = {1350_mrad, 1500_mrad};
+	Angle const positionTapis[enumToInt(PositionServoTapis::NBR)] = {80_deg};
+}
 
 constexpr Duree ConstantesSecondaire2015Type::TIMEOUT_DEPLACEMENT_DEFAUT;
 constexpr Duree ConstantesSecondaire2015Type::TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT;

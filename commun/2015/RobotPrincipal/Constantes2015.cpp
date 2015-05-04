@@ -7,11 +7,13 @@
 
 #include "Constantes2015.h"
 
-constexpr Angle ConstantesPrincipal2015Type::positionPince[enumToInt(ConstantesPrincipal2015Type::PositionPince::NBR)];
-constexpr Angle ConstantesPrincipal2015Type::positionCoude[enumToInt(ConstantesPrincipal2015Type::PositionCoude::NBR)];
-constexpr Angle ConstantesPrincipal2015Type::positionArriere[enumToInt(ConstantesPrincipal2015Type::PositionArriere::NBR)];
-constexpr Angle ConstantesPrincipal2015Type::positionBras[enumToInt(ConstantesPrincipal2015Type::PositionBras::NBR)];
-constexpr Angle ConstantesPrincipal2015Type::positionAscenseur[enumToInt(ConstantesPrincipal2015Type::PositionAscenseur::NBR)];
+namespace ConstantesPrincipal2015 {
+	Angle const positionPince[enumToInt(PositionPince::NBR)] = {87.5_deg, 92.5_deg, 77_deg, /*130_deg*/150_deg};
+	Angle const positionCoude[enumToInt(PositionCoude::NBR)] = {170_deg, 40_deg, 10_deg};
+	Angle const positionArriere[enumToInt(PositionArriere::NBR)] = {0_deg, 80_deg, 110_deg};
+	Angle const positionBras[enumToInt(PositionBras::NBR)] = {150_deg, 57.5_deg, 30_deg};
+	Angle const positionAscenseur[enumToInt(PositionAscenseur::NBR)] = {0_deg, 370_deg, 750_deg, 0_deg, 0_deg, 1000_deg};
+}
 
 constexpr Duree ConstantesPrincipal2015Type::TIMEOUT_DEPLACEMENT_DEFAUT;
 constexpr Duree ConstantesPrincipal2015Type::TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT;

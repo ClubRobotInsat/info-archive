@@ -173,33 +173,13 @@ STRUCT_NAMESPACE(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
 		using IDCartes = IDCartesPrincipal2015Type::IDCartes;
 		using IDCartesServo = IDCartesPrincipal2015Type::IDCartesServo;
 
-		using Contacteur 		= ConstantesPrincipal2015::Contacteur;
-		using ServoAscenseur 	= ConstantesPrincipal2015::ServoAscenseur;
-		using Servo 			= ConstantesPrincipal2015::Servo;
-		using PositionPince 	= ConstantesPrincipal2015::PositionPince;
-		using PositionCoude 	= ConstantesPrincipal2015::PositionCoude;
-		using PositionArriere 	= ConstantesPrincipal2015::PositionArriere;
-		using PositionBras 		= ConstantesPrincipal2015::PositionBras;
-		using PositionAscenseur = ConstantesPrincipal2015::PositionAscenseur;
-		using CoteAscenseur 	= ConstantesPrincipal2015::CoteAscenseur;
-
-		// Déclaration des positions
-		static constexpr Angle positionPince[enumToInt(PositionPince::NBR)] = {87.5_deg, 92.5_deg, 77_deg, /*130_deg*/150_deg};
-		static constexpr Angle positionCoude[enumToInt(PositionCoude::NBR)] = {170_deg, 40_deg, /*14_deg*/5_deg};
-		static constexpr Angle positionArriere[enumToInt(PositionArriere::NBR)] = {0_deg, 80_deg, 110_deg};
-		static constexpr Angle positionBras[enumToInt(PositionBras::NBR)] = {150_deg, 57.5_deg, 30_deg};
-
-		// Déclaration des positions
-		static constexpr Angle positionAscenseur[enumToInt(PositionAscenseur::NBR)] = {0_deg, 300_deg, 750_deg, 0_deg, 0_deg, 1000_deg};
-
 		// On reprend par défaut les mêmes valeur que la partie commune aux 2 robots, à changer si nécessaire
 		static constexpr Duree TIMEOUT_DEPLACEMENT_DEFAUT = Constantes2015::TIMEOUT_DEPLACEMENT_DEFAUT;
-        static constexpr Duree TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT = Constantes2015::TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT;
+		static constexpr Duree TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT = Constantes2015::TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT;
 		static constexpr VitesseLineaire VITESSE_LINEAIRE_DEFAUT = Constantes2015::VITESSE_LINEAIRE_DEFAUT;
 		static constexpr VitesseAngulaire VITESSE_ANGULAIRE_DEFAUT = Constantes2015::VITESSE_ANGULAIRE_DEFAUT;
 		static constexpr Distance PRECISION_LINEAIRE_DEFAUT = Constantes2015::PRECISION_LINEAIRE_DEFAUT;
 		static constexpr Angle PRECISION_ANGULAIRE_DEFAUT = Constantes2015::PRECISION_ANGULAIRE_DEFAUT;
-
 
 		static constexpr Distance RAYON_ROTATION_ROBOT = 230.0_mm;
 		static constexpr Vector3m TAILLE_ROBOT = {30_cm, 30_cm, 40_cm};
@@ -215,6 +195,27 @@ STRUCT_NAMESPACE(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
 		struct CarteServoInfo {};
 	};
 )
+
+namespace ConstantesPrincipal2015 {
+	using Contacteur 		= ConstantesPrincipal2015::Contacteur;
+	using ServoAscenseur 	= ConstantesPrincipal2015::ServoAscenseur;
+	using Servo 			= ConstantesPrincipal2015::Servo;
+	using PositionPince 	= ConstantesPrincipal2015::PositionPince;
+	using PositionCoude 	= ConstantesPrincipal2015::PositionCoude;
+	using PositionArriere 	= ConstantesPrincipal2015::PositionArriere;
+	using PositionBras 		= ConstantesPrincipal2015::PositionBras;
+	using PositionAscenseur = ConstantesPrincipal2015::PositionAscenseur;
+	using CoteAscenseur 	= ConstantesPrincipal2015::CoteAscenseur;
+
+	// Déclaration des positions
+	extern Angle const positionPince[enumToInt(PositionPince::NBR)];
+	extern Angle const positionCoude[enumToInt(PositionCoude::NBR)];
+	extern Angle const positionArriere[enumToInt(PositionArriere::NBR)];
+	extern Angle const positionBras[enumToInt(PositionBras::NBR)];
+
+	// Déclaration des positions
+	extern Angle const positionAscenseur[enumToInt(PositionAscenseur::NBR)];
+}
 
 EXPLICIT_INSTANCIATION(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
 	CarteInfo<IDCartesPrincipal2015::CAN_USB> : public std::integral_constant<uint32_t, IDCartesPrincipal2015::ID_CARTE_CAN_USB> {
