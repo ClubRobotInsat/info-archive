@@ -160,8 +160,8 @@ Vector2<T> &Vector2<T>::rotate(U angle) {
 
 // Multiplication par un scalaire (s * v)
 template <class T, class T_scalar>
-Vector2<T> operator*(const T_scalar& s, const Vector2<T>& v) {
-	return Vector2<T>(v.x * s, v.y * s);
+auto operator*(const T_scalar& s, const Vector2<T>& v) {
+	return Vector2<decltype(v.x * s)>(v.x * s, v.y * s);
 }
 
 // Division par un scalaire (s / v)

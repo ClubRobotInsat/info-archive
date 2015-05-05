@@ -129,7 +129,7 @@ bool operator!=(Vector2<T> const &v1, Vector2<T> const &v2) {
 
 // Multiplication par un scalaire (s * v)
 template <class T, class T_scalar>
-Vector2<T> operator*(const T_scalar& s, const Vector2<T>& v);
+auto operator*(const T_scalar& s, const Vector2<T>& v);
 
 // Division par un scalaire (s / v)
 template <class T, class T_scalar>
