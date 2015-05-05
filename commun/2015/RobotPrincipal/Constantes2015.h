@@ -184,6 +184,9 @@ STRUCT_NAMESPACE(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
 		static constexpr Distance RAYON_ROTATION_ROBOT = 230.0_mm;
 		static constexpr Vector3m TAILLE_ROBOT = {30_cm, 30_cm, 40_cm};
 		static constexpr uint16_t TCPIP_PORT_SIMU_DEFAUT = 4321;
+		// Cet offset sert à aligner le 0 de la balise avec le 0 de l'info
+		// NB : 0 devant, PI/-PI derrière, PI/2 à gauche et -PI/2 à droite
+		static constexpr Angle OFFSET_ANGLE_ADV = -0.5_PI;
 
 
 		/////////////////// CARTES ///////////////////
