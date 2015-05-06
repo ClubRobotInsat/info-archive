@@ -84,10 +84,10 @@ namespace ConstantesPrincipal2015 {
 	/////////////////// CONTACTEURS ///////////////////
 	// Numéros des contacteurs et les rôles associés
 	enum class Contacteur {
-		PIED_G 			= 1,
+		PIED_G 			= 6,
 		PIED_D			= 7,
-		CHOIX_EQUIPE	= 6, // TODO: à debug
-		TIRETTE			= 4, // TODO: à debug
+		CHOIX_EQUIPE	= 1, // TODO: à debug
+		TIRETTE			= 2, // TODO: à debug
 
 		// TODO: TBD
 		LAMPE_G			= 10,
@@ -173,7 +173,10 @@ STRUCT_NAMESPACE(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
 		using IDCartes = IDCartesPrincipal2015Type::IDCartes;
 		using IDCartesServo = IDCartesPrincipal2015Type::IDCartesServo;
 
-		// On reprend par défaut les mêmes valeur que la partie commune aux 2 robots, à changer si nécessaire
+        using Contacteur = ConstantesPrincipal2015::Contacteur;
+        using Servo = ConstantesPrincipal2015::Servo;
+
+        // On reprend par défaut les mêmes valeur que la partie commune aux 2 robots, à changer si nécessaire
 		static constexpr Duree TIMEOUT_DEPLACEMENT_DEFAUT = Constantes2015::TIMEOUT_DEPLACEMENT_DEFAUT;
 		static constexpr Duree TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT = Constantes2015::TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT;
 		static constexpr VitesseLineaire VITESSE_LINEAIRE_DEFAUT = Constantes2015::VITESSE_LINEAIRE_DEFAUT;
