@@ -264,19 +264,11 @@ EXPLICIT_INSTANCIATION(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
 		typedef CarteDetectAdv2009 type;
 	};
 )
-/*
-EXPLICIT_INSTANCIATION(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
-	CarteInfo<IDCartesPrincipal2015::PNEUMATIQUE> : public std::integral_constant<uint32_t, 9> {
-		typedef CartePneumatique2014 type;
-	};
-)
-*/
 EXPLICIT_INSTANCIATION(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
 	CarteInfo<IDCartesPrincipal2015::DEBUG_DESSIN> : public std::integral_constant<uint32_t, IDCartesPrincipal2015::ID_CARTE_DEBUG_DESSIN> {
 		typedef CarteDebugDessin type;
 	};
 )
-
 EXPLICIT_INSTANCIATION(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
 	CarteServoInfo<IDCartesPrincipal2015::IDCartesServo::ASCENSEUR> : public ConstantesPrincipal2015Type::CarteInfo<IDCartesPrincipal2015::SERVOS_ASCENSEUR> {
 		static auto const IDCarte = IDCartesPrincipal2015::SERVOS_ASCENSEUR;

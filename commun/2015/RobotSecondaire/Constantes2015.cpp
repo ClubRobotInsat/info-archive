@@ -22,3 +22,4 @@ constexpr Angle ConstantesSecondaire2015Type::PRECISION_ANGULAIRE_DEFAUT;
 constexpr Distance ConstantesSecondaire2015Type::RAYON_ROTATION_ROBOT;
 constexpr Vector3m ConstantesSecondaire2015Type::TAILLE_ROBOT;
 constexpr uint16_t ConstantesSecondaire2015Type::TCPIP_PORT_SIMU_DEFAUT;
+constexpr Angle ConstantesSecondaire2015Type::OFFSET_ANGLE_ADV;
