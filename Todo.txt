@@ -2,17 +2,10 @@
 
 Ascenser simu
 
-@équipe élec : clarifier le paramètre sens de pointerVers (côté simu, c'est soit le devant, soit le derrière qui pointe en fonction de sens)
-@équipe élec : étudier la possibilité de créer une consigne composite angle/coordonnées
-
-@équipe méca : inverser servos bras droit
-
 
 TODO
 rétablir la lecture du capteur de couleur
 Vérifier la valeur de retour de la carte IO pour la couleur
-scons -c Pétri
-Le positionnerServoBloquant retourne timeout, vérifier le feedback
 
 +------------------------------------------------------------------------------+
 | Commun                                                                       |
@@ -37,18 +30,13 @@ Le positionnerServoBloquant retourne timeout, vérifier le feedback
 * Robustifier la communication IA <-> carte CAN USB (fenêtre glissante etc.)
   o Créer un test exhaustif de la fiabilité de la commmunication
 
-* Réécrire le code de la Vigie
-
 * Constantes
   o Regroupement des constantes : y'en a partout (Constantes2015, Robot2015, Strategie2015…)
-
-* Pour l'équipe élec : Fonctionnement CarteDeplacement
 
 +------------------------------------------------------------------------------+
 | Simu                                                                         |
 +------------------------------------------------------------------------------+
 * Servos robot secondaire
-* animation servos robot principal (bras + benne) ?
 
 * RessourceManager
 
