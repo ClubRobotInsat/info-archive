@@ -12,7 +12,7 @@ public:
 	Erreur() : _msg() {}
 	
 	// constructeur avec un message
-	Erreur(std::string msg) : _msg(msg) {}
+	Erreur(std::string msg) : _msg(std::move(msg)) {}
 	
 	// destructeur
 	virtual ~Erreur() throw() {}
@@ -32,3 +32,8 @@ private:
 };
 
 #endif /*ERREUR_H_*/
+
+// écriture allégée pour définir une sous-classe d'exception.
+#define EXCEPTION_CLASS(name) class name : public Erreur \
+      {public: name(Str s) : Erreur(std::move(s)) {}};
+               //name(const char* s) : Erreur(Str(s)) {}};

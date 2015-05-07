@@ -10,6 +10,7 @@ set(OUTILS_SOURCE
 	log/LogTermVT100.cpp
 	Units/Units.cpp
 	sockets/Socket.cpp
+	sockets/tcpSock.cpp
 	Trame.cpp
 	MathToolbox/MathToolbox.cpp
 )

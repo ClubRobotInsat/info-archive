@@ -130,8 +130,10 @@ public:
 	bool listen(uint16_t port, int max_queue=10);
 	
 	// Acceptation d'un nouveau client (pour un serveur)
-	// -sock_client : pointeur vers la socket correspondant au nouveau client accepte
-	bool accept(Socket &sock_client);
+	// 'sock_client': pointeur vers la socket correspondant au nouveau client accepte
+	// Comportement indéfini si 'sock_client' nest pas vierge.
+   // renvoie false si erreur.
+   bool accept(Socket &sock_client);
 	
 	// Ferme la connexion
 	void shutdown();
