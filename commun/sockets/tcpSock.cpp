@@ -71,12 +71,25 @@ int TcpSock::readSome(void* buffer, int maxBytes)
    return rc;
 }
 
+bool TcpSock::hasNext()
+{
+   timeval zero = {};
+   fd_set fs = {};
+   FD_ZERO(&fs);
+   FD_SET(_fd, &fs);
+   if (select(_fd+1, &fs, nullptr, nullptr, &zero) < 0)
+      throw ErreurSocket("select() panic");
+   return FD_ISSET(_fd, &fs);
+}
+
 void TcpSock::write(const void* data, int cBytes)
 {
    const byte* ptr = (const byte*)data;
    while (cBytes > 0)
    {
-      int rc = ::send(_fd, ptr, cBytes, 0);
+      // Flag MSG_NOSIGNAL: les erreurs vont arriver dans rc au lieu de kill
+      // le processus
+      int rc = ::send(_fd, ptr, cBytes, MSG_NOSIGNAL);
       if (rc <= 0)
          throw ErreurSocket("Send Failed");
       cBytes -= rc;
@@ -120,7 +133,7 @@ TcpServSock::TcpServSock(uint16 port)
 		throw ErreurSocket("Bind Error (port déjà utilisé ?)");
 	}
 
-   if(listen(_fd, SOMAXCONN) < 0) {
+   if (listen(_fd, SOMAXCONN) < 0) {
 	   ::close(_fd);
       throw ErreurSocket("Listen Error");
    }

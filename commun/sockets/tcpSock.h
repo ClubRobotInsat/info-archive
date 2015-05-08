@@ -30,6 +30,10 @@ public:
 	// Renvoie le nb. d'octets lus, <= à 'maxBytes'.
 	int readSome(void* buffer, int maxBytes);
 
+   // Vrai si le prochain appel à read(_,1) ou readSome(_,_) va retourner sans
+   // bloquer
+   bool hasNext();
+
    void write(const void* data, int cBytes);
    void write(const Str& s)    {write(s.c_str(), s.size());}
 
