@@ -5,7 +5,7 @@
 
 #include <sstream>
 #include <algorithm>
-
+#include <vector>
 #include <cmath>
 #ifndef M_PI
 #define M_E         2.7182818284590452354
@@ -28,8 +28,7 @@ using byte = unsigned char;
 using uint16 = unsigned short;
 using Str = std::string;
 
-#define C const
-#define NO_COPY_CTOR(name) private: name(C name&) = delete; \
+#define NO_COPY_CTOR(name) private: name(const name&) = delete; \
                                     void operator=(name) = delete;
 
 
@@ -125,7 +124,7 @@ namespace Utils {
 	}
 
    template<class Ty>
-   Str toString(C std::vector<Ty>& v)
+   Str toString(std::vector<Ty> const & v)
    {
       std::ostringstream oss;
       oss << '[';

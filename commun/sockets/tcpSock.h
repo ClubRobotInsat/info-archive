@@ -15,7 +15,7 @@ class TcpSock
 {
 public:
    // Tente une connection à un serveur. Exception si échec
-   TcpSock(C Str& host, uint16 port);
+   TcpSock(const Str& host, uint16 port);
 	// close() implicite si nécessaire.
    ~TcpSock()   {close();}
 
@@ -31,7 +31,7 @@ public:
 	int readSome(void* buffer, int maxBytes);
 
    void write(const void* data, int cBytes);
-   void write(C Str& s)    {write(s.c_str(), s.size());}
+   void write(const Str& s)    {write(s.c_str(), s.size());}
 
 	// Ferme la connexion. Réveille sur Exception les autres appels bloquants
 	// sur cette instance. Sans effet si socket déjà fermé.

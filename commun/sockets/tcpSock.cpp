@@ -13,7 +13,7 @@ using namespace std;
 
 //-- Socket (point-à-point) --//
 
-TcpSock::TcpSock(C Str& host, uint16 port)
+TcpSock::TcpSock(const Str& host, uint16 port)
 {
 	_fd = socket(AF_INET, SOCK_STREAM, 0);
 	if (_fd < 0)
@@ -114,8 +114,8 @@ TcpServSock::TcpServSock(uint16 port)
    int optval = 1;
    setsockopt(_fd, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval));
 
-   int rc = bind(_fd, (struct sockaddr*)&addr, sizeof(struct sockaddr_in));
-   if (rc < 0) {
+	int rc = ::bind(_fd, (struct sockaddr*)&addr, sizeof(struct sockaddr_in));
+	if (rc < 0) {
       ::close(_fd);
 		throw ErreurSocket("Bind Error (port déjà utilisé ?)");
 	}
