@@ -123,6 +123,22 @@ namespace Utils {
 	inline std::string toString<uint8_t>(uint8_t const &value) {
 		return toString<int>(static_cast<uint8_t>(value));
 	}
+
+   template<class Ty>
+   Str toString(C std::vector<Ty>& v)
+   {
+      std::ostringstream oss;
+      oss << '[';
+      for (int i=0; i < v.size()-1; ++i) { // tous sauf le dernier: pas de ','
+         oss << v[i];                      // en trop
+         oss << ", ";
+      }
+      if (v.size()) {
+         oss << v.back();
+      }
+      oss << ']';
+      return oss.str();
+   }
 };
 
 #endif // UTILS_H

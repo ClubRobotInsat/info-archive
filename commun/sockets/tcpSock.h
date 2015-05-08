@@ -23,11 +23,15 @@ public:
    // Exception si pas assez de données disponibles.
 	void read(void* buffer, int cBytes);
 
+   // séparateur inclut dans le résultat.
+   Str readTextTo(char chr);
+
 	// Retourne dès que des données sont disponibles.
 	// Renvoie le nb. d'octets lus, <= à 'maxBytes'.
 	int readSome(void* buffer, int maxBytes);
 
    void write(const void* data, int cBytes);
+   void write(C Str& s)    {write(s.c_str(), s.size());}
 
 	// Ferme la connexion. Réveille sur Exception les autres appels bloquants
 	// sur cette instance. Sans effet si socket déjà fermé.

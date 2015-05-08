@@ -35,5 +35,6 @@ private:
 
 // écriture allégée pour définir une sous-classe d'exception.
 #define EXCEPTION_CLASS(name) class name : public Erreur \
-      {public: name(Str s) : Erreur(std::move(s)) {}};
+      {public: name() {} \
+               name(Str s) : Erreur(std::move(s)) {}};
                //name(const char* s) : Erreur(Str(s)) {}};

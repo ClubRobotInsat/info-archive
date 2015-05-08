@@ -51,6 +51,18 @@ void TcpSock::read(void* buffer, int cBytes)
    }
 }
 
+Str TcpSock::readTextTo(char chr)
+{
+   // buffering peut-être pas optimisé, mais ça marche et j'ai la flemme.
+   std::vector<char> buff;
+   char c;
+   do {
+      read(&c, 1);
+      buff.push_back(c);
+   } while (c != chr);
+   return Str(buff.data());
+}
+
 int TcpSock::readSome(void* buffer, int maxBytes)
 {
    int rc = recv(_fd, buffer, maxBytes, 0);
@@ -93,6 +105,14 @@ TcpServSock::TcpServSock(uint16 port)
 	addr.sin_family = AF_INET;
 	addr.sin_port = htons(port);
 	addr.sin_addr.s_addr = htonl(INADDR_ANY);
+
+   // Reprends le socket de force (ignore la protection TCP bloquant le port
+   // pour 30s après sa dernière fermeture, des fois que des paquets soient
+   // encore en vol.)
+   // Ne permet PAS de prendre un socket toujours utilisé par un serveur vivant,
+   // contrairement à ce que le nom peut suggérer.
+   int optval = 1;
+   setsockopt(_fd, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval));
 
    int rc = bind(_fd, (struct sockaddr*)&addr, sizeof(struct sockaddr_in));
    if (rc < 0) {
