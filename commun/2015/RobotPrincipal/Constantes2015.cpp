@@ -13,6 +13,8 @@ namespace ConstantesPrincipal2015 {
 	Angle const positionArriere[enumToInt(PositionArriere::NBR)] = {0_deg, 80_deg, 110_deg};
 	Angle const positionBras[enumToInt(PositionBras::NBR)] = {150_deg, 57.5_deg, 30_deg};
 	Angle const positionAscenseur[enumToInt(PositionAscenseur::NBR)] = {0_deg, 370_deg, 750_deg, 0_deg, 0_deg, 1000_deg};
+
+	Distance const ENTRAXE_PINCES = 12_cm;
 }
 
 constexpr Duree ConstantesPrincipal2015Type::TIMEOUT_DEPLACEMENT_DEFAUT;
