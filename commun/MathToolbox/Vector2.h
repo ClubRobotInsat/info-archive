@@ -89,7 +89,9 @@ public:
 	
 	// Division par un scalaire (v / s)
 	template <class T_scalar>
-	inline Vector2<T> operator/(const T_scalar& s) const;
+	inline Vector2<decltype(x / T_scalar{})> operator/(const T_scalar& s) const {
+		return {this->x / s, this->y / s};
+	}
 	
 	// Produit scalaire
 	auto operator*(const Vector2<T>& v) const {

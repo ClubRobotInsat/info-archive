@@ -15,6 +15,7 @@ namespace ConstantesPrincipal2015 {
 	Angle const positionAscenseur[enumToInt(PositionAscenseur::NBR)] = {0_deg, 370_deg, 750_deg, 0_deg, 0_deg, 1000_deg};
 
 	Distance const ENTRAXE_PINCES = 12_cm;
+	Distance const DISTANCE_CENTRE_PINCES = 30_cm;
 }
 
 constexpr Duree ConstantesPrincipal2015Type::TIMEOUT_DEPLACEMENT_DEFAUT;

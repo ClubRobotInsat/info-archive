@@ -220,6 +220,7 @@ namespace ConstantesPrincipal2015 {
 	extern Angle const positionArriere[enumToInt(PositionArriere::NBR)];
 	extern Angle const positionBras[enumToInt(PositionBras::NBR)];
 	extern Distance const ENTRAXE_PINCES;
+	extern Distance const DISTANCE_CENTRE_PINCES;
 
 	// Déclaration des positions
 	extern Angle const positionAscenseur[enumToInt(PositionAscenseur::NBR)];

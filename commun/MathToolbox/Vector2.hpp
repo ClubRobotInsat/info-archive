@@ -119,13 +119,6 @@ Vector2<T> Vector2<T>::operator*(const T_scalar& s) const {
 	return Vector2<T>(this->x * s, this->y * s);
 }
 
-// Division par un scalaire
-template <class T>
-template <class T_scalar>
-Vector2<T> Vector2<T>::operator/(const T_scalar& s) const {
-	return Vector2<T>(this->x / s, this->y / s);
-}
-
 // Normalisation + renvoi de la valeur de la norme
 template <class T>
 void Vector2<T>::normalize() {
