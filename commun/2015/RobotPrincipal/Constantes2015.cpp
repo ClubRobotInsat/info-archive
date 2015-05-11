@@ -8,11 +8,11 @@
 #include "Constantes2015.h"
 
 namespace ConstantesPrincipal2015 {
-	Angle const positionPince[enumToInt(PositionPince::NBR)] = {50_deg, 67.5_deg, 72.5_deg, 77_deg, /*130_deg*/150_deg};
-	Angle const positionCoude[enumToInt(PositionCoude::NBR)] = {170_deg, 40_deg, 10_deg};
+	Angle const positionPince[enumToInt(PositionPince::NBR)] = {50_deg, 67.5_deg, 72.5_deg, 67_deg, 90_deg, 150_deg};
+	Angle const positionCoude[enumToInt(PositionCoude::NBR)] = {170_deg, 40_deg, 7_deg};
 	Angle const positionArriere[enumToInt(PositionArriere::NBR)] = {0_deg, 80_deg, 110_deg};
 	Angle const positionBras[enumToInt(PositionBras::NBR)] = {150_deg, 57.5_deg, 30_deg};
-	Angle const positionAscenseur[enumToInt(PositionAscenseur::NBR)] = {0_deg, 370_deg, 750_deg, 0_deg, 0_deg, 1000_deg};
+	Angle const positionAscenseur[enumToInt(PositionAscenseur::NBR)] = {0_deg, 410_deg, 750_deg, 0_deg, 0_deg, 1000_deg};
 
 	Distance const ENTRAXE_PINCES = 12_cm;
 	Distance const DISTANCE_CENTRE_PINCES = 30_cm;

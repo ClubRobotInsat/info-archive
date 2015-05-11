@@ -119,7 +119,8 @@ namespace ConstantesPrincipal2015 {
 		GOBELET		= 1,
 		LAMPE		= 2,
 		PIED		= 3,
-		OUVERT		= 4,
+		GROS_PIED   = 4,
+		OUVERT		= 5,
 		NBR
 	};
 
