@@ -119,8 +119,8 @@ STRUCT_NAMESPACE(ConstantesSecondaire2015Type, ConstantesSecondaire2015,
 
 		static constexpr Duree TIMEOUT_DEPLACEMENT_DEFAUT = Constantes2015::TIMEOUT_DEPLACEMENT_DEFAUT;
         static constexpr Duree TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT = Constantes2015::TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT;
-		static constexpr VitesseLineaire VITESSE_LINEAIRE_DEFAUT = Constantes2015::VITESSE_LINEAIRE_DEFAUT;
-		static constexpr VitesseAngulaire VITESSE_ANGULAIRE_DEFAUT = Constantes2015::VITESSE_ANGULAIRE_DEFAUT;
+		static constexpr VitesseLineaire VITESSE_LINEAIRE_DEFAUT = 40_cm_s;
+		static constexpr VitesseAngulaire VITESSE_ANGULAIRE_DEFAUT = 90_deg_s;
 		static constexpr Distance PRECISION_LINEAIRE_DEFAUT = Constantes2015::PRECISION_LINEAIRE_DEFAUT;
 		static constexpr Angle PRECISION_ANGULAIRE_DEFAUT = Constantes2015::PRECISION_ANGULAIRE_DEFAUT;
 
