@@ -29,7 +29,7 @@ STRUCT_NAMESPACE(Constantes2015Type, Constantes2015, {
     static constexpr Duree TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT = 5_s;
 	static constexpr VitesseLineaire VITESSE_LINEAIRE_DEFAUT = 60_cm_s;
 	static constexpr VitesseAngulaire VITESSE_ANGULAIRE_DEFAUT = 5_rad_s; // Unité arbitraire décidée en élec.
-	static constexpr Distance PRECISION_LINEAIRE_DEFAUT = 5_cm;
+	static constexpr Distance PRECISION_LINEAIRE_DEFAUT = 4_cm;
 	static constexpr Angle PRECISION_ANGULAIRE_DEFAUT = 4_deg;
 
 	static constexpr VitesseLineaire VITESSE_LINEAIRE_EVITEMENT = 20_cm_s;
