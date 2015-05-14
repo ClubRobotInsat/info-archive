@@ -86,9 +86,9 @@ namespace ConstantesSecondaire2015 {
 
 	// ID des servos
 	enum class Servo {
-		TAPIS_G 		= ID_SERVO_POLANSKI_G,
+		TAPIS_G 		= 2, // ID_SERVO_POLANSKI_G
 		CONTREPOIDS 	= 10,
-		TAPIS_D 		= ID_SERVO_POLANSKI_D,
+		TAPIS_D 		= 1, //ID_SERVO_POLANSKI_D,
 		NBR
 	};
 
