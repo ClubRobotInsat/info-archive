@@ -157,7 +157,7 @@ namespace ConstantesPrincipal2015 {
 		ROULER 		= 1,
 		ETAGE1		= 2,
 		ETAGE2		= 3,
-		ETAGE3		= 4,
+		BAS 		= 4,
 		MAX_HAUT	= 5,
 		NBR
 	};
