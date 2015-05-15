@@ -12,7 +12,7 @@
 using namespace std::string_literals;
 
 inline void setThreadName(char const *name) {
-#if __LINUX__
+#if __linux__
 	pthread_setname_np(pthread_self(), name);
 #elif __APPLE__
 	pthread_setname_np(name);
