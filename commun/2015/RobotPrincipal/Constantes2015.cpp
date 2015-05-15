@@ -12,7 +12,7 @@ namespace ConstantesPrincipal2015 {
 	Angle const positionCoude[enumToInt(PositionCoude::NBR)] = {170_deg, 40_deg, 7_deg};
 	Angle const positionArriere[enumToInt(PositionArriere::NBR)] = {0_deg, 80_deg, 110_deg};
 	Angle const positionBras[enumToInt(PositionBras::NBR)] = {150_deg, 57.5_deg, 30_deg};
-	Angle const positionAscenseur[enumToInt(PositionAscenseur::NBR)] = {0_deg, 410_deg, 800_deg, 550_deg, 50_deg, 1000_deg};
+	Angle const positionAscenseur[enumToInt(PositionAscenseur::NBR)] = {0_deg, 410_deg, 800_deg, 500_deg, 50_deg, 1000_deg};
 
 	Distance const ENTRAXE_PINCES = 12_cm;
 	Distance const DISTANCE_CENTRE_PINCES = 30_cm;
