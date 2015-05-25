@@ -6,6 +6,7 @@
 #include "../Erreur.h"
 #include "Utils.h"
 #include <memory>
+#include <cstdint>
 /******************************************************************************/
 
 EXCEPTION_CLASS(ErreurSocket);
@@ -15,7 +16,7 @@ class TcpSock
 {
 public:
    // Tente une connection à un serveur. Exception si échec
-   TcpSock(const Str& host, uint16 port);
+	TcpSock(const std::string& host, std::uint16_t port);
 	// close() implicite si nécessaire.
    ~TcpSock()   {close();}
 
@@ -24,7 +25,7 @@ public:
 	void read(void* buffer, int cBytes);
 
    // séparateur inclut dans le résultat.
-   Str readTextTo(char chr);
+   std::string readTextTo(char chr);
 
 	// Retourne dès que des données sont disponibles.
 	// Renvoie le nb. d'octets lus, <= à 'maxBytes'.
@@ -35,7 +36,7 @@ public:
    bool hasNext();
 
    void write(const void* data, int cBytes);
-   void write(const Str& s)    {write(s.c_str(), s.size());}
+   void write(const std::string& s)    {write(s.c_str(), s.size());}
 
 	// Ferme la connexion. Réveille sur Exception les autres appels bloquants
 	// sur cette instance. Sans effet si socket déjà fermé.
@@ -53,7 +54,7 @@ private:
 class TcpServSock
 {
 public:
-   TcpServSock(uint16 port);
+   TcpServSock(std::uint16_t port);
    ~TcpServSock()    {close();}
 
    // Renvoie un socket valide, sinon exception.

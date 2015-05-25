@@ -13,7 +13,7 @@ using namespace std;
 
 //-- Socket (point-à-point) --//
 
-TcpSock::TcpSock(const Str& host, uint16 port)
+TcpSock::TcpSock(const std::string& host, std::uint16_t port)
 {
 	_fd = socket(AF_INET, SOCK_STREAM, 0);
 	if (_fd < 0)
@@ -40,7 +40,7 @@ TcpSock::TcpSock(const Str& host, uint16 port)
 
 void TcpSock::read(void* buffer, int cBytes)
 {
-   byte* ptr = (byte*)buffer;
+	auto ptr = (uint8_t*)buffer;
    while (cBytes > 0)
    {
       int rc = recv(_fd, ptr, cBytes, 0);
@@ -51,7 +51,7 @@ void TcpSock::read(void* buffer, int cBytes)
    }
 }
 
-Str TcpSock::readTextTo(char chr)
+std::string TcpSock::readTextTo(char chr)
 {
    // buffering peut-être pas optimisé, mais ça marche et j'ai la flemme.
    std::vector<char> buff;
@@ -60,7 +60,7 @@ Str TcpSock::readTextTo(char chr)
       read(&c, 1);
       buff.push_back(c);
    } while (c != chr);
-   return Str(buff.data());
+   return std::string(buff.data(), buff.data() + buff.size());
 }
 
 int TcpSock::readSome(void* buffer, int maxBytes)
@@ -84,7 +84,7 @@ bool TcpSock::hasNext()
 
 void TcpSock::write(const void* data, int cBytes)
 {
-   const byte* ptr = (const byte*)data;
+   auto ptr = (const uint8_t*)data;
    while (cBytes > 0)
    {
       // Flag MSG_NOSIGNAL: les erreurs vont arriver dans rc au lieu de kill
@@ -112,7 +112,7 @@ void TcpSock::close()
 
 //-- ServSocket (serveur) --//
 
-TcpServSock::TcpServSock(uint16 port)
+TcpServSock::TcpServSock(std::uint16_t port)
 {
    _fd = socket(AF_INET, SOCK_STREAM, 0);
    if (_fd < 0)

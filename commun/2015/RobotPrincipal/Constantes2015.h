@@ -193,6 +193,8 @@ STRUCT_NAMESPACE(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
 		// NB : 0 devant, PI/-PI derrière, PI/2 à gauche et -PI/2 à droite
 		static constexpr Angle OFFSET_ANGLE_ADV = -0.5_PI;
 
+		static constexpr int IDRobot = 0xDEAD;
+
 
 		/////////////////// CARTES ///////////////////
 

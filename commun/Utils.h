@@ -23,11 +23,6 @@
 #define M_SQRT1_2	0.70710678118654752440
 #endif
 
-
-using byte = unsigned char;
-using uint16 = unsigned short;
-using Str = std::string;
-
 #define NO_COPY_CTOR(name) private: name(const name&) = delete; \
                                     void operator=(name) = delete;
 
@@ -124,7 +119,7 @@ namespace Utils {
 	}
 
    template<class Ty>
-   Str toString(std::vector<Ty> const & v)
+	std::string toString(std::vector<Ty> const & v)
    {
       std::ostringstream oss;
       oss << '[';
