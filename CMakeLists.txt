@@ -61,10 +61,7 @@ add_subdirectory(commun)
 add_subdirectory(robot)
 
 # Juste lancer cmake avec les bons compilos dans env CC / CXX
-if (${TARGET} STREQUAL "rasPi")
-else()
-  add_subdirectory(simulateur)
-endif()
+add_subdirectory(simulateur)
 
 
 
