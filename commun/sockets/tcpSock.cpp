@@ -87,16 +87,17 @@ void TcpSock::write(const void* data, int cBytes)
    const byte* ptr = (const byte*)data;
    while (cBytes > 0)
    {
-#ifndef __APPLE__
       // Flag MSG_NOSIGNAL: les erreurs vont arriver dans rc au lieu de kill
       // le processus
+#ifdef __APPLE__
+      int rc = ::send(_fd, ptr, cBytes, SO_NOSIGPIPE);
+#else
       int rc = ::send(_fd, ptr, cBytes, MSG_NOSIGNAL);
+#endif
       if (rc <= 0)
          throw ErreurSocket("Send Failed");
       cBytes -= rc;
       ptr += rc;
-
-#endif
    }
 }
 
