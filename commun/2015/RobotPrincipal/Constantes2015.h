@@ -54,33 +54,29 @@ namespace IDCartesPrincipal2015 {
 	};
 
 	ENUM_NS(IDCartesPrincipal2015, IDCartes,
-		CAN_USB,
-		DEPLACEMENT,
-		ASSERVISSEMENT_ASCENSEUR_D,
-		ASSERVISSEMENT_ASCENSEUR_G,
-		SERVOS_ASCENSEUR,
-		SERVOS_AUTRES,
-		IO,
-		EVITEMENT,
-		/* PNEUMATIQUE */
-		DEBUG_DESSIN
-		//ID_CARTE_DEBUG = 11
+			CAN_USB,
+			DEPLACEMENT,
+			ASSERVISSEMENT_ASCENSEUR_D,
+			ASSERVISSEMENT_ASCENSEUR_G,
+			SERVOS_ASCENSEUR,
+			SERVOS_AUTRES,
+			IO,
+			EVITEMENT,
+			/* PNEUMATIQUE */
+			DEBUG_DESSIN
+	//ID_CARTE_DEBUG = 11
 	);
 
 	ENUM_CLASS_NS(IDCartesPrincipal2015, IDCartesServo,
-		ASCENSEUR,
-		AUTRES
-	);
+				  ASCENSEUR,
+				  AUTRES
+				  );
 }
 
-STRUCT_NAMESPACE(IDCartesPrincipal2015Type, IDCartesPrincipal2015,
-	{
-		using IDCartes = IDCartesPrincipal2015::IDCartes;
-		using IDCartesServo = IDCartesPrincipal2015::IDCartesServo;
-	}
-)
-
 namespace ConstantesPrincipal2015 {
+	using IDCartes = IDCartesPrincipal2015::IDCartes;
+	using IDCartesServo = IDCartesPrincipal2015::IDCartesServo;
+
 	/////////////////// CONTACTEURS ///////////////////
 	// Numéros des contacteurs et les rôles associés
 	enum class Contacteur {
@@ -167,55 +163,23 @@ namespace ConstantesPrincipal2015 {
 		DROIT,
 		GAUCHE,
 	};
-}
 
-STRUCT_NAMESPACE(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
-	{
-		using ConstantesCommunes = Constantes2015Type;
-		using IDCartes = IDCartesPrincipal2015Type::IDCartes;
-		using IDCartesServo = IDCartesPrincipal2015Type::IDCartesServo;
+	// On reprend par défaut les mêmes valeur que la partie commune aux 2 robots, à changer si nécessaire
+	extern Duree const TIMEOUT_DEPLACEMENT_DEFAUT;
+	extern Duree const TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT;
+	extern VitesseLineaire const VITESSE_LINEAIRE_DEFAUT;
+	extern VitesseAngulaire const VITESSE_ANGULAIRE_DEFAUT;
+	extern Distance const PRECISION_LINEAIRE_DEFAUT;
+	extern Angle const PRECISION_ANGULAIRE_DEFAUT;
 
-        using Contacteur = ConstantesPrincipal2015::Contacteur;
-        using Servo = ConstantesPrincipal2015::Servo;
+	extern Distance const RAYON_ROTATION_ROBOT;
+	extern Vector3m const TAILLE_ROBOT;
+	extern uint16_t const TCPIP_PORT_SIMU_DEFAUT;
+	// Cet offset sert à aligner le 0 de la balise avec le 0 de l'info
+	// NB : 0 devant, PI/-PI derrière, PI/2 à gauche et -PI/2 à droite
+	extern Angle const OFFSET_ANGLE_ADV;
 
-        // On reprend par défaut les mêmes valeur que la partie commune aux 2 robots, à changer si nécessaire
-		static constexpr Duree TIMEOUT_DEPLACEMENT_DEFAUT = Constantes2015::TIMEOUT_DEPLACEMENT_DEFAUT;
-		static constexpr Duree TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT = Constantes2015::TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT;
-		static constexpr VitesseLineaire VITESSE_LINEAIRE_DEFAUT = Constantes2015::VITESSE_LINEAIRE_DEFAUT;
-		static constexpr VitesseAngulaire VITESSE_ANGULAIRE_DEFAUT = 3.75_rad_s;
-		static constexpr Distance PRECISION_LINEAIRE_DEFAUT = Constantes2015::PRECISION_LINEAIRE_DEFAUT;
-		static constexpr Angle PRECISION_ANGULAIRE_DEFAUT = Constantes2015::PRECISION_ANGULAIRE_DEFAUT;
-
-		static constexpr Distance RAYON_ROTATION_ROBOT = 230.0_mm;
-		static constexpr Vector3m TAILLE_ROBOT = {30_cm, 30_cm, 40_cm};
-		static constexpr uint16_t TCPIP_PORT_SIMU_DEFAUT = 4321;
-		// Cet offset sert à aligner le 0 de la balise avec le 0 de l'info
-		// NB : 0 devant, PI/-PI derrière, PI/2 à gauche et -PI/2 à droite
-		static constexpr Angle OFFSET_ANGLE_ADV = -0.5_PI;
-
-		static constexpr int IDRobot = 1;
-
-
-		/////////////////// CARTES ///////////////////
-
-		template<IDCartes ID_CARTE>
-		struct CarteInfo {};
-
-		template<IDCartesServo ID_CARTE>
-		struct CarteServoInfo {};
-	};
-)
-
-namespace ConstantesPrincipal2015 {
-	using Contacteur 		= ConstantesPrincipal2015::Contacteur;
-	using ServoAscenseur 	= ConstantesPrincipal2015::ServoAscenseur;
-	using Servo 			= ConstantesPrincipal2015::Servo;
-	using PositionPince 	= ConstantesPrincipal2015::PositionPince;
-	using PositionCoude 	= ConstantesPrincipal2015::PositionCoude;
-	using PositionArriere 	= ConstantesPrincipal2015::PositionArriere;
-	using PositionBras 		= ConstantesPrincipal2015::PositionBras;
-	using PositionAscenseur = ConstantesPrincipal2015::PositionAscenseur;
-	using CoteAscenseur 	= ConstantesPrincipal2015::CoteAscenseur;
+	extern int const IDRobot;
 
 	// Déclaration des positions
 	extern Angle const positionPince[enumToInt(PositionPince::NBR)];
@@ -227,68 +191,82 @@ namespace ConstantesPrincipal2015 {
 
 	// Déclaration des positions
 	extern Angle const positionAscenseur[enumToInt(PositionAscenseur::NBR)];
-}
 
-EXPLICIT_INSTANCIATION(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
-	CarteInfo<IDCartesPrincipal2015::CAN_USB> : public std::integral_constant<uint32_t, IDCartesPrincipal2015::ID_CARTE_CAN_USB> {
+	/////////////////// CARTES ///////////////////
+
+	template<IDCartesPrincipal2015::IDCartes ID_CARTE>
+	struct CarteInfo {};
+
+	template<IDCartesPrincipal2015::IDCartesServo ID_CARTE>
+	struct CarteServoInfo {};
+
+	template<>
+	struct CarteInfo<IDCartesPrincipal2015::CAN_USB> : public std::integral_constant<uint32_t, IDCartesPrincipal2015::ID_CARTE_CAN_USB> {
 		typedef CarteCAN_USB type;
 	};
-)
-EXPLICIT_INSTANCIATION(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
-	CarteInfo<IDCartesPrincipal2015::DEPLACEMENT> : public std::integral_constant<uint32_t, IDCartesPrincipal2015::ID_CARTE_DEPLACEMENT> {
+	template<>
+	struct CarteInfo<IDCartesPrincipal2015::DEPLACEMENT> : public std::integral_constant<uint32_t, IDCartesPrincipal2015::ID_CARTE_DEPLACEMENT> {
 #ifdef TARGET_SIMULATEUR
 		typedef CarteDeplacement2009 type;
 #else
 		typedef CarteDeplacement2015 type;
 #endif
 	};
-)
-EXPLICIT_INSTANCIATION(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
-	CarteInfo<IDCartesPrincipal2015::ASSERVISSEMENT_ASCENSEUR_D> : public std::integral_constant<uint32_t, IDCartesPrincipal2015::ID_CARTE_ASSERVISSEMENT_ASCENSEUR_D> {
+	template<>
+	struct CarteInfo<IDCartesPrincipal2015::ASSERVISSEMENT_ASCENSEUR_D> : public std::integral_constant<uint32_t, IDCartesPrincipal2015::ID_CARTE_ASSERVISSEMENT_ASCENSEUR_D> {
 		typedef CarteAsservissement2009 type;
 	};
-)
-EXPLICIT_INSTANCIATION(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
-	CarteInfo<IDCartesPrincipal2015::ASSERVISSEMENT_ASCENSEUR_G> : public std::integral_constant<uint32_t, IDCartesPrincipal2015::ID_CARTE_ASSERVISSEMENT_ASCENSEUR_G> {
+	template<>
+	struct CarteInfo<IDCartesPrincipal2015::ASSERVISSEMENT_ASCENSEUR_G> : public std::integral_constant<uint32_t, IDCartesPrincipal2015::ID_CARTE_ASSERVISSEMENT_ASCENSEUR_G> {
 		typedef CarteAsservissement2009 type;
 	};
-)
-EXPLICIT_INSTANCIATION(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
-	CarteInfo<IDCartesPrincipal2015::SERVOS_ASCENSEUR> : public std::integral_constant<uint32_t, IDCartesPrincipal2015::ID_CARTE_SERVOS_ASCENSEUR> {
+	template<>
+	struct CarteInfo<IDCartesPrincipal2015::SERVOS_ASCENSEUR> : public std::integral_constant<uint32_t, IDCartesPrincipal2015::ID_CARTE_SERVOS_ASCENSEUR> {
 		typedef CarteServosNova2009 type;
 	};
-)
-EXPLICIT_INSTANCIATION(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
-	CarteInfo<IDCartesPrincipal2015::SERVOS_AUTRES> : public std::integral_constant<uint32_t, IDCartesPrincipal2015::ID_CARTE_SERVOS_AUTRES> {
+	template<>
+	struct CarteInfo<IDCartesPrincipal2015::SERVOS_AUTRES> : public std::integral_constant<uint32_t, IDCartesPrincipal2015::ID_CARTE_SERVOS_AUTRES> {
 		typedef CarteServosNova2009 type;
 	};
-)
-EXPLICIT_INSTANCIATION(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
-	CarteInfo<IDCartesPrincipal2015::IO> : public std::integral_constant<uint32_t, IDCartesPrincipal2015::ID_CARTE_IO> {
+	template<>
+	struct CarteInfo<IDCartesPrincipal2015::IO> : public std::integral_constant<uint32_t, IDCartesPrincipal2015::ID_CARTE_IO> {
 		typedef CarteIO2014 type;
 	};
-)
-EXPLICIT_INSTANCIATION(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
-	CarteInfo<IDCartesPrincipal2015::EVITEMENT> : public std::integral_constant<uint32_t, IDCartesPrincipal2015::ID_CARTE_EVITEMENT> {
+	template<>
+	struct CarteInfo<IDCartesPrincipal2015::EVITEMENT> : public std::integral_constant<uint32_t, IDCartesPrincipal2015::ID_CARTE_EVITEMENT> {
 		typedef CarteDetectAdv2009 type;
 	};
-)
-EXPLICIT_INSTANCIATION(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
-	CarteInfo<IDCartesPrincipal2015::DEBUG_DESSIN> : public std::integral_constant<uint32_t, IDCartesPrincipal2015::ID_CARTE_DEBUG_DESSIN> {
+	template<>
+	struct CarteInfo<IDCartesPrincipal2015::DEBUG_DESSIN> : public std::integral_constant<uint32_t, IDCartesPrincipal2015::ID_CARTE_DEBUG_DESSIN> {
 		typedef CarteDebugDessin type;
 	};
-)
-EXPLICIT_INSTANCIATION(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
-	CarteServoInfo<IDCartesPrincipal2015::IDCartesServo::ASCENSEUR> : public ConstantesPrincipal2015Type::CarteInfo<IDCartesPrincipal2015::SERVOS_ASCENSEUR> {
+	template<>
+	struct CarteServoInfo<IDCartesPrincipal2015::IDCartesServo::ASCENSEUR> : public ConstantesPrincipal2015::CarteInfo<IDCartesPrincipal2015::SERVOS_ASCENSEUR> {
 		static auto const IDCarte = IDCartesPrincipal2015::SERVOS_ASCENSEUR;
 		typedef ConstantesPrincipal2015::ServoAscenseur Servo;
 	};
-)
-EXPLICIT_INSTANCIATION(ConstantesPrincipal2015Type, ConstantesPrincipal2015,
-	CarteServoInfo<IDCartesPrincipal2015::IDCartesServo::AUTRES> : public CarteInfo<IDCartesPrincipal2015::SERVOS_AUTRES> {
+	template<>
+	struct CarteServoInfo<IDCartesPrincipal2015::IDCartesServo::AUTRES> : public CarteInfo<IDCartesPrincipal2015::SERVOS_AUTRES> {
 		static auto const IDCarte = IDCartesPrincipal2015::SERVOS_AUTRES;
 		typedef ConstantesPrincipal2015::Servo Servo;
 	};
-)
+};
+
+struct ConstantesRobotPrincipal2015 : public ConstantesRobot {
+	virtual Duree getTimeoutDeplacementDefaut() const override;
+	virtual Duree getTimeoutBlocageAdversaireDefaut() const override;
+	virtual VitesseLineaire getVitesseLineaireDefaut() const override;
+	virtual VitesseAngulaire getVitesseAngulaireDefaut() const override;
+	virtual Distance getPrecisionLineaireDefaut() const override;
+	virtual Angle getPrecisionAngulaireDefaut() const override;
+
+	virtual Distance getRayonRotation() const override;
+	virtual Vector3m getTailleRobot() const override;
+	virtual Angle getOffsetAngleAdv() const override;
+
+	virtual uint16_t getPortTCPIPDefaut() const override;
+
+	virtual int getIDRobot() const override;
+};
 
 #endif

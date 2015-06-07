@@ -155,6 +155,7 @@ typedef Vector2<float> Vector2f;
 typedef Vector2<unsigned int> Vector2ui;
 typedef Vector2<int> Vector2i;
 typedef Vector2<short> Vector2s;
+typedef Vector2<uint16_t> Vector2u16;
 typedef Vector2<unsigned char> Vector2ub;
 
 #include "Vector2.hpp"

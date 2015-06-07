@@ -49,6 +49,23 @@ bool Log::openCommon(Output o, bool desync_with_stdio) {
 	return true;
 }
 
+char const *Log::getFileNameFromPath(const char* file_path) {
+	const char* p = &file_path[0];
+	for(int i=0 ; file_path[i] != '\0' ; i++)
+		if(file_path[i] == '/' || file_path[i] == '\\')
+			p = &file_path[i+1];
+	return p;
+}
+
+void Log::doFormatting(std::string &msg, LogType type, Log::Output output) {
+	if(output == Log::TERMINAL)
+		Log::doTermFormatting(msg, type);
+	else if(output == Log::HTML)
+		Log::doHTMLFormatting(msg, type);
+	else if(output == Log::RTF)
+		Log::doRTFFormatting(msg, type);
+}
+
 // This "open()" parses argc and argv and calls the previous "open()".
 void Log::open(int argc, char* argv[], bool desync_with_stdio) {
 	// Look for "--log=XXX"
@@ -193,12 +210,74 @@ void Log::indent(int value) {
 	
 	// Look for the thread's ID in the indentation table
 	auto id = std::this_thread::get_id();
-	auto it = _threadInfos[id];
 	
 	// We add value to the current indentation.
 	_threadInfos[id]._indent += value;
 	if(_threadInfos[id]._indent < 0)
 		_threadInfos[id]._indent = 0;
+}
+
+void Log::writeInternal(LogType type, Output outputIndex, std::stringstream &stream) {
+	stream << std::flush;
+	std::string msg_first_part = stream.str();
+	std::string msg_second_part;
+
+	switch(type) {
+	case LOG_INFO:
+		doFormatting(msg_first_part, LOG_INFO, outputIndex);
+		break;
+	case LOG_SUCCESS:
+		doFormatting(msg_first_part, LOG_INFO, outputIndex);
+
+		msg_second_part = "[OK]";
+		doFormatting(msg_second_part, LOG_SUCCESS, outputIndex);
+		break;
+	case LOG_FAILED:
+		doFormatting(msg_first_part, LOG_INFO, outputIndex);
+
+		msg_second_part = "[FAILED]";
+		doFormatting(msg_second_part, LOG_FAILED, outputIndex);
+		break;
+	case LOG_WARN:
+		doFormatting(msg_first_part, LOG_WARN, outputIndex);
+		break;
+	case LOG_ERROR:
+		doFormatting(msg_first_part, LOG_ERROR, outputIndex);
+		break;
+
+	default: // LOG_DEBUG_X
+		doFormatting(msg_first_part, type, outputIndex);
+		break;
+	}
+
+	auto infos = _threadInfos[std::this_thread::get_id()];
+
+	// Finally write the message
+	if(outputIndex == TERMINAL) {
+		for(int i = 0; i < infos._indent ;i++)
+			(*_p_stream[outputIndex]) << ' ';
+
+		writeTermFormattedString(*_p_stream[outputIndex], msg_first_part);
+		writeTermFormattedString(*_p_stream[outputIndex], msg_second_part);
+
+		resetTerm(*_p_stream[outputIndex]); // If the terminal was used, reset its colors before the final newline,
+		(*_p_stream[outputIndex]) << std::endl;
+	}
+	else if(outputIndex == HTML) {
+		std::string indentation = ("<span style=\"margin-left:") + std::to_string(infos._indent * 30) + "px;\">";
+
+		(*_p_stream[outputIndex]) << indentation << msg_first_part << msg_second_part << " <br/>" << "</span>" << std::flush;
+	}
+	else if(outputIndex == RTF) {
+		for(int i = 0; i < infos._indent ; i++)
+			(*_p_stream[outputIndex]) << "\\tab";
+		(*_p_stream[outputIndex]) << msg_first_part << msg_second_part << "\\par" << std::flush;
+	}
+	else {// TXT or TERMINAL_NO_COLOR
+		for(int i = 0;i < infos._indent; i++)
+			(*_p_stream[outputIndex]) << ' ';
+		(*_p_stream[outputIndex]) << msg_first_part << msg_second_part << std::endl;
+	}
 }
 
 #endif // ENABLE_LOGGING

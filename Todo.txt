@@ -1,12 +1,5 @@
 #include "robot/Petri/Editor/Todo.txt"
 
-Ascenser simu
-
-
-TODO
-rétablir la lecture du capteur de couleur
-Vérifier la valeur de retour de la carte IO pour la couleur
-
 +------------------------------------------------------------------------------+
 | Commun                                                                       |
 +------------------------------------------------------------------------------+

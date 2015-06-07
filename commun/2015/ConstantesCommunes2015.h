@@ -6,6 +6,7 @@
 #include <iostream>
 #include <cstdint>
 #include "../Commun.h"
+#include "../Constantes.h"
 
 namespace Constantes2015 {
 	ENUM_CLASS_NS(Constantes2015, CouleurRobot,
@@ -16,38 +17,34 @@ namespace Constantes2015 {
 	);
 }
 
-STRUCT_NAMESPACE(Constantes2015Type, Constantes2015, {
+namespace Constantes2015 {
 	using CouleurRobot = Constantes2015::CouleurRobot;
 
-	static constexpr uint16_t TCPIP_PORT_PAR_DEFAUT = 1234;
-	static constexpr uint16_t TCPIP_PORT_SIMU_DEFAUT = 4321;
+	extern uint16_t const TCPIP_PORT_SIMU_DEFAUT;
 
-	static constexpr int deltaPositionServo = 20; // > résolution sur les valeurs de position des servos
-	static constexpr int deltaPositionMoteur = 70; // > résolution sur les valeurs de position des moteurs (TODO : mettre la bonne valeur)
+	extern int const deltaPositionServo; // > résolution sur les valeurs de position des servos
+	extern int const deltaPositionMoteur; // > résolution sur les valeurs de position des moteurs (TODO : mettre la bonne valeur)
 
-	static constexpr Duree TIMEOUT_DEPLACEMENT_DEFAUT = 10_s;
-    static constexpr Duree TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT = 5_s;
-	static constexpr VitesseLineaire VITESSE_LINEAIRE_DEFAUT = 60_cm_s;
-	static constexpr VitesseAngulaire VITESSE_ANGULAIRE_DEFAUT = 5_rad_s; // Unité arbitraire décidée en élec.
-	static constexpr Distance PRECISION_LINEAIRE_DEFAUT = 4_cm;
-	static constexpr Angle PRECISION_ANGULAIRE_DEFAUT = 4_deg;
+	extern Duree const TIMEOUT_DEPLACEMENT_DEFAUT;
+    extern Duree const TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT;
+	extern VitesseLineaire const VITESSE_LINEAIRE_DEFAUT;
+	extern VitesseAngulaire const VITESSE_ANGULAIRE_DEFAUT; // Unité arbitraire décidée en élec.
+	extern Distance const PRECISION_LINEAIRE_DEFAUT;
+	extern Angle const PRECISION_ANGULAIRE_DEFAUT;
 
-	static constexpr VitesseLineaire VITESSE_LINEAIRE_EVITEMENT = 20_cm_s;
-	static constexpr VitesseAngulaire VITESSE_ANGULAIRE_EVITEMENT = 1_rad_s;
+	extern VitesseLineaire const VITESSE_LINEAIRE_EVITEMENT;
+	extern VitesseAngulaire const VITESSE_ANGULAIRE_EVITEMENT;
 
-	static constexpr VitesseLineaire VITESSE_LINEAIRE_RECALAGE = 20_cm_s;
+	extern VitesseLineaire const VITESSE_LINEAIRE_RECALAGE;
 
-	static constexpr int NOMBRE_BLOCAGE_LOGICIEL_MAX = 5;
-	static constexpr int NOMBRE_BLOCAGE_PHYSIQUE_MAX = 5;
+	extern int const NOMBRE_BLOCAGE_LOGICIEL_MAX;
+	extern int const NOMBRE_BLOCAGE_PHYSIQUE_MAX;
 
-	static constexpr Duree DUREE_MATCH = 90_s;
+	extern Duree const DUREE_MATCH;
 
-	static constexpr Distance LARGEUR_TABLE = 3_m;
-	static constexpr Distance HAUTEUR_TABLE = 2_m;
-
-	static constexpr int GRID_SIZE_X = 300;
-	static constexpr int GRID_SIZE_Y = 200;
-})
+	extern Vector2m const TAILLE_TABLE;
+	extern Vector2u16 const TAILLE_GRILLE;
+}
 
 inline Constantes2015::CouleurRobot operator!(Constantes2015::CouleurRobot const &c) {
 	if(c == Constantes2015::CouleurRobot::Vert)
@@ -57,5 +54,15 @@ inline Constantes2015::CouleurRobot operator!(Constantes2015::CouleurRobot const
 
 	return c;
 }
+
+struct ConstantesCommunes2015 : ConstantesCommunes {
+	virtual int getNombreBlocageLogicielMax() const override;
+	virtual int getNombreBlocagePhysiqueMax() const override;
+
+	virtual Duree getDureeMatch() const override;
+
+	virtual Vector2m getTailleTable() const override;
+	virtual Vector2u16 getTailleGrille() const override;
+};
 
 #endif //CONSTANTES_COMMUNES_2015_H

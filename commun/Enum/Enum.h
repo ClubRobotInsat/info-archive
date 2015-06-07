@@ -12,6 +12,10 @@
 #include <iostream>
 
 /**
+ * Voir documentation en fin de fichier.
+ */
+
+/**
  * Convertit une valeur d'une enum (enum Enum ou enum class Enum) vers la valeur entière correspondante.
  * Une énumération définie avec un certain type entier sera convertie vers ce même type entier :
  * enum MonEnum : uint8_t { MaValeur = 42};
@@ -25,34 +29,6 @@ constexpr enumToInt(Enum e) {
 	return static_cast<std::underlying_type_t<Enum>>(e);
 }
 
-
-/**
- * Permet de créer un namespace et une structure avec le même contenu.
- * Pas super super propre, mais on peut faire un using namespace avec le namepace, et passer la structure en paramètre template avec la struct.
- * @param STRUCT_NAME Le nom de la structur à générer
- * @param NAMESPACE_NAME Le nom du namespace à générer
- * @param ... Le contenu de la struct/du namespace entre accolades
- * @return Une structure de nom STRUCT_NAME et un namespace de nom NAMESPACE_NAME avec le contenu passé en 3e argument
- */
-
-#define STRUCT_NAMESPACE(STRUCT_NAME, NAMESPACE_NAME, ...) \
-struct STRUCT_NAME __VA_ARGS__; \
-namespace NAMESPACE_NAME __VA_ARGS__
-
-
-/**
- * Instancie explicitement la structure template passée en argument.
- * Cette structure doit avoir été déclarée dans le corps d'une structure STRUCT et d'un namespace NAMESPACE, à l'aide par exemple de la macro STRUCT_NAMESPACE.
- * @param STRUCT Le nom de la structure dans laquelle est déclarée la structure à instancier
- * @param NAMESPACE Le nom du namespace dans lequel est déclarée la structure à instancier
- * @param ... La structure template à instancier (sans le mot clé struct) précédant le nom de la structure
- * @return Une instanciation explicite dans le namespace et dans la structure avec le code fourni
- */
-#define EXPLICIT_INSTANCIATION(STRUCT, NAMESPACE, ...) \
-template<> struct STRUCT::__VA_ARGS__ \
-namespace NAMESPACE { \
-template<> struct __VA_ARGS__ \
-}
 
 /* 
  * Un peu de magie noire pour permettre de récupérer une valeur d'enum sous forme de chaîne de caracères.

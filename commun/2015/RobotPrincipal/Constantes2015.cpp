@@ -18,14 +18,63 @@ namespace ConstantesPrincipal2015 {
 	Distance const DISTANCE_CENTRE_PINCES = 30_cm;
 }
 
-constexpr Duree ConstantesPrincipal2015Type::TIMEOUT_DEPLACEMENT_DEFAUT;
-constexpr Duree ConstantesPrincipal2015Type::TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT;
-constexpr VitesseLineaire ConstantesPrincipal2015Type::VITESSE_LINEAIRE_DEFAUT;
-constexpr VitesseAngulaire ConstantesPrincipal2015Type::VITESSE_ANGULAIRE_DEFAUT;
-constexpr Distance ConstantesPrincipal2015Type::PRECISION_LINEAIRE_DEFAUT;
-constexpr Angle ConstantesPrincipal2015Type::PRECISION_ANGULAIRE_DEFAUT;
+Duree const ConstantesPrincipal2015::TIMEOUT_DEPLACEMENT_DEFAUT = Constantes2015::TIMEOUT_DEPLACEMENT_DEFAUT;
+Duree const ConstantesPrincipal2015::TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT = Constantes2015::TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT;
+VitesseLineaire const ConstantesPrincipal2015::VITESSE_LINEAIRE_DEFAUT = Constantes2015::VITESSE_LINEAIRE_DEFAUT;
+VitesseAngulaire const ConstantesPrincipal2015::VITESSE_ANGULAIRE_DEFAUT = 3.75_rad_s;
+Distance const ConstantesPrincipal2015::PRECISION_LINEAIRE_DEFAUT = Constantes2015::PRECISION_LINEAIRE_DEFAUT;
+Angle const ConstantesPrincipal2015::PRECISION_ANGULAIRE_DEFAUT = Constantes2015::PRECISION_ANGULAIRE_DEFAUT;
 
-constexpr Distance ConstantesPrincipal2015Type::RAYON_ROTATION_ROBOT;
-constexpr Vector3m ConstantesPrincipal2015Type::TAILLE_ROBOT;
-constexpr uint16_t ConstantesPrincipal2015Type::TCPIP_PORT_SIMU_DEFAUT;
-constexpr Angle ConstantesPrincipal2015Type::OFFSET_ANGLE_ADV;
+Distance const ConstantesPrincipal2015::RAYON_ROTATION_ROBOT = 230.0_mm;
+Vector3m const ConstantesPrincipal2015::TAILLE_ROBOT = {30_cm, 30_cm, 40_cm};
+uint16_t const ConstantesPrincipal2015::TCPIP_PORT_SIMU_DEFAUT = 4321;
+Angle const ConstantesPrincipal2015::OFFSET_ANGLE_ADV = -0.5_PI;
+
+int const ConstantesPrincipal2015::IDRobot = 1;
+
+Duree ConstantesRobotPrincipal2015::getTimeoutDeplacementDefaut() const {
+	return ConstantesPrincipal2015::TIMEOUT_DEPLACEMENT_DEFAUT;
+}
+
+Duree ConstantesRobotPrincipal2015::getTimeoutBlocageAdversaireDefaut() const {
+	return ConstantesPrincipal2015::TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT;
+}
+
+VitesseLineaire ConstantesRobotPrincipal2015::getVitesseLineaireDefaut() const {
+	return ConstantesPrincipal2015::VITESSE_LINEAIRE_DEFAUT;
+}
+
+VitesseAngulaire ConstantesRobotPrincipal2015::getVitesseAngulaireDefaut() const {
+	return ConstantesPrincipal2015::VITESSE_ANGULAIRE_DEFAUT;
+}
+
+Distance ConstantesRobotPrincipal2015::getPrecisionLineaireDefaut() const {
+	return ConstantesPrincipal2015::PRECISION_LINEAIRE_DEFAUT;
+}
+
+Angle ConstantesRobotPrincipal2015::getPrecisionAngulaireDefaut() const {
+	return ConstantesPrincipal2015::PRECISION_ANGULAIRE_DEFAUT;
+}
+
+Distance ConstantesRobotPrincipal2015::getRayonRotation() const {
+	return ConstantesPrincipal2015::RAYON_ROTATION_ROBOT;
+}
+
+Vector3m ConstantesRobotPrincipal2015::getTailleRobot() const {
+	return ConstantesPrincipal2015::TAILLE_ROBOT;
+}
+
+Angle ConstantesRobotPrincipal2015::getOffsetAngleAdv() const {
+	return ConstantesPrincipal2015::OFFSET_ANGLE_ADV;
+}
+
+
+uint16_t ConstantesRobotPrincipal2015::getPortTCPIPDefaut() const {
+	return 1234;
+}
+
+int ConstantesRobotPrincipal2015::getIDRobot() const {
+	return ConstantesPrincipal2015::IDRobot;
+}
+
+

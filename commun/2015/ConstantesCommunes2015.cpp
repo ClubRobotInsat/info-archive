@@ -2,29 +2,47 @@
 
 #include "ConstantesCommunes2015.h"
 
-constexpr int Constantes2015Type::deltaPositionServo;
-constexpr int Constantes2015Type::deltaPositionMoteur;
-constexpr uint16_t Constantes2015Type::TCPIP_PORT_PAR_DEFAUT;
+uint16_t const Constantes2015::TCPIP_PORT_SIMU_DEFAUT = 4321;
 
-constexpr Duree Constantes2015Type::TIMEOUT_DEPLACEMENT_DEFAUT;
-constexpr Duree Constantes2015Type::TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT;
-constexpr VitesseLineaire Constantes2015Type::VITESSE_LINEAIRE_DEFAUT;
-constexpr VitesseAngulaire Constantes2015Type::VITESSE_ANGULAIRE_DEFAUT;
-constexpr Distance Constantes2015Type::PRECISION_LINEAIRE_DEFAUT;
-constexpr Angle Constantes2015Type::PRECISION_ANGULAIRE_DEFAUT;
+int const Constantes2015::deltaPositionServo = 20;
+int const Constantes2015::deltaPositionMoteur = 70;
 
-constexpr VitesseLineaire Constantes2015Type::VITESSE_LINEAIRE_EVITEMENT;
-constexpr VitesseAngulaire Constantes2015Type::VITESSE_ANGULAIRE_EVITEMENT;
+Duree const Constantes2015::TIMEOUT_DEPLACEMENT_DEFAUT = 10_s;
+Duree const Constantes2015::TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT = 5_s;
+VitesseLineaire const Constantes2015::VITESSE_LINEAIRE_DEFAUT = 40_cm_s;
+VitesseAngulaire const Constantes2015::VITESSE_ANGULAIRE_DEFAUT = 5_rad_s; // Unité arbitraire décidée en élec.
+Distance const Constantes2015::PRECISION_LINEAIRE_DEFAUT = 4_cm;
+Angle const Constantes2015::PRECISION_ANGULAIRE_DEFAUT = 4_deg;
 
-constexpr VitesseLineaire Constantes2015Type::VITESSE_LINEAIRE_RECALAGE;
+VitesseLineaire const Constantes2015::VITESSE_LINEAIRE_EVITEMENT = 20_cm_s;
+VitesseAngulaire const Constantes2015::VITESSE_ANGULAIRE_EVITEMENT = 1_rad_s;
 
-constexpr Duree Constantes2015Type::DUREE_MATCH;
+VitesseLineaire const Constantes2015::VITESSE_LINEAIRE_RECALAGE = 20_cm_s;
 
-constexpr int Constantes2015Type::NOMBRE_BLOCAGE_LOGICIEL_MAX;
-constexpr int Constantes2015Type::NOMBRE_BLOCAGE_PHYSIQUE_MAX;
+Duree const Constantes2015::DUREE_MATCH = 90_s;
 
-constexpr Distance Constantes2015Type::LARGEUR_TABLE;
-constexpr Distance Constantes2015Type::HAUTEUR_TABLE;
+int const Constantes2015::NOMBRE_BLOCAGE_LOGICIEL_MAX = 5;
+int const Constantes2015::NOMBRE_BLOCAGE_PHYSIQUE_MAX = 5;
 
-constexpr int Constantes2015Type::GRID_SIZE_X;
-constexpr int Constantes2015Type::GRID_SIZE_Y;
+Vector2m const Constantes2015::TAILLE_TABLE = {3_m, 2_m};
+Vector2u16 const Constantes2015::TAILLE_GRILLE = {300, 200};
+
+int ConstantesCommunes2015::getNombreBlocageLogicielMax() const {
+	return Constantes2015::NOMBRE_BLOCAGE_LOGICIEL_MAX;
+}
+
+int ConstantesCommunes2015::getNombreBlocagePhysiqueMax() const {
+	return Constantes2015::NOMBRE_BLOCAGE_PHYSIQUE_MAX;
+}
+
+Duree ConstantesCommunes2015::getDureeMatch() const {
+	return Constantes2015::DUREE_MATCH;
+}
+
+Vector2m ConstantesCommunes2015::getTailleTable() const {
+	return Constantes2015::TAILLE_TABLE;
+}
+
+Vector2u16 ConstantesCommunes2015::getTailleGrille() const {
+	return Constantes2015::TAILLE_GRILLE;
+}
