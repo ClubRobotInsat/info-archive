@@ -19,24 +19,10 @@ Vector3m translationPourRotationExcentree(Vector3m centreAbsolu, Vector3m centre
 }
 
 /**
-* Retourne vrai si la différence angulaire entre l'angle a1
-* et l'angle 'a2' est inférieure à l'angle 'threshold'.
-*
-* On utilise une méthode 'bourrine' qui consiste à calculer
-* la distance entre les 2 points formés par les 2 angles à comparer
-* sur le cercle rigo, le seuil donné (que l'on projette sur le cercle).
-*/
-bool equals(Angle a1, Angle a2, Angle threshold)
-{
-	float x1 = cos(a1.toRad());
-	float y1 = sin(a1.toRad());
-	float x2 = cos(a2.toRad());
-	float y2 = sin(a2.toRad());
-	float dx = x2 - x1;
-	float dy = y2 - y1;
-	// On calcule le carré de la distance entre les 2 points.
-	float distanceSquared = dx * dx + dy * dy;
-	// On calule notre seuil angulaire
-	float thresh = 2 * (1 - cos(threshold.toRad()));
-	return distanceSquared <= thresh;
+ * Retourne vrai si la différence angulaire entre l'angle a1
+ * et l'angle 'a2' est inférieure à l'angle 'threshold'.
+ *
+ */
+bool equals(Angle a1, Angle a2, Angle threshold) {
+	return abs((a1 - a2).toMoinsPiPi()) < abs(threshold.toMoinsPiPi());
 }

@@ -6,6 +6,17 @@
 #include "log/Log.h"
 #include <iostream>
 
+std::ostream &operator<<(std::ostream &s, Byte const &b) {
+	std::ios oldState(nullptr);
+	oldState.copyfmt(s);
+
+	s << "0x" << std::hex << b.value();
+
+	s.copyfmt(oldState);
+
+	return s;
+}
+
 Trame::Trame(uint8_t id, uint8_t cmd, uint8_t nbDonnees, uint8_t const donnees[]) : _num_paquet(0) {
 	this->addBytes(nbDonnees, donnees);
 	this->setId(id);
@@ -90,12 +101,12 @@ Trame::MuxedIdAndCmd Trame::multiplexIdAndCmd(uint8_t id, uint8_t cmd) {
 }
 
 // afficher la trame sur le flux de sortie
-std::ostream & operator <<(std::ostream & o, const Trame &t) {
+std::ostream &operator<<(std::ostream & o, Trame const &t) {
 	o << t.toString();
 	return o;
 }
 
-// convertir la tramme en chaine de caractere courte et en hexa
+// convertir la trame en chaine de caractere courte et en hexa
 std::string Trame::toString() const {
 	std::ostringstream oss;
 
@@ -116,7 +127,7 @@ std::string Trame::toString() const {
 	return oss.str();
 }
 
-// convertir la tramme en chaine de caractere lisible et decimal
+// convertir la trame en chaîne de caractères lisible et avec les nombres en base décimale
 std::string Trame::toStringLong() const {
 	std::ostringstream oss;
 	oss << "id=" << int(_id) << " cmd=" << Byte(_cmd) << " donnees={";

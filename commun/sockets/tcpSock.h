@@ -3,10 +3,10 @@
 /* info/commun/tcpSock.h                                           2015-05-17 */
 /* Club Robot INSA Toulouse                                      Félix Poisot */
 /******************************************************************************/
-#include "../Erreur.h"
 #include "Utils.h"
 #include <memory>
 #include <cstdint>
+#include <Commun.h>
 /******************************************************************************/
 
 EXCEPTION_CLASS(ErreurSocket);
