@@ -20,7 +20,7 @@
 #else
 
 #include "../../../robot/Cartes/Carte.h"
-#include "../../../robot/2015/Commun/CarteDeplacement2015.h"
+#include "../../../robot/Cartes/CarteDeplacementSymetrieY.h"
 #include "../../../robot/Cartes/CarteContacteurs2007.h"
 #include "../../../robot/Cartes/CarteIHM.h"
 #include "../../../robot/Cartes/CarteServosNova2009.h"
@@ -138,7 +138,7 @@ namespace ConstantesSecondaire2015 {
 #ifdef TARGET_SIMULATEUR
 		typedef CarteDeplacement2009 type;
 #else
-		typedef CarteDeplacement2015 type;
+		typedef CarteDeplacementSymetrieY type;
 #endif
 	};
 	template<>
