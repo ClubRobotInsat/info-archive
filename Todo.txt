@@ -20,9 +20,6 @@
 | IA                                                                           |
 +------------------------------------------------------------------------------+
 
-* Robustifier la communication IA <-> carte CAN USB (fenêtre glissante etc.)
-  o Créer un test exhaustif de la fiabilité de la commmunication
-
 * Constantes
   o Regroupement des constantes : y'en a partout (Constantes2015, Robot2015, Strategie2015…)
 
@@ -30,8 +27,6 @@
 | Simu                                                                         |
 +------------------------------------------------------------------------------+
 * Servos robot secondaire
-
-* RessourceManager
 
 * Envisager l'utilisation de shaders pour l'affichage
   o Boulot
@@ -41,8 +36,6 @@
 * Affichage d'infos de débug
 
 * Amélioration des performances des collisions
-
-* Chargement de textures un peu plus OO
 
 * Utilisation de la classe Socket de Commun
 
