@@ -2,6 +2,7 @@
 #define _CLOCK_H_H
 
 #include <iostream>
+#include <thread>
 #include "Units/Duree.h"
 
 #ifndef _WIN32
