@@ -7,6 +7,8 @@
 #include <algorithm>
 #include <vector>
 #include <cmath>
+#include <string>
+
 #ifndef M_PI
 #define M_E         2.7182818284590452354
 #define M_LOG2E		1.4426950408889634074
@@ -26,6 +28,32 @@
 #define NO_COPY_CTOR(name) private: name(const name&) = delete; \
                                     void operator=(name) = delete;
 
+using std::to_string;
+
+// Permet la copie d'un std::vector sur un std::ostream (std::cout par exemple).
+template<class T>
+std::ostream &operator<<(std::ostream &out, std::vector<T> const &v) {
+	out << '[';
+	std::copy(v.begin(), v.end(), std::ostream_iterator<char>(out, ", "));
+	out << ']';
+
+	return out;
+}
+
+template<typename T>
+std::string to_string(T const &t) {
+	// utiliser un flux de sortie pour créer la chaîne
+	std::ostringstream oss;
+	// écrire la valeur dans le flux
+	oss << t;
+	// renvoyer une string
+	return oss.str();
+}
+
+template<>
+inline std::string to_string<uint8_t>(uint8_t const &value) {
+	return to_string<int>(static_cast<uint8_t>(value));
+}
 
 /**** Conversions de/vers chaînes de caractères ******************************/
 
@@ -101,38 +129,6 @@ namespace Utils {
 
 		return nbNum;
 	}
-
-	// fonction qui transforme n'importe quel type en string si l'opérateur << est défini
-	template<typename T>
-	std::string toString(T const &value) {
-		// utiliser un flux de sortie pour créer la chaîne
-		std::ostringstream oss;
-		// écrire la valeur dans le flux
-		oss << value;
-		// renvoyer une string
-		return oss.str();
-	}
-	
-	template<>
-	inline std::string toString<uint8_t>(uint8_t const &value) {
-		return toString<int>(static_cast<uint8_t>(value));
-	}
-
-   template<class Ty>
-	std::string toString(std::vector<Ty> const & v)
-   {
-      std::ostringstream oss;
-      oss << '[';
-      for (int i=0; i < v.size()-1; ++i) { // tous sauf le dernier: pas de ','
-         oss << v[i];                      // en trop
-         oss << ", ";
-      }
-      if (v.size()) {
-         oss << v.back();
-      }
-      oss << ']';
-      return oss.str();
-   }
 };
 
 #endif // UTILS_H

@@ -17,8 +17,11 @@ std::ostream &operator<<(std::ostream &s, Byte const &b) {
 	return s;
 }
 
-Trame::Trame(uint8_t id, uint8_t cmd, uint8_t nbDonnees, uint8_t const donnees[]) : _num_paquet(0) {
-	this->addBytes(nbDonnees, donnees);
+Trame::Trame(uint8_t id, uint8_t cmd, std::initializer_list<uint8_t> donnees) {
+	if(donnees.size() > DONNEES_TRAME_MAX) {
+		throw std::length_error("Trop de donnees dans la trame !");
+	}
+	this->addBytes(donnees);
 	this->setId(id);
 	this->setCmd(cmd);
 }
@@ -57,6 +60,13 @@ void Trame::setId(uint8_t id) {
 	if(_id >= NB_CARTES_MAX)
 		throw ErreurIdCarteTropGrand(id);
 	_id = id;
+}
+
+void Trame::addBytes(std::initializer_list<uint8_t> donnees) {
+	if(donnees.size() + this->getNbDonnees() > Trame::DONNEES_TRAME_MAX)
+		throw ErreurTropDeDonnees(donnees.size());
+
+	_donnees.insert(_donnees.end(), donnees.begin(), donnees.end());
 }
 
 void Trame::addBytes(uint8_t nbDonnees, uint8_t const donnees[]) {
@@ -101,30 +111,17 @@ Trame::MuxedIdAndCmd Trame::multiplexIdAndCmd(uint8_t id, uint8_t cmd) {
 }
 
 // afficher la trame sur le flux de sortie
-std::ostream &operator<<(std::ostream & o, Trame const &t) {
-	o << t.toString();
+std::ostream &operator<<(std::ostream &o, Trame const &t) {
+	o << "[id=";
+	o << int(t._id);
+	o << ":";
+	o << "cmd=";
+	o << Byte(t._cmd);
+	o << ":";
+	o << "données=[";
+	std::copy(t._donnees.begin(), t._donnees.end(), std::ostream_iterator<char>(o, ", "));
+	o << ']';
 	return o;
-}
-
-// convertir la trame en chaine de caractere courte et en hexa
-std::string Trame::toString() const {
-	std::ostringstream oss;
-
-	oss << "[id=";
-	oss << int(_id);
-	oss << ":";
-	oss << "cmd=";
-	oss << Byte(_cmd);
-	oss << ":";
-	oss << "données=";
-	for(uint8_t numDonnee = 0; numDonnee < _donnees.size(); ++numDonnee) {
-		oss << Byte(_donnees[numDonnee]);
-		if(numDonnee == _donnees.size()-1)
-			oss << "]";
-		else
-			oss << ",";
-	}
-	return oss.str();
 }
 
 // convertir la trame en chaîne de caractères lisible et avec les nombres en base décimale

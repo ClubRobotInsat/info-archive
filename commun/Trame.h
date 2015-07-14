@@ -9,6 +9,8 @@
 #include <iostream>
 #include <string>
 #include <cstdint>
+#include <stdexcept>
+#include <initializer_list>
 
 class Byte final {
 public:
@@ -51,38 +53,39 @@ public:
 	};
 	
 	// erreur l'indice de la carte est trop grand
-	class ErreurIdCarteTropGrand : public std::runtime_error { public: ErreurIdCarteTropGrand(uint8_t id):std::runtime_error("L'id "+Utils::toString(id)+" n'est pas un id valide"){} };
+	class ErreurIdCarteTropGrand : public std::runtime_error { public: ErreurIdCarteTropGrand(uint8_t id):std::runtime_error("L'id " + to_string(id) + " n'est pas un id valide"){} };
 
 	// erreur si une trame n'est pas traitée
-	class ErreurTrameNonTraitee : public std::runtime_error { public: ErreurTrameNonTraitee(const Trame & t):std::runtime_error("La trame "+ t.toString() +" n'a pas été traitée"){} };
+	class ErreurTrameNonTraitee : public std::runtime_error { public: ErreurTrameNonTraitee(const Trame & t):std::runtime_error("La trame "+ to_string(t) +" n'a pas été traitée"){} };
 
 	// erreur si le numero de la donnée est trop grand
-	class ErreurNumeroDonneeTropGrand : public std::runtime_error { public: ErreurNumeroDonneeTropGrand(uint8_t num) : std::runtime_error("Le nombre de données dans la trame est trop petit pour accéder au numero " + Utils::toString(num)){} };
+	class ErreurNumeroDonneeTropGrand : public std::runtime_error { public: ErreurNumeroDonneeTropGrand(uint8_t num) : std::runtime_error("Le nombre de données dans la trame est trop petit pour accéder au numero " + to_string(num)){} };
 
 	// erreur si la quantité de données est trop grande
-	class ErreurTropDeDonnees : public std::runtime_error { public: ErreurTropDeDonnees(uint8_t num) : std::runtime_error("Trop de données dans la trame : " + Utils::toString(num)){} };
+	class ErreurTropDeDonnees : public std::runtime_error { public: ErreurTropDeDonnees(uint8_t num) : std::runtime_error("Trop de données dans la trame : " + to_string(num)){} };
 
 	// erreur si le numero du bit dans l'octet est trop grand
-	class ErreurNumeroBitTropGrand : public std::runtime_error { public: ErreurNumeroBitTropGrand(uint8_t num) : std::runtime_error("Le numero du bit " + Utils::toString((short)num) + " est invalide : il doit être comprit entre 0 et 7 inclu "){} };
+	class ErreurNumeroBitTropGrand : public std::runtime_error { public: ErreurNumeroBitTropGrand(uint8_t num) : std::runtime_error("Le numero du bit " + to_string((short)num) + " est invalide : il doit être comprit entre 0 et 7 inclu "){} };
 
 	// erreur si la distance entre la camera au centre d'observation est négative
-	class ErreurNumCommandeTropGrand : public std::runtime_error { public: ErreurNumCommandeTropGrand(uint8_t num) : std::runtime_error("Le numéro de commande demandé n'existe pas : " + Utils::toString(num)){} };
+	class ErreurNumCommandeTropGrand : public std::runtime_error { public: ErreurNumCommandeTropGrand(uint8_t num) : std::runtime_error("Le numéro de commande demandé n'existe pas : " + to_string(num)){} };
 
 public:
-	// constructeur : état par défaut, id = cmd = numPaquet = 0, pas de données
+	// constructeur : état par défaut, id = cmd = numPaquet = 0, pas de données
 	Trame() : Trame(0, 0) { }
 
 	// constructeur : sans données
 	// lève ErreurIdCarteTropGrand si l'id de la carte est trop grand
 	// lève ErreurNumCommandeTropGrand si la commande est trop grande
-	explicit Trame(uint8_t id, uint8_t cmd) : Trame(id, cmd, 0, nullptr) { }
+	explicit Trame(uint8_t id, uint8_t cmd) : Trame(id, cmd, {}) { }
 
 	// constructeur, avec plusieurs données pour le 1er et une seule pour le 2e
 	// lève ErreurIdCarteTropGrand si l'id de la carte est trop grand
-	// lève ErreurIdCarteTropGrand si l'id de la carte est trop grand
+	// lève ErreurIdCarteTropGrand si l'id de la carte est trop grand
 	// lève ErreurNumCommandeTropGrand si la commande est 0xFtrop grande
-	explicit Trame(uint8_t id, uint8_t cmd, uint8_t nbDonnees, uint8_t const donnees[]);
-	explicit Trame(uint8_t id, uint8_t cmd, uint8_t donnee) : Trame(id, cmd, 1, &donnee) { }
+	explicit Trame(uint8_t id, uint8_t cmd, std::initializer_list<uint8_t> donnees);
+	//explicit Trame(uint8_t id, uint8_t cmd, uint8_t nbDonnees, uint8_t const donnees[]);
+	explicit Trame(uint8_t id, uint8_t cmd, uint8_t donnee) : Trame(id, cmd, {donnee}) { }
 
 	Trame(Trame const &t) = default;
 	Trame(Trame &&t) = default;
@@ -106,6 +109,7 @@ public:
 	bool getDonneeBool(uint8_t numero, uint8_t bit);
 
 	void addByte(uint8_t value) { this->addDonnees(value); }
+	void addBytes(std::initializer_list<uint8_t> bytes);
 	void addBytes(uint8_t count, uint8_t const bytes[]);
 
 	template<typename... Args>
@@ -134,10 +138,7 @@ public:
 
 	// afficher la trame sur le flux de sortie
 	friend std::ostream & operator <<(std::ostream &, const Trame &);
-	
-	// convertir la trame en chaine de caractere courte et en hexa
-	std::string toString() const;
-	
+
 	// convertir la trame en chaîne de caractères lisible et avec les nombres en base décimale
 	std::string toStringLong() const;
 
