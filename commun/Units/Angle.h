@@ -98,7 +98,7 @@ public:
 	 * Retourne l'angle dans l'intervalle [-π, π[.
 	 * @return une copie de l'instance avec pour valeur son angle dans l'intervalle [-π,π[
 	 */
-	CONDITIONAL_CONSTEXPR Type toMoinsPiPi() const {
+	constexpr Type toMoinsPiPi() const {
 		auto mod2Pi = this->angleMod2Pi();
 
 		if(mod2Pi >= Type::makeFromRad(M_PI))

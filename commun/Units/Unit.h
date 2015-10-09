@@ -18,13 +18,6 @@ using std::abs;
 using std::atan2;
 using std::sqrt;
 
-// g++ même dans la version 4.9 ne se conforme pas au standard C++14 pour l'utilisation de fonctions constepxr
-#if __clang__
-#define CONDITIONAL_CONSTEXPR constexpr
-#else
-#define CONDITIONAL_CONSTEXPR
-#endif
-
 class UnitBase {
 public:
 	using ValueType = double;
@@ -43,7 +36,7 @@ class Unit : public UnitBase {};
  * @param ValType le type destiné à stocker les valeurs numériques de la grandeur (float, double, long double voire même entier en fonction de la précision voulue).
  */
 template<int Kg, int M, int S>
-class Unit<Kg, M, S, false> : public UnitBase  {
+class Unit<Kg, M, S, false> : public UnitBase {
 	template<int Kg1, int M1, int S1>
 	using DerivedType = Unit<Kg1, M1, S1, true>;
 public:
@@ -63,7 +56,7 @@ public:
 
 	/**
 	 * Créé une grandeur physique avec la valeur numérique nue.
-	 * Par exemple, une grandeur de longueur stockant des mètres et créée avec cette fonction et une valeur de 1 représentera une valeur de 1 mètre.
+     * Par exemple, une grandeur de longueur stockant des mètres et créée avec cette fonction et une valeur de 1 représentera une valeur de 1 mètre.
 	 * @param v la valeur numérique à assigner à la grandeur.
 	 * @return une instance de la grandeur physique représentant la valeur demandée.
 	 */
@@ -94,7 +87,7 @@ public:
 	 * @param v l'instance de même grandeur physique que *this qui contient la valeur à récupérer
 	 * @return l'instance courante, après que sa grandeur ait été remplacée par celle contenue dans le paramètre.
 	 */
-	CONDITIONAL_CONSTEXPR DerivedType<Kg, M, S> &operator=(DerivedType<Kg, M, S> v) {
+	constexpr DerivedType<Kg, M, S> &operator=(DerivedType<Kg, M, S> v) {
 		std::swap(static_cast<DerivedType<Kg, M, S> &>(*this), v);
 		return static_cast<DerivedType<Kg, M, S> &>(*this);
 	}
@@ -121,7 +114,7 @@ public:
 	 * @param val la valeur qu'on veut ajouter à la valeur de l'instance courante
 	 * @return l'instance courante à laquelle a été ajoutée la valeur du paramètre
 	 */
-	CONDITIONAL_CONSTEXPR DerivedType<Kg, M, S> &operator+=(DerivedType<Kg, M, S> const &val) {
+	constexpr DerivedType<Kg, M, S> &operator+=(DerivedType<Kg, M, S> const &val) {
 		_val += val._val;
 		return static_cast<DerivedType<Kg, M, S> &>(*this);
 	}
@@ -130,7 +123,7 @@ public:
 	 * Les deux grandeurs doivent être homogènes.
 	 * @param v1 le premier terme de la somme
 	 * @param v2 le deuxième terme de la somme
-	 * @return une nouvelle instance représentant la somme de la valeur de l'instance courante avec la valeur du paramètre
+     * @return une nouvelle instance représentant la somme de la valeur de l'instance courante avec la valeur du paramètre
 	 */
 	constexpr friend DerivedType<Kg, M, S> operator+(DerivedType<Kg, M, S> const &v1, DerivedType<Kg, M, S> const &v2) {
 		return makeFromValue(v1._val + v2._val);
@@ -142,7 +135,7 @@ public:
 	 * @param val la valeur qu'on veut soustraire à la valeur de l'instance courante
 	 * @return l'instance courante à laquelle a été soustraite la valeur du paramètre
 	 */
-	CONDITIONAL_CONSTEXPR DerivedType<Kg, M, S> &operator-=(DerivedType<Kg, M, S> const &val) {
+	constexpr DerivedType<Kg, M, S> &operator-=(DerivedType<Kg, M, S> const &val) {
 		_val -= val._val;
 		return static_cast<DerivedType<Kg, M, S> &>(*this);
 	}
@@ -151,7 +144,7 @@ public:
 	 * Les deux grandeurs doivent être homogènes.
 	 * @param v1 le premier terme de la différence
 	 * @param v2 le deuxième terme de la différence
-	 * @return une nouvelle instance représentant la différence de la valeur de l'instance courante avec la valeur du paramètre
+     * @return une nouvelle instance représentant la différence de la valeur de l'instance courante avec la valeur du paramètre
 	 */
 	constexpr friend DerivedType<Kg, M, S> operator-(DerivedType<Kg, M, S> const &v1, DerivedType<Kg, M, S> const &v2) {
 		return makeFromValue(v1._val - v2._val);
@@ -165,8 +158,7 @@ public:
 	 * @return l'instance courante multipliée par le paramètre
 	 */
 	template<typename U>
-	CONDITIONAL_CONSTEXPR std::enable_if_t<!std::is_base_of<UnitBase, U>::value, DerivedType<Kg, M, S> &>
-	operator*=(U val) {
+	constexpr std::enable_if_t<!std::is_base_of<UnitBase, U>::value, DerivedType<Kg, M, S> &> operator*=(U val) {
 		_val *= val;
 		return static_cast<DerivedType<Kg, M, S> &>(*this);
 	}
@@ -189,8 +181,7 @@ public:
 	 * Pareil qu'au dessus
 	 */
 	template<typename U, int Kg1, int M1, int S1>
-	constexpr friend Unit<Kg1, M1, S1, true>
-	operator*(U v1, Unit<Kg1, M1, S1, true> const &v2);
+	constexpr friend Unit<Kg1, M1, S1, true> operator*(U v1, Unit<Kg1, M1, S1, true> const &v2);
 	/**
 	 * Divise l'instance courante par la valeur du paramètre.
 	 * Le paramètre doit ne doit pas représenter une grandeur physique (il doit être un simple scalaire).
@@ -199,8 +190,7 @@ public:
 	 * @return l'instance divisée par le paramètre
 	 */
 	template<typename U>
-	CONDITIONAL_CONSTEXPR std::enable_if_t<std::is_arithmetic<U>::value, DerivedType<Kg, M, S> &>
-	operator/=(DerivedType<Kg, M, S> val) {
+	constexpr std::enable_if_t<std::is_arithmetic<U>::value, DerivedType<Kg, M, S> &> operator/=(DerivedType<Kg, M, S> val) {
 		_val /= val;
 		return static_cast<DerivedType<Kg, M, S> &>(*this);
 	}
@@ -215,7 +205,7 @@ public:
 	 */
 	template<typename U>
 	constexpr friend std::enable_if_t<std::is_arithmetic<U>::value, DerivedType<Kg, M, S>>
-	operator/(DerivedType<Kg, M, S> const &v1, U v2) {
+    operator/(DerivedType<Kg, M, S> const &v1, U v2) {
 		return makeFromValue(v1._val / v2);
 	}
 
@@ -224,7 +214,7 @@ public:
 	 * @param val le diviseur de la division
 	 * @return l'instance courante, après que le reste de la division lui ait été affecté
 	 */
-	CONDITIONAL_CONSTEXPR DerivedType<Kg, M, S> &operator%=(DerivedType<Kg, M, S> val) {
+	constexpr DerivedType<Kg, M, S> &operator%=(DerivedType<Kg, M, S> val) {
 		_val = std::fmod(_val, val._val);
 		return static_cast<DerivedType<Kg, M, S> &>(*this);
 	}
@@ -235,13 +225,13 @@ public:
 	 * @param v2 le diviseur de la division
 	 * @return le reste de la division
 	 */
-	constexpr friend DerivedType<Kg, M, S> operator%(DerivedType<Kg, M, S> const & v1, DerivedType<Kg, M, S> v2) {
+	constexpr friend DerivedType<Kg, M, S> operator%(DerivedType<Kg, M, S> const &v1, DerivedType<Kg, M, S> v2) {
 		return makeFromValue(std::fmod(v1._val, v2._val));
 	}
 
 	/**
 	 * Teste l'égalité des deux grandeurs physiques.
-	 * Si ValueType est un nombre en virgule flottante de précision limitée, attention, un test avec une tolérance sera peut-être préférable.
+     * Si ValueType est un nombre en virgule flottante de précision limitée, attention, un test avec une tolérance sera peut-être préférable.
 	 * @param val1 le premier terme de la comparaison
 	 * @param val2 le deuxième terme de la comparaison
 	 * @return true si les valeurs sont égales, false sinon
@@ -252,7 +242,7 @@ public:
 
 	/**
 	 * Teste l'égalité des deux grandeurs physiques.
-	 * Si ValueType est un nombre en virgule flottante de précision limitée, attention, un test avec une tolérance sera peut-être préférable.
+     * Si ValueType est un nombre en virgule flottante de précision limitée, attention, un test avec une tolérance sera peut-être préférable.
 	 * @param val1 le premier terme de la comparaison
 	 * @param val2 le deuxième terme de la comparaison
 	 * @return true si les valeurs sont différentes, false sinon
@@ -327,32 +317,32 @@ public:
 		return std::sin(val._val);
 	}
 
-	/**
-	 * Accède à la valeur numérique stockée par l'instance.
-	 * Accessible uniquement aux classes filles.
-	 * Par défault, le type de la valeur retourné est ValueType, et donc capable de retourner directement la valeur de l'instance.
-	 * En revanche, si le type de retour est spécifié, une vérification est effectuée pour être sûr que la conversion est sans overflow.
-	 * Si c'est le cas, on affiche une erreur, et la valeur retournée représente une valeur incohérente.
-	 * Ce test n'est pas effectué si la macro UNIT_NO_OVERFLOW_CHECK est définie, mais la valeur retournée sera bien sûr toujours incohérente.
-	 *
-	 * @return la valeur numérique de l'instance.
-	 */
+    /**
+     * Accède à la valeur numérique stockée par l'instance.
+     * Accessible uniquement aux classes filles.
+     * Par défault, le type de la valeur retourné est ValueType, et donc capable de retourner directement la valeur de l'instance.
+     * En revanche, si le type de retour est spécifié, une vérification est effectuée pour être sûr que la conversion est sans overflow.
+     * Si c'est le cas, on affiche une erreur, et la valeur retournée représente une valeur incohérente.
+     * Ce test n'est pas effectué si la macro UNIT_NO_OVERFLOW_CHECK est définie, mais la valeur retournée sera bien sûr toujours incohérente.
+     *
+     * @return la valeur numérique de l'instance.
+     */
 	template<typename U = ValueType>
-	CONDITIONAL_CONSTEXPR U value() const {
+	constexpr U value() const {
 #ifndef UNIT_NO_OVERFLOW_CHECK
-		if(_val > std::numeric_limits<U>::max() || _val < std::numeric_limits<U>::lowest()) {
-			std::cerr << "<ACHTUNG !>" << std::endl;
-			std::cerr << "Le type vers lequel est convertie la grandeur physique ne peut pas représenter la valeur actuelle de la grandeur !" << std::endl;
-			std::cerr << "C'est grave ! FIXME !" << std::endl;
-			std::cerr << "</ACHTUNG !>" << std::endl;
-		}
+        if(_val > std::numeric_limits<U>::max() || _val < std::numeric_limits<U>::lowest()) {
+            std::cerr << "<ACHTUNG !>" << std::endl;
+            std::cerr << "Le type vers lequel est convertie la grandeur physique ne peut pas représenter la valeur actuelle de la grandeur !" << std::endl;
+            std::cerr << "C'est grave ! FIXME !" << std::endl;
+            std::cerr << "</ACHTUNG !>" << std::endl;
+        }
 #endif // UNIT_NO_OVERFLOW_CHECK
 		return static_cast<U>(_val);
 	}
 
 protected:
 	constexpr Unit(float val) : _val(val) {}
-	
+
 	ValueType _val;
 };
 
