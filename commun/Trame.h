@@ -79,12 +79,12 @@ public:
 	// lève ErreurNumCommandeTropGrand si la commande est trop grande
 	explicit Trame(uint8_t id, uint8_t cmd) : Trame(id, cmd, {}) { }
 
-	// constructeur, avec plusieurs données pour le 1er et une seule pour le 2e
+	// constructeur, avec plusieurs données pour le 1er et 2e et une seule pour le 3e
 	// lève ErreurIdCarteTropGrand si l'id de la carte est trop grand
 	// lève ErreurIdCarteTropGrand si l'id de la carte est trop grand
 	// lève ErreurNumCommandeTropGrand si la commande est 0xFtrop grande
 	explicit Trame(uint8_t id, uint8_t cmd, std::initializer_list<uint8_t> donnees);
-	//explicit Trame(uint8_t id, uint8_t cmd, uint8_t nbDonnees, uint8_t const donnees[]);
+	explicit Trame(uint8_t id, uint8_t cmd, uint8_t nbDonnees, uint8_t const donnees[]);
 	explicit Trame(uint8_t id, uint8_t cmd, uint8_t donnee) : Trame(id, cmd, {donnee}) { }
 
 	Trame(Trame const &t) = default;

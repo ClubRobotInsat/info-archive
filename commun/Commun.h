@@ -8,6 +8,8 @@
 #include "Clock.h"
 #include "Utils.h"
 #include "ResultatAction.h"
+#include <cstdint>
+#include <thread>
 
 using namespace std::string_literals;
 

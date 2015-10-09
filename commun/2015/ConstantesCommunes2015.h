@@ -7,6 +7,7 @@
 #include <cstdint>
 #include "../Commun.h"
 #include "../Constantes.h"
+#include "../Enum/Enum.h"
 
 namespace Constantes2015 {
 	ENUM_CLASS_NS(Constantes2015, CouleurRobot,

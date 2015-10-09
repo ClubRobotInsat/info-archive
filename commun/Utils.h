@@ -8,6 +8,7 @@
 #include <vector>
 #include <cmath>
 #include <string>
+#include <iterator>
 
 #ifndef M_PI
 #define M_E         2.7182818284590452354

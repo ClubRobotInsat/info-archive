@@ -17,10 +17,13 @@ std::ostream &operator<<(std::ostream &s, Byte const &b) {
 	return s;
 }
 
+Trame::Trame(uint8_t id, uint8_t cmd, uint8_t nbDonnees, uint8_t const donnees[]) {
+	this->addBytes(nbDonnees, donnees);
+	this->setId(id);
+	this->setCmd(cmd);
+}
+
 Trame::Trame(uint8_t id, uint8_t cmd, std::initializer_list<uint8_t> donnees) {
-	if(donnees.size() > DONNEES_TRAME_MAX) {
-		throw std::length_error("Trop de donnees dans la trame !");
-	}
 	this->addBytes(donnees);
 	this->setId(id);
 	this->setCmd(cmd);
