@@ -1,9 +1,8 @@
 
 
 set(OUTILS_SOURCE
-	2015/RobotPrincipal/Constantes2015.cpp
-	2015/RobotSecondaire/Constantes2015.cpp
-	2015/ConstantesCommunes2015.cpp
+	RobotPrincipal/Constantes.cpp
+	ConstantesCommunes.cpp
 	log/Log.cpp
 	log/LogHTML.cpp
 	log/LogRTF.cpp

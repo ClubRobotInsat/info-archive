@@ -5,12 +5,12 @@
 
 #include <iostream>
 #include <cstdint>
-#include "../Commun.h"
-#include "../Constantes.h"
-#include "../Enum/Enum.h"
+#include "Commun.h"
+#include "IConstantes.h"
+#include "Enum/Enum.h"
 
-namespace Constantes2015 {
-	ENUM_CLASS_NS(Constantes2015, CouleurRobot,
+namespace Constantes {
+	ENUM_CLASS_NS(Constantes, CouleurRobot,
 				  Jaune,
 				  Vert,
 				  //Valeur d'initialisation, qui permet de déctecter si la lecture du capteur couleur a déconné.
@@ -18,8 +18,8 @@ namespace Constantes2015 {
 	);
 }
 
-namespace Constantes2015 {
-	using CouleurRobot = Constantes2015::CouleurRobot;
+namespace Constantes {
+	using CouleurRobot = Constantes::CouleurRobot;
 
 	extern uint16_t const TCPIP_PORT_SIMU_DEFAUT;
 
@@ -47,16 +47,16 @@ namespace Constantes2015 {
 	extern Vector2u16 const TAILLE_GRILLE;
 }
 
-inline Constantes2015::CouleurRobot operator!(Constantes2015::CouleurRobot const &c) {
-	if(c == Constantes2015::CouleurRobot::Vert)
-		return Constantes2015::CouleurRobot::Jaune;
-	else if(c == Constantes2015::CouleurRobot::Jaune)
-		return Constantes2015::CouleurRobot::Vert;
+inline Constantes::CouleurRobot operator!(Constantes::CouleurRobot const &c) {
+	if(c == Constantes::CouleurRobot::Vert)
+		return Constantes::CouleurRobot::Jaune;
+	else if(c == Constantes::CouleurRobot::Jaune)
+		return Constantes::CouleurRobot::Vert;
 
 	return c;
 }
 
-struct ConstantesCommunes2015 : ConstantesCommunes {
+struct ConstantesCommunes : Commun::ConstantesCommunes {
 	virtual int getNombreBlocageLogicielMax() const override;
 	virtual int getNombreBlocagePhysiqueMax() const override;
 
