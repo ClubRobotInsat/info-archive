@@ -1,0 +1,3 @@
+[submodule "petri"]
+	path = petri
+	url = https://github.com/rems4e/petri.git
