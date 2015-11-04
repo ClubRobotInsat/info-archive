@@ -132,10 +132,10 @@ namespace ConstantesPrincipal {
 	};
 
 	// On reprend par défaut les mêmes valeur que la partie commune aux 2 robots, à changer si nécessaire
-	extern Duree const TIMEOUT_DEPLACEMENT_DEFAUT;
-	extern Duree const TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT;
-	extern VitesseLineaire const VITESSE_LINEAIRE_DEFAUT;
-	extern VitesseAngulaire const VITESSE_ANGULAIRE_DEFAUT;
+	extern Duration const TIMEOUT_DEPLACEMENT_DEFAUT;
+	extern Duration const TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT;
+	extern Speed const VITESSE_LINEAIRE_DEFAUT;
+	extern AngularSpeed const VITESSE_ANGULAIRE_DEFAUT;
 	extern Distance const PRECISION_LINEAIRE_DEFAUT;
 	extern Angle const PRECISION_ANGULAIRE_DEFAUT;
 
@@ -168,8 +168,7 @@ namespace ConstantesPrincipal {
 	struct CarteServoInfo {};
 
 	template <>
-	struct CarteInfo<IDCartesPrincipal::CAN_USB>
-		: public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_CAN_USB> {
+	struct CarteInfo<IDCartesPrincipal::CAN_USB> : public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_CAN_USB> {
 		typedef CarteCAN_USB type;
 	};
 	template <>
@@ -229,10 +228,10 @@ namespace ConstantesPrincipal {
 };
 
 struct ConstantesRobotPrincipal : public Commun::ConstantesRobot {
-	virtual Duree getTimeoutDeplacementDefaut() const override;
-	virtual Duree getTimeoutBlocageAdversaireDefaut() const override;
-	virtual VitesseLineaire getVitesseLineaireDefaut() const override;
-	virtual VitesseAngulaire getVitesseAngulaireDefaut() const override;
+	virtual Duration getTimeoutDeplacementDefaut() const override;
+	virtual Duration getTimeoutBlocageAdversaireDefaut() const override;
+	virtual Speed getVitesseLineaireDefaut() const override;
+	virtual AngularSpeed getVitesseAngulaireDefaut() const override;
 	virtual Distance getPrecisionLineaireDefaut() const override;
 	virtual Angle getPrecisionAngulaireDefaut() const override;
 

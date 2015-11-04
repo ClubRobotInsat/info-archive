@@ -3,10 +3,11 @@
 
 #include <iostream>
 #include <thread>
-#include "Units/Duree.h"
+#include "Units/Time.h"
 
 #ifndef _WIN32
-// Cet en-tête définit une fonction sleep. Pour ne pas foirer la compilation en substituant la macro ci-après, on inclut le header d'abord.
+// Cet en-tête définit une fonction sleep. Pour ne pas foirer la compilation en substituant la macro ci-après, on inclut
+// le header d'abord.
 #include <unistd.h>
 #endif
 
@@ -43,8 +44,8 @@ public:
 		return DateTemps(DateTempsClock::now() + std::chrono::hours(24) * 365 * 100);
 	}
 
-	DateTemps &operator-=(Duree const &d);
-	DateTemps &operator+=(Duree const &d);
+	DateTemps &operator-=(Duration const &d);
+	DateTemps &operator+=(Duration const &d);
 
 	DateTempsType value() const {
 		return _value;
@@ -78,25 +79,25 @@ inline bool operator>=(DateTemps const &d1, DateTemps const &d2) {
 	return !(d1 < d2);
 }
 
-inline Duree operator-(DateTemps const &d1, DateTemps const &d2) {
+inline Duration operator-(DateTemps const &d1, DateTemps const &d2) {
 	auto delta = std::chrono::duration_cast<std::chrono::nanoseconds>(d1.value() - d2.value());
-	return Duree::makeFromNs(delta.count());
+	return Duration::makeFromNs(delta.count());
 }
 
-inline DateTemps operator-(DateTemps const &d1, Duree const &d2) {
+inline DateTemps operator-(DateTemps const &d1, Duration const &d2) {
 	return DateTemps(d1.value() - d2.toSystemDelay());
 }
 
-inline DateTemps operator+(DateTemps const &d1, Duree const &d2) {
+inline DateTemps operator+(DateTemps const &d1, Duration const &d2) {
 	return DateTemps(d1.value() + d2.toSystemDelay());
 }
 
-inline DateTemps &DateTemps::operator-=(Duree const &d) {
+inline DateTemps &DateTemps::operator-=(Duration const &d) {
 	*this = *this - d;
 	return *this;
 }
 
-inline DateTemps &DateTemps::operator+=(Duree const &d) {
+inline DateTemps &DateTemps::operator+=(Duration const &d) {
 	*this = *this + d;
 	return *this;
 }
@@ -108,16 +109,16 @@ public:
 	}
 
 	// Retourne le temps écoulé depuis la dernière réinitialisation
-	Duree getElapsedTime() const {
+	Duration getElapsedTime() const {
 		auto val = std::chrono::duration_cast<std::chrono::nanoseconds>(DateTemps::DateTempsClock::now() - _startTime);
-		return Duree::makeFromNs(val.count());
+		return Duration::makeFromNs(val.count());
 	}
 
 	// Réinitialise le chrono
 	void reset() {
 		_startTime = DateTemps::DateTempsClock::now();
 	}
-	
+
 private:
 	DateTemps::DateTempsType _startTime;
 };

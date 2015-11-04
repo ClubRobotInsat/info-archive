@@ -18,10 +18,10 @@ namespace ConstantesPrincipal {
 	Distance const DISTANCE_CENTRE_PINCES = 30_cm;
 }
 
-Duree const ConstantesPrincipal::TIMEOUT_DEPLACEMENT_DEFAUT = Constantes::TIMEOUT_DEPLACEMENT_DEFAUT;
-Duree const ConstantesPrincipal::TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT = Constantes::TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT;
-VitesseLineaire const ConstantesPrincipal::VITESSE_LINEAIRE_DEFAUT = Constantes::VITESSE_LINEAIRE_DEFAUT;
-VitesseAngulaire const ConstantesPrincipal::VITESSE_ANGULAIRE_DEFAUT = 3.75_rad_s;
+Duration const ConstantesPrincipal::TIMEOUT_DEPLACEMENT_DEFAUT = Constantes::TIMEOUT_DEPLACEMENT_DEFAUT;
+Duration const ConstantesPrincipal::TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT = Constantes::TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT;
+Speed const ConstantesPrincipal::VITESSE_LINEAIRE_DEFAUT = Constantes::VITESSE_LINEAIRE_DEFAUT;
+AngularSpeed const ConstantesPrincipal::VITESSE_ANGULAIRE_DEFAUT = 3.75_rad_s;
 Distance const ConstantesPrincipal::PRECISION_LINEAIRE_DEFAUT = Constantes::PRECISION_LINEAIRE_DEFAUT;
 Angle const ConstantesPrincipal::PRECISION_ANGULAIRE_DEFAUT = Constantes::PRECISION_ANGULAIRE_DEFAUT;
 
@@ -32,19 +32,18 @@ Angle const ConstantesPrincipal::OFFSET_ANGLE_ADV = -0.5_PI;
 
 int const ConstantesPrincipal::IDRobot = 1;
 
-Duree ConstantesRobotPrincipal::getTimeoutDeplacementDefaut() const {
+Duration ConstantesRobotPrincipal::getTimeoutDeplacementDefaut() const {
 	return ConstantesPrincipal::TIMEOUT_DEPLACEMENT_DEFAUT;
 }
 
-Duree ConstantesRobotPrincipal::getTimeoutBlocageAdversaireDefaut() const {
+Duration ConstantesRobotPrincipal::getTimeoutBlocageAdversaireDefaut() const {
 	return ConstantesPrincipal::TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT;
 }
 
-VitesseLineaire ConstantesRobotPrincipal::getVitesseLineaireDefaut() const {
+Speed ConstantesRobotPrincipal::getVitesseLineaireDefaut() const {
 	return ConstantesPrincipal::VITESSE_LINEAIRE_DEFAUT;
 }
-
-VitesseAngulaire ConstantesRobotPrincipal::getVitesseAngulaireDefaut() const {
+AngularSpeed ConstantesRobotPrincipal::getVitesseAngulaireDefaut() const {
 	return ConstantesPrincipal::VITESSE_ANGULAIRE_DEFAUT;
 }
 
@@ -76,5 +75,3 @@ uint16_t ConstantesRobotPrincipal::getPortTCPIPDefaut() const {
 int ConstantesRobotPrincipal::getIDRobot() const {
 	return ConstantesPrincipal::IDRobot;
 }
-
-

@@ -13,10 +13,10 @@
 
 namespace Commun {
 	struct ConstantesRobot {
-		virtual Duree getTimeoutDeplacementDefaut() const = 0;
-		virtual Duree getTimeoutBlocageAdversaireDefaut() const = 0;
-		virtual VitesseLineaire getVitesseLineaireDefaut() const = 0;
-		virtual VitesseAngulaire getVitesseAngulaireDefaut() const = 0;
+		virtual Duration getTimeoutDeplacementDefaut() const = 0;
+		virtual Duration getTimeoutBlocageAdversaireDefaut() const = 0;
+		virtual Speed getVitesseLineaireDefaut() const = 0;
+		virtual AngularSpeed getVitesseAngulaireDefaut() const = 0;
 		virtual Distance getPrecisionLineaireDefaut() const = 0;
 		virtual Angle getPrecisionAngulaireDefaut() const = 0;
 
@@ -33,7 +33,7 @@ namespace Commun {
 		virtual int getNombreBlocageLogicielMax() const = 0;
 		virtual int getNombreBlocagePhysiqueMax() const = 0;
 
-		virtual Duree getDureeMatch() const = 0;
+		virtual Duration getDureeMatch() const = 0;
 
 		virtual Vector2m getTailleTable() const = 0;
 		virtual Vector2u16 getTailleGrille() const = 0;
