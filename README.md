@@ -10,8 +10,6 @@ Clonage du repo
 ------------
 ```
 git clone https://github.com/ClubRobotInsat/info.git
-cd info/petri
-git submodule init
-git submodule update
+git submodule update --init
 svn checkout https://www.etud.insa-toulouse.fr/svn/roboinsat/CodeCommun --username votre_login
 ```
