@@ -5,19 +5,16 @@
 
 #include <list>
 
-class ItemsFinder
-{
+class ItemsFinder {
 public:
-	struct Item
-	{
+	struct Item {
 		int x, y, w, h;
 		int centerX, centerY;
 	};
 
 	typedef std::list<Item> ItemsList;
 
-	struct Config
-	{
+	struct Config {
 		int widthMin, heightMin;
 		int widthMax, heightMax;
 	};
@@ -32,12 +29,12 @@ public:
 	ItemsFinder(int width, int height);
 	virtual ~ItemsFinder();
 
-	void run(const char* dataGray);
+	void run(const char *dataGray);
 
-	const ItemsList& getFoundItems() const;
+	const ItemsList &getFoundItems() const;
 
-	void setConfig(const Config& config);
-	const Config& getConfig() const;
+	void setConfig(const Config &config);
+	const Config &getConfig() const;
 };
 
 #endif // ITEMS_FINDER_H

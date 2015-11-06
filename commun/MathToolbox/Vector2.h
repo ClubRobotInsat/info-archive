@@ -17,105 +17,111 @@ public:
 	typedef T value_type;
 
 	union {
-		struct{T r, g;};
-		struct{T s, t;};
-		struct{T x, y;};
+		struct {
+			T r, g;
+		};
+		struct {
+			T s, t;
+		};
+		struct {
+			T x, y;
+		};
 	};
-	
+
 	T &operator[](std::size_t i) {
 		return (&x)[i];
 	}
 	T const &operator[](std::size_t i) const {
 		return (&x)[i];
 	}
-	
+
 public:
 	// Constructeurs
 	constexpr Vector2(); // par défaut
-	
-	constexpr Vector2(const T& x, const T& y); // à partir des coordonnées
-	
+
+	constexpr Vector2(const T &x, const T &y); // à partir des coordonnées
+
 	template <class T_scalar>
-	Vector2(const T_scalar& s); // à partir d'un seul scalaire
-	
-	Vector2(const Vector2<T>& ref); // de copie 1
-	
+	Vector2(const T_scalar &s); // à partir d'un seul scalaire
+
+	Vector2(const Vector2<T> &ref); // de copie 1
+
 	template <class T_2>
-	Vector2(const Vector2<T_2>& ref); // de copie 2
-	
+	Vector2(const Vector2<T_2> &ref); // de copie 2
+
 	~Vector2() = default;
-	
+
 	// Affectation suivant un autre vecteur
 	template <class T_2>
-	inline Vector2<T>& operator=(const Vector2<T_2>& ref);
-	
+	inline Vector2<T> &operator=(const Vector2<T_2> &ref);
+
 	// Affectation suivant un autre vecteur du même type (sinon, ça compile pas...)
-	Vector2<T>& operator=(const Vector2<T>& ref);
-	
+	Vector2<T> &operator=(const Vector2<T> &ref);
+
 	// Affectation suivant un scalaire
 	template <class T_scalar>
-	inline Vector2<T>& operator=(const T_scalar& s);
-	
+	inline Vector2<T> &operator=(const T_scalar &s);
+
 	// Affectation-addition
 	template <class T_2>
-	inline Vector2<T>& operator+=(const Vector2<T_2>& v);
-	
+	inline Vector2<T> &operator+=(const Vector2<T_2> &v);
+
 	// Affectation-soustraction
 	template <class T_2>
-	inline Vector2<T>& operator-=(const Vector2<T_2>& v);
-	
+	inline Vector2<T> &operator-=(const Vector2<T_2> &v);
+
 	// Affectation-multiplication par un scalaire
 	template <class T_scalar>
-	inline Vector2<T>& operator*=(const T_scalar& s);
-	
+	inline Vector2<T> &operator*=(const T_scalar &s);
+
 	// Affectation-division par un scalaire
 	template <class T_scalar>
-	inline Vector2<T>& operator/=(const T_scalar& s);
-	
+	inline Vector2<T> &operator/=(const T_scalar &s);
+
 	// Négation
 	inline Vector2<T> operator-() const;
-	
+
 	// Addition
 	template <class T_2>
-	inline Vector2<T> operator+(const Vector2<T_2>& v) const;
-	
+	inline Vector2<T> operator+(const Vector2<T_2> &v) const;
+
 	// Soustraction
 	template <class T_2>
-	inline Vector2<T> operator-(const Vector2<T_2>& v) const;
-	
+	inline Vector2<T> operator-(const Vector2<T_2> &v) const;
+
 	// Multiplication par un scalaire (v * s)
 	template <class T_scalar>
-	inline Vector2<T> operator*(const T_scalar& s) const;
-	
+	inline Vector2<T> operator*(const T_scalar &s) const;
+
 	// Division par un scalaire (v / s)
 	template <class T_scalar>
-	inline Vector2<decltype(x / T_scalar{})> operator/(const T_scalar& s) const {
+	inline Vector2<decltype(x / T_scalar{})> operator/(const T_scalar &s) const {
 		return {this->x / s, this->y / s};
 	}
-	
+
 	// Produit scalaire
-	auto operator*(const Vector2<T>& v) const {
+	auto operator*(const Vector2<T> &v) const {
 		return this->x * v.x + this->y * v.y;
 	}
 
 	// Normalisation + renvoi de la valeur de la norme
 	inline void normalize();
-	
+
 	// Calcul de la norme
 	inline T norm() const;
-	
+
 	// Calcul de la norme au carré (plus rapide)
 	inline auto squaredNorm() const {
 		return *this * *this;
 	}
-	
+
 	// Calcul de l'angle
 	auto angle() const {
 		return atan2(y, x);
 	}
 
 	// Rotation du vecteur
-	template<typename U>
+	template <typename U>
 	inline Vector2<T> &rotate(U angle);
 };
 
@@ -131,21 +137,21 @@ bool operator!=(Vector2<T> const &v1, Vector2<T> const &v2) {
 
 // Multiplication par un scalaire (s * v)
 template <class T, class T_scalar>
-auto operator*(const T_scalar& s, const Vector2<T>& v);
+auto operator*(const T_scalar &s, const Vector2<T> &v);
 
 // Division par un scalaire (s / v)
 template <class T, class T_scalar>
-Vector2<T> operator/(const T_scalar& s, const Vector2<T>& v);
+Vector2<T> operator/(const T_scalar &s, const Vector2<T> &v);
 
 // Fonction pour le produit scalaire
 template <class T>
-inline T dot(const Vector2<T>& v1, const Vector2<T>& v2) {
+inline T dot(const Vector2<T> &v1, const Vector2<T> &v2) {
 	return v1 * v2;
 }
 
 // Affichage avec iostream
 template <class T>
-inline std::ostream& operator<<(std::ostream& os, const Vector2<T>& v) {
+inline std::ostream &operator<<(std::ostream &os, const Vector2<T> &v) {
 	os << "[" << v.x << ", " << v.y << "]";
 	return os;
 }

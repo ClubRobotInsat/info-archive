@@ -91,7 +91,7 @@ void Trame::set(uint8_t numero, uint8_t bit, bool valeur) {
 		throw ErreurNumeroDonneeTropGrand(numero);
 	if(bit >= 8)
 		throw ErreurNumeroBitTropGrand(bit);
-	
+
 	if(valeur)
 		_donnees[numero] |= 1 << bit;
 	else
@@ -136,4 +136,3 @@ std::string Trame::toStringLong() const {
 	oss << '}';
 	return oss.str();
 }
-

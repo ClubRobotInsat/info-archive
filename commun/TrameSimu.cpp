@@ -9,10 +9,8 @@
 
 static const int TrameSimu::NB_OCTETS_CMD = 1;
 
-TrameSimu::TrameSimu(uint8_t cmd) : _cmd(cmd) {
-}
+TrameSimu::TrameSimu(uint8_t cmd) : _cmd(cmd) {}
 
 TrameSimu::~TrameSimu() {
 	// TODO Auto-generated destructor stub
 }
-

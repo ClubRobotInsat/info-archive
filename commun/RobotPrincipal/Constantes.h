@@ -81,7 +81,7 @@ namespace ConstantesPrincipal {
 		PIED_G = 6,
 		PIED_D = 7,
 		CHOIX_EQUIPE = 1, // TODO: à debug
-		TIRETTE = 2, // TODO: à debug
+		TIRETTE = 2,	  // TODO: à debug
 
 		// TODO: TBD
 		LAMPE_G = 10,

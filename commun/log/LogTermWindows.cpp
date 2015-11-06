@@ -34,24 +34,24 @@ struct TermFormat {
 };
 
 static const TermFormat term_formats[LogType::ALL] = {
-	{TERM_WHITE, TERM_RED}, // error
+	{TERM_WHITE, TERM_RED},   // error
 	{TERM_WHITE, TERM_BROWN}, // warn
 
-	{TERM_RED, TERM_BLACK}, // failed
+	{TERM_RED, TERM_BLACK},   // failed
 	{TERM_GREEN, TERM_BLACK}, // success
 
 	{TERM_LIGHTGRAY, TERM_BLACK}, // info
 
-	{TERM_WHITE, TERM_GREEN}, // debug0
-	{TERM_WHITE, TERM_BLUE}, // debug1
-	{TERM_WHITE, TERM_MAGENTA}, // debug2
-	{TERM_WHITE, TERM_CYAN}, // debug3
-	{TERM_WHITE, TERM_BLACK}, // debug4
-	{TERM_YELLOW, TERM_GREEN}, // debug5
-	{TERM_YELLOW, TERM_BLUE}, // debug6
+	{TERM_WHITE, TERM_GREEN},	// debug0
+	{TERM_WHITE, TERM_BLUE},	 // debug1
+	{TERM_WHITE, TERM_MAGENTA},  // debug2
+	{TERM_WHITE, TERM_CYAN},	 // debug3
+	{TERM_WHITE, TERM_BLACK},	// debug4
+	{TERM_YELLOW, TERM_GREEN},   // debug5
+	{TERM_YELLOW, TERM_BLUE},	// debug6
 	{TERM_YELLOW, TERM_MAGENTA}, // debug7
-	{TERM_YELLOW, TERM_CYAN}, // debug8
-	{TERM_YELLOW, TERM_BLACK} // debug9
+	{TERM_YELLOW, TERM_CYAN},	// debug8
+	{TERM_YELLOW, TERM_BLACK}	// debug9
 };
 
 void Log::writeTermFormattedString(ostream &p_stream, const string &str) {

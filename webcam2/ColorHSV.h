@@ -13,17 +13,23 @@
 #include <iostream>
 #include <algorithm>
 
-struct ColorHSV
-{
+struct ColorHSV {
 	short h, s, v;
 
 	ColorHSV() : h(0), s(0), v(0) {}
-	ColorHSV(short h, short s, short v) {this->h = h; this->s = s; this->v = v;}
-	ColorHSV(const ColorHSV& ref) {*this = ref;}
-	ColorHSV(const ColorRGB& ref) {*this = ref;}
+	ColorHSV(short h, short s, short v) {
+		this->h = h;
+		this->s = s;
+		this->v = v;
+	}
+	ColorHSV(const ColorHSV &ref) {
+		*this = ref;
+	}
+	ColorHSV(const ColorRGB &ref) {
+		*this = ref;
+	}
 
-	ColorHSV& operator=(const ColorHSV& ref)
-	{
+	ColorHSV &operator=(const ColorHSV &ref) {
 		h = ref.h;
 		s = ref.s;
 		v = ref.v;
@@ -31,8 +37,7 @@ struct ColorHSV
 	}
 
 	// Conversion RGB -> HSV
-	ColorHSV& operator=(const ColorRGB& ref)
-	{
+	ColorHSV &operator=(const ColorRGB &ref) {
 		unsigned char max_rgb = std::max(ref.r, std::max(ref.g, ref.b));
 		unsigned char min_rgb = std::min(ref.r, std::min(ref.g, ref.b));
 
@@ -45,15 +50,12 @@ struct ColorHSV
 		// Teinte H :
 		float fh = -1.f; // undefined
 
-		if(max_rgb != min_rgb)
-		{
-			if(max_rgb == ref.r)
-			{
+		if(max_rgb != min_rgb) {
+			if(max_rgb == ref.r) {
 				fh = 60.f * (fg - fb) / (fmax_rgb - fmin_rgb);
 				if(ref.g < ref.b)
 					fh += 360.f;
-			}
-			else if(max_rgb == ref.g)
+			} else if(max_rgb == ref.g)
 				fh = (60.f * (fb - fr) / (fmax_rgb - fmin_rgb)) + 120.f;
 			else if(max_rgb == ref.b)
 				fh = (60.f * (fr - fg) / (fmax_rgb - fmin_rgb)) + 240.f;
@@ -62,7 +64,7 @@ struct ColorHSV
 			while(fh > 360.0f)
 				fh -= 360.0f;
 
-			while (fh < 0.0f)
+			while(fh < 0.0f)
 				fh += 360.0f;
 		}
 
@@ -82,9 +84,8 @@ struct ColorHSV
 		return *this;
 	}
 
-	bool operator==(const ColorHSV& ref)
-	{
-		return h==ref.h && s==ref.s && v==ref.v;
+	bool operator==(const ColorHSV &ref) {
+		return h == ref.h && s == ref.s && v == ref.v;
 	}
 };
 

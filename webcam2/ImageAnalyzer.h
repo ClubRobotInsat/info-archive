@@ -6,21 +6,19 @@
 #include "ImageBinarizer.h"
 #include "ItemsFinder.h"
 
-class ImageAnalyzer
-{
+class ImageAnalyzer {
 public:
-	typedef ItemsFinder::Item      Item;
+	typedef ItemsFinder::Item Item;
 	typedef ItemsFinder::ItemsList ItemsList;
 
-	struct Config
-	{
-		ItemsFinder::Config     itemsFinderConfig;
-		ImageBinarizer::Config  imageBinarizerConfig;
+	struct Config {
+		ItemsFinder::Config itemsFinderConfig;
+		ImageBinarizer::Config imageBinarizerConfig;
 	};
 
 private:
 	ImageBinarizer binarizer;
-	ItemsFinder    finder;
+	ItemsFinder finder;
 
 	Config config;
 
@@ -28,12 +26,12 @@ public:
 	ImageAnalyzer(int width, int height);
 	virtual ~ImageAnalyzer();
 
-	void run(const char* dataRGB);
+	void run(const char *dataRGB);
 
-	const ItemsList& getFoundItems() const;
+	const ItemsList &getFoundItems() const;
 
-	void setConfig(const Config& config);
-	const Config& getConfig() const;
+	void setConfig(const Config &config);
+	const Config &getConfig() const;
 };
 
 #endif // IMAGE_ANALYZER_H

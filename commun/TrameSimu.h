@@ -20,10 +20,10 @@ public:
 	TrameSimu(uint8_t cmd, long trameSize);
 
 	virtual ~TrameSimu();
+
 private:
 	uint8_t _cmd;
 	long _trameSize;
-
 };
 
 #endif /* COMMUN_TRAMESIMU_H_ */

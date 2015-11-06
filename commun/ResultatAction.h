@@ -10,9 +10,7 @@
 
 #include "Enum/Enum.h"
 
-ENUM_CLASS(ResultatAction,
-		   REUSSI, RATE, BLOQUE, BLOQUE_PAR_ADV, TIMEOUT
-		   )
+ENUM_CLASS(ResultatAction, REUSSI, RATE, BLOQUE, BLOQUE_PAR_ADV, TIMEOUT)
 
 
 #endif

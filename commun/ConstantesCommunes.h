@@ -23,7 +23,7 @@ namespace Constantes {
 
 	extern uint16_t const TCPIP_PORT_SIMU_DEFAUT;
 
-	extern int const deltaPositionServo; // > résolution sur les valeurs de position des servos
+	extern int const deltaPositionServo;  // > résolution sur les valeurs de position des servos
 	extern int const deltaPositionMoteur; // > résolution sur les valeurs de position des moteurs (TODO : mettre la
 										  // bonne valeur)
 

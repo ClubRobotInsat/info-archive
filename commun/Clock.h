@@ -13,91 +13,91 @@
 
 #define sleep(delay) std::this_thread::sleep_for((delay).toSystemDelay())
 
-class DateTemps {
+class TimePoint {
 public:
-	using DateTempsClock = std::chrono::high_resolution_clock;
-	using DateTempsType = std::chrono::time_point<DateTempsClock>;
+	using TimePointClock = std::chrono::high_resolution_clock;
+	using TimePointType = std::chrono::time_point<TimePointClock>;
 
-	DateTemps() : _value(DateTempsClock::now()) {}
-	DateTemps(DateTempsType d) : _value(d) {}
-	DateTemps(DateTemps const &d) : _value(d.value()) {}
+	TimePoint() : _value(TimePointClock::now()) {}
+	TimePoint(TimePointType d) : _value(d) {}
+	TimePoint(TimePoint const &d) : _value(d.value()) {}
 
-	DateTemps &operator=(DateTemps d) {
+	TimePoint &operator=(TimePoint d) {
 		swap(*this, d);
 		return *this;
 	}
 
-	friend void swap(DateTemps &d1, DateTemps &d2) {
+	friend void swap(TimePoint &d1, TimePoint &d2) {
 		using std::swap;
 		swap(d1._value, d2._value);
 	}
 
-	static DateTemps now() {
-		return DateTemps(DateTempsClock::now());
+	static TimePoint now() {
+		return TimePoint(TimePointClock::now());
 	}
 
-	static DateTemps distantPast() {
-		return DateTemps(DateTempsClock::now() - std::chrono::hours(24) * 365 * 100);
+	static TimePoint distantPast() {
+		return TimePoint(TimePointClock::now() - std::chrono::hours(24) * 365 * 100);
 	}
 
-	static DateTemps distantFuture() {
-		return DateTemps(DateTempsClock::now() + std::chrono::hours(24) * 365 * 100);
+	static TimePoint distantFuture() {
+		return TimePoint(TimePointClock::now() + std::chrono::hours(24) * 365 * 100);
 	}
 
-	DateTemps &operator-=(Duration const &d);
-	DateTemps &operator+=(Duration const &d);
+	TimePoint &operator-=(Duration const &d);
+	TimePoint &operator+=(Duration const &d);
 
-	DateTempsType value() const {
+	TimePointType value() const {
 		return _value;
 	}
 
 private:
-	DateTempsType _value;
+	TimePointType _value;
 };
 
-inline bool operator<(DateTemps const &d1, DateTemps const &d2) {
+inline bool operator<(TimePoint const &d1, TimePoint const &d2) {
 	return d1.value() < d2.value();
 }
 
-inline bool operator==(DateTemps const &d1, DateTemps const &d2) {
+inline bool operator==(TimePoint const &d1, TimePoint const &d2) {
 	return d1.value() == d2.value();
 }
 
-inline bool operator>(DateTemps const &d1, DateTemps const &d2) {
+inline bool operator>(TimePoint const &d1, TimePoint const &d2) {
 	return d2 < d1;
 }
 
-inline bool operator!=(DateTemps const &d1, DateTemps const &d2) {
+inline bool operator!=(TimePoint const &d1, TimePoint const &d2) {
 	return !(d1 == d2);
 }
 
-inline bool operator<=(DateTemps const &d1, DateTemps const &d2) {
+inline bool operator<=(TimePoint const &d1, TimePoint const &d2) {
 	return !(d1 > d2);
 }
 
-inline bool operator>=(DateTemps const &d1, DateTemps const &d2) {
+inline bool operator>=(TimePoint const &d1, TimePoint const &d2) {
 	return !(d1 < d2);
 }
 
-inline Duration operator-(DateTemps const &d1, DateTemps const &d2) {
+inline Duration operator-(TimePoint const &d1, TimePoint const &d2) {
 	auto delta = std::chrono::duration_cast<std::chrono::nanoseconds>(d1.value() - d2.value());
 	return Duration::makeFromNs(delta.count());
 }
 
-inline DateTemps operator-(DateTemps const &d1, Duration const &d2) {
-	return DateTemps(d1.value() - d2.toSystemDelay());
+inline TimePoint operator-(TimePoint const &d1, Duration const &d2) {
+	return TimePoint(d1.value() - d2.toSystemDelay());
 }
 
-inline DateTemps operator+(DateTemps const &d1, Duration const &d2) {
-	return DateTemps(d1.value() + d2.toSystemDelay());
+inline TimePoint operator+(TimePoint const &d1, Duration const &d2) {
+	return TimePoint(d1.value() + d2.toSystemDelay());
 }
 
-inline DateTemps &DateTemps::operator-=(Duration const &d) {
+inline TimePoint &TimePoint::operator-=(Duration const &d) {
 	*this = *this - d;
 	return *this;
 }
 
-inline DateTemps &DateTemps::operator+=(Duration const &d) {
+inline TimePoint &TimePoint::operator+=(Duration const &d) {
 	*this = *this + d;
 	return *this;
 }
@@ -110,17 +110,17 @@ public:
 
 	// Retourne le temps écoulé depuis la dernière réinitialisation
 	Duration getElapsedTime() const {
-		auto val = std::chrono::duration_cast<std::chrono::nanoseconds>(DateTemps::DateTempsClock::now() - _startTime);
+		auto val = std::chrono::duration_cast<std::chrono::nanoseconds>(TimePoint::TimePointClock::now() - _startTime);
 		return Duration::makeFromNs(val.count());
 	}
 
 	// Réinitialise le chrono
 	void reset() {
-		_startTime = DateTemps::DateTempsClock::now();
+		_startTime = TimePoint::TimePointClock::now();
 	}
 
 private:
-	DateTemps::DateTempsType _startTime;
+	TimePoint::TimePointType _startTime;
 };
 
 #endif

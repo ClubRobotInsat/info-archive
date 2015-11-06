@@ -22,17 +22,15 @@
 // EPSILON sert lors de la comparaison approchée entre des flottants
 #define EPSILON 0.01
 
-template<typename T>
+template <typename T>
 T minNonNul(T a, T b) {
 	return max(min(a, b), 0);
 }
 
-template<typename T>
+template <typename T>
 bool estDansIntervalOuvert(T val, T bMin, T bMax) {
 	return (val > bMin) && (val < bMax);
 }
 
 
-
 #endif
-
