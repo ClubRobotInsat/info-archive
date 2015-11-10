@@ -9,10 +9,10 @@
  * Un conseil étranger, passe ton chemin.
  * Du début jusqu'à la fin des foreach, les macros servent à itérer sur un nombre variable d'éléments.
  * Ce nombre variable est compris entre 0 et 100, je te laisse comprendre le motif pour permettre des itérations plus
- *longues (modifier les macros _NUM_ARGS, NUM_ARGS et FOREACH_XXX
+ * longues (modifier les macros _NUM_ARGS, NUM_ARGS et FOREACH_XXX
  *
  * Les macros STRIGIFY, NAMESPACIZE et TO_ASSOC sont des macros utilitaires qui permettent à partir d'un identificateur,
- *en générer la version texte et la version qualifiée d'un namespace.
+ * d'en générer la version texte et la version qualifiée d'un namespace.
  *
  * Le reste consiste en des détails d'implémentation des fonctions getEnumValue et toString.
  */
