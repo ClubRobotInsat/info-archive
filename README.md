@@ -5,7 +5,7 @@ Installation de tout ce qu'il faut
 
 ```
 sudo apt-get update
-sudo apt-get install ninja-build mono-complete cmake subversion git gcc-5-multilib g++-5-multilib openjdk-7-jre build-essential libglfw-dev libglu1-mesa-dev libxrandr-dev libgtk2.0-dev libusb-1.0-0-dev clang-format
+sudo apt-get install ninja-build mono-complete cmake subversion git gcc-5-multilib g++-5-multilib openjdk-7-jre build-essential libglfw-dev libglu1-mesa-dev libxrandr-dev libgtk2.0-dev libusb-1.0-0-dev clang-format-3.7
 ```
 
 ------------
