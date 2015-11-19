@@ -35,6 +35,6 @@ Il reste à ce moment un peu de configuration à effectuer : dans le menu ```Fil
 Dans le champ ```CMake options```, mettre le texte ```-DDEBUG=on -DBITS=64```.
 
 L'IDE est presque configuré. Maintenant, lancer un build, et l'interrompre (car il va échouer).
-La première ligne de la sortie console nous intéresse : sélectionner et copier la valeur de l'argument ```--build```, et dans un terminal saisir la commande ```ln -s <valeur de l'argument --build> <chemin du parent dossier info>/bin```.
+La première ligne de la sortie console (tout en haut) nous intéresse: sélectionner et copier la valeur de l'argument ```--build```, et dans un terminal saisir la commande ```ln -s <valeur de l'argument --build> <chemin du parent dossier info>/bin```.
 
 Voilà, maintanant l'IDE est configuré et la compilation du code info devrait fonctionner à 100 %.
