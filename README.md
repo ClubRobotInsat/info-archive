@@ -41,6 +41,14 @@ La première ligne de la sortie console (tout en haut) nous intéresse: sélecti
 
 Voilà, maintenant l'IDE est configuré et la compilation du code info devrait fonctionner à 100 %.
 
+--------------------------
+Installation de irrlicht (simu)
+--------------------------
+```
+svn co https://irrlicht.svn.sourceforge.net/svnroot/irrlicht/trunk irrlicht-trunk
+cd irrlicht-trunk/source/Irrlicht
+make
+```
 
 --------------------------
 Documentation Box2D (simu)
