@@ -7,9 +7,6 @@ Installation de tout ce qu'il faut
 sudo apt-get update
 sudo apt-get install ninja-build mono-complete cmake subversion git libbox2d-dev gcc-5-multilib g++-5-multilib openjdk-7-jre build-essential libglfw-dev libglu1-mesa-dev libxrandr-dev libgtk2.0-dev libusb-1.0-0-dev clang-format-3.7
 
-# Pour irrlicht
-sudo apt-get -y install build-essential xserver-xorg-dev x11proto-xf86vidmode-dev libxxf86vm-dev mesa-common-dev libgl1-mesa-dev libglu1-mesa-dev libxext-dev libxcursor-dev
-```
 ------------
 Clonage du repo
 ------------
@@ -40,15 +37,6 @@ L'IDE est presque configuré. Maintenant, lancer un build, et l'interrompre (car
 La première ligne de la sortie console (tout en haut) nous intéresse: sélectionner et copier la valeur de l'argument ```--build```, et dans un terminal saisir la commande ```ln -s <valeur de l'argument --build> <chemin du parent dossier info>/bin```.
 
 Voilà, maintenant l'IDE est configuré et la compilation du code info devrait fonctionner à 100 %.
-
---------------------------
-Installation de irrlicht (simu)
---------------------------
-```
-svn co https://irrlicht.svn.sourceforge.net/svnroot/irrlicht/trunk irrlicht-trunk
-cd irrlicht-trunk/source/Irrlicht
-make
-```
 
 --------------------------
 Documentation Box2D (simu)
