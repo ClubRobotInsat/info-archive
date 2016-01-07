@@ -14,7 +14,7 @@ Clonage du repo
 svn checkout https://www.etud.insa-toulouse.fr/svn/roboinsat/CodeCommun --username votre_login_insa
 git clone https://votre_login_github@github.com/ClubRobotInsat/info.git
 cd info
-git submodule update --init
+./boostrap.sh
 ```
 
 ------------
