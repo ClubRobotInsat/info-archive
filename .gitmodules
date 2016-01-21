@@ -3,4 +3,4 @@
 	url = https://github.com/rems4e/si-units.git
 [submodule "petri"]
 	path = petri
-	url = https://github.com/rems4e/petri/
+	url = https://github.com/rems4e/petri
