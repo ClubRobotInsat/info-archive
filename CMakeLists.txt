@@ -43,7 +43,7 @@ function(compile_petri TARGET_NAME PATH_TO_DOC OUTPUT)
 	add_custom_command(
 		OUTPUT    ${OUTPUT}
 		COMMAND   mono
-ARGS      ${root_SOURCE_DIR}/petri/Editor/Petri.exe --compile  --arch ${BITS} ${CMAKE_CURRENT_SOURCE_DIR}/${PATH_TO_DOC}
+ARGS      ${root_SOURCE_DIR}/petri/Editor/bin/Petri.exe --compile  --arch ${BITS} ${CMAKE_CURRENT_SOURCE_DIR}/${PATH_TO_DOC}
 		DEPENDS   ${PATH_TO_DOC}
 	)
 
