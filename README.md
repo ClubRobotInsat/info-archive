@@ -43,3 +43,32 @@ Voilà, maintenant l'IDE est configuré et la compilation du code info devrait f
 Documentation Box2D (simu)
 --------------------------
 http://box2d.org/manual.pdf
+
+
+--------------------------
+Pour lancer l'IA en mode Debug
+--------------------------
+Je considère que vous avez lancé petri.
+
+1. Se connecter au robot en usb.
+2. Activer le switch sur la tête du robot.
+3. Compiler son réseau petri une première fois et le faire compiler dans : /tondossierinfo/robot/Principal/IA
+4. Ouvrir dans CLION /info/robot/Principal/IA/IAPrincipal.h et modifier l'inclue présent: 
+include "iatrucmuche.h" 
+en :
+include "tonomdefichier.h"
+5. Compiler IAPrincipal dans CLION.
+6. Ouvrir un terminal aller dans le dossier parent du dossier info, puis dans :
+/bin/robot/Principal
+7. On tape :  ls /dev, et normalement, si il n'y a que le robot de brancher, on cherche une ligne "ttyUSBXX" avec XX des nombres entiers.
+8. On lance l'IA : 
+sudo ./IAPrincipal RS232 /dev/ttyUSBXX
+9. Dans Petri on passe en mode debug, on clique sur connect, et on clique sur Run.
+10. ?????
+11. Enjoy !
+
+--------------------------
+Architecture de la refonte
+--------------------------
+
+diagramme ""uml"" : https://drive.google.com/folderview?id=0Byjvg2rL9zBvdzhSZ1JDVEhUTXc&usp=sharing
