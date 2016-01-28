@@ -67,3 +67,8 @@ sudo ./IAPrincipal RS232 /dev/ttyUSBXX
 10. ?????
 11. Enjoy !
 
+--------------------------
+Architecture de la refonte
+--------------------------
+
+diagramme ""uml"" : https://drive.google.com/folderview?id=0Byjvg2rL9zBvdzhSZ1JDVEhUTXc&usp=sharing
