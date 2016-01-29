@@ -7,7 +7,7 @@ option(COLOR "Sortie en couleur de la compilation" ON)
 option(DEBUG "Compilation avec les symboles de debug et sans optimisations" OFF)
 set(BITS "32" CACHE . "Build en 32 ou 64 bits")
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 if(DEBUG)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0")
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -O0")
@@ -43,7 +43,7 @@ function(compile_petri TARGET_NAME PATH_TO_DOC OUTPUT)
 	add_custom_command(
 		OUTPUT    ${OUTPUT}
 		COMMAND   mono
-ARGS      ${root_SOURCE_DIR}/petri/Editor/bin/Petri.exe --compile  --arch ${BITS} ${CMAKE_CURRENT_SOURCE_DIR}/${PATH_TO_DOC}
+ARGS      ${root_SOURCE_DIR}/petri/Editor/bin/Petri.exe --generate --compile --verbose --arch ${BITS} ${CMAKE_CURRENT_SOURCE_DIR}/${PATH_TO_DOC}
 		DEPENDS   ${PATH_TO_DOC}
 	)
 
@@ -56,7 +56,9 @@ endfunction()
 # debug/CGTK semble désactivé depuis un moment également.
 add_definitions(-DGTKWIN_DISABLE)
 
-include_directories(commun)
+include_directories(commun /usr/local/include/)
+link_directories(/usr/local/lib/)
+
 add_subdirectory(commun)
 add_subdirectory(robot)
 
