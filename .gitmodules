@@ -4,3 +4,9 @@
 [submodule "petri"]
 	path = petri
 	url = https://github.com/rems4e/petri
+[submodule "simulateur/server/websocketpp"]
+	path = simulateur/server/websocketpp
+	url = https://github.com/zaphoyd/websocketpp.git
+[submodule "simulateur/server/asio"]
+	path = simulateur/server/asio
+	url = https://github.com/chriskohlhoff/asio.git
