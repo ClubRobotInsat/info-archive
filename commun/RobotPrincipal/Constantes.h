@@ -6,7 +6,7 @@
 
 #ifdef TARGET_SIMULATEUR
 
-#include "../../simulateur/simulateur/Robot/Carte.h"
+#include "../../simulateur/robot/Carte.h"
 #include "../../simulateur/cartes/CarteDeplacement2009.h"
 #include "../../simulateur/cartes/CarteContacteurs2007.h"
 #include "../../simulateur/cartes/CarteServosNova2009.h"
