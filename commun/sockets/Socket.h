@@ -150,7 +150,7 @@ private:
 #endif
 	SockState _state = SOCK_FREE;
 	SockProtocol _protocol;
-	sockaddr_in _addr = {};
+	sockaddr_in _addr;
 };
 
 #endif // SOCKET_H
