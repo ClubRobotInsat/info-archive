@@ -46,26 +46,14 @@ http://box2d.org/manual.pdf
 
 
 --------------------------
-Pour lancer l'IA en mode Debug
+Pour lancer le simulateur en mode Debug
 --------------------------
 Je considère que vous avez lancé petri.
 
-1. Se connecter au robot en usb.
-2. Activer le switch sur la tête du robot.
-3. Compiler son réseau petri une première fois et le faire compiler dans : /tondossierinfo/robot/Principal/IA
-4. Ouvrir dans CLION /info/robot/Principal/IA/IAPrincipal.h et modifier l'inclue présent: 
-include "iatrucmuche.h" 
-en :
-include "tonomdefichier.h"
-5. Compiler IAPrincipal dans CLION.
-6. Ouvrir un terminal aller dans le dossier parent du dossier info, puis dans :
-/bin/robot/Principal
-7. On tape :  ls /dev, et normalement, si il n'y a que le robot de brancher, on cherche une ligne "ttyUSBXX" avec XX des nombres entiers.
-8. On lance l'IA : 
-sudo ./IAPrincipal RS232 /dev/ttyUSBXX
-9. Dans Petri on passe en mode debug, on clique sur connect, et on clique sur Run.
-10. ?????
-11. Enjoy !
+1.Compiler, si ce n'est déjà fait, la target Simu2016
+2.Plusieurs options s'offrent à vous : lancer le simu depuis clion ou aller (quand vous êtes dans le dossier /info) dans ../bin/simulateur/simulateur) et taperer
+"./Simu2016" 
+3.Une fois le simu lancé, on se connecte sur http://etud.insa-toulouse.fr/~slacoste/simu/
 
 --------------------------
 Architecture de la refonte
