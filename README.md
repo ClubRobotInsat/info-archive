@@ -50,10 +50,10 @@ Pour lancer le simulateur en mode Debug
 --------------------------
 Je considère que vous avez lancé petri.
 
-1.Compiler, si ce n'est déjà fait, la target Simu2016
-2.Plusieurs options s'offrent à vous : lancer le simu depuis clion ou aller (quand vous êtes dans le dossier /info) dans ../bin/simulateur/simulateur) et taperer
-"./Simu2016" 
-3.Une fois le simu lancé, on se connecte sur http://etud.insa-toulouse.fr/~slacoste/simu/
+1.Compiler, si ce n'est déjà fait, la target Simu2016.
+2.Plusieurs options s'offrent à vous : lancer le simu depuis clion ou aller (quand vous êtes dans le dossier /info) dans ../bin/simulateur/simulateur) et taper
+"./Simu2016" .
+3.Une fois le simu lancé, on se connecte sur http://etud.insa-toulouse.fr/~slacoste/simu/.
 
 --------------------------
 Architecture de la refonte
