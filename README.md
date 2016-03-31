@@ -16,7 +16,20 @@ git clone https://votre_login_github@github.com/ClubRobotInsat/info.git
 cd info
 ./boostrap.sh
 ```
+## Problèmes fréquents : 
 
+#### Erreur de compilation petri
+Si lors de l'exécution de bootstrap.sh certaines erreurs de compilation apparaissent telles que celles ci-dessous, c'est que votre installation de mono n'est pas à jour :
+```
+../Sources/Code/Type.cs(119,35): error CS1525: Unexpected symbol `?'
+../Sources/Document/DocumentSection/Debugger/DebugEditor.cs(69,33): error CS1525: Unexpected symbol `?'
+```
+La compilation des réseaux de pétri requiert mono >= 4.x.x. Si mono --version vous renvoie 3.x.x, effectuez donc la manipulation suivante :
+```
+sudo add-apt-repository ppa:keks9n/monodevelop-latest
+sudo apt-get update
+sudo apt-get install mono-devel
+```
 ------------
 Installation de CLion (facultatif, mais recommandé)
 ------------
