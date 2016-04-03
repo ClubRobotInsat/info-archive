@@ -17,6 +17,7 @@
  * Le reste consiste en des détails d'implémentation des fonctions getEnumValue et toString.
  */
 
+#include <vector>
 
 #define _NUM_ARGS(X100, \
                   X99,  \
