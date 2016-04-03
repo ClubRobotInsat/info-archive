@@ -10,5 +10,7 @@ elif [[ "$platform" == "Darwin" ]]; then
     open "$url"
 fi
 
+dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 echo "Launching Petri..."
-petri/petri -o robot/Principal/petri/IA.petri && fg
+"$dir"/petri/petri -o robot/Principal/petri/IA.petri
