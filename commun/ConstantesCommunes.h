@@ -3,19 +3,19 @@
 #ifndef CONSTANTES_COMMUNES_2015_H
 #define CONSTANTES_COMMUNES_2015_H
 
-#include <iostream>
-#include <cstdint>
 #include "Commun.h"
-#include "IConstantes.h"
 #include "Enum/Enum.h"
+#include "IConstantes.h"
+#include <cstdint>
+#include <iostream>
 
 namespace Constantes {
 	ENUM_CLASS_NS(Constantes,
-				  CouleurRobot,
-				  Jaune,
-				  Vert,
-				  // Valeur d'initialisation, qui permet de déctecter si la lecture du capteur couleur a déconné.
-				  Undef);
+	              CouleurRobot,
+	              Jaune,
+	              Vert,
+	              // Valeur d'initialisation, qui permet de déctecter si la lecture du capteur couleur a déconné.
+	              Undef);
 }
 
 namespace Constantes {
@@ -25,7 +25,7 @@ namespace Constantes {
 
 	extern int const deltaPositionServo;  // > résolution sur les valeurs de position des servos
 	extern int const deltaPositionMoteur; // > résolution sur les valeurs de position des moteurs (TODO : mettre la
-										  // bonne valeur)
+	                                      // bonne valeur)
 
 	extern Duration const TIMEOUT_DEPLACEMENT_DEFAUT;
 	extern Duration const TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT;
@@ -48,7 +48,7 @@ namespace Constantes {
 	extern Vector2u16 const TAILLE_GRILLE;
 }
 
-inline Constantes::CouleurRobot operator!(Constantes::CouleurRobot const &c) {
+inline Constantes::CouleurRobot operator!(Constantes::CouleurRobot const& c) {
 	if(c == Constantes::CouleurRobot::Vert)
 		return Constantes::CouleurRobot::Jaune;
 	else if(c == Constantes::CouleurRobot::Jaune)

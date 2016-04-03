@@ -5,18 +5,18 @@
 
 #include "Utils.h"
 
-#include <vector>
-#include <iostream>
-#include <string>
 #include <cstdint>
-#include <stdexcept>
 #include <initializer_list>
+#include <iostream>
+#include <stdexcept>
+#include <string>
+#include <vector>
 
 class Byte final {
 public:
 	constexpr Byte(uint8_t val) : _value(val) {}
-	constexpr Byte(Byte const &) = default;
-	constexpr bool operator==(Byte const &b) const {
+	constexpr Byte(Byte const&) = default;
+	constexpr bool operator==(Byte const& b) const {
 		return _value == b._value;
 	}
 	constexpr bool operator==(uint8_t b) const {
@@ -34,7 +34,7 @@ private:
 	uint8_t _value;
 };
 
-std::ostream &operator<<(std::ostream &s, Byte const &b);
+std::ostream& operator<<(std::ostream& s, Byte const& b);
 
 inline constexpr Byte operator"" _b(unsigned long long value) {
 	return Byte(value);
@@ -63,15 +63,15 @@ public:
 	// erreur si une trame n'est pas traitée
 	class ErreurTrameNonTraitee : public std::runtime_error {
 	public:
-		ErreurTrameNonTraitee(const Trame &t)
-				: std::runtime_error("La trame " + to_string(t) + " n'a pas été traitée") {}
+		ErreurTrameNonTraitee(const Trame& t)
+		        : std::runtime_error("La trame " + to_string(t) + " n'a pas été traitée") {}
 	};
 
 	// erreur si le numero de la donnée est trop grand
 	class ErreurNumeroDonneeTropGrand : public std::runtime_error {
 	public:
 		ErreurNumeroDonneeTropGrand(uint8_t num)
-				: std::runtime_error("Le nombre de données dans la trame est trop petit pour accéder au numero " + to_string(num)) {}
+		        : std::runtime_error("Le nombre de données dans la trame est trop petit pour accéder au numero " + to_string(num)) {}
 	};
 
 	// erreur si la quantité de données est trop grande
@@ -84,15 +84,15 @@ public:
 	class ErreurNumeroBitTropGrand : public std::runtime_error {
 	public:
 		ErreurNumeroBitTropGrand(uint8_t num)
-				: std::runtime_error("Le numero du bit " + to_string((short)num) +
-									 " est invalide : il doit être comprit entre 0 et 7 inclu ") {}
+		        : std::runtime_error("Le numero du bit " + to_string((short)num) +
+		                             " est invalide : il doit être comprit entre 0 et 7 inclu ") {}
 	};
 
 	// erreur si la distance entre la camera au centre d'observation est négative
 	class ErreurNumCommandeTropGrand : public std::runtime_error {
 	public:
 		ErreurNumCommandeTropGrand(uint8_t num)
-				: std::runtime_error("Le numéro de commande demandé n'existe pas : " + to_string(num)) {}
+		        : std::runtime_error("Le numéro de commande demandé n'existe pas : " + to_string(num)) {}
 	};
 
 public:
@@ -112,8 +112,8 @@ public:
 	explicit Trame(uint8_t id, uint8_t cmd, uint8_t nbDonnees, uint8_t const donnees[]);
 	explicit Trame(uint8_t id, uint8_t cmd, uint8_t donnee) : Trame(id, cmd, {donnee}) {}
 
-	Trame(Trame const &t) = default;
-	Trame(Trame &&t) = default;
+	Trame(Trame const& t) = default;
+	Trame(Trame&& t) = default;
 
 	// destructeur
 	~Trame() = default;
@@ -124,7 +124,7 @@ public:
 	uint8_t getNbDonnees() const;
 	uint8_t getNumPaquet() const;
 
-	uint8_t const *getDonnees() const;
+	uint8_t const* getDonnees() const;
 
 	// Récupération de sizeof(T) octets à partir de l'octet numero
 	template <typename T = uint8_t>
@@ -140,14 +140,14 @@ public:
 	void addBytes(uint8_t count, uint8_t const bytes[]);
 
 	template <typename... Args>
-	void addDonnees(Args &&... values) {
+	void addDonnees(Args&&... values) {
 		this->addDonneesInternal(std::forward<Args>(values)...);
 	}
 
 	// Affecte une valeur à un bit de l'octet numeroOctet
 	void set(uint8_t numeroOctet,
-			 uint8_t numeroBit,
-			 bool valeurBit); // lève ErreurNumeroDonneeTropGrand et ErreurNumeroBitTropGrand
+	         uint8_t numeroBit,
+	         bool valeurBit); // lève ErreurNumeroDonneeTropGrand et ErreurNumeroBitTropGrand
 
 	void setNumPaquet(uint8_t num_paquet);
 	void setCmd(uint8_t cmd);
@@ -162,11 +162,11 @@ public:
 
 	// Ces 2 fonctions vont permettre l'extraction de l'ID ou de la commande depuis les 11 bits d'en-tête d'une trame
 	// CAN (regroupés en 2 fois 8 bits).
-	static uint8_t demultiplexId(MuxedIdAndCmd const &idAndCmd);
+	static uint8_t demultiplexId(MuxedIdAndCmd const& idAndCmd);
 	static uint8_t demultiplexId(uint8_t first, uint8_t second) {
 		return demultiplexId({first, second});
 	}
-	static uint8_t demultiplexCmd(MuxedIdAndCmd const &idAndCmd);
+	static uint8_t demultiplexCmd(MuxedIdAndCmd const& idAndCmd);
 	static uint8_t demultiplexCmd(uint8_t first, uint8_t second) {
 		return demultiplexCmd({first, second});
 	}
@@ -175,12 +175,12 @@ public:
 	static MuxedIdAndCmd multiplexIdAndCmd(uint8_t id, uint8_t cmd);
 
 	// afficher la trame sur le flux de sortie
-	friend std::ostream &operator<<(std::ostream &, const Trame &);
+	friend std::ostream& operator<<(std::ostream&, const Trame&);
 
 	// convertir la trame en chaîne de caractères lisible et avec les nombres en base décimale
 	std::string toStringLong() const;
 
-	friend bool operator==(Trame const &t1, Trame const &t2) {
+	friend bool operator==(Trame const& t1, Trame const& t2) {
 		return t1._id == t2._id && t1._cmd == t2._cmd && t1._num_paquet == t2._num_paquet && t1._donnees == t2._donnees;
 	}
 
@@ -188,9 +188,9 @@ private:
 	void addDonneesInternal() {}
 
 	template <typename T, typename... Args>
-	void addDonneesInternal(T &&value, Args &&... values);
+	void addDonneesInternal(T&& value, Args&&... values);
 	template <typename... Args>
-	void addDonneesInternal(Byte const &value, Args &&... values);
+	void addDonneesInternal(Byte const& value, Args&&... values);
 
 	// numéro de la carte à qui est adressée cette trame
 	uint8_t _id = 0;
@@ -212,7 +212,7 @@ T Trame::getDonnee(uint8_t numero) const {
 		throw ErreurNumeroDonneeTropGrand(numero);
 
 	T value;
-	uint8_t *pointer = reinterpret_cast<uint8_t *>(&value);
+	uint8_t* pointer = reinterpret_cast<uint8_t*>(&value);
 	std::copy(&_donnees[numero], &_donnees[numero + sizeof(T)], pointer);
 
 	return value;
@@ -228,18 +228,18 @@ inline bool Trame::getDonneeBool(uint8_t numero, uint8_t bit) {
 }
 
 template <typename T, typename... Args>
-void Trame::addDonneesInternal(T &&value, Args &&... values) {
+void Trame::addDonneesInternal(T&& value, Args&&... values) {
 	if(this->getNbDonnees() + sizeof(T) > Trame::DONNEES_TRAME_MAX)
 		throw ErreurTropDeDonnees(this->getNbDonnees() + sizeof(T));
 
-	auto pointer = reinterpret_cast<uint8_t const *>(&value);
+	auto pointer = reinterpret_cast<uint8_t const*>(&value);
 	_donnees.insert(_donnees.end(), pointer, pointer + sizeof(T));
 
 	this->addDonneesInternal(values...);
 }
 
 template <typename... Args>
-void Trame::addDonneesInternal(Byte const &value, Args &&... values) {
+void Trame::addDonneesInternal(Byte const& value, Args&&... values) {
 	if(this->getNbDonnees() + 1 > Trame::DONNEES_TRAME_MAX)
 		throw ErreurTropDeDonnees(this->getNbDonnees() + 1);
 

@@ -1,9 +1,9 @@
 #ifndef _CLOCK_H_H
 #define _CLOCK_H_H
 
+#include "Units/TimePoint.h"
 #include <iostream>
 #include <thread>
-#include "Units/TimePoint.h"
 
 using Units::sleep;
 

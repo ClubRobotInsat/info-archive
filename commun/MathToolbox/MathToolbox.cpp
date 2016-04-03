@@ -15,8 +15,8 @@ Vector3m translationPourRotationExcentree(Vector3m centreAbsolu, Vector3m centre
 	Vector4d imageCentreVoulu4 = rotation * centreVoulu4;
 	Vector4d translation = imageCentreVoulu4 - centreVoulu4;
 	return {Units::Distance::makeFromM(translation.x),
-			Units::Distance::makeFromM(translation.y),
-			Units::Distance::makeFromM(translation.z)};
+	        Units::Distance::makeFromM(translation.y),
+	        Units::Distance::makeFromM(translation.z)};
 }
 
 /**

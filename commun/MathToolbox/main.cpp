@@ -1,7 +1,7 @@
 // main.cpp
 
-#include <iostream>
 #include <exception>
+#include <iostream>
 
 #include "MathToolbox.h"
 
@@ -34,7 +34,7 @@ int main() {
 	std::cout << v5 << std::endl;
 	std::cout << v6 << std::endl;
 	std::cout << d << std::endl;
-	std::cout << v1 *v2 << std::endl;
+	std::cout << v1 * v2 << std::endl;
 
 	return 0;
 }

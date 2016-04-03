@@ -4,9 +4,9 @@
 #define MATH_TOOLBOX_H
 
 #include "MathUtilities.h"
-#include "Vector.h"
 #include "Matrix3.h"
 #include "Matrix4.h"
+#include "Vector.h"
 
 #include "../Units/Units.h"
 

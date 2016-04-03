@@ -9,11 +9,11 @@ Matrix4<T>::Matrix4() {
 // Constructeur à partir de 4 vecteurs
 template <class T>
 template <class T_scalar>
-Matrix4<T>::Matrix4(const Vector4<T_scalar> &v1,
-					const Vector4<T_scalar> &v2,
-					const Vector4<T_scalar> &v3,
-					const Vector4<T_scalar> &v4,
-					bool column_vectors) {
+Matrix4<T>::Matrix4(const Vector4<T_scalar>& v1,
+                    const Vector4<T_scalar>& v2,
+                    const Vector4<T_scalar>& v3,
+                    const Vector4<T_scalar>& v4,
+                    bool column_vectors) {
 	if(column_vectors) {
 		values[0] = v1.x;
 		values[1] = v1.y;
@@ -54,7 +54,7 @@ Matrix4<T>::Matrix4(const Vector4<T_scalar> &v1,
 // Constructeur à partir d'un tableau
 template <class T>
 template <class T_scalar>
-Matrix4<T>::Matrix4(T_scalar *values, bool transpose) {
+Matrix4<T>::Matrix4(T_scalar* values, bool transpose) {
 	for(int i = 0; i < 16; i++)
 		this->values[i] = values[i];
 
@@ -65,7 +65,7 @@ Matrix4<T>::Matrix4(T_scalar *values, bool transpose) {
 // Constructeur à partir de la sous-matrice 3x3 supérieure gauche et du vecteur de translation
 template <class T>
 template <class T_scalar>
-Matrix4<T>::Matrix4(const Matrix3<T_scalar> &sub_matrix, const Vector3<T_scalar> &translation) {
+Matrix4<T>::Matrix4(const Matrix3<T_scalar>& sub_matrix, const Vector3<T_scalar>& translation) {
 	this->values[0] = sub_matrix[0];
 	this->values[1] = sub_matrix[1];
 	this->values[2] = sub_matrix[2];
@@ -88,14 +88,14 @@ Matrix4<T>::Matrix4(const Matrix3<T_scalar> &sub_matrix, const Vector3<T_scalar>
 // Constructeur de copie
 template <class T>
 template <class T_scalar>
-Matrix4<T>::Matrix4(const Matrix4<T_scalar> &ref) {
+Matrix4<T>::Matrix4(const Matrix4<T_scalar>& ref) {
 	*this = ref;
 }
 
 // Opérateur d'affectation
 template <class T>
 template <class T_scalar>
-Matrix4<T> &Matrix4<T>::operator=(const Matrix4<T_scalar> &ref) {
+Matrix4<T>& Matrix4<T>::operator=(const Matrix4<T_scalar>& ref) {
 	for(int i = 0; i < 16; i++)
 		this->values[i] = ref.values[i];
 
@@ -105,7 +105,7 @@ Matrix4<T> &Matrix4<T>::operator=(const Matrix4<T_scalar> &ref) {
 // Affectation-addition
 template <class T>
 template <class T_scalar>
-Matrix4<T> &Matrix4<T>::operator+=(const Matrix4<T_scalar> &ref) {
+Matrix4<T>& Matrix4<T>::operator+=(const Matrix4<T_scalar>& ref) {
 	for(int i = 0; i < 16; i++)
 		this->values[i] += ref.values[i];
 
@@ -115,7 +115,7 @@ Matrix4<T> &Matrix4<T>::operator+=(const Matrix4<T_scalar> &ref) {
 // Affectation-soustraction
 template <class T>
 template <class T_scalar>
-Matrix4<T> &Matrix4<T>::operator-=(const Matrix4<T_scalar> &ref) {
+Matrix4<T>& Matrix4<T>::operator-=(const Matrix4<T_scalar>& ref) {
 	for(int i = 0; i < 16; i++)
 		this->values[i] -= ref.values[i];
 
@@ -125,7 +125,7 @@ Matrix4<T> &Matrix4<T>::operator-=(const Matrix4<T_scalar> &ref) {
 // Affectation-multiplication
 template <class T>
 template <class T_scalar>
-Matrix4<T> &Matrix4<T>::operator*=(const Matrix4<T_scalar> &ref) {
+Matrix4<T>& Matrix4<T>::operator*=(const Matrix4<T_scalar>& ref) {
 	*this = (*this) * ref;
 
 	return *this;
@@ -134,7 +134,7 @@ Matrix4<T> &Matrix4<T>::operator*=(const Matrix4<T_scalar> &ref) {
 // Affectation-multiplication par un scalaire
 template <class T>
 template <class T_scalar>
-Matrix4<T> &Matrix4<T>::operator*=(T_scalar s) {
+Matrix4<T>& Matrix4<T>::operator*=(T_scalar s) {
 	*this = (*this) * s;
 
 	return *this;
@@ -143,7 +143,7 @@ Matrix4<T> &Matrix4<T>::operator*=(T_scalar s) {
 // Affectation-division par un scalaire
 template <class T>
 template <class T_scalar>
-Matrix4<T> &Matrix4<T>::operator/=(T_scalar s) {
+Matrix4<T>& Matrix4<T>::operator/=(T_scalar s) {
 	*this = (*this) / s;
 
 	return *this;
@@ -161,7 +161,7 @@ Matrix4<T> Matrix4<T>::operator-() const {
 // Addition
 template <class T>
 template <class T_scalar>
-Matrix4<T> Matrix4<T>::operator+(const Matrix4<T_scalar> &ref) const {
+Matrix4<T> Matrix4<T>::operator+(const Matrix4<T_scalar>& ref) const {
 	Matrix4<T> resultat;
 
 	for(int i = 0; i < 16; i++)
@@ -173,7 +173,7 @@ Matrix4<T> Matrix4<T>::operator+(const Matrix4<T_scalar> &ref) const {
 // Soustraction
 template <class T>
 template <class T_scalar>
-Matrix4<T> Matrix4<T>::operator-(const Matrix4<T_scalar> &ref) const {
+Matrix4<T> Matrix4<T>::operator-(const Matrix4<T_scalar>& ref) const {
 	Matrix4<T> resultat;
 
 	for(int i = 0; i < 16; i++)
@@ -184,7 +184,7 @@ Matrix4<T> Matrix4<T>::operator-(const Matrix4<T_scalar> &ref) const {
 
 // Multiplication
 template <class T>
-Matrix4<T> Matrix4<T>::operator*(const Matrix4<T> &ref) const {
+Matrix4<T> Matrix4<T>::operator*(const Matrix4<T>& ref) const {
 	Matrix4<T> resultat;
 
 	for(int i = 0; i < 4; i++) {
@@ -216,7 +216,7 @@ Matrix4<T> Matrix4<T>::operator*(T_scalar s) const {
 
 // Multiplication par un vecteur
 template <class T>
-Vector4<T> Matrix4<T>::operator*(const Vector4<T> &v) const {
+Vector4<T> Matrix4<T>::operator*(const Vector4<T>& v) const {
 	Vector4<T> resultat;
 
 	for(int i = 0; i < 4; i++) {
@@ -244,22 +244,22 @@ Matrix4<T> Matrix4<T>::operator/(T_scalar s) const {
 
 // Accès à un élément
 template <class T>
-T &Matrix4<T>::operator[](int index) {
+T& Matrix4<T>::operator[](int index) {
 	return values[index];
 }
 
 template <class T>
-const T &Matrix4<T>::operator[](int index) const {
+const T& Matrix4<T>::operator[](int index) const {
 	return values[index];
 }
 
 template <class T>
-T &Matrix4<T>::get(int row, int column) {
+T& Matrix4<T>::get(int row, int column) {
 	return values[row + 4 * column];
 }
 
 template <class T>
-const T &Matrix4<T>::get(int row, int column) const {
+const T& Matrix4<T>::get(int row, int column) const {
 	return values[row + 4 * column];
 }
 
@@ -314,23 +314,23 @@ T Matrix4<T>::determinant() {
 	// On décompose en 4 déterminants 3x3, multipliés par +/- ai, avec ai : ième terme de la 1ère ligne.
 
 	det3 = +values[5] * (values[10] * values[15] - values[14] * values[11]) -
-		   values[9] * (values[6] * values[15] - values[14] * values[7]) +
-		   values[13] * (values[6] * values[11] - values[10] * values[7]);
+	       values[9] * (values[6] * values[15] - values[14] * values[7]) +
+	       values[13] * (values[6] * values[11] - values[10] * values[7]);
 	result += values[0] * det3;
 
 	det3 = +values[1] * (values[10] * values[15] - values[14] * values[11]) -
-		   values[9] * (values[2] * values[15] - values[14] * values[3]) +
-		   values[13] * (values[2] * values[11] - values[10] * values[3]);
+	       values[9] * (values[2] * values[15] - values[14] * values[3]) +
+	       values[13] * (values[2] * values[11] - values[10] * values[3]);
 	result -= values[4] * det3;
 
 	det3 = +values[1] * (values[6] * values[15] - values[14] * values[7]) -
-		   values[5] * (values[2] * values[15] - values[14] * values[3]) +
-		   values[13] * (values[2] * values[7] - values[6] * values[3]);
+	       values[5] * (values[2] * values[15] - values[14] * values[3]) +
+	       values[13] * (values[2] * values[7] - values[6] * values[3]);
 	result += values[8] * det3;
 
 	det3 = +values[1] * (values[6] * values[11] - values[10] * values[7]) -
-		   values[5] * (values[2] * values[11] - values[10] * values[3]) +
-		   values[9] * (values[2] * values[7] - values[6] * values[3]);
+	       values[5] * (values[2] * values[11] - values[10] * values[3]) +
+	       values[9] * (values[2] * values[7] - values[6] * values[3]);
 	result -= values[12] * det3;
 
 	return result;
@@ -414,28 +414,28 @@ void Matrix4<T>::invertAndTranspose() {
 
 	// Calcul des 8 1ers éléments (cofacteurs)
 	comatrix_transpose.values[0] = pairs[0] * values[5] + pairs[3] * values[6] + pairs[4] * values[7] -
-								   pairs[1] * values[5] - pairs[2] * values[6] - pairs[5] * values[7];
+	                               pairs[1] * values[5] - pairs[2] * values[6] - pairs[5] * values[7];
 
 	comatrix_transpose.values[1] = pairs[1] * values[4] + pairs[6] * values[6] + pairs[9] * values[7] -
-								   pairs[0] * values[4] - pairs[7] * values[6] - pairs[8] * values[7];
+	                               pairs[0] * values[4] - pairs[7] * values[6] - pairs[8] * values[7];
 
 	comatrix_transpose.values[2] = pairs[2] * values[4] + pairs[7] * values[5] + pairs[10] * values[7] -
-								   pairs[3] * values[4] - pairs[6] * values[5] - pairs[11] * values[7];
+	                               pairs[3] * values[4] - pairs[6] * values[5] - pairs[11] * values[7];
 
 	comatrix_transpose.values[3] = pairs[5] * values[4] + pairs[8] * values[5] + pairs[11] * values[6] -
-								   pairs[4] * values[4] - pairs[9] * values[5] - pairs[10] * values[6];
+	                               pairs[4] * values[4] - pairs[9] * values[5] - pairs[10] * values[6];
 
 	comatrix_transpose.values[4] = pairs[1] * values[1] + pairs[2] * values[2] + pairs[5] * values[3] -
-								   pairs[0] * values[1] - pairs[3] * values[2] - pairs[4] * values[3];
+	                               pairs[0] * values[1] - pairs[3] * values[2] - pairs[4] * values[3];
 
 	comatrix_transpose.values[5] = pairs[0] * values[0] + pairs[7] * values[2] + pairs[8] * values[3] -
-								   pairs[1] * values[0] - pairs[6] * values[2] - pairs[9] * values[3];
+	                               pairs[1] * values[0] - pairs[6] * values[2] - pairs[9] * values[3];
 
 	comatrix_transpose.values[6] = pairs[3] * values[0] + pairs[6] * values[1] + pairs[11] * values[3] -
-								   pairs[2] * values[0] - pairs[7] * values[1] - pairs[10] * values[3];
+	                               pairs[2] * values[0] - pairs[7] * values[1] - pairs[10] * values[3];
 
 	comatrix_transpose.values[7] = pairs[4] * values[0] + pairs[9] * values[1] + pairs[10] * values[2] -
-								   pairs[5] * values[0] - pairs[8] * values[1] - pairs[11] * values[2];
+	                               pairs[5] * values[0] - pairs[8] * values[1] - pairs[11] * values[2];
 
 	// Calcul de valeurs temporaires pour les 8 éléments suivants
 	pairs[0] = values[2] * values[7];
@@ -453,32 +453,32 @@ void Matrix4<T>::invertAndTranspose() {
 
 	// Calcul des 8 éléments suivants (cofacteurs)
 	comatrix_transpose.values[8] = pairs[0] * values[13] + pairs[3] * values[14] + pairs[4] * values[15] -
-								   pairs[1] * values[13] - pairs[2] * values[14] - pairs[5] * values[15];
+	                               pairs[1] * values[13] - pairs[2] * values[14] - pairs[5] * values[15];
 
 	comatrix_transpose.values[9] = pairs[1] * values[12] + pairs[6] * values[14] + pairs[9] * values[15] -
-								   pairs[0] * values[12] - pairs[7] * values[14] - pairs[8] * values[15];
+	                               pairs[0] * values[12] - pairs[7] * values[14] - pairs[8] * values[15];
 
 	comatrix_transpose.values[10] = pairs[2] * values[12] + pairs[7] * values[13] + pairs[10] * values[15] -
-									pairs[3] * values[12] - pairs[6] * values[13] - pairs[11] * values[15];
+	                                pairs[3] * values[12] - pairs[6] * values[13] - pairs[11] * values[15];
 
 	comatrix_transpose.values[11] = pairs[5] * values[12] + pairs[8] * values[13] + pairs[11] * values[14] -
-									pairs[4] * values[12] - pairs[9] * values[13] - pairs[10] * values[14];
+	                                pairs[4] * values[12] - pairs[9] * values[13] - pairs[10] * values[14];
 
 	comatrix_transpose.values[12] = pairs[2] * values[10] + pairs[5] * values[11] + pairs[1] * values[9] -
-									pairs[4] * values[11] - pairs[0] * values[9] - pairs[3] * values[10];
+	                                pairs[4] * values[11] - pairs[0] * values[9] - pairs[3] * values[10];
 
 	comatrix_transpose.values[13] = pairs[8] * values[11] + pairs[0] * values[8] + pairs[7] * values[10] -
-									pairs[6] * values[10] - pairs[9] * values[11] - pairs[1] * values[8];
+	                                pairs[6] * values[10] - pairs[9] * values[11] - pairs[1] * values[8];
 
 	comatrix_transpose.values[14] = pairs[6] * values[9] + pairs[11] * values[11] + pairs[3] * values[8] -
-									pairs[10] * values[11] - pairs[2] * values[8] - pairs[7] * values[9];
+	                                pairs[10] * values[11] - pairs[2] * values[8] - pairs[7] * values[9];
 
 	comatrix_transpose.values[15] = pairs[10] * values[10] + pairs[4] * values[8] + pairs[9] * values[9] -
-									pairs[8] * values[9] - pairs[11] * values[10] - pairs[5] * values[8];
+	                                pairs[8] * values[9] - pairs[11] * values[10] - pairs[5] * values[8];
 
 	// Calcul du déterminant (en réutilisant les valeurs calculées pour la comatrice)
 	det = values[0] * comatrix_transpose.values[0] + values[1] * comatrix_transpose.values[1] +
-		  values[2] * comatrix_transpose.values[2] + values[3] * comatrix_transpose.values[3];
+	      values[2] * comatrix_transpose.values[2] + values[3] * comatrix_transpose.values[3];
 
 	*this = comatrix_transpose / det;
 }
@@ -496,7 +496,7 @@ Vector4<T> Matrix4<T>::getColumn(int j) const {
 
 template <class T>
 template <class T_scalar>
-void Matrix4<T>::setRow(const Vector4<T_scalar> &v, int i) {
+void Matrix4<T>::setRow(const Vector4<T_scalar>& v, int i) {
 	values[i + 0 * 4] = v.x;
 	values[i + 1 * 4] = v.y;
 	values[i + 2 * 4] = v.z;
@@ -505,7 +505,7 @@ void Matrix4<T>::setRow(const Vector4<T_scalar> &v, int i) {
 
 template <class T>
 template <class T_scalar>
-void Matrix4<T>::setColumn(const Vector4<T_scalar> &v, int j) {
+void Matrix4<T>::setColumn(const Vector4<T_scalar>& v, int j) {
 	values[j * 4 + 0] = v.x;
 	values[j * 4 + 1] = v.y;
 	values[j * 4 + 2] = v.z;
@@ -514,7 +514,7 @@ void Matrix4<T>::setColumn(const Vector4<T_scalar> &v, int j) {
 
 // Affichage
 template <class T>
-std::ostream &operator<<(std::ostream &os, const Matrix4<T> &mat) {
+std::ostream& operator<<(std::ostream& os, const Matrix4<T>& mat) {
 	Vector4<T> r1 = mat.getRow(0);
 	Vector4<T> r2 = mat.getRow(1);
 	Vector4<T> r3 = mat.getRow(2);

@@ -1,12 +1,12 @@
 // Trame.cpp
 
 #include "Trame.h"
-#include <sstream>
-#include <iomanip>
 #include "log/Log.h"
+#include <iomanip>
 #include <iostream>
+#include <sstream>
 
-std::ostream &operator<<(std::ostream &s, Byte const &b) {
+std::ostream& operator<<(std::ostream& s, Byte const& b) {
 	std::ios oldState(nullptr);
 	oldState.copyfmt(s);
 
@@ -45,7 +45,7 @@ uint8_t Trame::getNumPaquet() const {
 	return _num_paquet;
 }
 
-uint8_t const *Trame::getDonnees() const {
+uint8_t const* Trame::getDonnees() const {
 	return &_donnees[0];
 }
 
@@ -98,12 +98,12 @@ void Trame::set(uint8_t numero, uint8_t bit, bool valeur) {
 		_donnees[numero] &= ~(1 << bit);
 }
 
-uint8_t Trame::demultiplexId(MuxedIdAndCmd const &idAndCmd) {
+uint8_t Trame::demultiplexId(MuxedIdAndCmd const& idAndCmd) {
 	uint16_t muxedVal = (uint16_t(idAndCmd.second) << 8) | uint16_t(idAndCmd.first);
 	return uint8_t((muxedVal >> BITS_CMD_TRAME) & ~(1 << BITS_ID_TRAME));
 }
 
-uint8_t Trame::demultiplexCmd(MuxedIdAndCmd const &idAndCmd) {
+uint8_t Trame::demultiplexCmd(MuxedIdAndCmd const& idAndCmd) {
 	uint16_t muxedVal = (uint16_t(idAndCmd.second) << 8) | uint16_t(idAndCmd.first);
 	return uint8_t(muxedVal & 0xF);
 }
@@ -114,7 +114,7 @@ Trame::MuxedIdAndCmd Trame::multiplexIdAndCmd(uint8_t id, uint8_t cmd) {
 }
 
 // afficher la trame sur le flux de sortie
-std::ostream &operator<<(std::ostream &o, Trame const &t) {
+std::ostream& operator<<(std::ostream& o, Trame const& t) {
 	o << "[id=";
 	o << int(t._id);
 	o << ":";

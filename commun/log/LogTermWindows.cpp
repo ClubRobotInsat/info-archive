@@ -2,8 +2,8 @@
 
 #ifdef WIN32
 
-#include <windows.h>
 #include "Log.h"
+#include <windows.h>
 
 enum TermColor {
 	TERM_BLACK,
@@ -34,27 +34,27 @@ struct TermFormat {
 };
 
 static const TermFormat term_formats[LogType::ALL] = {
-	{TERM_WHITE, TERM_RED},   // error
-	{TERM_WHITE, TERM_BROWN}, // warn
+    {TERM_WHITE, TERM_RED},   // error
+    {TERM_WHITE, TERM_BROWN}, // warn
 
-	{TERM_RED, TERM_BLACK},   // failed
-	{TERM_GREEN, TERM_BLACK}, // success
+    {TERM_RED, TERM_BLACK},   // failed
+    {TERM_GREEN, TERM_BLACK}, // success
 
-	{TERM_LIGHTGRAY, TERM_BLACK}, // info
+    {TERM_LIGHTGRAY, TERM_BLACK}, // info
 
-	{TERM_WHITE, TERM_GREEN},	// debug0
-	{TERM_WHITE, TERM_BLUE},	 // debug1
-	{TERM_WHITE, TERM_MAGENTA},  // debug2
-	{TERM_WHITE, TERM_CYAN},	 // debug3
-	{TERM_WHITE, TERM_BLACK},	// debug4
-	{TERM_YELLOW, TERM_GREEN},   // debug5
-	{TERM_YELLOW, TERM_BLUE},	// debug6
-	{TERM_YELLOW, TERM_MAGENTA}, // debug7
-	{TERM_YELLOW, TERM_CYAN},	// debug8
-	{TERM_YELLOW, TERM_BLACK}	// debug9
+    {TERM_WHITE, TERM_GREEN},    // debug0
+    {TERM_WHITE, TERM_BLUE},     // debug1
+    {TERM_WHITE, TERM_MAGENTA},  // debug2
+    {TERM_WHITE, TERM_CYAN},     // debug3
+    {TERM_WHITE, TERM_BLACK},    // debug4
+    {TERM_YELLOW, TERM_GREEN},   // debug5
+    {TERM_YELLOW, TERM_BLUE},    // debug6
+    {TERM_YELLOW, TERM_MAGENTA}, // debug7
+    {TERM_YELLOW, TERM_CYAN},    // debug8
+    {TERM_YELLOW, TERM_BLACK}    // debug9
 };
 
-void Log::writeTermFormattedString(ostream &p_stream, const string &str) {
+void Log::writeTermFormattedString(ostream& p_stream, const string& str) {
 	std::string str_buffer = "";
 	HANDLE handle;
 	if(&p_stream == &cerr)
@@ -82,7 +82,7 @@ void Log::writeTermFormattedString(ostream &p_stream, const string &str) {
 	p_stream << str_buffer << std::flush;
 }
 
-void Log::resetTerm(ostream &p_stream) {
+void Log::resetTerm(ostream& p_stream) {
 	HANDLE handle;
 	if(&p_stream == &cerr)
 		handle = GetStdHandle(STD_ERROR_HANDLE);
@@ -91,8 +91,8 @@ void Log::resetTerm(ostream &p_stream) {
 	SetConsoleTextAttribute(handle, TERM_BLACK << 4 | TERM_LIGHTGRAY);
 }
 
-void Log::doTermFormatting(string &msg, LogType type) {
-	const TermFormat &format = term_formats[(int)type];
+void Log::doTermFormatting(string& msg, LogType type) {
+	const TermFormat& format = term_formats[(int)type];
 
 	char str_beginning[64] = "";
 	sprintf(str_beginning, "%c;%c;%c;", 0x1B, char(int(format.front_color) + 42), char(int(format.back_color) + 42));
