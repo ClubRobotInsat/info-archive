@@ -41,10 +41,10 @@ endif()
  
 function(compile_petri TARGET_NAME PATH_TO_DOC OUTPUT)
 	add_custom_command(
-		OUTPUT    ${OUTPUT}
-		COMMAND   mono
-ARGS      ${root_SOURCE_DIR}/petri/Editor/bin/Petri.exe --generate --compile --verbose --arch ${BITS} ${CMAKE_CURRENT_SOURCE_DIR}/${PATH_TO_DOC}
-		DEPENDS   ${PATH_TO_DOC}
+		# ${OUTPUT}2 ne sert qu'à exécuter la cible à chaque fois.
+		OUTPUT    ${OUTPUT} ${OUTPUT}2
+		COMMAND   ${root_SOURCE_DIR}/petri/petri
+        ARGS      --update --arch ${BITS} ${CMAKE_CURRENT_SOURCE_DIR}/${PATH_TO_DOC}
 	)
 
 	add_custom_target(${TARGET_NAME} ALL
