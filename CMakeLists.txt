@@ -20,15 +20,15 @@ else()
 endif()
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL Clang)
-  if (COLOR)
-    set(CMAKE_COLOR_MAKEFILE ON)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fcolor-diagnostics")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fcolor-diagnostics")
-  else ()
-    set(CMAKE_COLOR_MAKEFILE OFF)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-color-diagnostics")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fno-color-diagnostics")
-  endif()
+	if (COLOR)
+		set(CMAKE_COLOR_MAKEFILE ON)
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fcolor-diagnostics")
+		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fcolor-diagnostics")
+	else ()
+		set(CMAKE_COLOR_MAKEFILE OFF)
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-color-diagnostics")
+		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fno-color-diagnostics")
+	endif()
 endif()
 
 if(${BITS} EQUAL 32)
@@ -40,15 +40,8 @@ if(${BITS} EQUAL 32)
 endif()
  
 function(compile_petri TARGET_NAME PATH_TO_DOC OUTPUT)
-	add_custom_command(
-		# ${OUTPUT}2 ne sert qu'à exécuter la cible à chaque fois.
-		OUTPUT    ${OUTPUT} ${OUTPUT}2
-		COMMAND   ${root_SOURCE_DIR}/petri/petri
-        ARGS      --update --arch ${BITS} ${CMAKE_CURRENT_SOURCE_DIR}/${PATH_TO_DOC}
-	)
-
 	add_custom_target(${TARGET_NAME} ALL
-		DEPENDS   ${OUTPUT}
+		COMMAND ${root_SOURCE_DIR}/petri/petri --update --arch ${BITS} ${CMAKE_CURRENT_SOURCE_DIR}/${PATH_TO_DOC}
 	)
 endfunction()
 
