@@ -1,19 +1,19 @@
 #ifndef _COMMUN_H_
 #define _COMMUN_H_
 
-#include "Enum/Enum.h"
-#include "Units.h"
-#include "MathToolbox/MathToolbox.h"
-#include "Trame.h"
 #include "Clock.h"
-#include "Utils.h"
+#include "Enum/Enum.h"
+#include "MathToolbox/MathToolbox.h"
 #include "ResultatAction.h"
+#include "Trame.h"
+#include "Units.h"
+#include "Utils.h"
 #include <cstdint>
 #include <thread>
 
 using namespace std::string_literals;
 
-inline void setThreadName(char const *name) {
+inline void setThreadName(char const* name) {
 #if __linux__
 	pthread_setname_np(pthread_self(), name);
 #elif __APPLE__
@@ -21,7 +21,7 @@ inline void setThreadName(char const *name) {
 #endif
 }
 
-inline void setThreadName(std::string const &name) {
+inline void setThreadName(std::string const& name) {
 	setThreadName(name.c_str());
 }
 

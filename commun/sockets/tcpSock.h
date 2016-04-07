@@ -4,9 +4,9 @@
 /* Club Robot INSA Toulouse                                      Félix Poisot */
 /******************************************************************************/
 #include "Utils.h"
-#include <memory>
-#include <cstdint>
 #include <Commun.h>
+#include <cstdint>
+#include <memory>
 /******************************************************************************/
 
 EXCEPTION_CLASS(ErreurSocket);
@@ -15,7 +15,7 @@ EXCEPTION_CLASS(ErreurSocket);
 class TcpSock {
 public:
 	// Tente une connection à un serveur. Exception si échec
-	TcpSock(const std::string &host, std::uint16_t port);
+	TcpSock(const std::string& host, std::uint16_t port);
 	// close() implicite si nécessaire.
 	~TcpSock() {
 		close();
@@ -23,21 +23,21 @@ public:
 
 	// Accumule 'cBytes' octets quoiqui'il arrive.
 	// Exception si pas assez de données disponibles.
-	void read(void *buffer, int cBytes);
+	void read(void* buffer, int cBytes);
 
 	// séparateur inclut dans le résultat.
 	std::string readTextTo(char chr);
 
 	// Retourne dès que des données sont disponibles.
 	// Renvoie le nb. d'octets lus, <= à 'maxBytes'.
-	int readSome(void *buffer, int maxBytes);
+	int readSome(void* buffer, int maxBytes);
 
 	// Vrai si le prochain appel à read(_,1) ou readSome(_,_) va retourner sans
 	// bloquer
 	bool hasNext();
 
-	void write(const void *data, int cBytes);
-	void write(const std::string &s) {
+	void write(const void* data, int cBytes);
+	void write(const std::string& s) {
 		write(s.c_str(), s.size());
 	}
 

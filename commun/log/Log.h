@@ -9,13 +9,13 @@
  * set to LogType::INFO, only LogType::INFO and upwards to LogTypeError will be displayed. */
 #define MIN_LOG_LEVEL LogType::ALL
 
-#include <iostream>
 #include <fstream>
+#include <iostream>
+#include <mutex>
 #include <sstream>
 #include <string>
-#include <unordered_map>
-#include <mutex>
 #include <thread>
+#include <unordered_map>
 
 #define logInfo(...) Log::write(LogType::INFO, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__)
 #define logSuccess(...) Log::write(LogType::SUCCESS, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__)
@@ -73,8 +73,8 @@ public:
 		OUTPUT_COUNT
 	};
 
-	static void open(Output output, const std::string &filename = "", bool desync_with_stdio = true);
-	static void open(int argc, char *argv[], bool desync_with_stdio = true);
+	static void open(Output output, const std::string& filename = "", bool desync_with_stdio = true);
+	static void open(int argc, char* argv[], bool desync_with_stdio = true);
 
 	// Close a log output
 	static void close(Output output);
@@ -83,7 +83,7 @@ public:
 	static void indent(int value = 1);
 
 	template <typename... Args>
-	static void write(LogType type, const char *file_path, int line, const char *function_name, Args &&... args);
+	static void write(LogType type, const char* file_path, int line, const char* function_name, Args&&... args);
 
 private:
 	// Information specific to a thread
@@ -93,34 +93,34 @@ private:
 
 	static bool _opened;
 	static std::mutex _logMutex;
-	static std::ostream *_p_stream[OUTPUT_COUNT];
+	static std::ostream* _p_stream[OUTPUT_COUNT];
 	static std::ofstream _RTFfile;
 	static std::ofstream _HTMLfile;
 	static std::ofstream _TXTfile;
 	static std::unordered_map<std::thread::id, ThreadInfo> _threadInfos;
 
 	template <typename T, typename... Args>
-	static void writeInternal(LogType type, Output outputIndex, std::stringstream &stream, T &&arg, Args &&... args);
-	static void writeInternal(LogType type, Output outputIndex, std::stringstream &stream);
+	static void writeInternal(LogType type, Output outputIndex, std::stringstream& stream, T&& arg, Args&&... args);
+	static void writeInternal(LogType type, Output outputIndex, std::stringstream& stream);
 
 	static bool openCommon(Output o, bool desync_with_stdio);
 	// Utility retrieve the file name from the complete path, i.e. "ls" from "/bin/ls"
-	static char const *getFileNameFromPath(const char *file_path);
+	static char const* getFileNameFromPath(const char* file_path);
 
 	// Functions implemented in Log[TermWindows/VT100]/HTML/RTF.cpp
 	// Terminal :
-	static void writeTermFormattedString(std::ostream &p_stream, const std::string &str);
-	static void resetTerm(std::ostream &p_stream);
-	static void doTermFormatting(std::string &msg, LogType type);
+	static void writeTermFormattedString(std::ostream& p_stream, const std::string& str);
+	static void resetTerm(std::ostream& p_stream);
+	static void doTermFormatting(std::string& msg, LogType type);
 
 	// HTML :
-	static void doHTMLFormatting(std::string &msg, LogType type);
+	static void doHTMLFormatting(std::string& msg, LogType type);
 
 	// RTF :
-	static void doRTFFormatting(std::string &msg, LogType type);
+	static void doRTFFormatting(std::string& msg, LogType type);
 
 	// Handy function, wrapper for all doXXXFormatting() ones
-	static inline void doFormatting(std::string &msg, LogType type, Log::Output output);
+	static inline void doFormatting(std::string& msg, LogType type, Log::Output output);
 };
 
 // RAII used to control indentation
@@ -134,14 +134,14 @@ struct LogIndent {
 };
 
 template <typename T, typename... Args>
-inline void Log::writeInternal(LogType type, Output outputIndex, std::stringstream &stream, T &&arg, Args &&... args) {
+inline void Log::writeInternal(LogType type, Output outputIndex, std::stringstream& stream, T&& arg, Args&&... args) {
 	stream << arg;
 	Log::writeInternal(type, outputIndex, stream, std::forward<Args>(args)...);
 }
 
 // write() implementation :
 template <typename... Args>
-inline void Log::write(LogType type, const char *file_path, int line, const char *function_name, Args &&... args) {
+inline void Log::write(LogType type, const char* file_path, int line, const char* function_name, Args&&... args) {
 #ifdef ENABLE_LOGGING
 	if(type > MIN_LOG_LEVEL) {
 		return;
@@ -153,7 +153,7 @@ inline void Log::write(LogType type, const char *file_path, int line, const char
 		Log::open(TERMINAL);
 
 	// Get the file's name from its path
-	const char *file_name = Log::getFileNameFromPath(file_path);
+	const char* file_name = Log::getFileNameFromPath(file_path);
 
 	for(int output_index = 0; output_index < OUTPUT_COUNT; output_index++) {
 		if(_p_stream[output_index]) {

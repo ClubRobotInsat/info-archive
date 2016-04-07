@@ -3,9 +3,9 @@
 #ifndef TRANSFORM_H
 #define TRANSFORM_H
 
-#include "Vector3.h"
 #include "Matrix3.h"
 #include "Matrix4.h"
+#include "Vector3.h"
 //#include "Trigo.h"
 #include <iostream>
 
@@ -31,53 +31,53 @@ public:
 	Transform(const Matrix3<T_scalar> rotation, const Vector3<T_scalar2> position);
 
 	template <class T_scalar>
-	Transform(const Matrix4<T_scalar> &mat);
+	Transform(const Matrix4<T_scalar>& mat);
 
 	template <class T_scalar>
-	Transform(const Transform<T_scalar> &ref);
+	Transform(const Transform<T_scalar>& ref);
 
 	virtual ~Transform();
 
 	// Redefined operators
 	template <class T_scalar>
-	Transform<T> &operator=(const Transform<T_scalar> &ref);
+	Transform<T>& operator=(const Transform<T_scalar>& ref);
 
 	template <class T_scalar>
-	Transform<T> &operator=(const Matrix4<T_scalar> &mat);
+	Transform<T>& operator=(const Matrix4<T_scalar>& mat);
 
 	// translation along a vector
 	template <class T_scalar>
-	Transform<T> &operator+=(const Vector3<T_scalar> &ref);
+	Transform<T>& operator+=(const Vector3<T_scalar>& ref);
 
 	template <class T_scalar>
-	Transform<T> &operator-=(const Vector3<T_scalar> &ref);
+	Transform<T>& operator-=(const Vector3<T_scalar>& ref);
 
 	// product with an other transformation matrix
 	template <class T_scalar>
-	Transform<T> &operator*=(const Transform<T_scalar> &ref);
+	Transform<T>& operator*=(const Transform<T_scalar>& ref);
 
 	template <class T_scalar>
-	Transform<T> &operator*=(const Matrix4<T_scalar> &ref);
+	Transform<T>& operator*=(const Matrix4<T_scalar>& ref);
 
 	template <class T_scalar>
-	Transform<T> &operator*=(const T_scalar ref[16]);
+	Transform<T>& operator*=(const T_scalar ref[16]);
 
 	// negation
 	Transform<T> operator-() const;
 
 	// translation along a vector
 	template <class T_scalar>
-	Transform<T> operator+(const Vector3<T_scalar> &ref) const;
+	Transform<T> operator+(const Vector3<T_scalar>& ref) const;
 
 	template <class T_scalar>
-	Transform<T> operator-(const Vector3<T_scalar> &ref) const;
+	Transform<T> operator-(const Vector3<T_scalar>& ref) const;
 
 	// product between transformation matrices
 	template <class T_scalar>
-	Transform<T> operator*(const Transform<T_scalar> &ref) const;
+	Transform<T> operator*(const Transform<T_scalar>& ref) const;
 
 	template <class T_scalar>
-	Transform<T> operator*(const Matrix4<T_scalar> &ref) const;
+	Transform<T> operator*(const Matrix4<T_scalar>& ref) const;
 
 	template <class T_scalar>
 	Transform<T> operator*(const T_scalar ref[16]) const;
@@ -97,7 +97,7 @@ public:
 
 	// setters
 	template <class T_scalar>
-	void setRotation(const Matrix3<T_scalar> &rotation);
+	void setRotation(const Matrix3<T_scalar>& rotation);
 
 	template <class T_scalar, class T_scalar2>
 	void rotate(Vector3<T_scalar> axis, T_scalar2 value);
@@ -109,10 +109,10 @@ public:
 	void lookAtZup(Vector3<T_scalar> target);
 
 	template <class T_scalar>
-	void move(const Vector3<T_scalar> &translation);
+	void move(const Vector3<T_scalar>& translation);
 
 	template <class T_scalar>
-	void moveTo(const Vector3<T_scalar> &target);
+	void moveTo(const Vector3<T_scalar>& target);
 
 	// getters
 	Transform<T> getInverse() const {
@@ -121,16 +121,16 @@ public:
 		return t;
 	}
 
-	const Matrix3<T> &getRotation() const {
+	const Matrix3<T>& getRotation() const {
 		return this->rotation;
 	}
-	const Vector3<T> &getPosition() const {
+	const Vector3<T>& getPosition() const {
 		return this->position;
 	}
 
 	// transformation of a vector
 	template <class T_scalar>
-	const Vector3<T_scalar> apply(const Vector3<T_scalar> &vec) const {
+	const Vector3<T_scalar> apply(const Vector3<T_scalar>& vec) const {
 		return (rotation * vec) + position;
 	}
 
@@ -161,13 +161,13 @@ public:
 // Transformation of a vector (t * v) : defined outside because of a conflict with Vector3's outside
 // operator* for scalar multiplication ; this is an overload of this template operator.
 template <class T, class T_scalar>
-Vector3<T> operator*(const Transform<T_scalar> &t, const Vector3<T> &v) {
+Vector3<T> operator*(const Transform<T_scalar>& t, const Vector3<T>& v) {
 	return (t.getRotation() * v) + t.getPosition();
 }
 
 // Iostream printing
 template <class T>
-inline std::ostream &operator<<(std::ostream &os, const Transform<T> &t) {
+inline std::ostream& operator<<(std::ostream& os, const Transform<T>& t) {
 	os << "rotation :" << std::endl << t.getRotation() << "position : " << t.getPosition();
 	return os;
 }

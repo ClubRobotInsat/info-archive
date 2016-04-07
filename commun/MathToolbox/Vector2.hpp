@@ -4,31 +4,26 @@
 // Version 1.0
 
 template <class T>
-constexpr Vector2<T>::Vector2()
-		: x(T()), y(T()) {}
+constexpr Vector2<T>::Vector2() : x(T()), y(T()) {}
 
 template <class T>
-constexpr Vector2<T>::Vector2(const T &xx, const T &yy)
-		: x(xx), y(yy) {}
+constexpr Vector2<T>::Vector2(const T& xx, const T& yy) : x(xx), y(yy) {}
 
 template <class T>
 template <class T_scalar>
-Vector2<T>::Vector2(const T_scalar &s)
-		: x(s), y(s) {}
+Vector2<T>::Vector2(const T_scalar& s) : x(s), y(s) {}
 
 template <class T>
-Vector2<T>::Vector2(const Vector2<T> &ref)
-		: x(ref.x), y(ref.y) {}
+Vector2<T>::Vector2(const Vector2<T>& ref) : x(ref.x), y(ref.y) {}
 
 template <class T>
 template <class T_2>
-Vector2<T>::Vector2(const Vector2<T_2> &ref)
-		: x(ref.x), y(ref.y) {}
+Vector2<T>::Vector2(const Vector2<T_2>& ref) : x(ref.x), y(ref.y) {}
 
 // Affectation suivant un autre vecteur
 template <class T>
 template <class T_2>
-Vector2<T> &Vector2<T>::operator=(const Vector2<T_2> &ref) {
+Vector2<T>& Vector2<T>::operator=(const Vector2<T_2>& ref) {
 	this->x = ref.x;
 	this->y = ref.y;
 	return *this;
@@ -36,7 +31,7 @@ Vector2<T> &Vector2<T>::operator=(const Vector2<T_2> &ref) {
 
 // Affectation suivant un autre vecteur du même type (sinon, ça compile pas...)
 template <class T>
-Vector2<T> &Vector2<T>::operator=(const Vector2<T> &ref) {
+Vector2<T>& Vector2<T>::operator=(const Vector2<T>& ref) {
 	this->x = ref.x;
 	this->y = ref.y;
 	return *this;
@@ -45,7 +40,7 @@ Vector2<T> &Vector2<T>::operator=(const Vector2<T> &ref) {
 // Affectation suivant un scalaire
 template <class T>
 template <class T_scalar>
-Vector2<T> &Vector2<T>::operator=(const T_scalar &s) {
+Vector2<T>& Vector2<T>::operator=(const T_scalar& s) {
 	this->x = s;
 	this->y = s;
 	return *this;
@@ -54,7 +49,7 @@ Vector2<T> &Vector2<T>::operator=(const T_scalar &s) {
 // Affectation-addition
 template <class T>
 template <class T_2>
-Vector2<T> &Vector2<T>::operator+=(const Vector2<T_2> &v) {
+Vector2<T>& Vector2<T>::operator+=(const Vector2<T_2>& v) {
 	this->x += v.x;
 	this->y += v.y;
 	return *this;
@@ -63,7 +58,7 @@ Vector2<T> &Vector2<T>::operator+=(const Vector2<T_2> &v) {
 // Affectation-soustraction
 template <class T>
 template <class T_2>
-Vector2<T> &Vector2<T>::operator-=(const Vector2<T_2> &v) {
+Vector2<T>& Vector2<T>::operator-=(const Vector2<T_2>& v) {
 	this->x -= v.x;
 	this->y -= v.y;
 	return *this;
@@ -72,7 +67,7 @@ Vector2<T> &Vector2<T>::operator-=(const Vector2<T_2> &v) {
 // Affectation-multiplication par un scalaire
 template <class T>
 template <class T_scalar>
-Vector2<T> &Vector2<T>::operator*=(const T_scalar &s) {
+Vector2<T>& Vector2<T>::operator*=(const T_scalar& s) {
 	this->x *= s;
 	this->y *= s;
 	return *this;
@@ -81,7 +76,7 @@ Vector2<T> &Vector2<T>::operator*=(const T_scalar &s) {
 // Affectation-division par un scalaire
 template <class T>
 template <class T_scalar>
-Vector2<T> &Vector2<T>::operator/=(const T_scalar &s) {
+Vector2<T>& Vector2<T>::operator/=(const T_scalar& s) {
 	this->x /= s;
 	this->y /= s;
 	return *this;
@@ -96,21 +91,21 @@ inline Vector2<T> Vector2<T>::operator-() const {
 // Addition
 template <class T>
 template <class T_2>
-Vector2<T> Vector2<T>::operator+(const Vector2<T_2> &v) const {
+Vector2<T> Vector2<T>::operator+(const Vector2<T_2>& v) const {
 	return Vector2<T>(this->x + v.x, this->y + v.y);
 }
 
 // Soustraction
 template <class T>
 template <class T_2>
-Vector2<T> Vector2<T>::operator-(const Vector2<T_2> &v) const {
+Vector2<T> Vector2<T>::operator-(const Vector2<T_2>& v) const {
 	return Vector2<T>(this->x - v.x, this->y - v.y);
 }
 
 // Multiplication par un scalaire
 template <class T>
 template <class T_scalar>
-Vector2<T> Vector2<T>::operator*(const T_scalar &s) const {
+Vector2<T> Vector2<T>::operator*(const T_scalar& s) const {
 	return Vector2<T>(this->x * s, this->y * s);
 }
 
@@ -131,7 +126,7 @@ T Vector2<T>::norm() const {
 // Rotation du vecteur
 template <class T>
 template <class U>
-Vector2<T> &Vector2<T>::rotate(U angle) {
+Vector2<T>& Vector2<T>::rotate(U angle) {
 	// On multiplie par la matrice :
 	// (cos(theta), -sin(theta) )
 	// (sin(theta), cos(theta) )
@@ -148,12 +143,12 @@ Vector2<T> &Vector2<T>::rotate(U angle) {
 
 // Multiplication par un scalaire (s * v)
 template <class T, class T_scalar>
-auto operator*(const T_scalar &s, const Vector2<T> &v) {
-	return Vector2<decltype(v.x *s)>(v.x * s, v.y * s);
+auto operator*(const T_scalar& s, const Vector2<T>& v) {
+	return Vector2<decltype(v.x * s)>(v.x * s, v.y * s);
 }
 
 // Division par un scalaire (s / v)
 template <class T, class T_scalar>
-Vector2<T> operator/(const T_scalar &s, const Vector2<T> &v) {
+Vector2<T> operator/(const T_scalar& s, const Vector2<T>& v) {
 	return Vector2<T>(v.x / s, v.y / s);
 }

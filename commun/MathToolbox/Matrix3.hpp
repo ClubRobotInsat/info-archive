@@ -9,7 +9,7 @@ Matrix3<T>::Matrix3() {
 // Constructeur à partir de 3 vecteurs
 template <class T>
 template <class T_scalar>
-Matrix3<T>::Matrix3(const Vector3<T_scalar> &v1, const Vector3<T_scalar> &v2, const Vector3<T_scalar> &v3, bool column_vectors) {
+Matrix3<T>::Matrix3(const Vector3<T_scalar>& v1, const Vector3<T_scalar>& v2, const Vector3<T_scalar>& v3, bool column_vectors) {
 	if(column_vectors) {
 		values[0] = v1.x;
 		values[1] = v1.y;
@@ -36,7 +36,7 @@ Matrix3<T>::Matrix3(const Vector3<T_scalar> &v1, const Vector3<T_scalar> &v2, co
 // Constructeur à partir d'un tableau
 template <class T>
 template <class T_scalar>
-Matrix3<T>::Matrix3(T_scalar *values, bool transpose) {
+Matrix3<T>::Matrix3(T_scalar* values, bool transpose) {
 	for(int i = 0; i < 9; i++)
 		this->values[i] = values[i];
 
@@ -47,14 +47,14 @@ Matrix3<T>::Matrix3(T_scalar *values, bool transpose) {
 // Constructeur de copie
 template <class T>
 template <class T_scalar>
-Matrix3<T>::Matrix3(const Matrix3<T_scalar> &ref) {
+Matrix3<T>::Matrix3(const Matrix3<T_scalar>& ref) {
 	*this = ref;
 }
 
 // Opérateur d'affectation
 template <class T>
 template <class T_scalar>
-Matrix3<T> &Matrix3<T>::operator=(const Matrix3<T_scalar> &ref) {
+Matrix3<T>& Matrix3<T>::operator=(const Matrix3<T_scalar>& ref) {
 	for(int i = 0; i < 9; i++)
 		this->values[i] = ref.values[i];
 
@@ -64,7 +64,7 @@ Matrix3<T> &Matrix3<T>::operator=(const Matrix3<T_scalar> &ref) {
 // Affectation-addition
 template <class T>
 template <class T_scalar>
-Matrix3<T> &Matrix3<T>::operator+=(const Matrix3<T_scalar> &ref) {
+Matrix3<T>& Matrix3<T>::operator+=(const Matrix3<T_scalar>& ref) {
 	for(int i = 0; i < 9; i++)
 		this->values[i] += ref.values[i];
 
@@ -74,7 +74,7 @@ Matrix3<T> &Matrix3<T>::operator+=(const Matrix3<T_scalar> &ref) {
 // Affectation-soustraction
 template <class T>
 template <class T_scalar>
-Matrix3<T> &Matrix3<T>::operator-=(const Matrix3<T_scalar> &ref) {
+Matrix3<T>& Matrix3<T>::operator-=(const Matrix3<T_scalar>& ref) {
 	for(int i = 0; i < 9; i++)
 		this->values[i] -= ref.values[i];
 
@@ -84,7 +84,7 @@ Matrix3<T> &Matrix3<T>::operator-=(const Matrix3<T_scalar> &ref) {
 // Affectation-multiplication
 template <class T>
 template <class T_scalar>
-Matrix3<T> &Matrix3<T>::operator*=(const Matrix3<T_scalar> &ref) {
+Matrix3<T>& Matrix3<T>::operator*=(const Matrix3<T_scalar>& ref) {
 	*this = (*this) * ref;
 
 	return *this;
@@ -93,7 +93,7 @@ Matrix3<T> &Matrix3<T>::operator*=(const Matrix3<T_scalar> &ref) {
 // Affectation-multiplication par un scalaire
 template <class T>
 template <class T_scalar>
-Matrix3<T> &Matrix3<T>::operator*=(T_scalar s) {
+Matrix3<T>& Matrix3<T>::operator*=(T_scalar s) {
 	*this = (*this) * s;
 
 	return *this;
@@ -102,7 +102,7 @@ Matrix3<T> &Matrix3<T>::operator*=(T_scalar s) {
 // Affectation-division par un scalaire
 template <class T>
 template <class T_scalar>
-Matrix3<T> &Matrix3<T>::operator/=(T_scalar s) {
+Matrix3<T>& Matrix3<T>::operator/=(T_scalar s) {
 	*this = (*this) / s;
 
 	return *this;
@@ -120,7 +120,7 @@ Matrix3<T> Matrix3<T>::operator-() const {
 // Addition
 template <class T>
 template <class T_scalar>
-Matrix3<T> Matrix3<T>::operator+(const Matrix3<T_scalar> &ref) const {
+Matrix3<T> Matrix3<T>::operator+(const Matrix3<T_scalar>& ref) const {
 	Matrix3<T> resultat;
 
 	for(int i = 0; i < 9; i++)
@@ -132,7 +132,7 @@ Matrix3<T> Matrix3<T>::operator+(const Matrix3<T_scalar> &ref) const {
 // Soustraction
 template <class T>
 template <class T_scalar>
-Matrix3<T> Matrix3<T>::operator-(const Matrix3<T_scalar> &ref) const {
+Matrix3<T> Matrix3<T>::operator-(const Matrix3<T_scalar>& ref) const {
 	Matrix3<T> resultat;
 
 	for(int i = 0; i < 9; i++)
@@ -143,7 +143,7 @@ Matrix3<T> Matrix3<T>::operator-(const Matrix3<T_scalar> &ref) const {
 
 // Multiplication
 template <class T>
-Matrix3<T> Matrix3<T>::operator*(const Matrix3<T> &ref) const {
+Matrix3<T> Matrix3<T>::operator*(const Matrix3<T>& ref) const {
 	Matrix3<T> resultat;
 
 	for(int i = 0; i < 3; i++) {
@@ -175,7 +175,7 @@ Matrix3<T> Matrix3<T>::operator*(T_scalar s) const {
 
 // Multiplication par un vecteur
 template <class T>
-Vector3<T> Matrix3<T>::operator*(const Vector3<T> &v) const {
+Vector3<T> Matrix3<T>::operator*(const Vector3<T>& v) const {
 	Vector3<T> resultat;
 
 	for(int i = 0; i < 3; i++) {
@@ -203,22 +203,22 @@ Matrix3<T> Matrix3<T>::operator/(T_scalar s) const {
 
 // Accès à un élément
 template <class T>
-T &Matrix3<T>::operator[](int index) {
+T& Matrix3<T>::operator[](int index) {
 	return values[index];
 }
 
 template <class T>
-const T &Matrix3<T>::operator[](int index) const {
+const T& Matrix3<T>::operator[](int index) const {
 	return values[index];
 }
 
 template <class T>
-T &Matrix3<T>::get(int row, int column) {
+T& Matrix3<T>::get(int row, int column) {
 	return values[row + 3 * column];
 }
 
 template <class T>
-const T &Matrix3<T>::get(int row, int column) const {
+const T& Matrix3<T>::get(int row, int column) const {
 	return values[row + 3 * column];
 }
 
@@ -254,8 +254,8 @@ void Matrix3<T>::setZero() {
 template <class T>
 T Matrix3<T>::determinant() {
 	return +values[0] * (values[1] * values[5] - values[2] * values[4]) -
-		   values[1] * (values[3] * values[8] - values[5] * values[6]) +
-		   values[2] * (values[3] * values[7] - values[4] * values[6]);
+	       values[1] * (values[3] * values[8] - values[5] * values[6]) +
+	       values[2] * (values[3] * values[7] - values[4] * values[6]);
 }
 
 // Renvoi de la matrice transposée
@@ -298,22 +298,22 @@ void Matrix3<T>::invert() {
 // Renvoi de la transposée de l'inverse de la matrice
 template <class T>
 Matrix3<T> Matrix3<T>::getInverse() {
-	T &m11 = values[0];
-	T &m21 = values[1];
-	T &m31 = values[2];
+	T& m11 = values[0];
+	T& m21 = values[1];
+	T& m31 = values[2];
 
-	T &m12 = values[3];
-	T &m22 = values[4];
-	T &m32 = values[5];
+	T& m12 = values[3];
+	T& m22 = values[4];
+	T& m32 = values[5];
 
-	T &m13 = values[6];
-	T &m23 = values[7];
-	T &m33 = values[8];
+	T& m13 = values[6];
+	T& m23 = values[7];
+	T& m33 = values[8];
 
 	Matrix3<T> result(Vector3<T>((m22 * m33 - m23 * m32), -(m12 * m33 - m13 * m32), (m12 * m23 - m13 * m22)),
-					  Vector3<T>(-(m21 * m33 - m23 * m31), (m11 * m33 - m13 * m31), -(m11 * m23 - m13 * m21)),
-					  Vector3<T>((m21 * m32 - m22 * m31), -(m11 * m32 - m12 * m31), (m11 * m22 - m12 * m21)),
-					  false);
+	                  Vector3<T>(-(m21 * m33 - m23 * m31), (m11 * m33 - m13 * m31), -(m11 * m23 - m13 * m21)),
+	                  Vector3<T>((m21 * m32 - m22 * m31), -(m11 * m32 - m12 * m31), (m11 * m22 - m12 * m21)),
+	                  false);
 
 	T det = m11 * result.values[0] + m12 * result.values[1] + m13 * result.values[2];
 	return (result / det);
@@ -339,7 +339,7 @@ Vector3<T> Matrix3<T>::getColumn(int j) const {
 
 template <class T>
 template <class T_scalar>
-void Matrix3<T>::setRow(const Vector3<T_scalar> &v, int i) {
+void Matrix3<T>::setRow(const Vector3<T_scalar>& v, int i) {
 	values[i + 0 * 3] = v.x;
 	values[i + 1 * 3] = v.y;
 	values[i + 2 * 3] = v.z;
@@ -347,7 +347,7 @@ void Matrix3<T>::setRow(const Vector3<T_scalar> &v, int i) {
 
 template <class T>
 template <class T_scalar>
-void Matrix3<T>::setColumn(const Vector3<T_scalar> &v, int j) {
+void Matrix3<T>::setColumn(const Vector3<T_scalar>& v, int j) {
 	values[j * 3 + 0] = v.x;
 	values[j * 3 + 1] = v.y;
 	values[j * 3 + 2] = v.z;
@@ -355,7 +355,7 @@ void Matrix3<T>::setColumn(const Vector3<T_scalar> &v, int j) {
 
 // Affichage
 template <class T>
-std::ostream &operator<<(std::ostream &os, const Matrix3<T> &mat) {
+std::ostream& operator<<(std::ostream& os, const Matrix3<T>& mat) {
 	Vector3<T> r1 = mat.getRow(0);
 	Vector3<T> r2 = mat.getRow(1);
 	Vector3<T> r3 = mat.getRow(2);

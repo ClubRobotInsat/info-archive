@@ -6,39 +6,39 @@
 
 #ifdef TARGET_SIMULATEUR
 
-#include "../../simulateur/robot/Carte.h"
-#include "../../simulateur/cartes/CarteDeplacement2009.h"
-#include "../../simulateur/cartes/CarteContacteurs2007.h"
-#include "../../simulateur/cartes/CarteServosNova2009.h"
 #include "../../simulateur/cartes/CarteAsservissement2009.h"
-#include "../../simulateur/cartes/CarteDebugDessin.h"
-#include "../../simulateur/cartes/CartePneumatique2013.h"
-#include "../../simulateur/cartes/CarteDetectAdv2009.h"
-#include "../../simulateur/cartes/CartePneumatique2014.h"
-#include "../../simulateur/cartes/CarteIO2014.h"
 #include "../../simulateur/cartes/CarteCAN_USB.h"
+#include "../../simulateur/cartes/CarteContacteurs2007.h"
+#include "../../simulateur/cartes/CarteDebugDessin.h"
+#include "../../simulateur/cartes/CarteDeplacement2009.h"
+#include "../../simulateur/cartes/CarteDetectAdv2009.h"
+#include "../../simulateur/cartes/CarteIO2014.h"
+#include "../../simulateur/cartes/CartePneumatique2013.h"
+#include "../../simulateur/cartes/CartePneumatique2014.h"
+#include "../../simulateur/cartes/CarteServosNova2009.h"
+#include "../../simulateur/robot/Carte.h"
 
 #else
 
 #include "../../robot/Cartes/Carte.h"
-#include "../../robot/Cartes/CarteDeplacementSymetrieY.h"
-#include "../../robot/Cartes/CarteContacteurs2007.h"
-#include "../../robot/Cartes/CarteServosNova2009.h"
 #include "../../robot/Cartes/CarteAsservissement2009.h"
-#include "../../robot/Cartes/CarteDebugDessin.h"
-#include "../../robot/Cartes/CartePneumatique.h"
-#include "../robot/Cartes/CarteDetectAdv2009.h"
-#include "../../robot/Cartes/CartePneumatique2014.h"
-#include "../../robot/Cartes/CarteIO2014.h"
 #include "../../robot/Cartes/CarteCAN_USB.h"
+#include "../../robot/Cartes/CarteContacteurs2007.h"
+#include "../../robot/Cartes/CarteDebugDessin.h"
+#include "../../robot/Cartes/CarteDeplacementSymetrieY.h"
+#include "../../robot/Cartes/CarteIO2014.h"
+#include "../../robot/Cartes/CartePneumatique.h"
+#include "../../robot/Cartes/CartePneumatique2014.h"
+#include "../../robot/Cartes/CarteServosNova2009.h"
+#include "../robot/Cartes/CarteDetectAdv2009.h"
 
 #endif
 
 #include "../../../CodeCommun/Informations_cartesElec.h"
 
-#include <type_traits>
 #include "../Commun.h"
 #include "../ConstantesCommunes.h"
+#include <type_traits>
 
 namespace IDCartesPrincipal {
 	enum {
@@ -54,19 +54,19 @@ namespace IDCartesPrincipal {
 	};
 
 	ENUM_NS(IDCartesPrincipal,
-			IDCartes,
-			CAN_USB,
-			DEPLACEMENT,
-			ASSERVISSEMENT_ASCENSEUR_D,
-			ASSERVISSEMENT_ASCENSEUR_G,
-			SERVOS_ASCENSEUR,
-			SERVOS_AUTRES,
-			IO,
-			EVITEMENT,
-			/* PNEUMATIQUE */
-			DEBUG_DESSIN
-			// ID_CARTE_DEBUG = 11
-			);
+	        IDCartes,
+	        CAN_USB,
+	        DEPLACEMENT,
+	        ASSERVISSEMENT_ASCENSEUR_D,
+	        ASSERVISSEMENT_ASCENSEUR_G,
+	        SERVOS_ASCENSEUR,
+	        SERVOS_AUTRES,
+	        IO,
+	        EVITEMENT,
+	        /* PNEUMATIQUE */
+	        DEBUG_DESSIN
+	        // ID_CARTE_DEBUG = 11
+	        );
 
 	ENUM_CLASS_NS(IDCartesPrincipal, IDCartesServo, ASCENSEUR, AUTRES);
 }
@@ -81,7 +81,7 @@ namespace ConstantesPrincipal {
 		PIED_G = 6,
 		PIED_D = 7,
 		CHOIX_EQUIPE = 1, // TODO: à debug
-		TIRETTE = 2,	  // TODO: à debug
+		TIRETTE = 2,      // TODO: à debug
 
 		// TODO: TBD
 		LAMPE_G = 10,
@@ -173,7 +173,7 @@ namespace ConstantesPrincipal {
 	};
 	template <>
 	struct CarteInfo<IDCartesPrincipal::DEPLACEMENT>
-		: public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_DEPLACEMENT> {
+	    : public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_DEPLACEMENT> {
 #ifdef TARGET_SIMULATEUR
 		typedef CarteDeplacement2009 type;
 #else
@@ -182,22 +182,22 @@ namespace ConstantesPrincipal {
 	};
 	template <>
 	struct CarteInfo<IDCartesPrincipal::ASSERVISSEMENT_ASCENSEUR_D>
-		: public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_ASSERVISSEMENT_ASCENSEUR_D> {
+	    : public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_ASSERVISSEMENT_ASCENSEUR_D> {
 		typedef CarteAsservissement2009 type;
 	};
 	template <>
 	struct CarteInfo<IDCartesPrincipal::ASSERVISSEMENT_ASCENSEUR_G>
-		: public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_ASSERVISSEMENT_ASCENSEUR_G> {
+	    : public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_ASSERVISSEMENT_ASCENSEUR_G> {
 		typedef CarteAsservissement2009 type;
 	};
 	template <>
 	struct CarteInfo<IDCartesPrincipal::SERVOS_ASCENSEUR>
-		: public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_SERVOS_ASCENSEUR> {
+	    : public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_SERVOS_ASCENSEUR> {
 		typedef CarteServosNova2009 type;
 	};
 	template <>
 	struct CarteInfo<IDCartesPrincipal::SERVOS_AUTRES>
-		: public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_SERVOS_AUTRES> {
+	    : public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_SERVOS_AUTRES> {
 		typedef CarteServosNova2009 type;
 	};
 	template <>
@@ -206,17 +206,17 @@ namespace ConstantesPrincipal {
 	};
 	template <>
 	struct CarteInfo<IDCartesPrincipal::EVITEMENT>
-		: public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_EVITEMENT> {
+	    : public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_EVITEMENT> {
 		typedef CarteDetectAdv2009 type;
 	};
 	template <>
 	struct CarteInfo<IDCartesPrincipal::DEBUG_DESSIN>
-		: public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_DEBUG_DESSIN> {
+	    : public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_DEBUG_DESSIN> {
 		typedef CarteDebugDessin type;
 	};
 	template <>
 	struct CarteServoInfo<IDCartesPrincipal::IDCartesServo::ASCENSEUR>
-		: public ConstantesPrincipal::CarteInfo<IDCartesPrincipal::SERVOS_ASCENSEUR> {
+	    : public ConstantesPrincipal::CarteInfo<IDCartesPrincipal::SERVOS_ASCENSEUR> {
 		static auto const IDCarte = IDCartesPrincipal::SERVOS_ASCENSEUR;
 		typedef ConstantesPrincipal::ServoAscenseur Servo;
 	};

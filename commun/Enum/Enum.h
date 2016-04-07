@@ -8,8 +8,8 @@
 #ifndef Club_Robot_Enum_h
 #define Club_Robot_Enum_h
 
-#include <type_traits>
 #include <iostream>
+#include <type_traits>
 
 /**
  * Voir documentation en fin de fichier.
@@ -34,9 +34,9 @@ std::enable_if_t<std::is_enum<Enum>::value, std::underlying_type_t<Enum>> conste
  * Voir la fin du fichier pour des exemples d'utilisation.
  */
 
+#include "Enum.hpp"
 #include <map>
 #include <vector>
-#include "Enum.hpp"
 
 /**
  * Définit une enum de nom NAME, et avec les valeurs contenues dans ..., comme si déclarée ainsi : enum NAME {...};

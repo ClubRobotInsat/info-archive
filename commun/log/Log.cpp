@@ -1,8 +1,8 @@
 // Log.cpp
 
 #include "Log.h"
-#include <iostream>
 #include <cstring>
+#include <iostream>
 
 #define STRINGIFY(x) #x
 #include "LogHTMLContents.h"
@@ -11,8 +11,8 @@
 // Empty definitions for disabled logging
 #ifndef ENABLE_LOGGING
 
-void Log::open(Output, const std::string &, bool) {}
-void Log::open(int, char **, bool) {}
+void Log::open(Output, const std::string&, bool) {}
+void Log::open(int, char**, bool) {}
 void Log::close(Log::Output) {}
 
 // When logging is enabled :
@@ -27,7 +27,7 @@ namespace {
 }
 
 // Static variables implementation
-std::ostream *Log::_p_stream[Log::OUTPUT_COUNT] = {};
+std::ostream* Log::_p_stream[Log::OUTPUT_COUNT] = {};
 
 std::unordered_map<std::thread::id, Log::ThreadInfo> Log::_threadInfos;
 std::mutex Log::_logMutex;
@@ -40,7 +40,7 @@ bool Log::_opened = false;
 bool Log::openCommon(Output o, bool desync_with_stdio) {
 	if(Log::_p_stream[o]) {
 		logWarn(
-			"Log::open() called multiple times with same output(s), may be because of an earlier wall to Log::write()");
+		    "Log::open() called multiple times with same output(s), may be because of an earlier wall to Log::write()");
 
 		return false;
 	}
@@ -50,15 +50,15 @@ bool Log::openCommon(Output o, bool desync_with_stdio) {
 	return true;
 }
 
-char const *Log::getFileNameFromPath(const char *file_path) {
-	const char *p = &file_path[0];
+char const* Log::getFileNameFromPath(const char* file_path) {
+	const char* p = &file_path[0];
 	for(int i = 0; file_path[i] != '\0'; i++)
 		if(file_path[i] == '/' || file_path[i] == '\\')
 			p = &file_path[i + 1];
 	return p;
 }
 
-void Log::doFormatting(std::string &msg, LogType type, Log::Output output) {
+void Log::doFormatting(std::string& msg, LogType type, Log::Output output) {
 	if(output == Log::TERMINAL)
 		Log::doTermFormatting(msg, type);
 	else if(output == Log::HTML)
@@ -68,7 +68,7 @@ void Log::doFormatting(std::string &msg, LogType type, Log::Output output) {
 }
 
 // This "open()" parses argc and argv and calls the previous "open()".
-void Log::open(int argc, char *argv[], bool desync_with_stdio) {
+void Log::open(int argc, char* argv[], bool desync_with_stdio) {
 	// Look for "--log=XXX"
 	// Usage :
 	// --log=stdout (default)
@@ -104,7 +104,7 @@ void Log::open(int argc, char *argv[], bool desync_with_stdio) {
 				auto file_name_len = file_name.length();
 
 				if(file_name_len > 4 && ((file_name.substr(file_name_len - 4, file_name_len - 1) == ".htm") ||
-										 (file_name.substr(file_name_len - 5, file_name_len - 1) == ".html"))) {
+				                         (file_name.substr(file_name_len - 5, file_name_len - 1) == ".html"))) {
 					open(HTML, file_name, desync_with_stdio);
 				} else if(file_name_len > 3 && file_name.substr(file_name_len - 4, file_name_len - 1) == ".rtf") {
 					open(RTF, file_name, desync_with_stdio);
@@ -120,7 +120,7 @@ void Log::open(int argc, char *argv[], bool desync_with_stdio) {
 		open(TERMINAL, "stdout", desync_with_stdio);
 }
 
-void Log::open(Log::Output output, const std::string &filename, bool desync_with_stdio) {
+void Log::open(Log::Output output, const std::string& filename, bool desync_with_stdio) {
 	if(!Log::openCommon(output, desync_with_stdio))
 		return;
 
@@ -214,7 +214,7 @@ void Log::indent(int value) {
 		_threadInfos[id]._indent = 0;
 }
 
-void Log::writeInternal(LogType type, Output outputIndex, std::stringstream &stream) {
+void Log::writeInternal(LogType type, Output outputIndex, std::stringstream& stream) {
 	stream << std::flush;
 	std::string msg_first_part = stream.str();
 	std::string msg_second_part;
@@ -263,7 +263,7 @@ void Log::writeInternal(LogType type, Output outputIndex, std::stringstream &str
 		std::string indentation = ("<span style=\"margin-left:") + std::to_string(infos._indent * 30) + "px;\">";
 
 		(*_p_stream[outputIndex]) << indentation << msg_first_part << msg_second_part << " <br/>"
-								  << "</span>" << std::flush;
+		                          << "</span>" << std::flush;
 	} else if(outputIndex == RTF) {
 		for(int i = 0; i < infos._indent; i++)
 			(*_p_stream[outputIndex]) << "\\tab";

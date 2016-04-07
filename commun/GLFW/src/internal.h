@@ -36,7 +36,7 @@
 // module (all other modules reference global variables as 'extern')
 //========================================================================
 
-#if defined( _init_c_ )
+#if defined(_init_c_)
 #define GLFWGLOBAL
 #else
 #define GLFWGLOBAL extern
@@ -55,9 +55,9 @@
 // System independent include files
 //========================================================================
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
 
 
 //------------------------------------------------------------------------
@@ -67,20 +67,20 @@
 // parameters passed to us by glfwOpenWindowHint
 //------------------------------------------------------------------------
 typedef struct {
-    int         refreshRate;
-    int         accumRedBits;
-    int         accumGreenBits;
-    int         accumBlueBits;
-    int         accumAlphaBits;
-    int         auxBuffers;
-    int         stereo;
-    int         windowNoResize;
-    int         samples;
-    int         glMajor;
-    int         glMinor;
-    int         glForward;
-    int         glDebug;
-    int         glProfile;
+	int refreshRate;
+	int accumRedBits;
+	int accumGreenBits;
+	int accumBlueBits;
+	int accumAlphaBits;
+	int auxBuffers;
+	int stereo;
+	int windowNoResize;
+	int samples;
+	int glMajor;
+	int glMinor;
+	int glForward;
+	int glDebug;
+	int glProfile;
 } _GLFWhints;
 
 
@@ -99,14 +99,14 @@ typedef struct {
 // platform independent code to the platform specific code
 //------------------------------------------------------------------------
 typedef struct {
-    int         mode;
-    int         refreshRate;
-    int         windowNoResize;
-    int         glMajor;
-    int         glMinor;
-    int         glForward;
-    int         glDebug;
-    int         glProfile;
+	int mode;
+	int refreshRate;
+	int windowNoResize;
+	int glMajor;
+	int glMinor;
+	int glForward;
+	int glDebug;
+	int glProfile;
 } _GLFWwndconfig;
 
 
@@ -118,20 +118,20 @@ typedef struct {
 // available framebuffer configurations
 //------------------------------------------------------------------------
 typedef struct {
-    int         redBits;
-    int         greenBits;
-    int         blueBits;
-    int         alphaBits;
-    int         depthBits;
-    int         stencilBits;
-    int         accumRedBits;
-    int         accumGreenBits;
-    int         accumBlueBits;
-    int         accumAlphaBits;
-    int         auxBuffers;
-    int         stereo;
-    int         samples;
-    GLFWintptr  platformID;
+	int redBits;
+	int greenBits;
+	int blueBits;
+	int alphaBits;
+	int depthBits;
+	int stencilBits;
+	int accumRedBits;
+	int accumGreenBits;
+	int accumBlueBits;
+	int accumAlphaBits;
+	int auxBuffers;
+	int stereo;
+	int samples;
+	GLFWintptr platformID;
 } _GLFWfbconfig;
 
 
@@ -140,7 +140,7 @@ typedef struct {
 //========================================================================
 
 // Flag indicating if GLFW has been initialized
-#if defined( _init_c_ )
+#if defined(_init_c_)
 int _glfwInitialized = 0;
 #else
 GLFWGLOBAL int _glfwInitialized;
@@ -151,10 +151,10 @@ GLFWGLOBAL int _glfwInitialized;
 // Abstract data stream (for image I/O)
 //------------------------------------------------------------------------
 typedef struct {
-    FILE*   file;
-    void*   data;
-    long    position;
-    long    size;
+	FILE* file;
+	void* data;
+	long position;
+	long size;
 } _GLFWstream;
 
 
@@ -163,63 +163,63 @@ typedef struct {
 //========================================================================
 
 // Init/terminate
-int _glfwPlatformInit( void );
-int _glfwPlatformTerminate( void );
+int _glfwPlatformInit(void);
+int _glfwPlatformTerminate(void);
 
 // Enable/Disable
-void _glfwPlatformEnableSystemKeys( void );
-void _glfwPlatformDisableSystemKeys( void );
+void _glfwPlatformEnableSystemKeys(void);
+void _glfwPlatformDisableSystemKeys(void);
 
 // Fullscreen
-int  _glfwPlatformGetVideoModes( GLFWvidmode *list, int maxcount );
-void _glfwPlatformGetDesktopMode( GLFWvidmode *mode );
+int _glfwPlatformGetVideoModes(GLFWvidmode* list, int maxcount);
+void _glfwPlatformGetDesktopMode(GLFWvidmode* mode);
 
 // OpenGL extensions
-int _glfwPlatformExtensionSupported( const char *extension );
-void * _glfwPlatformGetProcAddress( const char *procname );
+int _glfwPlatformExtensionSupported(const char* extension);
+void* _glfwPlatformGetProcAddress(const char* procname);
 
 // Joystick
-int _glfwPlatformGetJoystickParam( int joy, int param );
-int _glfwPlatformGetJoystickPos( int joy, float *pos, int numaxes );
-int _glfwPlatformGetJoystickButtons( int joy, unsigned char *buttons, int numbuttons );
+int _glfwPlatformGetJoystickParam(int joy, int param);
+int _glfwPlatformGetJoystickPos(int joy, float* pos, int numaxes);
+int _glfwPlatformGetJoystickButtons(int joy, unsigned char* buttons, int numbuttons);
 
 // Threads
-GLFWthread _glfwPlatformCreateThread( GLFWthreadfun fun, void *arg );
-void _glfwPlatformDestroyThread( GLFWthread ID );
-int _glfwPlatformWaitThread( GLFWthread ID, int waitmode );
-GLFWthread _glfwPlatformGetThreadID( void );
-GLFWmutex _glfwPlatformCreateMutex( void );
-void _glfwPlatformDestroyMutex( GLFWmutex mutex );
-void _glfwPlatformLockMutex( GLFWmutex mutex );
-void _glfwPlatformUnlockMutex( GLFWmutex mutex );
-GLFWcond _glfwPlatformCreateCond( void );
-void _glfwPlatformDestroyCond( GLFWcond cond );
-void _glfwPlatformWaitCond( GLFWcond cond, GLFWmutex mutex, double timeout );
-void _glfwPlatformSignalCond( GLFWcond cond );
-void _glfwPlatformBroadcastCond( GLFWcond cond );
-int _glfwPlatformGetNumberOfProcessors( void );
+GLFWthread _glfwPlatformCreateThread(GLFWthreadfun fun, void* arg);
+void _glfwPlatformDestroyThread(GLFWthread ID);
+int _glfwPlatformWaitThread(GLFWthread ID, int waitmode);
+GLFWthread _glfwPlatformGetThreadID(void);
+GLFWmutex _glfwPlatformCreateMutex(void);
+void _glfwPlatformDestroyMutex(GLFWmutex mutex);
+void _glfwPlatformLockMutex(GLFWmutex mutex);
+void _glfwPlatformUnlockMutex(GLFWmutex mutex);
+GLFWcond _glfwPlatformCreateCond(void);
+void _glfwPlatformDestroyCond(GLFWcond cond);
+void _glfwPlatformWaitCond(GLFWcond cond, GLFWmutex mutex, double timeout);
+void _glfwPlatformSignalCond(GLFWcond cond);
+void _glfwPlatformBroadcastCond(GLFWcond cond);
+int _glfwPlatformGetNumberOfProcessors(void);
 
 // Time
-double _glfwPlatformGetTime( void );
-void _glfwPlatformSetTime( double time );
-void _glfwPlatformSleep( double time );
+double _glfwPlatformGetTime(void);
+void _glfwPlatformSetTime(double time);
+void _glfwPlatformSleep(double time);
 
 // Window management
-int  _glfwPlatformOpenWindow( int width, int height, const _GLFWwndconfig *wndconfig, const _GLFWfbconfig *fbconfig );
-void _glfwPlatformCloseWindow( void );
-void _glfwPlatformSetWindowTitle( const char *title );
-void _glfwPlatformSetWindowSize( int width, int height );
-void _glfwPlatformSetWindowPos( int x, int y );
-void _glfwPlatformIconifyWindow( void );
-void _glfwPlatformRestoreWindow( void );
-void _glfwPlatformSwapBuffers( void );
-void _glfwPlatformSwapInterval( int interval );
-void _glfwPlatformRefreshWindowParams( void );
-void _glfwPlatformPollEvents( void );
-void _glfwPlatformWaitEvents( void );
-void _glfwPlatformHideMouseCursor( void );
-void _glfwPlatformShowMouseCursor( void );
-void _glfwPlatformSetMouseCursorPos( int x, int y );
+int _glfwPlatformOpenWindow(int width, int height, const _GLFWwndconfig* wndconfig, const _GLFWfbconfig* fbconfig);
+void _glfwPlatformCloseWindow(void);
+void _glfwPlatformSetWindowTitle(const char* title);
+void _glfwPlatformSetWindowSize(int width, int height);
+void _glfwPlatformSetWindowPos(int x, int y);
+void _glfwPlatformIconifyWindow(void);
+void _glfwPlatformRestoreWindow(void);
+void _glfwPlatformSwapBuffers(void);
+void _glfwPlatformSwapInterval(int interval);
+void _glfwPlatformRefreshWindowParams(void);
+void _glfwPlatformPollEvents(void);
+void _glfwPlatformWaitEvents(void);
+void _glfwPlatformHideMouseCursor(void);
+void _glfwPlatformShowMouseCursor(void);
+void _glfwPlatformSetMouseCursorPos(int x, int y);
 
 
 //========================================================================
@@ -227,40 +227,38 @@ void _glfwPlatformSetMouseCursorPos( int x, int y );
 //========================================================================
 
 // Window management (window.c)
-void _glfwClearWindowHints( void );
+void _glfwClearWindowHints(void);
 
 // Input handling (window.c)
-void _glfwClearInput( void );
-void _glfwInputDeactivation( void );
-void _glfwInputKey( int key, int action );
-void _glfwInputChar( int character, int action );
-void _glfwInputMouseClick( int button, int action );
+void _glfwClearInput(void);
+void _glfwInputDeactivation(void);
+void _glfwInputKey(int key, int action);
+void _glfwInputChar(int character, int action);
+void _glfwInputMouseClick(int button, int action);
 
 // Threads (thread.c)
-_GLFWthread * _glfwGetThreadPointer( int ID );
-void _glfwAppendThread( _GLFWthread * t );
-void _glfwRemoveThread( _GLFWthread * t );
+_GLFWthread* _glfwGetThreadPointer(int ID);
+void _glfwAppendThread(_GLFWthread* t);
+void _glfwRemoveThread(_GLFWthread* t);
 
 // OpenGL extensions (glext.c)
-void _glfwParseGLVersion( int *major, int *minor, int *rev );
-int _glfwStringInExtensionString( const char *string, const GLubyte *extensions );
-void _glfwRefreshContextParams( void );
+void _glfwParseGLVersion(int* major, int* minor, int* rev);
+int _glfwStringInExtensionString(const char* string, const GLubyte* extensions);
+void _glfwRefreshContextParams(void);
 
 // Abstracted data streams (stream.c)
-int _glfwOpenFileStream( _GLFWstream *stream, const char *name, const char *mode );
-int _glfwOpenBufferStream( _GLFWstream *stream, void *data, long size );
-long _glfwReadStream( _GLFWstream *stream, void *data, long size );
-long _glfwTellStream( _GLFWstream *stream );
-int _glfwSeekStream( _GLFWstream *stream, long offset, int whence );
-void _glfwCloseStream( _GLFWstream *stream );
+int _glfwOpenFileStream(_GLFWstream* stream, const char* name, const char* mode);
+int _glfwOpenBufferStream(_GLFWstream* stream, void* data, long size);
+long _glfwReadStream(_GLFWstream* stream, void* data, long size);
+long _glfwTellStream(_GLFWstream* stream);
+int _glfwSeekStream(_GLFWstream* stream, long offset, int whence);
+void _glfwCloseStream(_GLFWstream* stream);
 
 // Targa image I/O (tga.c)
-int _glfwReadTGA( _GLFWstream *s, GLFWimage *img, int flags );
+int _glfwReadTGA(_GLFWstream* s, GLFWimage* img, int flags);
 
 // Framebuffer configs
-const _GLFWfbconfig *_glfwChooseFBConfig( const _GLFWfbconfig *desired,
-                                          const _GLFWfbconfig *alternatives,
-                                          unsigned int count );
+const _GLFWfbconfig* _glfwChooseFBConfig(const _GLFWfbconfig* desired, const _GLFWfbconfig* alternatives, unsigned int count);
 
 
 #endif // _internal_h_

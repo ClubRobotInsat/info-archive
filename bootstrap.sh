@@ -8,8 +8,7 @@ cd "$dir"
 
 git submodule update --init
 petri/bootstrap.sh
-make -C petri clean
-make -C petri editor lib
+make -C petri editor lib -j8
 mkdir -p robot/Principal/petri/src
 
 cd "$oldpwd"
