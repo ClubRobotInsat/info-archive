@@ -29,6 +29,13 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL Clang)
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-color-diagnostics")
 		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fno-color-diagnostics")
 	endif()
+
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror=return-stack-address -Woverloaded-virtual")
+
+else()
+
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror=return-local-addr")
+
 endif()
 
 if(${BITS} EQUAL 32)
@@ -38,6 +45,8 @@ if(${BITS} EQUAL 32)
    set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -m32")
    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -m32")
 endif()
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wunused-value -Wuninitialized  -Wunused-parameter -Wmissing-prototypes -Wunreachable-code")
  
 function(compile_petri TARGET_NAME PATH_TO_DOC OUTPUT)
 	add_custom_target(${TARGET_NAME} ALL
