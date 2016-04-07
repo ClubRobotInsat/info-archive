@@ -20,15 +20,22 @@ else()
 endif()
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL Clang)
-  if (COLOR)
-    set(CMAKE_COLOR_MAKEFILE ON)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fcolor-diagnostics")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fcolor-diagnostics")
-  else ()
-    set(CMAKE_COLOR_MAKEFILE OFF)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-color-diagnostics")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fno-color-diagnostics")
-  endif()
+	if (COLOR)
+		set(CMAKE_COLOR_MAKEFILE ON)
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fcolor-diagnostics")
+		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fcolor-diagnostics")
+	else ()
+		set(CMAKE_COLOR_MAKEFILE OFF)
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-color-diagnostics")
+		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fno-color-diagnostics")
+	endif()
+
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror=return-stack-address")
+
+else()
+
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror=return-local-addr")
+
 endif()
 
 if(${BITS} EQUAL 32)
@@ -38,17 +45,12 @@ if(${BITS} EQUAL 32)
    set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -m32")
    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -m32")
 endif()
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wunused-value -Wuninitialized  -Wunused-parameter -Wunreachable-code -Wno-sign-compare -Woverloaded-virtual -Werror=return-type")
  
 function(compile_petri TARGET_NAME PATH_TO_DOC OUTPUT)
-	add_custom_command(
-		# ${OUTPUT}2 ne sert qu'à exécuter la cible à chaque fois.
-		OUTPUT    ${OUTPUT} ${OUTPUT}2
-		COMMAND   ${root_SOURCE_DIR}/petri/petri
-        ARGS      --update --arch ${BITS} ${CMAKE_CURRENT_SOURCE_DIR}/${PATH_TO_DOC}
-	)
-
 	add_custom_target(${TARGET_NAME} ALL
-		DEPENDS   ${OUTPUT}
+		COMMAND ${root_SOURCE_DIR}/petri/petri --update --arch ${BITS} ${CMAKE_CURRENT_SOURCE_DIR}/${PATH_TO_DOC}
 	)
 endfunction()
 
