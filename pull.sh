@@ -15,7 +15,7 @@ cd ../bin
 echo "Compiling the code…"
 
 if [ -f "Makefile" ]; then
-    make
+    make -j8
 elif [ -f "build.ninja" ]; then
     ninja
 else
