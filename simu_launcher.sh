@@ -13,4 +13,4 @@ fi
 dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 echo "Launching Petri..."
-"$dir"/petri/petri -o robot/Principal/petri/IA.petri
+"$dir"/petri/petri -o robot/Principal/petri/IADebug.petri
