@@ -4,21 +4,26 @@
 // Version 1.0
 
 template <class T>
-constexpr Vector2<T>::Vector2() : x(T()), y(T()) {}
+constexpr Vector2<T>::Vector2()
+        : x(T()), y(T()) {}
 
 template <class T>
-constexpr Vector2<T>::Vector2(const T& xx, const T& yy) : x(xx), y(yy) {}
+constexpr Vector2<T>::Vector2(const T& xx, const T& yy)
+        : x(xx), y(yy) {}
 
 template <class T>
 template <class T_scalar>
-Vector2<T>::Vector2(const T_scalar& s) : x(s), y(s) {}
+Vector2<T>::Vector2(const T_scalar& s)
+        : x(s), y(s) {}
 
 template <class T>
-Vector2<T>::Vector2(const Vector2<T>& ref) : x(ref.x), y(ref.y) {}
+Vector2<T>::Vector2(const Vector2<T>& ref)
+        : x(ref.x), y(ref.y) {}
 
 template <class T>
 template <class T_2>
-Vector2<T>::Vector2(const Vector2<T_2>& ref) : x(ref.x), y(ref.y) {}
+Vector2<T>::Vector2(const Vector2<T_2>& ref)
+        : x(ref.x), y(ref.y) {}
 
 // Affectation suivant un autre vecteur
 template <class T>
@@ -144,7 +149,7 @@ Vector2<T>& Vector2<T>::rotate(U angle) {
 // Multiplication par un scalaire (s * v)
 template <class T, class T_scalar>
 auto operator*(const T_scalar& s, const Vector2<T>& v) {
-	return Vector2<decltype(v.x * s)>(v.x * s, v.y * s);
+	return Vector2<decltype(v.x* s)>(v.x * s, v.y * s);
 }
 
 // Division par un scalaire (s / v)

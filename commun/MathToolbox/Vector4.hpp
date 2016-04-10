@@ -6,25 +6,31 @@
 #include <cmath>
 
 template <class T>
-Vector4<T>::Vector4() : x(T(0)), y(T(0)), z(T(0)), w(T(1)) {}
+Vector4<T>::Vector4()
+        : x(T(0)), y(T(0)), z(T(0)), w(T(1)) {}
 
 // Cas particulier pour les unsigned char : w = 255
 template <>
-inline Vector4<unsigned char>::Vector4() : x(0), y(0), z(0), w(255) {}
+inline Vector4<unsigned char>::Vector4()
+        : x(0), y(0), z(0), w(255) {}
 
 template <class T>
-Vector4<T>::Vector4(const T& xx, const T& yy, const T& zz, const T& ww) : x(xx), y(yy), z(zz), w(ww) {}
+Vector4<T>::Vector4(const T& xx, const T& yy, const T& zz, const T& ww)
+        : x(xx), y(yy), z(zz), w(ww) {}
 
 template <class T>
 template <class T_scalar>
-Vector4<T>::Vector4(const T_scalar& s) : x(s), y(s), z(s), w(s) {}
+Vector4<T>::Vector4(const T_scalar& s)
+        : x(s), y(s), z(s), w(s) {}
 
 template <class T>
-Vector4<T>::Vector4(const Vector4<T>& ref) : x(ref.x), y(ref.y), z(ref.z), w(ref.w) {}
+Vector4<T>::Vector4(const Vector4<T>& ref)
+        : x(ref.x), y(ref.y), z(ref.z), w(ref.w) {}
 
 template <class T>
 template <class T_2>
-Vector4<T>::Vector4(const Vector4<T_2>& ref) : x(ref.x), y(ref.y), z(ref.z), w(ref.w) {}
+Vector4<T>::Vector4(const Vector4<T_2>& ref)
+        : x(ref.x), y(ref.y), z(ref.z), w(ref.w) {}
 
 // Affectation suivant un autre vecteur
 template <class T>
