@@ -19,4 +19,4 @@ find "${format_path[@]}" \( -name "*.cpp" -o -name "*.h" -o -name "*.hpp" \) -no
 
 cd "$OLD_DIR"
 
-echo "Formating done."
+echo "Formatting done."
