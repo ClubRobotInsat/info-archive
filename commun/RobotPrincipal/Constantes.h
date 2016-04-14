@@ -30,6 +30,7 @@
 #include "../../robot/Cartes/CartePneumatique.h"
 #include "../../robot/Cartes/CartePneumatique2014.h"
 #include "../../robot/Cartes/CarteServosNova2009.h"
+#include "../../robot/Cartes/CarteElectrovannes2016.h"
 #include "../robot/Cartes/CarteDetectAdv2009.h"
 
 #endif
@@ -164,27 +165,27 @@ namespace ConstantesPrincipal {
 	template <>
 	struct CarteInfo<IDCartesPrincipal::SERVO_G>
 	    : public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_SERVO_G> {
-		typedef CarteAsservissement2009 type;
+		typedef CarteServo type;
 	};
 	template <>
 	struct CarteInfo<IDCartesPrincipal::SERVO_D>
 	    : public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_SERVO_D> {
-		typedef CarteAsservissement2009 type;
+		typedef CarteServo type;
 	};
 	template <>
 	struct CarteInfo<IDCartesPrincipal::PNEUMATIQUE_BAS>
 	    : public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_PNEUMATIQUE_BAS> {
-		typedef CarteServosNova2009 type;
+		typedef CartePneumatique2014 type;
 	};
 	template <>
 	struct CarteInfo<IDCartesPrincipal::PNEUMATIQUE_HAUTE>
 	    : public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_PNEUMATIQUE_HAUTE> {
-		typedef CarteServosNova2009 type;
+		typedef CartePneumatique2014 type;
 	};
 	template <>
 	struct CarteInfo<IDCartesPrincipal::ELECTROVANNES>
 			: public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_ELECTROVANNES> {
-		typedef CarteServosNova2009 type;
+		typedef CarteElectrovannes2016 type;
 	};
 	template <>
 	struct CarteInfo<IDCartesPrincipal::IO> : public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_IO> {
