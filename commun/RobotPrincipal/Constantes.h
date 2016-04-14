@@ -78,6 +78,7 @@ namespace ConstantesPrincipal {
 	/////////////////// CONTACTEURS ///////////////////
 	// Numéros des contacteurs et les rôles associés
 	enum class Contacteur {
+		// TODO: A virer
 		PIED_G = 6,
 		PIED_D = 7,
 		CHOIX_EQUIPE = 1, // TODO: à debug
@@ -88,6 +89,13 @@ namespace ConstantesPrincipal {
 		LAMPE_D = 11,
 		PINCE_D = 14,
 		PINCE_G = 15
+
+		Back_Contact_1 = 1;
+		Back_Contact_2 = 2;
+		Back_Contact_3 = 3;
+		Back_Contact_4 = 4;
+		Back_Contact_5 = 5;
+		Back_Contact_6 = 6;
 	};
 
 	/////////////////// SERVOS ///////////////////
