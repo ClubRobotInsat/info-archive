@@ -19,6 +19,10 @@ Vector3m translationPourRotationExcentree(Vector3m centreAbsolu, Vector3m centre
 	        Units::Distance::makeFromM(translation.z)};
 }
 
+Vector2m toVec2(Vector3m vec3) {
+	return Vector2m(vec3.x, vec3.y);
+}
+
 /**
  * Retourne vrai si la différence angulaire entre l'angle a1
  * et l'angle 'a2' est inférieure à l'angle 'threshold'.

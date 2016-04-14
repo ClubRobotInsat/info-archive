@@ -19,6 +19,10 @@ typedef Vector4<Units::Distance> Vector4m;
 // Il faut donc faire tourner la pièce, puis déterminer la translation par cette fonction, et l'appliquer à la pièce.
 Vector3m translationPourRotationExcentree(Vector3m centreAbsolu, Vector3m centreVoulu, Vector3d axeRotation, Units::Angle angleRotation);
 
+
+//transforme un vecteur (x, y, z) en vecteur (x, y)
+Vector2m toVec2(Vector3m vec3);
+
 /**
  * Retourne vrai si la différence angulaire entre l'angle a1
  * et l'angle 'a2' est inférieure à l'angle 'threshold'.
