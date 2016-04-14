@@ -106,25 +106,19 @@ namespace ConstantesPrincipal {
 	};
 
 	// Position des servos
-	enum class PositionPince { FERME = 0, GOBELET = 1, LAMPE = 2, PIED = 3, GROS_PIED = 4, OUVERT = 5, NBR };
+	enum class PositionPince {STOCKAGE = 0, FERME = 1, NBR};
 
-	enum class PositionCoude { STOCKAGE = 0, GOBELET = 1, MILIEU = 2, NBR };
-
-	enum class PositionArriere { FERME = 0, MILIEU = 1, OUVERT = 2, NBR };
-
-	enum class Bras {
+	enum class Pince {
 		GAUCHE = 0,
 		DROIT = 1,
 	};
 
-	enum class PositionBras { FERME = 0, DISTRIB = 1, OUVERT = 2, NBR };
 
 	/////////////////// MOTEURS ///////////////////
 	// Position des moteurs
-	enum class PositionAscenseur { MAX_BAS = 0, ROULER = 1, ETAGE1 = 2, ETAGE2 = 3, BAS = 4, MAX_HAUT = 5, NBR };
 
 	////////////////// UTILITAIRES ///////////////////
-	enum class CoteAscenseur {
+	enum class CotePince {
 		DROIT,
 		GAUCHE,
 	};
@@ -148,14 +142,10 @@ namespace ConstantesPrincipal {
 
 	// Déclaration des positions
 	extern Angle const positionPince[enumToInt(PositionPince::NBR)];
-	extern Angle const positionCoude[enumToInt(PositionCoude::NBR)];
-	extern Angle const positionArriere[enumToInt(PositionArriere::NBR)];
-	extern Angle const positionBras[enumToInt(PositionBras::NBR)];
 	extern Distance const ENTRAXE_PINCES;
 	extern Distance const DISTANCE_CENTRE_PINCES;
 
 	// Déclaration des positions
-	extern Angle const positionAscenseur[enumToInt(PositionAscenseur::NBR)];
 
 	/////////////////// CARTES ///////////////////
 
