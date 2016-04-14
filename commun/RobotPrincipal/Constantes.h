@@ -16,6 +16,7 @@
 #include "../../simulateur/cartes/CartePneumatique2013.h"
 #include "../../simulateur/cartes/CartePneumatique2014.h"
 #include "../../simulateur/cartes/CarteServosNova2009.h"
+#include "../../simulateur/cartes/CarteElectrovannes2016.h"
 #include "../../simulateur/robot/Carte.h"
 
 #else
@@ -39,7 +40,6 @@
 
 #include "../Commun.h"
 #include "../ConstantesCommunes.h"
-#include "../../robot/Cartes/CarteServos2007.h"
 #include <type_traits>
 
 namespace IDCartesPrincipal {
@@ -88,6 +88,27 @@ namespace ConstantesPrincipal {
 		BACK_CONTACT_5 = 7,
 		BACK_CONTACT_6 = 8,
 	};
+	/////////////////// BRAS /////////////////////
+
+	enum class Pince {
+		GAUCHE = 0,
+		DROIT = 1,
+	};
+
+	enum class PositionPince {
+		RENTREE,
+		SORTIE,
+	};
+
+	enum class PositionCuillere {
+		RENTRE,
+		SORTIE,
+	};
+
+	enum class PositionPelle {
+		RENTRE,
+		SORTIE,
+	};
 
 	/////////////////// SERVOS ///////////////////
 
@@ -104,10 +125,6 @@ namespace ConstantesPrincipal {
 	// Position des servos
 	enum class PositionPince {STOCKAGE = 0, FERME = 1, NBR};
 
-	enum class Pince {
-		GAUCHE = 0,
-		DROIT = 1,
-	};
 
 
 	/////////////////// MOTEURS ///////////////////
