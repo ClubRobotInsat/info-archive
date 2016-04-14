@@ -39,6 +39,7 @@
 
 #include "../Commun.h"
 #include "../ConstantesCommunes.h"
+#include "../../robot/Cartes/CarteServos2007.h"
 #include <type_traits>
 
 namespace IDCartesPrincipal {
@@ -165,12 +166,12 @@ namespace ConstantesPrincipal {
 	template <>
 	struct CarteInfo<IDCartesPrincipal::SERVO_G>
 	    : public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_SERVO_G> {
-		typedef CarteServo type;
+		typedef CarteServosNova2009 type;
 	};
 	template <>
 	struct CarteInfo<IDCartesPrincipal::SERVO_D>
 	    : public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_SERVO_D> {
-		typedef CarteServo type;
+		typedef CarteServosNova2009 type;
 	};
 	template <>
 	struct CarteInfo<IDCartesPrincipal::PNEUMATIQUE_BAS>
