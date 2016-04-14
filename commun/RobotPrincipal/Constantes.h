@@ -43,13 +43,14 @@
 namespace IDCartesPrincipal {
 	enum {
 		ID_CARTE_CAN_USB = 0,
-		ID_CARTE_DEPLACEMENT = ID_CARTE_KUBRICK_DEPLACEMENT,
-		ID_CARTE_ASSERVISSEMENT_ASCENSEUR_D = ID_CARTE_KUBRICK_ASSERVISSEMENT_BRAS_DROIT,
-		ID_CARTE_ASSERVISSEMENT_ASCENSEUR_G = ID_CARTE_KUBRICK_ASSERVISSEMENT_BRAS_GAUCHE,
-		ID_CARTE_SERVOS_ASCENSEUR = ID_CARTE_KUBRICK_SERVO_PINCES,
-		ID_CARTE_SERVOS_AUTRES = ID_CARTE_KUBRICK_SERVO_PANIERS,
-		ID_CARTE_IO = ID_CARTE_KUBRICK_CAPTEURS,
-		ID_CARTE_EVITEMENT = ID_CARTE_KUBRICK_EVITEMENT,
+		ID_CARTE_DEPLACEMENT = ID_CARTE_CHUCK_DEPLACEMENT,
+		ID_CARTE_SERVO_G = ID_CARTE_CHUCK_SERVOS_GAUCHE,
+		ID_CARTE_SERVO_D = ID_CARTE_CHUCK_SERVOS_DROIT,
+		ID_CARTE_IO = ID_CARTE_CHUCK_IO,
+		ID_CARTE_PNEUMATIQUE_HAUTE = ID_CARTE_CHUCK_PNEUMATIQUE_HAUT,
+		ID_CARTE_PNEUMATIQUE_BAS = ID_CARTE_CHUCK_PNEUMATIQUE_BAS,
+		ID_CARTE_EVITEMENT = ID_CARTE_CHUCK_EVITEMENT,
+		ID_CARTE_ELECTROVANNES = ID_CARTE_CHUCK_ELECTROVANNES,
 		ID_CARTE_DEBUG_DESSIN = 9
 	};
 
@@ -57,15 +58,14 @@ namespace IDCartesPrincipal {
 	        IDCartes,
 	        CAN_USB,
 	        DEPLACEMENT,
-	        ASSERVISSEMENT_ASCENSEUR_D,
-	        ASSERVISSEMENT_ASCENSEUR_G,
-	        SERVOS_ASCENSEUR,
-	        SERVOS_AUTRES,
+	        SERVO_G,
+	        SERVO_D,
 	        IO,
+	        PNEUMATIQUE_HAUTE,
+	        PNEUMATIQUE_BAS,
 	        EVITEMENT,
-	        /* PNEUMATIQUE */
+			ELECTROVANNES,
 	        DEBUG_DESSIN
-	        // ID_CARTE_DEBUG = 11
 	        );
 
 	ENUM_CLASS_NS(IDCartesPrincipal, IDCartesServo, ASCENSEUR, AUTRES);
@@ -78,7 +78,6 @@ namespace ConstantesPrincipal {
 	/////////////////// CONTACTEURS ///////////////////
 	// Numéros des contacteurs et les rôles associés
 	enum class Contacteur {
-
 		TIRETTE = 2,
 		BACK_CONTACT_1 = 3,
 		BACK_CONTACT_2 = 4,
@@ -91,20 +90,17 @@ namespace ConstantesPrincipal {
 	/////////////////// SERVOS ///////////////////
 	// Indice des servos
 	enum class ServoAscenseur {
-		PINCE_D = ID_SERVO_KUBRICK_PINCE_D,
-		PINCE_G = ID_SERVO_KUBRICK_PINCE_G,
-		COUDE_D = ID_SERVO_KUBRICK_COUDE_D,
-		COUDE_G = ID_SERVO_KUBRICK_COUDE_G,
-		NBR = 4
+
+		NBR = 0
 	};
 
 	enum class Servo {
-		ARRIERE = ID_SERVO_KUBRICK_PANIER,
-		BRAS_D = ID_SERVO_KUBRICK_VOLET_D,
-		BRAS_G = ID_SERVO_KUBRICK_VOLET_G,
-		NBR = 3
+		BRAS_D = ID_SERVO_DROIT,
+		BRAS_G = ID_SERVO_GAUCHE,
+		NBR = 2
 	};
 
+	/* Conservé à titre de référence. TODO: à virer
 	// Position des servos
 	enum class PositionPince {STOCKAGE = 0, FERME = 1, NBR};
 
@@ -122,7 +118,7 @@ namespace ConstantesPrincipal {
 		DROIT,
 		GAUCHE,
 	};
-
+	*/
 	// On reprend par défaut les mêmes valeur que la partie commune aux 2 robots, à changer si nécessaire
 	extern Duration const TIMEOUT_DEPLACEMENT_DEFAUT;
 	extern Duration const TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT;
@@ -141,7 +137,6 @@ namespace ConstantesPrincipal {
 	extern int const IDRobot;
 
 	// Déclaration des positions
-	extern Angle const positionPince[enumToInt(PositionPince::NBR)];
 	extern Distance const ENTRAXE_PINCES;
 	extern Distance const DISTANCE_CENTRE_PINCES;
 
@@ -169,23 +164,27 @@ namespace ConstantesPrincipal {
 #endif
 	};
 	template <>
-	struct CarteInfo<IDCartesPrincipal::ASSERVISSEMENT_ASCENSEUR_D>
-	    : public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_ASSERVISSEMENT_ASCENSEUR_D> {
+	struct CarteInfo<IDCartesPrincipal::SERVO_G>
+	    : public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_SERVO_G> {
 		typedef CarteAsservissement2009 type;
 	};
 	template <>
-	struct CarteInfo<IDCartesPrincipal::ASSERVISSEMENT_ASCENSEUR_G>
-	    : public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_ASSERVISSEMENT_ASCENSEUR_G> {
+	struct CarteInfo<IDCartesPrincipal::SERVO_D>
+	    : public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_SERVO_D> {
 		typedef CarteAsservissement2009 type;
 	};
 	template <>
-	struct CarteInfo<IDCartesPrincipal::SERVOS_ASCENSEUR>
-	    : public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_SERVOS_ASCENSEUR> {
+	struct CarteInfo<IDCartesPrincipal::PNEUMATIQUE_BAS>
+	    : public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_PNEUMATIQUE_BAS> {
 		typedef CarteServosNova2009 type;
 	};
 	template <>
-	struct CarteInfo<IDCartesPrincipal::SERVOS_AUTRES>
-	    : public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_SERVOS_AUTRES> {
+	struct CarteInfo<IDCartesPrincipal::PNEUMATIQUE_HAUTE>
+	    : public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_PNEUMATIQUE_HAUTE> {
+		typedef CarteServosNova2009 type;
+	};
+	struct CarteInfo<IDCartesPrincipal::ELECTROVANNES>
+			: public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_ELECTROVANNES> {
 		typedef CarteServosNova2009 type;
 	};
 	template <>
@@ -202,6 +201,8 @@ namespace ConstantesPrincipal {
 	    : public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_DEBUG_DESSIN> {
 		typedef CarteDebugDessin type;
 	};
+
+	/*
 	template <>
 	struct CarteServoInfo<IDCartesPrincipal::IDCartesServo::ASCENSEUR>
 	    : public ConstantesPrincipal::CarteInfo<IDCartesPrincipal::SERVOS_ASCENSEUR> {
@@ -212,7 +213,7 @@ namespace ConstantesPrincipal {
 	struct CarteServoInfo<IDCartesPrincipal::IDCartesServo::AUTRES> : public CarteInfo<IDCartesPrincipal::SERVOS_AUTRES> {
 		static auto const IDCarte = IDCartesPrincipal::SERVOS_AUTRES;
 		typedef ConstantesPrincipal::Servo Servo;
-	};
+	};*/
 };
 
 struct ConstantesRobotPrincipal : public Commun::ConstantesRobot {
