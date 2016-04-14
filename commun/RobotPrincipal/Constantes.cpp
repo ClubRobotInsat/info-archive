@@ -8,7 +8,7 @@
 #include "Constantes.h"
 
 namespace ConstantesPrincipal {
-	Angle const positionPince[enumToInt(PositionPince::NBR)] = {50_deg, 67.5_deg}; // TODO: Modifier les valeurs pour cette année.
+	// Angle const positionPince[enumToInt(PositionPince::NBR)] = {50_deg, 67.5_deg}; // TODO: Modifier les valeurs pour cette année.
 
 	Distance const ENTRAXE_PINCES = 12_cm;
 	Distance const DISTANCE_CENTRE_PINCES = 30_cm;

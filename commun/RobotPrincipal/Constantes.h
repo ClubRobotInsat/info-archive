@@ -88,16 +88,14 @@ namespace ConstantesPrincipal {
 	};
 
 	/////////////////// SERVOS ///////////////////
-	// Indice des servos
-	enum class ServoAscenseur {
-
-		NBR = 0
-	};
 
 	enum class Servo {
-		BRAS_D = ID_SERVO_DROIT,
-		BRAS_G = ID_SERVO_GAUCHE,
-		NBR = 2
+		PINCE_D = ID_SERVO_D_PINCE_DROITE,
+		PARAPLUIE = ID_SERVO_D_PARAPLUIE,
+		CUILLERE = ID_SERVO_D_CUILLERE,
+		PELLE = ID_SERVO_G_PELLE,
+		PINCE_G = ID_SERVO_G_PINCE_GAUCHE,
+		NBR = 5
 	};
 
 	/* Conservé à titre de référence. TODO: à virer
@@ -183,6 +181,7 @@ namespace ConstantesPrincipal {
 	    : public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_PNEUMATIQUE_HAUTE> {
 		typedef CarteServosNova2009 type;
 	};
+	template <>
 	struct CarteInfo<IDCartesPrincipal::ELECTROVANNES>
 			: public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_ELECTROVANNES> {
 		typedef CarteServosNova2009 type;
