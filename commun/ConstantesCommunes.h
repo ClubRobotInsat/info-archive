@@ -12,7 +12,7 @@
 namespace Constantes {
 	ENUM_CLASS_NS(Constantes,
 	              CouleurRobot,
-	              Jaune,
+	              Violet,
 	              Vert,
 	              // Valeur d'initialisation, qui permet de déctecter si la lecture du capteur couleur a déconné.
 	              Undef);
@@ -50,8 +50,8 @@ namespace Constantes {
 
 inline Constantes::CouleurRobot operator!(Constantes::CouleurRobot const& c) {
 	if(c == Constantes::CouleurRobot::Vert)
-		return Constantes::CouleurRobot::Jaune;
-	else if(c == Constantes::CouleurRobot::Jaune)
+		return Constantes::CouleurRobot::Violet;
+	else if(c == Constantes::CouleurRobot::Violet)
 		return Constantes::CouleurRobot::Vert;
 
 	return c;
