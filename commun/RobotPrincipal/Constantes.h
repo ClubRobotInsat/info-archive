@@ -110,6 +110,11 @@ namespace ConstantesPrincipal {
 		SORTIE,
 	};
 
+	enum class PositionParasol {
+			RENTRE,
+			SORTIE,
+	};
+
 	/////////////////// SERVOS ///////////////////
 
 	enum class Servo {
