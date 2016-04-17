@@ -60,8 +60,8 @@ namespace IDCartesPrincipal {
 	        IDCartes,
 	        CAN_USB,
 	        DEPLACEMENT,
+			SERVO_D,
 	        SERVO_G,
-	        SERVO_D,
 	        IO,
 	        PNEUMATIQUE_HAUTE,
 	        PNEUMATIQUE_BAS,
@@ -91,13 +91,17 @@ namespace ConstantesPrincipal {
 
 	/////////////////// SERVOS ///////////////////
 
-	enum class Servo {
+	enum class Servo_D {
 		PINCE_D = ID_SERVO_D_PINCE_DROITE,
 		PARAPLUIE = ID_SERVO_D_PARAPLUIE,
 		CUILLERE = ID_SERVO_D_CUILLERE,
+		NBR = 3
+	};
+
+	enum class Servo_G {
 		PELLE = ID_SERVO_G_PELLE,
 		PINCE_G = ID_SERVO_G_PINCE_GAUCHE,
-		NBR = 5
+		NBR = 2
 	};
 
 	/* Conservé à titre de référence. TODO: à virer
