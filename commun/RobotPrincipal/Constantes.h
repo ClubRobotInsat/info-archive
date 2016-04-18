@@ -130,6 +130,8 @@ namespace ConstantesPrincipal {
 		VANNE_5,
 		VANNE_6,
 	};
+
+
 	/////////////////// SERVOS ///////////////////
 
 	enum class Servo {
