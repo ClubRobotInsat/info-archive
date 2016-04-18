@@ -60,7 +60,7 @@ namespace IDCartesPrincipal {
 	        IDCartes,
 	        CAN_USB,
 	        DEPLACEMENT,
-			SERVO_D,
+	        SERVO_D,
 	        SERVO_G,
 	        IO,
 	        PNEUMATIQUE_HAUTE,
