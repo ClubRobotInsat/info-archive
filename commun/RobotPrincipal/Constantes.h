@@ -115,6 +115,21 @@ namespace ConstantesPrincipal {
 			SORTIE,
 	};
 
+	/////////////////// POMPES | VANNES ///////////////////
+
+	enum class Pompe {
+		HAUT,
+		BAS
+	};
+
+	enum class Vanne {
+		VANNE_1,
+		VANNE_2,
+		VANNE_3,
+		VANNE_4,
+		VANNE_5,
+		VANNE_6,
+	};
 	/////////////////// SERVOS ///////////////////
 
 	enum class Servo {
