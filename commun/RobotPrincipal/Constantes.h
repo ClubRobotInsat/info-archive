@@ -12,11 +12,11 @@
 #include "../../simulateur/cartes/CarteDebugDessin.h"
 #include "../../simulateur/cartes/CarteDeplacement2009.h"
 #include "../../simulateur/cartes/CarteDetectAdv2009.h"
+#include "../../simulateur/cartes/CarteElectrovannes2016.h"
 #include "../../simulateur/cartes/CarteIO2014.h"
 #include "../../simulateur/cartes/CartePneumatique2013.h"
 #include "../../simulateur/cartes/CartePneumatique2014.h"
 #include "../../simulateur/cartes/CarteServosNova2009.h"
-#include "../../simulateur/cartes/CarteElectrovannes2016.h"
 #include "../../simulateur/robot/Carte.h"
 
 #else
@@ -27,12 +27,12 @@
 #include "../../robot/Cartes/CarteContacteurs2007.h"
 #include "../../robot/Cartes/CarteDebugDessin.h"
 #include "../../robot/Cartes/CarteDeplacementSymetrieY.h"
+#include "../../robot/Cartes/CarteDetectAdv2009.h"
+#include "../../robot/Cartes/CarteElectrovannes2016.h"
 #include "../../robot/Cartes/CarteIO2014.h"
 #include "../../robot/Cartes/CartePneumatique.h"
 #include "../../robot/Cartes/CartePneumatique2014.h"
 #include "../../robot/Cartes/CarteServosNova2009.h"
-#include "../../robot/Cartes/CarteElectrovannes2016.h"
-#include "../robot/Cartes/CarteDetectAdv2009.h"
 
 #endif
 
@@ -70,12 +70,15 @@ namespace IDCartesPrincipal {
 	        DEBUG_DESSIN
 	        );
 
-	ENUM_CLASS_NS(IDCartesPrincipal, IDCartesServo, ASCENSEUR, AUTRES);
+	//ENUM_CLASS_NS(IDCartesPrincipal, IDCartesServo, ASCENSEUR, AUTRES);
+	enum class IDCartesServo { SERVO_D, SERVO_G} ;
+	enum class IDCartesPneumatique { PNEUMATIQUE_HAUTE, PNEUMATIQUE_BAS} ;
 }
 
 namespace ConstantesPrincipal {
 	using IDCartes = IDCartesPrincipal::IDCartes;
 	using IDCartesServo = IDCartesPrincipal::IDCartesServo;
+	using IDCartesPneumatique = IDCartesPrincipal::IDCartesPneumatique;
 
 	/////////////////// CONTACTEURS ///////////////////
 	// Numéros des contacteurs et les rôles associés
@@ -124,16 +127,16 @@ namespace ConstantesPrincipal {
 	};
 	*/
 	// On reprend par défaut les mêmes valeur que la partie commune aux 2 robots, à changer si nécessaire
-	extern Duration const TIMEOUT_DEPLACEMENT_DEFAUT;
-	extern Duration const TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT;
-	extern Speed const VITESSE_LINEAIRE_DEFAUT;
-	extern AngularSpeed const VITESSE_ANGULAIRE_DEFAUT;
-	extern Distance const PRECISION_LINEAIRE_DEFAUT;
-	extern Angle const PRECISION_ANGULAIRE_DEFAUT;
+	extern Duration const TIMEOUT_MOVE_DEFAULT;
+	extern Duration const TIMEOUT_OPPONENT_BLOCKING_DEFAULT;
+	extern Speed const LINEAR_SPEED_DEFAULT;
+	extern AngularSpeed const ANGULAR_SPEED_DEFAULT;
+	extern Distance const LINEAR_PRECISION_DEFAULT;
+	extern Angle const ANGULAR_PRECISION_DEFAULT;
 
-	extern Distance const RAYON_ROTATION_ROBOT;
-	extern Vector3m const TAILLE_ROBOT;
-	extern uint16_t const TCPIP_PORT_SIMU_DEFAUT;
+	extern Distance const ROBOT_RAY_ROTATION;
+	extern Vector3m const ROBOT_SIZE;
+	extern uint16_t const TCPIP_PORT_SIMU_DEFAULT;
 	// Cet offset sert à aligner le 0 de la balise avec le 0 de l'info
 	// NB : 0 devant, PI/-PI derrière, PI/2 à gauche et -PI/2 à droite
 	extern Angle const OFFSET_ANGLE_ADV;
@@ -144,7 +147,6 @@ namespace ConstantesPrincipal {
 	extern Distance const ENTRAXE_PINCES;
 	extern Distance const DISTANCE_CENTRE_PINCES;
 
-	// Déclaration des positions
 
 	/////////////////// CARTES ///////////////////
 
@@ -222,18 +224,18 @@ namespace ConstantesPrincipal {
 };
 
 struct ConstantesRobotPrincipal : public Commun::ConstantesRobot {
-	virtual Duration getTimeoutDeplacementDefaut() const override;
-	virtual Duration getTimeoutBlocageAdversaireDefaut() const override;
-	virtual Speed getVitesseLineaireDefaut() const override;
-	virtual AngularSpeed getVitesseAngulaireDefaut() const override;
-	virtual Distance getPrecisionLineaireDefaut() const override;
-	virtual Angle getPrecisionAngulaireDefaut() const override;
+	virtual Duration getTimeoutMoveDefault() const override;
+	virtual Duration getTimeoutOpponentBlockingDefault() const override;
+	virtual Speed getLinearSpeedDefault() const override;
+	virtual AngularSpeed getAngularSpeedDefault() const override;
+	virtual Distance getLinearPrecisionDefault() const override;
+	virtual Angle getAngularPrecisionDefault() const override;
 
-	virtual Distance getRayonRotation() const override;
-	virtual Vector3m getTailleRobot() const override;
+	virtual Distance getRayRotation() const override;
+	virtual Vector3m getRobotSize() const override;
 	virtual Angle getOffsetAngleAdv() const override;
 
-	virtual uint16_t getPortTCPIPDefaut() const override;
+	virtual uint16_t getPortTCPIPDefault() const override;
 
 	virtual int getIDRobot() const override;
 };

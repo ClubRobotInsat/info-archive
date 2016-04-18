@@ -14,49 +14,49 @@ namespace ConstantesPrincipal {
 	Distance const DISTANCE_CENTRE_PINCES = 30_cm;
 }
 
-Duration const ConstantesPrincipal::TIMEOUT_DEPLACEMENT_DEFAUT = Constantes::TIMEOUT_DEPLACEMENT_DEFAUT;
-Duration const ConstantesPrincipal::TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT = Constantes::TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT;
-Speed const ConstantesPrincipal::VITESSE_LINEAIRE_DEFAUT = Constantes::VITESSE_LINEAIRE_DEFAUT;
-AngularSpeed const ConstantesPrincipal::VITESSE_ANGULAIRE_DEFAUT = 3.75_rad_s;
-Distance const ConstantesPrincipal::PRECISION_LINEAIRE_DEFAUT = Constantes::PRECISION_LINEAIRE_DEFAUT;
-Angle const ConstantesPrincipal::PRECISION_ANGULAIRE_DEFAUT = Constantes::PRECISION_ANGULAIRE_DEFAUT;
+Duration const ConstantesPrincipal::TIMEOUT_MOVE_DEFAULT = Constantes::TIMEOUT_MOVE_DEFAULT;
+Duration const ConstantesPrincipal::TIMEOUT_OPPONENT_BLOCKING_DEFAULT = Constantes::TIMEOUT_OPPONENT_BLOCKING_DEFAULT;
+Speed const ConstantesPrincipal::LINEAR_SPEED_DEFAULT = Constantes::LINEAR_SPEED_DEFAULT;
+AngularSpeed const ConstantesPrincipal::ANGULAR_SPEED_DEFAULT = 3.75_rad_s;
+Distance const ConstantesPrincipal::LINEAR_PRECISION_DEFAULT = Constantes::LINEAR_PRECISION_DEFAULT;
+Angle const ConstantesPrincipal::ANGULAR_PRECISION_DEFAULT = Constantes::ANGULAR_PRECISION_DEFAULT;
 
-Distance const ConstantesPrincipal::RAYON_ROTATION_ROBOT = 230.0_mm;
-Vector3m const ConstantesPrincipal::TAILLE_ROBOT = {30_cm, 30_cm, 40_cm};
-uint16_t const ConstantesPrincipal::TCPIP_PORT_SIMU_DEFAUT = 4321;
+Distance const ConstantesPrincipal::ROBOT_RAY_ROTATION = 230.0_mm;
+Vector3m const ConstantesPrincipal::ROBOT_SIZE = {30_cm, 30_cm, 40_cm};
+uint16_t const ConstantesPrincipal::TCPIP_PORT_SIMU_DEFAULT = 4321;
 Angle const ConstantesPrincipal::OFFSET_ANGLE_ADV = -0.5_PI;
 
 int const ConstantesPrincipal::IDRobot = 1;
 
-Duration ConstantesRobotPrincipal::getTimeoutDeplacementDefaut() const {
-	return ConstantesPrincipal::TIMEOUT_DEPLACEMENT_DEFAUT;
+Duration ConstantesRobotPrincipal::getTimeoutMoveDefault() const {
+	return ConstantesPrincipal::TIMEOUT_MOVE_DEFAULT;
 }
 
-Duration ConstantesRobotPrincipal::getTimeoutBlocageAdversaireDefaut() const {
-	return ConstantesPrincipal::TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT;
+Duration ConstantesRobotPrincipal::getTimeoutOpponentBlockingDefault() const {
+	return ConstantesPrincipal::TIMEOUT_OPPONENT_BLOCKING_DEFAULT;
 }
 
-Speed ConstantesRobotPrincipal::getVitesseLineaireDefaut() const {
-	return ConstantesPrincipal::VITESSE_LINEAIRE_DEFAUT;
+Speed ConstantesRobotPrincipal::getLinearSpeedDefault() const {
+	return ConstantesPrincipal::LINEAR_SPEED_DEFAULT;
 }
-AngularSpeed ConstantesRobotPrincipal::getVitesseAngulaireDefaut() const {
-	return ConstantesPrincipal::VITESSE_ANGULAIRE_DEFAUT;
-}
-
-Distance ConstantesRobotPrincipal::getPrecisionLineaireDefaut() const {
-	return ConstantesPrincipal::PRECISION_LINEAIRE_DEFAUT;
+AngularSpeed ConstantesRobotPrincipal::getAngularSpeedDefault() const {
+	return ConstantesPrincipal::ANGULAR_SPEED_DEFAULT;
 }
 
-Angle ConstantesRobotPrincipal::getPrecisionAngulaireDefaut() const {
-	return ConstantesPrincipal::PRECISION_ANGULAIRE_DEFAUT;
+Distance ConstantesRobotPrincipal::getLinearPrecisionDefault() const {
+	return ConstantesPrincipal::LINEAR_PRECISION_DEFAULT;
 }
 
-Distance ConstantesRobotPrincipal::getRayonRotation() const {
-	return ConstantesPrincipal::RAYON_ROTATION_ROBOT;
+Angle ConstantesRobotPrincipal::getAngularPrecisionDefault() const {
+	return ConstantesPrincipal::ANGULAR_PRECISION_DEFAULT;
 }
 
-Vector3m ConstantesRobotPrincipal::getTailleRobot() const {
-	return ConstantesPrincipal::TAILLE_ROBOT;
+Distance ConstantesRobotPrincipal::getRayRotation() const {
+	return ConstantesPrincipal::ROBOT_RAY_ROTATION;
+}
+
+Vector3m ConstantesRobotPrincipal::getRobotSize() const {
+	return ConstantesPrincipal::ROBOT_SIZE;
 }
 
 Angle ConstantesRobotPrincipal::getOffsetAngleAdv() const {
@@ -64,7 +64,7 @@ Angle ConstantesRobotPrincipal::getOffsetAngleAdv() const {
 }
 
 
-uint16_t ConstantesRobotPrincipal::getPortTCPIPDefaut() const {
+uint16_t ConstantesRobotPrincipal::getPortTCPIPDefault() const {
 	return 1234;
 }
 
