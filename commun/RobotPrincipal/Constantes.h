@@ -123,12 +123,13 @@ namespace ConstantesPrincipal {
 	};
 
 	enum class Vanne {
-		VANNE_1,
-		VANNE_2,
-		VANNE_3,
-		VANNE_4,
-		VANNE_5,
-		VANNE_6,
+		VANNE_1 = 1,
+		VANNE_2 = 2,
+		VANNE_3 = 3,
+		VANNE_4 = 4,
+		VANNE_5 = 5,
+		VANNE_6 = 6,
+		VANNE_TOUTES = 7,
 	};
 
 
