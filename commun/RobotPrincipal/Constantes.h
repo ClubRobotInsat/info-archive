@@ -144,10 +144,13 @@ namespace ConstantesPrincipal {
 		NBR = 5
 	};
 
+	/////////////////// SERVOS ///////////////////
+	//Durée attendue lors de l'envoi d'un message aux cartes élecs dans les fonctions blonquantes autre que les servos.
+	auto const TIMEOUT_ELEC = 100_ms;
+
 	/* Conservé à titre de référence. TODO: à virer
 	// Position des servos
 	enum class PositionPince {STOCKAGE = 0, FERME = 1, NBR};
-
 
 
 	/////////////////// MOTEURS ///////////////////
