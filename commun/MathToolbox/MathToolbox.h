@@ -20,7 +20,7 @@ typedef Vector4<Units::Distance> Vector4m;
 Vector3m translationPourRotationExcentree(Vector3m centreAbsolu, Vector3m centreVoulu, Vector3d axeRotation, Units::Angle angleRotation);
 
 
-//transforme un vecteur (x, y, z) en vecteur (x, y)
+// transforme un vecteur (x, y, z) en vecteur (x, y)
 Vector2m toVec2(Vector3m vec3);
 
 /**
