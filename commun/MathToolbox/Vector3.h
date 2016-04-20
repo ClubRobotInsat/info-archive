@@ -102,7 +102,7 @@ public:
 	inline T norm() const;
 
 	// Calcul de la norme au carré (plus rapide)
-	inline decltype(x * x) squaredNorm() const {
+	inline decltype(x* x) squaredNorm() const {
 		return dot(*this, *this);
 	}
 
@@ -114,14 +114,14 @@ public:
 // Multiplication par un scalaire (v * s)
 template <class T_scalar, typename T>
 inline auto operator*(const T_scalar& s, const Vector3<T>& v)
-    -> std::enable_if_t<Units::is_unit<T_scalar>::value || std::is_scalar<T_scalar>::value, Vector3<decltype(v.x * s)>> {
-	return Vector3<decltype(s * v.x)>(v.x * s, v.y * s, v.z * s);
+    -> std::enable_if_t<Units::is_unit<T_scalar>::value || std::is_scalar<T_scalar>::value, Vector3<decltype(v.x* s)>> {
+	return Vector3<decltype(s* v.x)>(v.x * s, v.y * s, v.z * s);
 }
 
 template <class T_scalar, typename T>
 inline auto operator*(const Vector3<T>& v, const T_scalar& s)
-    -> std::enable_if_t<Units::is_unit<T_scalar>::value || std::is_scalar<T_scalar>::value, Vector3<decltype(v.x * s)>> {
-	return Vector3<decltype(s * v.x)>(v.x * s, v.y * s, v.z * s);
+    -> std::enable_if_t<Units::is_unit<T_scalar>::value || std::is_scalar<T_scalar>::value, Vector3<decltype(v.x* s)>> {
+	return Vector3<decltype(s* v.x)>(v.x * s, v.y * s, v.z * s);
 }
 
 
@@ -141,14 +141,14 @@ Vector3<T> operator/(const T_scalar& s, const Vector3<T>& v);
 
 // Fonction pour le produit scalaire
 template <class T1, class T2>
-inline auto dot(const Vector3<T1>& v1, const Vector3<T2>& v2) -> decltype(v1.x * v2.x) {
+inline auto dot(const Vector3<T1>& v1, const Vector3<T2>& v2) -> decltype(v1.x* v2.x) {
 	return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
 }
 
 // Fonction pour le produit vectoriel
 template <class T, class U>
 inline Vector3<decltype(std::declval<T>() * std::declval<U>())> cross(const Vector3<T>& v1, const Vector3<U>& v2) {
-	Vector3<decltype(v1.x * v2.x)> resultat;
+	Vector3<decltype(v1.x* v2.x)> resultat;
 	resultat.x = v1.y * v2.z - v1.z * v2.y;
 	resultat.y = -(v1.x * v2.z - v1.z * v2.x);
 	resultat.z = v1.x * v2.y - v1.y * v2.x;

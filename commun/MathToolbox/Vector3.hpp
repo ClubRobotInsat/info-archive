@@ -6,25 +6,31 @@
 #include <cmath>
 
 template <class T>
-constexpr Vector3<T>::Vector3() : x(T()), y(T()), z(T()) {}
+constexpr Vector3<T>::Vector3()
+        : x(T()), y(T()), z(T()) {}
 
 template <class T>
-constexpr Vector3<T>::Vector3(const T& x, const T& y, const T& z) : x(x), y(y), z(z) {}
+constexpr Vector3<T>::Vector3(const T& x, const T& y, const T& z)
+        : x(x), y(y), z(z) {}
 
 template <class T>
 template <class T_scalar>
-Vector3<T>::Vector3(const T_scalar& s) : x(s), y(s), z(s) {}
+Vector3<T>::Vector3(const T_scalar& s)
+        : x(s), y(s), z(s) {}
 
 template <class T>
 template <class T_scalar>
-Vector3<T>::Vector3(T_scalar const* s) : x(s[0]), y(s[1]), z(s[2]) {}
+Vector3<T>::Vector3(T_scalar const* s)
+        : x(s[0]), y(s[1]), z(s[2]) {}
 
 template <class T>
-Vector3<T>::Vector3(const Vector3<T>& ref) : x(ref.x), y(ref.y), z(ref.z) {}
+Vector3<T>::Vector3(const Vector3<T>& ref)
+        : x(ref.x), y(ref.y), z(ref.z) {}
 
 template <class T>
 template <class T_2>
-Vector3<T>::Vector3(const Vector3<T_2>& ref) : x(ref.x), y(ref.y), z(ref.z) {}
+Vector3<T>::Vector3(const Vector3<T_2>& ref)
+        : x(ref.x), y(ref.y), z(ref.z) {}
 
 // Affectation suivant un autre vecteur
 template <class T>

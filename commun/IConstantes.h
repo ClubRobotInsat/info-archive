@@ -13,18 +13,18 @@
 
 namespace Commun {
 	struct ConstantesRobot {
-		virtual Duration getTimeoutDeplacementDefaut() const = 0;
-		virtual Duration getTimeoutBlocageAdversaireDefaut() const = 0;
-		virtual Speed getVitesseLineaireDefaut() const = 0;
-		virtual AngularSpeed getVitesseAngulaireDefaut() const = 0;
-		virtual Distance getPrecisionLineaireDefaut() const = 0;
-		virtual Angle getPrecisionAngulaireDefaut() const = 0;
+		virtual Duration getTimeoutMoveDefault() const = 0;
+		virtual Duration getTimeoutOpponentBlockingDefault() const = 0;
+		virtual Speed getLinearSpeedDefault() const = 0;
+		virtual AngularSpeed getAngularSpeedDefault() const = 0;
+		virtual Distance getLinearPrecisionDefault() const = 0;
+		virtual Angle getAngularPrecisionDefault() const = 0;
 
-		virtual Distance getRayonRotation() const = 0;
-		virtual Vector3m getTailleRobot() const = 0;
+		virtual Distance getRayRotation() const = 0;
+		virtual Vector3m getRobotSize() const = 0;
 		virtual Angle getOffsetAngleAdv() const = 0;
 
-		virtual uint16_t getPortTCPIPDefaut() const = 0;
+		virtual uint16_t getPortTCPIPDefault() const = 0;
 
 		virtual int getIDRobot() const = 0;
 	};
@@ -33,9 +33,9 @@ namespace Commun {
 		virtual int getNombreBlocageLogicielMax() const = 0;
 		virtual int getNombreBlocagePhysiqueMax() const = 0;
 
-		virtual Duration getDureeMatch() const = 0;
+		virtual Duration getMatchDuration() const = 0;
 
-		virtual Vector2m getTailleTable() const = 0;
+		virtual Vector2m getTableSize() const = 0;
 		virtual Vector2u16 getTailleGrille() const = 0;
 	};
 }

@@ -144,6 +144,13 @@ namespace ConstantesPrincipal {
 		NBR = 5
 	};
 
+	enum class Servo_D {
+			NBR = 3
+	};
+
+	enum class Servo_G {
+			NBR = 2
+	};
 	/////////////////// SERVOS ///////////////////
 	//Durée attendue lors de l'envoi d'un message aux cartes élecs dans les fonctions blonquantes autre que les servos.
 	auto const TIMEOUT_ELEC = 100_ms;
@@ -172,7 +179,7 @@ namespace ConstantesPrincipal {
 
 	extern Distance const RAYON_ROTATION_ROBOT;
 	extern Vector3m const TAILLE_ROBOT;
-	extern uint16_t const TCPIP_PORT_SIMU_DEFAUT;
+	extern uint16_t const TCPIP_PORT_SIMU_DEFAULT;
 	// Cet offset sert à aligner le 0 de la balise avec le 0 de l'info
 	// NB : 0 devant, PI/-PI derrière, PI/2 à gauche et -PI/2 à droite
 	extern Angle const OFFSET_ANGLE_ADV;
@@ -261,18 +268,18 @@ namespace ConstantesPrincipal {
 };
 
 struct ConstantesRobotPrincipal : public Commun::ConstantesRobot {
-	virtual Duration getTimeoutDeplacementDefaut() const override;
-	virtual Duration getTimeoutBlocageAdversaireDefaut() const override;
-	virtual Speed getVitesseLineaireDefaut() const override;
-	virtual AngularSpeed getVitesseAngulaireDefaut() const override;
-	virtual Distance getPrecisionLineaireDefaut() const override;
-	virtual Angle getPrecisionAngulaireDefaut() const override;
+	virtual Duration getTimeoutMoveDefault() const override;
+	virtual Duration getTimeoutOpponentBlockingDefault() const override;
+	virtual Speed getLinearSpeedDefault() const override;
+	virtual AngularSpeed getAngularSpeedDefault() const override;
+	virtual Distance getLinearPrecisionDefault() const override;
+	virtual Angle getAngularPrecisionDefault() const override;
 
-	virtual Distance getRayonRotation() const override;
-	virtual Vector3m getTailleRobot() const override;
+	virtual Distance getRayRotation() const override;
+	virtual Vector3m getRobotSize() const override;
 	virtual Angle getOffsetAngleAdv() const override;
 
-	virtual uint16_t getPortTCPIPDefaut() const override;
+	virtual uint16_t getPortTCPIPDefault() const override;
 
 	virtual int getIDRobot() const override;
 };

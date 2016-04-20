@@ -14,48 +14,48 @@ namespace ConstantesPrincipal {
 	Distance const DISTANCE_CENTRE_PINCES = 30_cm;
 }
 
-Duration const ConstantesPrincipal::TIMEOUT_DEPLACEMENT_DEFAUT = Constantes::TIMEOUT_DEPLACEMENT_DEFAUT;
-Duration const ConstantesPrincipal::TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT = Constantes::TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT;
-Speed const ConstantesPrincipal::VITESSE_LINEAIRE_DEFAUT = Constantes::VITESSE_LINEAIRE_DEFAUT;
-AngularSpeed const ConstantesPrincipal::VITESSE_ANGULAIRE_DEFAUT = 3.75_rad_s;
-Distance const ConstantesPrincipal::PRECISION_LINEAIRE_DEFAUT = Constantes::PRECISION_LINEAIRE_DEFAUT;
-Angle const ConstantesPrincipal::PRECISION_ANGULAIRE_DEFAUT = Constantes::PRECISION_ANGULAIRE_DEFAUT;
+Duration const ConstantesPrincipal::TIMEOUT_DEPLACEMENT_DEFAUT = Constantes::TIMEOUT_MOVE_DEFAULT;
+Duration const ConstantesPrincipal::TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT = Constantes::TIMEOUT_OPPONENT_BLOCKING_DEFAULT;
+Speed const ConstantesPrincipal::VITESSE_LINEAIRE_DEFAUT = Constantes::LINEAR_SPEED_DEFAULT;
+AngularSpeed const ConstantesPrincipal::VITESSE_ANGULAIRE_DEFAUT = Constantes::ANGULAR_SPEED_DEFAULT;
+Distance const ConstantesPrincipal::PRECISION_LINEAIRE_DEFAUT = Constantes::LINEAR_PRECISION_DEFAULT;
+Angle const ConstantesPrincipal::PRECISION_ANGULAIRE_DEFAUT = Constantes::ANGULAR_PRECISION_DEFAULT;
 
 Distance const ConstantesPrincipal::RAYON_ROTATION_ROBOT = 230.0_mm;
 Vector3m const ConstantesPrincipal::TAILLE_ROBOT = {30_cm, 30_cm, 40_cm};
-uint16_t const ConstantesPrincipal::TCPIP_PORT_SIMU_DEFAUT = 4321;
+uint16_t const ConstantesPrincipal::TCPIP_PORT_SIMU_DEFAULT = 4321;
 Angle const ConstantesPrincipal::OFFSET_ANGLE_ADV = -0.5_PI;
 
 int const ConstantesPrincipal::IDRobot = 1;
 
-Duration ConstantesRobotPrincipal::getTimeoutDeplacementDefaut() const {
+Duration ConstantesRobotPrincipal::getTimeoutMoveDefault() const {
 	return ConstantesPrincipal::TIMEOUT_DEPLACEMENT_DEFAUT;
 }
 
-Duration ConstantesRobotPrincipal::getTimeoutBlocageAdversaireDefaut() const {
+Duration ConstantesRobotPrincipal::getTimeoutOpponentBlockingDefault() const {
 	return ConstantesPrincipal::TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT;
 }
 
-Speed ConstantesRobotPrincipal::getVitesseLineaireDefaut() const {
+Speed ConstantesRobotPrincipal::getLinearSpeedDefault() const {
 	return ConstantesPrincipal::VITESSE_LINEAIRE_DEFAUT;
 }
-AngularSpeed ConstantesRobotPrincipal::getVitesseAngulaireDefaut() const {
+AngularSpeed ConstantesRobotPrincipal::getAngularSpeedDefault() const {
 	return ConstantesPrincipal::VITESSE_ANGULAIRE_DEFAUT;
 }
 
-Distance ConstantesRobotPrincipal::getPrecisionLineaireDefaut() const {
+Distance ConstantesRobotPrincipal::getLinearPrecisionDefault() const {
 	return ConstantesPrincipal::PRECISION_LINEAIRE_DEFAUT;
 }
 
-Angle ConstantesRobotPrincipal::getPrecisionAngulaireDefaut() const {
+Angle ConstantesRobotPrincipal::getAngularPrecisionDefault() const {
 	return ConstantesPrincipal::PRECISION_ANGULAIRE_DEFAUT;
 }
 
-Distance ConstantesRobotPrincipal::getRayonRotation() const {
+Distance ConstantesRobotPrincipal::getRayRotation() const {
 	return ConstantesPrincipal::RAYON_ROTATION_ROBOT;
 }
 
-Vector3m ConstantesRobotPrincipal::getTailleRobot() const {
+Vector3m ConstantesRobotPrincipal::getRobotSize() const {
 	return ConstantesPrincipal::TAILLE_ROBOT;
 }
 
@@ -64,7 +64,7 @@ Angle ConstantesRobotPrincipal::getOffsetAngleAdv() const {
 }
 
 
-uint16_t ConstantesRobotPrincipal::getPortTCPIPDefaut() const {
+uint16_t ConstantesRobotPrincipal::getPortTCPIPDefault() const {
 	return 1234;
 }
 
