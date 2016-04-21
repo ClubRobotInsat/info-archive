@@ -56,19 +56,7 @@ namespace IDCartesPrincipal {
 		ID_CARTE_DEBUG_DESSIN = 9
 	};
 
-	ENUM_NS(IDCartesPrincipal,
-	        IDCartes,
-	        CAN_USB,
-	        DEPLACEMENT,
-	        SERVO_G,
-	        SERVO_D,
-	        IO,
-	        PNEUMATIQUE_HAUTE,
-	        PNEUMATIQUE_BAS,
-	        EVITEMENT,
-			ELECTROVANNES,
-	        DEBUG_DESSIN
-	        );
+	ENUM_NS(IDCartesPrincipal, IDCartes, CAN_USB, DEPLACEMENT, SERVO_G, SERVO_D, IO, PNEUMATIQUE_HAUTE, PNEUMATIQUE_BAS, EVITEMENT, ELECTROVANNES, DEBUG_DESSIN);
 
 	ENUM_CLASS_NS(IDCartesPrincipal, IDCartesServo, ASCENSEUR, AUTRES);
 }
@@ -111,16 +99,13 @@ namespace ConstantesPrincipal {
 	};
 
 	enum class PositionParasol {
-			RENTRE,
-			SORTIE,
+		RENTRE,
+		SORTIE,
 	};
 
 	/////////////////// POMPES | VANNES ///////////////////
 
-	enum class Pompe {
-		HAUT,
-		BAS
-	};
+	enum class Pompe { HAUT, BAS };
 
 	enum class Vanne {
 		VANNE_1 = 1,
@@ -144,15 +129,11 @@ namespace ConstantesPrincipal {
 		NBR = 5
 	};
 
-	enum class Servo_D {
-			NBR = 3
-	};
+	enum class Servo_D { NBR = 3 };
 
-	enum class Servo_G {
-			NBR = 2
-	};
+	enum class Servo_G { NBR = 2 };
 	/////////////////// SERVOS ///////////////////
-	//Durée attendue lors de l'envoi d'un message aux cartes élecs dans les fonctions blonquantes autre que les servos.
+	// Durée attendue lors de l'envoi d'un message aux cartes élecs dans les fonctions blonquantes autre que les servos.
 	auto const TIMEOUT_ELEC = 100_ms;
 
 	/* Conservé à titre de référence. TODO: à virer
@@ -165,8 +146,8 @@ namespace ConstantesPrincipal {
 
 	////////////////// UTILITAIRES ///////////////////
 	enum class CotePince {
-		DROIT,
-		GAUCHE,
+	    DROIT,
+	    GAUCHE,
 	};
 	*/
 	// On reprend par défaut les mêmes valeur que la partie commune aux 2 robots, à changer si nécessaire
@@ -214,13 +195,11 @@ namespace ConstantesPrincipal {
 #endif
 	};
 	template <>
-	struct CarteInfo<IDCartesPrincipal::SERVO_G>
-	    : public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_SERVO_G> {
+	struct CarteInfo<IDCartesPrincipal::SERVO_G> : public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_SERVO_G> {
 		typedef CarteServosNova2009 type;
 	};
 	template <>
-	struct CarteInfo<IDCartesPrincipal::SERVO_D>
-	    : public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_SERVO_D> {
+	struct CarteInfo<IDCartesPrincipal::SERVO_D> : public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_SERVO_D> {
 		typedef CarteServosNova2009 type;
 	};
 	template <>
@@ -235,7 +214,7 @@ namespace ConstantesPrincipal {
 	};
 	template <>
 	struct CarteInfo<IDCartesPrincipal::ELECTROVANNES>
-			: public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_ELECTROVANNES> {
+	    : public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_ELECTROVANNES> {
 		typedef CarteElectrovannes2016 type;
 	};
 	template <>
@@ -257,13 +236,14 @@ namespace ConstantesPrincipal {
 	template <>
 	struct CarteServoInfo<IDCartesPrincipal::IDCartesServo::ASCENSEUR>
 	    : public ConstantesPrincipal::CarteInfo<IDCartesPrincipal::SERVOS_ASCENSEUR> {
-		static auto const IDCarte = IDCartesPrincipal::SERVOS_ASCENSEUR;
-		typedef ConstantesPrincipal::ServoAscenseur Servo;
+	    static auto const IDCarte = IDCartesPrincipal::SERVOS_ASCENSEUR;
+	    typedef ConstantesPrincipal::ServoAscenseur Servo;
 	};
 	template <>
-	struct CarteServoInfo<IDCartesPrincipal::IDCartesServo::AUTRES> : public CarteInfo<IDCartesPrincipal::SERVOS_AUTRES> {
-		static auto const IDCarte = IDCartesPrincipal::SERVOS_AUTRES;
-		typedef ConstantesPrincipal::Servo Servo;
+	struct CarteServoInfo<IDCartesPrincipal::IDCartesServo::AUTRES> : public CarteInfo<IDCartesPrincipal::SERVOS_AUTRES>
+	{
+	    static auto const IDCarte = IDCartesPrincipal::SERVOS_AUTRES;
+	    typedef ConstantesPrincipal::Servo Servo;
 	};*/
 };
 
