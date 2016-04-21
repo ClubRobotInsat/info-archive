@@ -15,6 +15,8 @@ svn checkout https://www.etud.insa-toulouse.fr/svn/roboinsat/CodeCommun --userna
 git clone https://votre_login_github@github.com/ClubRobotInsat/info.git
 cd info
 ./boostrap.sh
+
+git clone https://github.com/ClubRobotInsat/websimulator
 ```
 ## Problèmes fréquents : 
 
