@@ -14,6 +14,9 @@ typedef Vector2<Units::Distance> Vector2m;
 typedef Vector3<Units::Distance> Vector3m;
 typedef Vector4<Units::Distance> Vector4m;
 
+typedef Vector2<Units::Angle> Vector2ang;
+typedef Vector3<Units::Angle> Vector3ang;
+
 // Retourne la translation qui permet de donner l'impression de faire tourner un élément autour du centreVoulu alors
 // qu'il tourne autour du centreAbsolu pour la rotation décrite par axeRotation et angleRotation
 // Il faut donc faire tourner la pièce, puis déterminer la translation par cette fonction, et l'appliquer à la pièce.
