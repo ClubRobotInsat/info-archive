@@ -68,6 +68,12 @@ Pour lancer l'IA en mode Debug sur le simu
 9. Dans Petri, aller dans ```Debug -> Creat Host```, normalement tout est déjà configuré, vous n'avez qu'à cliquer sur Create Host. Sinon, faut aller chercher les binaires de l'IA :```/bin/robot/Principal/IAPrincipal``` et indiquer comme argument : ```LOCAL```.
 10. Voilà c'est terminé, vous n'avez plus qu'a lancer votre réseau petri et admiré le résultat dans le simu !
 
+TEMPORAIREMENT : pour le serveur, il faut :
+1. ouvrir un terminal
+2. aller dans /websimulator/dist
+3. coller python -m SimpleHTTPServer
+4. se connecter sur localhost:8000
+
 ## Que faire ? 
 
 #### Débugger le simu et l'IA:
