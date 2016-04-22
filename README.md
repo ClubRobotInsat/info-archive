@@ -67,3 +67,12 @@ Pour lancer l'IA en mode Debug sur le simu
 8. Dans le navigateur Web, cliqué sur connect. Après une petite seconde, vous devriez voir la table apparaître.
 9. Dans Petri, aller dans ```Debug -> Creat Host```, normalement tout est déjà configuré, vous n'avez qu'à cliquer sur Create Host. Sinon, faut aller chercher les binaires de l'IA :```/bin/robot/Principal/IAPrincipal``` et indiquer comme argument : ```LOCAL```.
 10. Voilà c'est terminé, vous n'avez plus qu'a lancer votre réseau petri et admiré le résultat dans le simu !
+
+## Que faire ? 
+
+#### Débugger le simu et l'IA:
+
+Pour cela, lancer le simu, ouvrir la console qui reçoit les message de l'IA (alt gr + 2 , le combo qui fait ~ avec ALT GR).
+Ensuite faut tester toutes les méthodes petri, verifier que le simu les gèrent bien. Si jamais ils les gèrent bien et que rien ne s'affiche c'est que c'est côté robot que ça merde.
+Comment savoir si c'est bien geré ? Les méthodes correspondent à la doc des élecs, tout simplement.
+Voilà voilà.
