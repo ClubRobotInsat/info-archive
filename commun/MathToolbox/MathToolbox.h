@@ -14,13 +14,16 @@ typedef Vector2<Units::Distance> Vector2m;
 typedef Vector3<Units::Distance> Vector3m;
 typedef Vector4<Units::Distance> Vector4m;
 
+typedef Vector2<Units::Angle> Vector2ang;
+typedef Vector3<Units::Angle> Vector3ang;
+
 // Retourne la translation qui permet de donner l'impression de faire tourner un élément autour du centreVoulu alors
 // qu'il tourne autour du centreAbsolu pour la rotation décrite par axeRotation et angleRotation
 // Il faut donc faire tourner la pièce, puis déterminer la translation par cette fonction, et l'appliquer à la pièce.
 Vector3m translationPourRotationExcentree(Vector3m centreAbsolu, Vector3m centreVoulu, Vector3d axeRotation, Units::Angle angleRotation);
 
 
-//transforme un vecteur (x, y, z) en vecteur (x, y)
+// transforme un vecteur (x, y, z) en vecteur (x, y)
 Vector2m toVec2(Vector3m vec3);
 
 /**
