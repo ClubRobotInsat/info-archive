@@ -81,7 +81,7 @@ Voilà voilà.
 
 #### TODO : fix les méthodes suivantes
 
-1. carte électrovanne : fait crash le simu ("Une erreur est survenue dans le client du débuggueur : Le débuggueur distant n'est plus disponible !.")
+carte électrovanne : fait crash le simu ("Une erreur est survenue dans le client du débuggueur : Le débuggueur distant n'est plus disponible !.")
 * descendreCuillere()
 * monterCuillere()
 * descendrePelle()
@@ -93,16 +93,16 @@ Voilà voilà.
 * rentrerBrasDroit()
 * rentrerBrasGauche()
 
-2. partie pneumatique :  
-quand on active/désasctive une pompe seule la pompe BAS est concernée (ID = 6), on ne peut pas modif la pompe HAUTE
-
-3. je ne sais pas ce que font exactement ces méthodes -Benjamin
+partie pneumatique :  
+quand on active/désasctive une pompe seule la pompe BAS est concernée (ID = 6), on ne peut pas modif la pompe HAUTE  
+  
+je ne sais pas ce que font exactement ces méthodes -Benjamin
 * allerA(Distance, Distance)   ... ne marche pas (normal d'après Paul)
 * allerA(Vector2m)             ... ne marche pas (normal d'après Paul)
 * reculerA(Vector2m)
-
-4. ne marche pas : ça attend dans Petri, il y a le message "[CAN.cpp:221 in marquerAckRecu] : On reçoit un ack pour le message 56, déjà évacué de la fenêtre" dans le terminal
+  
+ne marche pas : ça attend dans Petri, il y a le message "[CAN.cpp:221 in marquerAckRecu] : On reçoit un ack pour le message 56, déjà évacué de la fenêtre" dans le terminal
 * recupererCubes()
-* relacherCubes()
-
-5. sinon les déplacements se font bien (et les cartes ont accès à la pos + angle de départ du robot, il n'y a pas de souci avec ça)
+* relacherCubes()  
+  
+sinon les déplacements se font bien (et les cartes ont accès à la pos + angle de départ du robot, il n'y a pas de souci avec ça)
