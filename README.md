@@ -97,12 +97,9 @@ Voilà voilà.
 quand on active/désasctive une pompe seule la pompe BAS est concernée (ID = 6), on ne peut pas modif la pompe HAUTE
 
 3. je ne sais pas ce que font exactement ces méthodes -Benjamin
-* allerA(Distance, Distance)
-* allerA(Vector2m)
-* avancerA(Vector2m, SensAvance)
-* avancerA(Vector2m)
+* allerA(Distance, Distance)   ... ne marche pas (normal d'après Paul)
+* allerA(Vector2m)             ... ne marche pas (normal d'après Paul)
 * reculerA(Vector2m)
-* bougerObjet(std::string const&, Distance, Distance)
 
 4. ne marche pas : ça attend dans Petri, il y a le message "[CAN.cpp:221 in marquerAckRecu] : On reçoit un ack pour le message 56, déjà évacué de la fenêtre" dans le terminal
 * recupererCubes()
