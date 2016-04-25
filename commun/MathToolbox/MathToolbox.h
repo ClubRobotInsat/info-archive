@@ -33,4 +33,10 @@ Vector2m toVec2(Vector3m vec3);
  */
 bool equals(Units::Angle a1, Units::Angle a2, Units::Angle threshold);
 
+/*
+ * Retourne vrai si la différence linéaire entre les distances a et
+ * b est inférieure à la distance 'threshold'
+ */
+bool distancesEquals(Vector2m a, Vector2m b, Units::Distance threshold);
+
 #endif // MATH_TOOLBOX_H
