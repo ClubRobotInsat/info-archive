@@ -31,3 +31,7 @@ Vector2m toVec2(Vector3m vec3) {
 bool equals(Units::Angle a1, Units::Angle a2, Units::Angle threshold) {
 	return abs((a1 - a2).toMinusPiPi()) < abs(threshold.toMinusPiPi());
 }
+
+bool distancesEquals(Vector2m a, Vector2m b, Units::Distance threshold) {
+	return pow((a.x.toM() - b.x.toM()), 2) + pow((a.y.toM() - b.y.toM()), 2) < pow(threshold.toM(), 2);
+}
