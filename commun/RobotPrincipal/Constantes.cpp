@@ -13,6 +13,11 @@ namespace ConstantesPrincipal {
 
 	Distance const ENTRAXE_PINCES = 12_cm;
 	Distance const DISTANCE_CENTRE_PINCES = 30_cm;
+
+	Angle const positionPinceD[enumToInt(PositionPince::NBR)] = {157_deg, 60_deg};
+	Angle const positionPinceG[enumToInt(PositionPince::NBR)] = {157_deg, 60_deg};
+	Angle const positionPelle[enumToInt(PositionPelle::NBR)] = { 0_deg, 185_deg };
+
 }
 
 Duration const ConstantesPrincipal::TIMEOUT_DEPLACEMENT_DEFAUT = Constantes::TIMEOUT_MOVE_DEFAULT;

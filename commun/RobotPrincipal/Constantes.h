@@ -84,8 +84,9 @@ namespace ConstantesPrincipal {
 	};
 
 	enum class PositionPince {
-		RENTREE,
-		SORTIE,
+		RENTREE = 0,
+		SORTIE = 1,
+		NBR = 2,
 	};
 
 	enum class PositionCuillere {
@@ -96,6 +97,7 @@ namespace ConstantesPrincipal {
 	enum class PositionPelle {
 		RENTRE,
 		SORTIE,
+		NBR = 2,
 	};
 
 	enum class PositionParasol {
@@ -121,17 +123,17 @@ namespace ConstantesPrincipal {
 	/////////////////// SERVOS ///////////////////
 
 	enum class Servo {
-		PINCE_D = ID_SERVO_D_PINCE_DROITE,
+		PINCE_D = ID_SERVO_G_PINCE_DROITE,
 		PARAPLUIE = ID_SERVO_D_PARAPLUIE,
-		CUILLERE = ID_SERVO_D_CUILLERE,
-		PELLE = ID_SERVO_G_PELLE,
+		CUILLERE = ID_SERVO_G_CUILLERE,
+		PELLE = ID_SERVO_D_PELLE,
 		PINCE_G = ID_SERVO_G_PINCE_GAUCHE,
 		NBR = 5
 	};
 
 	enum class Servo_D { NBR = 3 };
-
 	enum class Servo_G { NBR = 2 };
+
 	/////////////////// SERVOS ///////////////////
 	// Durée attendue lors de l'envoi d'un message aux cartes élecs dans les fonctions blonquantes autre que les servos.
 	auto const TIMEOUT_ELEC = 100_ms;
@@ -172,7 +174,9 @@ namespace ConstantesPrincipal {
 	extern Distance const DISTANCE_CENTRE_PINCES;
 
 	// Déclaration des positions
-
+	extern Angle const positionPinceD[enumToInt(PositionPince::NBR)];
+	extern Angle const positionPinceG[enumToInt(PositionPince::NBR)];
+	extern Angle const positionPelle[enumToInt(PositionPelle::NBR)];
 	/////////////////// CARTES ///////////////////
 
 	template <IDCartesPrincipal::IDCartes ID_CARTE>
