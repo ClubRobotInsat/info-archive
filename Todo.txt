@@ -1,4 +1,14 @@
 #include "robot/Petri/Editor/Todo.txt"
++------------------------------------------------------------------------------+
+| Urgent coupe !                                                               |
++------------------------------------------------------------------------------+
+* Recalage (avec petit robot)
+* Test de l'évitement
+* Timeout après déplacement.
+* Tester la cross compil sur l'EPIA!
+* Test du déplacement avec contournement
+* Bug du déplacement 1/4
+* IA
 
 +------------------------------------------------------------------------------+
 | Commun                                                                       |
