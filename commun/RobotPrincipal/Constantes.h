@@ -92,6 +92,7 @@ namespace ConstantesPrincipal {
 	enum class PositionCuillere {
 		RENTRE,
 		SORTIE,
+		NBR = 2,
 	};
 
 	enum class PositionPelle {
@@ -103,6 +104,7 @@ namespace ConstantesPrincipal {
 	enum class PositionParasol {
 		RENTRE,
 		SORTIE,
+		NBR = 2,
 	};
 
 	/////////////////// POMPES | VANNES ///////////////////
@@ -177,6 +179,9 @@ namespace ConstantesPrincipal {
 	extern Angle const positionPinceD[enumToInt(PositionPince::NBR)];
 	extern Angle const positionPinceG[enumToInt(PositionPince::NBR)];
 	extern Angle const positionPelle[enumToInt(PositionPelle::NBR)];
+	extern Angle const positionCuillere[enumToInt(PositionCuillere::NBR)];
+	extern Angle const positionParasol[enumToInt(PositionParasol::NBR)];
+
 	/////////////////// CARTES ///////////////////
 
 	template <IDCartesPrincipal::IDCartes ID_CARTE>
