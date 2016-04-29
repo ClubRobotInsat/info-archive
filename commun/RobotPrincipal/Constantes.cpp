@@ -8,15 +8,14 @@
 #include "Constantes.h"
 
 namespace ConstantesPrincipal {
-	// Angle const positionPince[enumToInt(PositionPince::NBR)] = {50_deg, 67.5_deg}; // TODO: Modifier les valeurs pour
-	// cette année.
-
 	Distance const ENTRAXE_PINCES = 12_cm;
 	Distance const DISTANCE_CENTRE_PINCES = 30_cm;
 
 	Angle const positionPinceD[enumToInt(PositionPince::NBR)] = {157_deg, 60_deg};
 	Angle const positionPinceG[enumToInt(PositionPince::NBR)] = {157_deg, 60_deg};
-	Angle const positionPelle[enumToInt(PositionPelle::NBR)] = { 0_deg, 185_deg };
+	Angle const positionPelle[enumToInt(PositionPelle::NBR)] = { 0_deg, 185_deg};
+	Angle const positionCuillere[enumToInt(PositionCuillere::NBR)] = { 0_deg, 180_deg}; // FIXME : mettre les bonnes valeurs une fois que le servo sera en place
+	Angle const positionParasol[enumToInt(PositionParasol::NBR)] = { 0_deg, 180_deg}; // FIXME : idem, mettre les bonnes valeurs
 
 }
 

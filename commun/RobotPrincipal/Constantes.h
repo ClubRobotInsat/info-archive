@@ -92,6 +92,7 @@ namespace ConstantesPrincipal {
 	enum class PositionCuillere {
 		RENTRE,
 		SORTIE,
+		NBR = 2,
 	};
 
 	enum class PositionPelle {
@@ -103,6 +104,7 @@ namespace ConstantesPrincipal {
 	enum class PositionParasol {
 		RENTRE,
 		SORTIE,
+		NBR = 2,
 	};
 
 	/////////////////// POMPES | VANNES ///////////////////
@@ -138,20 +140,6 @@ namespace ConstantesPrincipal {
 	// Durée attendue lors de l'envoi d'un message aux cartes élecs dans les fonctions blonquantes autre que les servos.
 	auto const TIMEOUT_ELEC = 100_ms;
 
-	/* Conservé à titre de référence. TODO: à virer
-	// Position des servos
-	enum class PositionPince {STOCKAGE = 0, FERME = 1, NBR};
-
-
-	/////////////////// MOTEURS ///////////////////
-	// Position des moteurs
-
-	////////////////// UTILITAIRES ///////////////////
-	enum class CotePince {
-	    DROIT,
-	    GAUCHE,
-	};
-	*/
 	// On reprend par défaut les mêmes valeur que la partie commune aux 2 robots, à changer si nécessaire
 	extern Duration const TIMEOUT_DEPLACEMENT_DEFAUT;
 	extern Duration const TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT;
@@ -177,6 +165,9 @@ namespace ConstantesPrincipal {
 	extern Angle const positionPinceD[enumToInt(PositionPince::NBR)];
 	extern Angle const positionPinceG[enumToInt(PositionPince::NBR)];
 	extern Angle const positionPelle[enumToInt(PositionPelle::NBR)];
+	extern Angle const positionCuillere[enumToInt(PositionCuillere::NBR)];
+	extern Angle const positionParasol[enumToInt(PositionParasol::NBR)];
+
 	/////////////////// CARTES ///////////////////
 
 	template <IDCartesPrincipal::IDCartes ID_CARTE>
@@ -235,20 +226,6 @@ namespace ConstantesPrincipal {
 	    : public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_DEBUG_DESSIN> {
 		typedef CarteDebugDessin type;
 	};
-
-	/*
-	template <>
-	struct CarteServoInfo<IDCartesPrincipal::IDCartesServo::ASCENSEUR>
-	    : public ConstantesPrincipal::CarteInfo<IDCartesPrincipal::SERVOS_ASCENSEUR> {
-	    static auto const IDCarte = IDCartesPrincipal::SERVOS_ASCENSEUR;
-	    typedef ConstantesPrincipal::ServoAscenseur Servo;
-	};
-	template <>
-	struct CarteServoInfo<IDCartesPrincipal::IDCartesServo::AUTRES> : public CarteInfo<IDCartesPrincipal::SERVOS_AUTRES>
-	{
-	    static auto const IDCarte = IDCartesPrincipal::SERVOS_AUTRES;
-	    typedef ConstantesPrincipal::Servo Servo;
-	};*/
 };
 
 struct ConstantesRobotPrincipal : public Commun::ConstantesRobot {
