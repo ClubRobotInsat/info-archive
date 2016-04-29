@@ -133,8 +133,8 @@ namespace ConstantesPrincipal {
 		NBR = 5
 	};
 
-	enum class Servo_D { NBR = 3 };
-	enum class Servo_G { NBR = 2 };
+	enum class Servo_D { NBR = 2 };
+	enum class Servo_G { NBR = 3 };
 
 	/////////////////// SERVOS ///////////////////
 	// Durée attendue lors de l'envoi d'un message aux cartes élecs dans les fonctions blonquantes autre que les servos.
