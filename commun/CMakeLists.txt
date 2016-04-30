@@ -14,8 +14,8 @@ set(OUTILS_SOURCE
 	MathToolbox/MathToolbox.cpp
 )
 
-add_library(Outils STATIC ${OUTILS_SOURCE})
-target_link_libraries(Outils pthread)
-add_dependencies(Outils InfoSubmodules)
+add_library(Outils_${SIMU_OU_ROBOT} STATIC ${OUTILS_SOURCE})
+target_link_libraries(Outils_${SIMU_OU_ROBOT} pthread)
+add_dependencies(Outils_${SIMU_OU_ROBOT} InfoSubmodules)
 
 add_subdirectory(GLFW)
