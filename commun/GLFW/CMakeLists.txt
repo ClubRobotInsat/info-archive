@@ -53,18 +53,18 @@ endif()
 
 include_directories(src)
 
-add_library(glfw STATIC ${SOURCE})
+add_library(glfw_${SIMU_OU_ROBOT} STATIC ${SOURCE})
 
 if(APPLE)
-	target_compile_options(glfw PUBLIC -Wno-deprecated -Wno-deprecated-declarations)
+	target_compile_options(glfw_${SIMU_OU_ROBOT} PUBLIC -Wno-deprecated -Wno-deprecated-declarations)
 
 	find_library(COCOA Cocoa)
 	find_library(OPENGL OpenGL)
 	find_library(GLUT GLUT)
 	find_library(IOKIT IOKit)
-	target_link_libraries(glfw m pthread ${COCOA} ${OPENGL} ${GLUT} ${IOKIT})
+target_link_libraries(glfw_${SIMU_OU_ROBOT} m pthread ${COCOA} ${OPENGL} ${GLUT} ${IOKIT})
 elseif(UNIX)
-	target_link_libraries(glfw GL GLU m X11 pthread Xrandr)
+	target_link_libraries(glfw_${SIMU_OU_ROBOT} GL GLU m X11 pthread Xrandr)
 else()
-	target_link_libraries(glfw opengl32 glu32)
+	target_link_libraries(glfw_${SIMU_OU_ROBOT} opengl32 glu32)
 endif()
