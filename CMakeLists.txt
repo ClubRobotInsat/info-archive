@@ -7,6 +7,18 @@ option(COLOR "Sortie en couleur de la compilation" ON)
 option(DEBUG "Compilation avec les symboles de debug et sans optimisations" OFF)
 set(BITS "32" CACHE . "Build en 32 ou 64 bits")
 
+# Mise à jour des submodules Git.
+execute_process(
+	COMMAND git submodule update --init
+	WORKING_DIRECTORY ${root_SOURCE_DIR}
+)
+add_custom_target(InfoSubmodules
+	COMMAND git submodule update --init
+	WORKING_DIRECTORY ${root_SOURCE_DIR}
+)
+
+add_subdirectory(petri)
+
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 if(DEBUG)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0")
