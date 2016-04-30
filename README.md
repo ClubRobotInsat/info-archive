@@ -4,6 +4,8 @@ Installation de tout ce qu'il faut
 ------------
 
 ```
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
+echo "deb http://download.mono-project.com/repo/debian wheezy main" | sudo tee /etc/apt/sources.list.d/mono-xamarin.list
 sudo apt-get update
 sudo apt-get install ninja-build mono-complete cmake subversion git libbox2d-dev gcc-5-multilib g++-5-multilib openjdk-7-jre build-essential libglfw-dev libglu1-mesa-dev libxrandr-dev libgtk2.0-dev libusb-1.0-0-dev clang-format-3.7
 ```
@@ -14,24 +16,10 @@ Clonage du repo
 svn checkout https://www.etud.insa-toulouse.fr/svn/roboinsat/CodeCommun --username votre_login_insa
 git clone https://votre_login_github@github.com/ClubRobotInsat/info.git
 cd info
-./boostrap.sh
 
 git clone https://github.com/ClubRobotInsat/websimulator
 ```
-## Problèmes fréquents : 
 
-#### Erreur de compilation petri
-Si lors de l'exécution de bootstrap.sh certaines erreurs de compilation apparaissent telles que celles ci-dessous, c'est que votre installation de mono n'est pas à jour :
-```
-../Sources/Code/Type.cs(119,35): error CS1525: Unexpected symbol `?'
-../Sources/Document/DocumentSection/Debugger/DebugEditor.cs(69,33): error CS1525: Unexpected symbol `?'
-```
-La compilation des réseaux de pétri requiert mono >= 4.x.x. Si mono --version vous renvoie 3.x.x, effectuez donc la manipulation suivante :
-```
-sudo add-apt-repository ppa:keks9n/monodevelop-latest
-sudo apt-get update
-sudo apt-get install mono-devel
-```
 ------------
 Installation de CLion (facultatif, mais recommandé)
 ------------

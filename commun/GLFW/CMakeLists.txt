@@ -54,7 +54,10 @@ endif()
 include_directories(src)
 
 add_library(glfw STATIC ${SOURCE})
+
 if(APPLE)
+	target_compile_options(glfw PUBLIC -Wno-deprecated -Wno-deprecated-declarations)
+
 	find_library(COCOA Cocoa)
 	find_library(OPENGL OpenGL)
 	find_library(GLUT GLUT)

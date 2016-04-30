@@ -16,5 +16,6 @@ set(OUTILS_SOURCE
 
 add_library(Outils STATIC ${OUTILS_SOURCE})
 target_link_libraries(Outils pthread)
+add_dependencies(Outils InfoSubmodules)
 
 add_subdirectory(GLFW)

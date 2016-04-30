@@ -12,11 +12,11 @@
 #include "../../simulateur/cartes/CarteDebugDessin.h"
 #include "../../simulateur/cartes/CarteDeplacement2009.h"
 #include "../../simulateur/cartes/CarteDetectAdv2009.h"
+#include "../../simulateur/cartes/CarteElectrovannes2016.h"
 #include "../../simulateur/cartes/CarteIO2014.h"
 #include "../../simulateur/cartes/CartePneumatique2013.h"
 #include "../../simulateur/cartes/CartePneumatique2014.h"
 #include "../../simulateur/cartes/CarteServosNova2009.h"
-#include "../../simulateur/cartes/CarteElectrovannes2016.h"
 #include "../../simulateur/robot/Carte.h"
 
 #else
@@ -27,11 +27,11 @@
 #include "../../robot/Cartes/CarteContacteurs2007.h"
 #include "../../robot/Cartes/CarteDebugDessin.h"
 #include "../../robot/Cartes/CarteDeplacementSymetrieY.h"
+#include "../../robot/Cartes/CarteElectrovannes2016.h"
 #include "../../robot/Cartes/CarteIO2014.h"
 #include "../../robot/Cartes/CartePneumatique.h"
 #include "../../robot/Cartes/CartePneumatique2014.h"
 #include "../../robot/Cartes/CarteServosNova2009.h"
-#include "../../robot/Cartes/CarteElectrovannes2016.h"
 #include "../robot/Cartes/CarteDetectAdv2009.h"
 
 #endif
@@ -133,8 +133,8 @@ namespace ConstantesPrincipal {
 		NBR = 5
 	};
 
-	enum class Servo_D { NBR = 3 };
-	enum class Servo_G { NBR = 2 };
+	enum class Servo_D { NBR = 2 };
+	enum class Servo_G { NBR = 3 };
 
 	/////////////////// SERVOS ///////////////////
 	// Durée attendue lors de l'envoi d'un message aux cartes élecs dans les fonctions blonquantes autre que les servos.
@@ -177,54 +177,58 @@ namespace ConstantesPrincipal {
 	struct CarteServoInfo {};
 
 	template <>
-	struct CarteInfo<IDCartesPrincipal::CAN_USB> : public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_CAN_USB> {
-		typedef CarteCAN_USB type;
+	struct CarteInfo<IDCartesPrincipal::CAN_USB> {
+		using typeCarte = CarteCAN_USB;
+        enum {idCarte = IDCartesPrincipal::ID_CARTE_CAN_USB};
 	};
 	template <>
-	struct CarteInfo<IDCartesPrincipal::DEPLACEMENT>
-	    : public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_DEPLACEMENT> {
+	struct CarteInfo<IDCartesPrincipal::DEPLACEMENT> {
 #ifdef TARGET_SIMULATEUR
-		typedef CarteDeplacement2009 type;
+		using typeCarte = CarteDeplacement2009;
 #else
-		typedef CarteDeplacementSymetrieY type;
+		using typeCarte = CarteDeplacementSymetrieY;
 #endif
+        enum {idCarte = IDCartesPrincipal::ID_CARTE_DEPLACEMENT};
 	};
 	template <>
-	struct CarteInfo<IDCartesPrincipal::SERVO_G> : public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_SERVO_G> {
-		typedef CarteServosNova2009 type;
+	struct CarteInfo<IDCartesPrincipal::SERVO_G> {
+		using typeCarte = CarteServosNova2009;
+        enum {idCarte = IDCartesPrincipal::ID_CARTE_SERVO_G};
 	};
 	template <>
-	struct CarteInfo<IDCartesPrincipal::SERVO_D> : public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_SERVO_D> {
-		typedef CarteServosNova2009 type;
+	struct CarteInfo<IDCartesPrincipal::SERVO_D> {
+		using typeCarte = CarteServosNova2009;
+        enum {idCarte = IDCartesPrincipal::ID_CARTE_SERVO_D};
 	};
 	template <>
-	struct CarteInfo<IDCartesPrincipal::PNEUMATIQUE_BAS>
-	    : public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_PNEUMATIQUE_BAS> {
-		typedef CartePneumatique2014 type;
+	struct CarteInfo<IDCartesPrincipal::PNEUMATIQUE_BAS> {
+		using typeCarte = CartePneumatique2014;
+        enum {idCarte = IDCartesPrincipal::ID_CARTE_PNEUMATIQUE_BAS};
 	};
 	template <>
-	struct CarteInfo<IDCartesPrincipal::PNEUMATIQUE_HAUTE>
-	    : public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_PNEUMATIQUE_HAUTE> {
-		typedef CartePneumatique2014 type;
+	struct CarteInfo<IDCartesPrincipal::PNEUMATIQUE_HAUTE> {
+		using typeCarte = CartePneumatique2014;
+        enum {idCarte = IDCartesPrincipal::ID_CARTE_PNEUMATIQUE_HAUTE};
 	};
 	template <>
-	struct CarteInfo<IDCartesPrincipal::ELECTROVANNES>
-	    : public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_ELECTROVANNES> {
-		typedef CarteElectrovannes2016 type;
+	struct CarteInfo<IDCartesPrincipal::ELECTROVANNES> {
+		using typeCarte = CarteElectrovannes2016;
+        enum {idCarte = IDCartesPrincipal::ID_CARTE_ELECTROVANNES};
 	};
 	template <>
-	struct CarteInfo<IDCartesPrincipal::IO> : public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_IO> {
-		typedef CarteIO2014 type;
+	struct CarteInfo<IDCartesPrincipal::IO> {
+		using typeCarte = CarteIO2014;
+        enum {idCarte = IDCartesPrincipal::ID_CARTE_IO};
 	};
 	template <>
-	struct CarteInfo<IDCartesPrincipal::EVITEMENT>
-	    : public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_EVITEMENT> {
-		typedef CarteDetectAdv2009 type;
+	struct CarteInfo<IDCartesPrincipal::EVITEMENT> {
+		using typeCarte = CarteDetectAdv2009;
+        enum {idCarte = IDCartesPrincipal::ID_CARTE_EVITEMENT};
 	};
 	template <>
-	struct CarteInfo<IDCartesPrincipal::DEBUG_DESSIN>
-	    : public std::integral_constant<uint32_t, IDCartesPrincipal::ID_CARTE_DEBUG_DESSIN> {
-		typedef CarteDebugDessin type;
+	struct CarteInfo<IDCartesPrincipal::DEBUG_DESSIN> {
+		using typeCarte = CarteDebugDessin;
+        enum {idCarte = IDCartesPrincipal::ID_CARTE_DEBUG_DESSIN};
 	};
 };
 
