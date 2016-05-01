@@ -47,14 +47,19 @@ Vector2u16 ConstantesCommunes::getTailleGrille() const {
 	return Constantes::TAILLE_GRILLE;
 }
 
-/*std::vector<Seashell> getListSeashells(Constantes::RobotColor robotColor, int map) const {
+std::vector<Seashell> getListSeashells(Constantes::RobotColor robotColor, int map) const {
 	std::vector<Seashell> result;
 
 	for(int i = 0 ; i < NUMBER_SEASHELLS ; i++) {
-		if(robotColor == Constantes::RobotColor::Green) {
-			if(LIST_SEASHELL_MAP[map][i].color == Seashell::Color::WHITE || LIST_SEASHELL_MAP[map][i].color == Seashell::Color::GREEN) {
-				result.push_back(LIST_SEASHELL_MAP)
+		if(robotColor == Constantes::RobotColor::Purple) {
+			if(LIST_SEASHELL_MAP[map][i]._color == Seashell::Color::WHITE || LIST_SEASHELL_MAP[map][i]._color == Seashell::Color::PURPLE) {
+				result.push_back(LIST_SEASHELL_MAP[map][i]);
+			}
+		} else if (robotColor == Constantes::RobotColor::Green) {
+			if(LIST_SEASHELL_MAP[map][i]._color == Seashell::Color::WHITE || LIST_SEASHELL_MAP[map][i]._color == Seashell::Color::GREEN) {
+				result.push_back(LIST_SEASHELL_MAP[map][i]);
 			}
 		}
 	}
-}*/
+	return result;
+}

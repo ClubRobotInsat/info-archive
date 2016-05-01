@@ -141,17 +141,14 @@ const Vector3m LIST_CYLINDER_POSITIONS[NUMBER_CYLINDERS] = {{1.5_m, 2 * CUBE_DIM
 
 // Coquillages
 const int NUMBER_SEASHELLS = 16;
-/*struct Seashell {
+struct Seashell {
 	enum Color { PURPLE, GREEN, WHITE };
 	static constexpr Length SEASHELL_RADIUS = 76.2_mm;
 	static constexpr Length SEASHELL_Z = 2.5_cm;
 	Color _color;
 	Vector3m _position;
 };
-/*struct SeashellMap {
-	Seashell LIST_SEASHELL[NUMBER_SEASHELLS];
-};*/
-/*const std::array<Seashell[NUMBER_SEASHELLS], 5> LIST_SEASHELL_MAP = {
+const std::array<std::array<Seashell, NUMBER_SEASHELLS>, 5> LIST_SEASHELL_MAP = {
 		// Carte 1
 		{
 				{Seashell::PURPLE, {7.5_cm, 20_cm, 4.4_cm}},
@@ -248,28 +245,7 @@ const int NUMBER_SEASHELLS = 16;
 				{Seashell::PURPLE, {2.8_m, 7.5_cm, 4.4_cm}}
 		}
 };
-std::vector<Seashell> getListSeashells(Constantes::RobotColor color, int map) const;*/
-const Length SEASHELL_RADIUS = 76.2_mm;
-const Length SEASHELL_Z = 2.5_cm;
-
-
-
-
-
-const Vector3m LIST_SEASHELL_POSITIONS[NUMBER_SEASHELLS] = {{20_cm, 1.25_m, 0_m},
-															{20_cm, 1.55_m, 0_m},
-															{70_cm, 1.25_m, 0_m},
-															{70_cm, 1.55_m, 0_m},
-															{90_cm, 1.45_m, 0_m},
-															{1.2_m, 1.65_m, 0_m},
-															{1.5_m, 1.55_m, 0_m},
-															{1.5_m, 1.85_m, 0_m},
-															{1.8_m, 1.65_m, 0_m},
-															{2.1_m, 1.45_m, 0_m},
-															{2.3_m, 1.25_m, 0_m},
-															{2.3_m, 1.55_m, 0_m},
-															{2.8_m, 1.25_m, 0_m},
-															{2.8_m, 1.55_m, 0_m}};
+std::vector<Seashell> getListSeashells(Constantes::RobotColor color, int map) const;
 
 // Robot
 const Length ROBOT_Z = 51_cm;
@@ -277,8 +253,8 @@ const Vector3m START_POSITION_ROBOT_PURPLE = {21_cm,
 											  0.751_m,
 											  0.15_m}; // => Vector2m(robotSize.x / 2 + 2_cm, 60.1_cm + robotSize.y / 2
 const Vector3m START_POSITION_ROBOT_GREEN = {2.79_m, 0.751_m, 0.15_m}; // TODO : avoir la meme formule que dans
-// info/robot/Principal/IA/IAPrincipal.cpp -
-// initialisation (au setRepere())
+																		// info/robot/Principal/IA/IAPrincipal.cpp -
+																		// initialisation (au setRepere())
 const Angle START_ANGLE_ROBOT_PURPLE = 0_deg;
 const Angle START_ANGLE_ROBOT_GREEN = 180_deg;
 
