@@ -204,6 +204,24 @@ const std::array<SeashellMap, 5> LIST_SEASHELL_MAP = {{// Carte 1
                                                                     Seashell{Seashell::WHITE, {2.825_m, 1.925_m, 6.6_cm}},
                                                                     Seashell{Seashell::GREEN, {2.8_m, 1.925_m, 4.4_cm}}}},
                                                        // Carte 4
+													   SeashellMap{{Seashell{Seashell::GREEN, {7.5_cm, 1.8_m, 4.4_cm}},
+																	Seashell{Seashell::WHITE, {7.5_cm, 1.925_m, 6.6_cm}},
+																	Seashell{Seashell::GREEN, {20_cm, 1.925_m, 4.4_cm}},
+																	Seashell{Seashell::PURPLE, {20_cm, 1.55_m, 0_m}},
+																	Seashell{Seashell::PURPLE, {20_cm, 1.25_m, 0_m}},
+																	Seashell{Seashell::WHITE, {70_cm, 1.55_m, 0_m}},
+																	Seashell{Seashell::PURPLE, {70_cm, 1.25_m, 0_m}},
+																	Seashell{Seashell::WHITE, {1.2_m, 1.65_m, 0_m}},
+																	Seashell{Seashell::WHITE, {1.8_m, 1.65_m, 0_m}},
+																	Seashell{Seashell::WHITE, {2.3_m, 1.55_m, 0_m}},
+																	Seashell{Seashell::GREEN, {2.3_m, 1.25_m, 0_m}},
+																	Seashell{Seashell::GREEN, {2.8_m, 1.55_m, 0_m}},
+																	Seashell{Seashell::GREEN, {2.8_m, 1.25_m, 0_m}},
+																	Seashell{Seashell::PURPLE, {2.825_m, 1.8_m, 4.4_cm}},
+																	Seashell{Seashell::WHITE, {2.825_m, 1.925_m, 6.6_cm}},
+																	Seashell{Seashell::PURPLE, {2.8_m, 1.925_m, 4.4_cm}}}},
+
+													   // Carte 5
                                                        SeashellMap{{Seashell{Seashell::PURPLE, {7.5_cm, 1.8_m, 4.4_cm}},
                                                                     Seashell{Seashell::WHITE, {7.5_cm, 1.925_m, 6.6_cm}},
                                                                     Seashell{Seashell::WHITE, {20_cm, 1.925_m, 4.4_cm}},
@@ -219,24 +237,8 @@ const std::array<SeashellMap, 5> LIST_SEASHELL_MAP = {{// Carte 1
                                                                     Seashell{Seashell::GREEN, {2.8_m, 1.25_m, 0_m}},
                                                                     Seashell{Seashell::GREEN, {2.825_m, 1.8_m, 4.4_cm}},
                                                                     Seashell{Seashell::WHITE, {2.825_m, 1.925_m, 6.6_cm}},
-                                                                    Seashell{Seashell::WHITE, {2.8_m, 1.925_m, 4.4_cm}}}},
-                                                       // Carte 5
-                                                       SeashellMap{{Seashell{Seashell::GREEN, {7.5_cm, 1.8_m, 4.4_cm}},
-                                                                    Seashell{Seashell::WHITE, {7.5_cm, 1.925_m, 6.6_cm}},
-                                                                    Seashell{Seashell::GREEN, {20_cm, 1.925_m, 4.4_cm}},
-                                                                    Seashell{Seashell::PURPLE, {20_cm, 1.55_m, 0_m}},
-                                                                    Seashell{Seashell::PURPLE, {20_cm, 1.25_m, 0_m}},
-                                                                    Seashell{Seashell::WHITE, {70_cm, 1.55_m, 0_m}},
-                                                                    Seashell{Seashell::PURPLE, {70_cm, 1.25_m, 0_m}},
-                                                                    Seashell{Seashell::WHITE, {1.2_m, 1.65_m, 0_m}},
-                                                                    Seashell{Seashell::WHITE, {1.8_m, 1.65_m, 0_m}},
-                                                                    Seashell{Seashell::WHITE, {2.3_m, 1.55_m, 0_m}},
-                                                                    Seashell{Seashell::GREEN, {2.3_m, 1.25_m, 0_m}},
-                                                                    Seashell{Seashell::GREEN, {2.8_m, 1.55_m, 0_m}},
-                                                                    Seashell{Seashell::GREEN, {2.8_m, 1.25_m, 0_m}},
-                                                                    Seashell{Seashell::PURPLE, {2.825_m, 1.8_m, 4.4_cm}},
-                                                                    Seashell{Seashell::WHITE, {2.825_m, 1.925_m, 6.6_cm}},
-                                                                    Seashell{Seashell::PURPLE, {2.8_m, 1.925_m, 4.4_cm}}}}}};
+                                                                    Seashell{Seashell::WHITE, {2.8_m, 1.925_m, 4.4_cm}}}}}};
+
 std::vector<Seashell> getListSeashells(Constantes::RobotColor color, int map);
 
 // Robot
