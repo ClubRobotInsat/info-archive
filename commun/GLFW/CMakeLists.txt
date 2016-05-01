@@ -56,8 +56,6 @@ include_directories(src)
 add_library(glfw_${SIMU_OU_ROBOT} STATIC ${SOURCE})
 
 if(APPLE)
-	target_compile_options(glfw_${SIMU_OU_ROBOT} PUBLIC -Wno-deprecated -Wno-deprecated-declarations)
-
 	find_library(COCOA Cocoa)
 	find_library(OPENGL OpenGL)
 	find_library(GLUT GLUT)
@@ -68,3 +66,6 @@ elseif(UNIX)
 else()
 	target_link_libraries(glfw_${SIMU_OU_ROBOT} opengl32 glu32)
 endif()
+
+target_compile_options(glfw_${SIMU_OU_ROBOT} PUBLIC -Wno-deprecated -Wno-deprecated-declarations)
+
