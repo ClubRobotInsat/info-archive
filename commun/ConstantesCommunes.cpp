@@ -46,3 +46,15 @@ Vector2m ConstantesCommunes::getTableSize() const {
 Vector2u16 ConstantesCommunes::getTailleGrille() const {
 	return Constantes::TAILLE_GRILLE;
 }
+
+/*std::vector<Seashell> getListSeashells(Constantes::RobotColor robotColor, int map) const {
+	std::vector<Seashell> result;
+
+	for(int i = 0 ; i < NUMBER_SEASHELLS ; i++) {
+		if(robotColor == Constantes::RobotColor::Green) {
+			if(LIST_SEASHELL_MAP[map][i].color == Seashell::Color::WHITE || LIST_SEASHELL_MAP[map][i].color == Seashell::Color::GREEN) {
+				result.push_back(LIST_SEASHELL_MAP)
+			}
+		}
+	}
+}*/
