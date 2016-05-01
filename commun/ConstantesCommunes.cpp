@@ -47,8 +47,8 @@ Vector2u16 ConstantesCommunes::getTailleGrille() const {
 	return Constantes::TAILLE_GRILLE;
 }
 
-Length const Seashell::RADIUS;
-Length const Seashell::Z;
+Length constexpr Seashell::RADIUS;
+Length constexpr Seashell::Z;
 
 
 std::vector<Seashell> getListSeashells(Constantes::RobotColor robotColor, int map) {
