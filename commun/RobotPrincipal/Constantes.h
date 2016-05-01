@@ -86,7 +86,8 @@ namespace ConstantesPrincipal {
 	enum class PositionPince {
 		RENTREE = 0,
 		SORTIE = 1,
-		NBR = 2,
+		OUVERT_MAX = 2,
+		NBR = 3,
 	};
 
 	enum class PositionCuillere {
@@ -179,7 +180,7 @@ namespace ConstantesPrincipal {
 	template <>
 	struct CarteInfo<IDCartesPrincipal::CAN_USB> {
 		using typeCarte = CarteCAN_USB;
-        enum {idCarte = IDCartesPrincipal::ID_CARTE_CAN_USB};
+		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_CAN_USB };
 	};
 	template <>
 	struct CarteInfo<IDCartesPrincipal::DEPLACEMENT> {
@@ -188,47 +189,47 @@ namespace ConstantesPrincipal {
 #else
 		using typeCarte = CarteDeplacementSymetrieY;
 #endif
-        enum {idCarte = IDCartesPrincipal::ID_CARTE_DEPLACEMENT};
+		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_DEPLACEMENT };
 	};
 	template <>
 	struct CarteInfo<IDCartesPrincipal::SERVO_G> {
 		using typeCarte = CarteServosNova2009;
-        enum {idCarte = IDCartesPrincipal::ID_CARTE_SERVO_G};
+		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_SERVO_G };
 	};
 	template <>
 	struct CarteInfo<IDCartesPrincipal::SERVO_D> {
 		using typeCarte = CarteServosNova2009;
-        enum {idCarte = IDCartesPrincipal::ID_CARTE_SERVO_D};
+		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_SERVO_D };
 	};
 	template <>
 	struct CarteInfo<IDCartesPrincipal::PNEUMATIQUE_BAS> {
 		using typeCarte = CartePneumatique2014;
-        enum {idCarte = IDCartesPrincipal::ID_CARTE_PNEUMATIQUE_BAS};
+		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_PNEUMATIQUE_BAS };
 	};
 	template <>
 	struct CarteInfo<IDCartesPrincipal::PNEUMATIQUE_HAUTE> {
 		using typeCarte = CartePneumatique2014;
-        enum {idCarte = IDCartesPrincipal::ID_CARTE_PNEUMATIQUE_HAUTE};
+		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_PNEUMATIQUE_HAUTE };
 	};
 	template <>
 	struct CarteInfo<IDCartesPrincipal::ELECTROVANNES> {
 		using typeCarte = CarteElectrovannes2016;
-        enum {idCarte = IDCartesPrincipal::ID_CARTE_ELECTROVANNES};
+		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_ELECTROVANNES };
 	};
 	template <>
 	struct CarteInfo<IDCartesPrincipal::IO> {
 		using typeCarte = CarteIO2014;
-        enum {idCarte = IDCartesPrincipal::ID_CARTE_IO};
+		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_IO };
 	};
 	template <>
 	struct CarteInfo<IDCartesPrincipal::EVITEMENT> {
 		using typeCarte = CarteDetectAdv2009;
-        enum {idCarte = IDCartesPrincipal::ID_CARTE_EVITEMENT};
+		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_EVITEMENT };
 	};
 	template <>
 	struct CarteInfo<IDCartesPrincipal::DEBUG_DESSIN> {
 		using typeCarte = CarteDebugDessin;
-        enum {idCarte = IDCartesPrincipal::ID_CARTE_DEBUG_DESSIN};
+		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_DEBUG_DESSIN };
 	};
 };
 
