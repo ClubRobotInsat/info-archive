@@ -86,7 +86,8 @@ namespace ConstantesPrincipal {
 	enum class PositionPince {
 		RENTREE = 0,
 		SORTIE = 1,
-		NBR = 2,
+		OUVERT_MAX = 2,
+		NBR = 3,
 	};
 
 	enum class PositionCuillere {
