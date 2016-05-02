@@ -11,8 +11,8 @@ namespace ConstantesPrincipal {
 	Distance const ENTRAXE_PINCES = 12_cm;
 	Distance const DISTANCE_CENTRE_PINCES = 30_cm;
 
-	Angle const positionPinceD[enumToInt(PositionPince::NBR)] = {150_deg, 60_deg, 4_deg};
-	Angle const positionPinceG[enumToInt(PositionPince::NBR)] = {150_deg, 60_deg, 4_deg};
+	Angle const positionPinceD[enumToInt(PositionPince::NBR)] = {160_deg, 150_deg, 60_deg, -10_deg};
+	Angle const positionPinceG[enumToInt(PositionPince::NBR)] = {160_deg, 150_deg, 60_deg, -10_deg};
 	Angle const positionPelle[enumToInt(PositionPelle::NBR)] = { 0_deg, 185_deg};
 	Angle const positionCuillere[enumToInt(PositionCuillere::NBR)] = { 0_deg, 180_deg}; // FIXME : mettre les bonnes valeurs une fois que le servo sera en place
 	Angle const positionParasol[enumToInt(PositionParasol::NBR)] = { 0_deg, 180_deg}; // FIXME : idem, mettre les bonnes valeurs
