@@ -238,8 +238,10 @@ const std::array<SeashellMap, 5> LIST_SEASHELL_MAP = {{// Carte 1
                                                                     Seashell{Seashell::GREEN, {2.825_m, 1.8_m, 4.4_cm}},
                                                                     Seashell{Seashell::WHITE, {2.825_m, 1.925_m, 6.6_cm}},
                                                                     Seashell{Seashell::WHITE, {2.8_m, 1.925_m, 4.4_cm}}}}}};
-
-std::vector<Seashell> getListSeashells(Constantes::RobotColor color, int map);
+// Liste des coquillages à récupérer (de la couleur du robot + blanc)
+std::vector<Seashell> getListGoodSeashells(Constantes::RobotColor color, int map);
+// Liste des coquillages à ne pas toucher (couleur opposée au robot)
+std::vector<Seashell> getListBadSeashells(Constantes::RobotColor color, int map);
 
 // Robot
 const Length ROBOT_Z = 51_cm;

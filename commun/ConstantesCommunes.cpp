@@ -51,7 +51,7 @@ Length constexpr Seashell::RADIUS;
 Length constexpr Seashell::Z;
 
 
-std::vector<Seashell> getListSeashells(Constantes::RobotColor robotColor, int map) {
+std::vector<Seashell> getListGoodSeashells(Constantes::RobotColor robotColor, int map) {
 	std::vector<Seashell> result;
 
 	for(int i = 0; i < NUMBER_SEASHELLS; i++) {
@@ -63,6 +63,23 @@ std::vector<Seashell> getListSeashells(Constantes::RobotColor robotColor, int ma
 		} else if(robotColor == Constantes::RobotColor::Green) {
 			if(LIST_SEASHELL_MAP[map]._seashells[i]._color == Seashell::Color::WHITE ||
 			   LIST_SEASHELL_MAP[map]._seashells[i]._color == Seashell::Color::GREEN) {
+				result.push_back(LIST_SEASHELL_MAP[map]._seashells[i]);
+			}
+		}
+	}
+	return result;
+}
+
+std::vector<Seashell> getListBadSeashells(Constantes::RobotColor robotColor, int map) {
+	std::vector<Seashell> result;
+
+	for(int i = 0; i < NUMBER_SEASHELLS; i++) {
+		if(robotColor == Constantes::RobotColor::Purple) {
+			if(LIST_SEASHELL_MAP[map]._seashells[i]._color == Seashell::Color::GREEN) {
+				result.push_back(LIST_SEASHELL_MAP[map]._seashells[i]);
+			}
+		} else if(robotColor == Constantes::RobotColor::Green) {
+			if(LIST_SEASHELL_MAP[map]._seashells[i]._color == Seashell::Color::PURPLE) {
 				result.push_back(LIST_SEASHELL_MAP[map]._seashells[i]);
 			}
 		}
