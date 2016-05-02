@@ -29,7 +29,7 @@ Angle const ConstantesPrincipal::PRECISION_ANGULAIRE_DEFAUT = Constantes::ANGULA
 Distance const ConstantesPrincipal::RAYON_ROTATION_ROBOT = 230.0_mm;
 Vector3m const ConstantesPrincipal::TAILLE_ROBOT = {38_cm, 30_cm, 43_cm};
 uint16_t const ConstantesPrincipal::TCPIP_PORT_SIMU_DEFAULT = 4321;
-Angle const ConstantesPrincipal::OFFSET_ANGLE_ADV = -0.5_PI;
+Angle const ConstantesPrincipal::OFFSET_ANGLE_ADV = 0_PI; // 0.5_PI
 
 int const ConstantesPrincipal::IDRobot = 1;
 
