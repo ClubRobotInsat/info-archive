@@ -41,6 +41,8 @@ La première ligne de la sortie console (tout en haut) nous intéresse: sélecti
 
 Voilà, maintenant l'IDE est configuré et la compilation du code info devrait fonctionner à 100 %.
 
+Pour pouvoir tester les IA via la laison série (RS232) en utilisant Clion (sans les droits root), il faut ajouter votre utilisateur au groupe ayant accès à la laison série (dialout) :
+```sudo usermod -a -G dialout NOM_UTILISATEUR```
 
 --------------------------
 Pour lancer l'IA en mode Debug sur le simu
