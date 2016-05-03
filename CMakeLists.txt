@@ -54,7 +54,7 @@ function(compile_petri TARGET_NAME PATH_TO_DOC OUTPUT)
 	add_custom_target(${TARGET_NAME}
 		COMMAND ${root_SOURCE_DIR}/petri/petri --update --arch ${BITS} ${CMAKE_CURRENT_SOURCE_DIR}/${PATH_TO_DOC}
 	)
-	add_dependencies(${TARGET_NAME} Editor)
+	add_dependencies(${TARGET_NAME} PetriEditor)
 endfunction()
 
 # Il y a du code pour les ombres, apparamment. Ca a pas l'air de marcher.
