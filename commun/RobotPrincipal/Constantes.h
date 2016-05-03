@@ -87,8 +87,7 @@ namespace ConstantesPrincipal {
 		RENTRE_FORCE = 0, // plaquer les cubes /!\ ne maintenair la position que qques secondes
 		RENTRE = 1, // maintenir les blosc contre le robot
 		SORTIE = 2, // récupérer les cubes de face
-		OUVERT_MAX = 3, // récupérer les cubes à 45 deg
-		NBR = 4,
+		NBR = 3,
 	};
 
 	enum class PositionCuillere {
