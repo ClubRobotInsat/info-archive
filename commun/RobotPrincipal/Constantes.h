@@ -68,7 +68,7 @@ namespace ConstantesPrincipal {
 	/////////////////// CONTACTEURS ///////////////////
 	// Numéros des contacteurs et les rôles associés
 	enum class Contacteur {
-		TIRETTE = 2,
+		TIRETTE = 1,
 		BACK_CONTACT_1 = 3,
 		BACK_CONTACT_2 = 4,
 		BACK_CONTACT_3 = 5,
@@ -127,7 +127,7 @@ namespace ConstantesPrincipal {
 
 	enum class Servo {
 		PINCE_D = ID_SERVO_G_PINCE_DROITE,
-		PARAPLUIE = ID_SERVO_D_PARASOL,
+		PARASOL = ID_SERVO_D_PARASOL,
 		CUILLERE = ID_SERVO_G_CUILLERE,
 		PELLE = ID_SERVO_D_PELLE,
 		PINCE_G = ID_SERVO_G_PINCE_GAUCHE,
