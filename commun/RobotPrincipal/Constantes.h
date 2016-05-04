@@ -68,7 +68,7 @@ namespace ConstantesPrincipal {
 	/////////////////// CONTACTEURS ///////////////////
 	// Numéros des contacteurs et les rôles associés
 	enum class Contacteur {
-		TIRETTE = 2,
+		TIRETTE = 1,
 		BACK_CONTACT_1 = 3,
 		BACK_CONTACT_2 = 4,
 		BACK_CONTACT_3 = 5,
