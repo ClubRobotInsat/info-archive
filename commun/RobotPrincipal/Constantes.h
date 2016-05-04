@@ -68,7 +68,7 @@ namespace ConstantesPrincipal {
 	/////////////////// CONTACTEURS ///////////////////
 	// Numéros des contacteurs et les rôles associés
 	enum class Contacteur {
-		TIRETTE = 2,
+		TIRETTE = 1,
 		BACK_CONTACT_1 = 3,
 		BACK_CONTACT_2 = 4,
 		BACK_CONTACT_3 = 5,
@@ -87,7 +87,8 @@ namespace ConstantesPrincipal {
 		RENTRE_FORCE = 0, // plaquer les cubes /!\ ne maintenair la position que qques secondes
 		RENTRE = 1, // maintenir les blosc contre le robot
 		SORTIE = 2, // récupérer les cubes de face
-		NBR = 3,
+		SORTIE_LARGE = 3, // récupérer les coquillages
+		NBR = 4,
 	};
 
 	enum class PositionCuillere {
