@@ -245,12 +245,8 @@ std::vector<Seashell> getListBadSeashells(Constantes::RobotColor color, int map)
 
 // Robot
 const Length ROBOT_Z = 51_cm;
-const Vector3m START_POSITION_ROBOT_PURPLE = {21_cm,
-                                              0.751_m,
-                                              0.15_m}; // => Vector2m(robotSize.x / 2 + 2_cm, 60.1_cm + robotSize.y / 2
-const Vector3m START_POSITION_ROBOT_GREEN = {2.79_m, 0.751_m, 0.15_m}; // TODO : avoir la meme formule que dans
-                                                                       // info/robot/Principal/IA/IAPrincipal.cpp -
-                                                                       // initialisation (au setRepere())
+const Vector3m START_POSITION_ROBOT_PURPLE = {21_cm, 0.751_m, 0.15_m};
+const Vector3m START_POSITION_ROBOT_GREEN = {2.79_m, 0.751_m, 0.15_m};
 const Angle START_ANGLE_ROBOT_PURPLE = 0_deg;
 const Angle START_ANGLE_ROBOT_GREEN = 180_deg;
 
