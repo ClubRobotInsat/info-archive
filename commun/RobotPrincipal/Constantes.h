@@ -84,10 +84,10 @@ namespace ConstantesPrincipal {
 	};
 
 	enum class PositionPince {
-		RENTRE_FORCE = 0, // plaquer les cubes /!\ ne maintenair la position que qques secondes
-		RENTRE = 1, // maintenir les blosc contre le robot
-		SORTIE = 2, // récupérer les cubes de face
-		SORTIE_LARGE = 3, // récupérer les coquillages
+		RENTRE_DEBUT = 0, // position de départ pour gagner de la place ; le bras gauche doit etre le plus rentré
+		RENTRE = 1, // position pour maintenir les cubes
+		SORTIE = 2, // position pour récupérer les coquillages
+		SORTIE_MAX = 3, // position pour récupérer les cubes
 		NBR = 4,
 	};
 
