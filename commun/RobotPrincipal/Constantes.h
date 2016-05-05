@@ -56,7 +56,7 @@ namespace IDCartesPrincipal {
 		ID_CARTE_DEBUG_DESSIN = 9
 	};
 
-	ENUM_NS(IDCartesPrincipal, IDCartes, CAN_USB, DEPLACEMENT, SERVO_G, SERVO_D, IO, PNEUMATIQUE_HAUTE, PNEUMATIQUE_BAS, EVITEMENT, ELECTROVANNES, DEBUG_DESSIN);
+	ENUM_NS(IDCartesPrincipal, IDCartes, CAN_USB, DEPLACEMENT, SERVO_G, SERVO_D, IO, PNEUMATIQUE_HAUTE, PNEUMATIQUE_BAS, EVITEMENT, ELECTROVANNES);
 
 	ENUM_CLASS_NS(IDCartesPrincipal, IDCartesServo, ASCENSEUR, AUTRES);
 }
@@ -226,11 +226,6 @@ namespace ConstantesPrincipal {
 	struct CarteInfo<IDCartesPrincipal::EVITEMENT> {
 		using typeCarte = CarteDetectAdv2009;
 		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_EVITEMENT };
-	};
-	template <>
-	struct CarteInfo<IDCartesPrincipal::DEBUG_DESSIN> {
-		using typeCarte = CarteDebugDessin;
-		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_DEBUG_DESSIN };
 	};
 };
 
