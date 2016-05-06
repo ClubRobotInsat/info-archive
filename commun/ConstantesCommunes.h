@@ -245,9 +245,9 @@ std::vector<Seashell> getListBadSeashells(Constantes::RobotColor color, int map)
 
 // Robot
 const Length ROBOT_Z = 51_cm;
-const Vector3m START_POSITION_ROBOT_GREEN = {21_cm, 0.751_m, 0.15_m};
-const Vector3m START_POSITION_ROBOT_PURPLE = {2.79_m, 0.751_m, 0.15_m};
-const Angle START_ANGLE_ROBOT_GREEN = 0_deg;
-const Angle START_ANGLE_ROBOT_PURPLE = 180_deg;
+const Vector3m START_POSITION_ROBOT_PURPLE = {21_cm, 0.751_m, 0.15_m};
+const Vector3m START_POSITION_ROBOT_GREEN = {2.79_m, 0.751_m, 0.15_m};
+const Angle START_ANGLE_ROBOT_PURPLE = 0_deg;
+const Angle START_ANGLE_ROBOT_GREEN = 180_deg;
 
 #endif // CONSTANTES_COMMUNES_2015_H
