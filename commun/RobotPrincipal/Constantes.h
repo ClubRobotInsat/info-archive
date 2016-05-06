@@ -114,12 +114,12 @@ namespace ConstantesPrincipal {
 	enum class Pompe { HAUT, BAS };
 
 	enum class Vanne {
-		VANNE_1 = 1,
-		VANNE_2 = 2,
-		VANNE_3 = 3,
-		VANNE_4 = 4,
-		VANNE_5 = 5,
-		VANNE_6 = 6,
+		VANNE_1 = 0,
+		VANNE_2 = 1,
+		VANNE_3 = 2,
+		VANNE_4 = 3,
+		VANNE_5 = 4,
+		VANNE_6 = 5,
 		VANNE_TOUTES = 7,
 	};
 
