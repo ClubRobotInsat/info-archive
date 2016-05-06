@@ -69,12 +69,12 @@ namespace ConstantesPrincipal {
 	// Numéros des contacteurs et les rôles associés
 	enum class Contacteur {
 		TIRETTE = 2,
-		BACK_CONTACT_1 = 3,
-		BACK_CONTACT_2 = 4,
-		BACK_CONTACT_3 = 5,
-		BACK_CONTACT_4 = 6,
-		BACK_CONTACT_5 = 7,
-		BACK_CONTACT_6 = 8,
+		BACK_CONTACT_1 = 5,
+		BACK_CONTACT_2 = 6,
+		BACK_CONTACT_3 = 7,
+		BACK_CONTACT_4 = 8,
+		BACK_CONTACT_5 = 9,
+		BACK_CONTACT_6 = 10,
 	};
 	/////////////////// BRAS /////////////////////
 
