@@ -120,7 +120,7 @@ namespace ConstantesPrincipal {
 		VANNE_4 = 3,
 		VANNE_5 = 4,
 		VANNE_6 = 5,
-		VANNE_TOUTES = 7,
+		VANNE_TOUTES = 6,
 	};
 
 
