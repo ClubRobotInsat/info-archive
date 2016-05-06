@@ -15,7 +15,7 @@ namespace ConstantesPrincipal {
 	Angle const positionPinceG[enumToInt(PositionPince::NBR)] = {180_deg, 135_deg, 55_deg, -5_deg};
 	Angle const positionPelle[enumToInt(PositionPelle::NBR)] = { 0_deg, 185_deg};
 	Angle const positionCuillere[enumToInt(PositionCuillere::NBR)] = { 0_deg, 180_deg}; // FIXME : mettre les bonnes valeurs une fois que le servo sera en place
-	Angle const positionParasol[enumToInt(PositionParasol::NBR)] = { 180_deg, 0_deg}; 
+	Angle const positionParasol[enumToInt(PositionParasol::NBR)] = { 180_deg, 0_deg};
 
 }
 
