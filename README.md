@@ -9,6 +9,12 @@ echo "deb http://download.mono-project.com/repo/debian wheezy main" | sudo tee /
 sudo apt-get update
 sudo apt-get install ninja-build mono-complete cmake subversion git libbox2d-dev gcc-5-multilib g++-5-multilib openjdk-7-jre build-essential libglfw-dev libglu1-mesa-dev libxrandr-dev libgtk2.0-dev libusb-1.0-0-dev clang-format-3.7
 ```
+
+Pour installer clang en tant que compilateur :
+```
+sudo apt-get install clang-3.8
+sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-3.8 100
+```
 ------------
 Clonage du repo
 ------------
