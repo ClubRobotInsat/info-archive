@@ -22,6 +22,9 @@ Clonage du repo
 svn checkout https://www.etud.insa-toulouse.fr/svn/roboinsat/CodeCommun --username votre_login_insa
 git clone https://votre_login_github@github.com/ClubRobotInsat/info.git
 cd info
+mkdir build
+cd build
+cmake .. -DDEBUG=on
 
 git clone https://github.com/ClubRobotInsat/websimulator
 ```
@@ -40,12 +43,7 @@ Le mail à fournir est celui de l'INSA (@etud.insa-toulouse.fr) pour que JetBrai
 Une fois l'IDE installé, on choisit d'ouvrir un projet existant et il faut sélectionner le dossier ```info``` résultat du clonage du Git.
 
 Il reste à ce moment un peu de configuration à effectuer : dans le menu ```File -> Settings```, dérouler l'item ```Build, Execution, Deployment``` et sélectionner ```CMake```.
-Dans le champ ```CMake options```, mettre le texte ```-DDEBUG=on -DBITS=64```.
-
-L'IDE est presque configuré. Maintenant, lancer un build, et l'interrompre (car il va échouer).
-La première ligne de la sortie console (tout en haut) nous intéresse: sélectionner et copier la valeur de l'argument ```--build```, et dans un terminal saisir la commande ```ln -s <valeur de l'argument --build> <chemin du parent dossier info>/bin```.
-
-Voilà, maintenant l'IDE est configuré et la compilation du code info devrait fonctionner à 100 %.
+Dans le champ ```CMake options```, mettre le texte ```-DDEBUG=on```.
 
 Pour pouvoir tester les IA via la laison série (RS232) en utilisant Clion (sans les droits root), il faut ajouter votre utilisateur au groupe ayant accès à la laison série (dialout) :
 ```sudo usermod -a -G dialout NOM_UTILISATEUR```
@@ -54,7 +52,7 @@ Pour pouvoir tester les IA via la laison série (RS232) en utilisant Clion (sans
 Pour lancer l'IA en mode Debug sur le simu
 --------------------------
 1. Tout compiler (choisir la target build all)
-2. Ouvrir un premier terminal dans le dossier info, puis se placer dans le dossier ```cd ../bin/simulateur```.
+2. Ouvrir un premier terminal dans le dossier info, puis se placer dans le dossier ```cd build```.
 3. Lancer le simu : ```./Simu2016 -robot on purple -world on```.
 4. Ouvrir un deuxième terminal dans le dossier info, puis se placer dans le dossier Petri : ```cd petri/Editor/bin```.
 5. Lancer Petri, toujours dans ce deuxième terminal : ```./Petri.exe```
