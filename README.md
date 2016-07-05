@@ -100,3 +100,48 @@ ne marche pas : ça attend dans Petri, il y a le message "[CAN.cpp:221 in marque
 * relacherCubes()  
   
 sinon les déplacements se font bien (et les cartes ont accès à la pos + angle de départ du robot, il n'y a pas de souci avec ça)
+
+------------
+Cross-Compilation pour Raspberry
+------------
+###Installation des outils :
+```
+sudo apt-get install build-essential git
+mkdir rpi
+cd rpi
+git clone https://github.com/raspberrypi/tools.git
+cd tools/arm-bcm2708
+cd ~/
+nano .bashrc
+```
+
+Pour savoir si on est en 32 ou en 64 bit, on peut utiliser ```uname -a```.
+Dans le bashrc, on va à la dernière ligne.
+Si on est en 32 bit, on écrit :
+```export PATH=$PATH:$HOME/rpi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian/bin```
+En 64 bit, on écrit :
+```export PATH=$PATH:$HOME/rpi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin```
+
+Puis Crtl+x -> Yes -> Entrer.
+```
+source .bashrc
+arm-linux-gnueabihf-gcc -v
+```
+
+###Compilation des sources :
+```
+Pour un Raspberrypi 1 :
+cd linux
+KERNEL=kernel
+make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- bcmrpi_defconfig
+```
+
+Pour un Raspberrypi 2/3 :
+```
+cd linux
+KERNEL=kernel7
+make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- bcm2709_defconfig
+```
+
+Puis ```make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- zImage modules dtbs```.
+Note : pour augmenter la vitesse de compilation, on peut rajouter ```-j n``` avec n = 1.5 * nombre de processeurs.
