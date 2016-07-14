@@ -128,7 +128,7 @@ source .bashrc
 arm-linux-gnueabihf-gcc -v
 ```
 
-###Compilation des sources :
+###Compilation des sources sur le RPi :
 ```
 Pour un Raspberrypi 1 :
 cd linux
@@ -145,3 +145,41 @@ make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- bcm2709_defconfig
 
 Puis ```make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- zImage modules dtbs```.
 Note : pour augmenter la vitesse de compilation, on peut rajouter ```-j n``` avec n = 1.5 * nombre de processeurs.
+
+###Compilation des programmes pour le club robot :
+```
+cd ClubRobot/info
+touch Cross-Compilation.cmake
+```
+
+On écrit dans le fichier avec :
+```
+SET(CMAKE_SYSTEM_NAME Linux)
+
+SET(CMAKE_SYSTEM_VERSION 1)
+
+# specify the cross compiler
+SET(CMAKE_C_COMPILER [chemin vers le compilateur c] )
+
+SET(CMAKE_CXX_COMPILER [chemin vers le compilateur c++] )
+
+# where is the target environment
+SET(CMAKE_FIND_ROOT_PATH [chemin vers la racine] )
+
+# search for programs in the build host directories
+SET(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
+# for libraries and headers in the target directories
+SET(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY BOTH)
+SET(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE BOTH)
+```
+
+par exemple, [chemin vers le compilateur c] = /usr/bin/arm-linux-gnueabi-gcc-5 ou /opt/cros/x-tools/arm-unknown-linux-gnueabi/bin/arm-unknown-linux-gnueabi-gcc
+
+ensuite :
+```
+cd ..
+mkdir cmake_generated_files
+cd cmake_generated_files
+cmake ../info -DCMAKE_TOOLCHAIN_FILE=~/ClubRobot/info/Cross-Compilation.cmake -DBITS=64
+make
+```
