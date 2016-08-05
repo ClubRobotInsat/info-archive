@@ -4,13 +4,17 @@
 
 //Lib nécessaires pour la compilation : libgtk-3-dev
 
-
 #include "Application.h"
-#include <gtk-3.0/gtk/gtk.h>
+#include "Header.h"
 
 int main(int , char** argv){
 
+    gtk_init(NULL, NULL);
     std::string const& usb_port = argv[1];
+#ifdef ACTIVATE_CAN
     Application app = Application(usb_port);
-
+#else
+    Application app = Application();
+#endif
+    gtk_main();
 };

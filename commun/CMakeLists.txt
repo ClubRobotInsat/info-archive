@@ -12,7 +12,7 @@ set(OUTILS_SOURCE
 	sockets/tcpSock.cpp
 	Trame.cpp
 	MathToolbox/MathToolbox.cpp
-)
+		../elec/Interface_Can/Header.h)
 
 add_library(Outils_${SIMU_OU_ROBOT} STATIC ${OUTILS_SOURCE})
 target_link_libraries(Outils_${SIMU_OU_ROBOT} pthread)
