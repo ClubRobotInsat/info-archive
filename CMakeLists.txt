@@ -65,7 +65,7 @@ add_definitions(-DGTKWIN_DISABLE)
 include_directories(commun /usr/local/include/)
 link_directories(/usr/local/lib/)
 
-#add_subdirectory(robot)
+add_subdirectory(robot)
 
 # Juste lancer cmake avec les bons compilos dans env CC / CXX
 add_subdirectory(simulateur)
