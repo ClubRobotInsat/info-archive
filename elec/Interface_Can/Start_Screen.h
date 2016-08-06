@@ -7,17 +7,32 @@
 
 
 #include <bits/unique_ptr.h>
+#include <vector>
 #include "Header.h"
 
 class Start_Screen {
 
     public:
+
     Start_Screen();
 
+    virtual ~Start_Screen();
+
+    /**
+     * @brief Will update _serialList with all the file in /dev that are relevant (aka /dev/ttyUSB0, etc.)
+     * @warning Does not throw any exception
+     */
+    void scanSerialConnection();
 
 private:
 
-    GtkWidget* _window;
+    //GtkWidget* _window;
+
+    //GtkWidget* _startbutton;
+
+    std::unique_ptr<std::string> _canAdress;
+
+    std::vector<std::string> _serialList;
 
 };
 

@@ -9,7 +9,6 @@
 
 int main(int , char** argv){
 
-    gtk_init(NULL, NULL);
     std::string const& usb_port = argv[1];
 #ifdef ACTIVATE_CAN
     Application app = Application(usb_port);

@@ -8,6 +8,7 @@
 #include <vector>
 #include "../../robot/Commun/CAN.h"
 #include "Header.h"
+#include "Start_Screen.h"
 
 
 class Application {
@@ -15,14 +16,14 @@ public:
 
 #ifdef ACTIVATE_CAN
     /**
-     *
      * @param port The port on wich the Can object will be listening
      */
     Application(std::string const& port);
 #else
     Application();
 #endif
-    void loop();
+
+    void startCan(std::string const& port);
 
 private:
 
@@ -30,7 +31,9 @@ private:
 
     std::shared_ptr<Commun::CAN> _can;
 
-    std::unique_ptr<GtkWidget> window;
+    //std::unique_ptr<GtkWidget> _window;
+
+    std::unique_ptr<Start_Screen> _start_screen;
 
 };
 

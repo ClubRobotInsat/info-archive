@@ -4,19 +4,21 @@
 
 #include "Application.h"
 #include "../../robot/Commun/RS232.h"
-#include "Start_Screen.h"
 
 #ifdef ACTIVATE_CAN
 Application::Application(std::string const& port) {
     _can.reset(new Commun::CAN(std::make_unique<Commun::RS232>(port)));
     _can->setTemporisation(10_ms);
 #else
-Application::Application() {
+Application::Application() : _start_screen(std::make_unique<Start_Screen>()) {
 #endif
-    //Start_Screen start_screen = Start_Screen();
+
+    //_start_screen = std::make_unique<Start_Screen>();
 
 }
 
-void Application::loop() {
+void Application::startCan(std::string const &port) {
 
+    _start_screen.reset();
+    std::cout << "Starting CAN" << std::endl;
 }
