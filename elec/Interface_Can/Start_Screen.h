@@ -9,6 +9,7 @@
 #include <bits/unique_ptr.h>
 #include <vector>
 #include "Header.h"
+#include "../../robot/Commun/TCPIP.h"
 
 class Start_Screen : public Gtk::Window {
 
@@ -18,19 +19,51 @@ class Start_Screen : public Gtk::Window {
 
     virtual ~Start_Screen();
 
+    protected:
+
     /**
      * @brief Will update _serialList with all the file in /dev that are relevant (aka /dev/ttyUSB0, etc.)
      * @warning Does not throw any exception
+     * @return True if there is some changes in /dev, false otherwise
      */
-    void scanSerialConnection();
+    bool scanSerialConnection();
 
-private:
+    /**
+     * @brief Update _displayedList() and ask gtkmm for a redraw
+     */
+    void updateComboBoxList();
+
+
+    /**
+     * @brief The main loop of the Start_Screen wich consists in scanning /dev and updating _displayedList
+     */
+    void mainLoop();
+
+    /**
+     * @brief The callback function for _launchCanMonitor
+     */
+    void onLaunchCanMonitorClicked();
+
+    /**
+     * @brief Scan 127.0.0.1:1234 looking for a listening socket
+     */
+    void scanTCPIPConnection();
+
+    private:
 
     std::unique_ptr<std::string> _canAdress;
 
     std::vector<std::string> _serialList;
 
-    Gtk::TextView _textDisplay;
+    Gtk::ComboBoxText _displayedList;
+
+    Gtk::Button _launchCanMonitor;
+
+    Gtk::Button _refreshList;
+
+    Gtk::Box _container;
+
+    bool _canListeningOnTCPIP;
 
 };
 
