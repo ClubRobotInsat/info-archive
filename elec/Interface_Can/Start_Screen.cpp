@@ -8,34 +8,12 @@
 #include <cstring>
 
 Start_Screen::Start_Screen() : Gtk::Window() , _serialList({}){
-    /*
-    _window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 
-    //Appearance of the window
-    gtk_widget_set_size_request(_window, 800, 450);
-    gtk_window_set_decorated(GTK_WINDOW (_window), FALSE);
-    gtk_window_set_position(GTK_WINDOW (_window),GTK_WIN_POS_CENTER_ALWAYS);
-    gtk_window_set_resizable(GTK_WINDOW (_window), FALSE);
-
-    //Uncomment to add a backgroud picture
-    //auto image = gtk_image_new_from_file("../Ressources/background.jpg");
-    //gtk_container_add(GTK_CONTAINER(_window), image);
-
-    //Start Button
-    _startbutton = gtk_button_new_with_label("Start CAN");
-    gtk_widget_set_size_request(_startbutton, 50, 100);
-
-    gtk_container_add(GTK_CONTAINER(_window), _startbutton);
-
-    gtk_widget_show_all(_window);
-
-    //this->scanSerialConnection();
-
-    g_signal_connect(_startbutton, "clicked", G_CALLBACK(&Start_Screen::scanSerialConnection), this);
-
-    g_signal_connect(_window, "destroy",
-                     G_CALLBACK(gtk_main_quit), NULL);
-                     */
+    this->set_border_width(0);
+    this->set_decorated(false);
+    this->set_size_request(800, 450);
+    this->set_position(Gtk::WindowPosition::WIN_POS_CENTER_ALWAYS);
+    this->set_resizable(false);
 
 }
 

@@ -30,6 +30,8 @@ private:
 
     std::vector<std::string> _serialList;
 
+    Gtk::TextView _textDisplay;
+
 };
 
 
