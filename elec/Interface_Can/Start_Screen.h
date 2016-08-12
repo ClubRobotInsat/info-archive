@@ -26,10 +26,6 @@ class Start_Screen : public Gtk::Window {
 
 private:
 
-    //GtkWidget* _window;
-
-    //GtkWidget* _startbutton;
-
     std::unique_ptr<std::string> _canAdress;
 
     std::vector<std::string> _serialList;

@@ -9,10 +9,21 @@
 
 int main(int argc, char** argv){
 
-    std::string const& usb_port = argv[1];
+    //std::string const& usb_port = argv[1];
+
 #ifdef ACTIVATE_CAN
+
     Application app = Application(usb_port, argc, argv);
+
 #else
-    Application app = {argc, argv};//Application(argc, argv);
+
+    Application app(argc, argv, "paul.florence.clubrobot");
+
+    //auto app = Gtk::Application::create(argc, argv, "test.paul.flo");
+
+    //Start_Screen screen;
+
+    //return app->run(screen);
+
 #endif
 };

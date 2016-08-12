@@ -7,7 +7,7 @@
 #include <dirent.h>
 #include <cstring>
 
-Start_Screen::Start_Screen() : _serialList({"aaaa","bbbb"}){
+Start_Screen::Start_Screen() : Gtk::Window() , _serialList({}){
     /*
     _window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 
@@ -48,7 +48,6 @@ Start_Screen::~Start_Screen() {
 
 
 void Start_Screen::scanSerialConnection() {
-
 
     _serialList.clear();
 

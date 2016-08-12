@@ -11,7 +11,7 @@
 #include "Start_Screen.h"
 
 
-class Application {
+class Application : public Gtk::Application {
 public:
 
 #ifdef ACTIVATE_CAN
@@ -20,7 +20,7 @@ public:
      */
     Application(std::string const& port, int argc, char** argv);
 #else
-    Application(int argc, char** argv);
+    Application(int argc, char** argv, std::string id);
 #endif
 
     void startCan(std::string const& port);
@@ -32,7 +32,6 @@ private:
     std::shared_ptr<Commun::CAN> _can;
 
     Start_Screen _start_screen;
-
 };
 
 #endif //ROOT_APPLICATION_H
