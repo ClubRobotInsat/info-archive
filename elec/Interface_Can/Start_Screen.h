@@ -10,7 +10,7 @@
 #include <vector>
 #include "Header.h"
 
-class Start_Screen {
+class Start_Screen : public Gtk::Window {
 
     public:
 

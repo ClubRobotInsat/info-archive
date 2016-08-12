@@ -7,13 +7,12 @@
 #include "Application.h"
 #include "Header.h"
 
-int main(int , char** argv){
+int main(int argc, char** argv){
 
     std::string const& usb_port = argv[1];
 #ifdef ACTIVATE_CAN
-    Application app = Application(usb_port);
+    Application app = Application(usb_port, argc, argv);
 #else
-    Application app = Application();
+    Application app = {argc, argv};//Application(argc, argv);
 #endif
-    gtk_main();
 };

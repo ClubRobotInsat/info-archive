@@ -18,9 +18,9 @@ public:
     /**
      * @param port The port on wich the Can object will be listening
      */
-    Application(std::string const& port);
+    Application(std::string const& port, int argc, char** argv);
 #else
-    Application();
+    Application(int argc, char** argv);
 #endif
 
     void startCan(std::string const& port);
@@ -31,9 +31,7 @@ private:
 
     std::shared_ptr<Commun::CAN> _can;
 
-    //std::unique_ptr<GtkWidget> _window;
-
-    std::unique_ptr<Start_Screen> _start_screen;
+    Start_Screen _start_screen;
 
 };
 
