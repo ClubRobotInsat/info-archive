@@ -28,15 +28,13 @@ Start_Screen::Start_Screen() : Gtk::Window() , _serialList({}){
 
     show_all_children();
 
-    this->queue_draw();
     _refreshList.signal_clicked().connect(sigc::mem_fun(*this, &Start_Screen::mainLoop));
+
+    this->mainLoop();
 
 }
 
 Start_Screen::~Start_Screen() {
-
-    //gtk_widget_destroy(_window);
-    //gtk_widget_destroy(_startbutton);
 
 }
 
@@ -71,20 +69,20 @@ bool Start_Screen::scanSerialConnection() {
 
 void Start_Screen::mainLoop() {
 
-        if (this->scanSerialConnection()) {
-            this->updateComboBoxList();
-        }
+        this->scanSerialConnection();
+        this->updateComboBoxList();
         this->scanTCPIPConnection();
 };
 
 void Start_Screen::updateComboBoxList() {
 
-    _displayedList.clear();
     for (auto items : _serialList) {
         _displayedList.append(items);
+        _displayedList.set_active_text(items);
     }
     if (_canListeningOnTCPIP) {
         _displayedList.append("TCPIP: 127.0.0.1:1234");
+        _displayedList.set_active_text("TCPIP: 127.0.0.1:1234");
     }
 }
 
