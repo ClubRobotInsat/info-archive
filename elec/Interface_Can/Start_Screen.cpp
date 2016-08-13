@@ -13,7 +13,7 @@ Start_Screen::Start_Screen() : Gtk::Window() , _serialList({}){
     _canListeningOnTCPIP = false;
 
     this->set_border_width(1);
-    this->set_decorated(false);
+    this->set_decorated(true);
     this->set_size_request(400, 50);
     this->set_position(Gtk::WindowPosition::WIN_POS_CENTER_ALWAYS);
     this->set_resizable(false);
@@ -26,9 +26,9 @@ Start_Screen::Start_Screen() : Gtk::Window() , _serialList({}){
     _refreshList.set_label("Refresh");
     _launchCanMonitor.set_label("Start Connection");
 
-    show_all_children();
-
     _refreshList.signal_clicked().connect(sigc::mem_fun(*this, &Start_Screen::mainLoop));
+
+    show_all_children();
 
     this->mainLoop();
 
@@ -69,9 +69,9 @@ bool Start_Screen::scanSerialConnection() {
 
 void Start_Screen::mainLoop() {
 
-        this->scanSerialConnection();
-        this->updateComboBoxList();
-        this->scanTCPIPConnection();
+    this->scanSerialConnection();
+    this->scanTCPIPConnection();
+    this->updateComboBoxList();
 };
 
 void Start_Screen::updateComboBoxList() {
@@ -92,13 +92,18 @@ void Start_Screen::onLaunchCanMonitorClicked() {
 
 void Start_Screen::scanTCPIPConnection() {
 
-    Commun::TCPIP connection("127.0.0.1", 1234);
-    if (connection.estConnecte()) {
-        _canListeningOnTCPIP = true;
-        std::cout << "OKKKKKK" << std::endl;
+    try {
+        Commun::TCPIP connection("127.0.0.1", 1234);
+        if (connection.estConnecte()) {
+            _canListeningOnTCPIP = true;
+            std::cout << "OKKKKKK" << std::endl;
+        } else {
+            std::cout << "nein" << std::endl;
+            _canListeningOnTCPIP = false;
+        }
     }
-    else {
-        std::cout << "nein" << std::endl;
-        _canListeningOnTCPIP = false;
+    catch (...) {
+
     }
+
 }
