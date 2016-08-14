@@ -1,4 +1,5 @@
 robot/Principal/petri/src/*
 .DS_Store
 /.idea
+/build
 *~
