@@ -26,6 +26,7 @@ void Application::startCan(std::string const& port) {
 void Application::killStartScreen(std::string canPort) {
 
     std::cout << canPort << std::endl;
-    //_start_screen.~Start_Screen();
+    this->quit();
+    _start_screen.~Start_Screen();
 
 }

@@ -42,8 +42,7 @@ class Start_Screen : public Gtk::Window{
      */
     void emitLaunchCanSignal();
 
-
-    protected:
+protected:
 
     /**
      * @brief Will update _serialList with all the file in /dev that are relevant (aka /dev/ttyUSB0, etc.)
