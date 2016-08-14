@@ -8,7 +8,7 @@
 #include <cstring>
 #include "../../robot/Commun/TCPIP.h"
 
-Start_Screen::Start_Screen() : Gtk::Window() , _serialList({}){
+Start_Screen::Start_Screen() : Gtk::Window() , _canAdress(""), _serialList({}){
 
     _canListeningOnTCPIP = false;
 
@@ -27,6 +27,7 @@ Start_Screen::Start_Screen() : Gtk::Window() , _serialList({}){
     _launchCanMonitor.set_label("Start Connection");
 
     _refreshList.signal_clicked().connect(sigc::mem_fun(*this, &Start_Screen::mainLoop));
+    _launchCanMonitor.signal_clicked().connect(sigc::mem_fun(*this, &Start_Screen::emitLaunchCanSignal));
 
     show_all_children();
 
@@ -94,16 +95,21 @@ void Start_Screen::scanTCPIPConnection() {
 
     try {
         Commun::TCPIP connection("127.0.0.1", 1234);
-        if (connection.estConnecte()) {
-            _canListeningOnTCPIP = true;
-            std::cout << "OKKKKKK" << std::endl;
-        } else {
-            std::cout << "nein" << std::endl;
-            _canListeningOnTCPIP = false;
-        }
+        _canListeningOnTCPIP = connection.estConnecte();
     }
     catch (...) {
 
     }
+
+}
+
+Start_Screen::type_startScreenSignalOnExit Start_Screen::startScreenSignalOnExit() {
+    return _startScreenSignalOnExit;
+}
+
+void Start_Screen::emitLaunchCanSignal() {
+
+    _canAdress = _displayedList.get_active_text();
+    _startScreenSignalOnExit.emit(_canAdress);
 
 }

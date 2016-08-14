@@ -10,14 +10,38 @@
 #include <vector>
 #include "Header.h"
 #include "../../robot/Commun/TCPIP.h"
+#include <sigc++/sigc++.h>
 
-class Start_Screen : public Gtk::Window {
+
+class Start_Screen : public Gtk::Window{
 
     public:
 
+
+    /**
+     *
+     */
     Start_Screen();
 
     virtual ~Start_Screen();
+
+    /**
+     * @brief The callback function for _launchCanMonitor
+     */
+    void onLaunchCanMonitorClicked();
+
+
+    /**
+     *
+     */
+    typedef sigc::signal<void, std::string> type_startScreenSignalOnExit;
+    type_startScreenSignalOnExit startScreenSignalOnExit();
+
+    /**
+     * @brief Send a signal through _startScreenSignalOnExit with _canAdress as member of it
+     */
+    void emitLaunchCanSignal();
+
 
     protected:
 
@@ -28,21 +52,16 @@ class Start_Screen : public Gtk::Window {
      */
     bool scanSerialConnection();
 
+
     /**
      * @brief Update _displayedList() and ask gtkmm for a redraw
      */
     void updateComboBoxList();
 
-
     /**
      * @brief The main loop of the Start_Screen wich consists in scanning /dev and updating _displayedList
      */
     void mainLoop();
-
-    /**
-     * @brief The callback function for _launchCanMonitor
-     */
-    void onLaunchCanMonitorClicked();
 
     /**
      * @brief Scan 127.0.0.1:1234 looking for a listening socket
@@ -51,7 +70,7 @@ class Start_Screen : public Gtk::Window {
 
     private:
 
-    std::unique_ptr<std::string> _canAdress;
+    std::string _canAdress;
 
     std::vector<std::string> _serialList;
 
@@ -64,6 +83,8 @@ class Start_Screen : public Gtk::Window {
     Gtk::Box _container;
 
     bool _canListeningOnTCPIP;
+
+    sigc::signal<void, std::string> _startScreenSignalOnExit;
 
 };
 
