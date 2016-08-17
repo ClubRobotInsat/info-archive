@@ -5,7 +5,7 @@ set(SOURCE_FILES_INTERFACE
         Can_Interface.cpp
         Application.cpp
         Start_Screen.cpp
-        Header.h)
+        Header.h Monitor.cpp Monitor.h)
 
 #Vu que c'est la manière "officielle" de récuperer gtkmm via Cmake, on est obligé de passer par PkgConfig
 find_package(PkgConfig REQUIRED)

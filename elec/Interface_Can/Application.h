@@ -5,26 +5,20 @@
 #ifndef ROOT_APPLICATION_H
 #define ROOT_APPLICATION_H
 
-#include <vector>
 #include "../../robot/Commun/CAN.h"
 #include "Header.h"
+#include "Monitor.h"
 #include "Start_Screen.h"
+#include <vector>
 
 
 class Application : public Gtk::Application {
 public:
 
-#ifdef ACTIVATE_CAN
-    /**
-     * @param port The port on wich the Can object will be listening
-     */
-    Application(std::string const& port, int argc, char** argv);
-#else
     Application(int argc, char** argv, std::string id);
-#endif
 
     /**
-     * Delete Start_Screen and create a Can monitoring window
+     * Delete Start_Screen and intialize a Can monitoring window
      * @param canPort a string to intialize the can object
      */
     void killStartScreen(std::string canPort);
@@ -35,9 +29,9 @@ private:
 
     std::vector<int> _messageList;
 
-    std::shared_ptr<Commun::CAN> _can;
-
     Start_Screen _start_screen;
+
+    std::shared_ptr<Monitor> _monitor;
 
 };
 

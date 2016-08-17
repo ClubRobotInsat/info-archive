@@ -17,7 +17,7 @@ int main(int argc, char** argv){
 
 #else
 
-    Application app(argc, argv, "paul.florence.clubrobot");
+    Application app(argc, argv, "club.robot.can");
 
 #endif
 };

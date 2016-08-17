@@ -7,9 +7,4 @@
 
 #include <gtkmm.h>
 
-
-//A variable wich tell the compiler if it as to create a Can Object (wich require some execution arguments to run)
-//#define ACTIVATE_CAN
-
-
 #endif //ROOT_HEADER_H
