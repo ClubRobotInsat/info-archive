@@ -73,10 +73,13 @@ void Start_Screen::mainLoop() {
     this->scanSerialConnection();
     this->scanTCPIPConnection();
     this->updateComboBoxList();
+    this->updateConnectionButton();
 };
 
 void Start_Screen::updateComboBoxList() {
 
+    _displayedList.remove_all();
+    //_displayedList.set_active(0);
     for (auto items : _serialList) {
         _displayedList.append(items);
         _displayedList.set_active_text(items);
@@ -95,10 +98,10 @@ void Start_Screen::scanTCPIPConnection() {
 
     try {
         Commun::TCPIP connection("127.0.0.1", 1234);
-        _canListeningOnTCPIP = connection.estConnecte();
+        _canListeningOnTCPIP = true;
     }
     catch (...) {
-
+        _canListeningOnTCPIP = false;
     }
 
 }
@@ -113,3 +116,9 @@ void Start_Screen::emitLaunchCanSignal() {
     _startScreenSignalOnExit.emit(_canAdress);
 
 }
+
+void Start_Screen::updateConnectionButton() {
+
+    _launchCanMonitor.set_sensitive((_displayedList.get_active_text() != ""));
+
+    }

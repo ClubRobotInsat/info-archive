@@ -53,9 +53,14 @@ protected:
 
 
     /**
-     * @brief Update _displayedList() and ask gtkmm for a redraw
+     * @brief Update _displayedList() and ask gtkmm for a redraw    
      */
     void updateComboBoxList();
+
+    /**
+     * @brief Update the "Connection" button depending if there is an item in _displayedList or not
+     */
+    void updateConnectionButton();
 
     /**
      * @brief The main loop of the Start_Screen wich consists in scanning /dev and updating _displayedList

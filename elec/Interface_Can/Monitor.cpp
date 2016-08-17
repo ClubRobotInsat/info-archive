@@ -16,10 +16,10 @@ Monitor::Monitor(std::string const& port) : Gtk::Window() {
         _can.reset(new Commun::CAN(std::make_unique<Commun::TCPIP>(port.substr(7,port.length()-12), 1234)));
     }
     else {
-
+        _can.reset(new Commun::CAN(std::make_unique<Commun::RS232>(port)));
     }
 
-    //_can->setTemporisation(10_ms);
+    _can->setTemporisation(10_ms);
 
     this->show_all();
 
