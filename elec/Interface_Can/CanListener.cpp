@@ -49,7 +49,7 @@ Trame CanListener::waitForMessage() {
 Trame CanListener::getOldestMessage() {
     std::lock_guard<std::mutex> lock(_mutex);
     Trame result = _messageList.front();
-    //_messageList.erase(_messageList.begin());
+    _messageList.pop_front();
     return result;
 }
 
