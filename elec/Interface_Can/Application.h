@@ -23,7 +23,7 @@ public:
      */
     void killStartScreen(std::string canPort);
 
-    void startCan(std::string const& port);
+    void startCan(std::string& port);
 
 private:
 

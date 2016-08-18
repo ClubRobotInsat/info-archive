@@ -53,7 +53,7 @@ protected:
 
 
     /**
-     * @brief Update _displayedList() and ask gtkmm for a redraw    
+     * @brief Update _displayedList() and ask gtkmm for a redraw
      */
     void updateComboBoxList();
 

@@ -7,18 +7,44 @@
 
 
 #include "Header.h"
-#include "../../robot/Commun/CAN.h"
-#include "../../robot/Commun/RS232.h"
+#include "Message.h"
+#include "CanListener.h"
 
 class Monitor : public Gtk::Window {
 
 public :
 
-    Monitor(std::string const& port);
+    /**
+     *
+     * @param port A string in the following form :
+     * either TCPIP:MY.IP.ADRESS.CONNECTION (the port is setted to 1234)
+     * either /dev/ttyUSB37
+     */
+    Monitor(std::string& port);
+
+    void onListenerNotification();
+
+protected:
+
+    void updateInterface();
 
 private:
 
-    std::unique_ptr<Commun::CAN> _can;
+    Glib::Dispatcher _dispatcher;
+
+    std::unique_ptr<std::thread> _listenerThread;
+
+    CanListener _canListener;
+
+    Gtk::Box _topLevelBox;
+
+    Gtk::ScrolledWindow _lowLevelWindow;
+
+    Glib::RefPtr<Gtk::ListStore> _refTreeModel;
+
+    Gtk::TreeView _messageTree;
+
+    Message _message;
 
 };
 

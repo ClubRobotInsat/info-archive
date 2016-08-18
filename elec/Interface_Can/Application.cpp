@@ -11,7 +11,7 @@ Application::Application(int argc, char** argv, std::string id) : Gtk::Applicati
 
 }
 
-void Application::startCan(std::string const& port) {
+void Application::startCan(std::string& port) {
 
     //_monitor.reset();
     _monitor = std::make_shared<Monitor>(port);

@@ -5,7 +5,8 @@ set(SOURCE_FILES_INTERFACE
         Can_Interface.cpp
         Application.cpp
         Start_Screen.cpp
-        Header.h Monitor.cpp Monitor.h)
+        Monitor.cpp
+        Message.h Message.cpp CanListener.cpp CanListener.h)
 
 #Vu que c'est la manière "officielle" de récuperer gtkmm via Cmake, on est obligé de passer par PkgConfig
 find_package(PkgConfig REQUIRED)
@@ -16,4 +17,6 @@ link_directories(${GTKMM_LIBRARY_DIRS})
 add_definitions(${GTKMM_CFLAGS_OTHER})
 
 add_executable(Can_Interface ${SOURCE_FILES_INTERFACE} )
+
+#On pense bien à linker avec la lib Robot qui permet d'utiliser le code déjà écrit pour le CAN
 target_link_libraries(Can_Interface  ${GTKMM_LIBRARIES} Robot)
