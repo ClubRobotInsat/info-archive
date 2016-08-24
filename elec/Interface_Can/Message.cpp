@@ -8,5 +8,4 @@ Message::Message(){
     add(_id);
     add(_data);
     add(_ackReceived);
-
 }

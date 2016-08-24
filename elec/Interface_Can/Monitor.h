@@ -22,9 +22,11 @@ public :
      */
     Monitor(std::string& port);
 
-    void onListenerNotification();
+    void notify();
 
 protected:
+
+    void onListenerNotification();
 
     void updateInterface();
 
@@ -36,7 +38,21 @@ private:
 
     CanListener _canListener;
 
-    Gtk::Box _topLevelBox;
+    Gtk::Paned _topLevelBox;
+
+    Gtk::Grid _sendMessageBox;
+
+    Gtk::Frame _frame;
+
+    Gtk::Button _sendTrameButton;
+
+    Gtk::Entry _trameData;
+
+    Gtk::Entry _trameId;
+
+    Gtk::Entry _trameType;
+
+    Gtk::Entry _trameManual;
 
     Gtk::ScrolledWindow _lowLevelWindow;
 

@@ -9,15 +9,6 @@
 
 int main(int argc, char** argv){
 
-    //std::string const& usb_port = argv[1];
-
-#ifdef ACTIVATE_CAN
-
-    Application app = Application(usb_port, argc, argv);
-
-#else
-
     Application app(argc, argv, "club.robot.can");
 
-#endif
 };

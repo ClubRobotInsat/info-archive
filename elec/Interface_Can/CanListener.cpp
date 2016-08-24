@@ -35,7 +35,7 @@ void CanListener::mainLoop(Monitor* caller) {
             std::lock_guard<std::mutex> lock(_mutex);
             _messageList.push_back(Trame);
         }
-        caller->onListenerNotification();
+        caller->notify();
     }
 }
 

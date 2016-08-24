@@ -6,9 +6,9 @@
 #include "Monitor.h"
 #include "../../robot/Commun/TCPIP.h"
 
-Monitor::Monitor(std::string& port) : Gtk::Window(), _listenerThread(nullptr), _canListener(port) {
+Monitor::Monitor(std::string& port) : Gtk::Window(), _listenerThread(nullptr), _canListener(port), _sendTrameButton("Envoyer la trame") {
 
-    //Threading Stuff
+    //-----------Threading Stuff|
 
     _dispatcher.connect(sigc::mem_fun(*this, &Monitor::onListenerNotification));
 
@@ -19,40 +19,52 @@ Monitor::Monitor(std::string& port) : Gtk::Window(), _listenerThread(nullptr), _
 
 
 
-    //Graphic Stuff
+    //-----------------GUI Stuff|
 
     this->set_size_request(800, 600);
     this->set_decorated(true);
 
+    _frame.set_label("Send a message");
+    _frame.set_label_align(Gtk::ALIGN_CENTER, Gtk::ALIGN_START);
+    _frame.set_shadow_type(Gtk::SHADOW_ETCHED_OUT);
+    _frame.set_border_width(15);
+
+    _sendMessageBox.set_row_homogeneous(true);
+    _sendMessageBox.set_column_homogeneous(true);
+    _sendMessageBox.set_column_spacing(15);
+
+    _sendMessageBox.add(_trameData);
+    _sendMessageBox.add(_trameId);
+    _sendMessageBox.add(_trameType);
+    _sendMessageBox.attach_next_to(_sendTrameButton, _trameId, Gtk::POS_BOTTOM, 1,1);
+
     _lowLevelWindow.add(_messageTree);
     _lowLevelWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
-
     _refTreeModel = Gtk::ListStore::create(_message);
-
     _messageTree.set_model(_refTreeModel);
-
-    /*
-    Gtk::TreeModel::Row row = *(_refTreeModel->append());
-
-    row[_message.m_col_id] = 1;
-    row[_message.m_col_name] = "Billy Bob";
-    row[_message.m_col_number] = 10;
-    row[_message.m_col_percentage] = 15;
-    */
-
     _messageTree.append_column("ID", _message._id);
     _messageTree.append_column("Data", _message._data);
     _messageTree.append_column("Ack Received", _message._ackReceived);
 
     this->add(_topLevelBox);
 
-    _topLevelBox.pack_start(_lowLevelWindow);
+    _frame.add(_sendMessageBox);
+    _topLevelBox.add1(_lowLevelWindow);
+    _topLevelBox.add2(_frame);
+
+    _topLevelBox.set_position(200);
+
+
 
     this->set_title("Can Monitor");
-
     this->show_all();
-
     this->show_all_children();
+
+}
+
+void Monitor::notify() {
+
+    _dispatcher.emit();
 
 }
 
@@ -67,7 +79,6 @@ void Monitor::onListenerNotification() {
 
 void Monitor::updateInterface() {
 
-    std::cout << "Handling Trame" << std::endl;
 
     auto TrameToHandle = _canListener.getOldestMessage();
 
