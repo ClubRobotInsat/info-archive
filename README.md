@@ -7,7 +7,7 @@ Installation de tout ce qu'il faut
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
 echo "deb http://download.mono-project.com/repo/debian wheezy main" | sudo tee /etc/apt/sources.list.d/mono-xamarin.list
 sudo apt-get update
-sudo apt-get install ninja-build mono-complete cmake libgtk-3-dev subversion git libbox2d-dev gcc-5-multilib g++-5-multilib build-essential libglfw-dev libglu1-mesa-dev libxrandr-dev libgtk2.0-dev libusb-1.0-0-dev clang-format-3.7
+sudo apt-get install ninja-build mono-complete cmake libgtk-3-dev subversion git libbox2d-dev libgtkmm-3.0-dev gcc-5-multilib g++-5-multilib build-essential libglfw-dev libglu1-mesa-dev libxrandr-dev libgtk2.0-dev libusb-1.0-0-dev clang-format-3.7
 ```
 
 Pour installer clang en tant que compilateur :

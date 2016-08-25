@@ -51,7 +51,6 @@ Monitor::Monitor(std::string& port) : Gtk::Window(), _listenerThread(nullptr), _
     _frame.add(_sendMessageBox);
     _topLevelBox.add1(_lowLevelWindow);
     _topLevelBox.add2(_frame);
-
     _topLevelBox.set_position(200);
 
 

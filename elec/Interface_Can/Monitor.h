@@ -62,6 +62,8 @@ private:
 
     Message _message;
 
+    Gtk::Entry _filter;
+
 };
 
 

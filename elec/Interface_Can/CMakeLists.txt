@@ -6,7 +6,9 @@ set(SOURCE_FILES_INTERFACE
         Application.cpp
         Start_Screen.cpp
         Monitor.cpp
-        Message.h Message.cpp CanListener.cpp CanListener.h)
+        Message.h Message.cpp
+        CanListener.cpp CanListener.h
+        Message_Buffer.cpp Message_Buffer.h)
 
 #Vu que c'est la manière "officielle" de récuperer gtkmm via Cmake, on est obligé de passer par PkgConfig
 find_package(PkgConfig REQUIRED)
