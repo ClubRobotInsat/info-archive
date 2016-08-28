@@ -12,8 +12,8 @@ public :
 
     Message();
 
-    Gtk::TreeModelColumn<unsigned int> _id;
-    Gtk::TreeModelColumn<uint8_t> _data;
+    Gtk::TreeModelColumn<std::string> _id;
+    Gtk::TreeModelColumn<std::string> _data;
     Gtk::TreeModelColumn<bool> _ackReceived;
 
 };

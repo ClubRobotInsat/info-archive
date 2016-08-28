@@ -83,8 +83,14 @@ void Monitor::updateInterface() {
 
     Gtk::TreeModel::Row row = *(_refTreeModel->append());
 
-    row[_message._id] = TrameToHandle.getId();
-    row[_message._data] = *TrameToHandle.getDonnees();
+    std::stringstream idStream;
+    std::stringstream dataStream;
+
+    idStream << "0x" << std::hex << (unsigned int) TrameToHandle.getId();
+    dataStream << "0x" << std::hex << (int) *TrameToHandle.getDonnees();
+
+    row[_message._id] = idStream.str();
+    row[_message._data] = dataStream.str();
     row[_message._ackReceived] = false;
 
     this->queue_draw();
