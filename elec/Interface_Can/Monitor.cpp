@@ -74,23 +74,22 @@ void Monitor::onListenerNotification() {
 
 }
 
+std::string Monitor::convertToHexadecimal(unsigned int number) {
+    std::stringstream stream;
+    stream << "0x" << std::hex << number;
+    return stream.str();
+}
+
 
 
 void Monitor::updateInterface() {
-
 
     auto TrameToHandle = _canListener.getOldestMessage();
 
     Gtk::TreeModel::Row row = *(_refTreeModel->append());
 
-    std::stringstream idStream;
-    std::stringstream dataStream;
-
-    idStream << "0x" << std::hex << (unsigned int) TrameToHandle.getId();
-    dataStream << "0x" << std::hex << (int) *TrameToHandle.getDonnees();
-
-    row[_message._id] = idStream.str();
-    row[_message._data] = dataStream.str();
+    row[_message._id] = convertToHexadecimal(TrameToHandle.getId());
+    row[_message._data] = convertToHexadecimal(TrameToHandle.getCmd());
     row[_message._ackReceived] = false;
 
     this->queue_draw();
