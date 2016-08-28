@@ -30,6 +30,8 @@ protected:
 
     void updateInterface();
 
+    std::string convertToHexadecimal(unsigned int number);
+
 private:
 
     Glib::Dispatcher _dispatcher;

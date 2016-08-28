@@ -74,26 +74,28 @@ void Monitor::onListenerNotification() {
 
 }
 
+std::string Monitor::convertToHexadecimal(unsigned int number) {
+    std::stringstream stream;
+    stream << "0x" << std::hex << number;
+    return stream.str();
+}
+
 
 
 void Monitor::updateInterface() {
-
 
     auto TrameToHandle = _canListener.getOldestMessage();
 
     Gtk::TreeModel::Row row = *(_refTreeModel->append());
 
-    std::stringstream idStream;
-    std::stringstream cmdStream;
-    std::stringstream dataStream;
+    row[_message._id] = convertToHexadecimal(TrameToHandle.getId());
+    row[_message._cmd] = convertToHexadecimal(TrameToHandle.getCmd());
+    std::string finalData;
+    for (int i =0; i<8; i++) {
+         finalData += convertToHexadecimal(TrameToHandle.getDonnee(i)) + " " ;
+    }
 
-    idStream << "0x" << std::hex << (uint8_t) TrameToHandle.getId();
-    cmdStream << "0x" << std::hex << (uint8_t) TrameToHandle.getCmd();
-    dataStream << "0x" << std::hex << (char**) TrameToHandle.getDonnees();
-
-    row[_message._id] = idStream.str();
-    row[_message._cmd] = cmdStream.str();
-    row[_message._data] = dataStream.str();
+    row[_message._data] = finalData;
 
     this->queue_draw();
 }
