@@ -13,6 +13,7 @@ CanListener::CanListener(std::string& port) : _shallStopListening(false), _refre
         std::cout << "CAN listening on : " << port.substr(7,port.length()-12) << ":1234" <<std::endl;
     }
     else {
+        std::cout << "CAN listening on : " << "/dev" + port << std::endl;
         _can.reset(new Commun::CAN(std::make_unique<Commun::RS232>("/dev/" + port)));
     }
 

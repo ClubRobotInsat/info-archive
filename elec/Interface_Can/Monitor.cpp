@@ -43,8 +43,8 @@ Monitor::Monitor(std::string& port) : Gtk::Window(), _listenerThread(nullptr), _
     _refTreeModel = Gtk::ListStore::create(_message);
     _messageTree.set_model(_refTreeModel);
     _messageTree.append_column("ID", _message._id);
+    _messageTree.append_column("Cmd", _message._cmd);
     _messageTree.append_column("Data", _message._data);
-    _messageTree.append_column("Ack Received", _message._ackReceived);
 
     this->add(_topLevelBox);
 
@@ -84,14 +84,16 @@ void Monitor::updateInterface() {
     Gtk::TreeModel::Row row = *(_refTreeModel->append());
 
     std::stringstream idStream;
+    std::stringstream cmdStream;
     std::stringstream dataStream;
 
-    idStream << "0x" << std::hex << (unsigned int) TrameToHandle.getId();
-    dataStream << "0x" << std::hex << (int) *TrameToHandle.getDonnees();
+    idStream << "0x" << std::hex << (uint8_t) TrameToHandle.getId();
+    cmdStream << "0x" << std::hex << (uint8_t) TrameToHandle.getCmd();
+    dataStream << "0x" << std::hex << (char**) TrameToHandle.getDonnees();
 
     row[_message._id] = idStream.str();
+    row[_message._cmd] = cmdStream.str();
     row[_message._data] = dataStream.str();
-    row[_message._ackReceived] = false;
 
     this->queue_draw();
 }
