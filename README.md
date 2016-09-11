@@ -183,3 +183,20 @@ cd cmake_generated_files
 cmake ../info -DCMAKE_TOOLCHAIN_FILE=~/ClubRobot/info/Cross-Compilation.cmake -DBITS=64
 make
 ```
+
+------------
+Installation des outils pour le controle du robot à la wiimote
+------------
+
+```
+sudo apt-get install libbluetooth-dev
+svn co https://wiic.svn.sourceforge.net/svnroot/wiic <WIIC_HOME>
+cd <WIIC_HOME>
+mkdir build
+cd build
+cmake ../src
+make
+sudo ldconfig
+```
+
+_<WIIC_HOME>_ désigne le dossier dans lequel installer Wiic
