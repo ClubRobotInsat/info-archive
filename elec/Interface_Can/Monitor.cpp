@@ -10,7 +10,7 @@ Monitor::Monitor(std::string& port) : Gtk::Window(), _listenerThread(nullptr), _
 
     //-----------Threading Stuff|
 
-    _dispatcher.connect(sigc::mem_fun(*this, &Monitor::onListenerNotification));
+    //_dispatcher.connect(sigc::mem_fun(*this, &Monitor::onListenerNotification));
 
     _listenerThread = std::make_unique<std::thread>([this]{
         _canListener.start(this);
@@ -63,13 +63,15 @@ Monitor::Monitor(std::string& port) : Gtk::Window(), _listenerThread(nullptr), _
 
 void Monitor::notify() {
 
-    _dispatcher.emit();
+    //_dispatcher.emit();
+    onListenerNotification();
 
 }
 
 
 void Monitor::onListenerNotification() {
 
+    std::cout << "je m'update" << std::endl;
     this->updateInterface();
 
 }

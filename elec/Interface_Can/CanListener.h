@@ -31,11 +31,11 @@ protected:
 
     bool shallStopListening();
 
+    Message_Buffer& getBuffer();
+
 private:
 
     mutable std::mutex _mutex;
-
-    //std::deque<Trame> _messageList;
 
     std::unique_ptr<Commun::CAN> _can;
 

@@ -4,7 +4,6 @@
 
 #include "CanListener.h"
 #include "Monitor.h"
-#include "../../commun/Units/TimePoint.h"
 
 CanListener::CanListener(std::string& port) : _shallStopListening(false), _refreshRate(20_ms), _buffer(10000) {
 
@@ -13,11 +12,13 @@ CanListener::CanListener(std::string& port) : _shallStopListening(false), _refre
         std::cout << "CAN listening on : " << port.substr(7,port.length()-12) << ":1234" <<std::endl;
     }
     else {
-        std::cout << "CAN listening on : " << "/dev" + port << std::endl;
         _can.reset(new Commun::CAN(std::make_unique<Commun::RS232>("/dev/" + port)));
+        std::cout << "CAN listening on : " << "/dev" + port << std::endl;
     }
 
     _can->setTemporisation(10_ms);
+
+    this->getBuffer().setAcceptNewMessage(true);
 
 }
 
@@ -29,14 +30,17 @@ void CanListener::start(Monitor* caller) {
 
 void CanListener::mainLoop(Monitor* caller) {
 
+    bool shallNotify = false;
     while(!this->shallStopListening()) {
         auto now = Units::TimePoint::now();
         while (Units::TimePoint::now() < now + _refreshRate) {
             auto Trame = this->waitForMessage();
-            std::lock_guard<std::mutex> lock(_mutex);
-            _buffer.addMessage(Trame);
+            shallNotify = this->getBuffer().addMessage(Trame);
         }
-        caller->notify();
+        if (shallNotify) {
+            caller->notify();
+            shallNotify = false;
+        }
     }
 }
 
@@ -48,13 +52,12 @@ Trame CanListener::waitForMessage() {
 }
 
 Trame CanListener::getOldestMessage() {
-    std::lock_guard<std::mutex> lock(_mutex);
-    Trame result = _buffer.retrieveMessageMatchingFilter(_filter, true);
+
+    Trame result = this->getBuffer().retrieveMessageMatchingFilter(_filter, true);
     return result;
 }
 
 bool CanListener::shallStopListening() {
-    std::lock_guard<std::mutex> lock(_mutex);
     return _shallStopListening;
 }
 
@@ -62,4 +65,10 @@ void CanListener::setFilter(std::string newfilter) {
 
     _filter = newfilter;
 
+}
+
+
+Message_Buffer &CanListener::getBuffer() {
+    std::lock_guard<std::mutex> lock(_mutex);
+    return _buffer;
 }

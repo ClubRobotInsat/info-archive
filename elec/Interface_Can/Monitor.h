@@ -18,7 +18,8 @@ public :
      *
      * @param port A string in the following form :
      * either TCPIP:MY.IP.ADRESS.CONNECTION (the port is setted to 1234)
-     * either /dev/ttyUSB37
+     * either /dev/
+     * ttyUSB37
      */
     Monitor(std::string& port);
 
@@ -34,7 +35,7 @@ protected:
 
 private:
 
-    Glib::Dispatcher _dispatcher;
+    //Glib::Dispatcher _dispatcher;
 
     std::unique_ptr<std::thread> _listenerThread;
 
