@@ -93,7 +93,7 @@ void Monitor::updateInterface() {
     row[_message._id] = convertToHexadecimal(TrameToHandle.getId());
     row[_message._cmd] = convertToHexadecimal(TrameToHandle.getCmd());
     std::string finalData;
-    for (int i =0; i<8; i++) {
+    for (int i =0; i<TrameToHandle.getNbDonnees(); i++) {
          finalData += convertToHexadecimal(TrameToHandle.getDonnee(i)) + " " ;
     }
 
