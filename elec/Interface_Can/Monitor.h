@@ -25,6 +25,8 @@ public :
 
     void notify();
 
+    void sendMessage();
+
 protected:
 
     void onListenerNotification();
@@ -32,6 +34,21 @@ protected:
     void updateInterface();
 
     std::string convertToHexadecimal(unsigned int number);
+
+    Trame buildTrameFromInput();
+
+    /**
+     * Will look at @var _trameData @var _trameType @var _trameId and verify that the fields are not empty.
+     * @return True if there is something as an input, false is one of the 3 is empty.
+     */
+    bool checkInputs();
+
+    template<typename... Args>
+    Trame make_trame(uint8_t id, uint8_t cmd, Args &&... donnees) {
+        Trame t(id, cmd);
+        t.addDonnees(donnees...);
+        return t;
+    }
 
 private:
 

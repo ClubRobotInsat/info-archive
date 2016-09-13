@@ -23,6 +23,8 @@ public:
 
     void setFilter(std::string newfilter);
 
+    bool sendMessage(Trame& trame);
+
 protected:
 
     void mainLoop(Monitor* caller);
@@ -34,6 +36,8 @@ protected:
     Message_Buffer& getBuffer();
 
 private:
+
+    std::atomic_bool _sentAMessage;
 
     mutable std::mutex _mutex;
 

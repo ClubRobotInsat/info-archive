@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include "Monitor.h"
-#include "../../robot/Commun/TCPIP.h"
+#include "Trame.h"
 
 Monitor::Monitor(std::string& port) : Gtk::Window(), _listenerThread(nullptr), _canListener(port), _sendTrameButton("Envoyer la trame") {
 
@@ -23,6 +23,8 @@ Monitor::Monitor(std::string& port) : Gtk::Window(), _listenerThread(nullptr), _
 
     this->set_size_request(800, 600);
     this->set_decorated(true);
+
+    _sendTrameButton.signal_clicked().connect(sigc::mem_fun(*this, &Monitor::sendMessage));
 
     _frame.set_label("Send a message");
     _frame.set_label_align(Gtk::ALIGN_CENTER, Gtk::ALIGN_START);
@@ -71,7 +73,6 @@ void Monitor::notify() {
 
 void Monitor::onListenerNotification() {
 
-    std::cout << "je m'update" << std::endl;
     this->updateInterface();
 
 }
@@ -93,11 +94,59 @@ void Monitor::updateInterface() {
     row[_message._id] = convertToHexadecimal(TrameToHandle.getId());
     row[_message._cmd] = convertToHexadecimal(TrameToHandle.getCmd());
     std::string finalData;
-    for (int i =0; i<TrameToHandle.getNbDonnees(); i++) {
+
+    for (int i =0; i < TrameToHandle.getNbDonnees(); i++) {
          finalData += convertToHexadecimal(TrameToHandle.getDonnee(i)) + " " ;
     }
 
     row[_message._data] = finalData;
 
     this->queue_draw();
+}
+
+void Monitor::sendMessage() {
+    /*
+    std::vector<Trame> test;
+    test.push_back(make_trame(0x00_b, 0x00_b, 0x55_b));
+    test.push_back(make_trame(0x01_b, 0x00_b, 0x55_b));
+    test.push_back(make_trame(0x02_b, 0x00_b, 0x55_b));
+    test.push_back(make_trame(0x03_b, 0x00_b, 0x55_b));
+    test.push_back(make_trame(0x04_b, 0x00_b, 0x55_b));
+     */
+    std::unique_ptr<Trame> message;
+    auto sendMessage = true;
+    try {
+        message = std::make_unique<Trame>(this->buildTrameFromInput());
+    }
+    catch (std::runtime_error &e) {
+        Gtk::MessageDialog dialog(*this, "Erreur, vous n'avez pas fourni de valeur pour une entrée");
+        dialog.run();
+        sendMessage = false;
+    }
+    if (sendMessage) {
+        Trame &result = *message.release();
+        _canListener.sendMessage(result);
+    }
+}
+
+
+
+Trame Monitor::buildTrameFromInput() {
+
+    if (checkInputs()) {
+        Trame result = make_trame(std::stoi(_trameId.get_buffer()->get_text()),
+                                  std::stoi(_trameType.get_buffer()->get_text()),
+                                  std::stoi(_trameData.get_buffer()->get_text()));
+
+        return result;
+    }
+    else {
+        throw std::runtime_error("Some fields are empty...");
+    }
+}
+
+bool Monitor::checkInputs() {
+    return !(_trameId.get_buffer()->get_text().empty() |
+            _trameData.get_buffer()->get_text().empty() |
+            _trameType.get_buffer()->get_text().empty());
 }

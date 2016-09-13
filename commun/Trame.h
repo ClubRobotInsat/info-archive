@@ -40,6 +40,12 @@ inline constexpr Byte operator"" _b(unsigned long long value) {
 	return Byte(value);
 }
 
+/*
+inline constexpr Byte makeFromString(std::string value) {
+
+}
+*/
+
 class Trame final {
 public:
 	/// Valeurs constantes de certains octets des trames
@@ -248,5 +254,14 @@ void Trame::addDonneesInternal(Byte const& value, Args&&... values) {
 
 	this->addDonneesInternal(values...);
 }
-
+/*
+Trame operator=(Trame const& t2) {
+    Trame result;
+    result._id = t2._id;
+    result._cmd = t2._cmd;
+    result._donnees = t2._donnees;
+    result._num_paquet = t2._num_paquet;
+    return result;
+}
+*/
 #endif /*TRAME_H_*/
