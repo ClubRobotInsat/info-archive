@@ -190,12 +190,14 @@ Installation des outils pour le controle du robot à la wiimote
 
 ```
 sudo apt-get install libbluetooth-dev
-svn co https://wiic.svn.sourceforge.net/svnroot/wiic <WIIC_HOME>
 cd <WIIC_HOME>
+git clone https://github.com/grandelli/WiiC.git
+cd WiiC
 mkdir build
 cd build
 cmake ../src
 make
+sudo make install
 sudo ldconfig
 ```
 
