@@ -7,7 +7,7 @@ Installation de tout ce qu'il faut
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
 echo "deb http://download.mono-project.com/repo/debian wheezy main" | sudo tee /etc/apt/sources.list.d/mono-xamarin.list
 sudo apt-get update
-sudo apt-get install ninja-build mono-complete cmake subversion git libbox2d-dev gcc-5-multilib g++-5-multilib openjdk-7-jre build-essential libglfw-dev libglu1-mesa-dev libxrandr-dev libgtk2.0-dev libusb-1.0-0-dev clang-format-3.7
+sudo apt-get install mono-complete cmake subversion git libbox2d-dev gcc-5-multilib g++-5-multilib libbluetooth-dev build-essential libglfw-dev libglu1-mesa-dev libxrandr-dev libgtkmm-3.0-dev libusb-1.0-0-dev clang-format-3.7
 ```
 
 Pour installer clang en tant que compilateur :
@@ -106,83 +106,10 @@ Cross-Compilation pour Raspberry
 ------------
 ###Installation des outils :
 ```
-sudo apt-get install build-essential git
-mkdir rpi
-cd rpi
-git clone https://github.com/raspberrypi/tools.git
-cd tools/arm-bcm2708
-cd ~/
-nano .bashrc
+sudo apt-get install gcc-5-arm-linux-gnueabihf g++-5-arm-linux-gnueabihf build-essential git
 ```
-
-Pour savoir si on est en 32 ou en 64 bit, on peut utiliser ```uname -a```.
-Dans le bashrc, on va à la dernière ligne.
-Si on est en 32 bit, on écrit :
-```export PATH=$PATH:$HOME/rpi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian/bin```
-En 64 bit, on écrit :
-```export PATH=$PATH:$HOME/rpi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin```
-
-Puis Crtl+x -> Yes -> Entrer.
-```
-source .bashrc
-arm-linux-gnueabihf-gcc -v
-```
-
-###Compilation des sources sur le RPi :
-```
-Pour un Raspberrypi 1 :
-cd linux
-KERNEL=kernel
-make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- bcmrpi_defconfig
-```
-
-Pour un Raspberrypi 2/3 :
-```
-cd linux
-KERNEL=kernel7
-make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- bcm2709_defconfig
-```
-
-Puis ```make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- zImage modules dtbs```.
-Note : pour augmenter la vitesse de compilation, on peut rajouter ```-j n``` avec n = 1.5 * nombre de processeurs.
-
-###Compilation des programmes pour le club robot :
-```
-cd ClubRobot/info
-touch Cross-Compilation.cmake
-```
-
-On écrit dans le fichier avec :
-```
-SET(CMAKE_SYSTEM_NAME Linux)
-
-SET(CMAKE_SYSTEM_VERSION 1)
-
-# specify the cross compiler
-SET(CMAKE_C_COMPILER [chemin vers le compilateur c] )
-
-SET(CMAKE_CXX_COMPILER [chemin vers le compilateur c++] )
-
-# where is the target environment
-SET(CMAKE_FIND_ROOT_PATH [chemin vers la racine] )
-
-# search for programs in the build host directories
-SET(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
-# for libraries and headers in the target directories
-SET(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY BOTH)
-SET(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE BOTH)
-```
-
-par exemple, [chemin vers le compilateur c] = /usr/bin/arm-linux-gnueabi-gcc-5 ou /opt/cros/x-tools/arm-unknown-linux-gnueabi/bin/arm-unknown-linux-gnueabi-gcc
-
-ensuite :
-```
-cd ..
-mkdir cmake_generated_files
-cd cmake_generated_files
-cmake ../info -DCMAKE_TOOLCHAIN_FILE=~/ClubRobot/info/Cross-Compilation.cmake -DBITS=64
-make
-```
+Pour crosscompiler la wiimote, il faut installer ```libbluetooth-dev``` en version arm, et aussi cross-compiler WiiC en arm.
+Ensuite faut mettre les libs dans ```/usr/arm-linux-gnueabihf/lib```
 
 ------------
 Installation des outils pour le controle du robot à la wiimote
