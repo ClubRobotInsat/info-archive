@@ -8,4 +8,5 @@ Message::Message(){
     add(_id);
     add(_cmd);
     add(_data);
+    add(_time);
 }

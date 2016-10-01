@@ -15,6 +15,7 @@ public :
     Gtk::TreeModelColumn<std::string> _id;
     Gtk::TreeModelColumn<std::string> _cmd;
     Gtk::TreeModelColumn<std::string> _data;
+    Gtk::TreeModelColumn<std::string> _time;
 
 };
 

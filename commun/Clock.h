@@ -27,5 +27,4 @@ public:
 private:
 	Units::TimePoint::TimePointType _startTime;
 };
-
-#endif
+    #endif

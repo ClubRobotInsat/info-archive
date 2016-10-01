@@ -29,6 +29,13 @@ public :
 
 protected:
 
+    /**
+ 	* Return a string HH:MM:SS
+ 	* For example : 16:34:10 if it is 16 hour past 34 minutes and 10 seconds
+ 	*/
+
+    std::string getLocalTime();
+
     void onListenerNotification();
 
     void updateInterface();

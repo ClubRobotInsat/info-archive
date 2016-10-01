@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include "Monitor.h"
-#include "Trame.h"
+#include <iomanip>
 
 Monitor::Monitor(std::string& port) : Gtk::Window(), _listenerThread(nullptr), _canListener(port), _sendTrameButton("Envoyer la trame") {
 
@@ -44,9 +44,11 @@ Monitor::Monitor(std::string& port) : Gtk::Window(), _listenerThread(nullptr), _
     _lowLevelWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
     _refTreeModel = Gtk::ListStore::create(_message);
     _messageTree.set_model(_refTreeModel);
+    _messageTree.append_column("Date", _message._time);
     _messageTree.append_column("ID", _message._id);
     _messageTree.append_column("Cmd", _message._cmd);
     _messageTree.append_column("Data", _message._data);
+
 
     this->add(_topLevelBox);
 
@@ -93,6 +95,7 @@ void Monitor::updateInterface() {
 
     row[_message._id] = convertToHexadecimal(TrameToHandle.getId());
     row[_message._cmd] = convertToHexadecimal(TrameToHandle.getCmd());
+    row[_message._time] = this->getLocalTime();
     std::string finalData;
 
     for (int i =0; i < TrameToHandle.getNbDonnees(); i++) {
@@ -149,4 +152,14 @@ bool Monitor::checkInputs() {
     return !(_trameId.get_buffer()->get_text().empty() |
             _trameData.get_buffer()->get_text().empty() |
             _trameType.get_buffer()->get_text().empty());
+}
+
+std::string Monitor::getLocalTime() {
+    auto t = std::time(nullptr);
+    auto tm = *std::localtime(&t);
+
+    std::ostringstream oss;
+    oss << std::put_time(&tm, "%H:%M:%S");
+    auto str = oss.str();
+    return str;
 }
