@@ -8,14 +8,10 @@
 
 #include "../../simulateur/cartes/CarteAsservissement2009.h"
 #include "../../simulateur/cartes/CarteCAN_USB.h"
-#include "../../simulateur/cartes/CarteContacteurs2007.h"
 #include "../../simulateur/cartes/CarteDebugDessin.h"
 #include "../../simulateur/cartes/CarteDeplacement2009.h"
 #include "../../simulateur/cartes/CarteDetectAdv2009.h"
-#include "../../simulateur/cartes/CarteElectrovannes2016.h"
 #include "../../simulateur/cartes/CarteIO2014.h"
-#include "../../simulateur/cartes/CartePneumatique2013.h"
-#include "../../simulateur/cartes/CartePneumatique2014.h"
 #include "../../simulateur/cartes/CarteServosNova2009.h"
 #include "../../simulateur/robot/Carte.h"
 
@@ -24,14 +20,9 @@
 #include "../../robot/Cartes/Carte.h"
 #include "../../robot/Cartes/CarteAsservissement2009.h"
 #include "../../robot/Cartes/CarteCAN_USB.h"
-#include "../../robot/Cartes/CarteContacteurs2007.h"
 #include "../../robot/Cartes/CarteDebugDessin.h"
 #include "../../robot/Cartes/CarteDeplacementSymetrieY.h"
-#include "../../robot/Cartes/CarteElectrovannes2016.h"
 #include "../../robot/Cartes/CarteIO2014.h"
-#include "../../robot/Cartes/CartePneumatique.h"
-#include "../../robot/Cartes/CartePneumatique2014.h"
-#include "../../robot/Cartes/CarteServosNova2009.h"
 #include "../robot/Cartes/CarteDetectAdv2009.h"
 
 #endif
@@ -76,67 +67,6 @@ namespace ConstantesPrincipal {
 		BACK_CONTACT_5 = 9,
 		BACK_CONTACT_6 = 10,
 	};
-	/////////////////// BRAS /////////////////////
-
-	enum class Pince {
-		GAUCHE = 0,
-		DROIT = 1,
-	};
-
-	enum class PositionPince {
-		RENTRE_DEBUT = 0, // position de départ pour gagner de la place ; le bras gauche doit etre le plus rentré
-		RENTRE = 1, // position pour maintenir les cubes
-		SORTIE = 2, // position pour récupérer les coquillages
-		SORTIE_MAX = 3, // position pour récupérer les cubes
-		NBR = 4,
-	};
-
-	enum class PositionCuillere {
-		RENTRE,
-		SORTIE,
-		NBR = 2,
-	};
-
-	enum class PositionPelle {
-		RENTRE,
-		SORTIE,
-		NBR = 2,
-	};
-
-	enum class PositionParasol {
-		RENTRE,
-		SORTIE,
-		NBR = 2,
-	};
-
-	/////////////////// POMPES | VANNES ///////////////////
-
-	enum class Pompe { HAUT, BAS };
-
-	enum class Vanne {
-		VANNE_1 = 0,
-		VANNE_2 = 1,
-		VANNE_3 = 2,
-		VANNE_4 = 3,
-		VANNE_5 = 4,
-		VANNE_6 = 5,
-		VANNE_TOUTES = 6,
-	};
-
-
-	/////////////////// SERVOS ///////////////////
-
-	enum class Servo {
-		PINCE_D = ID_SERVO_G_PINCE_DROITE,
-		PARASOL = ID_SERVO_D_PARASOL,
-		CUILLERE = ID_SERVO_G_CUILLERE,
-		PELLE = ID_SERVO_D_PELLE,
-		PINCE_G = ID_SERVO_G_PINCE_GAUCHE,
-		NBR = 5
-	};
-
-	enum class Servo_D { NBR = 2 };
-	enum class Servo_G { NBR = 3 };
 
 	/////////////////// SERVOS ///////////////////
 	// Durée attendue lors de l'envoi d'un message aux cartes élecs dans les fonctions blonquantes autre que les servos.
@@ -159,17 +89,6 @@ namespace ConstantesPrincipal {
 
 	extern int const IDRobot;
 
-	// Déclaration des positions
-	extern Distance const ENTRAXE_PINCES;
-	extern Distance const DISTANCE_CENTRE_PINCES;
-
-	// Déclaration des positions
-	extern Angle const positionPinceD[enumToInt(PositionPince::NBR)];
-	extern Angle const positionPinceG[enumToInt(PositionPince::NBR)];
-	extern Angle const positionPelle[enumToInt(PositionPelle::NBR)];
-	extern Angle const positionCuillere[enumToInt(PositionCuillere::NBR)];
-	extern Angle const positionParasol[enumToInt(PositionParasol::NBR)];
-
 	/////////////////// CARTES ///////////////////
 
 	template <IDCartesPrincipal::IDCartes ID_CARTE>
@@ -191,31 +110,6 @@ namespace ConstantesPrincipal {
 		using typeCarte = CarteDeplacementSymetrieY;
 #endif
 		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_DEPLACEMENT };
-	};
-	template <>
-	struct CarteInfo<IDCartesPrincipal::SERVO_G> {
-		using typeCarte = CarteServosNova2009;
-		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_SERVO_G };
-	};
-	template <>
-	struct CarteInfo<IDCartesPrincipal::SERVO_D> {
-		using typeCarte = CarteServosNova2009;
-		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_SERVO_D };
-	};
-	template <>
-	struct CarteInfo<IDCartesPrincipal::PNEUMATIQUE_BAS> {
-		using typeCarte = CartePneumatique2014;
-		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_PNEUMATIQUE_BAS };
-	};
-	template <>
-	struct CarteInfo<IDCartesPrincipal::PNEUMATIQUE_HAUTE> {
-		using typeCarte = CartePneumatique2014;
-		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_PNEUMATIQUE_HAUTE };
-	};
-	template <>
-	struct CarteInfo<IDCartesPrincipal::ELECTROVANNES> {
-		using typeCarte = CarteElectrovannes2016;
-		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_ELECTROVANNES };
 	};
 	template <>
 	struct CarteInfo<IDCartesPrincipal::IO> {

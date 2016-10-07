@@ -7,18 +7,6 @@
 
 #include "Constantes.h"
 
-namespace ConstantesPrincipal {
-	Distance const ENTRAXE_PINCES = 12_cm;
-	Distance const DISTANCE_CENTRE_PINCES = 30_cm;
-
-	Angle const positionPinceD[enumToInt(PositionPince::NBR)] = {180_deg, 135_deg, 55_deg, -5_deg};
-	Angle const positionPinceG[enumToInt(PositionPince::NBR)] = {180_deg, 135_deg, 55_deg, -5_deg};
-	Angle const positionPelle[enumToInt(PositionPelle::NBR)] = { 0_deg, 185_deg};
-	Angle const positionCuillere[enumToInt(PositionCuillere::NBR)] = { 0_deg, 180_deg}; // FIXME : mettre les bonnes valeurs une fois que le servo sera en place
-	Angle const positionParasol[enumToInt(PositionParasol::NBR)] = { 180_deg, 0_deg};
-
-}
-
 Duration const ConstantesPrincipal::TIMEOUT_DEPLACEMENT_DEFAUT = Constantes::TIMEOUT_MOVE_DEFAULT;
 Duration const ConstantesPrincipal::TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT = Constantes::TIMEOUT_OPPONENT_BLOCKING_DEFAULT;
 Speed const ConstantesPrincipal::VITESSE_LINEAIRE_DEFAUT = Constantes::LINEAR_SPEED_DEFAULT;
