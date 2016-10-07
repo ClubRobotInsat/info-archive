@@ -75,12 +75,12 @@ struct ConstantesCommunes : Commun::ConstantesCommunes {
 
 // Murs
 const Vector3m WALLS_DIMENSIONS = {3_m, 2_m, 7_cm};
-const Length WALLS_SIZE = 2_cm; // épaisseur des murs
+const Length WALLS_SIZE = 2.2_cm; // épaisseur des murs
 
 // Robot
 const Length ROBOT_Z = 51_cm;
-const Vector3m START_POSITION_ROBOT_BLUE = {60_cm, 0.751_m, 0.15_m};
-const Vector3m START_POSITION_ROBOT_YELLOW = {2.4_m, 0.751_m, 0.15_m};
+const Vector3m START_POSITION_ROBOT_BLUE = {60_cm, 20_cm, 0.15_m};
+const Vector3m START_POSITION_ROBOT_YELLOW = {2.4_m, 20_cm, 0.15_m};
 const Angle START_ANGLE_ROBOT_BLUE = 90_deg;
 const Angle START_ANGLE_ROBOT_YELLOW = 90_deg;
 
