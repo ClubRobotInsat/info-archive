@@ -9,4 +9,5 @@ Message::Message(){
     add(_cmd);
     add(_data);
     add(_time);
+    add(_color);
 }

@@ -59,13 +59,19 @@ Monitor::Monitor(std::string& port) : Gtk::Window(),
     //Creating and initializing the refTreeModel
     _refTreeModel = Gtk::ListStore::create(_message);
     _messageTree.set_model(_refTreeModel);
+
     _messageTree.append_column("Date", _message._time);
     _messageTree.append_column("ID", _message._id);
     _messageTree.append_column("Cmd", _message._cmd);
     _messageTree.append_column("Data", _message._data);
 
+    Gtk::TreeModel::iterator treeiter = _refTreeModel->append();
 
-
+    for (int i = 0; i<4; i++) {
+        auto column = _messageTree.get_column(i);
+        auto cellRenderer = column->get_first_cell();
+        column->add_attribute(cellRenderer->property_cell_background(), _message._color);
+    }
 
     this->add(_topLevelBox);
     _frame.add(_sendMessageContainer);
@@ -83,14 +89,14 @@ Monitor::Monitor(std::string& port) : Gtk::Window(),
 
 void Monitor::notify() {
 
-    onListenerNotification();
+    onListenerNotification(false);
 
 }
 
 
-void Monitor::onListenerNotification() {
+void Monitor::onListenerNotification(bool colored) {
 
-    this->updateInterface();
+    this->updateInterface(colored);
 
 }
 
@@ -102,7 +108,7 @@ std::string Monitor::convertToHexadecimal(unsigned int number) {
 
 
 
-void Monitor::updateInterface() {
+void Monitor::updateInterface(bool colored) {
 
     auto TrameToHandle = _canListener.getMessage(false);
 
@@ -119,7 +125,23 @@ void Monitor::updateInterface() {
 
     row[_message._data] = finalData;
 
+
+    if (colored) {
+        row[_message._color] = "pink";
+    }
+    else {
+        row[_message._color] = "white";
+    }
+
+    /*
+    Gtk::TreeViewColumn* viewcolumn = _messageTree.get_column(3);
+    Gtk::CellRenderer* cellrenderer = viewcolumn->get_first_cell();
+    viewcolumn->add_attribute(cellrenderer->property_cell_background (), _message._color);
+    viewcolumn->property_ce
+    //_messageTree.append_column(*viewcolumn);
+    */
     this->queue_draw();
+
 }
 
 void Monitor::sendMessage() {
@@ -138,7 +160,7 @@ void Monitor::sendMessage() {
     if (sendMessage) {
         Trame &result = *message.release();
         _canListener.sendMessage(result);
-        this->notify();
+        this->onListenerNotification(true);
         std::cout << "Message sent succesfully.";
     }
 

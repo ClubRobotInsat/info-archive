@@ -16,6 +16,12 @@ public :
     Gtk::TreeModelColumn<std::string> _cmd;
     Gtk::TreeModelColumn<std::string> _data;
     Gtk::TreeModelColumn<std::string> _time;
+    /**
+     * A column that will be used to store data about the color.
+     * Used mainly for rendering line in different colors based on if the message was sent to the CAN or received
+     * from it.
+     */
+    Gtk::TreeModelColumn<std::string> _color;
 
 };
 
