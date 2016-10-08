@@ -85,6 +85,5 @@ Message_Buffer &CanListener::getBuffer() {
 bool CanListener::sendMessage(const Trame &trame) {
     _can->envoyerTrame(trame);
     this->getBuffer().addMessage(trame);
-    _sentAMessage = true;
     return true;
 }

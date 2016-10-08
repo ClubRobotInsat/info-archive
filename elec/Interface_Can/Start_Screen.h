@@ -17,10 +17,6 @@ class Start_Screen : public Gtk::Window{
 
     public:
 
-
-    /**
-     *
-     */
     Start_Screen();
 
     virtual ~Start_Screen();
@@ -29,7 +25,6 @@ class Start_Screen : public Gtk::Window{
      * @brief The callback function for _launchCanMonitor
      */
     void onLaunchCanMonitorClicked();
-
 
     /**
      *

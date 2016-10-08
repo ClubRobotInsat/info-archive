@@ -23,6 +23,8 @@ public :
      */
     Monitor(std::string& port);
 
+    ~Monitor();
+
     /**
      * Method called by the listener thread to notify the main thread that a message has been received
      */

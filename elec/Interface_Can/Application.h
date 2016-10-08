@@ -17,6 +17,8 @@ public:
 
     Application(int argc, char** argv, std::string id);
 
+    ~Application();
+
     /**
      * Delete Start_Screen and intialize a Can monitoring window
      * @param canPort a string to intialize the can object
@@ -25,9 +27,9 @@ public:
 
     void startCan(std::string& port);
 
-private:
+    bool on_delete_event(GdkEventAny* event);
 
-    std::vector<int> _messageList;
+private:
 
     Start_Screen _start_screen;
 

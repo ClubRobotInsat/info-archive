@@ -123,6 +123,7 @@ void Monitor::updateInterface() {
 }
 
 void Monitor::sendMessage() {
+    std::cout << "Je passe" << std::endl;
     std::unique_ptr<Trame> message;
     auto sendMessage = true;
     try {
@@ -133,9 +134,11 @@ void Monitor::sendMessage() {
         dialog.run();
         sendMessage = false;
     }
+    std::cout << "SendMessage is : " << sendMessage << std::endl;
     if (sendMessage) {
         Trame &result = *message.release();
         _canListener.sendMessage(result);
+        this->notify();
         std::cout << "Message sent succesfully.";
     }
 
@@ -175,4 +178,12 @@ std::string Monitor::getLocalTime() {
 
 void Monitor::tooglePauseMode() {
     this->_canListener.getBuffer().toogleAcceptNewMessage();
+}
+
+Monitor::~Monitor() {
+
+    //_listenerThread->join();
+    _listenerThread.release();
+    _refTreeModel.release();
+
 }
