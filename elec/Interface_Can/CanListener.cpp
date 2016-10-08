@@ -18,8 +18,6 @@ CanListener::CanListener(std::string& port) :  _sentAMessage(false), _shallStopL
 
     _can->setTemporisation(10_ms);
 
-    this->getBuffer().setAcceptNewMessage(true);
-
 }
 
 void CanListener::start(Monitor* caller) {
@@ -62,9 +60,9 @@ Trame CanListener::waitForMessage() {
 
 }
 
-Trame CanListener::getOldestMessage() {
+Trame CanListener::getMessage(bool oldest) {
 
-    Trame result = this->getBuffer().retrieveMessageMatchingFilter(_filter, true);
+    Trame result = this->getBuffer().retrieveMessageMatchingFilter(_filter, oldest);
     return result;
 }
 
@@ -84,7 +82,7 @@ Message_Buffer &CanListener::getBuffer() {
     return _buffer;
 }
 
-bool CanListener::sendMessage(Trame &trame) {
+bool CanListener::sendMessage(const Trame &trame) {
     _can->envoyerTrame(trame);
     this->getBuffer().addMessage(trame);
     _sentAMessage = true;

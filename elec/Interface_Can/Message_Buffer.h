@@ -15,9 +15,9 @@ public:
 
     Message_Buffer(int buffersize);
 
-    bool addMessage(Trame& trame);
+    bool addMessage(const Trame& trame);
 
-    void setAcceptNewMessage(bool value);
+    void toogleAcceptNewMessage();
 
     Trame retrieveMessage();
 

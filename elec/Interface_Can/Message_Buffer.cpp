@@ -4,13 +4,13 @@
 
 #include "Message_Buffer.h"
 
-Message_Buffer::Message_Buffer(int buffersize) : _buffersize(buffersize) {
+Message_Buffer::Message_Buffer(int buffersize) : _buffersize(buffersize), _acceptNewMessage(true) {
     _messageList.clear();
 
 }
 
 
-bool Message_Buffer::addMessage(Trame &trame) {
+bool Message_Buffer::addMessage(const Trame &trame) {
     if (_acceptNewMessage) {
         _messageList.push_front(trame);
          if (_messageList.size() > _buffersize) {
@@ -23,8 +23,8 @@ bool Message_Buffer::addMessage(Trame &trame) {
     }
 }
 
-void Message_Buffer::setAcceptNewMessage(bool value) {
-    _acceptNewMessage = value;
+void Message_Buffer::toogleAcceptNewMessage() {
+    _acceptNewMessage = !_acceptNewMessage;
 
 }
 

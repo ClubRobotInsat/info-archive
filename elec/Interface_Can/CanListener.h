@@ -19,11 +19,13 @@ public:
 
     void start(Monitor* caller);
 
-    Trame getOldestMessage();
+    Trame getMessage(bool oldest);
 
     void setFilter(std::string newfilter);
 
-    bool sendMessage(Trame& trame);
+    bool sendMessage(const Trame& trame);
+
+    Message_Buffer& getBuffer();
 
 protected:
 
@@ -32,8 +34,6 @@ protected:
     Trame waitForMessage();
 
     bool shallStopListening();
-
-    Message_Buffer& getBuffer();
 
 private:
 
