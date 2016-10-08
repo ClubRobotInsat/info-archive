@@ -3,122 +3,112 @@
 //
 
 #include "Start_Screen.h"
-#include <iostream>
-#include <dirent.h>
-#include <cstring>
 #include "../../robot/Commun/TCPIP.h"
+#include <cstring>
+#include <dirent.h>
+#include <iostream>
 
-Start_Screen::Start_Screen() : Gtk::Window() , _canAdress(""), _serialList({}){
+Start_Screen::Start_Screen() : Gtk::Window(), _canAdress(""), _serialList({}) {
 
-    _canListeningOnTCPIP = false;
+	_canListeningOnTCPIP = false;
 
-    this->set_border_width(1);
-    this->set_decorated(true);
-    this->set_size_request(400, 50);
-    this->set_position(Gtk::WindowPosition::WIN_POS_CENTER_ALWAYS);
-    this->set_resizable(false);
+	this->set_border_width(1);
+	this->set_decorated(true);
+	this->set_size_request(400, 50);
+	this->set_position(Gtk::WindowPosition::WIN_POS_CENTER_ALWAYS);
+	this->set_resizable(false);
 
-    add(_container);
-    _container.add(_displayedList);
-    _container.add(_launchCanMonitor);
-    _container.add(_refreshList);
+	add(_container);
+	_container.add(_displayedList);
+	_container.add(_launchCanMonitor);
+	_container.add(_refreshList);
 
-    _refreshList.set_label("Refresh");
-    _launchCanMonitor.set_label("Start Connection");
+	_refreshList.set_label("Refresh");
+	_launchCanMonitor.set_label("Start Connection");
 
-    _refreshList.signal_clicked().connect(sigc::mem_fun(*this, &Start_Screen::mainLoop));
-    _launchCanMonitor.signal_clicked().connect(sigc::mem_fun(*this, &Start_Screen::emitLaunchCanSignal));
+	_refreshList.signal_clicked().connect(sigc::mem_fun(*this, &Start_Screen::mainLoop));
+	_launchCanMonitor.signal_clicked().connect(sigc::mem_fun(*this, &Start_Screen::emitLaunchCanSignal));
 
-    show_all_children();
+	show_all_children();
 
-    this->mainLoop();
-
+	this->mainLoop();
 }
 
-Start_Screen::~Start_Screen() {
-
-}
+Start_Screen::~Start_Screen() {}
 
 
 bool Start_Screen::scanSerialConnection() {
 
-    _serialList.clear();
+	_serialList.clear();
 
-    //temp file for storing everything that is in /dev;
-    std::vector<std::string> files_in_dev= {};
+	// temp file for storing everything that is in /dev;
+	std::vector<std::string> files_in_dev = {};
 
-    //open a directory and read it
-    auto open_dir = opendir("/dev");
-    auto dev_dir = readdir(open_dir);
+	// open a directory and read it
+	auto open_dir = opendir("/dev");
+	auto dev_dir = readdir(open_dir);
 
-    //populate files_in_dev with all the files in /dev that matches "ttyU"
-    while (dev_dir != NULL) {
-        std::string string_filename = dev_dir->d_name;
-        if (string_filename.substr(0,4) == "ttyU") {
-            files_in_dev.push_back(string_filename );
-        }
-        dev_dir = readdir(open_dir);
-    }
-    if (_serialList != files_in_dev) {
-        _serialList = files_in_dev;
-        return true;
-    }
-    else {
-        return false;
-    }
+	// populate files_in_dev with all the files in /dev that matches "ttyU"
+	while(dev_dir != NULL) {
+		std::string string_filename = dev_dir->d_name;
+		if(string_filename.substr(0, 4) == "ttyU") {
+			files_in_dev.push_back(string_filename);
+		}
+		dev_dir = readdir(open_dir);
+	}
+	if(_serialList != files_in_dev) {
+		_serialList = files_in_dev;
+		return true;
+	} else {
+		return false;
+	}
 }
 
 void Start_Screen::mainLoop() {
 
-    this->scanSerialConnection();
-    this->scanTCPIPConnection();
-    this->updateComboBoxList();
-    this->updateConnectionButton();
+	this->scanSerialConnection();
+	this->scanTCPIPConnection();
+	this->updateComboBoxList();
+	this->updateConnectionButton();
 };
 
 void Start_Screen::updateComboBoxList() {
 
-    _displayedList.remove_all();
-    //_displayedList.set_active(0);
-    for (auto items : _serialList) {
-        _displayedList.append(items);
-        _displayedList.set_active_text(items);
-    }
-    if (_canListeningOnTCPIP) {
-        _displayedList.append("TCPIP: 127.0.0.1:1234");
-        _displayedList.set_active_text("TCPIP: 127.0.0.1:1234");
-    }
+	_displayedList.remove_all();
+	//_displayedList.set_active(0);
+	for(auto items : _serialList) {
+		_displayedList.append(items);
+		_displayedList.set_active_text(items);
+	}
+	if(_canListeningOnTCPIP) {
+		_displayedList.append("TCPIP: 127.0.0.1:1234");
+		_displayedList.set_active_text("TCPIP: 127.0.0.1:1234");
+	}
 }
 
-void Start_Screen::onLaunchCanMonitorClicked() {
-
-}
+void Start_Screen::onLaunchCanMonitorClicked() {}
 
 void Start_Screen::scanTCPIPConnection() {
 
-    try {
-        Commun::TCPIP connection("127.0.0.1", 1234);
-        _canListeningOnTCPIP = true;
-    }
-    catch (...) {
-        _canListeningOnTCPIP = false;
-    }
-
+	try {
+		Commun::TCPIP connection("127.0.0.1", 1234);
+		_canListeningOnTCPIP = true;
+	} catch(...) {
+		_canListeningOnTCPIP = false;
+	}
 }
 
 Start_Screen::type_startScreenSignalOnExit Start_Screen::startScreenSignalOnExit() {
-    return _startScreenSignalOnExit;
+	return _startScreenSignalOnExit;
 }
 
 void Start_Screen::emitLaunchCanSignal() {
 
-    _canAdress = _displayedList.get_active_text();
-    _startScreenSignalOnExit.emit(_canAdress);
-
+	_canAdress = _displayedList.get_active_text();
+	_startScreenSignalOnExit.emit(_canAdress);
 }
 
 void Start_Screen::updateConnectionButton() {
 
-    _launchCanMonitor.set_sensitive((_displayedList.get_active_text() != ""));
-
-    }
+	_launchCanMonitor.set_sensitive((_displayedList.get_active_text() != ""));
+}

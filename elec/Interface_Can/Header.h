@@ -6,7 +6,7 @@
 #define ROOT_HEADER_H
 
 #include <gtkmm.h>
-#include <thread>
 #include <mutex>
+#include <thread>
 
-#endif //ROOT_HEADER_H
+#endif // ROOT_HEADER_H

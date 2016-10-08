@@ -14,27 +14,24 @@
 
 class Application : public Gtk::Application {
 public:
+	Application(int argc, char** argv, std::string id);
 
-    Application(int argc, char** argv, std::string id);
+	~Application();
 
-    ~Application();
+	/**
+	 * Delete Start_Screen and intialize a Can monitoring window
+	 * @param canPort a string to intialize the can object
+	 */
+	void killStartScreen(std::string canPort);
 
-    /**
-     * Delete Start_Screen and intialize a Can monitoring window
-     * @param canPort a string to intialize the can object
-     */
-    void killStartScreen(std::string canPort);
+	void startCan(std::string& port);
 
-    void startCan(std::string& port);
-
-    bool on_delete_event(GdkEventAny* event);
+	bool on_delete_event(GdkEventAny* event);
 
 private:
+	Start_Screen _start_screen;
 
-    Start_Screen _start_screen;
-
-    std::shared_ptr<Monitor> _monitor;
-
+	std::shared_ptr<Monitor> _monitor;
 };
 
-#endif //ROOT_APPLICATION_H
+#endif // ROOT_APPLICATION_H

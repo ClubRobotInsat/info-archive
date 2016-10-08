@@ -3,11 +3,11 @@
 //
 #include "Message.h"
 
-Message::Message(){
+Message::Message() {
 
-    add(_id);
-    add(_cmd);
-    add(_data);
-    add(_time);
-    add(_color);
+	add(_id);
+	add(_cmd);
+	add(_data);
+	add(_time);
+	add(_color);
 }
