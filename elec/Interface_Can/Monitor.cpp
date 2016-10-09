@@ -41,7 +41,7 @@ Monitor::Monitor(std::string& port)
 	_sendMessageContainer.attach(_pauseButton, 0, 1, 2, 1);
 
 	_sendMessageContainer.attach(_labelTrameId, 15, 1, 7, 1);
-	_sendMessageContainer.attach_next_to(_trameId, _labelTrameId, Gtk::POS_BOTTOM, 7, 1);
+    _sendMessageContainer.attach_next_to(_trameId, _labelTrameId, Gtk::POS_BOTTOM, 7, 1);
 	_sendMessageContainer.attach_next_to(_labelTrameType, _trameId, Gtk::POS_BOTTOM, 7, 1);
 	_sendMessageContainer.attach_next_to(_trameType, _labelTrameType, Gtk::POS_BOTTOM, 7, 1);
 	_sendMessageContainer.attach_next_to(_labelTrameData, _trameType, Gtk::POS_BOTTOM, 7, 1);
