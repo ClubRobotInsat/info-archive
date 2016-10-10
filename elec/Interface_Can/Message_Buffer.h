@@ -22,6 +22,8 @@ public:
 
 	Trame retrieveMessageMatchingFilter(std::string filter, bool oldest);
 
+	bool getAcceptNewMessage();
+
 private:
 	std::deque<Trame> _messageList;
 

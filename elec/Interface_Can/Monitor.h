@@ -79,6 +79,16 @@ protected:
 	 */
 	void tooglePauseMode();
 
+    /**
+     * Will scroll _lowLevelWindow all the way to the top
+     */
+    void scrollToTop();
+
+    /**
+     * Called by updateInterface. Scroll to the top if the app is not paused.
+     */
+    void autoscroll();
+
 	template <typename... Args>
 	Trame make_trame(uint8_t id, uint8_t cmd, Args&&... donnees) {
 		Trame t(id, cmd);
@@ -93,6 +103,7 @@ private:
 	// Glib::Dispatcher _dispatcher;
 	std::unique_ptr<std::thread> _listenerThread;
 	CanListener _canListener;
+	//mutable std::mutex mutex;
 	/**
 	 * Top level GUI elements
 	 */

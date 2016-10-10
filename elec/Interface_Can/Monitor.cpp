@@ -10,11 +10,11 @@ Monitor::Monitor(std::string& port)
         : Gtk::Window()
         , _listenerThread(nullptr)
         , _canListener(port)
-        , _sendTrameButton("Envoyer la trame")
         , _pauseButton("Pause")
+        , _sendTrameButton("Envoyer la trame")
         , _labelTrameId("Trame ID")
         , _labelTrameType("Trame Type")
-        , _labelTrameData("Trame Data") {
+        , _labelTrameData("Trame Data"){
 
 	//-----------Threading Stuff|
 
@@ -60,8 +60,6 @@ Monitor::Monitor(std::string& port)
 	_messageTree.append_column("ID", _message._id);
 	_messageTree.append_column("Cmd", _message._cmd);
 	_messageTree.append_column("Data", _message._data);
-
-	Gtk::TreeModel::iterator treeiter = _refTreeModel->append();
 
 	for(int i = 0; i < 4; i++) {
 		auto column = _messageTree.get_column(i);
@@ -130,6 +128,8 @@ void Monitor::updateInterface(bool colored) {
 		row[_message._color] = "white";
 	}
 
+	//this->autoscroll();
+
 	this->queue_draw();
 }
 
@@ -189,7 +189,22 @@ void Monitor::tooglePauseMode() {
 
 Monitor::~Monitor() {
 
-	//_listenerThread->join();
-	_listenerThread.release();
-	_refTreeModel.release();
+	//_listenerThread.release();
+	//_refTreeModel.release();
+}
+
+void Monitor::scrollToTop() {
+	//std::lock_guard<std::mutex> lock(mutex);
+	_lowLevelWindow.get_focus_vadjustment()->set_value(_lowLevelWindow.get_vadjustment()->get_upper());
+
+}
+
+void Monitor::autoscroll() {
+
+    if (this->_canListener.getBuffer().getAcceptNewMessage()) {
+
+        this->scrollToTop();
+
+    }
+
 }

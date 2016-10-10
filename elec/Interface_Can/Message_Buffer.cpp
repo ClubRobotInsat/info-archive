@@ -44,3 +44,9 @@ Trame Message_Buffer::retrieveMessageMatchingFilter(std::string filter, bool old
 		throw std::runtime_error("Oups, problem");
 	}
 }
+
+bool Message_Buffer::getAcceptNewMessage() {
+
+	return _acceptNewMessage;
+
+}
