@@ -7,7 +7,19 @@ Installation de tout ce qu'il faut
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
 echo "deb http://download.mono-project.com/repo/debian wheezy main" | sudo tee /etc/apt/sources.list.d/mono-xamarin.list
 sudo apt-get update
-sudo apt-get install mono-complete cmake subversion git libbox2d-dev gcc-5-multilib g++-5-multilib libbluetooth-dev build-essential libglfw-dev libglu1-mesa-dev libxrandr-dev libgtkmm-3.0-dev libusb-1.0-0-dev clang-format-3.7
+sudo apt-get install mono-complete cmake subversion git libbox2d-dev gcc-5-multilib g++-5-multilib libbluetooth-dev build-essential libglfw-dev libglu1-mesa-dev curl libxrandr-dev libgtkmm-3.0-dev libusb-1.0-0-dev clang-format-3.8
+
+pushd .
+cd /tmp
+git clone https://github.com/grandelli/WiiC.git
+cd WiiC
+cmake src
+make
+sudo make install
+sudo chmod -R go+x /usr/local/include/wiic
+cd /tmp
+rm -rf WiiC
+popd
 ```
 
 Pour installer clang en tant que compilateur :
@@ -46,7 +58,9 @@ Il reste à ce moment un peu de configuration à effectuer : dans le menu ```Fil
 Dans le champ ```CMake options```, mettre le texte ```-DDEBUG=on```.
 
 Pour pouvoir tester les IA via la laison série (RS232) en utilisant Clion (sans les droits root), il faut ajouter votre utilisateur au groupe ayant accès à la laison série (dialout) :
-```sudo usermod -a -G dialout NOM_UTILISATEUR```
+```
+sudo usermod -a -G dialout NOM_UTILISATEUR
+```
 
 --------------------------
 Pour lancer l'IA en mode Debug sur le simu
@@ -64,7 +78,7 @@ Pour lancer l'IA en mode Debug sur le simu
 11. Voilà c'est terminé, vous n'avez plus qu'a lancer votre réseau petri et admiré le résultat dans le simu !
 
 
-## Que faire ? 
+## Que faire ?
 
 #### Débugger le simu et l'IA:
 
@@ -89,43 +103,24 @@ carte électrovanne : fait crash le simu ("Une erreur est survenue dans le clien
 
 partie pneumatique :  
 quand on active/désasctive une pompe seule la pompe BAS est concernée (ID = 6), on ne peut pas modif la pompe HAUTE  
-  
+
 je ne sais pas ce que font exactement ces méthodes -Benjamin
 * allerA(Distance, Distance)   ... ne marche pas (normal d'après Paul)
 * allerA(Vector2m)             ... ne marche pas (normal d'après Paul)
 * reculerA(Vector2m)
-  
+
 ne marche pas : ça attend dans Petri, il y a le message "[CAN.cpp:221 in marquerAckRecu] : On reçoit un ack pour le message 56, déjà évacué de la fenêtre" dans le terminal
 * recupererCubes()
 * relacherCubes()  
-  
+
 sinon les déplacements se font bien (et les cartes ont accès à la pos + angle de départ du robot, il n'y a pas de souci avec ça)
 
 ------------
 Cross-Compilation pour Raspberry
 ------------
-###Installation des outils :
+### Installation des outils :
 ```
 sudo apt-get install gcc-5-arm-linux-gnueabihf g++-5-arm-linux-gnueabihf build-essential git
 ```
 Pour crosscompiler la wiimote, il faut installer ```libbluetooth-dev``` en version arm, et aussi cross-compiler WiiC en arm.
 Ensuite faut mettre les libs dans ```/usr/arm-linux-gnueabihf/lib```
-
-------------
-Installation des outils pour le controle du robot à la wiimote
-------------
-
-```
-sudo apt-get install libbluetooth-dev
-cd <WIIC_HOME>
-git clone https://github.com/grandelli/WiiC.git
-cd WiiC
-mkdir build
-cd build
-cmake ../src
-make
-sudo make install
-sudo ldconfig
-```
-
-_<WIIC_HOME>_ désigne le dossier dans lequel installer Wiic

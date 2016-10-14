@@ -3,3 +3,4 @@ robot/Principal/petri/src/*
 /.idea
 *~
 /build
+*.swp
