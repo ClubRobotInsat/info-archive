@@ -5,8 +5,8 @@
 #include "CanListener.h"
 #include "Monitor.h"
 
-CanListener::CanListener(std::string& port)
-        : _sentAMessage(false), _shallStopListening(false), _refreshRate(20_ms), _buffer(10000) {
+CanListener::CanListener(std::string& port, Monitor* caller, bool& stopBooleanAdress)
+        : _sentAMessage(false), _shallStopListening(stopBooleanAdress), _refreshRate(20_ms), _acceptNewMessage(true) {
 
 	if(port.substr(0, 5) == "TCPIP") {
 		_can.reset(new Commun::CAN(std::make_unique<Commun::TCPIP>(port.substr(7, port.length() - 12), 1234)));
@@ -18,68 +18,46 @@ CanListener::CanListener(std::string& port)
 	}
 
 	_can->setTemporisation(10_ms);
+	_on_message_received.connect(sigc::mem_fun(caller, &Monitor::notify));
 }
 
-void CanListener::start(Monitor* caller) {
-
-	this->mainLoop(caller);
+void CanListener::start() {
+	this->mainLoop();
 }
 
-void CanListener::mainLoop(Monitor* caller) {
+void CanListener::mainLoop() {
 
 	while(!this->shallStopListening()) {
-
-		bool shallNotify = false;
-
-		// check if other threads added stuff to the _buffer and if the caller needs to be notified
-		// usefull for the sendMessage() function
-
-		if(_sentAMessage) {
-			caller->notify();
-			_sentAMessage = false;
-		} else {
+		if(_acceptNewMessage) {
+			std::unique_ptr<Trame> trame;
 			auto now = Units::TimePoint::now();
 			while(Units::TimePoint::now() < now + _refreshRate) {
-				auto Trame = this->waitForMessage();
-				shallNotify = this->getBuffer().addMessage(Trame);
+				trame = std::make_unique<Trame>(this->waitForMessage());
+				if(not(trame->getId() == 0 or trame->getCmd() == 0)) {
+					_on_message_received.emit(*trame.get());
+				}
 			}
-			if(shallNotify) {
-				caller->notify();
-				shallNotify = false;
-			}
+		} else {
+			sleep(sleepTime);
 		}
 	}
 }
 
 Trame CanListener::waitForMessage() {
-
 	auto Trame = _can->recevoirTrame();
 	return Trame;
-}
-
-Trame CanListener::getMessage(bool oldest) {
-
-	Trame result = this->getBuffer().retrieveMessageMatchingFilter(_filter, oldest);
-	return result;
 }
 
 bool CanListener::shallStopListening() {
 	return _shallStopListening;
 }
 
-void CanListener::setFilter(std::string newfilter) {
-
-	_filter = newfilter;
-}
-
-
-Message_Buffer& CanListener::getBuffer() {
-	std::lock_guard<std::mutex> lock(_mutex);
-	return _buffer;
-}
-
-bool CanListener::sendMessage(const Trame& trame) {
+void CanListener::sendMessage(const Trame& trame) {
 	_can->envoyerTrame(trame);
-	this->getBuffer().addMessage(trame);
-	return true;
+	_on_message_received.emit(trame);
+}
+
+void CanListener::toogleAcceptNewMessage() {
+
+	_acceptNewMessage = !_acceptNewMessage;
 }

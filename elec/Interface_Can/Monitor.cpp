@@ -9,18 +9,19 @@
 Monitor::Monitor(std::string& port)
         : Gtk::Window()
         , _listenerThread(nullptr)
-        , _canListener(port)
+        , _stopListnenerThread(false)
+        , _canListener(port, this, _stopListnenerThread)
         , _pauseButton("Pause")
         , _sendTrameButton("Envoyer la trame")
         , _labelTrameId("Trame ID")
         , _labelTrameType("Trame Type")
-        , _labelTrameData("Trame Data"){
+        , _labelTrameData("Trame Data") {
 
 	//-----------Threading Stuff|
 
 	//_dispatcher.connect(sigc::mem_fun(*this, &Monitor::onListenerNotification));
 
-	_listenerThread = std::make_unique<std::thread>([this] { _canListener.start(this); });
+	_listenerThread = std::make_unique<std::thread>([this] { _canListener.start(); });
 
 	//-----------------GUI Stuff|
 
@@ -41,7 +42,7 @@ Monitor::Monitor(std::string& port)
 	_sendMessageContainer.attach(_pauseButton, 0, 1, 2, 1);
 
 	_sendMessageContainer.attach(_labelTrameId, 15, 1, 7, 1);
-    _sendMessageContainer.attach_next_to(_trameId, _labelTrameId, Gtk::POS_BOTTOM, 7, 1);
+	_sendMessageContainer.attach_next_to(_trameId, _labelTrameId, Gtk::POS_BOTTOM, 7, 1);
 	_sendMessageContainer.attach_next_to(_labelTrameType, _trameId, Gtk::POS_BOTTOM, 7, 1);
 	_sendMessageContainer.attach_next_to(_trameType, _labelTrameType, Gtk::POS_BOTTOM, 7, 1);
 	_sendMessageContainer.attach_next_to(_labelTrameData, _trameType, Gtk::POS_BOTTOM, 7, 1);
@@ -79,15 +80,15 @@ Monitor::Monitor(std::string& port)
 	this->show_all_children();
 }
 
-void Monitor::notify() {
+void Monitor::notify(Trame trame) {
 
-	onListenerNotification(false);
+	onListenerNotification(false, trame);
 }
 
 
-void Monitor::onListenerNotification(bool colored) {
+void Monitor::onListenerNotification(bool colored, Trame trame) {
 
-	this->updateInterface(colored);
+	this->handleTrame(trame, colored);
 }
 
 std::string Monitor::convertToHexadecimal(unsigned int number) {
@@ -95,31 +96,18 @@ std::string Monitor::convertToHexadecimal(unsigned int number) {
 	stream << "0x" << std::hex << number;
 	return stream.str();
 }
-/*
-uint Monitor::convertToHexadecimal(unsigned int number) {
-    std::stringstream stream;
-    stream << std::hex << number;
-    return std::stoi(stream.str(), nullptr, 10);
-}
-*/
 
 
-void Monitor::updateInterface(bool colored) {
-
-	auto TrameToHandle = _canListener.getMessage(false);
+void Monitor::updateInterface(bool colored, std::string id, std::string cmd, std::string time, std::string data) {
 
 	Gtk::TreeModel::Row row = *(_refTreeModel->prepend());
 
-	row[_message._id] = convertToHexadecimal(TrameToHandle.getId());
-	row[_message._cmd] = convertToHexadecimal(TrameToHandle.getCmd());
-	row[_message._time] = this->getLocalTime();
+	row[_message._id] = id;
+	row[_message._cmd] = cmd;
+	row[_message._time] = time;
 	std::string finalData;
 
-	for(int i = 0; i < TrameToHandle.getNbDonnees(); i++) {
-		finalData += convertToHexadecimal(TrameToHandle.getDonnee(i)) + " ";
-	}
-
-	row[_message._data] = finalData;
+	row[_message._data] = data;
 
 
 	if(colored) {
@@ -127,8 +115,6 @@ void Monitor::updateInterface(bool colored) {
 	} else {
 		row[_message._color] = "white";
 	}
-
-	//this->autoscroll();
 
 	this->queue_draw();
 }
@@ -148,7 +134,7 @@ void Monitor::sendMessage() {
 	if(sendMessage) {
 		Trame& result = *message.release();
 		_canListener.sendMessage(result);
-		this->onListenerNotification(true);
+		// this->onListenerNotification(true);
 	}
 }
 
@@ -184,7 +170,7 @@ std::string Monitor::getLocalTime() {
 }
 
 void Monitor::tooglePauseMode() {
-	this->_canListener.getBuffer().toogleAcceptNewMessage();
+	this->_canListener.toogleAcceptNewMessage();
 }
 
 Monitor::~Monitor() {
@@ -194,17 +180,19 @@ Monitor::~Monitor() {
 }
 
 void Monitor::scrollToTop() {
-	//std::lock_guard<std::mutex> lock(mutex);
+	// std::lock_guard<std::mutex> lock(mutex);
 	_lowLevelWindow.get_focus_vadjustment()->set_value(_lowLevelWindow.get_vadjustment()->get_upper());
-
 }
 
-void Monitor::autoscroll() {
+void Monitor::handleTrame(Trame& Trame, bool isColored) {
 
-    if (this->_canListener.getBuffer().getAcceptNewMessage()) {
+	auto id = convertToHexadecimal(Trame.getId());
+	auto cmd = convertToHexadecimal(Trame.getCmd());
+	auto time = this->getLocalTime();
+	std::string data;
+	for(int i = 0; i < Trame.getNbDonnees(); i++) {
+		data += convertToHexadecimal(Trame.getDonnee(i)) + " ";
+	}
 
-        this->scrollToTop();
-
-    }
-
+	this->updateInterface(isColored, id, cmd, time, data);
 }

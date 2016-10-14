@@ -18,9 +18,7 @@ public:
 
 	void toogleAcceptNewMessage();
 
-	Trame retrieveMessage();
-
-	Trame retrieveMessageMatchingFilter(std::string filter, bool oldest);
+	Trame retrieveMessage(bool oldest);
 
 	bool getAcceptNewMessage();
 

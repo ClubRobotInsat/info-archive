@@ -75,7 +75,6 @@ void Start_Screen::mainLoop() {
 void Start_Screen::updateComboBoxList() {
 
 	_displayedList.remove_all();
-	//_displayedList.set_active(0);
 	for(auto items : _serialList) {
 		_displayedList.append(items);
 		_displayedList.set_active_text(items);
@@ -85,8 +84,6 @@ void Start_Screen::updateComboBoxList() {
 		_displayedList.set_active_text("TCPIP: 127.0.0.1:1234");
 	}
 }
-
-void Start_Screen::onLaunchCanMonitorClicked() {}
 
 void Start_Screen::scanTCPIPConnection() {
 

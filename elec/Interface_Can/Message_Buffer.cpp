@@ -25,28 +25,19 @@ void Message_Buffer::toogleAcceptNewMessage() {
 	_acceptNewMessage = !_acceptNewMessage;
 }
 
-Trame Message_Buffer::retrieveMessage() {
-	return _messageList.back();
-}
-
-Trame Message_Buffer::retrieveMessageMatchingFilter(std::string filter, bool oldest) {
+Trame Message_Buffer::retrieveMessage(bool oldest) {
 	if(not _messageList.empty()) {
-		if(filter != "") {
-			if(oldest) {
-				return _messageList.back();
-			} else {
-				return _messageList.front();
-			}
+		if(oldest) {
+			return _messageList.back();
 		} else {
 			return _messageList.front();
 		}
 	} else {
-		throw std::runtime_error("Oups, problem");
+		throw std::runtime_error("Not trame to retrieve");
 	}
 }
 
 bool Message_Buffer::getAcceptNewMessage() {
 
 	return _acceptNewMessage;
-
 }

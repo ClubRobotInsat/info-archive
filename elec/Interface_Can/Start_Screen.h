@@ -21,11 +21,6 @@ public:
 	virtual ~Start_Screen();
 
 	/**
-	 * @brief The callback function for _launchCanMonitor
-	 */
-	void onLaunchCanMonitorClicked();
-
-	/**
 	 *
 	 */
 	typedef sigc::signal<void, std::string> type_startScreenSignalOnExit;

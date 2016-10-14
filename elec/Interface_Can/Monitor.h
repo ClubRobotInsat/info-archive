@@ -25,14 +25,22 @@ public:
 	~Monitor();
 
 	/**
-	 * Method called by the listener thread to notify the main thread that a message has been received
+	 * Method called by the listener thread to notify the main thread that a message has been received.
+	 * Call onListenerNotification(true);
 	 */
-	void notify();
+	void notify(Trame trame);
 
 	/**
 	 * Create a new trame from the data in _trameData, _trameId, _trameType and send it to the CAN
 	 */
 	void sendMessage();
+
+	/**
+	 * Will call update interface after splitting the Trame data.
+	 *
+	 * @param Trame : the trame to display on the GUI
+	 */
+	void handleTrame(Trame& Trame, bool isColored);
 
 protected:
 	/**
@@ -45,12 +53,17 @@ protected:
 	 * Method called by notify, wich will call updateInterface
 	 * @param colored : if the line shall be drawn in pink, send true, otherwise send false en it will be drawn normally
 	 */
-	void onListenerNotification(bool colored);
+	void onListenerNotification(bool colored, Trame trame);
 
 	/**
-	 * Add a line to the _refTreeModel
+	 * Add a line to the _refTreeModel  with the data passed to the function
+	 * @param colored : if the line should be in pink or not
+	 * @param id : the ID in hexadecimal
+	 * @param cmd : the CMD of the Trame in hexa
+	 * @param time : the time.
+	 * @param data : An array of string
 	 */
-	void updateInterface(bool colored);
+	void updateInterface(bool colored, std::string id, std::string cmd, std::string time, std::string data);
 
 	/**
 	 *
@@ -58,8 +71,6 @@ protected:
 	 * @return A string in the form 0x.. 0x.. 0x.. , etc.
 	 */
 	std::string convertToHexadecimal(unsigned int number);
-
-	// int convertToHexadecimal(unsigned int number);
 
 	/**
 	 *
@@ -79,15 +90,11 @@ protected:
 	 */
 	void tooglePauseMode();
 
-    /**
-     * Will scroll _lowLevelWindow all the way to the top
-     */
-    void scrollToTop();
-
-    /**
-     * Called by updateInterface. Scroll to the top if the app is not paused.
-     */
-    void autoscroll();
+	/**
+	 * Will scroll _lowLevelWindow all the way to the top
+	 * @warning Causes random segfault. Be warned. Use at your own discretion.
+	 */
+	void scrollToTop();
 
 	template <typename... Args>
 	Trame make_trame(uint8_t id, uint8_t cmd, Args&&... donnees) {
@@ -103,13 +110,15 @@ private:
 	// Glib::Dispatcher _dispatcher;
 	std::unique_ptr<std::thread> _listenerThread;
 	CanListener _canListener;
-	//mutable std::mutex mutex;
+	bool _stopListnenerThread;
+
 	/**
 	 * Top level GUI elements
 	 */
 	Gtk::Paned _topLevelBox;
 	Gtk::Frame _frame;
 	Gtk::Grid _sendMessageContainer;
+
 	/**
 	 * GUI elements related to sending message
 	 */

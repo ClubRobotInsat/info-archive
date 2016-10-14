@@ -10,44 +10,67 @@
 #include "Header.h"
 #include "Message_Buffer.h"
 
+/**
+ * Represent the time waited between two call to Can::waitForMessage
+ * Used to avoid having a while(true) loop in the code
+ */
+const Duration sleepTime = 5_ms;
+
 class Monitor;
 
+/**
+ * A class wich abstracts a Can Listener : shall be started by the start() method, and will return when
+ * _shallStopListening is set to false.
+ *
+ */
 class CanListener {
 
 public:
-	CanListener(std::string& port);
+	/**
+	 *
+	 * @param port : a string
+	 * @param caller : an pointer used to connect the signal _on_message_received
+	 * @return
+	 */
+	CanListener(std::string& port, Monitor* caller, bool& stopBooleanAdress);
 
-	void start(Monitor* caller);
+	/**
+	 * Enter the listening loop. This function will return if _shallStopListening is set to False.
+	 */
+	void start();
 
-	Trame getMessage(bool oldest);
+	/**
+	 * Toogle the variable _acceptNewMessage;
+	 */
+	void toogleAcceptNewMessage();
 
-	void setFilter(std::string newfilter);
-
-	bool sendMessage(const Trame& trame);
-
-	Message_Buffer& getBuffer();
+	void sendMessage(const Trame& trame);
 
 protected:
-	void mainLoop(Monitor* caller);
+	/**
+	 * Listen if _acceptNewMessage is set to true.
+	 * Return if _shallStopListening is set to true;
+	 */
+	void mainLoop();
 
 	Trame waitForMessage();
 
 	bool shallStopListening();
 
 private:
-	std::atomic_bool _sentAMessage;
+	Trame _currentTrame;
 
-	mutable std::mutex _mutex;
+	std::atomic_bool _sentAMessage;
 
 	std::unique_ptr<Commun::CAN> _can;
 
-	bool _shallStopListening;
+	bool& _shallStopListening;
+
+	bool _acceptNewMessage;
 
 	Units::Time _refreshRate;
 
-	Message_Buffer _buffer;
-
-	std::string _filter;
+	sigc::signal<void, Trame> _on_message_received;
 };
 
 
