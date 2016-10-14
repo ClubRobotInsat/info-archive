@@ -130,11 +130,10 @@ void Monitor::sendMessage() {
 		sendMessage = false;
 	}
 
-	// message = std::make_unique<Trame>(make_trame(0x01_b, 0x0_b, 0x55_b));
 	if(sendMessage) {
-		Trame& result = *message.release();
+		Trame result = *message.release();
 		_canListener.sendMessage(result);
-		// this->onListenerNotification(true);
+		this->handleTrame(result, true);
 	}
 }
 

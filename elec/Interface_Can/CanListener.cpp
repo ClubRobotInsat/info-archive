@@ -54,7 +54,6 @@ bool CanListener::shallStopListening() {
 
 void CanListener::sendMessage(const Trame& trame) {
 	_can->envoyerTrame(trame);
-	_on_message_received.emit(trame);
 }
 
 void CanListener::toogleAcceptNewMessage() {

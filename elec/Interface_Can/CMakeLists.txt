@@ -9,8 +9,7 @@ set(SOURCE_FILES_INTERFACE
         Message.cpp
         CanListener.cpp
         CanListener.h
-        Message_Buffer.cpp
-        Message_Buffer.h)
+        )
 
 #Vu que c'est la manière "officielle" de récuperer gtkmm via Cmake, on est obligé de passer par PkgConfig
 find_package(PkgConfig REQUIRED)
@@ -19,7 +18,7 @@ pkg_check_modules(GTKMM REQUIRED gtkmm - 3.0)
 include_directories(${GTKMM_INCLUDE_DIRS})
 link_directories(${GTKMM_LIBRARY_DIRS})
 add_definitions(${GTKMM_CFLAGS_OTHER})
-œ
+
 add_executable(Can_Interface ${SOURCE_FILES_INTERFACE})
 
 #On pense bien à linker avec la lib Robot qui permet d'utiliser le code déjà écrit pour le CAN

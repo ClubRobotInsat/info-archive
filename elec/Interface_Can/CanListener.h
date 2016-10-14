@@ -8,7 +8,6 @@
 #include "../../robot/Commun/RS232.h"
 #include "../../robot/Commun/TCPIP.h"
 #include "Header.h"
-#include "Message_Buffer.h"
 
 /**
  * Represent the time waited between two call to Can::waitForMessage
