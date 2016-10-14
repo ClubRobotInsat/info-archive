@@ -8,9 +8,11 @@
 
 #include "../../simulateur/cartes/CarteAsservissement2009.h"
 #include "../../simulateur/cartes/CarteCAN_USB.h"
+#include "../../simulateur/cartes/CarteContacteurs2007.h"
 #include "../../simulateur/cartes/CarteDebugDessin.h"
 #include "../../simulateur/cartes/CarteDeplacement2009.h"
 #include "../../simulateur/cartes/CarteDetectAdv2009.h"
+//#include "../../simulateur/cartes/CarteElectrovannes2016.h"
 #include "../../simulateur/cartes/CarteIO2014.h"
 #include "../../simulateur/cartes/CarteServosNova2009.h"
 #include "../../simulateur/robot/Carte.h"
@@ -20,9 +22,14 @@
 #include "../../robot/Cartes/Carte.h"
 #include "../../robot/Cartes/CarteAsservissement2009.h"
 #include "../../robot/Cartes/CarteCAN_USB.h"
+#include "../../robot/Cartes/CarteContacteurs2007.h"
 #include "../../robot/Cartes/CarteDebugDessin.h"
 #include "../../robot/Cartes/CarteDeplacementSymetrieY.h"
+//#include "../../robot/Cartes/CarteElectrovannes2016.h"
 #include "../../robot/Cartes/CarteIO2014.h"
+//#include "../../robot/Cartes/CartePneumatique.h"
+//#include "../../robot/Cartes/CartePneumatique2014.h"
+//#include "../../robot/Cartes/CarteServosNova2009.h"
 #include "../robot/Cartes/CarteDetectAdv2009.h"
 
 #endif
@@ -68,7 +75,37 @@ namespace ConstantesPrincipal {
 		BACK_CONTACT_6 = 10,
 	};
 
+	/*
+	enum class Pince {
+		GAUCHE = 0,
+		DROIT = 1,
+	};
+
+	enum class PositionPince {
+		RENTRE_DEBUT = 0,
+		RENTRE = 1,
+		SORTIE = 2,
+		SORTIE_MAX = 3,
+		NBR = 4,
+	};
+	*/
+
 	/////////////////// SERVOS ///////////////////
+
+	/*
+	enum class Servo {
+		PINCE_D = ID_SERVO_G_PINCE_DROITE,
+		PARASOL = ID_SERVO_D_PARASOL,
+		CUILLERE = ID_SERVO_G_CUILLERE,
+		PELLE = ID_SERVO_D_PELLE,
+		PINCE_G = ID_SERVO_G_PINCE_GAUCHE,
+		NBR = 5
+	};
+	*/
+
+	enum class Servo_D { NBR = 2 };
+	enum class Servo_G { NBR = 3 };
+
 	// Durée attendue lors de l'envoi d'un message aux cartes élecs dans les fonctions blonquantes autre que les servos.
 	auto const TIMEOUT_ELEC = 100_ms;
 
@@ -88,6 +125,8 @@ namespace ConstantesPrincipal {
 	extern Angle const OFFSET_ANGLE_ADV;
 
 	extern int const IDRobot;
+
+	//extern Angle const positionPinceD[enumToInt(PositionPince::NBR)];
 
 	/////////////////// CARTES ///////////////////
 
@@ -111,6 +150,14 @@ namespace ConstantesPrincipal {
 #endif
 		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_DEPLACEMENT };
 	};
+	// TODO : rajouter toutes les cartes
+	/*
+	template <>
+	struct CarteInfo<IDCartesPrincipal::SERVO_G> {
+			using typeCarte = CarteServosNova2009;
+			enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_SERVO_G };
+	};
+	*/
 	template <>
 	struct CarteInfo<IDCartesPrincipal::IO> {
 		using typeCarte = CarteIO2014;

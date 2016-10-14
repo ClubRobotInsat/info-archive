@@ -2,8 +2,5 @@ robot/Principal/petri/src/*
 .DS_Store
 /.idea
 *~
-<<<<<<< HEAD
-petri/
-=======
+/petri
 /build
->>>>>>> c858eb69fbe91f8c29d13bd955e711994e8b5fc8
