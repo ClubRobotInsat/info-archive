@@ -33,7 +33,7 @@ public:
 	 */
 	CanListener(std::string& port, Monitor* caller, bool& stopBooleanAdress);
 
-    virtual ~CanListener();
+	virtual ~CanListener();
 
 	/**
 	 * Enter the listening loop. This function will return if _shallStopListening is set to False.

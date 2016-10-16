@@ -73,10 +73,9 @@ Monitor::Monitor(std::string& port)
 	this->show_all();
 	this->show_all_children();
 
-    //-----------Threading Stuff|
+	//-----------Threading Stuff|
 
-    _listenerThread = std::make_unique<std::thread>([this] { _canListener.start(); });
-
+	_listenerThread = std::make_unique<std::thread>([this] { _canListener.start(); });
 }
 
 void Monitor::notify(Trame trame) {
@@ -169,9 +168,7 @@ void Monitor::tooglePauseMode() {
 	this->_canListener.toogleAcceptNewMessage();
 }
 
-Monitor::~Monitor() {
-
-}
+Monitor::~Monitor() {}
 
 void Monitor::scrollToTop() {
 	_lowLevelWindow.get_focus_vadjustment()->set_value(_lowLevelWindow.get_vadjustment()->get_upper());
@@ -192,8 +189,7 @@ void Monitor::handleTrame(Trame& Trame, bool isColored) {
 
 void Monitor::endListenerThread() {
 
-    _stopListnenerThread = true;
-    sleep(120_ms);
-    _listenerThread->join();
-
+	_stopListnenerThread = true;
+	sleep(120_ms);
+	_listenerThread->join();
 }

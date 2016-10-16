@@ -42,10 +42,10 @@ public:
 	 */
 	void handleTrame(Trame& Trame, bool isColored);
 
-    /**
-     * Set Monitor::_stopListenerThread to true, then wait for 120 ms.
-     */
-    void endListenerThread();
+	/**
+	 * Set Monitor::_stopListenerThread to true, then wait for 120 ms.
+	 */
+	void endListenerThread();
 
 protected:
 	/**
@@ -115,8 +115,8 @@ private:
 	 */
 	// Glib::Dispatcher _dispatcher;
 	std::unique_ptr<std::thread> _listenerThread;
-	CanListener _canListener;
 	bool _stopListnenerThread;
+	CanListener _canListener;
 
 	/**
 	 * Top level GUI elements

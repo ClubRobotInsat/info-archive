@@ -6,7 +6,7 @@
 #include "Monitor.h"
 
 CanListener::CanListener(std::string& port, Monitor* caller, bool& stopBooleanAdress)
-        : _sentAMessage(false), _shallStopListening(stopBooleanAdress), _refreshRate(20_ms), _acceptNewMessage(true) {
+        : _sentAMessage(false), _shallStopListening(stopBooleanAdress), _acceptNewMessage(true), _refreshRate(20_ms) {
 
 	if(port.substr(0, 5) == "TCPIP") {
 		_can.reset(new Commun::CAN(std::make_unique<Commun::TCPIP>(port.substr(7, port.length() - 12), 1234)));
@@ -58,12 +58,11 @@ void CanListener::sendMessage(const Trame& trame) {
 
 void CanListener::toogleAcceptNewMessage() {
 
-    _acceptNewMessage = !_acceptNewMessage;
-
+	_acceptNewMessage = !_acceptNewMessage;
 }
 
 CanListener::~CanListener() {
 
-    _shallStopListening = true;
-    sleep(120_ms);
+	_shallStopListening = true;
+	sleep(120_ms);
 }
