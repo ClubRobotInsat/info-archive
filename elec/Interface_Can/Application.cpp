@@ -23,7 +23,6 @@ void Application::killStartScreen(std::string canPort) {
 	this->startCan(canPort);
 	this->remove_window(_start_screen);
 	_start_screen.hide();
-	//_start_screen.~Start_Screen();
 }
 
 bool Application::on_delete_event(GdkEventAny*) {

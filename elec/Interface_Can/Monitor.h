@@ -28,7 +28,7 @@ public:
 	 * Method called by the listener thread to notify the main thread that a message has been received.
 	 * Call onListenerNotification(true);
 	 */
-	void notify(Trame trame);
+	void notify();
 
 	/**
 	 * Create a new trame from the data in _trameData, _trameId, _trameType and send it to the CAN
@@ -114,7 +114,8 @@ private:
 	 * Threading related members
 	 */
 	// Glib::Dispatcher _dispatcher;
-	std::unique_ptr<std::thread> _listenerThread;
+	// std::unique_ptr<std::thread> _listenerThread;
+	std::shared_ptr<Glib::Dispatcher> signal_on_message_received;
 	bool _stopListnenerThread;
 	CanListener _canListener;
 

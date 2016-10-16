@@ -8,9 +8,9 @@
 
 Monitor::Monitor(std::string& port)
         : Gtk::Window()
-        , _listenerThread(nullptr)
+        , signal_on_message_received(std::make_shared<Glib::Dispatcher>())
         , _stopListnenerThread(false)
-        , _canListener(port, this, _stopListnenerThread)
+        , _canListener(port, signal_on_message_received, _stopListnenerThread)
         , _pauseButton("Pause")
         , _sendTrameButton("Envoyer la trame")
         , _labelTrameId("Trame ID")
@@ -75,12 +75,14 @@ Monitor::Monitor(std::string& port)
 
 	//-----------Threading Stuff|
 
-	_listenerThread = std::make_unique<std::thread>([this] { _canListener.start(); });
+	//_listenerThread = std::make_unique<std::thread>([this] { _canListener.start(); });
+	signal_on_message_received->connect(sigc::mem_fun(*this, &Monitor::notify));
+	_canListener.start();
 }
 
-void Monitor::notify(Trame trame) {
+void Monitor::notify() {
 
-	onListenerNotification(trame, false);
+	onListenerNotification(_canListener.getTrameReceived(), false);
 }
 
 
@@ -191,5 +193,4 @@ void Monitor::endListenerThread() {
 
 	_stopListnenerThread = true;
 	sleep(120_ms);
-	_listenerThread->join();
 }

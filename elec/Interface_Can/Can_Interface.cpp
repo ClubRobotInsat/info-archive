@@ -8,6 +8,7 @@
 #include "Header.h"
 
 int main(int argc, char** argv) {
-
+	if(!Glib::thread_supported())
+		Glib::thread_init();
 	Application app(argc, argv, "club.robot.can");
 };

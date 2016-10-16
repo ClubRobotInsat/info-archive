@@ -29,9 +29,8 @@ public:
 	 *
 	 * @param port : a string
 	 * @param caller : an pointer used to connect the signal _on_message_received
-	 * @return
 	 */
-	CanListener(std::string& port, Monitor* caller, bool& stopBooleanAdress);
+	CanListener(std::string& port, std::shared_ptr<Glib::Dispatcher> receiver_signal_message_received, bool& stopBooleanAdress);
 
 	virtual ~CanListener();
 
@@ -45,7 +44,16 @@ public:
 	 */
 	void toogleAcceptNewMessage();
 
+	/**
+	 * Then the trame given to the CAN. Does not notify the GUI thread that it has sent one.
+	 * @param trame : the trame to be sent.
+	 */
 	void sendMessage(const Trame& trame);
+
+	/**
+	 * @return the last trame received
+	 */
+	Trame getTrameReceived();
 
 protected:
 	/**
@@ -59,8 +67,6 @@ protected:
 	bool shallStopListening();
 
 private:
-	Trame _currentTrame;
-
 	std::atomic_bool _sentAMessage;
 
 	std::unique_ptr<Commun::CAN> _can;
@@ -71,7 +77,11 @@ private:
 
 	Units::Time _refreshRate;
 
-	sigc::signal<void, Trame> _on_message_received;
+	Glib::Thread* _thread;
+
+	std::deque<Trame> _currentTrame;
+
+	std::shared_ptr<Glib::Dispatcher> signal_on_message_received;
 };
 
 

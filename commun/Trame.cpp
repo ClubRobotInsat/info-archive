@@ -123,7 +123,7 @@ std::ostream& operator<<(std::ostream& o, Trame const& t) {
 	o << ":";
 	o << "données=[";
 	std::copy(t._donnees.begin(), t._donnees.end(), std::ostream_iterator<char>(o, ", "));
-	o << ']';
+	o << "]]";
 	return o;
 }
 
@@ -136,3 +136,13 @@ std::string Trame::toStringLong() const {
 	oss << '}';
 	return oss.str();
 }
+/*
+Trame Trame::operator=(Trame const &t2) {
+    Trame result;
+    result._id = t2._id;
+    result._cmd = t2._cmd;
+    result._donnees = t2._donnees;
+    result._num_paquet = t2._num_paquet;
+    return result;
+}
+*/
