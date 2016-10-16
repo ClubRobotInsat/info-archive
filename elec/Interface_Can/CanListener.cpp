@@ -58,5 +58,12 @@ void CanListener::sendMessage(const Trame& trame) {
 
 void CanListener::toogleAcceptNewMessage() {
 
-	_acceptNewMessage = !_acceptNewMessage;
+    _acceptNewMessage = !_acceptNewMessage;
+
+}
+
+CanListener::~CanListener() {
+
+    _shallStopListening = true;
+    sleep(120_ms);
 }

@@ -17,12 +17,6 @@ Monitor::Monitor(std::string& port)
         , _labelTrameType("Trame Type")
         , _labelTrameData("Trame Data") {
 
-	//-----------Threading Stuff|
-
-	//_dispatcher.connect(sigc::mem_fun(*this, &Monitor::onListenerNotification));
-
-	_listenerThread = std::make_unique<std::thread>([this] { _canListener.start(); });
-
 	//-----------------GUI Stuff|
 
 	this->set_size_request(800, 600);
@@ -78,6 +72,11 @@ Monitor::Monitor(std::string& port)
 	this->set_title("Can Monitor");
 	this->show_all();
 	this->show_all_children();
+
+    //-----------Threading Stuff|
+
+    _listenerThread = std::make_unique<std::thread>([this] { _canListener.start(); });
+
 }
 
 void Monitor::notify(Trame trame) {
@@ -105,8 +104,6 @@ void Monitor::updateInterface(bool colored, std::string id, std::string cmd, std
 	row[_message._id] = id;
 	row[_message._cmd] = cmd;
 	row[_message._time] = time;
-	std::string finalData;
-
 	row[_message._data] = data;
 
 
@@ -174,12 +171,9 @@ void Monitor::tooglePauseMode() {
 
 Monitor::~Monitor() {
 
-	//_listenerThread.release();
-	//_refTreeModel.release();
 }
 
 void Monitor::scrollToTop() {
-	// std::lock_guard<std::mutex> lock(mutex);
 	_lowLevelWindow.get_focus_vadjustment()->set_value(_lowLevelWindow.get_vadjustment()->get_upper());
 }
 
@@ -194,4 +188,12 @@ void Monitor::handleTrame(Trame& Trame, bool isColored) {
 	}
 
 	this->updateInterface(isColored, id, cmd, time, data);
+}
+
+void Monitor::endListenerThread() {
+
+    _stopListnenerThread = true;
+    sleep(120_ms);
+    _listenerThread->join();
+
 }

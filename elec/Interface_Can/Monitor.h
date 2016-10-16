@@ -42,6 +42,11 @@ public:
 	 */
 	void handleTrame(Trame& Trame, bool isColored);
 
+    /**
+     * Set Monitor::_stopListenerThread to true, then wait for 120 ms.
+     */
+    void endListenerThread();
+
 protected:
 	/**
 	* Return a string HH:MM:SS
