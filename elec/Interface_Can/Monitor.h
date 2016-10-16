@@ -57,8 +57,9 @@ protected:
 	/**
 	 * Method called by notify, wich will call updateInterface
 	 * @param colored : if the line shall be drawn in pink, send true, otherwise send false en it will be drawn normally
+	 * @param trame : the trame that will be handled by the GUI
 	 */
-	void onListenerNotification(bool colored, Trame trame);
+	void onListenerNotification(Trame trame, bool colored);
 
 	/**
 	 * Add a line to the _refTreeModel  with the data passed to the function

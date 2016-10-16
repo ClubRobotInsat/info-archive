@@ -81,11 +81,11 @@ Monitor::Monitor(std::string& port)
 
 void Monitor::notify(Trame trame) {
 
-	onListenerNotification(false, trame);
+	onListenerNotification(trame, false);
 }
 
 
-void Monitor::onListenerNotification(bool colored, Trame trame) {
+void Monitor::onListenerNotification(Trame trame, bool colored) {
 
 	this->handleTrame(trame, colored);
 }
