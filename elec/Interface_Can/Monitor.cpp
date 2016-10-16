@@ -4,7 +4,6 @@
 
 #include "Monitor.h"
 #include <iomanip>
-#include <iostream>
 
 Monitor::Monitor(std::string& port)
         : Gtk::Window()
@@ -82,13 +81,14 @@ Monitor::Monitor(std::string& port)
 
 void Monitor::notify() {
 
-	onListenerNotification(_canListener.getTrameReceived(), false);
+	auto buffer = _canListener.getTrameReceived();
+	onListenerNotification(buffer, false);
 }
 
 
-void Monitor::onListenerNotification(Trame trame, bool colored) {
+void Monitor::onListenerNotification(std::deque<Trame>& buffer, bool colored) {
 
-	this->handleTrame(trame, colored);
+	this->handleTrame(buffer, colored);
 }
 
 std::string Monitor::convertToHexadecimal(unsigned int number) {
@@ -129,8 +129,9 @@ void Monitor::sendMessage() {
 	}
 
 	if(sendMessage) {
-		Trame result = *message.release();
-		_canListener.sendMessage(result);
+		std::deque<Trame> result;
+		result.push_front(*message.release());
+		_canListener.sendMessage(result.front());
 		this->handleTrame(result, true);
 	}
 }
@@ -172,25 +173,16 @@ void Monitor::tooglePauseMode() {
 
 Monitor::~Monitor() {}
 
-void Monitor::scrollToTop() {
-	_lowLevelWindow.get_focus_vadjustment()->set_value(_lowLevelWindow.get_vadjustment()->get_upper());
-}
+void Monitor::handleTrame(std::deque<Trame>& buffer, bool isColored) {
 
-void Monitor::handleTrame(Trame& Trame, bool isColored) {
-
-	auto id = convertToHexadecimal(Trame.getId());
-	auto cmd = convertToHexadecimal(Trame.getCmd());
-	auto time = this->getLocalTime();
-	std::string data;
-	for(int i = 0; i < Trame.getNbDonnees(); i++) {
-		data += convertToHexadecimal(Trame.getDonnee(i)) + " ";
+	for(auto Trame : buffer) {
+		auto id = convertToHexadecimal(Trame.getId());
+		auto cmd = convertToHexadecimal(Trame.getCmd());
+		auto time = this->getLocalTime();
+		std::string data;
+		for(int i = 0; i < Trame.getNbDonnees(); i++) {
+			data += convertToHexadecimal(Trame.getDonnee(i)) + " ";
+		}
+		this->updateInterface(isColored, id, cmd, time, data);
 	}
-
-	this->updateInterface(isColored, id, cmd, time, data);
-}
-
-void Monitor::endListenerThread() {
-
-	_stopListnenerThread = true;
-	sleep(120_ms);
 }

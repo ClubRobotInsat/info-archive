@@ -39,7 +39,8 @@ void CanListener::mainLoop() {
 			while(Units::TimePoint::now() < now + _refreshRate and not emitted) {
 				trame = std::make_unique<Trame>(this->waitForMessage());
 				if(not(trame->getId() == 0 or trame->getCmd() == 0)) {
-					_currentTrame.push_front(*trame.get());
+					std::lock_guard<std::mutex> lock(mutex);
+					_trameBuffer.push_front(*trame.get());
 					signal_on_message_received->emit();
 					emitted = true;
 				}
@@ -70,13 +71,15 @@ void CanListener::toogleAcceptNewMessage() {
 }
 
 CanListener::~CanListener() {
-
 	_shallStopListening = true;
-	sleep(120_ms);
+	if(_thread) {
+		_thread->join();
+	}
 }
 
-Trame CanListener::getTrameReceived() {
-	auto result = _currentTrame.back();
-	_currentTrame.pop_back();
+std::deque<Trame> CanListener::getTrameReceived() {
+	std::lock_guard<std::mutex> lock(mutex);
+	auto result = _trameBuffer;
+	_trameBuffer.clear();
 	return result;
 }

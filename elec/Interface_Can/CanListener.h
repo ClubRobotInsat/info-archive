@@ -51,9 +51,11 @@ public:
 	void sendMessage(const Trame& trame);
 
 	/**
-	 * @return the last trame received
+	 * Empty CanListener::_trameBuffer
+	 * Lock until it returns
+	 * @return a list with all the trame received.
 	 */
-	Trame getTrameReceived();
+	std::deque<Trame> getTrameReceived();
 
 protected:
 	/**
@@ -67,6 +69,8 @@ protected:
 	bool shallStopListening();
 
 private:
+	mutable std::mutex mutex;
+
 	std::atomic_bool _sentAMessage;
 
 	std::unique_ptr<Commun::CAN> _can;
@@ -79,7 +83,7 @@ private:
 
 	Glib::Thread* _thread;
 
-	std::deque<Trame> _currentTrame;
+	std::deque<Trame> _trameBuffer;
 
 	std::shared_ptr<Glib::Dispatcher> signal_on_message_received;
 };

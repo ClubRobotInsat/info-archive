@@ -26,8 +26,6 @@ void Application::killStartScreen(std::string canPort) {
 }
 
 bool Application::on_delete_event(GdkEventAny*) {
-
-	this->_monitor->endListenerThread();
 	this->quit();
 	return true;
 }

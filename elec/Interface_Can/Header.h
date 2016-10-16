@@ -7,6 +7,5 @@
 
 #include <gtkmm.h>
 #include <mutex>
-#include <thread>
 
 #endif // ROOT_HEADER_H

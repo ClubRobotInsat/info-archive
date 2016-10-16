@@ -26,6 +26,11 @@ public:
 
 	void startCan(std::string& port);
 
+	/**
+	 * Is called upon closing the monitor window
+	 * @param event : the event send by Monitor::signal_delete_event
+	 * @return Always true
+	 */
 	bool on_delete_event(GdkEventAny* event);
 
 private:

@@ -40,12 +40,7 @@ public:
 	 *
 	 * @param Trame : the trame to display on the GUI
 	 */
-	void handleTrame(Trame& Trame, bool isColored);
-
-	/**
-	 * Set Monitor::_stopListenerThread to true, then wait for 120 ms.
-	 */
-	void endListenerThread();
+	void handleTrame(std::deque<Trame>& buffer, bool isColored);
 
 protected:
 	/**
@@ -59,7 +54,7 @@ protected:
 	 * @param colored : if the line shall be drawn in pink, send true, otherwise send false en it will be drawn normally
 	 * @param trame : the trame that will be handled by the GUI
 	 */
-	void onListenerNotification(Trame trame, bool colored);
+	void onListenerNotification(std::deque<Trame>& buffer, bool colored);
 
 	/**
 	 * Add a line to the _refTreeModel  with the data passed to the function
@@ -96,12 +91,6 @@ protected:
 	 */
 	void tooglePauseMode();
 
-	/**
-	 * Will scroll _lowLevelWindow all the way to the top
-	 * @warning Causes random segfault. Be warned. Use at your own discretion.
-	 */
-	void scrollToTop();
-
 	template <typename... Args>
 	Trame make_trame(uint8_t id, uint8_t cmd, Args&&... donnees) {
 		Trame t(id, cmd);
@@ -113,8 +102,6 @@ private:
 	/**
 	 * Threading related members
 	 */
-	// Glib::Dispatcher _dispatcher;
-	// std::unique_ptr<std::thread> _listenerThread;
 	std::shared_ptr<Glib::Dispatcher> signal_on_message_received;
 	bool _stopListnenerThread;
 	CanListener _canListener;
