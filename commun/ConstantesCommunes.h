@@ -125,7 +125,8 @@ namespace positionObjetsTable {
                                                    {Vector3m(1881_mm, 1964_mm, 0_m),          ANGLE_DELIMITER},
                                                    {Vector3m(1973_mm, 1964_mm, 0_m),          -ANGLE_DELIMITER},
 
-                                                   {Vector3m(51.5_mm, 1477.5_mm,  0_m),       5.625_deg}, // arc de cercle en bas à gauche
+                                                   {Vector3m(51.5_mm, 1477.5_mm,
+                                                             0_m),                            5.625_deg}, // arc de cercle en bas à gauche
                                                    {Vector3m(152.4_mm, 1497.6_mm, 0_m),       16.875_deg},
                                                    {Vector3m(247.5_mm, 1537_mm, 0_m),         28.125_deg},
                                                    {Vector3m(333.1_mm, 1594.2_mm, 0_m),       39.375_deg},
@@ -134,7 +135,8 @@ namespace positionObjetsTable {
                                                    {Vector3m(502.4_mm, 1847_mm, 0_m),         73.125_deg},
                                                    {Vector3m(522.5_mm, 1948.5_mm, 0_m),       84.375_deg},
 
-                                                   {Vector3m(3_m - 51.5_mm, 1477.5_mm,  0_m), -5.625_deg}, // arc de cercle en bas à droite
+                                                   {Vector3m(3_m - 51.5_mm, 1477.5_mm,
+                                                             0_m),                            -5.625_deg}, // arc de cercle en bas à droite
                                                    {Vector3m(3_m - 152.4_mm, 1497.6_mm, 0_m), -16.875_deg},
                                                    {Vector3m(3_m - 247.5_mm, 1537_mm, 0_m),   -28.125_deg},
                                                    {Vector3m(3_m - 333.1_mm, 1594.2_mm, 0_m), -39.375_deg},
@@ -144,12 +146,12 @@ namespace positionObjetsTable {
                                                    {Vector3m(3_m - 522.5_mm, 1948.5_mm, 0_m), -84.375_deg}};
 
     // FIXME : il faut calculer les bonnes valeurs (pour le moment, elles sont approximatives)
-    const std::vector<Building> LIST_CENTRAL = {{Vector3m(1.05_m, 1.38_m, 3_cm),                    -45_deg},
-                                                {Vector3m(1.15_m, 1.3_m, 3_cm),                     -45_deg},
-                                                {Vector3m(1.43_m, WALLS_DIMENSIONS.y - 80_cm, 0_m), 0_deg},
-                                                {Vector3m(1.54_m, WALLS_DIMENSIONS.y - 80_cm, 0_m), 0_deg},
-                                                {Vector3m(1.83_m, 1.3_m, 3_cm),                     45_deg},
-                                                {Vector3m(1.93_m, 1.38_m, 3_cm),                    45_deg}};
+    const std::vector<Building> LIST_CENTRAL = {{Vector3m(1108.3_mm, 1694.5_mm, 1.5_cm), -45_deg},
+                                                {Vector3m(1184.6_mm, 1598.4_mm, 1.5_cm), -45_deg},
+                                                {Vector3m(1.446_m, 1.5_m, 1.5_cm),       0_deg},
+                                                {Vector3m(1.554_m, 1.5_m, 1.5_cm),       0_deg},
+                                                {Vector3m(1815.4_mm, 1598.4_mm, 1.5_cm), 45_deg},
+                                                {Vector3m(1891.7_mm, 1694.5_mm, 1.5_cm), 45_deg}};
 
     const std::vector<Vector3m> LIST_LATERAL_H = {Vector3m(0_m, 678_mm, 0_m),
                                                   Vector3m(0_m, 1.15_m, 0_m),
