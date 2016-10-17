@@ -94,33 +94,54 @@ namespace positionObjetsTable {
 
     const Angle ANGLE_DELIMITER = 31.78833062_deg;
 
-    const std::vector<Building> LIST_DELIMITERS = {{Vector3m(55_cm, 54_cm, 0_m),       90_deg}, // rond en haut à gauche
-                                                   {Vector3m(604.5_mm, 448_mm, 0_m),   -ANGLE_DELIMITER},
-                                                   {Vector3m(693.5_mm, 448_mm, 0_m),   ANGLE_DELIMITER},
-                                                   {Vector3m(75_cm, 54_cm, 0_m),       90_deg},
-                                                   {Vector3m(601_mm, 634_mm, 0_m),     ANGLE_DELIMITER},
-                                                   {Vector3m(693_mm, 634_mm, 0_m),     -ANGLE_DELIMITER},
+    const std::vector<Building> LIST_DELIMITERS = {{Vector3m(55_cm, 54_cm, 0_m),              90_deg}, // rond en haut à gauche
+                                                   {Vector3m(604.5_mm, 448_mm, 0_m),          -ANGLE_DELIMITER},
+                                                   {Vector3m(693.5_mm, 448_mm, 0_m),          ANGLE_DELIMITER},
+                                                   {Vector3m(75_cm, 54_cm, 0_m),              90_deg},
+                                                   {Vector3m(601_mm, 634_mm, 0_m),            ANGLE_DELIMITER},
+                                                   {Vector3m(693_mm, 634_mm, 0_m),            -ANGLE_DELIMITER},
 
-                                                   {Vector3m(225_cm, 54_cm, 0_m),      90_deg}, // rond en haut à droite
-                                                   {Vector3m(2304.5_mm, 448_mm, 0_m),  -ANGLE_DELIMITER},
-                                                   {Vector3m(2393.5_mm, 448_mm, 0_m),  ANGLE_DELIMITER},
-                                                   {Vector3m(245_cm, 54_cm, 0_m),      90_deg},
-                                                   {Vector3m(2301_mm, 634_mm, 0_m),    ANGLE_DELIMITER},
-                                                   {Vector3m(2393_mm, 634_mm, 0_m),    -ANGLE_DELIMITER},
+                                                   {Vector3m(225_cm, 54_cm,
+                                                             0_m),                            90_deg}, // rond en haut à droite
+                                                   {Vector3m(2304.5_mm, 448_mm, 0_m),         -ANGLE_DELIMITER},
+                                                   {Vector3m(2393.5_mm, 448_mm, 0_m),         ANGLE_DELIMITER},
+                                                   {Vector3m(245_cm, 54_cm, 0_m),             90_deg},
+                                                   {Vector3m(2301_mm, 634_mm, 0_m),           ANGLE_DELIMITER},
+                                                   {Vector3m(2393_mm, 634_mm, 0_m),           -ANGLE_DELIMITER},
 
-                                                   {Vector3m(970_mm, 1870_mm, 0_m),    90_deg}, //rond en bas à gauche
-                                                   {Vector3m(1024.5_mm, 1778_mm, 0_m), -ANGLE_DELIMITER},
-                                                   {Vector3m(1113.5_mm, 1778_mm, 0_m), ANGLE_DELIMITER},
-                                                   {Vector3m(1170_mm, 1870_mm, 0_m),   90_deg},
-                                                   {Vector3m(1021_mm, 1964_mm, 0_m),   ANGLE_DELIMITER},
-                                                   {Vector3m(1113_mm, 1964_mm, 0_m),   -ANGLE_DELIMITER},
+                                                   {Vector3m(970_mm, 1870_mm,
+                                                             0_m),                            90_deg}, //rond en bas à gauche
+                                                   {Vector3m(1024.5_mm, 1778_mm, 0_m),        -ANGLE_DELIMITER},
+                                                   {Vector3m(1113.5_mm, 1778_mm, 0_m),        ANGLE_DELIMITER},
+                                                   {Vector3m(1170_mm, 1870_mm, 0_m),          90_deg},
+                                                   {Vector3m(1021_mm, 1964_mm, 0_m),          ANGLE_DELIMITER},
+                                                   {Vector3m(1113_mm, 1964_mm, 0_m),          -ANGLE_DELIMITER},
 
-                                                   {Vector3m(1830_mm, 1870_mm, 0_m),   90_deg}, // rond en bas à droite
-                                                   {Vector3m(1884.5_mm, 1778_mm, 0_m), -ANGLE_DELIMITER},
-                                                   {Vector3m(1973.5_mm, 1778_mm, 0_m), ANGLE_DELIMITER},
-                                                   {Vector3m(2030_mm, 1870_mm, 0_m),   90_deg},
-                                                   {Vector3m(1881_mm, 1964_mm, 0_m),   ANGLE_DELIMITER},
-                                                   {Vector3m(1973_mm, 1964_mm, 0_m),   -ANGLE_DELIMITER}};
+                                                   {Vector3m(1830_mm, 1870_mm,
+                                                             0_m),                            90_deg}, // rond en bas à droite
+                                                   {Vector3m(1884.5_mm, 1778_mm, 0_m),        -ANGLE_DELIMITER},
+                                                   {Vector3m(1973.5_mm, 1778_mm, 0_m),        ANGLE_DELIMITER},
+                                                   {Vector3m(2030_mm, 1870_mm, 0_m),          90_deg},
+                                                   {Vector3m(1881_mm, 1964_mm, 0_m),          ANGLE_DELIMITER},
+                                                   {Vector3m(1973_mm, 1964_mm, 0_m),          -ANGLE_DELIMITER},
+
+                                                   {Vector3m(51.5_mm, 1477.5_mm,  0_m),       5.625_deg}, // arc de cercle en bas à gauche
+                                                   {Vector3m(152.4_mm, 1497.6_mm, 0_m),       16.875_deg},
+                                                   {Vector3m(247.5_mm, 1537_mm, 0_m),         28.125_deg},
+                                                   {Vector3m(333.1_mm, 1594.2_mm, 0_m),       39.375_deg},
+                                                   {Vector3m(405.8_mm, 1667_mm, 0_m),         50.625_deg},
+                                                   {Vector3m(463_mm, 1752.5_mm, 0_m),         61.875_deg},
+                                                   {Vector3m(502.4_mm, 1847_mm, 0_m),         73.125_deg},
+                                                   {Vector3m(522.5_mm, 1948.5_mm, 0_m),       84.375_deg},
+
+                                                   {Vector3m(3_m - 51.5_mm, 1477.5_mm,  0_m), -5.625_deg}, // arc de cercle en bas à droite
+                                                   {Vector3m(3_m - 152.4_mm, 1497.6_mm, 0_m), -16.875_deg},
+                                                   {Vector3m(3_m - 247.5_mm, 1537_mm, 0_m),   -28.125_deg},
+                                                   {Vector3m(3_m - 333.1_mm, 1594.2_mm, 0_m), -39.375_deg},
+                                                   {Vector3m(3_m - 405.8_mm, 1667_mm, 0_m),   -50.625_deg},
+                                                   {Vector3m(3_m - 463_mm, 1752.5_mm, 0_m),   -61.875_deg},
+                                                   {Vector3m(3_m - 502.4_mm, 1847_mm, 0_m),   -73.125_deg},
+                                                   {Vector3m(3_m - 522.5_mm, 1948.5_mm, 0_m), -84.375_deg}};
 
     // FIXME : il faut calculer les bonnes valeurs (pour le moment, elles sont approximatives)
     const std::vector<Building> LIST_CENTRAL = {{Vector3m(1.05_m, 1.38_m, 3_cm),                    -45_deg},
@@ -138,6 +159,5 @@ namespace positionObjetsTable {
     const std::vector<Vector3m> LIST_LATERAL_V = {Vector3m(8_cm, 70_cm, 0_cm),
                                                   Vector3m(2.89_m, 70_cm, 0_cm)};
 }
-
 
 #endif // CONSTANTES_COMMUNES_2015_H
