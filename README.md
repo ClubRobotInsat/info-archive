@@ -4,11 +4,11 @@ Installation de tout ce qu'il faut
 ------------
 
 ```
-sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
-echo "deb http://download.mono-project.com/repo/debian wheezy main" | sudo tee /etc/apt/sources.list.d/mono-xamarin.list
 sudo apt-get update
 sudo apt-get install mono-complete cmake subversion git libbox2d-dev gcc-5-multilib g++-5-multilib libbluetooth-dev build-essential libglfw-dev libglu1-mesa-dev curl libxrandr-dev libgtkmm-3.0-dev libusb-1.0-0-dev clang-format-3.8
-
+```
+### Facultatif :
+```
 pushd .
 cd /tmp
 git clone https://github.com/grandelli/WiiC.git
@@ -19,13 +19,21 @@ sudo make install
 sudo chmod -R go+x /usr/local/include/wiic
 cd /tmp
 rm -rf WiiC
-popd
+```
+Pour installer le hook (script lancer à chaque commit) qui formate le code comme il faut (**facultatif mais forte   ment recommandé**) :
+```
+./install.sh
 ```
 
 Pour installer clang en tant que compilateur :
 ```
 sudo apt-get install clang-3.8
 sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-3.8 100
+```
+Pour l'éditeur petri :
+```
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
+echo "deb http://download.mono-project.com/repo/debian wheezy main" | sudo tee /etc/apt/sources.list.d/mono-xamarin.list
 ```
 ------------
 Clonage du repo
@@ -34,9 +42,6 @@ Clonage du repo
 svn checkout https://www.etud.insa-toulouse.fr/svn/roboinsat/CodeCommun --username votre_login_insa
 git clone https://votre_login_github@github.com/ClubRobotInsat/info.git
 cd info
-mkdir build
-cd build
-cmake .. -DDEBUG=on
 
 git clone https://github.com/ClubRobotInsat/websimulator
 ```
@@ -76,44 +81,6 @@ Pour lancer l'IA en mode Debug sur le simu
 9. Dans le navigateur Web, se connecter sur ```localhost:8000``` puis cliquer sur connect. Après une petite seconde, vous devriez voir la table apparaître.
 10. Dans Petri, aller dans ```Debug -> Creat Host```, normalement tout est déjà configuré, vous n'avez qu'à cliquer sur Create Host. Sinon, faut aller chercher les binaires de l'IA :```/bin/robot/Principal/IAPrincipal``` et indiquer comme argument : ```LOCAL```.
 11. Voilà c'est terminé, vous n'avez plus qu'a lancer votre réseau petri et admiré le résultat dans le simu !
-
-
-## Que faire ?
-
-#### Débugger le simu et l'IA:
-
-Pour cela, lancer le simu, ouvrir la console qui reçoit les message de l'IA (alt gr + 2 , le combo qui fait ~ avec ALT GR).
-Ensuite faut tester toutes les méthodes petri, verifier que le simu les gèrent bien. Si jamais ils les gèrent bien et que rien ne s'affiche c'est que c'est côté robot que ça merde.
-Comment savoir si c'est bien geré ? Les méthodes correspondent à la doc des élecs, tout simplement.
-Voilà voilà.
-
-#### TODO : fix les méthodes suivantes
-
-carte électrovanne : fait crash le simu ("Une erreur est survenue dans le client du débuggueur : Le débuggueur distant n'est plus disponible !.")
-* descendreCuillere()
-* monterCuillere()
-* descendrePelle()
-* monterPelle()
-* sortirParasol()
-* rentrerParasol()
-* sortirBrasDroit()
-* sortirBrasGauche()
-* rentrerBrasDroit()
-* rentrerBrasGauche()
-
-partie pneumatique :  
-quand on active/désasctive une pompe seule la pompe BAS est concernée (ID = 6), on ne peut pas modif la pompe HAUTE  
-
-je ne sais pas ce que font exactement ces méthodes -Benjamin
-* allerA(Distance, Distance)   ... ne marche pas (normal d'après Paul)
-* allerA(Vector2m)             ... ne marche pas (normal d'après Paul)
-* reculerA(Vector2m)
-
-ne marche pas : ça attend dans Petri, il y a le message "[CAN.cpp:221 in marquerAckRecu] : On reçoit un ack pour le message 56, déjà évacué de la fenêtre" dans le terminal
-* recupererCubes()
-* relacherCubes()  
-
-sinon les déplacements se font bien (et les cartes ont accès à la pos + angle de départ du robot, il n'y a pas de souci avec ça)
 
 ------------
 Cross-Compilation pour Raspberry

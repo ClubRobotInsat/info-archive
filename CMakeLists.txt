@@ -17,17 +17,17 @@ SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules/")
 
 # Mise à jour des submodules Git.
 execute_process(
-	COMMAND git submodule update --init
-	WORKING_DIRECTORY ${root_SOURCE_DIR}
+		COMMAND git submodule update --init
+		WORKING_DIRECTORY ${root_SOURCE_DIR}
 )
 add_custom_target(InfoSubmodules
-	COMMAND git submodule update --init
-	WORKING_DIRECTORY ${root_SOURCE_DIR}
-)
+		COMMAND git submodule update --init
+		WORKING_DIRECTORY ${root_SOURCE_DIR}
+		)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 if(DEBUG)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0")
+
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -O0")
 else()
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
@@ -60,8 +60,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wunused-value -Wuninitialized  -W
 
 function(compile_petri TARGET_NAME PATH_TO_DOC OUTPUT)
 	add_custom_target(${TARGET_NAME}
-		COMMAND ${root_SOURCE_DIR}/petri/petri --update --arch ${BITS} ${CMAKE_CURRENT_SOURCE_DIR}/${PATH_TO_DOC}
-	)
+			COMMAND ${root_SOURCE_DIR}/petri/petri --update --arch ${BITS} ${CMAKE_CURRENT_SOURCE_DIR}/${PATH_TO_DOC}
+			)
 	add_dependencies(${TARGET_NAME} PetriEditor)
 endfunction()
 
@@ -86,6 +86,4 @@ if(${BITS} EQUAL 32)
 endif()
 
 add_subdirectory(petri)
-
-
-
+add_subdirectory(elec/Interface_Can)
