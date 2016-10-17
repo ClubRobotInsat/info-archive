@@ -75,6 +75,9 @@ struct ConstantesCommunes : Commun::ConstantesCommunes {
  */
 namespace positionObjetsTable {
 
+    /**
+     * Objets STATIQUES
+     */
 // Murs
     const Vector3m WALLS_DIMENSIONS = {3_m, 2_m, 7_cm};
     const Length WALLS_SIZE = 2.2_cm; // épaisseur des murs
@@ -101,32 +104,28 @@ namespace positionObjetsTable {
                                                    {Vector3m(601_mm, 634_mm, 0_m),            ANGLE_DELIMITER},
                                                    {Vector3m(693_mm, 634_mm, 0_m),            -ANGLE_DELIMITER},
 
-                                                   {Vector3m(225_cm, 54_cm,
-                                                             0_m),                            90_deg}, // rond en haut à droite
+                                                   {Vector3m(225_cm, 54_cm, 0_m),             90_deg}, // rond en haut à droite
                                                    {Vector3m(2304.5_mm, 448_mm, 0_m),         -ANGLE_DELIMITER},
                                                    {Vector3m(2393.5_mm, 448_mm, 0_m),         ANGLE_DELIMITER},
                                                    {Vector3m(245_cm, 54_cm, 0_m),             90_deg},
                                                    {Vector3m(2301_mm, 634_mm, 0_m),           ANGLE_DELIMITER},
                                                    {Vector3m(2393_mm, 634_mm, 0_m),           -ANGLE_DELIMITER},
 
-                                                   {Vector3m(970_mm, 1870_mm,
-                                                             0_m),                            90_deg}, //rond en bas à gauche
+                                                   {Vector3m(970_mm, 1870_mm, 0_m),           90_deg}, //rond en bas à gauche
                                                    {Vector3m(1024.5_mm, 1778_mm, 0_m),        -ANGLE_DELIMITER},
                                                    {Vector3m(1113.5_mm, 1778_mm, 0_m),        ANGLE_DELIMITER},
                                                    {Vector3m(1170_mm, 1870_mm, 0_m),          90_deg},
                                                    {Vector3m(1021_mm, 1964_mm, 0_m),          ANGLE_DELIMITER},
                                                    {Vector3m(1113_mm, 1964_mm, 0_m),          -ANGLE_DELIMITER},
 
-                                                   {Vector3m(1830_mm, 1870_mm,
-                                                             0_m),                            90_deg}, // rond en bas à droite
+                                                   {Vector3m(1830_mm, 1870_mm, 0_m),          90_deg}, // rond en bas à droite
                                                    {Vector3m(1884.5_mm, 1778_mm, 0_m),        -ANGLE_DELIMITER},
                                                    {Vector3m(1973.5_mm, 1778_mm, 0_m),        ANGLE_DELIMITER},
                                                    {Vector3m(2030_mm, 1870_mm, 0_m),          90_deg},
                                                    {Vector3m(1881_mm, 1964_mm, 0_m),          ANGLE_DELIMITER},
                                                    {Vector3m(1973_mm, 1964_mm, 0_m),          -ANGLE_DELIMITER},
 
-                                                   {Vector3m(51.5_mm, 1477.5_mm,
-                                                             0_m),                            5.625_deg}, // arc de cercle en bas à gauche
+                                                   {Vector3m(51.5_mm, 1477.5_mm, 0_m),        5.625_deg}, // arc de cercle en bas à gauche
                                                    {Vector3m(152.4_mm, 1497.6_mm, 0_m),       16.875_deg},
                                                    {Vector3m(247.5_mm, 1537_mm, 0_m),         28.125_deg},
                                                    {Vector3m(333.1_mm, 1594.2_mm, 0_m),       39.375_deg},
@@ -135,8 +134,7 @@ namespace positionObjetsTable {
                                                    {Vector3m(502.4_mm, 1847_mm, 0_m),         73.125_deg},
                                                    {Vector3m(522.5_mm, 1948.5_mm, 0_m),       84.375_deg},
 
-                                                   {Vector3m(3_m - 51.5_mm, 1477.5_mm,
-                                                             0_m),                            -5.625_deg}, // arc de cercle en bas à droite
+                                                   {Vector3m(3_m - 51.5_mm, 1477.5_mm, 0_m),  -5.625_deg}, // arc de cercle en bas à droite
                                                    {Vector3m(3_m - 152.4_mm, 1497.6_mm, 0_m), -16.875_deg},
                                                    {Vector3m(3_m - 247.5_mm, 1537_mm, 0_m),   -28.125_deg},
                                                    {Vector3m(3_m - 333.1_mm, 1594.2_mm, 0_m), -39.375_deg},
@@ -160,6 +158,47 @@ namespace positionObjetsTable {
 
     const std::vector<Vector3m> LIST_LATERAL_V = {Vector3m(8_cm, 70_cm, 0_cm),
                                                   Vector3m(2.89_m, 70_cm, 0_cm)};
+
+    /**
+     * Objets DYNAMIQUES
+     */
+    enum ColorLunarModule {
+        CYLINDER_BLUE,
+        CYLINDER_YELLOW,
+        CYLINDER_MULTICOLOR,
+    };
+
+    struct LunarModule {
+        Vector3m position;
+        ColorLunarModule color;
+    };
+
+    const std::vector<LunarModule> LIST_LUNAR_MODULES = {{Vector3m(1.15_m, 64_mm, 5_cm),      CYLINDER_BLUE},
+                                                         {Vector3m(1.15_m, 64_mm, 15.1_cm),   CYLINDER_BLUE},
+                                                         {Vector3m(1.15_m, 64_mm, 25.2_cm),   CYLINDER_BLUE},
+                                                         {Vector3m(1.15_m, 64_mm, 35.3_cm),   CYLINDER_BLUE},
+                                                         {Vector3m(1.85_m, 64_mm, 5_cm),      CYLINDER_YELLOW},
+                                                         {Vector3m(1.85_m, 64_mm, 15.1_cm),   CYLINDER_YELLOW},
+                                                         {Vector3m(1.85_m, 64_mm, 25.2_cm),   CYLINDER_YELLOW},
+                                                         {Vector3m(1.85_m, 64_mm, 35.3_cm),   CYLINDER_YELLOW},
+                                                         {Vector3m(20_cm, 60_cm, 5_cm),       CYLINDER_BLUE},
+                                                         {Vector3m(1_m, 60_cm, 5_cm),         CYLINDER_MULTICOLOR},
+                                                         {Vector3m(2_m, 60_cm, 5_cm),         CYLINDER_MULTICOLOR},
+                                                         {Vector3m(2.8_m, 60_cm, 5_cm),       CYLINDER_YELLOW},
+                                                         {Vector3m(50_cm, 1.1_m, 5_cm),       CYLINDER_MULTICOLOR},
+                                                         {Vector3m(2.5_m, 1.1_m, 5_cm),       CYLINDER_MULTICOLOR},
+                                                         {Vector3m(64_mm, 1.35_m, 5_cm),      CYLINDER_MULTICOLOR},
+                                                         {Vector3m(64_mm, 1.35_m, 15.1_cm),   CYLINDER_MULTICOLOR},
+                                                         {Vector3m(64_mm, 1.35_m, 25.2_cm),   CYLINDER_MULTICOLOR},
+                                                         {Vector3m(64_mm, 1.35_m, 35.3_cm),   CYLINDER_MULTICOLOR},
+                                                         {Vector3m(2936_mm, 1.35_m, 5_cm),    CYLINDER_MULTICOLOR},
+                                                         {Vector3m(2936_mm, 1.35_m, 15.1_cm), CYLINDER_MULTICOLOR},
+                                                         {Vector3m(2936_mm, 1.35_m, 25.2_cm), CYLINDER_MULTICOLOR},
+                                                         {Vector3m(2936_mm, 1.35_m, 35.3_cm), CYLINDER_MULTICOLOR},
+                                                         {Vector3m(90_cm, 1.4_m, 5_cm),       CYLINDER_MULTICOLOR},
+                                                         {Vector3m(2.1_m, 1.4_m, 5_cm),       CYLINDER_MULTICOLOR},
+                                                         {Vector3m(80_cm, 1.85_m, 5_cm),      CYLINDER_BLUE},
+                                                         {Vector3m(2.2_m, 1.85_m, 5_cm),      CYLINDER_YELLOW}};
 }
 
 #endif // CONSTANTES_COMMUNES_2015_H
