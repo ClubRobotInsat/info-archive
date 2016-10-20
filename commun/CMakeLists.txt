@@ -12,7 +12,6 @@ set(OUTILS_SOURCE
 		sockets/tcpSock.cpp
 		Trame.cpp
 		MathToolbox/MathToolbox.cpp
-		getopt/getopt.cpp
 )
 
 add_library(Outils_${SIMU_OU_ROBOT} STATIC ${OUTILS_SOURCE})
