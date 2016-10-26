@@ -66,7 +66,7 @@ protected:
 
 	Trame waitForMessage();
 
-	bool shallStopListening();
+	bool shallStopListening() const;
 
 private:
 	mutable std::mutex mutex;

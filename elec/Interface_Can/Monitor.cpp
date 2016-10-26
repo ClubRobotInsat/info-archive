@@ -86,19 +86,22 @@ void Monitor::notify() {
 }
 
 
-void Monitor::onListenerNotification(std::deque<Trame>& buffer, bool colored) {
-
+void Monitor::onListenerNotification(const std::deque<Trame>& buffer, const bool& colored) const {
 	this->handleTrame(buffer, colored);
 }
 
-std::string Monitor::convertToHexadecimal(unsigned int number) {
+std::string Monitor::convertToHexadecimal(const unsigned int& number) const {
 	std::stringstream stream;
-	stream << "0x" << std::hex << number;
+	stream << std::setfill('*') << std::hex << std::showbase << number;
 	return stream.str();
 }
 
 
-void Monitor::updateInterface(bool colored, std::string id, std::string cmd, std::string time, std::string data) {
+void Monitor::updateInterface(const bool& colored,
+                              const std::string& id,
+                              const std::string& cmd,
+                              const std::string& time,
+                              const std::string& data) const {
 
 	Gtk::TreeModel::Row row = *(_refTreeModel->prepend());
 
@@ -114,7 +117,7 @@ void Monitor::updateInterface(bool colored, std::string id, std::string cmd, std
 		row[_message._color] = "white";
 	}
 
-	this->queue_draw();
+	// this->queue_draw();
 }
 
 void Monitor::sendMessage() {
@@ -137,7 +140,7 @@ void Monitor::sendMessage() {
 }
 
 
-Trame Monitor::buildTrameFromInput() {
+Trame Monitor::buildTrameFromInput() const {
 
 	if(this->checkInputs()) {
 		int id = std::stoi(_trameId.get_buffer()->get_text(), nullptr, 16);
@@ -148,16 +151,16 @@ Trame Monitor::buildTrameFromInput() {
 
 		return result;
 	} else {
-		throw std::runtime_error("Some fields are empty...");
+		throw std::runtime_error("Please input some data in all fields.");
 	}
 }
 
-bool Monitor::checkInputs() {
+bool Monitor::checkInputs() const {
 	return !(_trameId.get_buffer()->get_text().empty() | _trameData.get_buffer()->get_text().empty() |
 	         _trameType.get_buffer()->get_text().empty());
 }
 
-std::string Monitor::getLocalTime() {
+std::string Monitor::getLocalTime() const {
 	auto t = std::time(nullptr);
 	auto tm = *std::localtime(&t);
 
@@ -173,7 +176,7 @@ void Monitor::tooglePauseMode() {
 
 Monitor::~Monitor() {}
 
-void Monitor::handleTrame(std::deque<Trame>& buffer, bool isColored) {
+void Monitor::handleTrame(const std::deque<Trame>& buffer, const bool& isColored) const {
 
 	for(auto Trame : buffer) {
 		auto id = convertToHexadecimal(Trame.getId());

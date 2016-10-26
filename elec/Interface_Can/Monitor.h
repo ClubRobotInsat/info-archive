@@ -40,21 +40,21 @@ public:
 	 *
 	 * @param Trame : the trame to display on the GUI
 	 */
-	void handleTrame(std::deque<Trame>& buffer, bool isColored);
+	void handleTrame(const std::deque<Trame>& buffer, const bool& isColored) const;
 
 protected:
 	/**
 	* Return a string HH:MM:SS
 	* For example : 16:34:10 if it is 16 hour past 34 minutes and 10 seconds
 	*/
-	std::string getLocalTime();
+	std::string getLocalTime() const;
 
 	/**
 	 * Method called by notify, wich will call updateInterface
 	 * @param colored : if the line shall be drawn in pink, send true, otherwise send false en it will be drawn normally
 	 * @param trame : the trame that will be handled by the GUI
 	 */
-	void onListenerNotification(std::deque<Trame>& buffer, bool colored);
+	void onListenerNotification(const std::deque<Trame>& buffer, const bool& colored) const;
 
 	/**
 	 * Add a line to the _refTreeModel  with the data passed to the function
@@ -64,27 +64,28 @@ protected:
 	 * @param time : the time.
 	 * @param data : An array of string
 	 */
-	void updateInterface(bool colored, std::string id, std::string cmd, std::string time, std::string data);
+	void updateInterface(const bool& colored, const std::string& id, const std::string& cmd, const std::string& time, const std::string& data) const;
 
 	/**
 	 *
 	 * @param The raw data to represent in hexadecimal
 	 * @return A string in the form 0x.. 0x.. 0x.. , etc.
 	 */
-	std::string convertToHexadecimal(unsigned int number);
+	std::string convertToHexadecimal(const unsigned int& number) const;
 
 	/**
 	 *
 	 * @return a Trame object with the data from _trameID, _trameType and _trameData
 	 * @throw std::runtime_error if checkInputs() return false
 	 */
-	Trame buildTrameFromInput();
+	Trame buildTrameFromInput() const;
 
 	/**
 	 * Will look at _trameData _trameType _trameId and verify that the fields are not empty.
 	 * @return True if there is something as an input, false is one of the 3 is empty.
+	 * @return True if there is something as an input, false is one of the 3 is empty.
 	 */
-	bool checkInputs();
+	bool checkInputs() const;
 
 	/**
 	 * @brief Toogle the reception of new message.
@@ -92,7 +93,7 @@ protected:
 	void tooglePauseMode();
 
 	template <typename... Args>
-	Trame make_trame(uint8_t id, uint8_t cmd, Args&&... donnees) {
+	Trame make_trame(const uint8_t& id, const uint8_t& cmd, Args&&... donnees) const {
 		Trame t(id, cmd);
 		t.addDonnees(donnees...);
 		return t;

@@ -57,7 +57,7 @@ Trame CanListener::waitForMessage() {
 	return Trame;
 }
 
-bool CanListener::shallStopListening() {
+bool CanListener::shallStopListening() const {
 	return _shallStopListening;
 }
 
