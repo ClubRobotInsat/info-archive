@@ -13,7 +13,7 @@ set(SOURCE_FILES_INTERFACE
 
 #Vu que c'est la manière "officielle" de récuperer gtkmm via Cmake, on est obligé de passer par PkgConfig
 find_package(PkgConfig REQUIRED)
-pkg_check_modules(GTKMM REQUIRED gtkmm - 3.0)
+pkg_check_modules(GTKMM REQUIRED gtkmm-3.0)
 
 include_directories(${GTKMM_INCLUDE_DIRS})
 link_directories(${GTKMM_LIBRARY_DIRS})
