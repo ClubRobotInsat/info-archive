@@ -189,3 +189,29 @@ void Monitor::handleTrame(const std::deque<Trame>& buffer, const bool& isColored
 		this->updateInterface(isColored, id, cmd, time, data);
 	}
 }
+
+std::vector<uint8_t> Monitor::buildTrameData(const std::string& data) const {
+
+	// all the hex data in the string
+	std::vector<uint8_t> result;
+	// list of all data in the string seperated by the ' ' character
+	std::vector<std::string> wordlist;
+	// we populate it with the data from the argument
+	std::string word;
+	for(int i = 0; i <= data.size(); i++) {
+		char character = data[i];
+		// Check if we are at the end so that we could add the last word that does not ends by a ' '
+		if(i == data.size()) {
+			word += character;
+			wordlist.push_back(word);
+		} else {
+			if(character != ' ') {
+				word += character;
+			} else {
+				wordlist.push_back(word);
+				word.clear();
+			}
+		}
+	}
+	return result;
+}
