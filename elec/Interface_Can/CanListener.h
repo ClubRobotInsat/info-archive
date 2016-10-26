@@ -57,6 +57,12 @@ public:
 	 */
 	std::deque<Trame> getTrameReceived();
 
+	/**
+	 * Update CanListener::_parentIsRequestingData with value
+	 * @param value : the value that Monitor::_parentIsRequestingData will take
+	 */
+	void isRequestingData(bool value);
+
 protected:
 	/**
 	 * Listen if _acceptNewMessage is set to true.
@@ -77,7 +83,9 @@ private:
 
 	bool& _shallStopListening;
 
-	bool _acceptNewMessage;
+	std::atomic_bool _acceptNewMessage;
+
+	std::atomic_bool _parentIsRequestingData;
 
 	Units::Time _refreshRate;
 

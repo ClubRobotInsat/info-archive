@@ -81,8 +81,11 @@ Monitor::Monitor(std::string& port)
 
 void Monitor::notify() {
 
+	// Tell the worker thread to stop sending us signals because we are already processing one
+	_canListener.isRequestingData(true);
 	auto buffer = _canListener.getTrameReceived();
 	onListenerNotification(buffer, false);
+	_canListener.isRequestingData(false);
 }
 
 
@@ -145,7 +148,7 @@ Trame Monitor::buildTrameFromInput() const {
 	if(this->checkInputs()) {
 		int id = std::stoi(_trameId.get_buffer()->get_text(), nullptr, 16);
 		int cmd = std::stoi(_trameType.get_buffer()->get_text(), nullptr, 16);
-		int data = std::stoi(_trameData.get_buffer()->get_text(), nullptr, 16);
+		std::vector<uint8_t> data = buildTrameData(_trameData.get_buffer()->get_text());
 
 		Trame result = make_trame(id, cmd, data);
 
@@ -197,21 +200,37 @@ std::vector<uint8_t> Monitor::buildTrameData(const std::string& data) const {
 	// list of all data in the string seperated by the ' ' character
 	std::vector<std::string> wordlist;
 	// we populate it with the data from the argument
-	std::string word;
+	std::string temp_word;
 	for(int i = 0; i <= data.size(); i++) {
 		char character = data[i];
 		// Check if we are at the end so that we could add the last word that does not ends by a ' '
 		if(i == data.size()) {
-			word += character;
-			wordlist.push_back(word);
+			temp_word += character;
+			wordlist.push_back(temp_word);
 		} else {
 			if(character != ' ') {
-				word += character;
+				temp_word += character;
 			} else {
-				wordlist.push_back(word);
-				word.clear();
+				wordlist.push_back(temp_word);
+				temp_word.clear();
 			}
 		}
 	}
+
+	// We remove the "0x" from the first word
+	temp_word.clear();
+	for(int i = 0; i <= wordlist.front().size(); i++) {
+		if(i >= 2) {
+			temp_word += wordlist.front()[i];
+		}
+	}
+	wordlist.front() = temp_word;
+	temp_word.clear();
+
+	// Now we populate the result
+	for(auto& word : wordlist) {
+		result.push_back(std::stoi(word, nullptr, 16));
+	}
+
 	return result;
 }

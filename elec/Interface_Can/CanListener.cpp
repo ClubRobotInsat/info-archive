@@ -9,6 +9,7 @@ CanListener::CanListener(std::string& port, std::shared_ptr<Glib::Dispatcher> re
         : _sentAMessage(false)
         , _shallStopListening(stopBooleanAdress)
         , _acceptNewMessage(true)
+        , _parentIsRequestingData(false)
         , _refreshRate(20_ms)
         , _thread(0)
         , signal_on_message_received(receiver_signal_message_received) {
@@ -41,7 +42,9 @@ void CanListener::mainLoop() {
 				if(not(trame->getId() == 0 or trame->getCmd() == 0)) {
 					std::lock_guard<std::mutex> lock(mutex);
 					_trameBuffer.push_front(*trame.get());
-					signal_on_message_received->emit();
+					if(not _parentIsRequestingData) {
+						signal_on_message_received->emit();
+					}
 					emitted = true;
 				}
 			}
@@ -66,7 +69,6 @@ void CanListener::sendMessage(const Trame& trame) {
 }
 
 void CanListener::toogleAcceptNewMessage() {
-
 	_acceptNewMessage = !_acceptNewMessage;
 }
 
@@ -82,4 +84,9 @@ std::deque<Trame> CanListener::getTrameReceived() {
 	auto result = _trameBuffer;
 	_trameBuffer.clear();
 	return result;
+}
+
+void CanListener::isRequestingData(bool value) {
+
+	_parentIsRequestingData = value;
 }

@@ -131,6 +131,8 @@ printf "\n \x1b[31m The following differences were found between the code to com
 cat "$patch"
 git apply $patch
 
-printf "\x1b[32m Applied patch to your code, you have to recommit your files.\n\x1b[0m"
+printf "\x1b[32m Applied patch to your code, you have to add the modified files and recommit them.\n\x1b[0m"
+printf "To unapply the patch, you can try the following command : "
+printf "git [COMMANDE] $patch"
 
 exit 1
