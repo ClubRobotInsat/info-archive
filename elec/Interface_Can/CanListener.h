@@ -30,7 +30,7 @@ public:
 	 * @param port : a string
 	 * @param caller : an pointer used to connect the signal _on_message_received
 	 */
-	CanListener(std::string& port, std::shared_ptr<Glib::Dispatcher> receiver_signal_message_received, bool& stopBooleanAdress);
+	CanListener(const std::string& port, std::shared_ptr<Glib::Dispatcher> receiver_signal_message_received, bool& stopBooleanAdress);
 
 	virtual ~CanListener();
 
@@ -61,7 +61,7 @@ public:
 	 * Update CanListener::_parentIsRequestingData with value
 	 * @param value : the value that Monitor::_parentIsRequestingData will take
 	 */
-	void isRequestingData(bool value);
+	void isRequestingData(const bool& value);
 
 protected:
 	/**

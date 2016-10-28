@@ -5,7 +5,7 @@
 #include "CanListener.h"
 #include "Monitor.h"
 
-CanListener::CanListener(std::string& port, std::shared_ptr<Glib::Dispatcher> receiver_signal_message_received, bool& stopBooleanAdress)
+CanListener::CanListener(const std::string& port, std::shared_ptr<Glib::Dispatcher> receiver_signal_message_received, bool& stopBooleanAdress)
         : _sentAMessage(false)
         , _shallStopListening(stopBooleanAdress)
         , _acceptNewMessage(true)
@@ -86,7 +86,6 @@ std::deque<Trame> CanListener::getTrameReceived() {
 	return result;
 }
 
-void CanListener::isRequestingData(bool value) {
-
+void CanListener::isRequestingData(const bool& value) {
 	_parentIsRequestingData = value;
 }
