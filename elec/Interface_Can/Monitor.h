@@ -9,6 +9,19 @@
 #include "CanListener.h"
 #include "Header.h"
 #include "Message.h"
+#include <set>
+
+/**
+ * A simple struct to hold a toogle button with the ID attached to it. Usefull for filtering elements.
+ */
+struct ButtonWithId {
+public:
+	ButtonWithId(const std::string& label, const int ID) : _button(std::make_shared<Gtk::ToggleButton>(label)) {
+		_id = ID;
+	}
+	std::shared_ptr<Gtk::ToggleButton> _button;
+	int _id;
+};
 
 class Monitor : public Gtk::Window {
 
@@ -43,6 +56,28 @@ public:
 	void handleTrame(const std::deque<Trame>& buffer, const bool& isColored) const;
 
 protected:
+	/**
+	 * A callback function for Monitor::_toggleAllIDs
+	 * Set the state to each button in Monitor::_buttonIdList to be the same as Monitor::_toggleAllIDs
+	 */
+	void onToggleAllClicked();
+
+	/**
+	 * This method looks at Monitor::_buttonIdList and for each button, if it is toggled, add its ID to the returned
+	 * set.
+	 * @return A set with all the IDs of all the buttons that are toogled
+	 */
+	std::set<int> generateIdSet() const;
+
+	/**
+	 *
+	 * @param buffer : the buffer of Trame to process
+	 * @param acceptableIDs : a set of all the IDs that should be shown
+	 * @return A new buffer with only the relevant ID. Keep the original trame order (aka the 1st Trame will still be
+	 * the first).
+	 */
+	std::deque<Trame> filterBuffer(const std::deque<Trame>& buffer, const std::set<int>& acceptableIDs) const;
+
 	/**
 	* Return a string HH:MM:SS
 	* For example : 16:34:10 if it is 16 hour past 34 minutes and 10 seconds
@@ -146,6 +181,10 @@ private:
 	Gtk::TreeView _messageTree;
 
 	Message _message;
+
+	std::vector<std::shared_ptr<ButtonWithId>> _buttonIdList;
+
+	Gtk::ToggleButton _toggleAllIDs;
 };
 
 

@@ -14,7 +14,8 @@ Monitor::Monitor(std::string& port)
         , _sendTrameButton("Envoyer la trame")
         , _labelTrameId("Trame ID")
         , _labelTrameType("Trame Type")
-        , _labelTrameData("Trame Data") {
+        , _labelTrameData("Trame Data")
+        , _toggleAllIDs("Toggle all") {
 
 	//-----------------GUI Stuff|
 
@@ -24,6 +25,7 @@ Monitor::Monitor(std::string& port)
 	// Connecting the button to their designated function
 	_sendTrameButton.signal_clicked().connect(sigc::mem_fun(*this, &Monitor::sendMessage));
 	_pauseButton.signal_clicked().connect(sigc::mem_fun(*this, &Monitor::tooglePauseMode));
+	_toggleAllIDs.signal_clicked().connect(sigc::mem_fun(*this, &Monitor::onToggleAllClicked));
 
 	_frame.set_label("Send a message");
 	_frame.set_label_align(Gtk::ALIGN_CENTER, Gtk::ALIGN_START);
@@ -34,7 +36,7 @@ Monitor::Monitor(std::string& port)
 	_sendMessageContainer.set_orientation(Gtk::ORIENTATION_HORIZONTAL);
 	_sendMessageContainer.attach(_pauseButton, 0, 1, 2, 1);
 
-	_sendMessageContainer.attach(_labelTrameId, 15, 1, 7, 1);
+	_sendMessageContainer.attach(_labelTrameId, 0, 1, 7, 1);
 	_sendMessageContainer.attach_next_to(_trameId, _labelTrameId, Gtk::POS_BOTTOM, 7, 1);
 	_sendMessageContainer.attach_next_to(_labelTrameType, _trameId, Gtk::POS_BOTTOM, 7, 1);
 	_sendMessageContainer.attach_next_to(_trameType, _labelTrameType, Gtk::POS_BOTTOM, 7, 1);
@@ -45,6 +47,16 @@ Monitor::Monitor(std::string& port)
 
 	_lowLevelWindow.add(_messageTree);
 	_lowLevelWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+
+	// Setting up the filter
+	for(int i = 0; i < 10; i++) {
+		std::string buttonLabel = "Show ID " + std::to_string(i);
+		std::shared_ptr<ButtonWithId> button = std::make_shared<ButtonWithId>(buttonLabel, i);
+		_sendMessageContainer.attach(*button->_button.get(), 18, 1 + i, 10, 1);
+		_buttonIdList.push_back(button);
+	}
+	_sendMessageContainer.attach(_toggleAllIDs, 18, 12, 10, 1);
+
 
 	// Creating and initializing the refTreeModel
 	_refTreeModel = Gtk::ListStore::create(_message);
@@ -84,7 +96,8 @@ void Monitor::notify() {
 	// Tell the worker thread to stop sending us signals because we are already processing one
 	_canListener.isRequestingData(true);
 	auto buffer = _canListener.getTrameReceived();
-	onListenerNotification(buffer, false);
+	onListenerNotification(this->filterBuffer(buffer, this->generateIdSet()), false);
+	// We tell the worker thread that he can send us signals again once we finished processing AND displaying the data.
 	_canListener.isRequestingData(false);
 }
 
@@ -233,4 +246,37 @@ std::vector<uint8_t> Monitor::buildTrameData(const std::string& data) const {
 	}
 
 	return result;
+}
+
+std::deque<Trame> Monitor::filterBuffer(const std::deque<Trame>& buffer, const std::set<int>& acceptableIDs) const {
+
+	std::deque<Trame> result;
+
+	for(auto& trame : buffer) {
+		// Verify if the ID is in the list
+		if(acceptableIDs.find(trame.getId()) != acceptableIDs.end()) {
+			result.push_back(trame);
+		}
+	}
+
+
+	return result;
+}
+
+std::set<int> Monitor::generateIdSet() const {
+	std::set<int> result;
+	for(int i = 0; i < _buttonIdList.size(); i++) {
+		auto button = _buttonIdList[i];
+		if(!button->_button->get_active()) {
+			result.insert(button->_id);
+		}
+	}
+	return result;
+}
+
+void Monitor::onToggleAllClicked() {
+
+	for(auto& buttons : _buttonIdList) {
+		buttons->_button->set_active(_toggleAllIDs.get_active());
+	}
 }
