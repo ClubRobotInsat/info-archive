@@ -126,7 +126,6 @@ protected:
 	/**
 	 * Will look at _trameData _trameType _trameId and verify that the fields are not empty.
 	 * @return True if there is something as an input, false is one of the 3 is empty.
-	 * @return True if there is something as an input, false is one of the 3 is empty.
 	 */
 	bool checkInputs() const;
 

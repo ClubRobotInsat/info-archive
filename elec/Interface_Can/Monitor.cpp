@@ -142,7 +142,7 @@ void Monitor::sendMessage() {
 	try {
 		message = std::make_unique<Trame>(this->buildTrameFromInput());
 	} catch(std::runtime_error& e) {
-		Gtk::MessageDialog dialog(*this, "Error : no input to build a trame from.");
+		Gtk::MessageDialog dialog(*this, "Error : no input to build a trame from.\n");
 		dialog.run();
 		sendMessage = false;
 	}
@@ -163,7 +163,13 @@ Trame Monitor::buildTrameFromInput() const {
 		int cmd = std::stoi(_trameType.get_buffer()->get_text(), nullptr, 16);
 		std::vector<uint8_t> data = buildTrameData(_trameData.get_buffer()->get_text());
 
-		Trame result = make_trame(id, cmd, data);
+		// No data because we will add it later
+		Trame result = make_trame(id, cmd);
+		// Adding the data to the Trame
+		for(auto item : data) {
+			result.addDonnees(item);
+		}
+
 
 		return result;
 	} else {
@@ -172,8 +178,10 @@ Trame Monitor::buildTrameFromInput() const {
 }
 
 bool Monitor::checkInputs() const {
-	return !(_trameId.get_buffer()->get_text().empty() | _trameData.get_buffer()->get_text().empty() |
-	         _trameType.get_buffer()->get_text().empty());
+	bool testId = _trameId.get_buffer()->get_text().empty();
+	bool testData = _trameData.get_buffer()->get_text().empty();
+	bool testCmd = _trameType.get_buffer()->get_text().empty();
+	return !(testId or testData or testCmd);
 }
 
 std::string Monitor::getLocalTime() const {
