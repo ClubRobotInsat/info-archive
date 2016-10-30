@@ -101,12 +101,12 @@ protected:
 	 */
 	void updateInterface(const bool& colored, const std::string& id, const std::string& cmd, const std::string& time, const std::string& data) const;
 
-	/**
-	 *
-	 * @param The raw data to represent in hexadecimal
-	 * @return A string in the form 0x.. 0x.. 0x.. , etc.
+	/*
+	 * @param number : The raw data to represent in hexadecimal
+	 * @param addPrefix : If the function should add "0x" to the result
+	 * @return A string with the number in an hexadecimal base
 	 */
-	std::string convertToHexadecimal(const unsigned int& number) const;
+	std::string convertToHexadecimal(const unsigned int& number, bool addPrefix) const;
 
 	/**
 	 *

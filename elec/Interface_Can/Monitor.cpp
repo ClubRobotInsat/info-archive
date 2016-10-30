@@ -106,9 +106,12 @@ void Monitor::onListenerNotification(const std::deque<Trame>& buffer, const bool
 	this->handleTrame(buffer, colored);
 }
 
-std::string Monitor::convertToHexadecimal(const unsigned int& number) const {
+std::string Monitor::convertToHexadecimal(const unsigned int& number, bool addPrefix) const {
 	std::stringstream stream;
-	stream << std::setfill('*') << std::hex << std::showbase << number;
+	if(addPrefix) {
+		stream << "0x";
+	}
+	stream << std::setfill('*') << std::hex << number;
 	return stream.str();
 }
 
@@ -203,12 +206,12 @@ Monitor::~Monitor() {}
 void Monitor::handleTrame(const std::deque<Trame>& buffer, const bool& isColored) const {
 
 	for(auto Trame : buffer) {
-		auto id = convertToHexadecimal(Trame.getId());
-		auto cmd = convertToHexadecimal(Trame.getCmd());
+		auto id = convertToHexadecimal(Trame.getId(), true);
+		auto cmd = convertToHexadecimal(Trame.getCmd(), true);
 		auto time = this->getLocalTime();
 		std::string data;
 		for(int i = 0; i < Trame.getNbDonnees(); i++) {
-			data += convertToHexadecimal(Trame.getDonnee(i)) + " ";
+			data += convertToHexadecimal(Trame.getDonnee(i), i == 0) + " ";
 		}
 		this->updateInterface(isColored, id, cmd, time, data);
 	}
