@@ -13,7 +13,7 @@ Monitor::Monitor(std::string& port)
         , _pauseButton("Pause")
         , _sendTrameButton("Envoyer la trame")
         , _labelTrameId("Trame ID")
-        , _labelTrameType("Trame Type")
+        , _labelTrameType("Trame Cmd")
         , _labelTrameData("Trame Data")
         , _toggleAllIDs("Toggle all") {
 
@@ -44,6 +44,7 @@ Monitor::Monitor(std::string& port)
 	_sendMessageContainer.attach_next_to(_trameData, _labelTrameData, Gtk::POS_BOTTOM, 7, 1);
 	_sendMessageContainer.attach_next_to(_sendTrameButton, _trameData, Gtk::POS_BOTTOM, 7, 1);
 
+	_trameId.set_adjustment(Gtk::Adjustment::create(0, 0, 1, 1, 1, 1));
 
 	_lowLevelWindow.add(_messageTree);
 	_lowLevelWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
@@ -86,7 +87,6 @@ Monitor::Monitor(std::string& port)
 
 	//-----------Threading Stuff|
 
-	//_listenerThread = std::make_unique<std::thread>([this] { _canListener.start(); });
 	signal_on_message_received->connect(sigc::mem_fun(*this, &Monitor::notify));
 	_canListener.start();
 }
@@ -150,11 +150,12 @@ void Monitor::sendMessage() {
 		sendMessage = false;
 	}
 
+	std::deque<Trame> result;
 	if(sendMessage) {
-		std::deque<Trame> result;
-		result.push_front(*message.release());
-		_canListener.sendMessage(result.front());
-		this->handleTrame(result, true);
+		std::deque<Trame> temp;
+		temp.push_front(*message.release());
+		_canListener.sendMessage(temp.front());
+		this->handleTrame(temp, true);
 	}
 }
 
@@ -162,7 +163,7 @@ void Monitor::sendMessage() {
 Trame Monitor::buildTrameFromInput() const {
 
 	if(this->checkInputs()) {
-		int id = std::stoi(_trameId.get_buffer()->get_text(), nullptr, 16);
+		int id = _trameId.get_value();
 		int cmd = std::stoi(_trameType.get_buffer()->get_text(), nullptr, 16);
 		std::vector<uint8_t> data = buildTrameData(_trameData.get_buffer()->get_text());
 

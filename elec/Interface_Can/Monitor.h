@@ -159,11 +159,11 @@ private:
 	/**
 	 * GUI elements related to sending message
 	 */
-	Gtk::Button _pauseButton;
+	Gtk::ToggleButton _pauseButton;
 	Gtk::Button _sendTrameButton;
 
 	Gtk::Entry _trameData;
-	Gtk::Entry _trameId;
+	Gtk::SpinButton _trameId;
 	Gtk::Entry _trameType;
 
 	Gtk::Label _labelTrameId;

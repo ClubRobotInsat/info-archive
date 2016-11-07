@@ -33,18 +33,16 @@ void CanListener::start() {
 
 void CanListener::mainLoop() {
 	auto emitted = false;
-	while(!this->shallStopListening()) {
+	while(not _shallStopListening) {
 		if(_acceptNewMessage) {
 			std::unique_ptr<Trame> trame;
 			auto now = Units::TimePoint::now();
-			while(Units::TimePoint::now() < now + _refreshRate and not emitted) {
+			while(Units::TimePoint::now() < now + _refreshRate and not emitted and not _shallStopListening) {
 				trame = std::make_unique<Trame>(this->waitForMessage());
-				if(not(trame->getId() == 0 or trame->getCmd() == 0)) {
-					std::lock_guard<std::mutex> lock(mutex);
-					_trameBuffer.push_front(*trame.get());
-					if(not _parentIsRequestingData) {
-						signal_on_message_received->emit();
-					}
+				std::lock_guard<std::mutex> lock(mutex);
+				_trameBuffer.push_front(*trame.get());
+				if(not _parentIsRequestingData) {
+					signal_on_message_received->emit();
 					emitted = true;
 				}
 			}
