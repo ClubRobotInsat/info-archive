@@ -37,7 +37,7 @@ else()
 	set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -flto")
 endif()
 
-if (CMAKE_CXX_COMPILER_ID MATCHES "^(Apple)?Clang$")
+if (${CMAKE_CXX_COMPILER_ID} STREQUAL "^(Apple)?Clang$")
 	if (COLOR)
 		set(CMAKE_COLOR_MAKEFILE ON)
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fcolor-diagnostics")
