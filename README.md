@@ -5,7 +5,7 @@ Installation de tout ce qu'il faut
 
 ```
 sudo apt-get update
-sudo apt-get install mono-complete cmake subversion git libbox2d-dev gcc-5-multilib g++-5-multilib libbluetooth-dev build-essential libglfw-dev libglu1-mesa-dev curl libxrandr-dev libgtkmm-3.0-dev libusb-1.0-0-dev clang-format-3.8
+sudo apt-get install mono-complete cmake subversion git libbox2d-dev gcc-5-multilib g++-5-multilib libbluetooth-dev build-essential libglfw-dev libglu1-mesa-dev curl libxrandr-dev libgtkmm-3.0-dev libusb-1.0-0-dev clang-format
 ```
 ### Facultatif :
 Pour installer la lib Wiic nécessaire pour les démos à la wiimote
