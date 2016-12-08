@@ -45,13 +45,13 @@ namespace IDCartesPrincipal {
 		ID_CARTE_CAN_USB = 0,
 		ID_CARTE_DEPLACEMENT = ID_CARTE_CHUCK_DEPLACEMENT,
 		/*ID_CARTE_SERVO_G = ID_CARTE_CHUCK_SERVOS_GAUCHE,
-		ID_CARTE_SERVO_D = ID_CARTE_CHUCK_SERVOS_DROIT,*/
+	    ID_CARTE_SERVO_D = ID_CARTE_CHUCK_SERVOS_DROIT,*/
 		ID_CARTE_IO = ID_CARTE_CHUCK_IO,
 		/*ID_CARTE_PNEUMATIQUE_HAUTE = ID_CARTE_CHUCK_PNEUMATIQUE_HAUT,
-		ID_CARTE_PNEUMATIQUE_BAS = ID_CARTE_CHUCK_PNEUMATIQUE_BAS,*/
+	    ID_CARTE_PNEUMATIQUE_BAS = ID_CARTE_CHUCK_PNEUMATIQUE_BAS,*/
 		ID_CARTE_EVITEMENT = ID_CARTE_CHUCK_EVITEMENT,
 		/*ID_CARTE_ELECTROVANNES = ID_CARTE_CHUCK_ELECTROVANNES,
-		ID_CARTE_DEBUG_DESSIN = 9*/
+	    ID_CARTE_DEBUG_DESSIN = 9*/
 	};
 
 	ENUM_NS(IDCartesPrincipal, IDCartes, CAN_USB, DEPLACEMENT, SERVO_G, SERVO_D, IO, PNEUMATIQUE_HAUTE, PNEUMATIQUE_BAS, EVITEMENT, ELECTROVANNES);
@@ -77,16 +77,16 @@ namespace ConstantesPrincipal {
 
 	/*
 	enum class Pince {
-		GAUCHE = 0,
-		DROIT = 1,
+	    GAUCHE = 0,
+	    DROIT = 1,
 	};
 
 	enum class PositionPince {
-		RENTRE_DEBUT = 0,
-		RENTRE = 1,
-		SORTIE = 2,
-		SORTIE_MAX = 3,
-		NBR = 4,
+	    RENTRE_DEBUT = 0,
+	    RENTRE = 1,
+	    SORTIE = 2,
+	    SORTIE_MAX = 3,
+	    NBR = 4,
 	};
 	*/
 
@@ -94,12 +94,12 @@ namespace ConstantesPrincipal {
 
 	/*
 	enum class Servo {
-		PINCE_D = ID_SERVO_G_PINCE_DROITE,
-		PARASOL = ID_SERVO_D_PARASOL,
-		CUILLERE = ID_SERVO_G_CUILLERE,
-		PELLE = ID_SERVO_D_PELLE,
-		PINCE_G = ID_SERVO_G_PINCE_GAUCHE,
-		NBR = 5
+	    PINCE_D = ID_SERVO_G_PINCE_DROITE,
+	    PARASOL = ID_SERVO_D_PARASOL,
+	    CUILLERE = ID_SERVO_G_CUILLERE,
+	    PELLE = ID_SERVO_D_PELLE,
+	    PINCE_G = ID_SERVO_G_PINCE_GAUCHE,
+	    NBR = 5
 	};
 	*/
 
@@ -126,7 +126,7 @@ namespace ConstantesPrincipal {
 
 	extern int const IDRobot;
 
-	//extern Angle const positionPinceD[enumToInt(PositionPince::NBR)];
+	// extern Angle const positionPinceD[enumToInt(PositionPince::NBR)];
 
 	/////////////////// CARTES ///////////////////
 
@@ -154,8 +154,8 @@ namespace ConstantesPrincipal {
 	/*
 	template <>
 	struct CarteInfo<IDCartesPrincipal::SERVO_G> {
-			using typeCarte = CarteServosNova2009;
-			enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_SERVO_G };
+	        using typeCarte = CarteServosNova2009;
+	        enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_SERVO_G };
 	};
 	*/
 	template <>
