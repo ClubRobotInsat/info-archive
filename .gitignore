@@ -1,4 +1,5 @@
 robot/Principal/petri/src/*
+cmake-build-debug/
 .DS_Store
 /.idea
 /build
