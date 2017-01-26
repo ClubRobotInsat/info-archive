@@ -6,6 +6,7 @@
 #include "Commun.h"
 #include "Enum/Enum.h"
 #include "IConstantes.h"
+#include "MathToolbox/Repere.h"
 #include <array>
 #include <vector>
 #include <cstdint>
@@ -88,6 +89,9 @@ namespace positionObjetsTable {
     const Vector3m START_POSITION_ROBOT_YELLOW = {2.098_m, 2_m - 18_cm, 0.15_m};
     const Angle START_ANGLE_ROBOT_BLUE =   -90_deg;
     const Angle START_ANGLE_ROBOT_YELLOW = -90_deg;
+
+// Repère absolu pour toutes les tables : (0, 0) en bas à gauche (contre le mur proche du tableau au club)
+	const repere::Repere ABSOLUTE_REFERENCE = repere::Repere(Vector2m(0_m, 0_m), repere::Multiplicateur::SENS_POSITIF, repere::Multiplicateur::SENS_POSITIF);
 
 // Position et angle des bâtons
     struct Building {
