@@ -1,18 +1,18 @@
 
 
 set(OUTILS_SOURCE
-		RobotPrincipal/Constantes.cpp
 		ConstantesCommunes.cpp
 		log/Log.cpp
 		log/LogHTML.cpp
 		log/LogRTF.cpp
 		log/LogTermVT100.cpp
-		Units/Units.cpp
+		MathToolbox/MathToolbox.cpp
+		MathToolbox/Repere.cpp
+		RobotPrincipal/Constantes.cpp
 		sockets/Socket.cpp
 		sockets/tcpSock.cpp
 		Trame.cpp
-		MathToolbox/MathToolbox.cpp
-)
+		Units/Units.cpp)
 
 add_library(Outils_${SIMU_OU_ROBOT} STATIC ${OUTILS_SOURCE})
 target_link_libraries(Outils_${SIMU_OU_ROBOT} pthread)
