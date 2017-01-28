@@ -5,7 +5,6 @@
 #ifndef ROOT_REPERE_H
 #define ROOT_REPERE_H
 
-//#include <bits/shared_ptr.h>
 #include "Units.h"
 #include "MathToolbox/MathToolbox.h"
 
@@ -18,9 +17,15 @@ namespace repere {
     class Repere;
 
     struct Coordonnees {
-        Vector2m pos;
-        Angle angle;
-        const Repere& repere_projete;
+        Coordonnees(const Repere& repere_parent, Vector3m position = Vector3m(0_m, 0_m, 0_m), Angle angle = 0_rad);
+        Coordonnees(const Repere& repere_parent, Vector2m position, Angle angle = 0_rad);
+        Coordonnees(Coordonnees const& coords);
+
+        //Coordonnees& operator=(const Coordonnees other);
+
+        Vector3m _pos;
+        Angle _angle;
+        const Repere& _repere_parent;
     };
 
     enum Multiplicateur {
@@ -37,7 +42,7 @@ namespace repere {
             _multY = multY;
         }
 
-        Coordonnees get_coordonnees(Coordonnees coordonnees);
+        Coordonnees get_coordonnees(Coordonnees coordonnees) const;
 
     private:
         Multiplicateur _multX, _multY;
