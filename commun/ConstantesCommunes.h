@@ -87,12 +87,7 @@ namespace positionObjetsTable {
 // Repère absolu pour toutes les tables : (0, 0) en bas à gauche (contre le mur proche du tableau au club)
 	const repere::Repere ABSOLUTE_REFERENCE = repere::Repere({0_m, 0_m}, repere::Multiplicateur::SENS_POSITIF, repere::Multiplicateur::SENS_POSITIF);
 
-	// Robot
-    const Length ROBOT_Z = 51_cm;
-	const repere::Coordonnees START_COORDS_ROBOT_BLUE   = repere::Coordonnees(ABSOLUTE_REFERENCE, {902_mm,  2_m - 18_cm, 0.15_m}, -90_deg);
-	const repere::Coordonnees START_COORDS_ROBOT_YELLOW = repere::Coordonnees(ABSOLUTE_REFERENCE, {2.098_m, 2_m - 18_cm, 0.15_m}, -90_deg);
-
-
+// Positionnement des objets sur la table
     const Angle ANGLE_DELIMITER = 31.78833062_deg;
 
     const std::vector<repere::Coordonnees> LIST_DELIMITERS = {{ABSOLUTE_REFERENCE, Vector3m(55_cm,                 2_m - 54_cm,     0_m), 90_deg}, // rond en haut à gauche
@@ -198,6 +193,10 @@ namespace positionObjetsTable {
                                                          {{ABSOLUTE_REFERENCE, Vector3m(2.1_m,   2_m - 1.4_m,  5_cm)},    CYLINDER_MULTICOLOR},
                                                          {{ABSOLUTE_REFERENCE, Vector3m(80_cm,   2_m - 1.85_m, 5_cm)},    CYLINDER_BLUE},
                                                          {{ABSOLUTE_REFERENCE, Vector3m(2.2_m,   2_m - 1.85_m, 5_cm)},    CYLINDER_YELLOW}};
+
+
+
+	/// Construction de l'environnement :
 }
 
 #endif // CONSTANTES_COMMUNES_2015_H

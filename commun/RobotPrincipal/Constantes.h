@@ -63,6 +63,12 @@ namespace ConstantesPrincipal {
 	using IDCartes = IDCartesPrincipal::IDCartes;
 	using IDCartesServo = IDCartesPrincipal::IDCartesServo;
 
+	const repere::Repere REFERENCE_BLUE   = repere::Repere({0_m, 0_m}, repere::Multiplicateur::SENS_POSITIF, repere::Multiplicateur::SENS_POSITIF);
+	const repere::Repere REFERENCE_YELLOW = repere::Repere({3_m, 0_m}, repere::Multiplicateur::SENS_NEGATIF, repere::Multiplicateur::SENS_POSITIF);
+
+	const Vector3m START_ROBOT_POSITION(902_mm,  182_cm, 15_cm);
+	const Angle START_ROBOT_ANGLE(-90_deg);
+
 	/////////////////// CONTACTEURS ///////////////////
 	// Numéros des contacteurs et les rôles associés
 	enum class Contacteur {
