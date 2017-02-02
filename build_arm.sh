@@ -19,7 +19,7 @@ fi
 
 cd build_arm
 echo -e "$dgreen Generating CMakeFile $egreen"
-cmake .. -DBITS=64 -DCMAKE_TOOLCHAIN=Cross-Compilation.cmake 
+cmake .. -DBITS=64 -DCMAKE_TOOLCHAIN_FILE=Cross-Compilation.cmake 
 
 echo -e "$dgreen Building IAPrincipal $egreen"
 make IAPrincipal -j $cores
