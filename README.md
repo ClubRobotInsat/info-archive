@@ -126,9 +126,9 @@ On clique donc sur "Add" et on choisi "Ethernet".
 Une fois dans le menu de paramètrage de la connexion il faut modifier quelques champs :
 1. Connection name : A remplir pour différencier la connection des autres
 2. Onglet Ethernet :
-⋅⋅* Device : Normalement il n'y en a que un à chosir
+  * Device : Normalement il n'y en a que un à chosir
 3. Onglet IPv4 Settings : 
-⋅⋅* Method : Choisir "Shared to other computers"
+  * Method : Choisir "Shared to other computers"
 Les autres champs peuvent être laissés tel quel.
 
 Ensuite, pour pouvoir se ssh sur le RaspberryPI il faut trouver son adresse IP via :
