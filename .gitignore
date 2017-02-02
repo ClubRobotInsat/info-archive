@@ -4,3 +4,5 @@ robot/Principal/petri/src/*
 *~
 /petri
 /build
+/cmake-build-debug
+
