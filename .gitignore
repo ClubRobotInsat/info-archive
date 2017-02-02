@@ -3,4 +3,5 @@ robot/Principal/petri/src/*
 /.idea
 *~
 /petri
+/build_arm
 /build
