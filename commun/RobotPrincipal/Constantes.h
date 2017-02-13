@@ -29,12 +29,13 @@
 #include "../../robot/Cartes/CarteIO2014.h"
 //#include "../../robot/Cartes/CartePneumatique.h"
 //#include "../../robot/Cartes/CartePneumatique2014.h"
-//#include "../../robot/Cartes/CarteServosNova2009.h"
+#include "../../robot/Cartes/CarteServosNova2009.h"
 #include "../robot/Cartes/CarteDetectAdv2009.h"
+#include "../../robot/Cartes/CarteColorimetre2014.h"
 
 #endif
 
-#include "../../../CodeCommun/Informations_cartesElec.h"
+#include "../../../CodeCommun/Informations_cartesElec_2017.h"
 
 #include "../Commun.h"
 #include "../ConstantesCommunes.h"
@@ -43,20 +44,20 @@
 namespace IDCartesPrincipal {
 	enum {
 		ID_CARTE_CAN_USB = 0,
-		ID_CARTE_DEPLACEMENT = ID_CARTE_CHUCK_DEPLACEMENT,
-		/*ID_CARTE_SERVO_G = ID_CARTE_CHUCK_SERVOS_GAUCHE,
-	    ID_CARTE_SERVO_D = ID_CARTE_CHUCK_SERVOS_DROIT,*/
-		ID_CARTE_IO = ID_CARTE_CHUCK_IO,
-		/*ID_CARTE_PNEUMATIQUE_HAUTE = ID_CARTE_CHUCK_PNEUMATIQUE_HAUT,
-	    ID_CARTE_PNEUMATIQUE_BAS = ID_CARTE_CHUCK_PNEUMATIQUE_BAS,*/
-		ID_CARTE_EVITEMENT = ID_CARTE_CHUCK_EVITEMENT,
-		/*ID_CARTE_ELECTROVANNES = ID_CARTE_CHUCK_ELECTROVANNES,
-	    ID_CARTE_DEBUG_DESSIN = 9*/
+		ID_CARTE_DEPLACEMENT  = ID_CARTE_INYANGA_DEPLACEMENT,
+		ID_CARTE_SERVOS       = ID_CARTE_INYANGA_SERVOS,
+	    ID_CARTE_IO           = ID_CARTE_INYANGA_IO,
+		ID_CARTE_EVITEMENT    = ID_CARTE_INYANGA_EVITEMENT,
+		ID_CARTE_ASCENSEUR    = ID_CARTE_INYANGA_ASCENSEUR,
+		ID_CARTE_ASPIRATION   = ID_CARTE_INYANGA_ASPIRATION,
+		ID_CARTE_COLORIMETRIE = ID_CARTE_INYANGA_COLORIMETRIE,
+
+		/*ID_CARTE_DEBUG_DESSIN = 8*/
 	};
 
-	ENUM_NS(IDCartesPrincipal, IDCartes, CAN_USB, DEPLACEMENT, SERVO_G, SERVO_D, IO, PNEUMATIQUE_HAUTE, PNEUMATIQUE_BAS, EVITEMENT, ELECTROVANNES);
+	ENUM_NS(IDCartesPrincipal, IDCartes, CAN_USB, DEPLACEMENT, SERVOS, IO, EVITEMENT, ASCENSEUR, ASPIRATION, COLORIMETRIE);
 
-	ENUM_CLASS_NS(IDCartesPrincipal, IDCartesServo, ASCENSEUR, AUTRES);
+	ENUM_CLASS_NS(IDCartesPrincipal, IDCartesServo, PINCE, LACET, TANGAGE, FUSEE, PELLE, GAUCHE, DROITE);
 }
 
 namespace ConstantesPrincipal {
@@ -98,19 +99,21 @@ namespace ConstantesPrincipal {
 
 	/////////////////// SERVOS ///////////////////
 
-	/*
 	enum class Servo {
-	    PINCE_D = ID_SERVO_G_PINCE_DROITE,
-	    PARASOL = ID_SERVO_D_PARASOL,
-	    CUILLERE = ID_SERVO_G_CUILLERE,
-	    PELLE = ID_SERVO_D_PELLE,
-	    PINCE_G = ID_SERVO_G_PINCE_GAUCHE,
-	    NBR = 5
-	};
-	*/
+		PINCE   = ID_SERVO_INYANGA_PINCE,
+		LACET   = ID_SERVO_INYANGA_LACET,   // mouvement de gauche à droite
+		TANGAGE = ID_SERVO_INYANGA_TANGAGE, // mouvement de bas en haut
+		FUSEE   = ID_SERVO_INYANGA_FUSEE,
+		PELLE   = ID_SERVO_INYANGA_PELLE,
+		GAUCHE  = ID_SERVO_INYANGA_GAUCHE,  // servos à l'arrière
+		DROITE  = ID_SERVO_INYANGE_DROITE,
 
-	enum class Servo_D { NBR = 2 };
-	enum class Servo_G { NBR = 3 };
+	    NBR = 7
+	};
+
+
+	/*enum class Servo_D { NBR = 2 };
+	enum class Servo_G { NBR = 3 };*/
 
 	// Durée attendue lors de l'envoi d'un message aux cartes élecs dans les fonctions blonquantes autre que les servos.
 	auto const TIMEOUT_ELEC = 100_ms;
@@ -147,6 +150,7 @@ namespace ConstantesPrincipal {
 		using typeCarte = CarteCAN_USB;
 		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_CAN_USB };
 	};
+
 	template <>
 	struct CarteInfo<IDCartesPrincipal::DEPLACEMENT> {
 #ifdef TARGET_SIMULATEUR
@@ -156,24 +160,43 @@ namespace ConstantesPrincipal {
 #endif
 		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_DEPLACEMENT };
 	};
-	// TODO : rajouter toutes les cartes
-	/*
+
 	template <>
-	struct CarteInfo<IDCartesPrincipal::SERVO_G> {
+	struct CarteInfo<IDCartesPrincipal::SERVOS> {
 	        using typeCarte = CarteServosNova2009;
-	        enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_SERVO_G };
+	        enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_SERVOS };
 	};
-	*/
+
 	template <>
 	struct CarteInfo<IDCartesPrincipal::IO> {
 		using typeCarte = CarteIO2014;
 		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_IO };
 	};
+
 	template <>
 	struct CarteInfo<IDCartesPrincipal::EVITEMENT> {
 		using typeCarte = CarteDetectAdv2009;
 		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_EVITEMENT };
 	};
+
+	// TODO : s'occuper des cartes ascenseur et aspiration
+	/*template <>
+	struct CarteInfo<IDCartesPrincipal::ASCENSEUR> {
+		using typeCarte = CarteAscenseur;
+		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_ASCENSEUR };
+	};
+
+	template <>
+	struct CarteInfo<IDCartesPrincipal::ASPIRATION> {
+		using typeCarte = CarteAspiration;
+		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_ASPIRATION };
+	};
+
+	template <>
+	struct CarteInfo<IDCartesPrincipal::COLORIMETRIE> {
+		using typeCarte = CarteColorimetre2014;
+		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_COLORIMETRIE };
+	};*/
 };
 
 struct ConstantesRobotPrincipal : public Commun::ConstantesRobot {
