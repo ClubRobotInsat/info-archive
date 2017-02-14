@@ -64,7 +64,6 @@ Pour lancer l'IA en mode Debug sur le simu
 11. Voilà c'est terminé, vous n'avez plus qu'a lancer votre réseau petri et admiré le résultat dans le simu !
 
 
-## Que faire ? 
 
 #### Débugger le simu et l'IA:
 
@@ -110,6 +109,50 @@ sudo apt-get install gcc-5-arm-linux-gnueabihf g++-5-arm-linux-gnueabihf build-e
 ```
 Pour crosscompiler la wiimote, il faut installer ```libbluetooth-dev``` en version arm, et aussi cross-compiler WiiC en arm.
 Ensuite faut mettre les libs dans ```/usr/arm-linux-gnueabihf/lib```
+
+###Cross-compilation
+Un script build_arm.sh est fourni, il compilera IAPrincipal et IAWiimote dans info/build_arm.
+Il est possible de donner le nombre de coeur à utiliser au script :
+```
+ ./build_arm.sh 8
+```
+
+###Envoyer le script sur le Raspberry
+####Configuration de ton ordinateur
+Il faut commencer par ouvrir le gestionnaire de connections de ton ordinateur. Pour cela il faut cliquer sur l'icône "Network" dans ta barre des tâches et sélectionner "Edit Connections". Une fois dans ce menu, il est possible de definir une nouvelle connexion Ethernet qui sera partagée avec le Raspberry.
+
+
+On clique donc sur "Add" et on choisi "Ethernet".
+Une fois dans le menu de paramètrage de la connexion il faut modifier quelques champs :
+
+
+1. Connection name : A remplir pour différencier la connection des autres
+
+
+2. Onglet Ethernet :
+
+
+  * Device : Normalement il n'y en a que un à chosir
+
+
+3. Onglet IPv4 Settings : 
+
+
+  * Method : Choisir "Shared to other computers"
+
+
+
+Les autres champs peuvent être laissés tel quel.
+
+Ensuite, pour pouvoir se ssh sur le RaspberryPI il faut trouver son adresse IP via :
+```
+arp -a
+```
+Pour copier des fichiers il faut utiliser rsync, example 
+```
+rsync IAWiimote robot@10.42.0.132:~/Desktop
+```
+Le mot de passe de l'utilisateur robot est "robot".
 
 ------------
 Installation des outils pour le controle du robot à la wiimote
