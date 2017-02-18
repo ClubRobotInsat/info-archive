@@ -3,4 +3,6 @@ robot/Principal/petri/src/*
 /.idea
 *~
 /petri
+/cmake-build-debug
+/build_arm
 /build
