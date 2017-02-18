@@ -63,43 +63,6 @@ Pour lancer l'IA en mode Debug sur le simu
 10. Dans Petri, aller dans ```Debug -> Creat Host```, normalement tout est déjà configuré, vous n'avez qu'à cliquer sur Create Host. Sinon, faut aller chercher les binaires de l'IA :```/bin/robot/Principal/IAPrincipal``` et indiquer comme argument : ```LOCAL```.
 11. Voilà c'est terminé, vous n'avez plus qu'a lancer votre réseau petri et admiré le résultat dans le simu !
 
-
-
-#### Débugger le simu et l'IA:
-
-Pour cela, lancer le simu, ouvrir la console qui reçoit les message de l'IA (alt gr + 2 , le combo qui fait ~ avec ALT GR).
-Ensuite faut tester toutes les méthodes petri, verifier que le simu les gèrent bien. Si jamais ils les gèrent bien et que rien ne s'affiche c'est que c'est côté robot que ça merde.
-Comment savoir si c'est bien geré ? Les méthodes correspondent à la doc des élecs, tout simplement.
-Voilà voilà.
-
-#### TODO : fix les méthodes suivantes
-
-carte électrovanne : fait crash le simu ("Une erreur est survenue dans le client du débuggueur : Le débuggueur distant n'est plus disponible !.")
-* descendreCuillere()
-* monterCuillere()
-* descendrePelle()
-* monterPelle()
-* sortirParasol()
-* rentrerParasol()
-* sortirBrasDroit()
-* sortirBrasGauche()
-* rentrerBrasDroit()
-* rentrerBrasGauche()
-
-partie pneumatique :  
-quand on active/désasctive une pompe seule la pompe BAS est concernée (ID = 6), on ne peut pas modif la pompe HAUTE  
-  
-je ne sais pas ce que font exactement ces méthodes -Benjamin
-* allerA(Distance, Distance)   ... ne marche pas (normal d'après Paul)
-* allerA(Vector2m)             ... ne marche pas (normal d'après Paul)
-* reculerA(Vector2m)
-  
-ne marche pas : ça attend dans Petri, il y a le message "[CAN.cpp:221 in marquerAckRecu] : On reçoit un ack pour le message 56, déjà évacué de la fenêtre" dans le terminal
-* recupererCubes()
-* relacherCubes()  
-  
-sinon les déplacements se font bien (et les cartes ont accès à la pos + angle de départ du robot, il n'y a pas de souci avec ça)
-
 ------------
 Cross-Compilation pour Raspberry
 ------------
