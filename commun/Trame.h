@@ -40,6 +40,12 @@ inline constexpr Byte operator"" _b(unsigned long long value) {
 	return Byte(value);
 }
 
+/*
+inline constexpr Byte makeFromString(std::string value) {
+
+}
+*/
+
 class Trame final {
 public:
 	/// Valeurs constantes de certains octets des trames
@@ -98,6 +104,8 @@ public:
 public:
 	// constructeur : état par défaut, id = cmd = numPaquet = 0, pas de données
 	Trame() : Trame(0, 0) {}
+
+	Trame operator=(Trame const& t2);
 
 	// constructeur : sans données
 	// lève ErreurIdCarteTropGrand si l'id de la carte est trop grand
@@ -248,5 +256,6 @@ void Trame::addDonneesInternal(Byte const& value, Args&&... values) {
 
 	this->addDonneesInternal(values...);
 }
+
 
 #endif /*TRAME_H_*/
