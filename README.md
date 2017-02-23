@@ -4,16 +4,34 @@ Installation de tout ce qu'il faut
 ------------
 
 ```
-sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
-echo "deb http://download.mono-project.com/repo/debian wheezy main" | sudo tee /etc/apt/sources.list.d/mono-xamarin.list
 sudo apt-get update
-sudo apt-get install mono-complete cmake subversion git libbox2d-dev gcc-5-multilib g++-5-multilib libbluetooth-dev build-essential libglfw-dev libglu1-mesa-dev libxrandr-dev libgtkmm-3.0-dev libusb-1.0-0-dev clang-format-3.7
+sudo apt-get install mono-complete cmake subversion git libbox2d-dev gcc-5-multilib g++-5-multilib libbluetooth-dev build-essential libglfw-dev libglu1-mesa-dev curl libxrandr-dev libgtkmm-3.0-dev libusb-1.0-0-dev clang-format
+```
+### Facultatif :
+Pour installer la lib Wiic nécessaire pour les démos à la wiimote
+```
+pushd .
+cd /tmp
+git clone https://github.com/grandelli/WiiC.git
+cd WiiC
+cmake src
+make
+sudo make install
+```
+Pour installer le hook (script lancer à chaque commit) qui formate le code comme il faut (**facultatif mais forte   ment recommandé**) :
+```
+./install.sh
 ```
 
 Pour installer clang en tant que compilateur :
 ```
 sudo apt-get install clang-3.8
 sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-3.8 100
+```
+Pour l'éditeur petri :
+```
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
+echo "deb http://download.mono-project.com/repo/debian wheezy main" | sudo tee /etc/apt/sources.list.d/mono-xamarin.list
 ```
 ------------
 Clonage du repo
@@ -22,9 +40,6 @@ Clonage du repo
 svn checkout https://www.etud.insa-toulouse.fr/svn/roboinsat/CodeCommun --username votre_login_insa
 git clone https://votre_login_github@github.com/ClubRobotInsat/info.git
 cd info
-mkdir build
-cd build
-cmake .. -DDEBUG=on
 
 git clone https://github.com/ClubRobotInsat/websimulator
 ```
@@ -46,7 +61,9 @@ Il reste à ce moment un peu de configuration à effectuer : dans le menu ```Fil
 Dans le champ ```CMake options```, mettre le texte ```-DDEBUG=on```.
 
 Pour pouvoir tester les IA via la laison série (RS232) en utilisant Clion (sans les droits root), il faut ajouter votre utilisateur au groupe ayant accès à la laison série (dialout) :
-```sudo usermod -a -G dialout NOM_UTILISATEUR```
+```
+sudo usermod -a -G dialout NOM_UTILISATEUR
+```
 
 --------------------------
 Pour lancer l'IA en mode Debug sur le simu
@@ -66,7 +83,7 @@ Pour lancer l'IA en mode Debug sur le simu
 ------------
 Cross-Compilation pour Raspberry
 ------------
-###Installation des outils :
+### Installation des outils :
 ```
 sudo apt-get install gcc-5-arm-linux-gnueabihf g++-5-arm-linux-gnueabihf build-essential git
 ```
