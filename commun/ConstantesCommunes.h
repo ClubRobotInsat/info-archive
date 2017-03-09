@@ -8,9 +8,9 @@
 #include "IConstantes.h"
 #include "MathToolbox/Repere.h"
 #include <array>
-#include <vector>
 #include <cstdint>
 #include <iostream>
+#include <vector>
 
 namespace Constantes {
 	ENUM_CLASS_NS(Constantes,
@@ -49,6 +49,12 @@ namespace Constantes {
 
 	extern Vector2m const TABLE_SIZE;
 	extern Vector2u16 const TAILLE_GRILLE;
+
+	// Repère absolu pour toutes les tables : (0, 0) en bas à gauche (contre le mur proche du tableau au club)
+	const repere::Repere ABSOLUTE_REFERENCE =
+	    repere::Repere({0_m, 0_m}, repere::Multiplicateur::SENS_POSITIF, repere::Multiplicateur::SENS_POSITIF);
+	const repere::Repere REFERENCE_ASTAR =
+	    repere::Repere({0_m, 1_m}, repere::Multiplicateur::SENS_POSITIF, repere::Multiplicateur::SENS_POSITIF);
 }
 
 inline Constantes::RobotColor operator!(Constantes::RobotColor const& c) {
@@ -76,124 +82,126 @@ struct ConstantesCommunes : Commun::ConstantesCommunes {
  */
 namespace positionObjetsTable {
 
-    /**
-     * Objets STATIQUES
-     */
-// Murs
-    const Vector3m WALLS_DIMENSIONS = {3_m, 2_m, 7_cm};
-    const Length WALLS_SIZE = 2.2_cm; // épaisseur des murs
+	/**
+	 * Objets STATIQUES
+	 */
+	// Murs
+	const Vector3m WALLS_DIMENSIONS = {3_m, 2_m, 7_cm};
+	const Length WALLS_SIZE = 2.2_cm; // épaisseur des murs
+
+	// Positionnement des objets sur la table
+	const Angle ANGLE_DELIMITER = 31.78833062_deg;
+
+	const std::vector<repere::Coordonnees> LIST_DELIMITERS = {
+	    {Constantes::ABSOLUTE_REFERENCE, Vector3m(55_cm, 2_m - 54_cm, 0_m), 90_deg}, // rond en haut à gauche
+	    {Constantes::ABSOLUTE_REFERENCE, Vector3m(604.5_mm, 2_m - 448_mm, 0_m), ANGLE_DELIMITER},
+	    {Constantes::ABSOLUTE_REFERENCE, Vector3m(693.5_mm, 2_m - 448_mm, 0_m), -ANGLE_DELIMITER},
+	    {Constantes::ABSOLUTE_REFERENCE, Vector3m(75_cm, 2_m - 54_cm, 0_m), 90_deg},
+	    {Constantes::ABSOLUTE_REFERENCE, Vector3m(601_mm, 2_m - 634_mm, 0_m), -ANGLE_DELIMITER},
+	    {Constantes::ABSOLUTE_REFERENCE, Vector3m(693_mm, 2_m - 634_mm, 0_m), ANGLE_DELIMITER},
+
+	    {Constantes::ABSOLUTE_REFERENCE, Vector3m(225_cm, 2_m - 54_cm, 0_m), 90_deg}, // rond en haut à droite
+	    {Constantes::ABSOLUTE_REFERENCE, Vector3m(2304.5_mm, 2_m - 448_mm, 0_m), ANGLE_DELIMITER},
+	    {Constantes::ABSOLUTE_REFERENCE, Vector3m(2393.5_mm, 2_m - 448_mm, 0_m), -ANGLE_DELIMITER},
+	    {Constantes::ABSOLUTE_REFERENCE, Vector3m(245_cm, 2_m - 54_cm, 0_m), 90_deg},
+	    {Constantes::ABSOLUTE_REFERENCE, Vector3m(2301_mm, 2_m - 634_mm, 0_m), -ANGLE_DELIMITER},
+	    {Constantes::ABSOLUTE_REFERENCE, Vector3m(2393_mm, 2_m - 634_mm, 0_m), ANGLE_DELIMITER},
+
+	    {Constantes::ABSOLUTE_REFERENCE, Vector3m(970_mm, 2_m - 1870_mm, 0_m), 90_deg}, // rond en bas à gauche
+	    {Constantes::ABSOLUTE_REFERENCE, Vector3m(1024.5_mm, 2_m - 1778_mm, 0_m), ANGLE_DELIMITER},
+	    {Constantes::ABSOLUTE_REFERENCE, Vector3m(1113.5_mm, 2_m - 1778_mm, 0_m), -ANGLE_DELIMITER},
+	    {Constantes::ABSOLUTE_REFERENCE, Vector3m(1170_mm, 2_m - 1870_mm, 0_m), 90_deg},
+	    {Constantes::ABSOLUTE_REFERENCE, Vector3m(1021_mm, 2_m - 1964_mm, 0_m), -ANGLE_DELIMITER},
+	    {Constantes::ABSOLUTE_REFERENCE, Vector3m(1113_mm, 2_m - 1964_mm, 0_m), ANGLE_DELIMITER},
+
+	    {Constantes::ABSOLUTE_REFERENCE, Vector3m(1830_mm, 2_m - 1870_mm, 0_m), 90_deg}, // rond en bas à droite
+	    {Constantes::ABSOLUTE_REFERENCE, Vector3m(1884.5_mm, 2_m - 1778_mm, 0_m), ANGLE_DELIMITER},
+	    {Constantes::ABSOLUTE_REFERENCE, Vector3m(1973.5_mm, 2_m - 1778_mm, 0_m), -ANGLE_DELIMITER},
+	    {Constantes::ABSOLUTE_REFERENCE, Vector3m(2030_mm, 2_m - 1870_mm, 0_m), 90_deg},
+	    {Constantes::ABSOLUTE_REFERENCE, Vector3m(1881_mm, 2_m - 1964_mm, 0_m), -ANGLE_DELIMITER},
+	    {Constantes::ABSOLUTE_REFERENCE, Vector3m(1973_mm, 2_m - 1964_mm, 0_m), ANGLE_DELIMITER},
 
 
-// Repère absolu pour toutes les tables : (0, 0) en bas à gauche (contre le mur proche du tableau au club)
-	const repere::Repere ABSOLUTE_REFERENCE = repere::Repere({0_m, 0_m}, repere::Multiplicateur::SENS_POSITIF, repere::Multiplicateur::SENS_POSITIF);
+	    {Constantes::ABSOLUTE_REFERENCE,
+	     Vector3m(51.5_mm - 5_cm, 2_m - 1477.5_mm, 0_m),
+	     -5.625_deg}, // arc de cercle en bas à gauche
+	    {Constantes::ABSOLUTE_REFERENCE, Vector3m(152.4_mm - 5_cm, 2_m - 1497.6_mm, 0_m), -16.875_deg},
+	    {Constantes::ABSOLUTE_REFERENCE, Vector3m(247.5_mm - 5_cm, 2_m - 1537_mm, 0_m), -28.125_deg},
+	    {Constantes::ABSOLUTE_REFERENCE, Vector3m(333.1_mm - 5_cm, 2_m - 1594.2_mm, 0_m), -39.375_deg},
+	    {Constantes::ABSOLUTE_REFERENCE, Vector3m(405.8_mm - 5_cm, 2_m - 1667_mm, 0_m), -50.625_deg},
+	    {Constantes::ABSOLUTE_REFERENCE, Vector3m(463_mm - 5_cm, 2_m - 1752.5_mm, 0_m), -61.875_deg},
+	    {Constantes::ABSOLUTE_REFERENCE, Vector3m(502.4_mm - 5_cm, 2_m - 1847_mm, 0_m), -73.125_deg},
+	    {Constantes::ABSOLUTE_REFERENCE, Vector3m(522.5_mm - 5_cm, 2_m - 1948.5_mm, 0_m), -84.375_deg},
 
-// Positionnement des objets sur la table
-    const Angle ANGLE_DELIMITER = 31.78833062_deg;
+	    {Constantes::ABSOLUTE_REFERENCE,
+	     Vector3m(3_m - 51.5_mm - 5_cm, 2_m - 1477.5_mm, 0_m),
+	     5.625_deg}, // arc de cercle en bas à droite
+	    {Constantes::ABSOLUTE_REFERENCE, Vector3m(3_m - 152.4_mm - 5_cm, 2_m - 1497.6_mm, 0_m), 16.875_deg},
+	    {Constantes::ABSOLUTE_REFERENCE, Vector3m(3_m - 247.5_mm - 5_cm, 2_m - 1537_mm, 0_m), 28.125_deg},
+	    {Constantes::ABSOLUTE_REFERENCE, Vector3m(3_m - 333.1_mm - 5_cm, 2_m - 1594.2_mm, 0_m), 39.375_deg},
+	    {Constantes::ABSOLUTE_REFERENCE, Vector3m(3_m - 405.8_mm - 5_cm, 2_m - 1667_mm, 0_m), 50.625_deg},
+	    {Constantes::ABSOLUTE_REFERENCE, Vector3m(3_m - 463_mm - 5_cm, 2_m - 1752.5_mm, 0_m), 61.875_deg},
+	    {Constantes::ABSOLUTE_REFERENCE, Vector3m(3_m - 502.4_mm - 5_cm, 2_m - 1847_mm, 0_m), 73.125_deg},
+	    {Constantes::ABSOLUTE_REFERENCE, Vector3m(3_m - 522.5_mm - 5_cm, 2_m - 1948.5_mm, 0_m), 84.375_deg}};
 
-    const std::vector<repere::Coordonnees> LIST_DELIMITERS = {{ABSOLUTE_REFERENCE, Vector3m(55_cm,                 2_m - 54_cm,     0_m), 90_deg}, // rond en haut à gauche
-                                                              {ABSOLUTE_REFERENCE, Vector3m(604.5_mm,              2_m - 448_mm,    0_m), ANGLE_DELIMITER},
-                                                              {ABSOLUTE_REFERENCE, Vector3m(693.5_mm,              2_m - 448_mm,    0_m), -ANGLE_DELIMITER},
-                                                              {ABSOLUTE_REFERENCE, Vector3m(75_cm,                 2_m - 54_cm,     0_m), 90_deg},
-                                                              {ABSOLUTE_REFERENCE, Vector3m(601_mm,                2_m - 634_mm,    0_m), -ANGLE_DELIMITER},
-                                                              {ABSOLUTE_REFERENCE, Vector3m(693_mm,                2_m - 634_mm,    0_m), ANGLE_DELIMITER},
+	// FIXME : il faut calculer les bonnes valeurs (pour le moment, elles sont approximatives)
+	const std::vector<repere::Coordonnees> LIST_CENTRAL = {
+	    {Constantes::ABSOLUTE_REFERENCE, Vector3m(1108.3_mm, 2_m - 1694.5_mm, 1.5_cm), 45_deg},
+	    {Constantes::ABSOLUTE_REFERENCE, Vector3m(1184.6_mm, 2_m - 1598.4_mm, 1.5_cm), 45_deg},
+	    {Constantes::ABSOLUTE_REFERENCE, Vector3m(1.446_m, 2_m - 1.5_m, 1.5_cm), 0_deg},
+	    {Constantes::ABSOLUTE_REFERENCE, Vector3m(1.554_m, 2_m - 1.5_m, 1.5_cm), 0_deg},
+	    {Constantes::ABSOLUTE_REFERENCE, Vector3m(1815.4_mm, 2_m - 1598.4_mm, 1.5_cm), -45_deg},
+	    {Constantes::ABSOLUTE_REFERENCE, Vector3m(1891.7_mm, 2_m - 1694.5_mm, 1.5_cm), -45_deg}};
 
-                                                              {ABSOLUTE_REFERENCE, Vector3m(225_cm,                2_m - 54_cm,     0_m), 90_deg}, // rond en haut à droite
-                                                              {ABSOLUTE_REFERENCE, Vector3m(2304.5_mm,             2_m - 448_mm,    0_m), ANGLE_DELIMITER},
-                                                              {ABSOLUTE_REFERENCE, Vector3m(2393.5_mm,             2_m - 448_mm,    0_m), -ANGLE_DELIMITER},
-                                                              {ABSOLUTE_REFERENCE, Vector3m(245_cm,                2_m - 54_cm,     0_m), 90_deg},
-                                                              {ABSOLUTE_REFERENCE, Vector3m(2301_mm,               2_m - 634_mm,    0_m), -ANGLE_DELIMITER},
-                                                              {ABSOLUTE_REFERENCE, Vector3m(2393_mm,               2_m - 634_mm,    0_m), ANGLE_DELIMITER},
+	const std::vector<repere::Coordonnees> LIST_LATERAL_H = {{Constantes::ABSOLUTE_REFERENCE, Vector3m(0_m, 1.3_m, 0_m)},
+	                                                         {Constantes::ABSOLUTE_REFERENCE, Vector3m(0_m, 828_mm, 0_m)},
+	                                                         {Constantes::ABSOLUTE_REFERENCE, Vector3m(2.92_m, 1.3_m, 0_m)},
+	                                                         {Constantes::ABSOLUTE_REFERENCE, Vector3m(2.92_m, 828_mm, 0_m)}};
 
-                                                              {ABSOLUTE_REFERENCE, Vector3m(970_mm,                2_m - 1870_mm,   0_m), 90_deg}, //rond en bas à gauche
-                                                              {ABSOLUTE_REFERENCE, Vector3m(1024.5_mm,             2_m - 1778_mm,   0_m), ANGLE_DELIMITER},
-                                                              {ABSOLUTE_REFERENCE, Vector3m(1113.5_mm,             2_m - 1778_mm,   0_m), -ANGLE_DELIMITER},
-                                                              {ABSOLUTE_REFERENCE, Vector3m(1170_mm,               2_m - 1870_mm,   0_m), 90_deg},
-                                                              {ABSOLUTE_REFERENCE, Vector3m(1021_mm,               2_m - 1964_mm,   0_m), -ANGLE_DELIMITER},
-                                                              {ABSOLUTE_REFERENCE, Vector3m(1113_mm,               2_m - 1964_mm,   0_m), ANGLE_DELIMITER},
+	const std::vector<repere::Coordonnees> LIST_LATERAL_V = {{Constantes::ABSOLUTE_REFERENCE, Vector3m(8_cm, 85_cm, 0_cm)},
+	                                                         {Constantes::ABSOLUTE_REFERENCE, Vector3m(2.89_m, 85_cm, 0_cm)}};
 
-                                                              {ABSOLUTE_REFERENCE, Vector3m(1830_mm,               2_m - 1870_mm,   0_m), 90_deg}, // rond en bas à droite
-                                                              {ABSOLUTE_REFERENCE, Vector3m(1884.5_mm,             2_m - 1778_mm,   0_m), ANGLE_DELIMITER},
-                                                              {ABSOLUTE_REFERENCE, Vector3m(1973.5_mm,             2_m - 1778_mm,   0_m), -ANGLE_DELIMITER},
-                                                              {ABSOLUTE_REFERENCE, Vector3m(2030_mm,               2_m - 1870_mm,   0_m), 90_deg},
-                                                              {ABSOLUTE_REFERENCE, Vector3m(1881_mm,               2_m - 1964_mm,   0_m), -ANGLE_DELIMITER},
-                                                              {ABSOLUTE_REFERENCE, Vector3m(1973_mm,               2_m - 1964_mm,   0_m), ANGLE_DELIMITER},
+	/**
+	 * Objets DYNAMIQUES
+	 */
+	enum ColorLunarModule {
+		CYLINDER_BLUE,
+		CYLINDER_YELLOW,
+		CYLINDER_MULTICOLOR,
+	};
 
-
-                                                              {ABSOLUTE_REFERENCE, Vector3m(51.5_mm  - 5_cm,       2_m - 1477.5_mm, 0_m), -5.625_deg}, // arc de cercle en bas à gauche
-                                                              {ABSOLUTE_REFERENCE, Vector3m(152.4_mm - 5_cm,       2_m - 1497.6_mm, 0_m), -16.875_deg},
-                                                              {ABSOLUTE_REFERENCE, Vector3m(247.5_mm - 5_cm,       2_m - 1537_mm,   0_m), -28.125_deg},
-                                                              {ABSOLUTE_REFERENCE, Vector3m(333.1_mm - 5_cm,       2_m - 1594.2_mm, 0_m), -39.375_deg},
-                                                              {ABSOLUTE_REFERENCE, Vector3m(405.8_mm - 5_cm,       2_m - 1667_mm,   0_m), -50.625_deg},
-                                                              {ABSOLUTE_REFERENCE, Vector3m(463_mm   - 5_cm,       2_m - 1752.5_mm, 0_m), -61.875_deg},
-                                                              {ABSOLUTE_REFERENCE, Vector3m(502.4_mm - 5_cm,       2_m - 1847_mm,   0_m), -73.125_deg},
-                                                              {ABSOLUTE_REFERENCE, Vector3m(522.5_mm - 5_cm,       2_m - 1948.5_mm, 0_m), -84.375_deg},
-
-                                                              {ABSOLUTE_REFERENCE, Vector3m(3_m - 51.5_mm  - 5_cm, 2_m - 1477.5_mm, 0_m), 5.625_deg}, // arc de cercle en bas à droite
-                                                              {ABSOLUTE_REFERENCE, Vector3m(3_m - 152.4_mm - 5_cm, 2_m - 1497.6_mm, 0_m), 16.875_deg},
-                                                              {ABSOLUTE_REFERENCE, Vector3m(3_m - 247.5_mm - 5_cm, 2_m - 1537_mm,   0_m), 28.125_deg},
-                                                              {ABSOLUTE_REFERENCE, Vector3m(3_m - 333.1_mm - 5_cm, 2_m - 1594.2_mm, 0_m), 39.375_deg},
-                                                              {ABSOLUTE_REFERENCE, Vector3m(3_m - 405.8_mm - 5_cm, 2_m - 1667_mm,   0_m), 50.625_deg},
-                                                              {ABSOLUTE_REFERENCE, Vector3m(3_m - 463_mm   - 5_cm, 2_m - 1752.5_mm, 0_m), 61.875_deg},
-                                                              {ABSOLUTE_REFERENCE, Vector3m(3_m - 502.4_mm - 5_cm, 2_m - 1847_mm,   0_m), 73.125_deg},
-                                                              {ABSOLUTE_REFERENCE, Vector3m(3_m - 522.5_mm - 5_cm, 2_m - 1948.5_mm, 0_m), 84.375_deg}};
-
-    // FIXME : il faut calculer les bonnes valeurs (pour le moment, elles sont approximatives)
-    const std::vector<repere::Coordonnees> LIST_CENTRAL = {{ABSOLUTE_REFERENCE, Vector3m(1108.3_mm, 2_m - 1694.5_mm, 1.5_cm), 45_deg},
-                                       			           {ABSOLUTE_REFERENCE, Vector3m(1184.6_mm, 2_m - 1598.4_mm, 1.5_cm), 45_deg},
-                                       			           {ABSOLUTE_REFERENCE, Vector3m(1.446_m,   2_m - 1.5_m,     1.5_cm), 0_deg},
-                                       			           {ABSOLUTE_REFERENCE, Vector3m(1.554_m,   2_m - 1.5_m,     1.5_cm), 0_deg},
-                                       			           {ABSOLUTE_REFERENCE, Vector3m(1815.4_mm, 2_m - 1598.4_mm, 1.5_cm), -45_deg},
-                                       			           {ABSOLUTE_REFERENCE, Vector3m(1891.7_mm, 2_m - 1694.5_mm, 1.5_cm), -45_deg}};
-
-    const std::vector<repere::Coordonnees> LIST_LATERAL_H = {{ABSOLUTE_REFERENCE, Vector3m(0_m,    1.3_m,  0_m)},
-															 {ABSOLUTE_REFERENCE, Vector3m(0_m,    828_mm, 0_m)},
-															 {ABSOLUTE_REFERENCE, Vector3m(2.92_m, 1.3_m,  0_m)},
-															 {ABSOLUTE_REFERENCE, Vector3m(2.92_m, 828_mm, 0_m)}};
-
-    const std::vector<repere::Coordonnees> LIST_LATERAL_V = {{ABSOLUTE_REFERENCE, Vector3m(8_cm,   85_cm,  0_cm)},
-															 {ABSOLUTE_REFERENCE, Vector3m(2.89_m, 85_cm,  0_cm)}};
-
-    /**
-     * Objets DYNAMIQUES
-     */
-    enum ColorLunarModule {
-        CYLINDER_BLUE,
-        CYLINDER_YELLOW,
-        CYLINDER_MULTICOLOR,
-    };
-
-    struct LunarModule {
+	struct LunarModule {
 		repere::Coordonnees coords;
-        ColorLunarModule color;
-    };
+		ColorLunarModule color;
+	};
 
-    const std::vector<LunarModule> LIST_LUNAR_MODULES = {{{ABSOLUTE_REFERENCE, Vector3m(1.15_m,  2_m - 64_mm,  5_cm)}, 	  CYLINDER_BLUE},
-                                                         {{ABSOLUTE_REFERENCE, Vector3m(1.15_m,  2_m - 64_mm,  15.1_cm)}, CYLINDER_BLUE},
-                                                         {{ABSOLUTE_REFERENCE, Vector3m(1.15_m,  2_m - 64_mm,  25.2_cm)}, CYLINDER_BLUE},
-                                                         {{ABSOLUTE_REFERENCE, Vector3m(1.15_m,  2_m - 64_mm,  35.3_cm)}, CYLINDER_BLUE},
-                                                         {{ABSOLUTE_REFERENCE, Vector3m(1.85_m,  2_m - 64_mm,  5_cm)}, 	  CYLINDER_YELLOW},
-                                                         {{ABSOLUTE_REFERENCE, Vector3m(1.85_m,  2_m - 64_mm,  15.1_cm)}, CYLINDER_YELLOW},
-                                                         {{ABSOLUTE_REFERENCE, Vector3m(1.85_m,  2_m - 64_mm,  25.2_cm)}, CYLINDER_YELLOW},
-                                                         {{ABSOLUTE_REFERENCE, Vector3m(1.85_m,  2_m - 64_mm,  35.3_cm)}, CYLINDER_YELLOW},
-                                                         {{ABSOLUTE_REFERENCE, Vector3m(20_cm,   2_m - 60_cm,  5_cm)},    CYLINDER_BLUE},
-                                                         {{ABSOLUTE_REFERENCE, Vector3m(1_m,     2_m - 60_cm,  5_cm)},    CYLINDER_MULTICOLOR},
-                                                         {{ABSOLUTE_REFERENCE, Vector3m(2_m,     2_m - 60_cm,  5_cm)},    CYLINDER_MULTICOLOR},
-                                                         {{ABSOLUTE_REFERENCE, Vector3m(2.8_m,   2_m - 60_cm,  5_cm)},    CYLINDER_YELLOW},
-                                                         {{ABSOLUTE_REFERENCE, Vector3m(50_cm,   2_m - 1.1_m,  5_cm)},    CYLINDER_MULTICOLOR},
-                                                         {{ABSOLUTE_REFERENCE, Vector3m(2.5_m,   2_m - 1.1_m,  5_cm)},    CYLINDER_MULTICOLOR},
-                                                         {{ABSOLUTE_REFERENCE, Vector3m(64_mm,   2_m - 1.35_m, 5_cm)},    CYLINDER_MULTICOLOR},
-                                                         {{ABSOLUTE_REFERENCE, Vector3m(64_mm,   2_m - 1.35_m, 15.1_cm)}, CYLINDER_MULTICOLOR},
-                                                         {{ABSOLUTE_REFERENCE, Vector3m(64_mm,   2_m - 1.35_m, 25.2_cm)}, CYLINDER_MULTICOLOR},
-                                                         {{ABSOLUTE_REFERENCE, Vector3m(64_mm,   2_m - 1.35_m, 35.3_cm)}, CYLINDER_MULTICOLOR},
-                                                         {{ABSOLUTE_REFERENCE, Vector3m(2936_mm, 2_m - 1.35_m, 5_cm)},    CYLINDER_MULTICOLOR},
-                                                         {{ABSOLUTE_REFERENCE, Vector3m(2936_mm, 2_m - 1.35_m, 15.1_cm)}, CYLINDER_MULTICOLOR},
-                                                         {{ABSOLUTE_REFERENCE, Vector3m(2936_mm, 2_m - 1.35_m, 25.2_cm)}, CYLINDER_MULTICOLOR},
-                                                         {{ABSOLUTE_REFERENCE, Vector3m(2936_mm, 2_m - 1.35_m, 35.3_cm)}, CYLINDER_MULTICOLOR},
-                                                         {{ABSOLUTE_REFERENCE, Vector3m(90_cm,   2_m - 1.4_m,  5_cm)},    CYLINDER_MULTICOLOR},
-                                                         {{ABSOLUTE_REFERENCE, Vector3m(2.1_m,   2_m - 1.4_m,  5_cm)},    CYLINDER_MULTICOLOR},
-                                                         {{ABSOLUTE_REFERENCE, Vector3m(80_cm,   2_m - 1.85_m, 5_cm)},    CYLINDER_BLUE},
-                                                         {{ABSOLUTE_REFERENCE, Vector3m(2.2_m,   2_m - 1.85_m, 5_cm)},    CYLINDER_YELLOW}};
-
+	const std::vector<LunarModule> LIST_LUNAR_MODULES = {
+	    {{Constantes::ABSOLUTE_REFERENCE, Vector3m(1.15_m, 2_m - 64_mm, 5_cm)}, CYLINDER_BLUE},
+	    {{Constantes::ABSOLUTE_REFERENCE, Vector3m(1.15_m, 2_m - 64_mm, 15.1_cm)}, CYLINDER_BLUE},
+	    {{Constantes::ABSOLUTE_REFERENCE, Vector3m(1.15_m, 2_m - 64_mm, 25.2_cm)}, CYLINDER_BLUE},
+	    {{Constantes::ABSOLUTE_REFERENCE, Vector3m(1.15_m, 2_m - 64_mm, 35.3_cm)}, CYLINDER_BLUE},
+	    {{Constantes::ABSOLUTE_REFERENCE, Vector3m(1.85_m, 2_m - 64_mm, 5_cm)}, CYLINDER_YELLOW},
+	    {{Constantes::ABSOLUTE_REFERENCE, Vector3m(1.85_m, 2_m - 64_mm, 15.1_cm)}, CYLINDER_YELLOW},
+	    {{Constantes::ABSOLUTE_REFERENCE, Vector3m(1.85_m, 2_m - 64_mm, 25.2_cm)}, CYLINDER_YELLOW},
+	    {{Constantes::ABSOLUTE_REFERENCE, Vector3m(1.85_m, 2_m - 64_mm, 35.3_cm)}, CYLINDER_YELLOW},
+	    {{Constantes::ABSOLUTE_REFERENCE, Vector3m(20_cm, 2_m - 60_cm, 5_cm)}, CYLINDER_BLUE},
+	    {{Constantes::ABSOLUTE_REFERENCE, Vector3m(1_m, 2_m - 60_cm, 5_cm)}, CYLINDER_MULTICOLOR},
+	    {{Constantes::ABSOLUTE_REFERENCE, Vector3m(2_m, 2_m - 60_cm, 5_cm)}, CYLINDER_MULTICOLOR},
+	    {{Constantes::ABSOLUTE_REFERENCE, Vector3m(2.8_m, 2_m - 60_cm, 5_cm)}, CYLINDER_YELLOW},
+	    {{Constantes::ABSOLUTE_REFERENCE, Vector3m(50_cm, 2_m - 1.1_m, 5_cm)}, CYLINDER_MULTICOLOR},
+	    {{Constantes::ABSOLUTE_REFERENCE, Vector3m(2.5_m, 2_m - 1.1_m, 5_cm)}, CYLINDER_MULTICOLOR},
+	    {{Constantes::ABSOLUTE_REFERENCE, Vector3m(64_mm, 2_m - 1.35_m, 5_cm)}, CYLINDER_MULTICOLOR},
+	    {{Constantes::ABSOLUTE_REFERENCE, Vector3m(64_mm, 2_m - 1.35_m, 15.1_cm)}, CYLINDER_MULTICOLOR},
+	    {{Constantes::ABSOLUTE_REFERENCE, Vector3m(64_mm, 2_m - 1.35_m, 25.2_cm)}, CYLINDER_MULTICOLOR},
+	    {{Constantes::ABSOLUTE_REFERENCE, Vector3m(64_mm, 2_m - 1.35_m, 35.3_cm)}, CYLINDER_MULTICOLOR},
+	    {{Constantes::ABSOLUTE_REFERENCE, Vector3m(2936_mm, 2_m - 1.35_m, 5_cm)}, CYLINDER_MULTICOLOR},
+	    {{Constantes::ABSOLUTE_REFERENCE, Vector3m(2936_mm, 2_m - 1.35_m, 15.1_cm)}, CYLINDER_MULTICOLOR},
+	    {{Constantes::ABSOLUTE_REFERENCE, Vector3m(2936_mm, 2_m - 1.35_m, 25.2_cm)}, CYLINDER_MULTICOLOR},
+	    {{Constantes::ABSOLUTE_REFERENCE, Vector3m(2936_mm, 2_m - 1.35_m, 35.3_cm)}, CYLINDER_MULTICOLOR},
+	    {{Constantes::ABSOLUTE_REFERENCE, Vector3m(90_cm, 2_m - 1.4_m, 5_cm)}, CYLINDER_MULTICOLOR},
+	    {{Constantes::ABSOLUTE_REFERENCE, Vector3m(2.1_m, 2_m - 1.4_m, 5_cm)}, CYLINDER_MULTICOLOR},
+	    {{Constantes::ABSOLUTE_REFERENCE, Vector3m(80_cm, 2_m - 1.85_m, 5_cm)}, CYLINDER_BLUE},
+	    {{Constantes::ABSOLUTE_REFERENCE, Vector3m(2.2_m, 2_m - 1.85_m, 5_cm)}, CYLINDER_YELLOW}};
 
 
 	/// Construction de l'environnement :
