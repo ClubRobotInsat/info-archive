@@ -1,16 +1,24 @@
 #!/bin/bash
 
-url="http://etud.insa-toulouse.fr/~slacoste/simu/"
-
-platform=$(uname)
-
-if [[ "$platform" == "Linux" ]]; then
-    xdg-open "$url"
-elif [[ "$platform" == "Darwin" ]]; then
-    open "$url"
+color=blue
+if `test $# -eq 1`
+then
+	if [ "$1" = "yellow" ]
+	then
+		color=yellow
+	fi
+elif ! [ "$1" = "blue" ]
+then
+	echo "Usage : simu_launcher.sh [blue|yellow]"
 fi
 
 dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+echo "Launching server..."
+"$dir"/websimulator/serve.sh 2> /dev/null
+
 echo "Launching Petri..."
-"$dir"/petri/petri -o robot/Principal/petri/IADebug.petri
+"$dir"/petri/petri &
+
+echo "Launching simu..."
+"$dir"/build/Simu2017 --robot on --world on --color "$color"
