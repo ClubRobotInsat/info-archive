@@ -57,6 +57,8 @@ namespace IDCartesPrincipal {
 
 	ENUM_NS(IDCartesPrincipal, IDCartes, CAN_USB, DEPLACEMENT, SERVOS, IO, EVITEMENT, ASCENSEUR, ASPIRATION, COLORIMETRIE);
 
+
+	// TODO : AJOUTER ASCENSEUR ?
 	ENUM_CLASS_NS(IDCartesPrincipal, IDCartesServo, PINCE, LACET, TANGAGE, FUSEE, PELLE, GAUCHE, DROITE);
 }
 
@@ -91,6 +93,13 @@ namespace ConstantesPrincipal {
 	};
 	*/
 
+
+	enum class PositionAscenseur {
+		HAUT=0,
+		BAS=1,
+		NBR = 2,
+	};
+
 	/////////////////// SERVOS ///////////////////
 
 	enum class Servo {
@@ -104,6 +113,7 @@ namespace ConstantesPrincipal {
 
 	    NBR = 7
 	};
+
 
 
 	/*enum class Servo_D { NBR = 2 };
@@ -129,6 +139,8 @@ namespace ConstantesPrincipal {
 
 	extern int const IDRobot;
 
+
+	extern Angle const positionAscenseur[enumToInt(PositionAscenseur::NBR)];
 	// extern Angle const positionPinceD[enumToInt(PositionPince::NBR)];
 
 	/////////////////// CARTES ///////////////////
@@ -173,13 +185,15 @@ namespace ConstantesPrincipal {
 		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_EVITEMENT };
 	};
 
-	// TODO : s'occuper des cartes ascenseur et aspiration
-	/*template <>
+	template<>
 	struct CarteInfo<IDCartesPrincipal::ASCENSEUR> {
-		using typeCarte = CarteAscenseur;
+		using typeCarte = CarteAsservissement2009;
 		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_ASCENSEUR };
 	};
 
+
+	// TODO : s'occuper des cartes ascenseur et aspiration
+/*
 	template <>
 	struct CarteInfo<IDCartesPrincipal::ASPIRATION> {
 		using typeCarte = CarteAspiration;

@@ -7,6 +7,12 @@
 
 #include "Constantes.h"
 
+namespace ConstantesPrincipal {
+
+	Angle const positionAscenseur[enumToInt(PositionAscenseur::NBR)] = {0_deg,20_deg};
+
+}
+
 Duration const ConstantesPrincipal::TIMEOUT_DEPLACEMENT_DEFAUT = Constantes::TIMEOUT_MOVE_DEFAULT;
 Duration const ConstantesPrincipal::TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT = Constantes::TIMEOUT_OPPONENT_BLOCKING_DEFAULT;
 Speed const ConstantesPrincipal::VITESSE_LINEAIRE_DEFAUT = Constantes::LINEAR_SPEED_DEFAULT;
