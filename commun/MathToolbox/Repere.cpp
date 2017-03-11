@@ -28,17 +28,6 @@ Coordonnees& Coordonnees::operator=(const Coordonnees& coords) {
 	return *this;
 }
 
-/*Coordonnees& Coordonnees::operator=(const Coordonnees other) {
-    if(this != &other) {
-//        std::swap(static_cast<Repere &>(this->_repere_parent), static_cast<Repere &>(other._repere_parent));
-        _pos = other._pos;
-        _angle = other._angle;
-        //std::swap(_pos, copy._pos);
-        //std::swap(_angle, copy._angle);
-    }
-    return *this;
-}*/
-
 Coordonnees Repere::get_coordonnees(Coordonnees coords) const {
 	const int mx0 = coords._repere_parent._multX;
 	const int my0 = coords._repere_parent._multY;
