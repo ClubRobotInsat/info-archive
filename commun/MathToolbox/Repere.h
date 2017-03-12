@@ -41,6 +41,11 @@ namespace repere {
 		const Repere& _repere_parent;
 	};
 
+	inline std::ostream& operator<<(std::ostream& os, const Coordonnees& coords) {
+		os << "[x=" << coords.getX() << ", y=" << coords.getY() << ", theta=" << coords._angle.toDeg() << " deg]";
+		return os;
+	}
+
 	enum Multiplicateur { SENS_POSITIF = 1, SENS_NEGATIF = -1 };
 
 	class Repere {
