@@ -124,13 +124,13 @@ namespace ConstantesPrincipal {
 
 	enum class Gauche {
 		FERME = 0,
-		OUVER = 1,
+		OUVERT = 1,
 		NBR = 2,
 	};
 
 	enum class Droite {
 		FERME = 0,
-		OUVER = 1,
+		OUVERT = 1,
 		NBR = 2,
 	};
 
