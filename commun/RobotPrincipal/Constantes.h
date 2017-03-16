@@ -97,9 +97,40 @@ namespace ConstantesPrincipal {
 	enum class PositionAscenseur {
 		HAUT=0,
 		BAS=1,
-		NBR = 2,
+		STOCKAGE=2,
+		CYLINDRE=3,
+		NBR = 4,
 	};
 
+	enum class Pince {
+		OUVERT=0,
+		FERME=1,
+		NBR=2,
+	};
+
+	enum class Fusee {
+		STOCKAGE=0,
+		RELACHEMENT=1,
+		NBR=2,
+	};
+
+	enum class Gauche {
+		FERME=0,
+		OUVER=1,
+		NBR=2,
+	};
+
+	enum class Droite {
+		FERME=0,
+		OUVER=1,
+		NBR=2,
+	};
+
+	enum class Tangage {
+		ATTRAPER=0,
+		RANGER=1,
+		NBR=2,
+	};
 	/////////////////// SERVOS ///////////////////
 
 	enum class Servo {
@@ -141,7 +172,11 @@ namespace ConstantesPrincipal {
 
 
 	extern Angle const positionAscenseur[enumToInt(PositionAscenseur::NBR)];
-	// extern Angle const positionPinceD[enumToInt(PositionPince::NBR)];
+	extern Angle const positionPince[enumToInt(Pince::NBR)];
+	extern Angle const positionTangage[enumToInt(Tangage::NBR)];
+	extern Angle const positionGauche[enumToInt(Gauche::NBR)];
+	extern Angle const positionDroite[enumToInt(Droite::NBR)];
+	extern Angle const positionFusee[enumToInt(Fusee::NBR)];
 
 	/////////////////// CARTES ///////////////////
 
