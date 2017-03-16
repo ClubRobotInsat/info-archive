@@ -29,9 +29,9 @@
 #include "../../robot/Cartes/CarteIO2014.h"
 //#include "../../robot/Cartes/CartePneumatique.h"
 //#include "../../robot/Cartes/CartePneumatique2014.h"
+#include "../../robot/Cartes/CarteColorimetre2014.h"
 #include "../../robot/Cartes/CarteServosNova2009.h"
 #include "../robot/Cartes/CarteDetectAdv2009.h"
-#include "../../robot/Cartes/CarteColorimetre2014.h"
 
 #endif
 
@@ -44,12 +44,12 @@
 namespace IDCartesPrincipal {
 	enum {
 		ID_CARTE_CAN_USB = 0,
-		ID_CARTE_DEPLACEMENT  = ID_CARTE_INYANGA_DEPLACEMENT,
-		ID_CARTE_SERVOS       = ID_CARTE_INYANGA_SERVOS,
-	    ID_CARTE_IO           = ID_CARTE_INYANGA_IO,
-		ID_CARTE_EVITEMENT    = ID_CARTE_INYANGA_EVITEMENT,
-		ID_CARTE_ASCENSEUR    = ID_CARTE_INYANGA_ASCENSEUR,
-		ID_CARTE_ASPIRATION   = ID_CARTE_INYANGA_ASPIRATION,
+		ID_CARTE_DEPLACEMENT = ID_CARTE_INYANGA_DEPLACEMENT,
+		ID_CARTE_SERVOS = ID_CARTE_INYANGA_SERVOS,
+		ID_CARTE_IO = ID_CARTE_INYANGA_IO,
+		ID_CARTE_EVITEMENT = ID_CARTE_INYANGA_EVITEMENT,
+		ID_CARTE_ASCENSEUR = ID_CARTE_INYANGA_ASCENSEUR,
+		ID_CARTE_ASPIRATION = ID_CARTE_INYANGA_ASPIRATION,
 		ID_CARTE_COLORIMETRIE = ID_CARTE_INYANGA_COLORIMETRIE,
 
 		/*ID_CARTE_DEBUG_DESSIN = 8*/
@@ -59,7 +59,7 @@ namespace IDCartesPrincipal {
 
 
 	// TODO : AJOUTER ASCENSEUR ?
-	ENUM_CLASS_NS(IDCartesPrincipal, IDCartesServo, PINCE, LACET, TANGAGE, FUSEE, PELLE, GAUCHE, DROITE);
+	ENUM_CLASS_NS(IDCartesPrincipal, IDCartesServo, PINCE, LACET, TANGAGE, FUSEE, GAUCHE, DROITE);
 }
 
 namespace ConstantesPrincipal {
@@ -95,56 +95,54 @@ namespace ConstantesPrincipal {
 
 
 	enum class PositionAscenseur {
-		HAUT=0,
-		BAS=1,
-		STOCKAGE=2,
-		CYLINDRE=3,
+		HAUT = 0,
+		BAS = 1,
+		STOCKAGE = 2,
+		CYLINDRE = 3,
 		NBR = 4,
 	};
 
 	enum class Pince {
-		OUVERT=0,
-		FERME=1,
-		NBR=2,
+		OUVERT = 0,
+		FERME = 1,
+		NBR = 2,
 	};
 
 	enum class Fusee {
-		STOCKAGE=0,
-		RELACHEMENT=1,
-		NBR=2,
+		STOCKAGE = 0,
+		RELACHEMENT = 1,
+		NBR = 2,
 	};
 
 	enum class Gauche {
-		FERME=0,
-		OUVER=1,
-		NBR=2,
+		FERME = 0,
+		OUVER = 1,
+		NBR = 2,
 	};
 
 	enum class Droite {
-		FERME=0,
-		OUVER=1,
-		NBR=2,
+		FERME = 0,
+		OUVER = 1,
+		NBR = 2,
 	};
 
 	enum class Tangage {
-		ATTRAPER=0,
-		RANGER=1,
-		NBR=2,
+		ATTRAPER = 0,
+		RANGER = 1,
+		NBR = 2,
 	};
 	/////////////////// SERVOS ///////////////////
 
 	enum class Servo {
-		PINCE   = ID_SERVO_INYANGA_PINCE,
-		LACET   = ID_SERVO_INYANGA_LACET,   // mouvement de gauche à droite
+		PINCE = ID_SERVO_INYANGA_PINCE,
+		LACET = ID_SERVO_INYANGA_LACET,     // mouvement de gauche à droite
 		TANGAGE = ID_SERVO_INYANGA_TANGAGE, // mouvement de bas en haut
-		FUSEE   = ID_SERVO_INYANGA_FUSEE,
-		PELLE   = ID_SERVO_INYANGA_PELLE,
-		GAUCHE  = ID_SERVO_INYANGA_GAUCHE,  // servos à l'arrière
-		DROITE  = ID_SERVO_INYANGE_DROITE,
+		FUSEE = ID_SERVO_INYANGA_FUSEE,
+		GAUCHE = ID_SERVO_INYANGA_GAUCHE, // servos à l'arrière
+		DROITE = ID_SERVO_INYANGE_DROITE,
 
-	    NBR = 7
+		NBR = 6
 	};
-
 
 
 	/*enum class Servo_D { NBR = 2 };
@@ -204,8 +202,8 @@ namespace ConstantesPrincipal {
 
 	template <>
 	struct CarteInfo<IDCartesPrincipal::SERVOS> {
-	        using typeCarte = CarteServosNova2009;
-	        enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_SERVOS };
+		using typeCarte = CarteServosNova2009;
+		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_SERVOS };
 	};
 
 	template <>
@@ -220,7 +218,7 @@ namespace ConstantesPrincipal {
 		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_EVITEMENT };
 	};
 
-	template<>
+	template <>
 	struct CarteInfo<IDCartesPrincipal::ASCENSEUR> {
 		using typeCarte = CarteAsservissement2009;
 		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_ASCENSEUR };
@@ -228,18 +226,18 @@ namespace ConstantesPrincipal {
 
 
 	// TODO : s'occuper des cartes ascenseur et aspiration
-/*
-	template <>
-	struct CarteInfo<IDCartesPrincipal::ASPIRATION> {
-		using typeCarte = CarteAspiration;
-		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_ASPIRATION };
-	};
+	/*
+	    template <>
+	    struct CarteInfo<IDCartesPrincipal::ASPIRATION> {
+	        using typeCarte = CarteAspiration;
+	        enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_ASPIRATION };
+	    };
 
-	template <>
-	struct CarteInfo<IDCartesPrincipal::COLORIMETRIE> {
-		using typeCarte = CarteColorimetre2014;
-		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_COLORIMETRIE };
-	};*/
+	    template <>
+	    struct CarteInfo<IDCartesPrincipal::COLORIMETRIE> {
+	        using typeCarte = CarteColorimetre2014;
+	        enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_COLORIMETRIE };
+	    };*/
 };
 
 struct ConstantesRobotPrincipal : public Commun::ConstantesRobot {
