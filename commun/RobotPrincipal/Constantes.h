@@ -66,6 +66,14 @@ namespace ConstantesPrincipal {
 	using IDCartes = IDCartesPrincipal::IDCartes;
 	using IDCartesServo = IDCartesPrincipal::IDCartesServo;
 
+	const repere::Repere REFERENCE_BLUE =
+	    repere::Repere({0_m, 0_m}, repere::Multiplicateur::SENS_POSITIF, repere::Multiplicateur::SENS_POSITIF);
+	const repere::Repere REFERENCE_YELLOW =
+	    repere::Repere({3_m, 0_m}, repere::Multiplicateur::SENS_NEGATIF, repere::Multiplicateur::SENS_POSITIF);
+
+	const Vector3m START_ROBOT_POSITION(902_mm, 182_cm, 15_cm);
+	const Angle START_ROBOT_ANGLE(-90_deg);
+
 	/////////////////// CONTACTEURS ///////////////////
 	// Numéros des contacteurs et les rôles associés
 	enum class Contacteur {
@@ -148,7 +156,8 @@ namespace ConstantesPrincipal {
 	/*enum class Servo_D { NBR = 2 };
 	enum class Servo_G { NBR = 3 };*/
 
-	// Durée attendue lors de l'envoi d'un message aux cartes élecs dans les fonctions blonquantes autre que les servos.
+	// Durée attendue lors de l'envoi d'un message aux cartes élecs dans les fonctions blonquantes autre que les
+	// servos.
 	auto const TIMEOUT_ELEC = 100_ms;
 
 	// On reprend par défaut les mêmes valeur que la partie commune aux 2 robots, à changer si nécessaire
@@ -192,11 +201,7 @@ namespace ConstantesPrincipal {
 
 	template <>
 	struct CarteInfo<IDCartesPrincipal::DEPLACEMENT> {
-#ifdef TARGET_SIMULATEUR
 		using typeCarte = CarteDeplacement2009;
-#else
-		using typeCarte = CarteDeplacementSymetrieY;
-#endif
 		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_DEPLACEMENT };
 	};
 
@@ -233,11 +238,11 @@ namespace ConstantesPrincipal {
 	        enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_ASPIRATION };
 	    };
 
-	    template <>
-	    struct CarteInfo<IDCartesPrincipal::COLORIMETRIE> {
-	        using typeCarte = CarteColorimetre2014;
-	        enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_COLORIMETRIE };
-	    };*/
+	        template <>
+	        struct CarteInfo<IDCartesPrincipal::COLORIMETRIE> {
+	            using typeCarte = CarteColorimetre2014;
+	            enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_COLORIMETRIE };
+	        };*/
 };
 
 struct ConstantesRobotPrincipal : public Commun::ConstantesRobot {
