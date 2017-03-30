@@ -20,5 +20,12 @@ echo "Launching server..."
 echo "Launching Petri..."
 "$dir"/petri/petri &
 
-echo "Launching simu..."
-"$dir"/build/Simu2017 --robot on --world on --color "$color"
+if `test -e "$dir"/build/Simu2017`
+then
+	echo "Launching simu..."
+	"$dir"/build/Simu2017 --robot on --world on --color "$color"
+elif `test -e "$dir"/cmake-build-debug/Simu2017`
+then
+	echo "Launching simu..."
+	"$dir"/cmake-build-debug/Simu2017 --robot on --world on --color "$color"
+fi
