@@ -4,12 +4,13 @@
 
 #include "Monitor.h"
 #include <iomanip>
+#include <log/Log.h>
 
 Monitor::Monitor(std::string& port)
         : Gtk::Window()
         , signal_on_message_received(std::make_shared<Glib::Dispatcher>())
-        , _stopListnenerThread(false)
-        , _canListener(port, signal_on_message_received, _stopListnenerThread)
+        , _stopListenerThread(false)
+        , _canListener(port, signal_on_message_received, _stopListenerThread)
         , _pauseButton("Pause")
         , _sendTrameButton("Envoyer la trame")
         , _labelTrameId("Trame ID")
@@ -45,6 +46,9 @@ Monitor::Monitor(std::string& port)
 	_sendMessageContainer.attach_next_to(_sendTrameButton, _trameData, Gtk::POS_BOTTOM, 7, 1);
 
 	_trameId.set_adjustment(Gtk::Adjustment::create(0, 0, 1, 1, 1, 1));
+	_trameId.set_increments(1, 5);
+	_trameId.set_range(0, 10);
+	_trameId.set_digits(0);
 
 	_lowLevelWindow.add(_messageTree);
 	_lowLevelWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
@@ -145,7 +149,7 @@ void Monitor::sendMessage() {
 	try {
 		message = std::make_unique<Trame>(this->buildTrameFromInput());
 	} catch(std::runtime_error& e) {
-		Gtk::MessageDialog dialog(*this, "Error : no input to build a trame from.\n");
+		Gtk::MessageDialog dialog(*this, e.what());
 		dialog.run();
 		sendMessage = false;
 	}
@@ -163,19 +167,23 @@ void Monitor::sendMessage() {
 Trame Monitor::buildTrameFromInput() const {
 
 	if(this->checkInputs()) {
-		int id = _trameId.get_value();
-		int cmd = std::stoi(_trameType.get_buffer()->get_text(), nullptr, 16);
-		std::vector<uint8_t> data = buildTrameData(_trameData.get_buffer()->get_text());
+		try {
+			int id = std::stoi(_trameId.get_buffer()->get_text(), nullptr, 10);
+			int cmd = std::stoi(_trameType.get_buffer()->get_text(), nullptr, 16);
+			std::vector<uint8_t> data = buildTrameData(_trameData.get_buffer()->get_text());
 
-		// No data because we will add it later
-		Trame result = make_trame(id, cmd);
-		// Adding the data to the Trame
-		for(auto item : data) {
-			result.addDonnees(item);
+			// No data because we will add it later
+			Trame result = make_trame(id, cmd);
+			// Adding the data to the Trame
+			for(auto item : data) {
+				result.addDonnees(item);
+			}
+
+			return result;
+		} // Catch les erreurs de stoi
+		catch(std::exception& e) {
+			throw std::runtime_error("Please input some valid data.");
 		}
-
-
-		return result;
 	} else {
 		throw std::runtime_error("Please input some data in all fields.");
 	}

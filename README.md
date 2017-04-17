@@ -65,6 +65,9 @@ Pour pouvoir tester les IA via la laison série (RS232) en utilisant Clion (sans
 sudo usermod -a -G dialout NOM_UTILISATEUR
 ```
 
+### Si ça ne compile pas : 
+- Aller dans Settings > Build, Execution, Deployment > CMake. Dans "CMake options", rajouter le paramètre `-DBITS=64`
+
 --------------------------
 Pour lancer l'IA en mode Debug sur le simu
 --------------------------

@@ -146,7 +146,7 @@ private:
 	 * Threading related members
 	 */
 	std::shared_ptr<Glib::Dispatcher> signal_on_message_received;
-	bool _stopListnenerThread;
+	bool _stopListenerThread;
 	CanListener _canListener;
 
 	/**
