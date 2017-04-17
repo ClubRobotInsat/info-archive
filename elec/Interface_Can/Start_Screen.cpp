@@ -7,6 +7,7 @@
 #include <cstring>
 #include <dirent.h>
 #include <iostream>
+#include <log/Log.h>
 
 Start_Screen::Start_Screen() : Gtk::Window(), _canAdress(""), _serialList({}) {
 
@@ -91,6 +92,7 @@ void Start_Screen::scanTCPIPConnection() {
 		Commun::TCPIP connection("127.0.0.1", 1234);
 		_canListeningOnTCPIP = true;
 	} catch(...) {
+		logVert("Mais pas de panique ! C'est normal.");
 		_canListeningOnTCPIP = false;
 	}
 }
