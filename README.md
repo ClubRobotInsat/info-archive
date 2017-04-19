@@ -67,6 +67,7 @@ sudo usermod -a -G dialout NOM_UTILISATEUR
 
 ### Si ça ne compile pas : 
 - Aller dans Settings > Build, Execution, Deployment > CMake. Dans "CMake options", rajouter le paramètre `-DBITS=64`
+- Problème de clock skew ? Il suffit de lancer `find -exec touch \{\} \;` dans le dossier `info`. Attention, cela peut être un petit peul ong.
 
 --------------------------
 Pour lancer l'IA en mode Debug sur le simu
