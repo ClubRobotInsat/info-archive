@@ -1,5 +1,3 @@
-
-
 set(OUTILS_SOURCE
 		ConstantesCommunes.cpp
 		log/Log.cpp

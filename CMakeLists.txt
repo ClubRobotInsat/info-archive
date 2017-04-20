@@ -7,6 +7,9 @@ option(COLOR "Sortie en couleur de la compilation" ON)
 option(DEBUG "Compilation avec les symboles de debug et sans optimisations" OFF)
 set(BITS "32" CACHE . "Build en 32 ou 64 bits")
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -std=gnu++14")
+set(CMAKE_CXX_STANDARD 14)
+
 if(${OUTPUTINBUILD})
 	set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build)
 	set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build)
@@ -25,7 +28,6 @@ add_custom_target(InfoSubmodules
 		WORKING_DIRECTORY ${root_SOURCE_DIR}
 		)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 if(DEBUG)
 
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -O0")
