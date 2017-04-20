@@ -70,9 +70,11 @@ protected:
 	 */
 	void mainLoop();
 
+	/// When _canShouldStop is false, the function returns early, raising an exception.
 	Trame waitForMessage();
 
-	bool shallStopListening() const;
+	/// Stop listening on the CAN. This will raise an exception because we are interrupting
+	void stopListening();
 
 private:
 	mutable std::mutex mutex;
@@ -82,6 +84,8 @@ private:
 	std::unique_ptr<Commun::CAN> _can;
 
 	bool& _shallStopListening;
+
+	std::atomic_bool _canShouldStop;
 
 	std::atomic_bool _acceptNewMessage;
 

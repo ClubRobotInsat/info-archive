@@ -4,6 +4,7 @@
 
 #include "CanListener.h"
 #include "Monitor.h"
+#include <future>
 
 CanListener::CanListener(const std::string& port, std::shared_ptr<Glib::Dispatcher> receiver_signal_message_received, bool& stopBooleanAdress)
         : _sentAMessage(false)
@@ -32,34 +33,43 @@ void CanListener::start() {
 }
 
 void CanListener::mainLoop() {
-	auto emitted = false;
+	// Event loop, where the only event is receiving a message on the CAN
+	std::cout << "entering listening loop" << std::endl;
+	auto trame = std::async(std::launch::async, &CanListener::waitForMessage, this);
 	while(not _shallStopListening) {
 		if(_acceptNewMessage) {
-			std::unique_ptr<Trame> trame;
-			auto now = Units::TimePoint::now();
-			while(Units::TimePoint::now() < now + _refreshRate and not emitted and not _shallStopListening) {
-				trame = std::make_unique<Trame>(this->waitForMessage());
-				std::lock_guard<std::mutex> lock(mutex);
-				_trameBuffer.push_front(*trame.get());
-				if(not _parentIsRequestingData) {
-					signal_on_message_received->emit();
-					emitted = true;
+			std::cout << "Waiting" << std::endl;
+			std::future_status status = trame.wait_for(_refreshRate.toSystemDelay());
+			std::cout << "Waiting finished" << std::endl;
+			switch(status) {
+				case std::future_status::ready: {
+					std::lock_guard<std::mutex> lock(mutex);
+					std::cout << "Récuperation" << std::endl;
+					_trameBuffer.push_front(trame.get());
+					if(not _parentIsRequestingData) {
+						signal_on_message_received->emit();
+					}
+					trame = std::async(std::launch::async, &CanListener::waitForMessage, this);
 				}
+				default: { continue; }
 			}
-			emitted = false;
 		} else {
 			sleep(sleepTime);
 		}
 	}
 }
 
+/// Fonction loquante qui reçois un message sur le CAN
 Trame CanListener::waitForMessage() {
-	auto Trame = _can->recevoirTrame();
+	std::cout << "Waiting for message..." << std::endl;
+	auto Trame = _can->recevoirTrame(_canShouldStop);
+	std::cout << "Received one !" << std::endl;
 	return Trame;
 }
 
-bool CanListener::shallStopListening() const {
-	return _shallStopListening;
+void CanListener::stopListening() {
+	_shallStopListening = true;
+	_canShouldStop = true;
 }
 
 void CanListener::sendMessage(const Trame& trame) {
@@ -71,7 +81,7 @@ void CanListener::toogleAcceptNewMessage() {
 }
 
 CanListener::~CanListener() {
-	_shallStopListening = true;
+	stopListening();
 	if(_thread) {
 		_thread->join();
 	}
