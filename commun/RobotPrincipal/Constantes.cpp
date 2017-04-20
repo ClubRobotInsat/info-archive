@@ -10,19 +10,17 @@
 namespace ConstantesPrincipal {
 
 	// TODO : tester les valeurs avec les elecs
-	Angle const positionAscenseur[enumToInt(PositionAscenseur::NBR)] = {0_deg,20_deg,30_deg,40_deg};
+	Angle const positionAscenseur[enumToInt(PositionAscenseur::NBR)] = {0_deg, 20_deg, 30_deg, 40_deg};
 
-	Angle const positionPince[enumToInt(Pince::NBR)] = {0_deg,20_deg};
+	Angle const positionPince[enumToInt(Pince::NBR)] = {0_deg, 20_deg};
 
-	Angle const positionTangage[enumToInt(Tangage::NBR)] = {0_deg,0_deg};
+	Angle const positionTangage[enumToInt(Tangage::NBR)] = {0_deg, 0_deg};
 
-	Angle const positionGauche[enumToInt(Gauche::NBR)] = {0_deg,0_deg};
+	Angle const positionGauche[enumToInt(Gauche::NBR)] = {0_deg, 0_deg};
 
-	Angle const positionDroite[enumToInt(Droite::NBR)] = {0_deg,0_deg};
+	Angle const positionDroite[enumToInt(Droite::NBR)] = {0_deg, 0_deg};
 
-	Angle const positionFusee[enumToInt(Fusee::NBR)] = {0_deg,0_deg};
-
-
+	Angle const positionFusee[enumToInt(Fusee::NBR)] = {0_deg, 0_deg};
 }
 
 Duration const ConstantesPrincipal::TIMEOUT_DEPLACEMENT_DEFAUT = Constantes::TIMEOUT_MOVE_DEFAULT;
@@ -35,7 +33,7 @@ Angle const ConstantesPrincipal::PRECISION_ANGULAIRE_DEFAUT = Constantes::ANGULA
 Distance const ConstantesPrincipal::RAYON_ROTATION_ROBOT = 230.0_mm;
 Vector3m const ConstantesPrincipal::TAILLE_ROBOT = {38_cm, 30_cm, 43_cm};
 uint16_t const ConstantesPrincipal::TCPIP_PORT_SIMU_DEFAULT = 4321;
-Angle const ConstantesPrincipal::OFFSET_ANGLE_ADV = 0_PI; // 0.5_PI
+Angle const ConstantesPrincipal::OFFSET_ANGLE_ADV = 1_PI;
 
 int const ConstantesPrincipal::IDRobot = 1;
 
