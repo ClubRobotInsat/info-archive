@@ -46,7 +46,7 @@ class app :
         self.b_kill.place(relx=0,rely=0.5,relwidth=0.25,relheight=0.25)
 
         #Color 
-        self.b_color=tkinter.Button(self.root,text="Bleu",height=15,width=60,bg="blue",fg="black",command=self.callback_color_change)
+        self.b_color=tkinter.Button(self.root,text="Bleu",height=15,width=60,bg="blue",activebackground="blue",fg="black",command=self.callback_color_change)
         #self.b_color.config(activebackground=self.get_color())
         self.b_color.place(relx=0,rely=0,relwidth=0.25,relheight=0.5)
 
@@ -55,11 +55,13 @@ class app :
         if self.color == "blue"  :
             self.color = "yellow"
             self.b_color.configure(bg="yellow")
+            self.b_color.configure(activebackground="yellow")
             self.b_color.configure(text="Jaune")
             print("blue to yellow")
         elif self.color == "yellow" :
             self.color="blue"
             self.b_color.configure(bg="blue")
+            self.b_color.configure(activebackground="blue")
             self.b_color.configure(text="Bleu")
             print("yellow to blue")
         else : 
