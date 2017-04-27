@@ -103,6 +103,21 @@ sudo apt-get install gcc-6-arm-linux-gnueabihf g++-6-arm-linux-gnueabihf build-e
 Pour crosscompiler la wiimote, il faut installer ```libbluetooth-dev``` en version arm, et aussi cross-compiler WiiC en arm.
 Ensuite faut mettre les libs dans ```/usr/arm-linux-gnueabihf/lib```
 
+#### Installation des libs pour la WiiMote
+```
+sudo apt-get install libbluetooth-dev
+cd <WIIC_HOME>
+git clone https://github.com/grandelli/WiiC.git
+cd WiiC
+mkdir build
+cd build
+cmake ../src
+make
+sudo make install
+sudo ldconfig
+```
+
+_<WIIC_HOME>_ désigne le dossier dans lequel installer Wiic
 ###Cross-compilation
 Un script build_arm.sh est fourni, il compilera IAPrincipal et IAWiimote dans info/build_arm.
 Il est possible de donner le nombre de coeur à utiliser au script :
@@ -137,31 +152,16 @@ Une fois dans le menu de paramètrage de la connexion il faut modifier quelques 
 
 Les autres champs peuvent être laissés tel quel.
 
-Ensuite, pour pouvoir se ssh sur le RaspberryPI il faut trouver son adresse IP via :
+Ensuite, pour pouvoir se ssh sur le RaspberryPI il suffit de lancer le script :
 ```
-arp -a
-```
-Pour copier des fichiers il faut utiliser rsync, example 
-```
-rsync IAWiimote robot@10.42.0.132:~/Desktop
+./ssh_into_rpi.sh
 ```
 Le mot de passe de l'utilisateur robot est "robot".
 
-------------
-Installation des outils pour le controle du robot à la wiimote
-------------
 
-```
-sudo apt-get install libbluetooth-dev
-cd <WIIC_HOME>
-git clone https://github.com/grandelli/WiiC.git
-cd WiiC
-mkdir build
-cd build
-cmake ../src
-make
-sudo make install
-sudo ldconfig
-```
 
-_<WIIC_HOME>_ désigne le dossier dans lequel installer Wiic
+Pour copier des fichiers il faut lancer un autre script, avec en argument le fichier a envoyé. Celui-ci se trouvera alors sur le bureau. 
+```
+./send_file_to_rpi.sh build/robot/Principal/IAPrincipal
+```
+Le mot de passe de l'utilisateur robot est "robot".
