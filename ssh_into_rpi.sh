@@ -21,7 +21,7 @@ RED="\x1B[31m"
 GREEN="\x1B[32m"
 RST="\x1B[0m"
 
-ip_ssh=`arp -a | grep "enp4s0\|eth0" | cut -d ' ' -f 2 | cut -c 2-12`
+ip_ssh=`arp -a | grep "enp4s0\|eth0" | cut -d ' ' -f 2 | cut -d '(' -f 2 | cut -d ')' -f 1`
 
 # Verification de l'adresse IP
 validateIP $ip_ssh
