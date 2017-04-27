@@ -110,8 +110,8 @@ Il est possible de donner le nombre de coeur à utiliser au script :
  ./build_arm.sh 8
 ```
 
-###Envoyer le script sur le Raspberry
-####Configuration de ton ordinateur
+### Envoyer le script sur le Raspberry
+#### Configuration de ton ordinateur
 Il faut commencer par ouvrir le gestionnaire de connections de ton ordinateur. Pour cela il faut cliquer sur l'icône "Network" dans ta barre des tâches et sélectionner "Edit Connections". Une fois dans ce menu, il est possible de definir une nouvelle connexion Ethernet qui sera partagée avec le Raspberry.
 
 
