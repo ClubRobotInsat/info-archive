@@ -141,7 +141,7 @@ Une fois dans le menu de paramètrage de la connexion il faut modifier quelques 
 
 
   * Device : Normalement il n'y en a que un à chosir
-
+  S'il y en a plusieurs, il faut tous les essayer jusqu'à ce que ça marche.
 
 3. Onglet IPv4 Settings : 
 
@@ -151,6 +151,8 @@ Une fois dans le menu de paramètrage de la connexion il faut modifier quelques 
 
 
 Les autres champs peuvent être laissés tel quel.
+
+Une fois la configuration terminée dans ton gestionnaire de connexion, active la configuration créée.
 
 Ensuite, pour pouvoir se ssh sur le RaspberryPI il suffit de lancer le script :
 ```
