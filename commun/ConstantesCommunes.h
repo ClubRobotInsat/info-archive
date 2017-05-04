@@ -54,7 +54,7 @@ namespace Constantes {
 	const repere::Repere ABSOLUTE_REFERENCE =
 	    repere::Repere({0_m, 0_m}, repere::Multiplicateur::SENS_POSITIF, repere::Multiplicateur::SENS_POSITIF);
 	const repere::Repere REFERENCE_ASTAR =
-	    repere::Repere({0_m, 1_m}, repere::Multiplicateur::SENS_POSITIF, repere::Multiplicateur::SENS_POSITIF);
+	    repere::Repere({0_m, 0_m}, repere::Multiplicateur::SENS_POSITIF, repere::Multiplicateur::SENS_POSITIF);
 }
 
 inline Constantes::RobotColor operator!(Constantes::RobotColor const& c) {
