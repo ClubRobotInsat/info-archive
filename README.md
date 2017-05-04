@@ -31,7 +31,7 @@ cmake src
 make
 sudo make install
 ```
-Pour installer le hook (script lancer à chaque commit) qui formate le code comme il faut (**facultatif mais forte   ment recommandé**) :
+Pour installer le hook (script lancé à chaque commit) qui formate le code comme il faut (**facultatif mais fortement recommandé**) :
 ```
 ./install.sh
 ```
@@ -61,7 +61,7 @@ git clone https://github.com/ClubRobotInsat/websimulator
 Installation de CLion (facultatif, mais recommandé)
 ------------
 CLion est un IDE développé par JetBrains, qui est à la fois flexible, simple d'utilisation, multiplateforme et qui a la particularité d'utiliser nativement CMake, le système de build utilisé par notre code.
-Il est normalement payant, mais une version éducation (licence valide 1 an, renouvelable tant que l'on est étudiant) est disponible.
+Il est normalement payant, mais une version d'éducation (licence valide 1 an, renouvelable tant que l'on est étudiant) est disponible.
 
 Pour commencer, aller sur cette page ```https://www.jetbrains.com/clion/download/``` et télécharger l'IDE.
 
@@ -80,22 +80,20 @@ sudo usermod -a -G dialout NOM_UTILISATEUR
 
 ### Si ça ne compile pas : 
 - Aller dans Settings > Build, Execution, Deployment > CMake. Dans "CMake options", rajouter le paramètre `-DBITS=64`
-- Problème de clock skew ? Il suffit de lancer `find -exec touch \{\} \;` dans le dossier `info`. Attention, cela peut être un petit peul ong.
+- Problème de clock skew ? Il suffit de lancer `find -exec touch \{\} \;` dans le dossier `info`. Attention, cela peut être un petit peu long.
 
 --------------------------
 Pour lancer l'IA en mode Debug sur le simu
 --------------------------
 1. Tout compiler (choisir la target build all)
 2. Ouvrir un premier terminal dans le dossier info, puis se placer dans le dossier ```cd build```.
-3. Lancer le simu : ```./Simu2016 -robot on purple -world on```.
-4. Ouvrir un deuxième terminal dans le dossier info, puis se placer dans le dossier Petri : ```cd petri/Editor/bin```.
-5. Lancer Petri, toujours dans ce deuxième terminal : ```./Petri.exe```
-6. Dans Petri, charger l'IA (IA.petri ou IADebug.petri, situé dans ```/info/robot/Principal/petri```).
-7. Ouvrir un troisième terminal à coté du dossier info, puis se placer dans le dossier ```websimulator/dist```.
-8. Ecrire la commande ```python -m SimpleHTTPServer```.
-9. Dans le navigateur Web, se connecter sur ```localhost:8000``` puis cliquer sur connect. Après une petite seconde, vous devriez voir la table apparaître.
-10. Dans Petri, aller dans ```Debug -> Creat Host```, normalement tout est déjà configuré, vous n'avez qu'à cliquer sur Create Host. Sinon, faut aller chercher les binaires de l'IA :```/bin/robot/Principal/IAPrincipal``` et indiquer comme argument : ```LOCAL```.
-11. Voilà c'est terminé, vous n'avez plus qu'a lancer votre réseau petri et admiré le résultat dans le simu !
+3. Lancer le simu : ```./Simu2017 --robot on --color blue --world on```.
+4. Ouvrir un deuxième terminal dans le dossier info, puis lancer Petri : ```./petri/petri```.
+5. Dans Petri, charger l'IA (IA.petri ou IADebug.petri, situé dans ```/info/robot/Principal/petri```).
+6. Ouvrir un troisième terminal à coté du dossier info, puis lancer ```websimulator/serve.sh```.
+7. Dans le navigateur Web, se connecter sur ```localhost:8000``` puis cliquer sur connect. Après une petite seconde, vous devriez voir la table apparaître.
+8. Dans Petri, aller dans ```Debug -> Creat Host```, normalement tout est déjà configuré, vous n'avez qu'à cliquer sur Create Host. Sinon, il faut aller chercher les binaires de l'IA :```/bin/robot/Principal/IAPrincipal``` et indiquer comme argument : ```LOCAL```.
+9. Voilà c'est terminé, vous n'avez plus qu'à lancer votre réseau petri et admirer le résultat dans le simu !
 
 ------------
 Cross-Compilation pour Raspberry
@@ -110,7 +108,6 @@ Pour compiler IAWiimote il faut copier les librairies précompilées pour ARM da
 Pour cela il suffit d'exécuter :
  
 ```sudo cp sudo cp precompiled-libraries/libbluetooth.so.3 precompiled-libraries/libwiicpp.so precompiled-libraries/libwiic.so /usr/arm-linux-gnueabihf/lib```
-
 #### Installation des libs pour la WiiMote
 ```
 sudo apt-get install libbluetooth-dev
@@ -148,7 +145,7 @@ Une fois dans le menu de paramètrage de la connexion il faut modifier quelques 
 2. Onglet Ethernet :
 
 
-  * Device : Normalement il n'y en a que un à chosir
+  * Device : Normalement il n'y en a que un à chosir.
   S'il y en a plusieurs, il faut tous les essayer jusqu'à ce que ça marche.
 
 3. Onglet IPv4 Settings : 
@@ -166,12 +163,11 @@ Ensuite, pour pouvoir se ssh sur le RaspberryPI il suffit de lancer le script :
 ```
 ./ssh_into_rpi.sh
 ```
-Le mot de passe de l'utilisateur robot est "robot".
+Le mot de passe de l'utilisateur robot est "**robot**".
 
 
 
-Pour copier des fichiers il faut lancer un autre script, avec en argument le fichier a envoyé. Celui-ci se trouvera alors sur le bureau. 
+Pour copier des fichiers il faut lancer un autre script, avec en argument le fichier à envoyer. Celui-ci se trouvera alors sur le bureau.
 ```
 ./send_file_to_rpi.sh build/robot/Principal/IAPrincipal
 ```
-Le mot de passe de l'utilisateur robot est "robot".
