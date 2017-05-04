@@ -7,7 +7,12 @@ Installation de tout ce qu'il faut
 sudo apt-get update
 sudo apt-get install mono-complete cmake subversion git libbox2d-dev gcc-5-multilib g++-5-multilib libbluetooth-dev build-essential libglfw-dev libglu1-mesa-dev curl libxrandr-dev libgtkmm-3.0-dev libusb-1.0-0-dev clang-format
 
+```
+
+
+
 Pour installer g++-6 et gcc-6, la méthode est la suivante :
+
 ```
 sudo add-apt-repository ppa:ubuntu-toolchain-r/test
 sudo apt-get update
@@ -15,7 +20,6 @@ sudo apt-get install gcc-6 g++-6
 sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-6 60 --slave /usr/bin/g++ g++ /usr/bin/g++-6
 ```
 
-```
 ### Facultatif :
 Pour installer la lib Wiic nécessaire pour les démos à la wiimote
 ```
@@ -67,7 +71,7 @@ Le mail à fournir est celui de l'INSA (@etud.insa-toulouse.fr) pour que JetBrai
 Une fois l'IDE installé, on choisit d'ouvrir un projet existant et il faut sélectionner le dossier ```info``` résultat du clonage du Git.
 
 Il reste à ce moment un peu de configuration à effectuer : dans le menu ```File -> Settings```, dérouler l'item ```Build, Execution, Deployment``` et sélectionner ```CMake```.
-Dans le champ ```CMake options```, mettre le texte ```-DDEBUG=on```.
+Dans le champ ```CMake options```, mettre le texte ```-DDEBUG=on -DBITS=64```.
 
 Pour pouvoir tester les IA via la laison série (RS232) en utilisant Clion (sans les droits root), il faut ajouter votre utilisateur au groupe ayant accès à la laison série (dialout) :
 ```
@@ -96,11 +100,14 @@ Cross-Compilation pour Raspberry
 ------------
 ### Installation des outils :
 ```
-sudo apt-get install gcc-6-arm-linux-gnueabihf g++-6-arm-linux-gnueabihf build-essential git
+sudo apt-get install gcc-5-arm-linux-gnueabihf g++-5-arm-linux-gnueabihf build-essential git
 ```
-Pour crosscompiler la wiimote, il faut installer ```libbluetooth-dev``` en version arm, et aussi cross-compiler WiiC en arm.
-Ensuite il faut mettre les libs dans ```/usr/arm-linux-gnueabihf/lib```
+Pour compiler IAWiimote il faut copier les librairies précompilées pour ARM dans le dossier `/usr/arm-linux-gnueabihf/lib`.
 
+
+Pour cela il suffit d'exécuter :
+ 
+```sudo cp sudo cp precompiled-libraries/libbluetooth.so.3 precompiled-libraries/libwiicpp.so precompiled-libraries/libwiic.so /usr/arm-linux-gnueabihf/lib```
 #### Installation des libs pour la WiiMote
 ```
 sudo apt-get install libbluetooth-dev

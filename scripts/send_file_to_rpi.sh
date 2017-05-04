@@ -40,8 +40,7 @@ else
 	exit 1
 fi
 
-ip_ssh=`arp -a | grep "enp4s0\|eth0" | cut -d ' ' -f 2 | cut -c 2-12`
-
+ip_ssh=`arp -a | grep "enp4s0\|eth0" | cut -d ' ' -f 2 | cut -d '(' -f 2 | cut -d ')' -f 1`
 # Verification de l'adresse IP
 validateIP $ip_ssh
 if [[ $? -ne 0 ]]
