@@ -104,8 +104,12 @@ Cross-Compilation pour Raspberry
 ```
 sudo apt-get install gcc-5-arm-linux-gnueabihf g++-5-arm-linux-gnueabihf build-essential git
 ```
-Pour crosscompiler la wiimote, il faut installer ```libbluetooth-dev``` en version arm, et aussi cross-compiler WiiC en arm.
-Ensuite faut mettre les libs dans ```/usr/arm-linux-gnueabihf/lib```
+Pour compiler IAWiimote il faut copier les librairies précompilées pour ARM dans le dossier `/usr/arm-linux-gnueabihf/lib`.
+
+
+Pour cela il suffit d'exécuter :
+ 
+```sudo cp sudo cp precompiled-libraries/libbluetooth.so.3 precompiled-libraries/libwiicpp.so precompiled-libraries/libwiic.so /usr/arm-linux-gnueabihf/lib```
 
 #### Installation des libs pour la WiiMote
 ```

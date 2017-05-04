@@ -7,8 +7,8 @@ Green='\033[0;32m'
 Red='\033[0;31m'
 
 
-cd .git/hooks
-ln -f ../../hooks/pre-commit pre-commit
+cd ../.git/hooks
+ln -f ../../scripts/pre-commit pre-commit
 if [ $? -eq "0" ]
 	then install_hook=1
 fi
@@ -22,11 +22,15 @@ cmake src
 make
 sudo make install
 
+if [ $? -eq "0" ]
+	then install_wii=1
+fi
+
 if $install_hook
 then echo '$Green' Installation du hook réussie 
 else echo '$Red' Installation du hook échouée
 fi
 if $install_wii
-then echo '$Green' Installation du hook échouée
-else echo '$Red' Installation de libwii échouée
+then echo '$Green' Installation du libwiic réussie
+else echo '$Red' Installation de libwiic échouée
 fi
