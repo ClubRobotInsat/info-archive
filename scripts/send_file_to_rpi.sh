@@ -17,12 +17,30 @@ function validateIP()
 	fi
 	return $stat
 }
+
 RED="\x1B[31m"
 GREEN="\x1B[32m"
 RST="\x1B[0m"
 
-ip_ssh=`arp -a | grep "enp4s0\|eth0" | cut -d ' ' -f 2 | cut -c 2-12`
+usage="Usage : \x1B[36m$0 \x1B[1m<Fichier à envoyer> \x1B[0m"
 
+if `test $# -ne 1`
+then
+        echo -e $usage 
+	exit 1
+fi
+ 
+ 
+# Test of the arguments
+if `test -f $Fichier`
+then
+	Fichier=$1
+else
+        echo -e $usage 
+	exit 1
+fi
+
+ip_ssh=`arp -a | grep "enp4s0\|eth0" | cut -d ' ' -f 2 | cut -d '(' -f 2 | cut -d ')' -f 1`
 # Verification de l'adresse IP
 validateIP $ip_ssh
 if [[ $? -ne 0 ]]
@@ -34,4 +52,4 @@ fi
 echo -e "IP du raspberry PI : $GREEN $ip_ssh $RST"
 echo "Le mot de passe est robot."
 
-ssh pi@$ip_ssh
+rsync $Fichier pi@$ip_ssh:~/Desktop

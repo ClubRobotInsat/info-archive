@@ -17,9 +17,9 @@ if `! test -d build_arm`
 	then	mkdir build_arm
 fi
 
-cd build_arm
+cd ../build_arm
 echo -e "$dgreen Generating CMakeFile $egreen"
-cmake .. -DBITS=64 -DCMAKE_TOOLCHAIN_FILE=Cross-Compilation.cmake 
+cmake .. -DBITS=64 -DRASPI="1" -DCMAKE_TOOLCHAIN_FILE=../Cross-Compilation.cmake
 
 echo -e "$dgreen Building IAPrincipal $egreen"
 make IAPrincipal -j $cores
