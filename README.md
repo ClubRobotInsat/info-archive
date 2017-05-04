@@ -71,7 +71,7 @@ Le mail à fournir est celui de l'INSA (@etud.insa-toulouse.fr) pour que JetBrai
 Une fois l'IDE installé, on choisit d'ouvrir un projet existant et il faut sélectionner le dossier ```info``` résultat du clonage du Git.
 
 Il reste à ce moment un peu de configuration à effectuer : dans le menu ```File -> Settings```, dérouler l'item ```Build, Execution, Deployment``` et sélectionner ```CMake```.
-Dans le champ ```CMake options```, mettre le texte ```-DDEBUG=on```.
+Dans le champ ```CMake options```, mettre le texte ```-DDEBUG=on -DBITS=64```.
 
 Pour pouvoir tester les IA via la laison série (RS232) en utilisant Clion (sans les droits root), il faut ajouter votre utilisateur au groupe ayant accès à la laison série (dialout) :
 ```
