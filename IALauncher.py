@@ -74,12 +74,20 @@ class app :
         
         # Get the menu because OptionMenu is a shitty widget
         menu = self.ia_picker.nametowidget(self.ia_picker.menuname) 
-        menu.configure(font=('Arial', 70)) 
+        menu.configure(font=('Arial', 30)) 
         
         self.ia_picker.place(relx=0,rely=0.5,relwidth=0.25,relheight=0.16667)
-        self.available_connection=list()
+        self.available_connection=('No connection available','')
         # ---- Refresh Connection
         self.b_refresh = tkinter.Button(self.root,text="Refresh Connections",command=self.callback_refresh,state="normal")
+        self.b_refresh.place(relx=0.125,rely=0.25,relwidth=0.125,relheight=0.125)
+
+
+        # ---- Connection list
+        self.ia_connection_value = tkinter.StringVar()
+        self.ia_connection_value.set(self.available_connection[0])
+        self.l_connection = tkinter.OptionMenu(self.root,self.ia_connection_value,*self.available_connection)
+        self.l_connection.place(relx=0,rely=0.375,relwidth=0.25,relheight=0.125)
 
         # ---- Run
         self.b_run = tkinter.Button(self.root,text="GO !",command=self.callback_run,state="normal")
@@ -96,10 +104,18 @@ class app :
 
         # ---- Kill Launcher
         self.b_kill_launcher=tkinter.Button(self.root,text="Kill Interface",command=self.callback_kill_interface)
-        self.b_kill_launcher.place(relx=0,rely=0.25,relwidth=0.25,relheight=0.25)
+        self.b_kill_launcher.place(relx=0,rely=0.25,relwidth=0.125,relheight=0.125)
+
+        # ---- Refresh Connection
+
 
     def callback_refresh(self):
-        self.available_connection=scan_usb_connection
+        
+        temp_connection=scan_usb_connection()
+        if len(temp_connection) == 0:
+            self.available_connection="No Connection available"
+        else :
+            self.available_connection=temp_connection
 
 
     def callback_kill_interface(self):
