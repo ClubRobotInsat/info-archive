@@ -72,7 +72,7 @@ namespace ConstantesPrincipal {
 	    repere::Repere({3_m, 0_m}, repere::Multiplicateur::SENS_NEGATIF, repere::Multiplicateur::SENS_POSITIF);
 
 	const Vector3m START_ROBOT_POSITION(902_mm, 182_cm, 15_cm);
-	const Angle START_ROBOT_ANGLE(-90_deg);
+	const Angle START_ROBOT_ANGLE(180_deg);
 
 	/////////////////// CONTACTEURS ///////////////////
 	// Numéros des contacteurs et les rôles associés
