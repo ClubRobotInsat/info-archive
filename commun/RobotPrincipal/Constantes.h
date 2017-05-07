@@ -23,13 +23,13 @@
 #include "../../robot/Cartes/CarteAsservissement2009.h"
 #include "../../robot/Cartes/CarteCAN_USB.h"
 #include "../../robot/Cartes/CarteContacteurs2007.h"
-#include "../../robot/Cartes/CarteDebugDessin.h"
-#include "../../robot/Cartes/CarteDeplacementSymetrieY.h"
+//#include "../../robot/Cartes/CarteDebugDessin.h"
+#include "../../robot/Cartes/CarteDeplacement2009.h"
 //#include "../../robot/Cartes/CarteElectrovannes2016.h"
 #include "../../robot/Cartes/CarteIO2014.h"
 //#include "../../robot/Cartes/CartePneumatique.h"
 //#include "../../robot/Cartes/CartePneumatique2014.h"
-#include "../../robot/Cartes/CarteColorimetre2014.h"
+//#include "../../robot/Cartes/CarteColorimetre2014.h"
 #include "../../robot/Cartes/CarteServosNova2009.h"
 #include "../robot/Cartes/CarteDetectAdv2009.h"
 
@@ -49,8 +49,6 @@ namespace IDCartesPrincipal {
 		ID_CARTE_IO = ID_CARTE_INYANGA_IO,
 		ID_CARTE_EVITEMENT = ID_CARTE_INYANGA_EVITEMENT,
 		ID_CARTE_ASCENSEUR = ID_CARTE_INYANGA_ASCENSEUR,
-		// ID_CARTE_ASPIRATION = ID_CARTE_INYANGA_ASPIRATION,
-		// ID_CARTE_COLORIMETRIE = ID_CARTE_INYANGA_COLORIMETRIE,
 
 		/*ID_CARTE_DEBUG_DESSIN = 8*/
 	};
@@ -72,18 +70,12 @@ namespace ConstantesPrincipal {
 	    repere::Repere({3_m, 0_m}, repere::Multiplicateur::SENS_NEGATIF, repere::Multiplicateur::SENS_POSITIF);
 
 	const Vector3m START_ROBOT_POSITION(902_mm, 182_cm, 15_cm);
-	const Angle START_ROBOT_ANGLE(180_deg);
+	const Angle START_ROBOT_ANGLE(-90_deg);
 
 	/////////////////// CONTACTEURS ///////////////////
 	// Numéros des contacteurs et les rôles associés
 	enum class Contacteur {
 		TIRETTE = 2,
-		BACK_CONTACT_1 = 5,
-		BACK_CONTACT_2 = 6,
-		BACK_CONTACT_3 = 7,
-		BACK_CONTACT_4 = 8,
-		BACK_CONTACT_5 = 9,
-		BACK_CONTACT_6 = 10,
 	};
 
 	/*
