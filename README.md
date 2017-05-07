@@ -107,7 +107,7 @@ Pour compiler IAWiimote il faut copier les librairies précompilées pour ARM da
 
 Pour cela il suffit d'exécuter :
  
-```sudo cp sudo cp precompiled-libraries/libbluetooth.so.3 precompiled-libraries/libwiicpp.so precompiled-libraries/libwiic.so /usr/arm-linux-gnueabihf/lib```
+```sudo cp precompiled-libraries/libbluetooth.so.3 precompiled-libraries/libwiicpp.so precompiled-libraries/libwiic.so /usr/arm-linux-gnueabihf/lib```
 #### Installation des libs pour la WiiMote
 ```
 sudo apt-get install libbluetooth-dev
@@ -125,18 +125,23 @@ sudo ldconfig
 _<WIIC_HOME>_ désigne le dossier dans lequel installer Wiic
 ###Cross-compilation
 Un script build_arm.sh est fourni, il compilera IAPrincipal et IAWiimote dans info/build_arm.
-Il est possible de donner le nombre de coeur à utiliser au script :
+Il est possible de donner le nombre de coeurs à utiliser au script :
 ```
+ cd scripts
  ./build_arm.sh 8
 ```
 
+
+Si il y a des problèmes de compilations, il faut commencer par supprimer le dossier /build_arm.
+
+
 ### Envoyer le script sur le Raspberry
 #### Configuration de ton ordinateur
-Il faut commencer par ouvrir le gestionnaire de connections de ton ordinateur. Pour cela il faut cliquer sur l'icône "Network" dans ta barre des tâches et sélectionner "Edit Connections". Une fois dans ce menu, il est possible de definir une nouvelle connexion Ethernet qui sera partagée avec le Raspberry.
+Il faut commencer par ouvrir le gestionnaire de connections de ton ordinateur. Pour cela il faut cliquer sur l'icône "Network" dans ta barre des tâches et sélectionner "Edit Connections". Une fois dans ce menu, il est possible de définir une nouvelle connexion Ethernet qui sera partagée avec le Raspberry.
 
 
-On clique donc sur "Add" et on choisi "Ethernet".
-Une fois dans le menu de paramètrage de la connexion il faut modifier quelques champs :
+On clique donc sur "Add" et on choisit "Ethernet".
+Une fois dans le menu de paramétrage de la connexion il faut modifier quelques champs :
 
 
 1. Connection name : A remplir pour différencier la connection des autres
