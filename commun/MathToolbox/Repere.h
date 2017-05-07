@@ -30,20 +30,25 @@ namespace repere {
 	 */
 	struct Coordonnees {
 		Coordonnees(const Repere& repere_parent, Vector3m position = Vector3m(0_m, 0_m, 0_m), Angle angle = 0_rad);
+
 		/// Surcharge pour donner des coordonnées 2D
 		Coordonnees(const Repere& repere_parent, Vector2m position, Angle angle = 0_rad);
+
 		Coordonnees(Coordonnees const& coords);
 
 		/// Getters
 		Distance getX() const {
 			return _pos.x;
 		}
+
 		Distance getY() const {
 			return _pos.y;
 		}
+
 		Vector2m getPos2D() const {
 			return toVec2(_pos);
 		}
+
 		Angle getAngle() const {
 			return _angle;
 		}
@@ -140,20 +145,20 @@ namespace repere {
 	 */
 	class Repere {
 	public:
-		Repere(Vector2m origine = {0_m, 0_m}, Multiplicateur multX = SENS_POSITIF, Multiplicateur multY = SENS_POSITIF) {
-			_origine = origine;
-			_multX = multX;
-			_multY = multY;
-		}
+		Repere(Vector2m origine = {0_m, 0_m}, Multiplicateur multX = SENS_POSITIF, Multiplicateur multY = SENS_POSITIF)
+		        : _origine(origine), _multX(multX), _multY(multY) {}
+
+		Repere(const Repere& other) : _origine(other._origine), _multX(other._multX), _multY(other._multY) {}
 
 		Coordonnees get_coordonnees(Coordonnees coordonnees) const;
+
 		Angle convertDeltaAngle(const Repere& origin, const Angle& angle) const;
 
 		bool operator==(const Repere& other) const;
 
 	private:
-		Multiplicateur _multX, _multY;
 		Vector2m _origine;
+		Multiplicateur _multX, _multY;
 	};
 }
 
