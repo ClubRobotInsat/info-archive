@@ -126,6 +126,10 @@ namespace repere {
 			return repere.getAngle(_angle, _repere);
 		}
 
+		void setAngle(const Angle& angle, const Repere& repere = ABSOLUTE_REFERENCE) {
+			_angle = _repere.getAngle(angle, repere);
+		}
+
 	private:
 		Angle _angle;
 		const Repere& _repere;
