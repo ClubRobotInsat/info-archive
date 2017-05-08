@@ -122,7 +122,7 @@ namespace repere {
 		Orientation(Angle angle = 0_deg, const Repere& repere_parent = ABSOLUTE_REFERENCE);
 		Orientation(const Orientation& other);
 
-		Angle getAngle(const Repere& repere) {
+		Angle getAngle(const Repere& repere = ABSOLUTE_REFERENCE) {
 			return repere.getAngle(_angle, _repere);
 		}
 
