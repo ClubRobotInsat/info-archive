@@ -7,6 +7,8 @@
 
 #include "MathToolbox.h"
 
+#include "Units.h"
+
 Vector3m translationPourRotationExcentree(Vector3m centreAbsolu, Vector3m centreVoulu, Vector3d axeRotation, Units::Angle angleRotation) {
 	// On convertit tout en dimension 4 pour profiter des capacités de calcul des rotations en 4D
 	Vector4d centreAbsolu4 = {centreAbsolu.x.toM(), centreAbsolu.y.toM(), centreAbsolu.z.toM(), 0.0};
@@ -21,6 +23,10 @@ Vector3m translationPourRotationExcentree(Vector3m centreAbsolu, Vector3m centre
 
 Vector2m toVec2(Vector3m vec3) {
 	return Vector2m(vec3.x, vec3.y);
+}
+
+Vector3m toVec3(Vector2m vec2) {
+	return Vector3m(vec2.x, vec2.y, 0_m);
 }
 
 /**

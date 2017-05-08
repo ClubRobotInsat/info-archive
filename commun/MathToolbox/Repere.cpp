@@ -6,54 +6,71 @@
 
 using namespace repere;
 
-Coordonnees::Coordonnees(const Repere& repere_parent, Vector3m position, Angle angle) : _repere_parent(repere_parent) {
+Orientation::Orientation(Angle angle, const Repere& repere_parent) : _angle(angle), _repere(repere_parent) {}
+
+Orientation::Orientation(const Orientation& other) : _angle(other._angle), _repere(other._repere) {}
+
+Position::Position(Vector3m pos, const Repere& repere_parent) : _pos(pos), _repere(repere_parent) {}
+
+Position::Position(Vector2m pos, const Repere& repere_parent) : _pos(toVec3(pos)), _repere(repere_parent) {}
+
+Position::Position(const Position& other) : _pos(other._pos), _repere(other._repere) {}
+
+Coordonnees::Coordonnees(Vector3m position, Angle angle, const Repere& repere_parent) : _repere_parent(repere_parent) {
 	_pos = position;
 	_angle = angle;
 }
 
-Coordonnees::Coordonnees(const Repere& repere_parent, Vector2m position, Angle angle)
-        : Coordonnees(repere_parent, Vector3m(position.x, position.y, 0_m), angle) {}
+Coordonnees::Coordonnees(Vector2m position, Angle angle, const Repere& repere_parent)
+        : Coordonnees(Vector3m(position.x, position.y, 0_m), angle, repere_parent) {}
 
-Coordonnees::Coordonnees(Coordonnees const& coords) : Coordonnees(coords._repere_parent, coords._pos, coords._angle) {}
+Coordonnees::Coordonnees(Coordonnees const& coords) : Coordonnees(coords._pos, coords._angle, coords._repere_parent) {}
 
 Coordonnees& Coordonnees::operator=(const Coordonnees& coords) {
 	if(_repere_parent == coords._repere_parent) {
 		_pos = coords._pos;
 		_angle = coords._angle;
 	} else {
-		Coordonnees temp = _repere_parent.get_coordonnees(coords);
-		_pos = temp._pos;
-		_angle = temp._angle;
+		_pos = _repere_parent.getPosition(coords._pos, coords._repere_parent);
+		_angle = _repere_parent.getAngle(coords._angle, coords._repere_parent);
 	}
 	return *this;
 }
 
-Coordonnees Repere::get_coordonnees(Coordonnees coords) const {
-	const int mx0 = coords._repere_parent._multX;
-	const int my0 = coords._repere_parent._multY;
+
+Vector3m Repere::getPosition(Vector3m initPos, const Repere& repere) const {
+	const int mx0 = repere._multX;
+	const int my0 = repere._multY;
 	const int mx1 = this->_multX;
 	const int my1 = this->_multY;
 
-	Vector3m new_position = {(coords._pos.x * mx0 + coords._repere_parent._origine.x - this->_origine.x) * mx1,
-	                         (coords._pos.y * my0 + coords._repere_parent._origine.y - this->_origine.y) * my1,
-	                         coords._pos.z};
+	return {(initPos.x * mx0 + repere._origine.x - this->_origine.x) * mx1,
+	        (initPos.y * my0 + repere._origine.y - this->_origine.y) * my1,
+	        initPos.z};
+}
+
+Angle Repere::getAngle(Angle initAngle, const Repere& repere) const {
+	const int mx0 = repere._multX;
+	const int my0 = repere._multY;
+	const int mx1 = this->_multX;
+	const int my1 = this->_multY;
 
 	Angle new_angle;
 	if(mx0 == mx1) {
 		if(my0 == my1) {
-			new_angle = coords._angle;
+			new_angle = initAngle;
 		} else {
-			new_angle = -coords._angle;
+			new_angle = initAngle;
 		}
 	} else {
 		if(my0 == my1) {
-			new_angle = (180_deg - coords._angle).toMinusPiPi();
+			new_angle = (180_deg - initAngle).toMinusPiPi();
 		} else {
-			new_angle = (coords._angle + 180_deg).toMinusPiPi();
+			new_angle = (initAngle + 180_deg).toMinusPiPi();
 		}
 	}
 
-	return {coords._repere_parent, new_position, new_angle};
+	return new_angle;
 }
 
 Angle Repere::convertDeltaAngle(const Repere& origin, const Angle& angle) const {
