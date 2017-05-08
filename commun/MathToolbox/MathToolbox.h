@@ -26,6 +26,8 @@ Vector3m translationPourRotationExcentree(Vector3m centreAbsolu, Vector3m centre
 // transforme un vecteur (x, y, z) en vecteur (x, y)
 Vector2m toVec2(Vector3m vec3);
 
+Vector3m toVec3(Vector2m vec2);
+
 /**
  * Retourne vrai si la différence angulaire entre l'angle a1
  * et l'angle 'a2' est inférieure à l'angle 'threshold'.
