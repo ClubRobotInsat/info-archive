@@ -26,3 +26,6 @@ make IAPrincipal -j $cores
 
 echo -e "$dgreen Building IAWiimote $egreen"
 make IAWiimote -j $cores
+
+echo -e "$dgreen Building IATestRobot $egreen"
+make IATestRobot -j $cores
