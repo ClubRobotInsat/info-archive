@@ -72,6 +72,9 @@ namespace ConstantesPrincipal {
 	const Vector3m START_ROBOT_POSITION(1.05_m - 29.4_cm / 2, 2_m - 29.4_cm / 2 - 2.1_cm, 15_cm);
 	const Angle START_ROBOT_ANGLE(-90_deg);
 
+	// POSITION_TOURELLE = { décalage avant, décalage vers la droite }
+	const Vector2m POSITION_TOURELLE(10_cm, 5_cm);
+
 	/////////////////// CONTACTEURS ///////////////////
 	// Numéros des contacteurs et les rôles associés
 	enum class Contacteur {
