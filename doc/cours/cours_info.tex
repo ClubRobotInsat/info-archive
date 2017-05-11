@@ -1,0 +1,41 @@
+% cours_info.tex
+
+\documentclass[a4paper]{article}
+
+\usepackage[french]{babel}
+\usepackage{a4}
+\usepackage[T1]{fontenc}	% pour les polices
+\usepackage[utf8]{inputenc}	% encodage
+\usepackage{graphicx}	% pour les images
+\usepackage{epsfig}	% pour les images au format PostScript
+\usepackage{float}	% pour le placement des images
+\usepackage{version}	% pour pouvoir faire des commentaires sur plusieurs lignes avec \begin{comment}
+						% et \end{comment}
+\usepackage[a4paper,left=3cm,right=3cm,top=2cm,bottom=2cm]{geometry}	% pour pouvoir régler les marges
+\usepackage{listings}	% Pour inclure du code ; Cf http://www.ctan.org/tex-archive/help/Catalogue/entries/listings.html
+\lstset{language=C++}
+
+\begin{document}
+
+\begin{center}
+\includegraphics[width=16cm]{images/logos.png}
+\Huge{\textbf{Introduction à l'informatique au club robot\\}}
+\vspace{3cm}
+\includegraphics[width=7cm]{images/pandora.png}
+\end{center}
+
+\newpage
+
+\textbf{Introduction}\\
+
+Ce document a pour but de résumer ce qu'il est nécessaire de savoir pour pouvoir travailler sur la partie informatique du robot. Il vise surtout à vous présenter ce qui a déjà été fait, comment cela a été réalisé et quelles sont les perspectives pour cette année (2009).
+
+\tableofcontents
+
+\include{introduction}
+\include{1_environnement}
+\include{2_cplusplus}
+\include{3_architecture_robot}
+\include{4_projets}
+\include{liens}
+\end{document}

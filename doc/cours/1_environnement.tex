@@ -1,0 +1,21 @@
+% 1_environnement.tex
+
+\section{Environnement de développement}
+
+Pour développer sur le robot, on peut utiliser au choix un système Windows ou un système GNU/Linux ; d'autres plate-formes peuvent s'ajouter simplement, on n'en a juste pas eu la nécessité jusque là.\\
+Au niveau de ce qu'il vous est nécessaire pour pouvoir développer quelque chose, il y a :\\
+\begin{itemize}
+\item \textbf{Un compilateur} : Sous Linux, g++ s'impose, et sous Windows je vous conseillerais d'utiliser son portage, "MinGW", avec l'environnement Code::Blocks (Cf les liens). Bien évidemment, n'importe quel environnement convient, faites comme bon vous semble :) Au niveau de l'intégration avec un environnement existant, il peut être pratique de passer par un Makefile qui appelle SCons ; par exemple, avec Code::Blocks, on peut lui spécifier d'utiliser un Makefile personnalisé. De tels Makefiles sont sur le serveur SVN.\\
+\item \textbf{SVN} : un client SVN est indispensable pour pouvoir récupérer une copie du dépôt du club. SVN est un système de gestion de version, qui permet dans un projet à plusieurs d'avoir un serveur central qui contienne les fichiers sur lesquels on travaille. L'avantage d'un tel système de gestion de version par rapport à un simple compte FTP par exemple est qu'il permet de garder plusieurs versions d'un même fichier, et qu'un update sur votre copie ne téléchargera que les différences, par exemple. Sous GNU/Linux, vous pouvez utiliser le client en ligne de commande, ou bien RapidSVN ou eSVN ; sous Windows, le client le plus connu et le plus utilisé est TortoiseSVN. Des explications sont données sur le Trac du club (Cf les liens à la fin de ce document).\\
+\item \textbf{SCons} : \textbf{S}oftware \textbf{Cons}truction tool : il s'agit du système que l'on utilise pour compiler toute la partie informatique du robot. C'est un équivalent aux classiques Makefiles et autotools de UNIX, mais bien mieux pensé. On crée des fichiers du nom de \texttt{SConstruct}, qui contiennent du code dans le langage interprété \texttt{Python}. Un mini-tuto sur son utilisation est disponible sur le Trac, il s'appuie sur le didacticiel plus général qui se trouve ici : \begin{verbatim}http://www.coder-studio.com/?page=tutoriaux_aff&code=autre_5\end{verbatim} .\\
+\item \textbf{pthreads-win32} : \underline{seulement} pour les utilisateurs de Windows : cette librairie est un portage Windows de la librairie standard "pthreads" de UNIX. Elle sert à faire de la programmation en multithreading, i.e. de permettre d'avoir plusieurs fonctions qui s'exécutent en parallèle. Elle est utilisée par la libRobot, entre-autres.\\
+\item \textbf{Dépendances sous GNU/Linux : libxrandr, libbluetooth, Mesa3D, libv4l} : \underline{seulement} pour les utilisateurs de GNU/Linux : libxrandr et Mesa3D sont utilisés par GLFW (Cf plus loin), libbluetooth est nécessaire pour la libcwiimote (Cf plus loin aussi) et libv4l pour la libWebcam. Sur une Debian ou une Ubuntu, les paquets à installer sont \texttt{libxrandr-dev}, \texttt{libbluetooth-dev}, \texttt{libgl1-mesa-dev}, \texttt{libglu1-mesa-dev} et \texttt{libv4l-dev}.\\
+\\
+\end{itemize}
+
+Les autres librairies sont normalement déjà inclues dans les fichiers du dépôt SVN :\\
+\begin{itemize}
+\item \textbf{GLFW} : Open\textbf{GL} \textbf{F}rame\textbf{W}ork : utilisée dans le simulateur, le programme de debug au clavier, le programme de test de la webcam...etc ; c'est une librairie qui permet d'ouvrir facilement une fenêtre utilisant OpenGL et d'utiliser le clavier et la souris. Elle sera utile pour ceux qui voudront développer des applications graphiques (programmes de debug pour les électroniciens par exemple).\\
+\item \textbf{Bullet} : moteur physique utilisé par le simulateur\\
+\item \textbf{libcwiimote} : \underline{seulement} pour les utilisateurs de GNU/Linux : c'est la librairie qui permet d'utiliser une wiimote, pour contrôler le robot par exemple :)\\
+\end{itemize}

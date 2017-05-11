@@ -103,10 +103,21 @@ namespace repere {
 
 		Repere(const Repere& other) : _origine(other._origine), _multX(other._multX), _multY(other._multY) {}
 
+		Vector2m getOrigine() const {
+			return _origine;
+		}
+
 		Vector3m getPosition(Vector3m initPos, const Repere& repere) const;
 		Angle getAngle(Angle initAngle, const Repere& repere) const;
 
 		Angle convertDeltaAngle(const Repere& origin, const Angle& angle) const;
+
+		Repere& operator=(const Repere& other) {
+			_origine = other._origine;
+			_multX = other._multX;
+			_multY = other._multY;
+			return *this;
+		}
 
 		bool operator==(const Repere& other) const;
 
