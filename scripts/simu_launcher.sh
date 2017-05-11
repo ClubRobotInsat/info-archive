@@ -16,12 +16,10 @@ fi
 dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 echo "Launching web_server..."
-#../websimulator/serve.sh &
+../websimulator/serve.sh &
 
 echo "Launching Petri..."
 "$dir"/petri/petri &
-
-echo salut
 
 if `test -e "$dir"/build/Simu2017`
 then
