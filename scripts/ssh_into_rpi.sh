@@ -34,6 +34,5 @@ then
 fi
 
 echo -e "IP du raspberry PI : $GREEN $ip_ssh $RST"
-echo -e "Le mot de passe est $BLUE robot $RST."
 
 ssh pi@$ip_ssh

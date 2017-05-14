@@ -45,11 +45,17 @@ ip_ssh=`arp -a | grep "enp4s0\|eth0" | cut -d ' ' -f 2 | cut -d '(' -f 2 | cut -
 validateIP $ip_ssh
 if [[ $? -ne 0 ]]
 then 
-	echo -e "$RED Problème de connexion au raspi, vérifier le câble ethernet. $RST"
+	echo -e "$RED Problème de connexion au raspberry, vérifies le câble ethernet. $RST"
 	exit 1
 fi
 
 echo -e "IP du raspberry PI : $GREEN $ip_ssh $RST"
-echo "Le mot de passe est robot."
 
 rsync $Fichier pi@$ip_ssh:~/Desktop
+
+if `test $? -eq 0`
+then
+	echo -e $GREEN "Envoi réussi !" $RST
+else
+	echo -e $RED "Echec de l'envoi." $RST
+fi

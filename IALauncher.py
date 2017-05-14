@@ -17,6 +17,9 @@ right="purple"
 env=os.environ
 env['LD_LIBRARY_PATH']="/home/pi/Desktop"
 
+# This variable defines where the AI are living
+prefix_exec_path="/home/pi/Desktop/"
+
 # Shared variables between threads
 keep_running=True
 
@@ -82,7 +85,7 @@ class app :
 
         # ---- IA Picker
         self.ia_picker_option = ('IAWiimote','IAPrincipal')
-        self.ia_map = {'IAWiimote' : 'sudo ./IAWiimote RS232 /dev/ttyUSB0', 'IAPrincipal' : 'sudo ./IAPrincipal RS232'}
+        self.ia_map = {'IAWiimote' : 'IAWiimote', 'IAPrincipal' : 'IAPrincipal '}
         self.ia_picker_value = tkinter.StringVar()
         self.ia_picker_value.set(self.ia_picker_option[0])
 
@@ -98,25 +101,25 @@ class app :
         menu = self.ia_picker.nametowidget(self.ia_picker.menuname) 
         menu.configure(font=('Arial', 30)) 
         
-        self.ia_picker.place(relx=0,rely=0.5,relwidth=0.25,relheight=0.16667)
+        self.ia_picker.place(relx=0,rely=0.3,relwidth=0.25,relheight=0.2222)
         self.available_connection=None
         
         # ---- Run
         self.b_run = tkinter.Button(self.root,text="",command=self.callback_run,state="normal")
-        self.b_run.place(relx=0,rely=0.83333,relwidth=0.25,relheight=0.16667)
+        self.b_run.place(relx=0,rely=0.74444,relwidth=0.25,relheight=0.2222)
        
        # ---- Kill
         self.b_kill=tkinter.Button(self.root,text="KILL IA",state="disabled",command=self.callback_kill_ia)
-        self.b_kill.place(relx=0,rely=0.6667,relwidth=0.25,relheight=0.16667)
+        self.b_kill.place(relx=0,rely=0.5222,relwidth=0.25,relheight=0.2222)
 
         # ---- Color 
         self.b_color=tkinter.Button(self.root,text="Bleu",bg="blue",activebackground="blue",fg="black",command=self.callback_color_change)
-        self.b_color.place(relx=0,rely=0,relwidth=0.25,relheight=0.25)
+        self.b_color.place(relx=0,rely=0,relwidth=0.25,relheight=0.3)
 
 
         # ---- Kill Launcher
-        self.b_kill_launcher=tkinter.Button(self.root,text="Kill Interface",command=self.callback_kill_interface)
-        self.b_kill_launcher.place(relx=0,rely=0.25,relwidth=0.125,relheight=0.125)
+        #self.b_kill_launcher=tkinter.Button(self.root,text="Kill Interface",command=self.callback_kill_interface)
+        #self.b_kill_launcher.place(relx=0,rely=0.25,relwidth=0.125,relheight=0.125)
 
         self.root.after(50,self.read_queue)
 
@@ -136,6 +139,7 @@ class app :
 
     # Button management logic
     def update_button(self,connection_status,process_status):
+        #print("Status du processus : " + process_status)
         if process_status == "Running"  :
             self.b_kill.config(state='normal')
             self.b_run.config(state='disabled')
@@ -172,25 +176,30 @@ class app :
 
     #Callback for running the AI
     def callback_run(self) :
-        self.b_run.config(state="disabled")
-        self.b_kill.config(state="normal")
         connection_suffix = " RS232 " + self.available_connection
         if self.ia_picker_value == "IAWiimote" :
-            self.ia = subprocess.Popen([self.ia_map[self.ia_picker_value.get()] +connection_suffix + " > tmp 2>&1"],shell=True,env=env)
+            self.ia = subprocess.Popen("exec "+prefix_exec_path +[self.ia_map[self.ia_picker_value.get()] + connection_suffix + " > tmp 2>&1"],shell=True,env=env,preexec_fn=os.setsid)
         else :
-            ia_invocation = self.ia_map[self.ia_picker_value.get()]+connection_suffix + "-c " + self.color + " > tmp 2>&1"
-            self.ia = subprocess.Popen([ia_invocation],shell=True,env=env)
+            ia_invocation = "exec " +prefix_exec_path +self.ia_map[self.ia_picker_value.get()]+connection_suffix + " -c " + self.color + " > tmp 2>&1"
+            self.ia = subprocess.Popen([ia_invocation],shell=True,env=env,preexec_fn=os.setsid)
 
     #Callback for killing the AI
     def callback_kill_ia(self) :
-        self.b_run.config(state="normal")
-        self.b_kill.config(state="disabled")
-        os.killpg(self.ia.pid,signal.SIGKILL)
-
+        # Killink the AI and the subprocess, so we have to reset self.ia
+        os.killpg(os.getpgid(self.ia.pid), signal.SIGKILL)
+        self.ia=""
 
     def get_color(self) :
         return self.color
 
+
+def check_pid(pid):        
+    try:
+        os.kill(pid, 0)
+    except OSError:
+        return False
+    else:
+        return True
 
 # Signal Handler for SIGINT,SIGSTOP,SIGTERM
 def signal_handler(signal,frame):
@@ -207,12 +216,13 @@ def should_i_keep_running() :
 
 # This function run on a separate thread and update variables for button management.
 # The data is put in a thread_safe queue that is read in the GUI thread to avoid problems.
-def send_data_to_queue(queue,process):
+def send_data_to_queue(queue,launcher):
     while should_i_keep_running() :
+        ia_process = get_ia_status()
         connection_status = monitor_connections()
-        if process == "":
+        if ia_process == "":
             process_status="Killed"
-        elif process.returncode == None :
+        elif ia_process.returncode == None :
             process_status="Running"
         else :
             process_status="Killed"
@@ -223,10 +233,14 @@ def send_data_to_queue(queue,process):
 
 theLauncher = app()
 
-thread=threading.Thread(target=send_data_to_queue,args=(theLauncher.queue,theLauncher.ia))
+def get_ia_status() :
+    global theLauncher
+    return theLauncher.ia
+
+
+thread=threading.Thread(target=send_data_to_queue,args=(theLauncher.queue,theLauncher))
 thread.start()
 
-#signal.signal(signal.SIGINT,signal_handler)
 signal.signal(signal.SIGINT,signal_handler)
 signal.signal(signal.SIGTERM,signal_handler)
 
