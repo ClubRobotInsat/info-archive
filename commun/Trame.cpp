@@ -122,7 +122,10 @@ std::ostream& operator<<(std::ostream& o, Trame const& t) {
 	o << Byte(t._cmd);
 	o << ":";
 	o << "données=[";
-	std::copy(t._donnees.begin(), t._donnees.end(), std::ostream_iterator<char>(o, ", "));
+	for(auto donnee : t._donnees) {
+		o << Byte(donnee);
+		o << ", ";
+	}
 	o << "]]";
 	return o;
 }
