@@ -1,0 +1,176 @@
+% 2_cplusplus.tex
+
+\section{Un peu de C++...}
+
+Cette section a été écrite pour ceux qui ne connaissent absolument pas le C++ et les concepts de la programmation orientée objets (POO).\\
+Pour ceux qui ne connaissent que le C, ça peut être utile aussi :)\\
+C'est un résumé \underline{très, très} loin d'être exhaustif, et qui suppose que vous ayiez un minimum de connaissances en programmation (disons, UV1 de 1\up{ère} année d'Ada :)). C'est plus un résumé, un aide-mémoire qu'autre chose, et les notions y sont assez expédiées ^^ Le but est que vous soyiez capables de lire et de modifier du code écrit par les membres du club, et de progresser ensuite par vous-mêmes. Voici donc pour commencer le classique Hello World :
+
+\begin{lstlisting}
+// Hello World :
+
+#include <stdio.h>	// On inclut la librairie standard d'input/output
+
+// Fonction principale, "main()" : c'est la 1ere a etre appelee.
+int main()	// Elle renvoie un entier (int), code de retour du programme.
+{
+	printf("Hello World !\n");	// Affichage d'un message a l'ecran.
+	return 0;	// Valeur de retour de la fonction main(),
+				// qui est la valeur de retour du programme.
+}
+\end{lstlisting}
+
+\begin{itemize}
+\item Les commentaires débutent par "//" (une seule ligne) ou sont encadrés par "/*" et "*/" (commentaires sur plusieurs lignes).\\
+
+\item \lstinline{#include} : la ligne "\lstinline{#include <stdio.h>}" est remplacée à la compilation par le contenu du fichier "stdio.h", qui se trouve dans \texttt{/usr/include} sous UNIX et dans le répertoire de votre compilateur sous Windows (ex : C:$\backslash$CodeBlocks$\backslash$MinGW$\backslash$include). Ce travail est effectué par un programme particulier, le "préprocesseur", qui interprète toutes les lignes débutant par un "\#". C'est la première chose qui est effectuée, après le retrait des commentaires, à la compilation. Pour inclure un fichier .h se trouvant dans le même répertoire que le fichier source où est écrit le "\lstinline{#include}", on utilisera \lstinline{#include "mon_header.h"} plutôt que \lstinline{#include <mon_header.h>}\\
+
+\item \lstinline{#define} : autre commande du préprocesseur, elle s'utilise en général pour définir une constante (mais permet de faire beaucoup plus :)). Toutes les occurences dans le code du symbole défini seront remplacées par la chaîne de caractères indiquée. Exemple :\\
+\lstinline{#define MA_CONSTANTE 42}\\
+Tous les endroits dans le code où l'on verra écrit "MA\_CONSTANTE" seront remplacés par "42".
+
+\item Déclaration d'une variable : \lstinline{type nom_variable;} ; exemple :\\
+\lstinline{int var;}\\
+Une variable peut être déclarée n'importe où dans une fonction (variable locale), ou même en dehors (variables globales), auquel cas la variable est utilisable partout dans le code. C'est une \textbf{très mauvaise pratique} car cela désorganise totalement le code, le rendant difficile à relire et à faire évoluer.\\
+Souvenez-vous de ceci : "\textit{Global, c'est mal, local, c'est génial !}".
+
+\item Types de base pour les variables :
+	\begin{itemize}
+	\item \lstinline{bool} : valeur booléenne, valant soit \lstinline{true}, soit \lstinline{false} (\lstinline{Boolean} en Ada)
+	\item \lstinline{char} : caractère (8 bits) (\lstinline{Character} en Ada) ; peut servir pour stocker simplement un octet, qui ne soit pas forcément un caractère.
+	\item \lstinline{short} : nombre entier (16 bits)
+	\item \lstinline{int} : nombre entier (32 bits) (\lstinline{Integer} en Ada)
+	\item \lstinline{float} : nombre flottant (32 bits) (\lstinline{Float} en Ada)
+	\item \lstinline{double} : nombre flottant double précision (64 bits)\\
+	\end{itemize}
+On peut rajouter l'attribut \lstinline{unsigned} devant \lstinline{int}, \lstinline{short} ou \lstinline{char} pour préciser que ce sont des nombres non signés, toujours positifs.
+
+\item \lstinline{printf} : affichage d'un message sur la console : exemple :\\
+\begin{lstlisting}
+int var = 2;
+printf("Message : %d %f %s %c", var, 4.2, "pouet", 'K');
+// Affiche sur la console le message : "Message : 2 4.2 pouet K"
+\end{lstlisting}
+Le code spécial \%d sert à afficher un int, \%f à afficher un float, \%s une chaîne de caractères, \%c un caractère. La fonction \lstinline{printf} est déclarée dans le fichier stdio.h.\\
+
+\item Opérations particulières sur les nombres :
+\begin{lstlisting}
+int i=0;
+i++;	// Equivalent a "i = i+1;"
+i++;	// Equivalent a "i = i-1;"
+i+=3;	// Equivalent a "i = i+3;"
+i%=2;	// Equivalent a "i = i%2", avec l'operateur % signifiant "modulo".
+		// On met dans i le reste de la division entiere de i par 2.
+\end{lstlisting}
+
+\item \lstinline{if, for, while} : exemple :\\
+\begin{lstlisting}
+int i=0;
+for(i=0 ; i<5 ; i++)
+{
+	if(i % 2 == 0)
+		printf("%d ", i);
+}
+
+while(i > 0)
+{
+	printf("%d ", i);
+	i--;
+}
+
+\end{lstlisting}
+Un if, un for ou un while peuvent ne pas être suivis d'un bloc (i.e. du code entre { et }), auquel cas seule l'instruction qui suit est concernée. Ici, par exemple, le if n'est pas suivi d'un bloc car il n'y a qu'une seule instruction, qui est l'appel à printf(). On aurait aussi bien pu écrire :\\
+\begin{lstlisting}
+for(i=0 ; i<5 ; i++)
+	if(i % 2 == 0)
+	{
+			printf("%d ", i);
+	}
+\end{lstlisting}
+
+\item Tableaux : \\
+\begin{lstlisting}
+int tab[5] = {1, 2, 3, 4, 5};	// Tableau de 5 nombres entiers
+tab[0] = 42;	// NB : contrairement a Ada, les indices d'un tableau
+				// varient toujours entre 0 et sa taille -1 (ici 4).
+\end{lstlisting}
+
+\item Pointeurs : un pointeur est un type particulier de variable qui contient l'\underline{adresse} d'une autre variable.\\
+\begin{itemize}
+\item Déclaration : \lstinline{type* pointeur;}
+\item Adresse mémoire d'une variable : \lstinline{&variable}
+\item Valeur de la variable pointée par "pointeur" : \lstinline{*pointeur}\\
+\end{itemize}
+Exemple : \\
+\begin{lstlisting}
+int* pointeur;	// Pointeur qui n'est theoriquement capable
+				// de pointer que sur des variables entieres
+int var = 0;
+pointeur = &var;	// Je mets dans pointeur l'adresse memoire de "var".
+					// On dit que "pointeur pointe sur var".
+*pointeur = 42;	// Je mets la valeur 42 dans la variable pointee par pointeur,
+				// c'est a dire dans var.
+printf("%d\n", var);	// Affiche 42
+\end{lstlisting}
+
+\item Déclaration/implémentation de fonctions : exemple :\\
+\begin{lstlisting}
+int carre(int a);	// Prototype de ma fonction, qui prend un entier "a" en entree et renvoie un entier.
+int carre(int a)	// Implementation de ma fonction
+{
+	return a*a;	// Valeur de retour
+}
+// ...plus loin dans le code :
+int var = carre(2);	// "var" vaut 4
+\end{lstlisting}
+Le prototype d'une fonction permet juste d'indiquer que la fonction "existe", tandis que son implémentation sert à indiquer ce qu'effectue réellement la fonction. En général, on place les prototypes dans des fichiers .h que l'on inclut ensuite, et les implémentations dans des fichiers .cpp.\\
+Le type de retour spécial "void" signifie que la fonction ne renvoie pas de valeur. La fonction est alors équivalente à une "procedure" en Ada.
+
+\item Classe/structure : équivalent du record en Ada. C'est la base de la programmation orientée objets. Une classe est un type particulier de variable, que l'on définit soit-même. Une variable dont le type est une classe est appelée "objet". Une classe peut contenir des variables dites "membres" ou "attributs", ainsi que des fonctions, dites aussi "méthodes". Exemple :\\
+\begin{lstlisting}
+class MaClasse
+{
+private:
+	int a;
+public:
+	int b;
+	void afficher()
+	{
+		printf("a == %d, b == %d\n", a, b);	// NB : '\n' est le caractere de retour a la ligne.
+	}
+};
+
+// ...plus loin dans le code :
+MaClasse objet;
+printf("%d\n", objet.a);	// NE COMPILE PAS car MaClasse::a est en private
+printf("%d\n", objet.b);	// OK
+objet.afficher();	// Affiche les valeurs de a et de b
+\end{lstlisting}
+
+\item Héritage : l'héritage consiste à créer une nouvelle classe, dite "dérivée", à partir d'une classe dite "de base" ; la nouvelle classe "hérite" de tous les attributs et de toutes les variables membres de la classe de base. Ce mécanisme est équivalent à une recopie de la classe de base, à laquelle on ajoute de nouvelles fonctionnalités spécifiques à la classe dérivée. Exemple :\\
+\begin{lstlisting}
+class Base
+{
+public:
+	void pouet()
+	{
+		printf("pouet !\n");
+	}
+};
+
+class Derivee : public Base
+{
+public:
+	void youpi()
+	{
+		printf("youpi !\n");
+	}
+};
+
+// ...plus loin dans le code
+Derivee objet;
+objet.pouet();	// Affiche "pouet !"
+objet.youpi();	// Affiche "youpi !"
+\end{lstlisting}
+
+\end{itemize}

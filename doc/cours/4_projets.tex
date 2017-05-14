@@ -1,0 +1,24 @@
+% 4_projets.tex
+
+\section{Projets}
+
+\subsection{Projets utiles pour la coupe}
+\begin{itemize}
+\item Stratégies des matchs et réorganisation : pour l'année à venir, il nous faudra programmer une, ou plutôt plusieurs, nouvelle IA. Plusieurs IAs car on n'est jamais sûr à l'avance de ce qui fonctionnera ou pas le jour de la coupe, et de la configuration du terrain, de l'adversaire...etc. Il est prévu de programmer des IAs très basiques, et d'autres plus complexes, le choix se faisant le jour de la coupe. De même, il faudra réorganiser un petit peu le code pour les IAs, en faisant par exemple une classe de base RobotIA de laquelle pourront dériver toutes les IAs.\\
+\item Interfaçage Info/Elec (cartes) : mettre à jour les cartes existantes si besoin est, revoir un peu la communication avec la carte déplacement, ajouter de nouvelles classes de cartes si besoin est.\\
+\item Administration du système Linux embarqué ; il est prévu de tester l'installation d'une distribution Debian minimale sur le robot, pour ne plus avoir de problèmes avec la reconnaissance de la caméra, d'une clef bluetooth, d'une clef Wi-Fi...\\
+\item Simulateur 3D : il devra être mis à jour avec les règles de cette année (modèles 3D de la table et du robot, gestion de la physique pour l'empilement...) et être tenu à jour au niveau des cartes simulées. Il est prévu de donner la possibilité à l'IA de demander un affichage particulier sur le simulateur, pour pouvoir par exemple afficher la "zone interdite" lors du calcul de l'algorithme A* (recherche du plus court chemin)\\
+\item Webcam, reconnaissance d'objets : il faut adapter le code existant pour qu'il utilise la totalité de la résolution et non 1/4 de celle-ci. On pourrait aussi travailler sur l'application de filtres avec des matrices, pour détecter des contours, ou toute autre technique plus évoluée (pourquoi pas essayer de se repérer sur le terrain en utilisant les bords de celui-ci par exemple ? Ou, plus réaliste, essayer de détecter le robot adverse avec la webcam ?).\\
+\item Interfaçage Python : en interfaçant l'API du robot avec le langage Python, on pourrait tester nos fonctions sans avoir besoin de recompiler, directement au prompt, ce qui serait un avantage notable. Les IAs pourraient ensuite être écrites en Python. En poussant plus loin, on pourrait faire un programme graphique où l'on définisse à la souris les déplacements que doive effectuer le robot :) Voire intégrer ça dans le simulateur...Bref, "moderniser" un peu notre approche :)\\
+\item Programmes de debug pour les élecs : par exemple, en 2007, un programme de debug pour la carte de déplacement permettait de lui donner des ordres graphiquement et de voir où elle pensait se trouver sur le terrain.\\
+\item Correction de fautes d'orthographe et réorganisation de certaines parties du projet...\\
+\end{itemize}
+
+\subsection{Projets moins utiles pour la coupe mais funs}
+\begin{itemize}
+\item Contrôle à la wiimote\\
+\item Reconnaissance/synthèse vocale : faire parler le robot, le faire obéir à la voix !\\
+\item Streaming vidéo : pouvoir piloter le robot à distance et voir ce qu'il voit sur notre PC :)\\
+\item Carte LEDs : trouver de nouvelles combinaisons, l'interfacer avec la wiimote\\
+\item ...etc\\
+\end{itemize}
