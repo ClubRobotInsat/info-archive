@@ -98,10 +98,10 @@ namespace ConstantesPrincipal {
 
 
 	enum class PositionAscenseur {
-		HAUT = 0,
-		BAS = 1,
-		STOCKAGE = 2,
-		CYLINDRE = 3,
+		STOCKAGE_HAUT = 0,
+		STOCKAGE_BAS = 1,
+		SAISIE_CYLINDRE_SOL = 2,
+		SAISIE_CYLINDRE_STOCKAGE_BAS = 3,
 		NBR = 4,
 	};
 

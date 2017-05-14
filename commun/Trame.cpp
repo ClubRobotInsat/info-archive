@@ -7,12 +7,12 @@
 #include <sstream>
 
 std::ostream& operator<<(std::ostream& s, Byte const& b) {
-	std::ios oldState(nullptr);
+	/*std::ios oldState(nullptr);
 	oldState.copyfmt(s);
+	*/
+	s << "0x" << std::hex << (int)b.value();
 
-	s << "0x" << std::hex << b.value();
-
-	s.copyfmt(oldState);
+	// s.copyfmt(oldState);
 
 	return s;
 }
