@@ -40,12 +40,14 @@ else
 	exit 1
 fi
 
-ip_ssh=`arp -a | grep "enp4s0\|eth0" | cut -d ' ' -f 2 | cut -d '(' -f 2 | cut -d ')' -f 1`
+# Ligne à modifier si on a une interface Internet avec un nom bizarre (dans 'ssh_into_rpi.sh' aussi)
+ip_ssh=`arp -a | grep "enp4s0\|eth0\|enx00e02f7000b5" | cut -d ' ' -f 2 | cut -d '(' -f 2 | cut -d ')' -f 1`
+
 # Verification de l'adresse IP
 validateIP $ip_ssh
 if [[ $? -ne 0 ]]
 then 
-	echo -e "$RED Problème de connexion au raspberry, vérifies le câble ethernet. $RST"
+	echo -e "$RED Problème de connexion au raspberry, vérifier le câble ethernet. $RST"
 	exit 1
 fi
 
