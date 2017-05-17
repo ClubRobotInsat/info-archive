@@ -36,21 +36,20 @@ void CanListener::mainLoop() {
 	// Event loop, where the only event is receiving a message on the CAN
 	auto trame = std::async(std::launch::async, &CanListener::waitForMessage, this);
 	while(not _shallStopListening) {
-		if(_acceptNewMessage) {
-			std::future_status status = trame.wait_for(_refreshRate.toSystemDelay());
-			switch(status) {
-				case std::future_status::ready: {
+		std::future_status status = trame.wait_for(_refreshRate.toSystemDelay());
+		switch(status) {
+			case std::future_status::ready: {
+				if(_acceptNewMessage) {
 					std::lock_guard<std::mutex> lock(mutex);
 					_trameBuffer.push_front(trame.get());
 					if(not _parentIsRequestingData) {
 						signal_on_message_received->emit();
 					}
-					trame = std::async(std::launch::async, &CanListener::waitForMessage, this);
+				} else {
 				}
-				default: { continue; }
+				trame = std::async(std::launch::async, &CanListener::waitForMessage, this);
 			}
-		} else {
-			sleep(sleepTime);
+			default: { continue; }
 		}
 	}
 }
