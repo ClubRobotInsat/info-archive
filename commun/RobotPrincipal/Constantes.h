@@ -102,7 +102,8 @@ namespace ConstantesPrincipal {
 		STOCKAGE_BAS = 1,
 		SAISIE_CYLINDRE_SOL = 2,
 		SAISIE_CYLINDRE_STOCKAGE_BAS = 3,
-		NBR = 4,
+		POSER_DANS_RAILS = 4,
+		NBR = 5,
 	};
 
 	enum class Pince {

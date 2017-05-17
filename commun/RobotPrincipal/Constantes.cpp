@@ -10,7 +10,7 @@
 namespace ConstantesPrincipal {
 
 	// TODO : tester les valeurs avec les elecs
-	Angle const positionAscenseur[enumToInt(PositionAscenseur::NBR)] = {700_deg, 200_deg, 0_deg, 0_deg};
+	Angle const positionAscenseur[enumToInt(PositionAscenseur::NBR)] = {700_deg, 200_deg, 0_deg, 0_deg, 350_deg};
 
 	Angle const positionPince[enumToInt(Pince::NBR)] = {0_deg, 20_deg};
 
