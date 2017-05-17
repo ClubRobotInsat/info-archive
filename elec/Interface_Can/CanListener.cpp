@@ -41,7 +41,7 @@ void CanListener::mainLoop() {
 			case std::future_status::ready: {
 				if(_acceptNewMessage) {
 					std::lock_guard<std::mutex> lock(mutex);
-					_trameBuffer.push_front(trame.get());
+					_trameBuffer.push_back(trame.get());
 					if(not _parentIsRequestingData) {
 						signal_on_message_received->emit();
 					}
