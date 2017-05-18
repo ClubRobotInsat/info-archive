@@ -28,10 +28,10 @@ Monitor::Monitor(std::string& port)
 	_pauseButton.signal_clicked().connect(sigc::mem_fun(*this, &Monitor::tooglePauseMode));
 	_toggleAllIDs.signal_clicked().connect(sigc::mem_fun(*this, &Monitor::onToggleAllClicked));
 
-	_frame.set_label("Send a message");
-	_frame.set_label_align(Gtk::ALIGN_CENTER, Gtk::ALIGN_START);
-	_frame.set_shadow_type(Gtk::SHADOW_ETCHED_OUT);
-	_frame.set_border_width(15);
+	_rightFrame.set_label("Send a message");
+	_rightFrame.set_label_align(Gtk::ALIGN_CENTER, Gtk::ALIGN_START);
+	_rightFrame.set_shadow_type(Gtk::SHADOW_ETCHED_OUT);
+	_rightFrame.set_border_width(15);
 
 	// Setting up the Grid for sending messages
 	_sendMessageContainer.set_orientation(Gtk::ORIENTATION_HORIZONTAL);
@@ -66,6 +66,7 @@ Monitor::Monitor(std::string& port)
 	// Creating and initializing the refTreeModel
 	_refTreeModel = Gtk::ListStore::create(_message);
 	_messageTree.set_model(_refTreeModel);
+	_messageTree.set_vscroll_policy(Gtk::ScrollablePolicy::SCROLL_MINIMUM);
 
 	_messageTree.append_column("Date", _message._time);
 	_messageTree.append_column("ID", _message._id);
@@ -79,9 +80,9 @@ Monitor::Monitor(std::string& port)
 	}
 
 	this->add(_topLevelBox);
-	_frame.add(_sendMessageContainer);
+	_rightFrame.add(_sendMessageContainer);
 	_topLevelBox.add1(_lowLevelWindow);
-	_topLevelBox.add2(_frame);
+	_topLevelBox.add2(_rightFrame);
 	_topLevelBox.set_position(200);
 
 
@@ -95,6 +96,18 @@ Monitor::Monitor(std::string& port)
 	_canListener.start();
 }
 
+
+bool Monitor::on_key_release_event(GdkEventKey* event) {
+	if(event->keyval == 32 and
+	   not(_trameData.property_is_focus().get_value() or _trameId.property_is_focus().get_value() or
+	       _trameType.property_is_focus().get_value())) {
+		_pauseButton.clicked();
+		return true;
+	} else {
+		return Gtk::Window::on_key_release_event(event);
+	}
+}
+
 void Monitor::notify() {
 
 	// Tell the worker thread to stop sending us signals because we are already processing one
@@ -106,7 +119,7 @@ void Monitor::notify() {
 }
 
 
-void Monitor::onListenerNotification(const std::deque<Trame>& buffer, const bool& colored) const {
+void Monitor::onListenerNotification(const std::deque<Trame>& buffer, const bool& colored) {
 	this->handleTrame(buffer, colored);
 }
 
@@ -120,11 +133,7 @@ std::string Monitor::convertToHexadecimal(const unsigned int& number, bool addPr
 }
 
 
-void Monitor::updateInterface(const bool& colored,
-                              const std::string& id,
-                              const std::string& cmd,
-                              const std::string& time,
-                              const std::string& data) const {
+void Monitor::updateInterface(const bool& colored, const std::string& id, const std::string& cmd, const std::string& time, const std::string& data) {
 
 	Gtk::TreeModel::Row row = *(_refTreeModel->prepend());
 
@@ -140,7 +149,9 @@ void Monitor::updateInterface(const bool& colored,
 		row[_message._color] = "white";
 	}
 
-	// this->queue_draw();
+	// This is the part of the code managing the autoscroll functionnality.
+	auto adj = this->_lowLevelWindow.get_vadjustment();
+	adj->set_value(adj->get_lower());
 }
 
 void Monitor::sendMessage() {
@@ -212,7 +223,7 @@ void Monitor::tooglePauseMode() {
 
 Monitor::~Monitor() {}
 
-void Monitor::handleTrame(const std::deque<Trame>& buffer, const bool& isColored) const {
+void Monitor::handleTrame(const std::deque<Trame>& buffer, const bool& isColored) {
 
 	for(auto Trame : buffer) {
 		auto id = convertToHexadecimal(Trame.getId(), true);

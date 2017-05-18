@@ -50,12 +50,20 @@ public:
 
 	/**
 	 * Will call update interface after splitting the Trame data.
+	 * This is the function responsible for handling the spacebar interruption.
 	 *
 	 * @param Trame : the trame to display on the GUI
 	 */
-	void handleTrame(const std::deque<Trame>& buffer, const bool& isColored) const;
+	void handleTrame(const std::deque<Trame>& buffer, const bool& isColored);
 
 protected:
+	/**
+	 * The function called when the user press a key while focusing on the window.
+	 * @param event : the event with the key.
+	 * @return
+	 */
+	bool on_key_release_event(GdkEventKey* event) override;
+
 	/**
 	 * A callback function for Monitor::_toggleAllIDs
 	 * Set the state to each button in Monitor::_buttonIdList to be the same as Monitor::_toggleAllIDs
@@ -89,17 +97,18 @@ protected:
 	 * @param colored : if the line shall be drawn in pink, send true, otherwise send false en it will be drawn normally
 	 * @param trame : the trame that will be handled by the GUI
 	 */
-	void onListenerNotification(const std::deque<Trame>& buffer, const bool& colored) const;
+	void onListenerNotification(const std::deque<Trame>& buffer, const bool& colored);
 
 	/**
-	 * Add a line to the _refTreeModel  with the data passed to the function
+	 * Add a line to the _refTreeModel  with the data passed to the function.
+	 * This function is responsible for the autoscroll behavior on the message list.
 	 * @param colored : if the line should be in pink or not
 	 * @param id : the ID in hexadecimal
 	 * @param cmd : the CMD of the Trame in hexa
 	 * @param time : the time.
 	 * @param data : An array of string
 	 */
-	void updateInterface(const bool& colored, const std::string& id, const std::string& cmd, const std::string& time, const std::string& data) const;
+	void updateInterface(const bool& colored, const std::string& id, const std::string& cmd, const std::string& time, const std::string& data);
 
 	/*
 	 * @param number : The raw data to represent in hexadecimal
@@ -153,7 +162,7 @@ private:
 	 * Top level GUI elements
 	 */
 	Gtk::Paned _topLevelBox;
-	Gtk::Frame _frame;
+	Gtk::Frame _rightFrame;
 	Gtk::Grid _sendMessageContainer;
 
 	/**
