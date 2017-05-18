@@ -14,7 +14,9 @@ namespace ConstantesPrincipal {
 
 	Angle const positionPince[enumToInt(Pince::NBR)] = {0_deg, 20_deg};
 
-	Angle const positionTangage[enumToInt(Tangage::NBR)] = {0_deg, 0_deg};
+	Angle const positionTangage[enumToInt(Tangage::NBR)] = {0_deg, 0_deg}; // De haut en bas
+
+	Angle const positionLacet[enumToInt(Lacet::NBR)] = {0_deg, 0_deg}; // De droite à gauche
 
 	Angle const positionGauche[enumToInt(Gauche::NBR)] = {0_deg, 0_deg};
 

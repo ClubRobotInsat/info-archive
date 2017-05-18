@@ -81,22 +81,6 @@ namespace ConstantesPrincipal {
 		TIRETTE = 2,
 	};
 
-	/*
-	enum class Pince {
-	    GAUCHE = 0,
-	    DROIT = 1,
-	};
-
-	enum class PositionPince {
-	    RENTRE_DEBUT = 0,
-	    RENTRE = 1,
-	    SORTIE = 2,
-	    SORTIE_MAX = 3,
-	    NBR = 4,
-	};
-	*/
-
-
 	enum class PositionAscenseur {
 		STOCKAGE_HAUT = 0,
 		STOCKAGE_BAS = 1,
@@ -130,9 +114,15 @@ namespace ConstantesPrincipal {
 		NBR = 2,
 	};
 
-	enum class Tangage {
+	enum class Lacet {
 		ATTRAPER = 0,
 		RANGER = 1,
+		NBR = 2,
+	};
+
+	enum class Tangage {
+		DEVANT = 0,
+		BAS = 1,
 		NBR = 2,
 	};
 	/////////////////// SERVOS ///////////////////
@@ -176,9 +166,10 @@ namespace ConstantesPrincipal {
 
 	extern Angle const positionAscenseur[enumToInt(PositionAscenseur::NBR)];
 	extern Angle const positionPince[enumToInt(Pince::NBR)];
-	extern Angle const positionTangage[enumToInt(Tangage::NBR)];
-	extern Angle const positionGauche[enumToInt(Gauche::NBR)];
-	extern Angle const positionDroite[enumToInt(Droite::NBR)];
+	extern Angle const positionTangage[enumToInt(Tangage::NBR)]; // De haut en bas
+	extern Angle const positionLacet[enumToInt(Lacet::NBR)];     // De droite à gauche
+	extern Angle const positionGauche[enumToInt(Gauche::NBR)];   // Fesse gauche
+	extern Angle const positionDroite[enumToInt(Droite::NBR)];   // Fesse droite
 	extern Angle const positionFusee[enumToInt(Fusee::NBR)];
 
 	/////////////////// CARTES ///////////////////
