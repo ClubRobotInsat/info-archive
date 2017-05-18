@@ -50,6 +50,7 @@ public:
 
 	/**
 	 * Will call update interface after splitting the Trame data.
+	 * This is the function responsible for handling the spacebar interruption.
 	 *
 	 * @param Trame : the trame to display on the GUI
 	 */
@@ -99,7 +100,8 @@ protected:
 	void onListenerNotification(const std::deque<Trame>& buffer, const bool& colored);
 
 	/**
-	 * Add a line to the _refTreeModel  with the data passed to the function
+	 * Add a line to the _refTreeModel  with the data passed to the function.
+	 * This function is responsible for the autoscroll behavior on the message list.
 	 * @param colored : if the line should be in pink or not
 	 * @param id : the ID in hexadecimal
 	 * @param cmd : the CMD of the Trame in hexa
@@ -160,7 +162,7 @@ private:
 	 * Top level GUI elements
 	 */
 	Gtk::Paned _topLevelBox;
-	Gtk::Frame _frame;
+	Gtk::Frame _rightFrame;
 	Gtk::Grid _sendMessageContainer;
 
 	/**

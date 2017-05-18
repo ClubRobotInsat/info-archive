@@ -28,10 +28,10 @@ Monitor::Monitor(std::string& port)
 	_pauseButton.signal_clicked().connect(sigc::mem_fun(*this, &Monitor::tooglePauseMode));
 	_toggleAllIDs.signal_clicked().connect(sigc::mem_fun(*this, &Monitor::onToggleAllClicked));
 
-	_frame.set_label("Send a message");
-	_frame.set_label_align(Gtk::ALIGN_CENTER, Gtk::ALIGN_START);
-	_frame.set_shadow_type(Gtk::SHADOW_ETCHED_OUT);
-	_frame.set_border_width(15);
+	_rightFrame.set_label("Send a message");
+	_rightFrame.set_label_align(Gtk::ALIGN_CENTER, Gtk::ALIGN_START);
+	_rightFrame.set_shadow_type(Gtk::SHADOW_ETCHED_OUT);
+	_rightFrame.set_border_width(15);
 
 	// Setting up the Grid for sending messages
 	_sendMessageContainer.set_orientation(Gtk::ORIENTATION_HORIZONTAL);
@@ -80,9 +80,9 @@ Monitor::Monitor(std::string& port)
 	}
 
 	this->add(_topLevelBox);
-	_frame.add(_sendMessageContainer);
+	_rightFrame.add(_sendMessageContainer);
 	_topLevelBox.add1(_lowLevelWindow);
-	_topLevelBox.add2(_frame);
+	_topLevelBox.add2(_rightFrame);
 	_topLevelBox.set_position(200);
 
 
@@ -149,10 +149,9 @@ void Monitor::updateInterface(const bool& colored, const std::string& id, const 
 		row[_message._color] = "white";
 	}
 
+	// This is the part of the code managing the autoscroll functionnality.
 	auto adj = this->_lowLevelWindow.get_vadjustment();
-	// std::cout << "low : " << adj->get_lower() << " | high : " << adj->get_upper() << std::endl;
 	adj->set_value(adj->get_lower());
-	//_lowLevelWindow.get_vadjustment()->set_value()
 }
 
 void Monitor::sendMessage() {
