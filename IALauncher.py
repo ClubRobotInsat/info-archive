@@ -18,7 +18,7 @@ env=os.environ
 env['LD_LIBRARY_PATH']="/home/pi/Desktop"
 
 # This variable defines where the AI are living
-prefix_exec_path="/home/pi/Desktop/"
+ia_directory="/home/pi/Desktop/"
 
 # Shared variables between threads
 keep_running=True
@@ -73,9 +73,9 @@ class app :
         # ---- Canvas
         self.c_term=tkinter.Frame(self.root)
         self.c_term.place(relx=0.25,rely=0,relwidth=0.75,relheight=1)
-
+        
         # ---- Terminal
-        os.system('xterm -into %d -geometry 97x37 -sb -e tail -f tmp&' % self.c_term.winfo_id())
+        os.system('xterm -into '+ str(self.c_term.winfo_id()) +' -geometry 97x37 -sb -e tail -f ' + ia_directory + 'tmp&')
         
         # ---- Color internal variable
         self.color = "blue"
@@ -176,12 +176,12 @@ class app :
 
     #Callback for running the AI
     def callback_run(self) :
-        connection_suffix = " RS232 " + self.available_connection
+        ia_arguments = " RS232 " + self.available_connection
         if self.ia_picker_value == "IAWiimote" :
-            self.ia = subprocess.Popen("exec "+prefix_exec_path +[self.ia_map[self.ia_picker_value.get()] + connection_suffix + " > tmp 2>&1"],shell=True,env=env,preexec_fn=os.setsid)
+            self.ia = subprocess.Popen("exec "+ ia_directory +[self.ia_map[self.ia_picker_value.get()] + ia_arguments + " > " + ia_directory + "tmp 2>&1"],shell=True,env=env,preexec_fn=os.setsid,cwd=ia_directory)
         else :
-            ia_invocation = "exec " +prefix_exec_path +self.ia_map[self.ia_picker_value.get()]+connection_suffix + " -c " + self.color + " > tmp 2>&1"
-            self.ia = subprocess.Popen([ia_invocation],shell=True,env=env,preexec_fn=os.setsid)
+            ia_invocation = "exec " + ia_directory +self.ia_map[self.ia_picker_value.get()]+ ia_arguments + " -c " + self.color + " >" + ia_directory + "tmp 2>&1"
+            self.ia = subprocess.Popen([ia_invocation],shell=True,env=env,preexec_fn=os.setsid,cwd=ia_directory)
 
     #Callback for killing the AI
     def callback_kill_ia(self) :
