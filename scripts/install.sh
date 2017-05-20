@@ -1,36 +1,87 @@
 #!/bin/bash
 
-#Variable pour l'affichage final
+#Arguments
+install_apt=1
 install_hook=0
+install_petri=0
 install_wii=0
-Green='\033[0;32m'
-Red='\033[0;31m'
 
-
-cd ../.git/hooks
-ln -f ../../scripts/pre-commit pre-commit
-if [ $? -eq "0" ]
-	then install_hook=1
+if [ $# -ne "0" ]
+    then for arg in $*
+    do
+        if [ "$arg" = "petri" ]
+            then install_petri=1
+        elif [ "$arg" = "format" ]
+            then install_hook=1
+        elif [ "$arg" = "wii" ]
+            then install_wii=1
+        else
+            echo "Usage : $0 [petri|format|wii]"
+            exit
+        fi
+        install_apt=0
+    done
+else
+    install_hook=1
+    install_petri=1
+    install_wii=1
 fi
 
-sudo apt-get install mono-complete cmake subversion git libbox2d-dev gcc-5-multilib g++-5-multilib libbluetooth-dev build-essential libglfw-dev libglu1-mesa-dev curl libxrandr-dev libgtkmm-3.0-dev libusb-1.0-0-dev clang-format
-#Installation de la wiimote
-cd /tmp
-git clone https://github.com/grandelli/WiiC.git
-cd WiiC
-cmake src
-make
-sudo make install
+#echo -e
+Green='\033[0;42m'
+Red='\033[0;41m'
+Yellow='\033[0;43m'
+End='\033[0;0m'
 
-if [ $? -eq "0" ]
-	then install_wii=1
+#Déplacement dans le dossier info/scripts
+dir=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
+
+#Tracking
+hook_installed=0
+wii_installed=0
+petri_installed=0
+
+if [ $install_apt -eq 1 ]
+    then echo -e "${Yellow}Installation des logiciels nécessaires$End"
+    sudo apt-get install mono-complete cmake subversion git libbox2d-dev gcc-5-multilib g++-5-multilib libbluetooth-dev build-essential libglfw-dev libglu1-mesa-dev curl libxrandr-dev libgtkmm-3.0-dev libusb-1.0-0-dev clang-format
 fi
 
-if $install_hook
-then echo '$Green' Installation du hook réussie 
-else echo '$Red' Installation du hook échouée
+if [ $install_hook -eq 1 ]
+    then echo -e "${Yellow}Installation du pre-commit hook$End"
+    cd ${dir}/.git/hooks
+    ln -f ../../scripts/pre-commit pre-commit
+
+    if [ $? -eq "0" ]
+        then echo -e ${Green}Installation du hook réussie$End
+        hook_installed=1
+        else echo -e ${Red}Installation du hook échouée$End
+    fi
 fi
-if $install_wii
-then echo '$Green' Installation du libwiic réussie
-else echo '$Red' Installation de libwiic échouée
+
+if [ $install_petri -eq 1 ]
+    then echo -e "${Yellow}Accès en ssh au serveur pour Petri$End"
+    mkdir -p ~/.ssh
+    cp ${dir}/.auth/* ~/.ssh
+
+    if [ $? -eq "0" ]
+        then echo -e ${Green}Installation de petri réussie$End
+        petri_installed=1
+        else echo -e ${Red}Installation de petri échouée$End
+    fi
+fi
+
+if [ $install_wii -eq 1 ]
+    then echo -e "${Yellow}Installation de la wiimote$End"
+    cd /tmp
+    git clone https://github.com/grandelli/WiiC.git
+    cd WiiC
+    cmake src
+    make
+    sudo make install
+
+    if [ $? -eq "0" ]
+        then echo -e ${Green}Installation du libwiic réussie$End
+        wii_installed=1
+        else echo -e ${Red}Installation de libwiic échouée$End
+    fi
 fi

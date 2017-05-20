@@ -13,3 +13,4 @@ echo "Génération de la lib dynamique"
 cd ..
 
 scripts/send_file_to_rpi.sh build_arm/IA2017.so
+scripts/send_file_to_rpi.sh build_arm/petri/Runtime/libPetriRuntime.so

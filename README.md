@@ -176,3 +176,11 @@ Pour copier des fichiers il faut lancer un autre script, avec en argument le fic
 ```
 ./send_file_to_rpi.sh build/robot/Principal/IAPrincipal
 ```
+
+
+LIGNE A SUPPRIMER SOON
+Si lors de la compilation, github nous demande notre mdp pour petri, c'est que Rémi a modifié l'hébergement de son code
+Pour y remédier, il faut :
+1. Modifier les fichiers de dépendance des submodules : dans info/.git/modules/petri/config, il faut modifier la ligne 8 par
+```url = ssh://git.remi-saurel.com/rsaurel/petri```
+2. Lancer scripts/install.sh (juste le début) : il va installer les clefs SSH privées qui permettent de se connecter sur le dépôt de petri
