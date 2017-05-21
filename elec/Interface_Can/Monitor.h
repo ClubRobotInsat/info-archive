@@ -134,14 +134,6 @@ protected:
 
 	/**
 	 *
-	 * @param data : a string formatted to represent some data in hexadecimal with the following shape 0x01 13f 07 4e.
-	 * @return a vector with all the pertinent information splitted appart, in this example it would be [01, 13f, 07,
-	 * 4e].
-	 */
-	std::vector<uint8_t> buildTrameData(const std::string& data) const;
-
-	/**
-	 *
 	 * @return a Trame object with the data from _trameID, _trameType and _trameData.
 	 * @throw std::runtime_error if checkInputs() return false.
 	 */
