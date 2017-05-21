@@ -110,6 +110,8 @@ Monitor::Monitor(std::string& port)
 
 	this->add(_topLevelBox);
 
+	//_lowLevelWindow.event
+
 	// Tree of Widgets
 	_middleFrame.add(_sendMessageLayout);
 	_rightFrame.add(_buttonLayout);
@@ -155,11 +157,11 @@ void Monitor::notify() {
 }
 
 
-void Monitor::onListenerNotification(const std::deque<Trame>& buffer, const bool& colored) {
+void Monitor::onListenerNotification(const std::deque<Trame>& buffer, bool colored) {
 	this->handleTrame(buffer, colored);
 }
 
-std::string Monitor::convertToHexadecimal(const unsigned int& number, bool addPrefix) const {
+std::string Monitor::convertToHexadecimal(const unsigned int& number, const bool addPrefix) const {
 	std::stringstream stream;
 	if(addPrefix) {
 		stream << "0x";
@@ -169,7 +171,7 @@ std::string Monitor::convertToHexadecimal(const unsigned int& number, bool addPr
 }
 
 
-void Monitor::updateInterface(const bool& colored, const std::string& id, const std::string& cmd, const std::string& time, const std::string& data) {
+void Monitor::updateInterface(bool colored, const std::string& id, const std::string& cmd, const std::string& time, const std::string& data) {
 
 	Gtk::TreeModel::Row row = *(_refTreeModel->prepend());
 
@@ -266,7 +268,7 @@ void Monitor::tooglePauseMode() {
 
 Monitor::~Monitor() {}
 
-void Monitor::handleTrame(const std::deque<Trame>& buffer, const bool& isColored) {
+void Monitor::handleTrame(const std::deque<Trame>& buffer, bool isColored) {
 
 	for(const auto Trame : buffer) {
 
@@ -319,7 +321,7 @@ void Monitor::onToggleAllClicked() {
 }
 
 
-void Monitor::sendPing(const uint8_t id) {
+void Monitor::sendPing(uint8_t id) {
 	auto trame = make_trame(id, 0x00_b, 0x55_b);
 	_pingStatus[id]->set_label("No Pong !");
 	_pingStatus[id]->override_color(Gdk::RGBA("red"), Gtk::STATE_FLAG_NORMAL);
@@ -329,7 +331,7 @@ void Monitor::sendPing(const uint8_t id) {
 	_internalCardData[id] = false;
 }
 
-void Monitor::onPongReceived(const uint8_t id) {
+void Monitor::onPongReceived(uint8_t id) {
 
 	_pingStatus[id]->set_label("Connected !");
 	_pingStatus[id]->override_color(Gdk::RGBA("green"), Gtk::STATE_FLAG_NORMAL);
@@ -343,7 +345,7 @@ void Monitor::pingAll() {
 }
 
 
-const bool Monitor::isEntryFieldFocused() {
+bool Monitor::isEntryFieldFocused() const {
 	bool result = false;
 	for(const auto entry : _dataArray) {
 		result = result or entry->property_is_focus().get_value();

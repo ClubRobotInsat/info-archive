@@ -30,7 +30,7 @@ public:
 	 * @param port : a string
 	 * @param caller : an pointer used to connect the signal _on_message_received
 	 */
-	CanListener(const std::string& port, std::shared_ptr<Glib::Dispatcher> receiver_signal_message_received, bool& stopBooleanAdress);
+	CanListener(const std::string& port, const std::shared_ptr<Glib::Dispatcher> receiver_signal_message_received, bool& stopBooleanAdress);
 
 	virtual ~CanListener();
 
@@ -55,13 +55,13 @@ public:
 	 * Lock until it returns
 	 * @return a list with all the trame received.
 	 */
-	std::deque<Trame> getTrameReceived();
+	const std::deque<Trame> getTrameReceived();
 
 	/**
 	 * Update CanListener::_parentIsRequestingData with value
 	 * @param value : the value that Monitor::_parentIsRequestingData will take
 	 */
-	void isRequestingData(const bool& value);
+	void isRequestingData(bool value);
 
 protected:
 	/**
@@ -73,31 +73,36 @@ protected:
 	/// When _canShouldStop is false, the function returns early, raising an exception.
 	Trame waitForMessage();
 
-	/// Stop listening on the CAN. This will raise an exception because we are interrupting
+	/// Stop listening on the CAN. This will raise an exception because we are interrupting the serial connection in
+	///  a bad maneer.
 	void stopListening();
 
 private:
 	mutable std::mutex mutex;
 
-	std::atomic_bool _sentAMessage;
-
+	/// The Object that implements all the fonction for communicating with the Can.
 	std::unique_ptr<Commun::CAN> _can;
 
+	/// When this bool is true, the thread will stop as soon as possible.
 	bool& _shallStopListening;
 
-	std::atomic_bool _canShouldStop;
-
+	/// When this bool is true, the Can will listen and store any new message.
 	std::atomic_bool _acceptNewMessage;
 
+	/// When this bool is true, the GUI thread is waiting for us to release the lock on the message buffer.
 	std::atomic_bool _parentIsRequestingData;
 
-	Units::Time _refreshRate;
+	/// The time we sleep before verifying if we have received a new Trame.
+	const Units::Time _refreshRate;
 
+	/// The underlying thread.
 	Glib::Thread* _thread;
 
+	/// This field stores all the Trame that we receive. It is cleared once it has been transmited to the GUI Thread.
 	std::deque<Trame> _trameBuffer;
 
-	std::shared_ptr<Glib::Dispatcher> signal_on_message_received;
+	/// This is the function that we call when we receive a new message.
+	const std::shared_ptr<Glib::Dispatcher> signal_on_message_received;
 };
 
 
