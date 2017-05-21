@@ -221,12 +221,9 @@ Trame Monitor::buildTrameFromInput() const {
 
 
 			// Build the data string
-			std::string data_string = "";
 			std::vector<uint8_t> data;
 			for(auto entry : _dataArray) {
-				data_string += entry->get_buffer()->get_text() + " ";
 				uint8_t d = std::stoi(entry->get_buffer()->get_text(), nullptr, 16);
-				std::cout << d << std::endl;
 				data.push_back(d);
 			}
 

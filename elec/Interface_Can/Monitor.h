@@ -125,7 +125,7 @@ protected:
 	 */
 	void updateInterface(const bool& colored, const std::string& id, const std::string& cmd, const std::string& time, const std::string& data);
 
-	/*
+	/**
 	 * @param number : The raw data to represent in hexadecimal
 	 * @param addPrefix : If the function should add "0x" to the result
 	 * @return A string with the number in an hexadecimal base
