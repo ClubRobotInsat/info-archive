@@ -30,8 +30,7 @@ public:
 	 *
 	 * @param port A string in the following form :
 	 * either TCPIP:MY.IP.ADRESS.CONNECTION (the port is setted to 1234)
-	 * either /dev/
-	 * ttyUSB37
+	 * either /dev/ttyUSB37 .
 	 */
 	Monitor(std::string& port);
 
@@ -44,7 +43,7 @@ public:
 	void notify();
 
 	/**
-	 * Create a new trame from the data in _trameData, _trameId, _trameType and send it to the CAN
+	 * Create a new trame from the data in _trameData, _trameId, _trameType and send it to the CAN.
 	 */
 	void sendMessage();
 
@@ -52,9 +51,24 @@ public:
 	 * Will call update interface after splitting the Trame data.
 	 * This is the function responsible for handling the spacebar interruption.
 	 *
-	 * @param Trame : the trame to display on the GUI
+	 * @param Trame : the trame to display on the GUI.
 	 */
 	void handleTrame(const std::deque<Trame>& buffer, const bool& isColored);
+
+	/**
+	* Send a Trame for pinging id.
+	* Trame Id : id.
+	* Trame Cmd : 0x00.
+	* Trame Data : [0x55].
+	* This function also set _internalCardData[id] to false.
+	* @param id : the id of the trame that will be sent.
+	*/
+	void sendPing(const uint8_t id);
+
+	/**
+	 * Call sendPing() for all id between 0 and 10;
+	 */
+	void pingAll();
 
 protected:
 	/**
@@ -65,48 +79,49 @@ protected:
 	bool on_key_release_event(GdkEventKey* event) override;
 
 	/**
-	 * A callback function for Monitor::_toggleAllIDs
-	 * Set the state to each button in Monitor::_buttonIdList to be the same as Monitor::_toggleAllIDs
+	 * A callback function for Monitor::_toggleAllIDs.
+	 * Set the state to each button in Monitor::_buttonIdList to be the same as Monitor::_toggleAllIDs.
 	 */
 	void onToggleAllClicked();
 
 	/**
-	 * This method looks at Monitor::_buttonIdList and for each button, if it is toggled, add its ID to the returned
+	 * This method looks at Monitor::_buttonIdList and for each button, if it is toggled, add its ID to the returned.
 	 * set.
-	 * @return A set with all the IDs of all the buttons that are toogled
+	 * @return A set with all the IDs of all the buttons that are toogled.
 	 */
 	std::set<int> generateIdSet() const;
 
 	/**
 	 *
-	 * @param buffer : the buffer of Trame to process
-	 * @param acceptableIDs : a set of all the IDs that should be shown
+	 * @param buffer : the buffer of Trame to process.
+	 * @param acceptableIDs : a set of all the IDs that should be shown.
 	 * @return A new buffer with only the relevant ID. Keep the original trame order (aka the 1st Trame will still be
 	 * the first).
 	 */
 	std::deque<Trame> filterBuffer(const std::deque<Trame>& buffer, const std::set<int>& acceptableIDs) const;
 
 	/**
-	* Return a string HH:MM:SS
-	* For example : 16:34:10 if it is 16 hour past 34 minutes and 10 seconds
+	* Return a string HH:MM:SS.
+	* For example : 16:34:10 if it is 16 hour past 34 minutes and 10 seconds.
 	*/
 	std::string getLocalTime() const;
 
 	/**
-	 * Method called by notify, wich will call updateInterface
-	 * @param colored : if the line shall be drawn in pink, send true, otherwise send false en it will be drawn normally
-	 * @param trame : the trame that will be handled by the GUI
+	 * Method called by notify, wich will call updateInterface.
+	 * @param colored : if the line shall be drawn in pink, send true, otherwise send false en it will be drawn
+	 * normally.
+	 * @param trame : the trame that will be handled by the GUI.
 	 */
 	void onListenerNotification(const std::deque<Trame>& buffer, const bool& colored);
 
 	/**
 	 * Add a line to the _refTreeModel  with the data passed to the function.
 	 * This function is responsible for the autoscroll behavior on the message list.
-	 * @param colored : if the line should be in pink or not
-	 * @param id : the ID in hexadecimal
-	 * @param cmd : the CMD of the Trame in hexa
+	 * @param colored : if the line should be in pink or not.
+	 * @param id : the ID in hexadecimal.
+	 * @param cmd : the CMD of the Trame in hexa.
 	 * @param time : the time.
-	 * @param data : An array of string
+	 * @param data : An array of string.
 	 */
 	void updateInterface(const bool& colored, const std::string& id, const std::string& cmd, const std::string& time, const std::string& data);
 
@@ -119,16 +134,16 @@ protected:
 
 	/**
 	 *
-	 * @param data : a string formatted to represent some data in hexadecimal with the following shape 0x01 13f 07 4e
+	 * @param data : a string formatted to represent some data in hexadecimal with the following shape 0x01 13f 07 4e.
 	 * @return a vector with all the pertinent information splitted appart, in this example it would be [01, 13f, 07,
-	 * 4e]
+	 * 4e].
 	 */
 	std::vector<uint8_t> buildTrameData(const std::string& data) const;
 
 	/**
 	 *
-	 * @return a Trame object with the data from _trameID, _trameType and _trameData
-	 * @throw std::runtime_error if checkInputs() return false
+	 * @return a Trame object with the data from _trameID, _trameType and _trameData.
+	 * @throw std::runtime_error if checkInputs() return false.
 	 */
 	Trame buildTrameFromInput() const;
 
@@ -150,40 +165,59 @@ protected:
 		return t;
 	}
 
+	/**
+	 * This function is called uppon receiving a certain type of trame that correspond to a "pong".
+	 * This function set _internalCardData[id] to true.
+	 * @param id : the id of the card that responded "pong".
+	 */
+	void onPongReceived(const uint8_t id);
+
+
 private:
 	/**
-	 * Threading related members
+	 * Threading related members.
 	 */
 	std::shared_ptr<Glib::Dispatcher> signal_on_message_received;
 	bool _stopListenerThread;
 	CanListener _canListener;
 
 	/**
-	 * Top level GUI elements
+	 * Top level GUI elements.
 	 */
 	Gtk::Paned _topLevelBox;
 
-	/// Hold _middleFrame and _rightFrame together
+	/// Hold _middleFrame and _rightFrame together.
 	Gtk::Paned _frameContainer;
 
-	/// The Frame with alle the button inside
+	/// The Frame with alle the button inside.
 	Gtk::Frame _rightFrame;
 
-	/// The Frame with all the sending stuf inside
+	/// The Frame with all the sending stuf inside.
 	Gtk::Frame _middleFrame;
 
-	/// The grid that hold the button
+	/// The grid that hold the button.
 	Gtk::Grid _buttonLayout;
 
-	/// The grid that hold the GUI for sending messages
+	/// The grid that hold the GUI for sending messages.
 	Gtk::Grid _sendMessageLayout;
 
 	/**
-	 * GUI elements related to the right pane : pinging cards and filtering messages
+	 * GUI elements related to the right pane : pinging cards and filtering messages.
 	 */
 
+	/// All the button for filtering message.
+	std::vector<std::shared_ptr<ButtonWithId>> _buttonIdList;
+
+	/// A button that toogle all the button contained in _buttonIdList.
+	Gtk::ToggleButton _toggleAllIDs;
+
+	/// A button that will ping all IDs.
+	Gtk::Button _pingAllIDs;
+
+	std::vector<std::shared_ptr<Gtk::Label>> _pingStatus;
+
 	/**
-	 * GUI elements related to sending message
+	 * GUI elements related to sending message.
 	 */
 	Gtk::ToggleButton _pauseButton;
 	Gtk::Button _sendTrameButton;
@@ -197,7 +231,7 @@ private:
 	Gtk::Label _labelTrameData;
 
 	/**
-	 * GUI Elements related to the viewing of messages
+	 * GUI Elements related to the viewing of messages.
 	 */
 	Gtk::ScrolledWindow _lowLevelWindow;
 
@@ -207,9 +241,10 @@ private:
 
 	Message _message;
 
-	std::vector<std::shared_ptr<ButtonWithId>> _buttonIdList;
-
-	Gtk::ToggleButton _toggleAllIDs;
+	/**
+	 * Internal data for storing card information (pinged, etc.).
+	 */
+	std::map<int, bool> _internalCardData;
 };
 
 

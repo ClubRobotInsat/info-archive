@@ -16,7 +16,8 @@ Monitor::Monitor(std::string& port)
         , _labelTrameId("Trame ID")
         , _labelTrameType("Trame Cmd")
         , _labelTrameData("Trame Data")
-        , _toggleAllIDs("Toggle all") {
+        , _toggleAllIDs("Toggle all")
+        , _pingAllIDs("Ping all IDs") {
 
 	//-----------------GUI Stuff|
 
@@ -27,6 +28,7 @@ Monitor::Monitor(std::string& port)
 	_sendTrameButton.signal_clicked().connect(sigc::mem_fun(*this, &Monitor::sendMessage));
 	_pauseButton.signal_clicked().connect(sigc::mem_fun(*this, &Monitor::tooglePauseMode));
 	_toggleAllIDs.signal_clicked().connect(sigc::mem_fun(*this, &Monitor::onToggleAllClicked));
+	_pingAllIDs.signal_clicked().connect(sigc::mem_fun(*this, &Monitor::pingAll));
 
 	_rightFrame.set_label("Hide messages and ping cards");
 	_rightFrame.set_label_align(Gtk::ALIGN_CENTER, Gtk::ALIGN_START);
@@ -62,10 +64,19 @@ Monitor::Monitor(std::string& port)
 	for(int i = 0; i < 10; i++) {
 		std::string buttonLabel = "Show ID " + std::to_string(i);
 		std::shared_ptr<ButtonWithId> button = std::make_shared<ButtonWithId>(buttonLabel, i);
-		_buttonLayout.attach(*button->_button.get(), 18, 1 + i, 10, 1);
+		_buttonLayout.attach(*button->_button.get(), 1, 1 + i, 1, 1);
 		_buttonIdList.push_back(button);
+
+
+		std::shared_ptr<Gtk::Label> label = std::make_shared<Gtk::Label>("No pong !", 0, 0);
+		label->override_color(Gdk::RGBA("red"), Gtk::STATE_FLAG_NORMAL);
+		_buttonLayout.attach(*label.get(), 2, 1 + i, 1, 1);
+		_pingStatus.push_back(label);
+
+		_internalCardData.emplace(i, true);
 	}
-	_buttonLayout.attach(_toggleAllIDs, 18, 12, 10, 1);
+	_buttonLayout.attach(_toggleAllIDs, 1, 11, 1, 1);
+	_buttonLayout.attach(_pingAllIDs, 2, 11, 1, 1);
 
 
 	// Creating and initializing the refTreeModel
@@ -150,6 +161,7 @@ void Monitor::updateInterface(const bool& colored, const std::string& id, const 
 
 	Gtk::TreeModel::Row row = *(_refTreeModel->prepend());
 
+
 	row[_message._id] = id;
 	row[_message._cmd] = cmd;
 	row[_message._time] = time;
@@ -192,9 +204,9 @@ Trame Monitor::buildTrameFromInput() const {
 
 	if(this->checkInputs()) {
 		try {
-			int id = std::stoi(_trameId.get_buffer()->get_text(), nullptr, 10);
-			int cmd = std::stoi(_trameType.get_buffer()->get_text(), nullptr, 16);
-			std::vector<uint8_t> data = buildTrameData(_trameData.get_buffer()->get_text());
+			const int id = std::stoi(_trameId.get_buffer()->get_text(), nullptr, 10);
+			const int cmd = std::stoi(_trameType.get_buffer()->get_text(), nullptr, 16);
+			const std::vector<uint8_t> data = buildTrameData(_trameData.get_buffer()->get_text());
 
 			// No data because we will add it later
 			Trame result = make_trame(id, cmd);
@@ -214,15 +226,15 @@ Trame Monitor::buildTrameFromInput() const {
 }
 
 bool Monitor::checkInputs() const {
-	bool testId = _trameId.get_buffer()->get_text().empty();
-	bool testData = _trameData.get_buffer()->get_text().empty();
-	bool testCmd = _trameType.get_buffer()->get_text().empty();
+	const bool testId = _trameId.get_buffer()->get_text().empty();
+	const bool testData = _trameData.get_buffer()->get_text().empty();
+	const bool testCmd = _trameType.get_buffer()->get_text().empty();
 	return !(testId or testData or testCmd);
 }
 
 std::string Monitor::getLocalTime() const {
-	auto t = std::time(nullptr);
-	auto tm = *std::localtime(&t);
+	const auto t = std::time(nullptr);
+	const auto tm = *std::localtime(&t);
 
 	std::ostringstream oss;
 	oss << std::put_time(&tm, "%H:%M:%S");
@@ -238,10 +250,15 @@ Monitor::~Monitor() {}
 
 void Monitor::handleTrame(const std::deque<Trame>& buffer, const bool& isColored) {
 
-	for(auto Trame : buffer) {
-		auto id = convertToHexadecimal(Trame.getId(), true);
-		auto cmd = convertToHexadecimal(Trame.getCmd(), true);
-		auto time = this->getLocalTime();
+	for(const auto Trame : buffer) {
+
+		if(Trame.getCmd() == 0x00_b and Trame.getDonnee(0) == 0xaa_b) {
+			this->onPongReceived(Trame.getId());
+		}
+
+		const auto id = convertToHexadecimal(Trame.getId(), true);
+		const auto cmd = convertToHexadecimal(Trame.getCmd(), true);
+		const auto time = this->getLocalTime();
 		std::string data;
 		for(int i = 0; i < Trame.getNbDonnees(); i++) {
 			data += convertToHexadecimal(Trame.getDonnee(i), i == 0) + " ";
@@ -322,5 +339,29 @@ void Monitor::onToggleAllClicked() {
 
 	for(auto& buttons : _buttonIdList) {
 		buttons->_button->set_active(_toggleAllIDs.get_active());
+	}
+}
+
+
+void Monitor::sendPing(const uint8_t id) {
+	auto trame = make_trame(id, 0x00_b, 0x55_b);
+	_pingStatus[id]->set_label("No Pong !");
+	_pingStatus[id]->override_color(Gdk::RGBA("red"), Gtk::STATE_FLAG_NORMAL);
+
+
+	_canListener.sendMessage(trame);
+	_internalCardData[id] = false;
+}
+
+void Monitor::onPongReceived(const uint8_t id) {
+
+	_pingStatus[id]->set_label("Connected !");
+	_pingStatus[id]->override_color(Gdk::RGBA("green"), Gtk::STATE_FLAG_NORMAL);
+	_internalCardData[id] = true;
+}
+
+void Monitor::pingAll() {
+	for(uint8_t i = 0; i < 10; i++) {
+		this->sendPing(i);
 	}
 }
