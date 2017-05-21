@@ -62,7 +62,7 @@ if [ $install_petri -eq 1 ]
     then echo -e "${Yellow}Accès en ssh au serveur pour Petri$End"
     mkdir -p ~/.ssh
     cp ${dir}/.auth/* ~/.ssh
-    chmod 600 ${dir}/.ssh/petri_rsa
+    chmod 600 ~/.ssh/petri_rsa
     if [ $? -eq "0" ]
         then echo -e ${Green}Installation de petri réussie$End
         petri_installed=1
