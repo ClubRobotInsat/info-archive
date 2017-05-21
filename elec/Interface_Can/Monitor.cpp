@@ -12,7 +12,7 @@ Monitor::Monitor(std::string& port)
         , _stopListenerThread(false)
         , _canListener(port, signal_on_message_received, _stopListenerThread)
         , _pauseButton("Pause")
-        , _sendTrameButton("Envoyer la trame")
+        , _sendTrameButton("Send Trame")
         , _labelTrameId("Trame ID")
         , _labelTrameType("Trame Cmd")
         , _labelTrameData("Trame Data")
@@ -28,22 +28,27 @@ Monitor::Monitor(std::string& port)
 	_pauseButton.signal_clicked().connect(sigc::mem_fun(*this, &Monitor::tooglePauseMode));
 	_toggleAllIDs.signal_clicked().connect(sigc::mem_fun(*this, &Monitor::onToggleAllClicked));
 
-	_rightFrame.set_label("Send a message");
+	_rightFrame.set_label("Hide messages and ping cards");
 	_rightFrame.set_label_align(Gtk::ALIGN_CENTER, Gtk::ALIGN_START);
 	_rightFrame.set_shadow_type(Gtk::SHADOW_ETCHED_OUT);
-	_rightFrame.set_border_width(15);
+	_rightFrame.set_border_width(5);
+
+	_middleFrame.set_label("Send a message");
+	_middleFrame.set_label_align(Gtk::ALIGN_CENTER, Gtk::ALIGN_START);
+	_middleFrame.set_border_width(5);
+
 
 	// Setting up the Grid for sending messages
-	_sendMessageContainer.set_orientation(Gtk::ORIENTATION_HORIZONTAL);
-	_sendMessageContainer.attach(_pauseButton, 0, 1, 2, 1);
+	_sendMessageLayout.set_orientation(Gtk::ORIENTATION_HORIZONTAL);
+	_sendMessageLayout.attach(_pauseButton, 0, 1, 2, 1);
 
-	_sendMessageContainer.attach(_labelTrameId, 0, 1, 7, 1);
-	_sendMessageContainer.attach_next_to(_trameId, _labelTrameId, Gtk::POS_BOTTOM, 7, 1);
-	_sendMessageContainer.attach_next_to(_labelTrameType, _trameId, Gtk::POS_BOTTOM, 7, 1);
-	_sendMessageContainer.attach_next_to(_trameType, _labelTrameType, Gtk::POS_BOTTOM, 7, 1);
-	_sendMessageContainer.attach_next_to(_labelTrameData, _trameType, Gtk::POS_BOTTOM, 7, 1);
-	_sendMessageContainer.attach_next_to(_trameData, _labelTrameData, Gtk::POS_BOTTOM, 7, 1);
-	_sendMessageContainer.attach_next_to(_sendTrameButton, _trameData, Gtk::POS_BOTTOM, 7, 1);
+	_sendMessageLayout.attach(_labelTrameId, 0, 1, 7, 1);
+	_sendMessageLayout.attach_next_to(_trameId, _labelTrameId, Gtk::POS_BOTTOM, 7, 1);
+	_sendMessageLayout.attach_next_to(_labelTrameType, _trameId, Gtk::POS_BOTTOM, 7, 1);
+	_sendMessageLayout.attach_next_to(_trameType, _labelTrameType, Gtk::POS_BOTTOM, 7, 1);
+	_sendMessageLayout.attach_next_to(_labelTrameData, _trameType, Gtk::POS_BOTTOM, 7, 1);
+	_sendMessageLayout.attach_next_to(_trameData, _labelTrameData, Gtk::POS_BOTTOM, 7, 1);
+	_sendMessageLayout.attach_next_to(_sendTrameButton, _trameData, Gtk::POS_BOTTOM, 7, 1);
 
 	_trameId.set_adjustment(Gtk::Adjustment::create(0, 0, 1, 1, 1, 1));
 	_trameId.set_increments(1, 5);
@@ -53,14 +58,14 @@ Monitor::Monitor(std::string& port)
 	_lowLevelWindow.add(_messageTree);
 	_lowLevelWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
 
-	// Setting up the filter
+	// Setting up the messgae filter buttons
 	for(int i = 0; i < 10; i++) {
 		std::string buttonLabel = "Show ID " + std::to_string(i);
 		std::shared_ptr<ButtonWithId> button = std::make_shared<ButtonWithId>(buttonLabel, i);
-		_sendMessageContainer.attach(*button->_button.get(), 18, 1 + i, 10, 1);
+		_buttonLayout.attach(*button->_button.get(), 18, 1 + i, 10, 1);
 		_buttonIdList.push_back(button);
 	}
-	_sendMessageContainer.attach(_toggleAllIDs, 18, 12, 10, 1);
+	_buttonLayout.attach(_toggleAllIDs, 18, 12, 10, 1);
 
 
 	// Creating and initializing the refTreeModel
@@ -80,9 +85,17 @@ Monitor::Monitor(std::string& port)
 	}
 
 	this->add(_topLevelBox);
-	_rightFrame.add(_sendMessageContainer);
+
+	// Tree of Widgets
+	_middleFrame.add(_sendMessageLayout);
+	_rightFrame.add(_buttonLayout);
+
+	_frameContainer.add1(_middleFrame);
+	_frameContainer.add2(_rightFrame);
+
+
 	_topLevelBox.add1(_lowLevelWindow);
-	_topLevelBox.add2(_rightFrame);
+	_topLevelBox.add2(_frameContainer);
 	_topLevelBox.set_position(200);
 
 

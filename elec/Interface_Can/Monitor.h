@@ -162,8 +162,25 @@ private:
 	 * Top level GUI elements
 	 */
 	Gtk::Paned _topLevelBox;
+
+	/// Hold _middleFrame and _rightFrame together
+	Gtk::Paned _frameContainer;
+
+	/// The Frame with alle the button inside
 	Gtk::Frame _rightFrame;
-	Gtk::Grid _sendMessageContainer;
+
+	/// The Frame with all the sending stuf inside
+	Gtk::Frame _middleFrame;
+
+	/// The grid that hold the button
+	Gtk::Grid _buttonLayout;
+
+	/// The grid that hold the GUI for sending messages
+	Gtk::Grid _sendMessageLayout;
+
+	/**
+	 * GUI elements related to the right pane : pinging cards and filtering messages
+	 */
 
 	/**
 	 * GUI elements related to sending message
