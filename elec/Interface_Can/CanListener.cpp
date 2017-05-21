@@ -6,9 +6,8 @@
 #include "Monitor.h"
 #include <future>
 
-CanListener::CanListener(const std::string& port, std::shared_ptr<Glib::Dispatcher> receiver_signal_message_received, bool& stopBooleanAdress)
-        : _sentAMessage(false)
-        , _shallStopListening(stopBooleanAdress)
+CanListener::CanListener(const std::string& port, const std::shared_ptr<Glib::Dispatcher> receiver_signal_message_received, bool& stopBooleanAdress)
+        : _shallStopListening(stopBooleanAdress)
         , _acceptNewMessage(true)
         , _parentIsRequestingData(false)
         , _refreshRate(20_ms)
@@ -56,13 +55,12 @@ void CanListener::mainLoop() {
 
 /// Fonction loquante qui reçois un message sur le CAN
 Trame CanListener::waitForMessage() {
-	auto Trame = _can->recevoirTrame(_canShouldStop);
+	auto Trame = _can->recevoirTrame(_shallStopListening);
 	return Trame;
 }
 
 void CanListener::stopListening() {
 	_shallStopListening = true;
-	_canShouldStop = true;
 }
 
 void CanListener::sendMessage(const Trame& trame) {
@@ -80,13 +78,13 @@ CanListener::~CanListener() {
 	}
 }
 
-std::deque<Trame> CanListener::getTrameReceived() {
+const std::deque<Trame> CanListener::getTrameReceived() {
 	std::lock_guard<std::mutex> lock(mutex);
 	auto result = _trameBuffer;
 	_trameBuffer.clear();
 	return result;
 }
 
-void CanListener::isRequestingData(const bool& value) {
+void CanListener::isRequestingData(bool value) {
 	_parentIsRequestingData = value;
 }

@@ -110,6 +110,8 @@ Monitor::Monitor(std::string& port)
 
 	this->add(_topLevelBox);
 
+	//_lowLevelWindow.event
+
 	// Tree of Widgets
 	_middleFrame.add(_sendMessageLayout);
 	_rightFrame.add(_buttonLayout);
@@ -127,8 +129,9 @@ Monitor::Monitor(std::string& port)
 	this->show_all();
 	this->show_all_children();
 
-	//-----------Threading Stuff|
+	this->pingAll();
 
+	//-----------Threading Stuff|
 	signal_on_message_received->connect(sigc::mem_fun(*this, &Monitor::notify));
 	_canListener.start();
 }
@@ -154,11 +157,11 @@ void Monitor::notify() {
 }
 
 
-void Monitor::onListenerNotification(const std::deque<Trame>& buffer, const bool& colored) {
+void Monitor::onListenerNotification(const std::deque<Trame>& buffer, bool colored) {
 	this->handleTrame(buffer, colored);
 }
 
-std::string Monitor::convertToHexadecimal(const unsigned int& number, bool addPrefix) const {
+std::string Monitor::convertToHexadecimal(const unsigned int& number, const bool addPrefix) const {
 	std::stringstream stream;
 	if(addPrefix) {
 		stream << "0x";
@@ -168,7 +171,7 @@ std::string Monitor::convertToHexadecimal(const unsigned int& number, bool addPr
 }
 
 
-void Monitor::updateInterface(const bool& colored, const std::string& id, const std::string& cmd, const std::string& time, const std::string& data) {
+void Monitor::updateInterface(bool colored, const std::string& id, const std::string& cmd, const std::string& time, const std::string& data) {
 
 	Gtk::TreeModel::Row row = *(_refTreeModel->prepend());
 
@@ -220,12 +223,11 @@ Trame Monitor::buildTrameFromInput() const {
 
 
 			// Build the data string
-			std::string data_string = "";
+			std::vector<uint8_t> data;
 			for(auto entry : _dataArray) {
-				data_string += entry->get_buffer()->get_text();
+				uint8_t d = std::stoi(entry->get_buffer()->get_text(), nullptr, 16);
+				data.push_back(d);
 			}
-
-			const std::vector<uint8_t> data = buildTrameData(data_string);
 
 			// No data because we will add it later
 			Trame result = make_trame(id, cmd);
@@ -266,7 +268,7 @@ void Monitor::tooglePauseMode() {
 
 Monitor::~Monitor() {}
 
-void Monitor::handleTrame(const std::deque<Trame>& buffer, const bool& isColored) {
+void Monitor::handleTrame(const std::deque<Trame>& buffer, bool isColored) {
 
 	for(const auto Trame : buffer) {
 
@@ -283,48 +285,6 @@ void Monitor::handleTrame(const std::deque<Trame>& buffer, const bool& isColored
 		}
 		this->updateInterface(isColored, id, cmd, time, data);
 	}
-}
-
-std::vector<uint8_t> Monitor::buildTrameData(const std::string& data) const {
-
-	// all the hex data in the string
-	std::vector<uint8_t> result;
-	// list of all data in the string seperated by the ' ' character
-	std::vector<std::string> wordlist;
-	// we populate it with the data from the argument
-	std::string temp_word;
-	for(int i = 0; i <= data.size(); i++) {
-		char character = data[i];
-		// Check if we are at the end so that we could add the last word that does not ends by a ' '
-		if(i == data.size()) {
-			temp_word += character;
-			wordlist.push_back(temp_word);
-		} else {
-			if(character != ' ') {
-				temp_word += character;
-			} else {
-				wordlist.push_back(temp_word);
-				temp_word.clear();
-			}
-		}
-	}
-
-	// We remove the "0x" from the first word
-	temp_word.clear();
-	for(int i = 0; i <= wordlist.front().size(); i++) {
-		if(i >= 2) {
-			temp_word += wordlist.front()[i];
-		}
-	}
-	wordlist.front() = temp_word;
-	temp_word.clear();
-
-	// Now we populate the result
-	for(auto& word : wordlist) {
-		result.push_back(std::stoi(word, nullptr, 16));
-	}
-
-	return result;
 }
 
 std::deque<Trame> Monitor::filterBuffer(const std::deque<Trame>& buffer, const std::set<int>& acceptableIDs) const {
@@ -361,7 +321,7 @@ void Monitor::onToggleAllClicked() {
 }
 
 
-void Monitor::sendPing(const uint8_t id) {
+void Monitor::sendPing(uint8_t id) {
 	auto trame = make_trame(id, 0x00_b, 0x55_b);
 	_pingStatus[id]->set_label("No Pong !");
 	_pingStatus[id]->override_color(Gdk::RGBA("red"), Gtk::STATE_FLAG_NORMAL);
@@ -371,7 +331,7 @@ void Monitor::sendPing(const uint8_t id) {
 	_internalCardData[id] = false;
 }
 
-void Monitor::onPongReceived(const uint8_t id) {
+void Monitor::onPongReceived(uint8_t id) {
 
 	_pingStatus[id]->set_label("Connected !");
 	_pingStatus[id]->override_color(Gdk::RGBA("green"), Gtk::STATE_FLAG_NORMAL);
@@ -385,7 +345,7 @@ void Monitor::pingAll() {
 }
 
 
-const bool Monitor::isEntryFieldFocused() {
+bool Monitor::isEntryFieldFocused() const {
 	bool result = false;
 	for(const auto entry : _dataArray) {
 		result = result or entry->property_is_focus().get_value();

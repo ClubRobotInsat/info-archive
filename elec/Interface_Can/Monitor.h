@@ -53,7 +53,7 @@ public:
 	 *
 	 * @param Trame : the trame to display on the GUI.
 	 */
-	void handleTrame(const std::deque<Trame>& buffer, const bool& isColored);
+	void handleTrame(const std::deque<Trame>& buffer, bool isColored);
 
 	/**
 	* Send a Trame for pinging id.
@@ -63,7 +63,7 @@ public:
 	* This function also set _internalCardData[id] to false.
 	* @param id : the id of the trame that will be sent.
 	*/
-	void sendPing(const uint8_t id);
+	void sendPing(uint8_t id);
 
 	/**
 	 * Call sendPing() for all id between 0 and 10;
@@ -112,7 +112,7 @@ protected:
 	 * normally.
 	 * @param trame : the trame that will be handled by the GUI.
 	 */
-	void onListenerNotification(const std::deque<Trame>& buffer, const bool& colored);
+	void onListenerNotification(const std::deque<Trame>& buffer, bool colored);
 
 	/**
 	 * Add a line to the _refTreeModel  with the data passed to the function.
@@ -123,22 +123,14 @@ protected:
 	 * @param time : the time.
 	 * @param data : An array of string.
 	 */
-	void updateInterface(const bool& colored, const std::string& id, const std::string& cmd, const std::string& time, const std::string& data);
+	void updateInterface(bool colored, const std::string& id, const std::string& cmd, const std::string& time, const std::string& data);
 
-	/*
+	/**
 	 * @param number : The raw data to represent in hexadecimal
 	 * @param addPrefix : If the function should add "0x" to the result
 	 * @return A string with the number in an hexadecimal base
 	 */
 	std::string convertToHexadecimal(const unsigned int& number, bool addPrefix) const;
-
-	/**
-	 *
-	 * @param data : a string formatted to represent some data in hexadecimal with the following shape 0x01 13f 07 4e.
-	 * @return a vector with all the pertinent information splitted appart, in this example it would be [01, 13f, 07,
-	 * 4e].
-	 */
-	std::vector<uint8_t> buildTrameData(const std::string& data) const;
 
 	/**
 	 *
@@ -159,7 +151,7 @@ protected:
 	void tooglePauseMode();
 
 	template <typename... Args>
-	Trame make_trame(const uint8_t& id, const uint8_t& cmd, Args&&... donnees) const {
+	Trame make_trame(uint8_t id, uint8_t cmd, Args&&... donnees) const {
 		Trame t(id, cmd);
 		t.addDonnees(donnees...);
 		return t;
@@ -170,13 +162,12 @@ protected:
 	 * This function set _internalCardData[id] to true.
 	 * @param id : the id of the card that responded "pong".
 	 */
-	void onPongReceived(const uint8_t id);
+	void onPongReceived(uint8_t id);
 
 	/**
-	 *
 	 * @return true if the cursor is in any of the entry field.
 	 */
-	const bool isEntryFieldFocused();
+	bool isEntryFieldFocused() const;
 
 private:
 	/**
@@ -231,9 +222,6 @@ private:
 	Gtk::SpinButton _trameId;
 	Gtk::Entry _trameType;
 
-	/**
-	 *
-	 */
 
 	Gtk::Label _labelTrameId;
 	Gtk::Label _labelTrameType;
