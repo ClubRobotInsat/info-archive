@@ -11,13 +11,13 @@ Monitor::Monitor(std::string& port)
         , signal_on_message_received(std::make_shared<Glib::Dispatcher>())
         , _stopListenerThread(false)
         , _canListener(port, signal_on_message_received, _stopListenerThread)
+        , _toggleAllIDs("Toggle all")
+        , _pingAllIDs("Ping all IDs")
         , _pauseButton("Pause")
         , _sendTrameButton("Send Trame")
         , _labelTrameId("Trame ID")
         , _labelTrameType("Trame Cmd")
-        , _labelTrameData("Trame Data")
-        , _toggleAllIDs("Toggle all")
-        , _pingAllIDs("Ping all IDs") {
+        , _labelTrameData("Trame Data") {
 
 	//-----------------GUI Stuff|
 
@@ -30,6 +30,7 @@ Monitor::Monitor(std::string& port)
 	_toggleAllIDs.signal_clicked().connect(sigc::mem_fun(*this, &Monitor::onToggleAllClicked));
 	_pingAllIDs.signal_clicked().connect(sigc::mem_fun(*this, &Monitor::pingAll));
 
+	// Setting up the two frames
 	_rightFrame.set_label("Hide messages and ping cards");
 	_rightFrame.set_label_align(Gtk::ALIGN_CENTER, Gtk::ALIGN_START);
 	_rightFrame.set_shadow_type(Gtk::SHADOW_ETCHED_OUT);
@@ -39,23 +40,35 @@ Monitor::Monitor(std::string& port)
 	_middleFrame.set_label_align(Gtk::ALIGN_CENTER, Gtk::ALIGN_START);
 	_middleFrame.set_border_width(5);
 
+	// Pre-Labelling the input fields
+	_trameType.get_buffer()->set_text("0x00");
+
+	// Setting up the grid for the trameData input
+	for(int k = 0; k < 6; k++) {
+		std::shared_ptr<Gtk::Entry> entry = std::make_shared<Gtk::Entry>();
+		entry->get_buffer()->set_text("0x00");
+		entry->set_max_length(4);
+		entry->set_width_chars(4);
+		_sendMessageLayout.attach(*entry.get(), k, 10, 1, 1);
+		_dataArray.push_back(entry);
+	}
 
 	// Setting up the Grid for sending messages
-	_sendMessageLayout.set_orientation(Gtk::ORIENTATION_HORIZONTAL);
-	_sendMessageLayout.attach(_pauseButton, 0, 1, 2, 1);
-
+	_sendMessageLayout.attach(_pauseButton, 0, 1, 7, 1);
 	_sendMessageLayout.attach(_labelTrameId, 0, 1, 7, 1);
 	_sendMessageLayout.attach_next_to(_trameId, _labelTrameId, Gtk::POS_BOTTOM, 7, 1);
 	_sendMessageLayout.attach_next_to(_labelTrameType, _trameId, Gtk::POS_BOTTOM, 7, 1);
 	_sendMessageLayout.attach_next_to(_trameType, _labelTrameType, Gtk::POS_BOTTOM, 7, 1);
 	_sendMessageLayout.attach_next_to(_labelTrameData, _trameType, Gtk::POS_BOTTOM, 7, 1);
-	_sendMessageLayout.attach_next_to(_trameData, _labelTrameData, Gtk::POS_BOTTOM, 7, 1);
-	_sendMessageLayout.attach_next_to(_sendTrameButton, _trameData, Gtk::POS_BOTTOM, 7, 1);
+	_sendMessageLayout.attach(_sendTrameButton, 0, 11, 7, 1);
 
 	_trameId.set_adjustment(Gtk::Adjustment::create(0, 0, 1, 1, 1, 1));
 	_trameId.set_increments(1, 5);
 	_trameId.set_range(0, 10);
 	_trameId.set_digits(0);
+
+	_trameType.set_width_chars(4);
+	_trameType.set_max_length(4);
 
 	_lowLevelWindow.add(_messageTree);
 	_lowLevelWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
@@ -122,9 +135,7 @@ Monitor::Monitor(std::string& port)
 
 
 bool Monitor::on_key_release_event(GdkEventKey* event) {
-	if(event->keyval == 32 and
-	   not(_trameData.property_is_focus().get_value() or _trameId.property_is_focus().get_value() or
-	       _trameType.property_is_focus().get_value())) {
+	if(event->keyval == 32 and not(this->isEntryFieldFocused())) {
 		_pauseButton.clicked();
 		return true;
 	} else {
@@ -206,7 +217,15 @@ Trame Monitor::buildTrameFromInput() const {
 		try {
 			const int id = std::stoi(_trameId.get_buffer()->get_text(), nullptr, 10);
 			const int cmd = std::stoi(_trameType.get_buffer()->get_text(), nullptr, 16);
-			const std::vector<uint8_t> data = buildTrameData(_trameData.get_buffer()->get_text());
+
+
+			// Build the data string
+			std::string data_string = "";
+			for(auto entry : _dataArray) {
+				data_string += entry->get_buffer()->get_text();
+			}
+
+			const std::vector<uint8_t> data = buildTrameData(data_string);
 
 			// No data because we will add it later
 			Trame result = make_trame(id, cmd);
@@ -227,9 +246,8 @@ Trame Monitor::buildTrameFromInput() const {
 
 bool Monitor::checkInputs() const {
 	const bool testId = _trameId.get_buffer()->get_text().empty();
-	const bool testData = _trameData.get_buffer()->get_text().empty();
 	const bool testCmd = _trameType.get_buffer()->get_text().empty();
-	return !(testId or testData or testCmd);
+	return !(testId or testCmd);
 }
 
 std::string Monitor::getLocalTime() const {
@@ -364,4 +382,14 @@ void Monitor::pingAll() {
 	for(uint8_t i = 0; i < 10; i++) {
 		this->sendPing(i);
 	}
+}
+
+
+const bool Monitor::isEntryFieldFocused() {
+	bool result = false;
+	for(const auto entry : _dataArray) {
+		result = result or entry->property_is_focus().get_value();
+	}
+	result = result or _trameId.property_is_focus().get_value() or _trameType.property_is_focus().get_value();
+	return result;
 }

@@ -172,6 +172,11 @@ protected:
 	 */
 	void onPongReceived(const uint8_t id);
 
+	/**
+	 *
+	 * @return true if the cursor is in any of the entry field.
+	 */
+	const bool isEntryFieldFocused();
 
 private:
 	/**
@@ -222,9 +227,13 @@ private:
 	Gtk::ToggleButton _pauseButton;
 	Gtk::Button _sendTrameButton;
 
-	Gtk::Entry _trameData;
+	std::vector<std::shared_ptr<Gtk::Entry>> _dataArray;
 	Gtk::SpinButton _trameId;
 	Gtk::Entry _trameType;
+
+	/**
+	 *
+	 */
 
 	Gtk::Label _labelTrameId;
 	Gtk::Label _labelTrameType;
