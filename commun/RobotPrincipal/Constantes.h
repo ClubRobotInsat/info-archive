@@ -78,7 +78,7 @@ namespace ConstantesPrincipal {
 	/////////////////// CONTACTEURS ///////////////////
 	// Numéros des contacteurs et les rôles associés
 	enum class Contacteur {
-		TIRETTE = 2,
+		TIRETTE = 3,
 	};
 
 	enum class PositionAscenseur {
