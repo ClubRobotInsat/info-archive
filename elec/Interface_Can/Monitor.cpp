@@ -55,11 +55,12 @@ Monitor::Monitor(std::string& port)
 
 	// Setting up the Grid for sending messages
 	_sendMessageLayout.attach(_pauseButton, 0, 1, 7, 1);
-	_sendMessageLayout.attach(_labelTrameId, 0, 1, 7, 1);
-	_sendMessageLayout.attach_next_to(_trameId, _labelTrameId, Gtk::POS_BOTTOM, 7, 1);
-	_sendMessageLayout.attach_next_to(_labelTrameType, _trameId, Gtk::POS_BOTTOM, 7, 1);
-	_sendMessageLayout.attach_next_to(_trameType, _labelTrameType, Gtk::POS_BOTTOM, 7, 1);
-	_sendMessageLayout.attach_next_to(_labelTrameData, _trameType, Gtk::POS_BOTTOM, 7, 1);
+	_sendMessageLayout.attach(_labelTrameId, 0, 2, 4, 1);
+	_sendMessageLayout.attach(_labelTrameType, 4, 2, 3, 1);
+	_sendMessageLayout.attach(_trameId, 0, 3, 4, 1);
+	_sendMessageLayout.attach(_trameType, 4, 3, 3, 1);
+	_sendMessageLayout.attach(_labelTrameData, 0, 4, 7, 1);
+
 	_sendMessageLayout.attach(_sendTrameButton, 0, 11, 7, 1);
 
 	_trameId.set_adjustment(Gtk::Adjustment::create(0, 0, 1, 1, 1, 1));
@@ -122,7 +123,7 @@ Monitor::Monitor(std::string& port)
 
 	_topLevelBox.add1(_lowLevelWindow);
 	_topLevelBox.add2(_frameContainer);
-	_topLevelBox.set_position(200);
+	_topLevelBox.set_position(350);
 
 
 	this->set_title("Can Monitor");
@@ -157,7 +158,7 @@ void Monitor::notify() {
 }
 
 
-void Monitor::onListenerNotification(const std::deque<Trame>& buffer, bool colored) {
+void Monitor::onListenerNotification(const std::deque<std::pair<Trame, std::chrono::milliseconds>>& buffer, bool colored) {
 	this->handleTrame(buffer, colored);
 }
 
@@ -204,11 +205,12 @@ void Monitor::sendMessage() {
 		sendMessage = false;
 	}
 
-	std::deque<Trame> result;
 	if(sendMessage) {
-		std::deque<Trame> temp;
-		temp.push_front(*message.release());
-		_canListener.sendMessage(temp.front());
+		std::deque<std::pair<Trame, std::chrono::milliseconds>> temp;
+		std::chrono::milliseconds time =
+		    std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
+		temp.push_front(std::pair<Trame, std::chrono::milliseconds>(*message.release(), time));
+		_canListener.sendMessage(temp.front().first);
 		this->handleTrame(temp, true);
 	}
 }
@@ -257,44 +259,46 @@ std::string Monitor::getLocalTime() const {
 	const auto tm = *std::localtime(&t);
 
 	std::ostringstream oss;
-	oss << std::put_time(&tm, "%H:%M:%S");
+	oss << std::put_time(&tm, "%H:%M:%S.%%06u");
 	auto str = oss.str();
 	return str;
 }
 
 void Monitor::tooglePauseMode() {
 	this->_canListener.toogleAcceptNewMessage();
+	this->_pingAllIDs.set_sensitive(not _pingAllIDs.get_sensitive());
 }
 
 Monitor::~Monitor() {}
 
-void Monitor::handleTrame(const std::deque<Trame>& buffer, bool isColored) {
+void Monitor::handleTrame(const std::deque<std::pair<Trame, std::chrono::milliseconds>>& buffer, bool isColored) {
 
-	for(const auto Trame : buffer) {
-
-		if(Trame.getCmd() == 0x00_b and Trame.getDonnee(0) == 0xaa_b) {
-			this->onPongReceived(Trame.getId());
+	for(const auto pair : buffer) {
+		const Trame& trame = pair.first;
+		if(trame.getCmd() == 0x00_b and trame.getDonnee(0) == 0xaa_b) {
+			this->onPongReceived(trame.getId());
 		}
 
-		const auto id = convertToHexadecimal(Trame.getId(), true);
-		const auto cmd = convertToHexadecimal(Trame.getCmd(), true);
-		const auto time = this->getLocalTime();
+		const auto id = convertToHexadecimal(trame.getId(), true);
+		const auto cmd = convertToHexadecimal(trame.getCmd(), true);
 		std::string data;
-		for(int i = 0; i < Trame.getNbDonnees(); i++) {
-			data += convertToHexadecimal(Trame.getDonnee(i), i == 0) + " ";
+		for(int i = 0; i < trame.getNbDonnees(); i++) {
+			data += convertToHexadecimal(trame.getDonnee(i), i == 0) + " ";
 		}
-		this->updateInterface(isColored, id, cmd, time, data);
+		this->updateInterface(isColored, id, cmd, std::to_string(pair.second.count()), data);
 	}
 }
 
-std::deque<Trame> Monitor::filterBuffer(const std::deque<Trame>& buffer, const std::set<int>& acceptableIDs) const {
+std::deque<std::pair<Trame, std::chrono::milliseconds>>
+    Monitor::filterBuffer(const std::deque<std::pair<Trame, std::chrono::milliseconds>>& buffer,
+                          const std::set<int>& acceptableIDs) const {
 
-	std::deque<Trame> result;
+	std::deque<std::pair<Trame, std::chrono::milliseconds>> result;
 
-	for(auto& trame : buffer) {
+	for(auto& pair : buffer) {
 		// Verify if the ID is in the list
-		if(acceptableIDs.find(trame.getId()) != acceptableIDs.end()) {
-			result.push_back(trame);
+		if(acceptableIDs.find(pair.first.getId()) != acceptableIDs.end()) {
+			result.push_back(pair);
 		}
 	}
 

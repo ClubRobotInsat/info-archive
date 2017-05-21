@@ -40,7 +40,9 @@ void CanListener::mainLoop() {
 			case std::future_status::ready: {
 				if(_acceptNewMessage) {
 					std::lock_guard<std::mutex> lock(mutex);
-					_trameBuffer.push_back(trame.get());
+					std::chrono::milliseconds time = std::chrono::duration_cast<std::chrono::milliseconds>(
+					    std::chrono::system_clock::now().time_since_epoch());
+					_trameBuffer.push_back(std::pair<Trame, std::chrono::milliseconds>(trame.get(), time));
 					if(not _parentIsRequestingData) {
 						signal_on_message_received->emit();
 					}
@@ -78,9 +80,9 @@ CanListener::~CanListener() {
 	}
 }
 
-const std::deque<Trame> CanListener::getTrameReceived() {
+const std::deque<std::pair<Trame, std::chrono::milliseconds>> CanListener::getTrameReceived() {
 	std::lock_guard<std::mutex> lock(mutex);
-	auto result = _trameBuffer;
+	std::deque<std::pair<Trame, std::chrono::milliseconds>> result = _trameBuffer;
 	_trameBuffer.clear();
 	return result;
 }
