@@ -42,36 +42,36 @@ wii_installed=0
 petri_installed=0
 
 if [ $install_apt -eq 1 ]
-    then echo -e "${Yellow}Installation des logiciels nécessaires$End"
+    then echo -e "${Yellow}Installation des logiciels nécessaires${End}"
     sudo apt-get install mono-complete cmake subversion git libbox2d-dev gcc-5-multilib g++-5-multilib libbluetooth-dev build-essential libglfw-dev libglu1-mesa-dev curl libxrandr-dev libgtkmm-3.0-dev libusb-1.0-0-dev clang-format
 fi
 
 if [ $install_hook -eq 1 ]
-    then echo -e "${Yellow}Installation du pre-commit hook$End"
+    then echo -e "${Yellow}Installation du pre-commit hook${End}"
     cd ${dir}/.git/hooks
     ln -f ../../scripts/pre-commit pre-commit
 
     if [ $? -eq "0" ]
-        then echo -e ${Green}Installation du hook réussie$End
+        then echo -e "${Green}Installation du hook réussie${End}"
         hook_installed=1
-        else echo -e ${Red}Installation du hook échouée$End
+        else echo -e "${Red}Installation du hook échouée${End}"
     fi
 fi
 
 if [ $install_petri -eq 1 ]
-    then echo -e "${Yellow}Accès en ssh au serveur pour Petri$End"
+    then echo -e "${Yellow}Accès en ssh au serveur pour Petri${End}"
     mkdir -p ~/.ssh
     cp ${dir}/.auth/* ~/.ssh
     chmod 600 ~/.ssh/petri_rsa
     if [ $? -eq "0" ]
-        then echo -e ${Green}Installation de petri réussie$End
+        then echo -e "${Green}Installation de petri réussie${End}"
         petri_installed=1
-        else echo -e ${Red}Installation de petri échouée$End
+        else echo -e "${Red}Installation de petri échouée${End}"
     fi
 fi
 
 if [ $install_wii -eq 1 ]
-    then echo -e "${Yellow}Installation de la wiimote$End"
+    then echo -e "${Yellow}Installation de la wiimote${End}"
     cd /tmp
     git clone https://github.com/grandelli/WiiC.git
     cd WiiC
@@ -80,8 +80,8 @@ if [ $install_wii -eq 1 ]
     sudo make install
 
     if [ $? -eq "0" ]
-        then echo -e ${Green}Installation du libwiic réussie$End
+        then echo -e "${Green}Installation du libwiic réussie${End}"
         wii_installed=1
-        else echo -e ${Red}Installation de libwiic échouée$End
+        else echo -e "${Red}Installation de libwiic échouée${End}"
     fi
 fi

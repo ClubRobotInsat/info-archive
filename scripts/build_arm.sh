@@ -2,30 +2,33 @@
 
 cores=4
 
-dgreen='\e[1;32m'
-egreen='\e[0m' 
+Green='\e[1;32m'
+End='\e[0m' 
 
 if !( [[ "$1" =~ ^[-+]?[0-9]+$ ]] )
 then
-	echo -e "$dgreen Compiling with -j 4 $egreen"
+	echo -e "${Green} Compiling with -j 4 ${End}"
 else
 	cores=$1
-	echo -e "$dgreen Compiling with -j $cores $egreen"
+	echo -e "${Green} Compiling with -j ${cores} ${End}"
 fi
+
+dir=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
+cd ${dir}
 
 if `! test -d build_arm`  
 	then	mkdir build_arm
 fi
 
 cd build_arm
-echo -e "$dgreen Generating CMakeFile $egreen"
+echo -e "${Green} Generating CMakeFile ${End}"
 cmake .. -DBITS=64 -DRASPI="1" -DCMAKE_TOOLCHAIN_FILE="../Cross-Compilation.cmake"
 
-echo -e "$dgreen Building IAPrincipal $egreen"
-make IAPrincipal -j $cores
+echo -e "${Green} Building IAPrincipal ${End}"
+make IAPrincipal -j ${cores}
 
-echo -e "$dgreen Building IAWiimote $egreen"
-make IAWiimote -j $cores
+echo -e "${Green} Building IAWiimote ${End}"
+make IAWiimote -j ${cores}
 
-echo -e "$dgreen Building IATestRobot $egreen"
-make IATestRobot -j $cores
+echo -e "${Green} Building IATestRobot ${End}"
+make IATestRobot -j ${cores}
