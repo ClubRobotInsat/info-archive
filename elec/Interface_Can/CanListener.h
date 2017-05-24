@@ -8,6 +8,7 @@
 #include "../../robot/Commun/RS232.h"
 #include "../../robot/Commun/TCPIP.h"
 #include "Header.h"
+#include <chrono>
 
 /**
  * Represent the time waited between two call to Can::waitForMessage
@@ -55,7 +56,7 @@ public:
 	 * Lock until it returns
 	 * @return a list with all the trame received.
 	 */
-	const std::deque<Trame> getTrameReceived();
+	const std::deque<std::pair<Trame, std::chrono::milliseconds>> getTrameReceived();
 
 	/**
 	 * Update CanListener::_parentIsRequestingData with value
@@ -99,7 +100,7 @@ private:
 	Glib::Thread* _thread;
 
 	/// This field stores all the Trame that we receive. It is cleared once it has been transmited to the GUI Thread.
-	std::deque<Trame> _trameBuffer;
+	std::deque<std::pair<Trame, std::chrono::milliseconds>> _trameBuffer;
 
 	/// This is the function that we call when we receive a new message.
 	const std::shared_ptr<Glib::Dispatcher> signal_on_message_received;
