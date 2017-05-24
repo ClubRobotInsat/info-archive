@@ -92,8 +92,9 @@ namespace ConstantesPrincipal {
 
 	enum class Pince {
 		OUVERT = 0,
-		FERME = 1,
-		NBR = 2,
+		OUVERT_MAX = 1,
+		FERME = 2,
+		NBR = 3,
 	};
 
 	enum class Fusee {
