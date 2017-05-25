@@ -14,7 +14,7 @@
 #include "../../simulateur/cartes/CarteDetectAdv2009.h"
 //#include "../../simulateur/cartes/CarteElectrovannes2016.h"
 #include "../../simulateur/cartes/CarteIO2014.h"
-#include "../../simulateur/cartes/CarteServosNova2009.h"
+#include "../../simulateur/cartes/CarteServosNova2017.h"
 #include "../../simulateur/robot/Carte.h"
 
 #else
@@ -30,7 +30,7 @@
 //#include "../../robot/Cartes/CartePneumatique.h"
 //#include "../../robot/Cartes/CartePneumatique2014.h"
 //#include "../../robot/Cartes/CarteColorimetre2014.h"
-#include "../../robot/Cartes/CarteServosNova2009.h"
+#include "../../robot/Cartes/CarteServosNova2017.h"
 #include "../robot/Cartes/CarteDetectAdv2009.h"
 
 #endif
@@ -195,7 +195,7 @@ namespace ConstantesPrincipal {
 
 	template <>
 	struct CarteInfo<IDCartesPrincipal::SERVOS> {
-		using typeCarte = CarteServosNova2009;
+		using typeCarte = CarteServosNova2017;
 		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_SERVOS };
 	};
 
