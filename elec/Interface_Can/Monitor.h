@@ -53,7 +53,7 @@ public:
 	 *
 	 * @param Trame : the trame to display on the GUI.
 	 */
-	void handleTrame(const std::deque<Trame>& buffer, bool isColored);
+	void handleTrame(const std::deque<std::pair<Trame, std::chrono::milliseconds>>& buffer, bool isColored);
 
 	/**
 	* Send a Trame for pinging id.
@@ -98,7 +98,8 @@ protected:
 	 * @return A new buffer with only the relevant ID. Keep the original trame order (aka the 1st Trame will still be
 	 * the first).
 	 */
-	std::deque<Trame> filterBuffer(const std::deque<Trame>& buffer, const std::set<int>& acceptableIDs) const;
+	std::deque<std::pair<Trame, std::chrono::milliseconds>>
+	    filterBuffer(const std::deque<std::pair<Trame, std::chrono::milliseconds>>& buffer, const std::set<int>& acceptableIDs) const;
 
 	/**
 	* Return a string HH:MM:SS.
@@ -112,7 +113,7 @@ protected:
 	 * normally.
 	 * @param trame : the trame that will be handled by the GUI.
 	 */
-	void onListenerNotification(const std::deque<Trame>& buffer, bool colored);
+	void onListenerNotification(const std::deque<std::pair<Trame, std::chrono::milliseconds>>& buffer, bool colored);
 
 	/**
 	 * Add a line to the _refTreeModel  with the data passed to the function.

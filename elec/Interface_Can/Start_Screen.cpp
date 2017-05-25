@@ -52,7 +52,7 @@ bool Start_Screen::scanSerialConnection() {
 	// populate files_in_dev with all the files in /dev that matches "ttyU"
 	while(dev_dir != NULL) {
 		std::string string_filename = dev_dir->d_name;
-		if(string_filename.substr(0, 4) == "ttyU") {
+		if(string_filename.substr(0, 6) == "ttyUSB" or string_filename.substr(0, 6) == "ttyACM") {
 			files_in_dev.push_back(string_filename);
 		}
 		dev_dir = readdir(open_dir);

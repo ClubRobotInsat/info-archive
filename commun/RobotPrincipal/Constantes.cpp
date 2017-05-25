@@ -18,19 +18,19 @@ namespace ConstantesPrincipal {
 	Angle const positionPince[enumToInt(Pince::NBR)] = {0_deg, 0_deg, 200_deg};
 
 	//                                                      devant bas
-	Angle const positionTangage[enumToInt(Tangage::NBR)] = {0_deg, 0_deg}; // De haut en bas
+	Angle const positionTangage[enumToInt(Tangage::NBR)] = {240_deg, 150_deg}; // De haut en bas
 
 	//                                                  attrap ranger
-	Angle const positionLacet[enumToInt(Lacet::NBR)] = {0_deg, 0_deg}; // De droite à gauche
+	Angle const positionLacet[enumToInt(Lacet::NBR)] = {30_deg, 115_deg}; // De droite à gauche
 
 	//                                                    ferme  ouvert
-	Angle const positionGauche[enumToInt(Gauche::NBR)] = {0_deg, 0_deg};
+	Angle const positionGauche[enumToInt(Gauche::NBR)] = {120_deg, 30_deg};
 
 	//                                                    ferme  ouvert
-	Angle const positionDroite[enumToInt(Droite::NBR)] = {0_deg, 0_deg};
+	Angle const positionDroite[enumToInt(Droite::NBR)] = {60_deg, 150_deg};
 
 	//                                                  stock  lancement
-	Angle const positionFusee[enumToInt(Fusee::NBR)] = {0_deg, 0_deg};
+	Angle const positionFusee[enumToInt(Fusee::NBR)] = {260_deg, 320_deg};
 }
 
 Duration const ConstantesPrincipal::TIMEOUT_DEPLACEMENT_DEFAUT = Constantes::TIMEOUT_MOVE_DEFAULT;
