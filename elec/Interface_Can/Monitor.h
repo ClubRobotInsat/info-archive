@@ -48,6 +48,11 @@ public:
 	void sendMessage();
 
 	/**
+	 *  Save the Trame from _trameData in a file
+	 */
+	void saveTramePreset();
+
+	/**
 	 * Will call update interface after splitting the Trame data.
 	 * This is the function responsible for handling the spacebar interruption.
 	 *
@@ -218,6 +223,7 @@ private:
 	 */
 	Gtk::ToggleButton _pauseButton;
 	Gtk::Button _sendTrameButton;
+	Gtk::Button _saveTramePreset;
 
 	std::vector<std::shared_ptr<Gtk::Entry>> _dataArray;
 	Gtk::SpinButton _trameId;

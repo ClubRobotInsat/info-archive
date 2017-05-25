@@ -8,7 +8,7 @@ set(SOURCE_FILES_INTERFACE
         Message.cpp
         CanListener.cpp
         CanListener.h
-        )
+        Preset.cpp Preset.h)
 
 #Vu que c'est la manière "officielle" de récuperer gtkmm via Cmake, on est obligé de passer par PkgConfig
 find_package(PkgConfig REQUIRED)
