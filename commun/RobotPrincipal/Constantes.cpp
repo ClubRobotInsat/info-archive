@@ -15,10 +15,10 @@ namespace ConstantesPrincipal {
 	Angle const positionAscenseur[enumToInt(PositionAscenseur::NBR)] = {700_deg, 200_deg, 0_deg, 0_deg, 350_deg};
 
 	//                                                  ouvert max    ferme
-	Angle const positionPince[enumToInt(Pince::NBR)] = {0_deg, 0_deg, 200_deg};
+	Angle const positionPince[enumToInt(Pince::NBR)] = {180_deg, 45_deg, 200_deg};
 
 	//                                                      devant bas
-	Angle const positionTangage[enumToInt(Tangage::NBR)] = {240_deg, 150_deg}; // De haut en bas
+	Angle const positionTangage[enumToInt(Tangage::NBR)] = {270_deg, 180_deg}; // De haut en bas
 
 	//                                                  attrap ranger
 	Angle const positionLacet[enumToInt(Lacet::NBR)] = {30_deg, 115_deg}; // De droite à gauche
