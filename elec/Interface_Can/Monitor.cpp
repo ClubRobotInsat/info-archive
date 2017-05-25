@@ -3,6 +3,7 @@
 //
 
 #include "Monitor.h"
+#include "Preset.h"
 #include <iomanip>
 #include <log/Log.h>
 
@@ -220,7 +221,10 @@ void Monitor::sendMessage() {
 
 // for the Test of the button call the function, it only print "reussi" when the button is clicked
 void Monitor::saveTramePreset() {
-	std::cout << "reussi" << std::endl;
+
+	Gtk::ComboBoxText _displayList;
+	for(Preset preset : PresetArray)
+		std::cout << "reussi" << std::endl;
 };
 
 
