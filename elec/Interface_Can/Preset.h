@@ -17,6 +17,10 @@ class Preset {
 
 	Preset(uint8_t id, uint8_t cmd, uint8_t data[6]);
 
+	/**
+	 * This function return a representable string of a Trame.
+	 * @return a string representing a Trame.
+	 */
 	std::string toString();
 
 
@@ -33,8 +37,15 @@ private:
 class PresetArray {
 
 public:
+	/**
+	 * This function will initialize the array from the file specified by path.
+	 * @param path : the file where all the presets are loaded.
+	 */
 	PresetArray(std::string path);
 
+	/**
+	 * @return the internal trame array.
+	 */
 	std::vector<Preset> getArray();
 
 private:
