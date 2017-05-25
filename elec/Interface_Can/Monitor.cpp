@@ -15,6 +15,7 @@ Monitor::Monitor(std::string& port)
         , _pingAllIDs("Ping all IDs")
         , _pauseButton("Pause")
         , _sendTrameButton("Send Trame")
+        , _saveTramePreset("Save Trame Preset")
         , _labelTrameId("Trame ID")
         , _labelTrameType("Trame Cmd")
         , _labelTrameData("Trame Data") {
@@ -26,6 +27,7 @@ Monitor::Monitor(std::string& port)
 
 	// Connecting the button to their designated function
 	_sendTrameButton.signal_clicked().connect(sigc::mem_fun(*this, &Monitor::sendMessage));
+	_saveTramePreset.signal_clicked().connect(sigc::mem_fun(*this, &Monitor::saveTramePreset));
 	_pauseButton.signal_clicked().connect(sigc::mem_fun(*this, &Monitor::tooglePauseMode));
 	_toggleAllIDs.signal_clicked().connect(sigc::mem_fun(*this, &Monitor::onToggleAllClicked));
 	_pingAllIDs.signal_clicked().connect(sigc::mem_fun(*this, &Monitor::pingAll));
@@ -62,6 +64,7 @@ Monitor::Monitor(std::string& port)
 	_sendMessageLayout.attach(_labelTrameData, 0, 4, 7, 1);
 
 	_sendMessageLayout.attach(_sendTrameButton, 0, 11, 7, 1);
+	_sendMessageLayout.attach(_saveTramePreset, 0, 12, 7, 1);
 
 	_trameId.set_adjustment(Gtk::Adjustment::create(0, 0, 1, 1, 1, 1));
 	_trameId.set_increments(1, 5);
@@ -214,6 +217,11 @@ void Monitor::sendMessage() {
 		this->handleTrame(temp, true);
 	}
 }
+
+// for the Test of the button call the function, it only print "reussi" when the button is clicked
+void Monitor::saveTramePreset() {
+	std::cout << "reussi" << std::endl;
+};
 
 
 Trame Monitor::buildTrameFromInput() const {
