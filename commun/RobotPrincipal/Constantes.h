@@ -94,7 +94,8 @@ namespace ConstantesPrincipal {
 		OUVERT = 0,
 		OUVERT_MAX = 1,
 		FERME = 2,
-		NBR = 3,
+		SEMI_OUVERT = 3,
+		NBR = 4,
 	};
 
 	enum class Fusee {
