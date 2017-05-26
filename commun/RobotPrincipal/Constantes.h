@@ -118,8 +118,9 @@ namespace ConstantesPrincipal {
 
 	enum class Lacet {
 		ATTRAPER = 0,
-		RANGER = 1,
-		NBR = 2,
+		RECALAGE = 1,
+		RANGER = 2,
+		NBR = 3,
 	};
 
 	enum class Tangage {

@@ -8,20 +8,17 @@
 #include "Constantes.h"
 
 namespace ConstantesPrincipal {
-
-	// TODO : tester les valeurs avec les elecs
-
 	//                                                                  haut     bas      sol    saisie rails
-	Angle const positionAscenseur[enumToInt(PositionAscenseur::NBR)] = {0_deg, 450_deg, 650_deg, 620_deg, 150_deg};
+	Angle const positionAscenseur[enumToInt(PositionAscenseur::NBR)] = {0_deg, 350_deg, 670_deg, 560_deg, 340_deg};
 
 	//                                                  ouvert   max     ferme    semi-ouvert
-	Angle const positionPince[enumToInt(Pince::NBR)] = {150_deg, 70_deg, 250_deg, 155_deg};
+	Angle const positionPince[enumToInt(Pince::NBR)] = {160_deg, 90_deg, 250_deg, 200_deg};
 
 	//                                                      devant bas
 	Angle const positionTangage[enumToInt(Tangage::NBR)] = {90_deg, 180_deg}; // De haut en bas
 
-	//                                                  attrap ranger
-	Angle const positionLacet[enumToInt(Lacet::NBR)] = {0_deg, 135_deg}; // De droite à gauche
+	//                                                  attrap recal    ranger
+	Angle const positionLacet[enumToInt(Lacet::NBR)] = {0_deg, 120_deg, 180_deg}; // De droite à gauche
 
 	//                                                    ferme  ouvert
 	Angle const positionGauche[enumToInt(Gauche::NBR)] = {120_deg, 30_deg};
@@ -30,7 +27,7 @@ namespace ConstantesPrincipal {
 	Angle const positionDroite[enumToInt(Droite::NBR)] = {60_deg, 150_deg};
 
 	//                                                  stock  lancement
-	Angle const positionFusee[enumToInt(Fusee::NBR)] = {260_deg, 320_deg};
+	Angle const positionFusee[enumToInt(Fusee::NBR)] = {260_deg, 330_deg};
 }
 
 Duration const ConstantesPrincipal::TIMEOUT_DEPLACEMENT_DEFAUT = Constantes::TIMEOUT_MOVE_DEFAULT;
