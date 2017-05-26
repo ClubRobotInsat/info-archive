@@ -13,7 +13,7 @@ Monitor::Monitor(std::string& port)
         , _stopListenerThread(false)
         , _canListener(port, signal_on_message_received, _stopListenerThread)
         , _path(".can_interface_preset")
-        , _tramePreset(_path)
+        //, _tramePreset(_path)
         , _toggleAllIDs("Toggle all")
         , _pingAllIDs("Ping all IDs")
         , _pauseButton("Pause")
@@ -225,14 +225,15 @@ void Monitor::sendMessage() {
 }
 
 // for the Test of the button call the function, it only print "reussi" when the button is clicked
-void Monitor::saveTramePreset() {
-
-	Gtk::ComboBoxText _displayList;
-	for(auto preset : _tramePreset.getArray()) {
-		_displayList.append(preset.toString());
-		_displayList.set_active_text(preset.toString());
-	}
-	std::cout << "reussi" << std::endl;
+void Monitor::saveTramePreset(){
+    /*
+        Gtk::ComboBoxText _displayList;
+        for(auto preset : _tramePreset.getArray()) {
+            _displayList.append(preset.toString());
+            _displayList.set_active_text(preset.toString());
+        }
+        std::cout << "reussi" << std::endl;
+     */
 };
 
 

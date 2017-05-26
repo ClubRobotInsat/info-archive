@@ -25,6 +25,7 @@ void Application::killStartScreen(std::string canPort) {
 		_start_screen.hide();
 	} catch(std::exception& e) {
 		logError("-> Lancer l'application en sudo.");
+		logError(e.what());
 		Gtk::MessageDialog dialog(_start_screen,
 		                          "Je n'ai pas les permissions nécessaires pour me connecter au robot. "
 		                          "Essayez de lancer l'application avec sudo");

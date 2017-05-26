@@ -208,7 +208,7 @@ private:
 	std::string _path;
 
 	/// the Preset's variable list
-	PresetArray _tramePreset;
+	// PresetArray _tramePreset;
 
 
 	/**
