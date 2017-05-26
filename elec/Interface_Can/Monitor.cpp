@@ -12,6 +12,8 @@ Monitor::Monitor(std::string& port)
         , signal_on_message_received(std::make_shared<Glib::Dispatcher>())
         , _stopListenerThread(false)
         , _canListener(port, signal_on_message_received, _stopListenerThread)
+        , _path(".can_interface_preset")
+        , _tramePreset(_path)
         , _toggleAllIDs("Toggle all")
         , _pingAllIDs("Ping all IDs")
         , _pauseButton("Pause")
@@ -19,7 +21,10 @@ Monitor::Monitor(std::string& port)
         , _saveTramePreset("Save Trame Preset")
         , _labelTrameId("Trame ID")
         , _labelTrameType("Trame Cmd")
-        , _labelTrameData("Trame Data") {
+        , _labelTrameData("Trame Data")
+
+
+{
 
 	//-----------------GUI Stuff|
 
@@ -223,8 +228,11 @@ void Monitor::sendMessage() {
 void Monitor::saveTramePreset() {
 
 	Gtk::ComboBoxText _displayList;
-	for(Preset preset : PresetArray)
-		std::cout << "reussi" << std::endl;
+	for(auto preset : _tramePreset.getArray()) {
+		_displayList.append(preset.toString());
+		_displayList.set_active_text(preset.toString());
+	}
+	std::cout << "reussi" << std::endl;
 };
 
 

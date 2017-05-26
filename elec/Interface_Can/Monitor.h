@@ -204,8 +204,12 @@ private:
 	/// The grid that hold the GUI for sending messages.
 	Gtk::Grid _sendMessageLayout;
 
+	/// the path to file
+	std::string _path;
+
 	/// the Preset's variable list
-	Preset PresetArray(); //("./Can_Interface_Preset");
+	PresetArray _tramePreset;
+
 
 	/**
 	 * GUI elements related to the right pane : pinging cards and filtering messages.

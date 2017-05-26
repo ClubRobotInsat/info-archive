@@ -12,16 +12,16 @@ namespace ConstantesPrincipal {
 	// TODO : tester les valeurs avec les elecs
 
 	//                                                                  haut     bas      sol    saisie rails
-	Angle const positionAscenseur[enumToInt(PositionAscenseur::NBR)] = {0_deg, 350_deg, 580_deg, 560_deg, 340_deg};
+	Angle const positionAscenseur[enumToInt(PositionAscenseur::NBR)] = {0_deg, 450_deg, 650_deg, 620_deg, 150_deg};
 
 	//                                                  ouvert   max     ferme    semi-ouvert
-	Angle const positionPince[enumToInt(Pince::NBR)] = {150_deg, 45_deg, 250_deg, 155_deg};
+	Angle const positionPince[enumToInt(Pince::NBR)] = {150_deg, 70_deg, 250_deg, 155_deg};
 
 	//                                                      devant bas
-	Angle const positionTangage[enumToInt(Tangage::NBR)] = {275_deg, 180_deg}; // De haut en bas
+	Angle const positionTangage[enumToInt(Tangage::NBR)] = {90_deg, 180_deg}; // De haut en bas
 
 	//                                                  attrap ranger
-	Angle const positionLacet[enumToInt(Lacet::NBR)] = {30_deg, 135_deg}; // De droite à gauche
+	Angle const positionLacet[enumToInt(Lacet::NBR)] = {0_deg, 135_deg}; // De droite à gauche
 
 	//                                                    ferme  ouvert
 	Angle const positionGauche[enumToInt(Gauche::NBR)] = {120_deg, 30_deg};
