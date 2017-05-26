@@ -149,6 +149,7 @@ namespace repere {
 	struct Position {
 		Position(Vector3m pos = {0_m, 0_m, 0_m}, const Repere& repere_parent = ABSOLUTE_REFERENCE);
 		Position(Vector2m pos, const Repere& repere_parent = ABSOLUTE_REFERENCE);
+		Position(Distance x, Distance y, const Repere& repere_parent = ABSOLUTE_REFERENCE);
 		Position(const Position& other);
 
 		Distance getX(const Repere& repere) {

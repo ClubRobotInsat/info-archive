@@ -8,14 +8,14 @@
 #include "Constantes.h"
 
 namespace ConstantesPrincipal {
-	//                                                                  haut     bas      sol    saisie rails
-	Angle const positionAscenseur[enumToInt(PositionAscenseur::NBR)] = {0_deg, 350_deg, 670_deg, 560_deg, 340_deg};
+	//                                                                  haut     bas      sol    saisie   rails
+	Angle const positionAscenseur[enumToInt(PositionAscenseur::NBR)] = {0_deg, 350_deg, 670_deg, 560_deg, 250_deg};
 
 	//                                                  ouvert   max     ferme    semi-ouvert
 	Angle const positionPince[enumToInt(Pince::NBR)] = {160_deg, 90_deg, 250_deg, 200_deg};
 
 	//                                                      devant bas
-	Angle const positionTangage[enumToInt(Tangage::NBR)] = {90_deg, 180_deg}; // De haut en bas
+	Angle const positionTangage[enumToInt(Tangage::NBR)] = {180_deg, 90_deg}; // De haut en bas
 
 	//                                                  attrap recal    ranger
 	Angle const positionLacet[enumToInt(Lacet::NBR)] = {0_deg, 120_deg, 180_deg}; // De droite à gauche

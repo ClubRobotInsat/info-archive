@@ -14,6 +14,8 @@ Position::Position(Vector3m pos, const Repere& repere_parent) : _pos(pos), _repe
 
 Position::Position(Vector2m pos, const Repere& repere_parent) : _pos(toVec3(pos)), _repere(repere_parent) {}
 
+Position::Position(Distance x, Distance y, const Repere& repere_parent) : _pos(x, y, 0_m), _repere(repere_parent) {}
+
 Position::Position(const Position& other) : _pos(other._pos), _repere(other._repere) {}
 
 Coordonnees::Coordonnees(Vector3m position, Angle angle, const Repere& repere_parent) : _repere_parent(repere_parent) {
