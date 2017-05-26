@@ -9,6 +9,7 @@
 #include "CanListener.h"
 #include "Header.h"
 #include "Message.h"
+#include "Preset.h"
 #include <set>
 
 /**
@@ -202,6 +203,13 @@ private:
 
 	/// The grid that hold the GUI for sending messages.
 	Gtk::Grid _sendMessageLayout;
+
+	/// the path to file
+	std::string _path;
+
+	/// the Preset's variable list
+	PresetArray _tramePreset;
+
 
 	/**
 	 * GUI elements related to the right pane : pinging cards and filtering messages.
