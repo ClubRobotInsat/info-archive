@@ -58,6 +58,14 @@ else()
 
 endif()
 
+if(${BITS} EQUAL 32)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32")
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32")
+	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -m32")
+	set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -m32")
+	set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -m32")
+endif()
+
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wunused-value -Wuninitialized  -Wunused-parameter -Wunreachable-code -Wno-sign-compare -Woverloaded-virtual -Werror=return-type")
 
 function(compile_petri TARGET_NAME PATH_TO_DOC OUTPUT)
@@ -71,21 +79,10 @@ endfunction()
 # debug/CGTK semble désactivé depuis un moment également.
 add_definitions(-DGTKWIN_DISABLE)
 
-include_directories(commun /usr/local/include/)
+include_directories(src/commun third_parties /usr/local/include/)
 link_directories(/usr/local/lib/)
+add_subdirectory(third_parties)
 
-add_subdirectory(robot)
-
-# Juste lancer cmake avec les bons compilos dans env CC / CXX
-add_subdirectory(simulateur)
-
-if(${BITS} EQUAL 32)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32")
-	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32")
-	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -m32")
-	set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -m32")
-	set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -m32")
-endif()
-
-add_subdirectory(petri)
-add_subdirectory(elec/Interface_Can)
+add_subdirectory(src/robot)
+add_subdirectory(src/simulateur)
+add_subdirectory(src/elec/Interface_Can)

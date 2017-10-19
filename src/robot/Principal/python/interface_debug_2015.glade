@@ -1,0 +1,700 @@
+<?xml version="1.0"?>
+<interface>
+  <requires lib="gtk+" version="2.16"/>
+  <!-- interface-naming-policy project-wide -->
+  <object class="GtkWindow" id="graphique">
+    <property name="events">GDK_KEY_RELEASE_MASK | GDK_STRUCTURE_MASK</property>
+    <signal name="destroy" handler="onWindowsDestroy"/>
+    <signal name="key_press_event" handler="onWindowKeyPressedEvent"/>
+    <signal name="key_release_event" handler="onWindowKeyReleaseEvent"/>
+    <child>
+      <object class="GtkVBox" id="vboxInterface">
+        <property name="visible">True</property>
+        <child>
+          <object class="GtkLabel" id="labelControleClav">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes">Contr&#xF4;le Clavier</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkHBox" id="hboxControleClav">
+            <property name="visible">True</property>
+            <child>
+              <object class="GtkVBox" id="vboxActions2">
+                <property name="visible">True</property>
+                <child>
+                  <object class="GtkLabel" id="labelGlissiereTotem">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">Glissi&#xE8;re Totem</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkHBox" id="hboxGlissiereTotem">
+                    <property name="visible">True</property>
+                    <child>
+                      <object class="GtkButton" id="glissiereTOuverte">
+                        <property name="label" translatable="yes">Sortie (P)</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <signal name="pressed" handler="onButtonPressed"/>
+                        <signal name="released" handler="onButtonReleased"/>
+                      </object>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="glissiereTFermee">
+                        <property name="label" translatable="yes">Rentr&#xE9;e (M)</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <signal name="pressed" handler="onButtonPressed"/>
+                        <signal name="released" handler="onButtonReleased"/>
+                      </object>
+                      <packing>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="labelBrasCarte">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">Bras Carte</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkHBox" id="hboxBrasCarte">
+                    <property name="visible">True</property>
+                    <child>
+                      <object class="GtkButton" id="brasCarteOuvert">
+                        <property name="label" translatable="yes">Ouvert (U)</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <signal name="pressed" handler="onButtonPressed"/>
+                        <signal name="released" handler="onButtonReleased"/>
+                      </object>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="brasCarteFerme">
+                        <property name="label" translatable="yes">Ferm&#xE9; (J)</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <signal name="pressed" handler="onButtonPressed"/>
+                        <signal name="released" handler="onButtonReleased"/>
+                      </object>
+                      <packing>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="position">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="labelPinceCarte">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">Pince Carte</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="position">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkHBox" id="hboxPinceCarte">
+                    <property name="visible">True</property>
+                    <child>
+                      <object class="GtkButton" id="pinceCarteOuvert">
+                        <property name="label" translatable="yes">Ouvert (Y)</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <signal name="pressed" handler="onButtonPressed"/>
+                        <signal name="released" handler="onButtonReleased"/>
+                      </object>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="pinceCarteFerme">
+                        <property name="label" translatable="yes">Ferm&#xE9; (H)</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <signal name="pressed" handler="onButtonPressed"/>
+                        <signal name="released" handler="onButtonReleased"/>
+                      </object>
+                      <packing>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="position">5</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="labelGlissiereCoffre">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">Glissi&#xE8;re Coffre</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="position">6</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkHBox" id="hboxGlissiereCoffre">
+                    <property name="visible">True</property>
+                    <child>
+                      <object class="GtkButton" id="glissiereCOuverte">
+                        <property name="label" translatable="yes">Ouverte (W)</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <signal name="pressed" handler="onButtonPressed"/>
+                        <signal name="released" handler="onButtonReleased"/>
+                      </object>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="glissiereCFermee">
+                        <property name="label" translatable="yes">Ferm&#xE9;e (X)</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <signal name="pressed" handler="onButtonPressed"/>
+                        <signal name="released" handler="onButtonReleased"/>
+                      </object>
+                      <packing>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="position">7</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="labelCoffre">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">Coffre</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="position">8</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkHBox" id="hboxCoffre">
+                    <property name="visible">True</property>
+                    <child>
+                      <object class="GtkButton" id="coffreOuvert">
+                        <property name="label" translatable="yes">Ouvert (I)</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <signal name="pressed" handler="onButtonPressed"/>
+                        <signal name="released" handler="onButtonReleased"/>
+                      </object>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="coffreFerme">
+                        <property name="label" translatable="yes">Ferm&#xE9; (K)</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <signal name="pressed" handler="onButtonPressed"/>
+                        <signal name="released" handler="onButtonReleased"/>
+                      </object>
+                      <packing>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="position">9</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="labelServoBenneAvant">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">Benne avant</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="position">10</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkHBox" id="hboxMoissoneuse">
+                    <property name="visible">True</property>
+                    <child>
+                      <object class="GtkButton" id="servoBenneAvantBas">
+                        <property name="label" translatable="yes">Bas (O)</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <signal name="pressed" handler="onButtonPressed"/>
+                        <signal name="released" handler="onButtonReleased"/>
+                      </object>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="servoBenneAvantHaut">
+                        <property name="label" translatable="yes">Haut (L)</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <signal name="pressed" handler="onButtonPressed"/>
+                        <signal name="released" handler="onButtonReleased"/>
+                      </object>
+                      <packing>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="position">11</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkVBox" id="vboxRobotDep">
+                <property name="visible">True</property>
+                <child>
+                  <object class="GtkImage" id="image1">
+                    <property name="visible">True</property>
+                    <property name="pixbuf">imageRobotHyperion2012.jpg</property>
+                  </object>
+                  <packing>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkTable" id="table1">
+                    <property name="visible">True</property>
+                    <property name="n_rows">3</property>
+                    <property name="n_columns">3</property>
+                    <child>
+                      <object class="GtkButton" id="flecheHaut">
+                        <property name="label" translatable="yes">&#x2191;</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <signal name="pressed" handler="onButtonPressed"/>
+                        <signal name="released" handler="onButtonReleased"/>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="right_attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="flecheGauche">
+                        <property name="label" translatable="yes">&#x2190;</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <signal name="pressed" handler="onButtonPressed"/>
+                        <signal name="released" handler="onButtonReleased"/>
+                      </object>
+                      <packing>
+                        <property name="top_attach">1</property>
+                        <property name="bottom_attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="flecheBas">
+                        <property name="label" translatable="yes">&#x2193;</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <signal name="pressed" handler="onButtonPressed"/>
+                        <signal name="released" handler="onButtonReleased"/>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="right_attach">2</property>
+                        <property name="top_attach">2</property>
+                        <property name="bottom_attach">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="flecheDroite">
+                        <property name="label" translatable="yes">&#x2192;</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <signal name="pressed" handler="onButtonPressed"/>
+                        <signal name="released" handler="onButtonReleased"/>
+                      </object>
+                      <packing>
+                        <property name="left_attach">2</property>
+                        <property name="right_attach">3</property>
+                        <property name="top_attach">1</property>
+                        <property name="bottom_attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkVBox" id="vboxActions">
+                <property name="visible">True</property>
+                <child>
+                  <object class="GtkLabel" id="labelPincesHaut">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">Pinces Haut</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkHBox" id="hboxPincesHaut">
+                    <property name="visible">True</property>
+                    <child>
+                      <object class="GtkButton" id="pincesHOuvertes">
+                        <property name="label" translatable="yes">Ouvertes (A)</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <signal name="pressed" handler="onButtonPressed"/>
+                        <signal name="released" handler="onButtonReleased"/>
+                      </object>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="pincesHFermees">
+                        <property name="label" translatable="yes">Ferm&#xE9;es (Q)</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <signal name="pressed" handler="onButtonPressed"/>
+                        <signal name="released" handler="onButtonReleased"/>
+                      </object>
+                      <packing>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="labelPincesTotem">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">Pinces Totem</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkHBox" id="hboxPincesTotem">
+                    <property name="visible">True</property>
+                    <child>
+                      <object class="GtkButton" id="pincesTOuvertes">
+                        <property name="label" translatable="yes">Ouvertes (Z)</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <signal name="pressed" handler="onButtonPressed"/>
+                        <signal name="released" handler="onButtonReleased"/>
+                      </object>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="pincesTFermees">
+                        <property name="label" translatable="yes">Ferm&#xE9;es (S)</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <signal name="pressed" handler="onButtonPressed"/>
+                        <signal name="released" handler="onButtonReleased"/>
+                      </object>
+                      <packing>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="position">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="labelPincesBas">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">Pinces Bas</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="position">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkHBox" id="hboxPincesBas">
+                    <property name="visible">True</property>
+                    <child>
+                      <object class="GtkButton" id="pincesBOuvertes">
+                        <property name="label" translatable="yes">Ouvertes (E)</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <signal name="pressed" handler="onButtonPressed"/>
+                        <signal name="released" handler="onButtonReleased"/>
+                      </object>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="pincesBFermees">
+                        <property name="label" translatable="yes">Ferm&#xE9;es (D)</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <signal name="pressed" handler="onButtonPressed"/>
+                        <signal name="released" handler="onButtonReleased"/>
+                      </object>
+                      <packing>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="position">5</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="labelBrasDroit">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">Bras Droit</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="position">6</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkHBox" id="hboxBrasDroit">
+                    <property name="visible">True</property>
+                    <child>
+                      <object class="GtkButton" id="brasDOuvert">
+                        <property name="label" translatable="yes">Ouvert (R)</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <signal name="pressed" handler="onButtonPressed"/>
+                        <signal name="released" handler="onButtonReleased"/>
+                      </object>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="brasDFerme">
+                        <property name="label" translatable="yes">Ferm&#xE9; (F)</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <signal name="pressed" handler="onButtonPressed"/>
+                        <signal name="released" handler="onButtonReleased"/>
+                      </object>
+                      <packing>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="position">7</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="labelBrasGauche">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">Bras Gauche</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="position">8</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkHBox" id="hboxBrasGauche">
+                    <property name="visible">True</property>
+                    <child>
+                      <object class="GtkButton" id="brasGOuvert">
+                        <property name="label" translatable="yes">Ouvert (T)</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <signal name="pressed" handler="onButtonPressed"/>
+                        <signal name="released" handler="onButtonReleased"/>
+                      </object>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="brasGFerme">
+                        <property name="label" translatable="yes">Ferm&#xE9; (G)</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <signal name="pressed" handler="onButtonPressed"/>
+                        <signal name="released" handler="onButtonReleased"/>
+                      </object>
+                      <packing>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="position">9</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="labelAutres">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">Autres</property>
+                  </object>
+                  <packing>
+                    <property name="position">20</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkHBox" id="hboxAutres">
+                    <property name="visible">True</property>
+                    <child>
+                      <object class="GtkCheckButton" id="debugTrames">
+                        <property name="label" translatable="yes">Debug trames</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="draw_indicator">True</property>
+                        <signal name="toggled" handler="onCheckbuttonToggled"/>
+                      </object>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="position">21</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="position">2</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="initialisationMeca">
+            <property name="label" translatable="yes">Initialisation meca</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="pressed" handler="onButtonPressed"/>
+            <signal name="released" handler="onButtonReleased"/>
+          </object>
+          <packing>
+            <property name="position">2</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkWindow" id="console">
+    <property name="visible">True</property>
+    <child>
+      <object class="GtkVBox" id="vboxConsole">
+        <property name="visible">True</property>
+        <child>
+          <object class="GtkLabel" id="labelCommandeAv1">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes">Commandes Avanc&#xE9;es</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

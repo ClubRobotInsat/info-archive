@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Document>
+  <Settings Name="IADebug" Enum="ResultatAction,REUSSI,RATE,TIMEOUT" SourceOutputPath="../petri/src" LibOutputPath="../../../build" Hostname="localhost" Port="12346" Language="Cpp" RunInEditor="False">
+    <Compiler Invocation="/usr/bin/g++" />
+    <IncludePaths>
+      <IncludePath Path="../../../petri" Recursive="true" />
+      <IncludePath Path="../../../commun" Recursive="false" />
+    </IncludePaths>
+    <LibPaths />
+    <Libs />
+  </Settings>
+  <Window X="65" Y="24" W="1301" H="744" />
+  <Headers>
+    <Header File="Deplacement.h" />
+    <Header File="Utils.h" />
+  </Headers>
+  <Macros>
+    <Macro Name="ia" Value="incrementerAscenseur" />
+  </Macros>
+  <PetriNet ID="0" Name="Root" X="0" Y="0" Active="true" RequiredTokens="0" Radius="30">
+    <Comments>
+      <Comment ID="43" Name="Test pour le déplacement" X="540" Y="30" Width="192" Height="44" R="0.76423285267414354" G="0.79055466544594488" B="0.82426184481574727" A="1" />
+      <Comment ID="44" Name="Test pour les servos" X="540" Y="160" Width="192" Height="27" R="0.74509803921568629" G="0.74509803921568629" B="0.81176470588235294" A="1" />
+    </Comments>
+    <States>
+      <Action ID="1" Name="begin" X="94" Y="90" Active="true" RequiredTokens="0" Radius="20" Function="Petri::Utility::doNothing()" />
+      <Action ID="2" Name="2" X="222" Y="90" Active="false" RequiredTokens="1" Radius="20" Function="avancer(1_m)" />
+      <Action ID="3" Name="3" X="350" Y="90" Active="false" RequiredTokens="1" Radius="20" Function="reculer(1_m)" />
+      <Action ID="4" Name="4" X="478" Y="90" Active="false" RequiredTokens="1" Radius="20" Function="tournerRelatif(67_deg)" />
+      <Action ID="5" Name="5" X="606" Y="90" Active="false" RequiredTokens="1" Radius="20" Function="tournerAbsolu(360_deg)" />
+      <Action ID="6" Name="6" X="724" Y="90" Active="false" RequiredTokens="1" Radius="20" Function="ouvrirToutesVannes()" />
+      <Action ID="7" Name="7" X="860" Y="90" Active="false" RequiredTokens="1" Radius="20" Function="fermerToutesVannes()" />
+      <Action ID="8" Name="8" X="990" Y="90" Active="false" RequiredTokens="1" Radius="20" Function="ouvrirVanne(HAUT_1)" />
+      <Action ID="9" Name="9" X="990" Y="218" Active="false" RequiredTokens="1" Radius="20" Function="ouvrirVanne(HAUT_2)" />
+      <Action ID="10" Name="10" X="860" Y="220" Active="false" RequiredTokens="1" Radius="20" Function="ouvrirVanne(HAUT_3)" />
+      <Action ID="11" Name="11" X="720" Y="220" Active="false" RequiredTokens="1" Radius="20" Function="activerPompe(HAUT)" />
+      <Action ID="12" Name="12" X="606" Y="218" Active="false" RequiredTokens="1" Radius="20" Function="desactiverPompe(BAS)" />
+      <Action ID="13" Name="13" X="480" Y="220" Active="false" RequiredTokens="1" Radius="20" Function="fermerVanne(HAUT_1)" />
+      <Action ID="14" Name="14" X="350" Y="218" Active="false" RequiredTokens="1" Radius="20" Function="fermerVanne(HAUT_2)" />
+      <Action ID="15" Name="15" X="220" Y="220" Active="false" RequiredTokens="1" Radius="20" Function="fermerVanne(HAUT_3)" />
+      <Action ID="16" Name="16" X="94" Y="218" Active="false" RequiredTokens="1" Radius="20" Function="ouvrirVanne(BAS_1)" />
+      <Action ID="17" Name="17" X="94" Y="346" Active="false" RequiredTokens="1" Radius="20" Function="ouvrirVanne(BAS_2)" />
+      <Action ID="18" Name="18" X="222" Y="346" Active="false" RequiredTokens="1" Radius="20" Function="ouvrirVanne(BAS_3)" />
+      <Action ID="19" Name="19" X="350" Y="346" Active="false" RequiredTokens="1" Radius="20" Function="activerPompe(BAS)" />
+      <Action ID="20" Name="20" X="478" Y="346" Active="false" RequiredTokens="1" Radius="20" Function="desactiverPompe(BAS)" />
+      <Action ID="21" Name="21" X="606" Y="346" Active="false" RequiredTokens="1" Radius="20" Function="fermerVanne(BAS_1)" />
+      <Action ID="22" Name="22" X="720" Y="346" Active="false" RequiredTokens="1" Radius="20" Function="fermerVanne(BAS_2)" />
+      <Action ID="45" Name="46" X="860" Y="346" Active="false" RequiredTokens="1" Radius="20" Function="fermerVanne(BAS_3)" />
+      <Action ID="46" Name="48" X="990" Y="346" Active="false" RequiredTokens="1" Radius="20" Function="monterCuillere()" />
+      <Action ID="47" Name="50" X="990" Y="458" Active="false" RequiredTokens="1" Radius="20" Function="arreter()" />
+    </States>
+    <Transitions>
+      <Transition ID="23" Name="24" X="158" Y="90" BeforeID="1" AfterID="2" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="128" />
+      <Transition ID="24" Name="25" X="286" Y="90" BeforeID="2" AfterID="3" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="128" />
+      <Transition ID="25" Name="26" X="414" Y="90" BeforeID="3" AfterID="4" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="128" />
+      <Transition ID="26" Name="27" X="542" Y="90" BeforeID="4" AfterID="5" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="128" />
+      <Transition ID="27" Name="28" X="665" Y="90" BeforeID="5" AfterID="6" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="118" />
+      <Transition ID="28" Name="29" X="792" Y="90" BeforeID="6" AfterID="7" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="136" />
+      <Transition ID="29" Name="30" X="925" Y="90" BeforeID="7" AfterID="8" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="130" />
+      <Transition ID="30" Name="31" X="990" Y="154" BeforeID="8" AfterID="9" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="128" />
+      <Transition ID="31" Name="32" X="925" Y="219" BeforeID="9" AfterID="10" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="130.01538370516005" />
+      <Transition ID="32" Name="33" X="790" Y="220" BeforeID="10" AfterID="11" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
+      <Transition ID="33" Name="34" X="663" Y="219" BeforeID="11" AfterID="12" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="114.0175425099138" />
+      <Transition ID="34" Name="35" X="543" Y="219" BeforeID="12" AfterID="13" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="126.01587201618692" />
+      <Transition ID="35" Name="36" X="415" Y="219" BeforeID="13" AfterID="14" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="130.01538370516005" />
+      <Transition ID="36" Name="37" X="285" Y="219" BeforeID="14" AfterID="15" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="130.01538370516005" />
+      <Transition ID="37" Name="38" X="157" Y="219" BeforeID="15" AfterID="16" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="126.01587201618692" />
+      <Transition ID="38" Name="39" X="94" Y="282" BeforeID="16" AfterID="17" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="128" />
+      <Transition ID="39" Name="40" X="158" Y="346" BeforeID="17" AfterID="18" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="128" />
+      <Transition ID="40" Name="41" X="286" Y="346" BeforeID="18" AfterID="19" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="128" />
+      <Transition ID="41" Name="42" X="414" Y="346" BeforeID="19" AfterID="20" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="128" />
+      <Transition ID="42" Name="43" X="542" Y="346" BeforeID="20" AfterID="21" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="128" />
+      <Transition ID="48" Name="52" X="663" Y="346" BeforeID="21" AfterID="22" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="114" />
+      <Transition ID="49" Name="53" X="790" Y="346" BeforeID="22" AfterID="45" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
+      <Transition ID="50" Name="54" X="925" Y="346" BeforeID="45" AfterID="46" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="130" />
+      <Transition ID="51" Name="55" X="990" Y="402" BeforeID="46" AfterID="47" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="112" />
+    </Transitions>
+  </PetriNet>
+</Document>

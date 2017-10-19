@@ -1,12 +1,12 @@
-[submodule "commun/Units"]
-	path = commun/Units
-	url = https://github.com/rems4e/si-units.git
-[submodule "petri"]
-	path = petri
+[submodule "third_parties/petri"]
+	path = third_parties/petri
 	url = ssh://git.remi-saurel.com/rsaurel/petri
-[submodule "simulateur/server/websocketpp"]
-	path = simulateur/server/websocketpp
+[submodule "third_parties/websocketpp"]
+	path = third_parties/websocketpp
 	url = https://github.com/zaphoyd/websocketpp.git
-[submodule "simulateur/server/asio"]
-	path = simulateur/server/asio
+[submodule "third_parties/asio"]
+	path = third_parties/asio
 	url = https://github.com/chriskohlhoff/asio.git
+[submodule "Units"]
+	path = third_parties/Units
+	url = https://github.com/rems4e/si-units.git

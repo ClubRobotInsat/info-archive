@@ -1,0 +1,392 @@
+<html><head><title>Video4Linux Kernel API Reference v0.1:19990430</title><!-- Revision History: --><!--   4/30/1999 - Fred Gleason (fredg@wava.com)--><!-- Documented extensions for the Radio Data System (RDS) extensions --></head><body bgcolor="#ffffff">
+<h3>Devices</h3>
+Video4Linux provides the following sets of device files. These live on the
+character device formerly known as "/dev/bttv". /dev/bttv should be a
+symlink to /dev/video0 for most people. 
+<p>
+<table>
+<tbody><tr><th>Device Name</th><th>Minor Range</th><th>Function</th>
+</tr><tr><td>/dev/video</td><td>0-63</td><td>Video Capture Interface</td>
+</tr><tr><td>/dev/radio</td><td>64-127</td><td>AM/FM Radio Devices</td>
+</tr><tr><td>/dev/vtx</td><td>192-223</td><td>Teletext Interface Chips</td>
+</tr><tr><td>/dev/vbi</td><td>224-239</td><td>Raw VBI Data (Intercast/teletext)</td>
+</tr></tbody></table>
+</p><p>
+Video4Linux programs open and scan the devices to find what they are looking
+for. Capability queries define what each interface supports. The 
+described API is only defined for video capture cards. The relevant subset
+applies to radio cards. Teletext interfaces talk the existing VTX API.
+</p><p>
+</p><h3>Capability Query Ioctl</h3>
+The <b>VIDIOCGCAP</b> ioctl call is used to obtain the capability
+information for a video device. The <b>struct video_capability</b> object
+passed to the ioctl is completed and returned. It contains the following
+information
+<p>
+<table>
+<tbody><tr><td><b>name[32]</b></td><td>Canonical name for this interface</td>
+</tr><tr><td><b>type</b></td><td>Type of interface</td>
+</tr><tr><td><b>channels</b></td><td>Number of radio/tv channels if appropriate</td>
+</tr><tr><td><b>audios</b></td><td>Number of audio devices if appropriate</td>
+</tr><tr><td><b>maxwidth</b></td><td>Maximum capture width in pixels</td>
+</tr><tr><td><b>maxheight</b></td><td>Maximum capture height in pixels</td>
+</tr><tr><td><b>minwidth</b></td><td>Minimum capture width in pixels</td>
+</tr><tr><td><b>minheight</b></td><td>Minimum capture height in pixels</td>
+</tr></tbody></table>
+</p><p>
+The type field lists the capability flags for the device. These are
+as follows
+</p><p>
+<table>
+<tbody><tr><th>Name</th><th>Description</th>
+</tr><tr><td><b>VID_TYPE_CAPTURE</b></td><td>Can capture to memory</td>
+</tr><tr><td><b>VID_TYPE_TUNER</b></td><td>Has a tuner of some form</td>
+</tr><tr><td><b>VID_TYPE_TELETEXT</b></td><td>Has teletext capability</td>
+</tr><tr><td><b>VID_TYPE_OVERLAY</b></td><td>Can overlay its image onto the frame buffer</td>
+</tr><tr><td><b>VID_TYPE_CHROMAKEY</b></td><td>Overlay is Chromakeyed</td>
+</tr><tr><td><b>VID_TYPE_CLIPPING</b></td><td>Overlay clipping is supported</td>
+</tr><tr><td><b>VID_TYPE_FRAMERAM</b></td><td>Overlay overwrites frame buffer memory</td>
+</tr><tr><td><b>VID_TYPE_SCALES</b></td><td>The hardware supports image scaling</td>
+</tr><tr><td><b>VID_TYPE_MONOCHROME</b></td><td>Image capture is grey scale only</td>
+</tr><tr><td><b>VID_TYPE_SUBCAPTURE</b></td><td>Capture can be of only part of the image</td>
+</tr></tbody></table>
+</p><p>
+The minimum and maximum sizes listed for a capture device do not imply all
+that all height/width ratios or sizes within the range are possible. A
+request to set a size will be honoured by the largest available capture
+size whose capture is no large than the requested rectangle in either
+direction. For example the quickcam has 3 fixed settings. 
+</p><p>
+</p><h3>Frame Buffer</h3>
+Capture cards that drop data directly onto the frame buffer must be told the
+base address of the frame buffer, its size and organisation. This is a 
+privileged ioctl and one that eventually X itself should set.
+<p>
+The <b>VIDIOCSFBUF</b> ioctl sets the frame buffer parameters for a capture
+card. If the card does not do direct writes to the frame buffer then this
+ioctl will be unsupported. The <b>VIDIOCGFBUF</b> ioctl returns the
+currently used parameters. The structure used in both cases is a 
+<b>struct video_buffer</b>.
+</p><p>
+<table>
+<tbody><tr><td><b>void *base</b></td><td>Base physical address of the buffer</td>
+</tr><tr><td><b>int height</b></td><td>Height of the frame buffer</td>
+</tr><tr><td><b>int width</b></td><td>Width of the frame buffer</td>
+</tr><tr><td><b>int depth</b></td><td>Depth of the frame buffer</td>
+</tr><tr><td><b>int bytesperline</b></td><td>Number of bytes of memory between the start of two adjacent lines</td>
+</tr></tbody></table>
+</p><p>
+Note that these values reflect the physical layout of the frame buffer. 
+The visible area may be smaller. In fact under XFree86 this is commonly the
+case. XFree86 DGA can provide the parameters required to set up this ioctl.
+Setting the base address to NULL indicates there is no physical frame buffer
+access.
+</p><p>
+</p><h3>Capture Windows</h3>
+The capture area is described by a <b>struct video_window</b>. This defines
+a capture area and the clipping information if relevant. The 
+<b>VIDIOCGWIN</b> ioctl recovers the current settings and the 
+<b>VIDIOCSWIN</b> sets new values. A successful call to <b>VIDIOCSWIN</b> 
+indicates that a suitable set of parameters have been chosen. They do not
+indicate that exactly what was requested was granted. The program should
+call <b>VIDIOCGWIN</b> to check if the nearest match was suitable. The
+<b>struct video_window</b> contains the following fields.
+<p>
+<table>
+<tbody><tr><td><b>x</b></td><td>The X co-ordinate specified in X windows format.</td>
+</tr><tr><td><b>y</b></td><td>The Y co-ordinate specified in X windows format.</td>
+</tr><tr><td><b>width</b></td><td>The width of the image capture.</td>
+</tr><tr><td><b>height</b></td><td>The height of the image capture.</td>
+</tr><tr><td><b>chromakey</b></td><td>A host order RGB32 value for the chroma key.</td>
+</tr><tr><td><b>flags</b></td><td>Additional capture flags.</td>
+</tr><tr><td><b>clips</b></td><td>A list of clipping rectangles. <em>(Set only)</em></td>
+</tr><tr><td><b>clipcount</b></td><td>The number of clipping rectangles. <em>(Set only)</em></td>
+</tr></tbody></table>
+</p><p>
+Clipping rectangles are passed as an array. Each clip consists of the following
+fields available to the user.
+</p><p>
+<table>
+<tbody><tr><td><b>x</b></td><td>X co-ordinate of rectangle to skip</td>
+</tr><tr><td><b>y</b></td><td>Y co-ordinate of rectangle to skip</td>
+</tr><tr><td><b>width</b></td><td>Width of rectangle to skip</td>
+</tr><tr><td><b>height</b></td><td>Height of rectangle to skip</td>
+</tr></tbody></table>
+</p><p>
+Merely setting the window does not enable capturing. Overlay capturing
+(i.e. PCI-PCI transfer to the frame buffer of the video card)
+is activated by passing the <b>VIDIOCCAPTURE</b> ioctl a value of 1, and
+disabled by passing it a value of 0. 
+</p><p>
+Some capture devices can capture a subfield of the image they actually see.
+This is indicated when VIDEO_TYPE_SUBCAPTURE is defined.
+The video_capture describes the time and special subfields to capture.
+The video_capture structure contains the following fields.
+</p><p>
+<table>
+<tbody><tr><td><b>x</b></td><td>X co-ordinate of source rectangle to grab</td>
+</tr><tr><td><b>y</b></td><td>Y co-ordinate of source rectangle to grab</td>
+</tr><tr><td><b>width</b></td><td>Width of source rectangle to grab</td>
+</tr><tr><td><b>height</b></td><td>Height of source rectangle to grab</td>
+</tr><tr><td><b>decimation</b></td><td>Decimation to apply</td>
+</tr><tr><td><b>flags</b></td><td>Flag settings for grabbing</td>
+</tr></tbody></table>
+The available flags are
+</p><p>
+<table>
+<tbody><tr><th>Name</th><th>Description</th>
+</tr><tr><td><b>VIDEO_CAPTURE_ODD</b></td><td>Capture only odd frames</td>
+</tr><tr><td><b>VIDEO_CAPTURE_EVEN</b></td><td>Capture only even frames</td>
+</tr></tbody></table>
+</p><p>
+</p><h3>Video Sources</h3>
+Each video4linux video or audio device captures from one or more 
+source <b>channels</b>. Each channel can be queries with the 
+<b>VDIOCGCHAN</b> ioctl call. Before invoking this function the caller
+must set the channel field to the channel that is being queried. On return
+the <b>struct video_channel</b> is filled in with information about the
+nature of the channel itself.
+<p>
+The <b>VIDIOCSCHAN</b> ioctl takes an integer argument and switches the
+capture to this input. It is not defined whether parameters such as colour
+settings or tuning are maintained across a channel switch. The caller should
+maintain settings as desired for each channel. (This is reasonable as 
+different video inputs may have different properties).
+</p><p>
+The <b>struct video_channel</b> consists of the following
+</p><p>
+<table>
+<tbody><tr><td><b>channel</b></td><td>The channel number</td>
+</tr><tr><td><b>name</b></td><td>The input name - preferably reflecting the label
+on the card input itself</td>
+</tr><tr><td><b>tuners</b></td><td>Number of tuners for this input</td>
+</tr><tr><td><b>flags</b></td><td>Properties the tuner has</td>
+</tr><tr><td><b>type</b></td><td>Input type (if known)</td>
+</tr><tr><td><b>norm</b></td><td>The norm for this channel</td>
+</tr></tbody></table>
+</p><p>
+The flags defined are
+</p><p>
+<table>
+<tbody><tr><td><b>VIDEO_VC_TUNER</b></td><td>Channel has tuners.</td>
+</tr><tr><td><b>VIDEO_VC_AUDIO</b></td><td>Channel has audio.</td>
+</tr><tr><td><b>VIDEO_VC_NORM</b></td><td>Channel has norm setting.</td>
+</tr></tbody></table>
+</p><p>
+The types defined are
+</p><p>
+<table>
+<tbody><tr><td><b>VIDEO_TYPE_TV</b></td><td>The input is a TV input.</td>
+</tr><tr><td><b>VIDEO_TYPE_CAMERA</b></td><td>The input is a camera.</td>
+</tr></tbody></table>
+</p><p>
+</p><h3>Image Properties</h3>
+The image properties of the picture can be queried with the <b>VIDIOCGPICT</b>
+ioctl which fills in a <b>struct video_picture</b>. The <b>VIDIOCSPICT</b> 
+ioctl allows values to be changed. All values except for the palette type
+are scaled between 0-65535. 
+<p>
+The <b>struct video_picture</b> consists of the following fields
+</p><p>
+<table>
+<tbody><tr><td><b>brightness</b></td><td>Picture brightness</td>
+</tr><tr><td><b>hue</b></td><td>Picture hue (colour only)</td>
+</tr><tr><td><b>colour</b></td><td>Picture colour (colour only)</td>
+</tr><tr><td><b>contrast</b></td><td>Picture contrast</td>
+</tr><tr><td><b>whiteness</b></td><td>The whiteness (greyscale only)</td>
+</tr><tr><td><b>depth</b></td><td>The capture depth (may need to match the frame buffer depth)</td>
+</tr><tr><td><b>palette</b></td><td>Reports the palette that should be used for this image</td>
+</tr></tbody></table>
+</p><p>
+The following palettes are defined
+</p><p>
+<table>
+<tbody><tr><td><b>VIDEO_PALETTE_GREY</b></td><td>Linear intensity grey scale (255 is brightest).</td>
+</tr><tr><td><b>VIDEO_PALETTE_HI240</b></td><td>The BT848 8bit colour cube.</td>
+</tr><tr><td><b>VIDEO_PALETTE_RGB565</b></td><td>RGB565 packed into 16 bit words.</td>
+</tr><tr><td><b>VIDEO_PALETTE_RGB555</b></td><td>RGV555 packed into 16 bit words, top bit undefined.</td>
+</tr><tr><td><b>VIDEO_PALETTE_RGB24</b></td><td>RGB888 packed into 24bit words.</td>
+</tr><tr><td><b>VIDEO_PALETTE_RGB32</b></td><td>RGB888 packed into the low 3 bytes of 32bit words. The top 8bits are undefined.</td>
+</tr><tr><td><b>VIDEO_PALETTE_YUV422</b></td><td>Video style YUV422 - 8bits packed 4bits Y 2bits U 2bits V</td>
+</tr><tr><td><b>VIDEO_PALETTE_YUYV</b></td><td>Describe me</td>
+</tr><tr><td><b>VIDEO_PALETTE_UYVY</b></td><td>Describe me</td>
+</tr><tr><td><b>VIDEO_PALETTE_YUV420</b></td><td>YUV420 capture</td>
+</tr><tr><td><b>VIDEO_PALETTE_YUV411</b></td><td>YUV411 capture</td>
+</tr><tr><td><b>VIDEO_PALETTE_RAW</b></td><td>RAW capture (BT848)</td>
+</tr><tr><td><b>VIDEO_PALETTE_YUV422P</b></td><td>YUV 4:2:2 Planar</td>
+</tr><tr><td><b>VIDEO_PALETTE_YUV411P</b></td><td>YUV 4:1:1 Planar</td>
+</tr></tbody></table>
+</p><p>
+</p><h3>Tuning</h3>
+Each video input channel can have one or more tuners associated with it. Many
+devices will not have tuners. TV cards and radio cards will have one or more
+tuners attached.
+<p>
+Tuners are described by a <b>struct video_tuner</b> which can be obtained by
+the <b>VIDIOCGTUNER</b> ioctl. Fill in the tuner number in the structure
+then pass the structure to the ioctl to have the data filled in. The 
+tuner can be switched using <b>VIDIOCSTUNER</b> which takes an integer argument
+giving the tuner to use. A struct tuner has the following fields
+</p><p>
+<table>
+<tbody><tr><td><b>tuner</b></td><td>Number of the tuner</td>
+</tr><tr><td><b>name</b></td><td>Canonical name for this tuner (eg FM/AM/TV)</td>
+</tr><tr><td><b>rangelow</b></td><td>Lowest tunable frequency</td>
+</tr><tr><td><b>rangehigh</b></td><td>Highest tunable frequency</td>
+</tr><tr><td><b>flags</b></td><td>Flags describing the tuner</td>
+</tr><tr><td><b>mode</b></td><td>The video signal mode if relevant</td>
+</tr><tr><td><b>signal</b></td><td>Signal strength if known - between 0-65535</td>
+</tr></tbody></table>
+</p><p>
+The following flags exist
+</p><p>
+<table>
+<tbody><tr><td><b>VIDEO_TUNER_PAL</b></td><td>PAL tuning is supported</td>
+</tr><tr><td><b>VIDEO_TUNER_NTSC</b></td><td>NTSC tuning is supported</td>
+</tr><tr><td><b>VIDEO_TUNER_SECAM</b></td><td>SECAM tuning is supported</td>
+</tr><tr><td><b>VIDEO_TUNER_LOW</b></td><td>Frequency is in a lower range</td>
+</tr><tr><td><b>VIDEO_TUNER_NORM</b></td><td>The norm for this tuner is settable</td>
+</tr><tr><td><b>VIDEO_TUNER_STEREO_ON</b></td><td>The tuner is seeing stereo audio</td>
+</tr><tr><td><b>VIDEO_TUNER_RDS_ON</b></td><td>The tuner is seeing a RDS datastream</td>
+</tr><tr><td><b>VIDEO_TUNER_MBS_ON</b></td><td>The tuner is seeing a MBS datastream</td>
+</tr></tbody></table>
+</p><p>
+The following modes are defined
+</p><p>
+<table>
+<tbody><tr><td><b>VIDEO_MODE_PAL</b></td><td>The tuner is in PAL mode</td>
+</tr><tr><td><b>VIDEO_MODE_NTSC</b></td><td>The tuner is in NTSC mode</td>
+</tr><tr><td><b>VIDEO_MODE_SECAM</b></td><td>The tuner is in SECAM mode</td>
+</tr><tr><td><b>VIDEO_MODE_AUTO</b></td><td>The tuner auto switches, or mode does not apply</td>
+</tr></tbody></table>
+</p><p>
+Tuning frequencies are an unsigned 32bit value in 1/16th MHz or if the
+<b>VIDEO_TUNER_LOW</b> flag is set they are in 1/16th KHz. The current
+frequency is obtained as an unsigned long via the <b>VIDIOCGFREQ</b> ioctl and
+set by the <b>VIDIOCSFREQ</b> ioctl.
+</p><p>
+</p><h3>Audio</h3>
+TV and Radio devices have one or more audio inputs that may be selected. 
+The audio properties are queried by passing a <b>struct video_audio</b> to <b>VIDIOCGAUDIO</b> ioctl. The
+<b>VIDIOCSAUDIO</b> ioctl sets audio properties.
+<p>
+The structure contains the following fields
+</p><p>
+<table>
+<tbody><tr><td><b>audio</b></td><td>The channel number</td>
+</tr><tr><td><b>volume</b></td><td>The volume level</td>
+</tr><tr><td><b>bass</b></td><td>The bass level</td>
+</tr><tr><td><b>treble</b></td><td>The treble level</td>
+</tr><tr><td><b>flags</b></td><td>Flags describing the audio channel</td>
+</tr><tr><td><b>name</b></td><td>Canonical name for the audio input</td>
+</tr><tr><td><b>mode</b></td><td>The mode the audio input is in</td>
+</tr><tr><td><b>balance</b></td><td>The left/right balance</td>
+</tr><tr><td><b>step</b></td><td>Actual step used by the hardware</td>
+</tr></tbody></table>
+</p><p>
+The following flags are defined
+</p><p>
+<table>
+<tbody><tr><td><b>VIDEO_AUDIO_MUTE</b></td><td>The audio is muted</td>
+</tr><tr><td><b>VIDEO_AUDIO_MUTABLE</b></td><td>Audio muting is supported</td>
+</tr><tr><td><b>VIDEO_AUDIO_VOLUME</b></td><td>The volume is controllable</td>
+</tr><tr><td><b>VIDEO_AUDIO_BASS</b></td><td>The bass is controllable</td>
+</tr><tr><td><b>VIDEO_AUDIO_TREBLE</b></td><td>The treble is controllable</td>
+</tr><tr><td><b>VIDEO_AUDIO_BALANCE</b></td><td>The balance is controllable</td>
+</tr></tbody></table>
+</p><p>
+The following decoding modes are defined
+</p><p>
+<table>
+<tbody><tr><td><b>VIDEO_SOUND_MONO</b></td><td>Mono signal</td>
+</tr><tr><td><b>VIDEO_SOUND_STEREO</b></td><td>Stereo signal (NICAM for TV)</td>
+</tr><tr><td><b>VIDEO_SOUND_LANG1</b></td><td>European TV alternate language 1</td>
+</tr><tr><td><b>VIDEO_SOUND_LANG2</b></td><td>European TV alternate language 2</td>
+</tr></tbody></table>
+</p><p>
+</p><h3>Reading Images</h3>
+Each call to the <b>read</b> syscall returns the next available image
+from the device. It is up to the caller to set format and size (using
+the VIDIOCSPICT and VIDIOCSWIN ioctls) and then to pass a suitable
+size buffer and length to the function. Not all devices will support
+read operations.
+<p>
+A second way to handle image capture is via the mmap interface if supported.
+To use the mmap interface a user first sets the desired image size and depth
+properties. Next the VIDIOCGMBUF ioctl is issued. This reports the size
+of buffer to mmap and the offset within the buffer for each frame. The
+number of frames supported is device dependent and may only be one. 
+</p><p>
+The video_mbuf structure contains the following fields
+</p><p>
+<table>
+<tbody><tr><td><b>size</b></td><td>The number of bytes to map</td>
+</tr><tr><td><b>frames</b></td><td>The number of frames</td>
+</tr><tr><td><b>offsets</b></td><td>The offset of each frame</td>
+</tr></tbody></table>
+</p><p>
+Once the mmap has been made the VIDIOCMCAPTURE ioctl starts the
+capture to a frame using the format and image size specified in the
+video_mmap (which should match or be below the initial query size).
+When the VIDIOCMCAPTURE ioctl returns the frame is <em>not</em>
+captured yet, the driver just instructed the hardware to start the
+capture.  The application has to use the VIDIOCSYNC ioctl to wait
+until the capture of a frame is finished.  VIDIOCSYNC takes the frame
+number you want to wait for as argument.
+</p><p>
+It is allowed to call VIDIOCMCAPTURE multiple times (with different
+frame numbers in video_mmap-&gt;frame of course) and thus have multiple
+outstanding capture requests.  A simple way do to double-buffering
+using this feature looks like this:
+</p><pre>/* setup everything */
+VIDIOCMCAPTURE(0)
+while (whatever) {
+   VIDIOCMCAPTURE(1)
+   VIDIOCSYNC(0)
+   /* process frame 0 while the hardware captures frame 1 */
+   VIDIOCMCAPTURE(0)
+   VIDIOCSYNC(1)
+   /* process frame 1 while the hardware captures frame 0 */
+}
+</pre>
+Note that you are <em>not</em> limited to only two frames.  The API
+allows up to 32 frames, the VIDIOCGMBUF ioctl returns the number of
+frames the driver granted.  Thus it is possible to build deeper queues
+to avoid loosing frames on load peaks.
+<p>
+While capturing to memory the driver will make a "best effort" attempt
+to capture to screen as well if requested. This normally means all
+frames that "miss" memory mapped capture will go to the display.
+</p><p>
+A final ioctl exists to allow a device to obtain related devices if a
+driver has multiple components (for example video0 may not be associated
+with vbi0 which would cause an intercast display program to make a bad
+mistake). The VIDIOCGUNIT ioctl reports the unit numbers of the associated
+devices if any exist. The video_unit structure has the following fields.
+</p><p>
+<table>
+<tbody><tr><td><b>video</b></td><td>Video capture device</td>
+</tr><tr><td><b>vbi</b></td><td>VBI capture device</td>
+</tr><tr><td><b>radio</b></td><td>Radio device</td>
+</tr><tr><td><b>audio</b></td><td>Audio mixer</td>
+</tr><tr><td><b>teletext</b></td><td>Teletext device</td>
+</tr></tbody></table>
+</p><p>
+</p><h3>RDS Datastreams</h3>
+For radio devices that support it, it is possible to receive Radio Data
+System (RDS) data by means of a read() on the device.  The data is packed in
+groups of three, as follows:
+<table>
+<tbody><tr><td>First Octet</td><td>Least Significant Byte of RDS Block</td></tr>
+<tr><td>Second Octet</td><td>Most Significant Byte of RDS Block
+</td></tr><tr><td>Third Octet</td><td>Bit 7:</td><td>Error bit.  Indicates that
+an uncorrectable error occurred during reception of this block.</td></tr>
+<tr><td>&nbsp;</td><td>Bit 6:</td><td>Corrected bit.  Indicates that  
+an error was corrected for this data block.</td></tr>
+<tr><td>&nbsp;</td><td>Bits 5-3:</td><td>Received Offset.  Indicates the  
+offset received by the sync system.</td></tr>
+<tr><td>&nbsp;</td><td>Bits 2-0:</td><td>Offset Name.  Indicates the  
+offset applied to this data.</td></tr>
+</tbody></table>
+
+</body></html>

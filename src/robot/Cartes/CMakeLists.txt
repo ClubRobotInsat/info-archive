@@ -1,0 +1,45 @@
+# Wrappers python pas compilé pour le moment
+
+set(CARTES_SOURCE
+        Carte.cpp
+        CarteExemple.cpp
+        CarteElectrovannes2016.cpp
+        CarteActionneurs2007.cpp
+        CarteAlimentation2009.cpp
+        CarteAsservissement2008.cpp
+        CarteAsservissement2009.cpp
+        CarteBalises2007.cpp
+        CarteBalisesIR2008.cpp
+        CarteBarrieres2007.cpp
+        CarteColorimetres2008.cpp
+        CarteColorimetre2014.cpp
+        CarteColorimetre2009.cpp
+        CarteContacteurs2007.cpp
+        CarteConvertisseurs2007.cpp
+        CarteDebug2009.cpp
+        CarteDebug2011.cpp
+        CarteDeplacement2009.cpp
+        CarteDetectAdv2009.cpp
+        CarteLcd2008.cpp
+        CarteLcd2009.cpp
+        CarteLed2008.cpp
+        CarteMoteursNonAsservis2008.cpp
+        CarteServos2007.cpp
+        CarteServosNova2017.cpp
+        CarteTelemetreIR2008.cpp
+        CarteTelemetres2009.cpp
+        CarteTriangulation2008.cpp
+        POBEye2007.cpp
+        CarteDebugDessin.cpp
+        CarteBaliseInertielle2010.cpp
+        CarteXbee2010.cpp
+        CarteAlimentation2010.cpp
+        CarteCodesBarres2011.cpp
+        CarteIHM.cpp
+        CarteDetectAdv2012.cpp
+        CarteEvitement2012.cpp
+        CartePneumatique.cpp
+        CartePneumatique2014.cpp
+        CarteIO2014.cpp
+        CarteCAN_USB.cpp)
+add_library(Cartes STATIC ${CARTES_SOURCE})

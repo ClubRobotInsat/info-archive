@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Document>
+  <Settings Name="demo" Enum="ResultatAction,REUSSI,RATE,TIMEOUT" SourceOutputPath="../petri/src" LibOutputPath="../../../build" Hostname="localhost" Port="12346" Language="Cpp" RunInEditor="False">
+    <Compiler Invocation="/usr/bin/g++" />
+    <IncludePaths>
+      <IncludePath Path="../../../petri" Recursive="true" />
+      <IncludePath Path="../../../commun" Recursive="false" />
+    </IncludePaths>
+    <LibPaths />
+    <Libs />
+  </Settings>
+  <Window X="509" Y="24" W="931" H="848" />
+  <Headers>
+    <Header File="Deplacement.h" />
+    <Header File="Servo.h" />
+    <Header File="Utils.h" />
+  </Headers>
+  <Macros>
+    <Macro Name="ia" Value="incrementerAscenseur" />
+  </Macros>
+  <PetriNet ID="0" Name="Root" X="0" Y="0" Active="true" RequiredTokens="0" Radius="30">
+    <Comments />
+    <States>
+      <Action ID="1" Name="609" X="140" Y="150" Active="true" RequiredTokens="1" Radius="20" Function="Petri::Utility::pause(2_s)" />
+      <Action ID="2" Name="610" X="470" Y="150" Active="false" RequiredTokens="1" Radius="20" Function="reculerDe(1_m, 2_s)" />
+      <Action ID="3" Name="613" X="630" Y="150" Active="false" RequiredTokens="1" Radius="20" Function="tournerAbsolu(180_deg)" />
+      <Action ID="5" Name="615" X="640" Y="270" Active="false" RequiredTokens="1" Radius="20" Function="reculerDe(50_cm, 2_s)" />
+      <Action ID="7" Name="8" X="344" Y="276" Active="false" RequiredTokens="1" Radius="20" Function="tournerRelatif(360_deg)" />
+      <Action ID="9" Name="10" X="140" Y="280" Active="false" RequiredTokens="1" Radius="20" Function="reculerDe(50_cm, 2_s)" />
+      <Action ID="12" Name="13" X="330" Y="150" Active="false" RequiredTokens="1" Radius="20" Function="tournerAbsolu(0_deg)" />
+    </States>
+    <Transitions>
+      <Transition ID="4" Name="614" X="550" Y="150" BeforeID="2" AfterID="3" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="160" />
+      <Transition ID="6" Name="616" X="635" Y="210" BeforeID="3" AfterID="5" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="120.41594578792295" />
+      <Transition ID="8" Name="9" X="492" Y="273" BeforeID="5" AfterID="7" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="296.06080456554866" />
+      <Transition ID="10" Name="11" X="242" Y="278" BeforeID="7" AfterID="9" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="204.03921191770959" />
+      <Transition ID="11" Name="12" X="140" Y="215" BeforeID="9" AfterID="1" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="130" />
+      <Transition ID="13" Name="14" X="235" Y="150" BeforeID="1" AfterID="12" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="190" />
+      <Transition ID="14" Name="15" X="400" Y="150" BeforeID="12" AfterID="2" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
+    </Transitions>
+  </PetriNet>
+</Document>

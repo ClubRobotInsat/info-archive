@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Document>
+  <Settings Name="Homologation" Enum="ResultatAction,REUSSI,RATE,TIMEOUT" SourceOutputPath="../petri/src" LibOutputPath="../../../build" Hostname="localhost" Port="12346" Language="Cpp" RunInEditor="False">
+    <Compiler Invocation="/usr/bin/g++" />
+    <IncludePaths>
+      <IncludePath Path="../../../petri" Recursive="true" />
+      <IncludePath Path="../../../commun" Recursive="false" />
+    </IncludePaths>
+    <LibPaths />
+    <Libs />
+  </Settings>
+  <Window X="65" Y="24" W="1301" H="744" />
+  <Headers>
+    <Header File="Deplacement.h" />
+    <Header File="Servo.h" />
+    <Header File="Utils.h" />
+  </Headers>
+  <Macros>
+    <Macro Name="ia" Value="incrementerAscenseur" />
+  </Macros>
+  <PetriNet ID="0" Name="Root" X="0" Y="0" Active="true" RequiredTokens="0" Radius="30">
+    <Comments />
+    <States>
+      <Action ID="4" Name="178" X="90" Y="180" Active="true" RequiredTokens="0" Radius="20" Function="Petri::Utility::doNothing()" />
+    </States>
+    <Transitions />
+  </PetriNet>
+</Document>
