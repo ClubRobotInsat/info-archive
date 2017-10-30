@@ -232,7 +232,7 @@ inline bool Trame::getDonneeBool(uint8_t numero, uint8_t bit) {
 	if(bit >= 8)
 		throw ErreurNumeroBitTropGrand(bit);
 
-	return _donnees[numero] && (1 << bit);
+	return _donnees[numero] && (1 < bit);
 }
 
 template <typename T, typename... Args>

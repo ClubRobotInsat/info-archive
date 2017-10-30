@@ -18,8 +18,11 @@
 #ifndef VECTEUR_H
 #define VECTEUR_H
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpedantic"
 #include "Vector2.h"
 #include "Vector3.h"
 #include "Vector4.h"
+#pragma GCC diagnostic pop
 
 #endif // VECTEUR_H

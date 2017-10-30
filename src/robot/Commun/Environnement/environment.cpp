@@ -935,19 +935,19 @@ void Environment::saveToTGA(const char* path, vector<Vector2m> const& traj) {
 			r = g = b = a = 0;
 			float value = obst[x][y].staticValue + obst[x][y].dynamicValue;
 			if(value > 0) {
-				a = b = r = 255;
+				a = b = r = (char)255;
 
 				// Affichage des dangers infinis en noir
 				if(value == DANGER_INFINITY) {
 					b = g = 0;
-					r = 200;
+					r = (char)200;
 				} else {
 					// Formule un peu bizarre qui permet d'avoir un joli dégradé --> correction gamma
-					g = r = 255 * pow((255 - max(0, min(255, (int)(value * (255.0f / DANGER_INFINITY))))) / 255.0, 1 / 2.2);
+					g = r = (char)(255 * pow((255 - max(0, min(255, (int)(value * (255.0f / DANGER_INFINITY))))) / 255.0, 1 / 2.2));
 				}
 
 			} else {
-				r = g = b = a = 255;
+				r = g = b = a = (char)255;
 			}
 
 			// Affichage de la debug value

@@ -53,11 +53,11 @@ namespace IDCartesPrincipal {
 		/*ID_CARTE_DEBUG_DESSIN = 8*/
 	};
 
-	ENUM_NS(IDCartesPrincipal, IDCartes, SERVOS, CAN_USB, DEPLACEMENT, IO, EVITEMENT, ASCENSEUR);
+	ENUM_NS(IDCartesPrincipal, IDCartes, SERVOS, CAN_USB, DEPLACEMENT, IO, EVITEMENT, ASCENSEUR)
 
 
 	// TODO : AJOUTER ASCENSEUR ?
-	ENUM_CLASS_NS(IDCartesPrincipal, IDCartesServo, PINCE, LACET, TANGAGE, FUSEE, GAUCHE, DROITE);
+	ENUM_CLASS_NS(IDCartesPrincipal, IDCartesServo, PINCE, LACET, TANGAGE, FUSEE, GAUCHE, DROITE)
 }
 
 namespace ConstantesPrincipal {
@@ -233,7 +233,7 @@ namespace ConstantesPrincipal {
 	            using typeCarte = CarteColorimetre2014;
 	            enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_COLORIMETRIE };
 	        };*/
-};
+}
 
 struct ConstantesRobotPrincipal : public Commun::ConstantesRobot {
 	virtual Duration getTimeoutMoveDefault() const override;

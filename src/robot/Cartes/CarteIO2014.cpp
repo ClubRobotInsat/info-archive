@@ -86,7 +86,7 @@ void CarteIO2014::traiterMessage(Trame const& message) {
 
 // Envoie la demande de lecture des capteurs
 void CarteIO2014::actualiserUnCapteur(uint8_t noCapteur) {
-	if(noCapteur > NBCAPTEURS || noCapteur < 0) {
+	if(noCapteur > NBCAPTEURS) {
 		logError("Numéro de capteur ", (int)noCapteur, " hors limite pour la carte IO");
 	} else {
 		// Envoi de la requête de données

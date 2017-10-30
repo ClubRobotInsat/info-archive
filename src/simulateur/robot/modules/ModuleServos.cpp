@@ -6,11 +6,11 @@
 #include "../Robot2017.h"
 
 std::string generateMessage(uint8_t numServo, Angle angle) {
-	return "Le robot a envoyé un ordre d'angle au servo :" + std::to_string(numServo) + " | Consigne : " +
-	       std::to_string(angle.toDeg());
+	return "Le robot a envoyé un ordre d'angle au servo :" + std::to_string(numServo) +
+	       " | Consigne : " + std::to_string(angle.toDeg());
 }
 
-ModuleServos::ModuleServos(Robot2017& robot2017) : _robot(robot2017){};
+ModuleServos::ModuleServos(Robot2017& robot2017) : _robot(robot2017) {}
 
 void ModuleServos::setAngle(uint8_t idCarte, uint8_t numServo, Angle angle) {
 	if(idCarte == ID_CARTE_INYANGA_SERVOS) {

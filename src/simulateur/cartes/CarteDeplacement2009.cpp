@@ -476,6 +476,7 @@ void CarteDeplacement2009::traiterTrame(Trame const& t) {
 				envoyerMesurePosition();
 			else if(type_mesure(t.getDonnee(0)) == MESURE_ANGLE)
 				envoyerMesureAngle();
+			[[fallthrough]];
 
 		// Reglage des coordonnees actuels
 		case DEFINIR_COORD:
@@ -994,7 +995,7 @@ Angle CarteDeplacement2009::getAngle2d() const {
 }
 
 // modifier le repère du robot
-void CarteDeplacement2009::setRepere(Distance x, Distance y, Angle theta) {
+void CarteDeplacement2009::setRepere(Distance x, Distance y, Angle /*theta*/) {
 	_dxOrigineTable = _dyOrigineTable = 0_m;
 	_dthetaOrigineTable = 0_rad;
 

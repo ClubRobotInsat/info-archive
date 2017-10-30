@@ -132,6 +132,6 @@ namespace Utils {
 
 		return nbNum;
 	}
-};
+}
 
 #endif // UTILS_H

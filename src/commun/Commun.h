@@ -9,6 +9,7 @@
 #include "Units.h"
 #include "Utils.h"
 #include <cstdint>
+#include <functional>
 #include <thread>
 
 using namespace std::string_literals;

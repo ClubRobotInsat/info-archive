@@ -345,7 +345,7 @@ std::vector<std::pair<double, double>> parameter_spline::get_curvature_infos_d()
 		result.push_back(std::make_pair(curvature, length));
 	}
 	return result;
-};
+}
 
 std::vector<std::pair<Length, Distance>> parameter_spline::get_curvature_infos() const {
 	std::vector<std::pair<double, double>> double_infos = get_curvature_infos_d();
@@ -375,8 +375,8 @@ std::vector<CurvatureInfos> parameter_spline::get_curvature_advance(Distance ent
 		Distance length = (checkpoints[i + 1] - checkpoints[i]).norm();
 
 		double denom = Xderiv1 * Yderivs[i].second - Yderiv1 * Xderivs[i].second;
-		if(std::abs(denom) > 1.0)
-			; // TODO : gérer le cas défectueux (R = 0_m)
+		if(std::abs(denom) > 1.0) {
+		} // TODO : gérer le cas défectueux (R = 0_m)
 		Distance R = fromSplineCalculationD(std::abs(pow(Xderiv1 * Xderiv1 + Yderiv1 * Yderiv1, 1.5) / denom));
 		bool inversion = R < 0_m;
 		R = abs(R);
@@ -397,7 +397,7 @@ std::vector<CurvatureInfos> parameter_spline::get_curvature_advance(Distance ent
 			result.push_back({speedCoeffL, speedCoeffR, length});
 	}
 	return result;
-};
+}
 
 std::vector<std::pair<double, double>> parameter_spline::get_points_d() const {
 	std::vector<std::pair<double, double>> result;
@@ -421,7 +421,7 @@ std::vector<std::pair<double, double>> parameter_spline::get_derivs(bool X) cons
 	for(int i = 0; i < _paramT.size() - 1; i++)
 		result.push_back((X ? _splineX : _splineY).get_deriv(_paramT[i]));
 	return result;
-};
+}
 
 void parameter_spline::_create_parametric_vectors(const std::vector<double>& x, const std::vector<double>& y) {
 	_paramT.push_back(0.0);

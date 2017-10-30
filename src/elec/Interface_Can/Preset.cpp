@@ -25,7 +25,7 @@ std::string Preset::toString() {
 	return result;
 }
 
-Preset::Preset(std::string rawPreset) {}
+Preset::Preset(std::string /*rawPreset*/) {}
 
 
 PresetArray::PresetArray(std::string path) {

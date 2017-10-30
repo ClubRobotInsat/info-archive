@@ -71,7 +71,7 @@ void Start_Screen::mainLoop() {
 	this->scanTCPIPConnection();
 	this->updateComboBoxList();
 	this->updateConnectionButton();
-};
+}
 
 void Start_Screen::updateComboBoxList() {
 

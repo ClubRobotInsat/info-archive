@@ -53,7 +53,7 @@ void CarteElectrovannes2016::traiterMessage(Trame const& message) {
 
 void CarteElectrovannes2016::ouvrirVanne(uint8_t vanneId) {
 	_ack = false;
-	if(vanneId < 0 || vanneId > VANNES_ALL)
+	if(vanneId > VANNES_ALL)
 		logError("ID de vanne '", vanneId, "' out of range.");
 	logDebug8("Message elec ouverture : ", this->make_trame(CMD_ACTIV, vanneId).toStringLong());
 	envoyerMessage(this->make_trame(CMD_ACTIV, vanneId));
@@ -61,7 +61,7 @@ void CarteElectrovannes2016::ouvrirVanne(uint8_t vanneId) {
 
 void CarteElectrovannes2016::fermerVanne(uint8_t vanneId) {
 	_ack = false;
-	if(vanneId < 0 || vanneId > VANNES_ALL)
+	if(vanneId > VANNES_ALL)
 		logError("ID de vanne '", vanneId, "' out of range.");
 	logDebug8("Message elec ouverture : ", this->make_trame(CMD_ACTIV, vanneId).toStringLong());
 	envoyerMessage(this->make_trame(CMD_DESACTIV, vanneId));
@@ -70,7 +70,7 @@ void CarteElectrovannes2016::fermerVanne(uint8_t vanneId) {
 
 // Obtient l'etat de la vanne.
 bool CarteElectrovannes2016::etatVanne(uint8_t vanneId) {
-	if(vanneId < 0 || vanneId > VANNES_ALL)
+	if(vanneId > VANNES_ALL)
 		logError("ID de vanne '", vanneId, "' out of range.");
 
 	// Vérification de toutes les vannes

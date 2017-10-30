@@ -5,7 +5,7 @@
 
 namespace Commun {
 
-	EXCEPTION_CLASS(ErreurEOF);
+	EXCEPTION_CLASS(ErreurEOF)
 
 	/// Fournit une interface générique de communication série
 	class Serie {

@@ -17,6 +17,7 @@ void CarteBarrieres2007::traiterMessage(Trame const& message) {
 			if(message.getNbDonnees() == 1 && message.getDonnee(0) != 0xff_b) {
 				_barrieresActualisees = true;
 			}
+			[[fallthrough]];
 		// pas de break
 		case 0x02_b: // Changement état capteurs
 			if(message.getNbDonnees() == 1 && message.getDonnee(0) != 0xff_b)

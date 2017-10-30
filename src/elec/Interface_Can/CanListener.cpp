@@ -50,6 +50,7 @@ void CanListener::mainLoop() {
 				}
 				trame = std::async(std::launch::async, &CanListener::waitForMessage, this);
 			}
+				[[fallthrough]];
 			default: { continue; }
 		}
 	}

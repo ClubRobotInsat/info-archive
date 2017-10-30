@@ -3,7 +3,11 @@
 #ifndef MATRIX3_H
 #define MATRIX3_H
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpedantic"
 #include "Vector3.h"
+#pragma GCC diagnostic pop
+
 #include <iostream>
 
 template <class T>

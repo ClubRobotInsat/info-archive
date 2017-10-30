@@ -107,7 +107,7 @@ public:
 	/**
 	 * Obtient le type de l'objet selon le type box2D
 	 */
-	const b2BodyType getType() {
+	b2BodyType getType() const {
 		return _type;
 	}
 

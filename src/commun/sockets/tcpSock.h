@@ -9,7 +9,7 @@
 #include <memory>
 /******************************************************************************/
 
-EXCEPTION_CLASS(ErreurSocket);
+EXCEPTION_CLASS(ErreurSocket)
 
 // Version plus saine de Socket
 class TcpSock {
@@ -46,7 +46,7 @@ public:
 	void close();
 
 private:
-	NO_COPY_CTOR(TcpSock);
+	NO_COPY_CTOR(TcpSock)
 	friend class TcpServSock;
 	TcpSock(int fd) {
 		_fd = fd;
@@ -71,7 +71,7 @@ public:
 	void close();
 
 private:
-	NO_COPY_CTOR(TcpServSock);
+	NO_COPY_CTOR(TcpServSock)
 
 	int _fd;
 };

@@ -5,8 +5,13 @@
 
 #include "MathUtilities.h"
 #include "Matrix3.h"
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpedantic"
 #include "Vector3.h"
 #include "Vector4.h"
+#pragma GCC diagnostic pop
+
 #include <iostream>
 
 template <class T>
