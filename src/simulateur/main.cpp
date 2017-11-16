@@ -2,10 +2,10 @@
 // Created by paul on 04/02/16.
 //
 
-#include "Simulateur.h"
-#include "SimulateurConstantes.h"
-#include "robot/Robot2017.h"
-#include "world/World2017.h"
+#include "communication/Robot2017.h"
+#include "core/Simulateur.h"
+#include "core/SimulateurConstantes.h"
+#include "core/World2017.h"
 #include <Box2D/Box2D.h>
 #include <atomic>
 #include <getopt.h>

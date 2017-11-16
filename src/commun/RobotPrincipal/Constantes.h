@@ -6,16 +6,16 @@
 
 #ifdef TARGET_SIMULATEUR
 
-#include "../../simulateur/cartes/CarteAsservissement2009.h"
-#include "../../simulateur/cartes/CarteCAN_USB.h"
-#include "../../simulateur/cartes/CarteContacteurs2007.h"
-#include "../../simulateur/cartes/CarteDebugDessin.h"
-#include "../../simulateur/cartes/CarteDeplacement2009.h"
-#include "../../simulateur/cartes/CarteDetectAdv2009.h"
+#include "../../simulateur/communication/cartes/CarteAsservissement2009.h"
+#include "../../simulateur/communication/cartes/CarteCAN_USB.h"
+#include "../../simulateur/communication/cartes/CarteContacteurs2007.h"
+#include "../../simulateur/communication/cartes/CarteDebugDessin.h"
+#include "../../simulateur/communication/cartes/CarteDeplacement2009.h"
+#include "../../simulateur/communication/cartes/CarteDetectAdv2009.h"
 //#include "../../simulateur/cartes/CarteElectrovannes2016.h"
-#include "../../simulateur/cartes/CarteIO2014.h"
-#include "../../simulateur/cartes/CarteServosNova2017.h"
-#include "../../simulateur/robot/Carte.h"
+#include "../../simulateur/communication/cartes/Carte.h"
+#include "../../simulateur/communication/cartes/CarteIO2014.h"
+#include "../../simulateur/communication/cartes/CarteServosNova2017.h"
 
 #else
 
