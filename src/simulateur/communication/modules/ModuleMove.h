@@ -12,8 +12,8 @@
 
 class ModuleMove : public IDeplacement {
 public:
-	ModuleMove(FormeRobot* obj);
-	void setPhysicalObject(FormeRobot* obj);
+	ModuleMove(IPhysicalInstance* obj);
+	void setPhysicalObject(IPhysicalInstance* obj);
 	// Implementation de IDeplacement
 	virtual Vector2m getPosition() override;
 	virtual Speed getLinearVelocity() const override;
@@ -23,7 +23,7 @@ public:
 	virtual void setAngularVelocity(AngularSpeed) override;
 
 private:
-	FormeRobot* _obj;
+	IPhysicalInstance* _obj;
 };
 
 

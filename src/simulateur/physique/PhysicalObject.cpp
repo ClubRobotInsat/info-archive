@@ -1,18 +1,20 @@
-//
-// Created by louis on 07/12/15.
-//
-
 //#define DEBUG_BOX2D //A definir si on veut afficher des messages de DEBUG_BOX2D à chaque fois que des données passent
 // par box2D
 #include "PhysicalObject.h"
+
 #include <Box2D/Dynamics/Joints/b2RevoluteJoint.h>
 
-PhysicalObject::PhysicalObject(PhysicalObjectDefinition& def, b2World* world, Vector2m position) : _world(world) {
+#include "../core/Object3D.h"
+#include "Box2DPhysicalContext.h"
+#include "PhysicalObjectDefinition.h"
+
+PhysicalObject::PhysicalObject(PhysicalObjectDefinition& def, Box2DPhysicalContext* context, int id, Vector2m position)
+        : _id(id), _context(context) {
 	// Definition et création du body
 	b2BodyDef bodyDef;
 	bodyDef.type = def.getType();
 	bodyDef.position = b2Vec2(toSimulation(position.x), toSimulation(position.y));
-	_body = world->CreateBody(&bodyDef);
+	_body = _context->getWorld().CreateBody(&bodyDef);
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = def.getShape().get(); // La shape est clonée, aucun problème de pointeurs
@@ -32,8 +34,19 @@ PhysicalObject::PhysicalObject(PhysicalObjectDefinition& def, b2World* world, Ve
 	setPosition(position);
 }
 
-PhysicalObject::PhysicalObject(PhysicalObjectDefinition& def, b2World* world, Length x, Length y)
-        : PhysicalObject(def, world, Vector2m(x, y)) {}
+PhysicalObject::PhysicalObject(PhysicalObjectDefinition& def, Box2DPhysicalContext* context, int id, Length x, Length y)
+        : PhysicalObject(def, context, id, Vector2m(x, y)) {}
+
+PhysicalObject::~PhysicalObject() {
+	if(_body) { // au cas où _body == nullptr
+		_context->getWorld().DestroyBody(_body);
+	}
+
+	for(b2Joint* joint : _joints) {
+		_context->getWorld().DestroyJoint(joint);
+		joint = nullptr;
+	}
+}
 
 // ********************************************* //
 //                   Position                    //
@@ -164,7 +177,14 @@ std::list<b2Vec2> PhysicalObject::getBodyPoints() {
 	return result;
 }
 
-// private
+void PhysicalObject::update(Object3D& parent) {
+	parent.setPosition(fromSimulation(_body->GetPosition()));
+	parent.rotation().z = getAngle();
+}
+
+// *********** PRIVATE MEMBERS ****************** //
+
+
 b2Shape* PhysicalObject::getMainShape() {
 	b2Fixture* fixtureList = _body->GetFixtureList();
 
@@ -217,13 +237,13 @@ void PhysicalObject::addRevoluteJoint(PhysicalObject& other, Vector2m commonPoin
 	b2RevoluteJointDef def;
 	def.Initialize(_body, other._body, b2Vec2(toSimulation(commonPoint.x), toSimulation(commonPoint.y)));
 
-	b2Joint* joint = _world->CreateJoint(&def);
+	b2Joint* joint = _context->getWorld().CreateJoint(&def);
 
 	_joints.push_back(joint);
 	other._joints.push_back(joint);
 }
 
-const Vector2m PhysicalObject::getPosition() {
+Vector2m PhysicalObject::getPosition() {
 	Vector2m position;
 	position.x = fromSimulation(_body->GetPosition().x);
 	position.y = fromSimulation(_body->GetPosition().y);

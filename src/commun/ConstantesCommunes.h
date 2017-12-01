@@ -3,14 +3,15 @@
 #ifndef CONSTANTES_COMMUNES_2015_H
 #define CONSTANTES_COMMUNES_2015_H
 
-#include "Commun.h"
-#include "Enum/Enum.h"
-#include "IConstantes.h"
-#include "MathToolbox/Repere.h"
 #include <array>
 #include <cstdint>
 #include <iostream>
 #include <vector>
+
+#include "Commun.h"
+#include "Enum/Enum.h"
+#include "IConstantes.h"
+#include "MathToolbox/Repere.h"
 
 namespace Constantes {
 	ENUM_CLASS_NS(Constantes,
@@ -166,32 +167,33 @@ namespace positionObjetsTable {
 		ColorLunarModule color;
 	};
 
-	const std::vector<LunarModule> LIST_LUNAR_MODULES = {{{Vector3m(1.15_m, 2_m - 64_mm, 5_cm)}, CYLINDER_BLUE},
-	                                                     {{Vector3m(1.15_m, 2_m - 64_mm, 15.1_cm)}, CYLINDER_BLUE},
-	                                                     {{Vector3m(1.15_m, 2_m - 64_mm, 25.2_cm)}, CYLINDER_BLUE},
-	                                                     {{Vector3m(1.15_m, 2_m - 64_mm, 35.3_cm)}, CYLINDER_BLUE},
-	                                                     {{Vector3m(1.85_m, 2_m - 64_mm, 5_cm)}, CYLINDER_YELLOW},
-	                                                     {{Vector3m(1.85_m, 2_m - 64_mm, 15.1_cm)}, CYLINDER_YELLOW},
-	                                                     {{Vector3m(1.85_m, 2_m - 64_mm, 25.2_cm)}, CYLINDER_YELLOW},
-	                                                     {{Vector3m(1.85_m, 2_m - 64_mm, 35.3_cm)}, CYLINDER_YELLOW},
-	                                                     {{Vector3m(20_cm, 2_m - 60_cm, 5_cm)}, CYLINDER_BLUE},
-	                                                     {{Vector3m(1_m, 2_m - 60_cm, 5_cm)}, CYLINDER_MULTICOLOR},
-	                                                     {{Vector3m(2_m, 2_m - 60_cm, 5_cm)}, CYLINDER_MULTICOLOR},
-	                                                     {{Vector3m(2.8_m, 2_m - 60_cm, 5_cm)}, CYLINDER_YELLOW},
-	                                                     {{Vector3m(50_cm, 2_m - 1.1_m, 5_cm)}, CYLINDER_MULTICOLOR},
-	                                                     {{Vector3m(2.5_m, 2_m - 1.1_m, 5_cm)}, CYLINDER_MULTICOLOR},
-	                                                     {{Vector3m(64_mm, 2_m - 1.35_m, 5_cm)}, CYLINDER_MULTICOLOR},
-	                                                     {{Vector3m(64_mm, 2_m - 1.35_m, 15.1_cm)}, CYLINDER_MULTICOLOR},
-	                                                     {{Vector3m(64_mm, 2_m - 1.35_m, 25.2_cm)}, CYLINDER_MULTICOLOR},
-	                                                     {{Vector3m(64_mm, 2_m - 1.35_m, 35.3_cm)}, CYLINDER_MULTICOLOR},
-	                                                     {{Vector3m(2936_mm, 2_m - 1.35_m, 5_cm)}, CYLINDER_MULTICOLOR},
-	                                                     {{Vector3m(2936_mm, 2_m - 1.35_m, 15.1_cm)}, CYLINDER_MULTICOLOR},
-	                                                     {{Vector3m(2936_mm, 2_m - 1.35_m, 25.2_cm)}, CYLINDER_MULTICOLOR},
-	                                                     {{Vector3m(2936_mm, 2_m - 1.35_m, 35.3_cm)}, CYLINDER_MULTICOLOR},
-	                                                     {{Vector3m(90_cm, 2_m - 1.4_m, 5_cm)}, CYLINDER_MULTICOLOR},
-	                                                     {{Vector3m(2.1_m, 2_m - 1.4_m, 5_cm)}, CYLINDER_MULTICOLOR},
-	                                                     {{Vector3m(80_cm, 2_m - 1.85_m, 5_cm)}, CYLINDER_BLUE},
-	                                                     {{Vector3m(2.2_m, 2_m - 1.85_m, 5_cm)}, CYLINDER_YELLOW}};
+	const std::vector<LunarModule> LIST_LUNAR_MODULES = {
+	    {{Vector3m(1.15_m, 2_m - 64_mm, 5_cm)}, CYLINDER_BLUE},
+	    {{Vector3m(1.15_m, 2_m - 64_mm, 15.1_cm)}, CYLINDER_BLUE},
+	    {{Vector3m(1.15_m, 2_m - 64_mm, 25.2_cm)}, CYLINDER_BLUE},
+	    {{Vector3m(1.15_m, 2_m - 64_mm, 35.3_cm)}, CYLINDER_BLUE},
+	    {{Vector3m(1.85_m, 2_m - 64_mm, 5_cm)}, CYLINDER_YELLOW},
+	    {{Vector3m(1.85_m, 2_m - 64_mm, 15.1_cm)}, CYLINDER_YELLOW},
+	    {{Vector3m(1.85_m, 2_m - 64_mm, 25.2_cm)}, CYLINDER_YELLOW},
+	    {{Vector3m(1.85_m, 2_m - 64_mm, 35.3_cm)}, CYLINDER_YELLOW},
+	    {{Vector3m(20_cm, 2_m - 60_cm, 5_cm)}, CYLINDER_BLUE},
+	    {{Vector3m(1_m, 2_m - 60_cm, 5_cm)}, CYLINDER_MULTICOLOR},
+	    {{Vector3m(2_m, 2_m - 60_cm, 5_cm)}, CYLINDER_MULTICOLOR},
+	    {{Vector3m(2.8_m, 2_m - 60_cm, 5_cm)}, CYLINDER_YELLOW},
+	    {{Vector3m(50_cm, 2_m - 1.1_m, 5_cm)}, CYLINDER_MULTICOLOR},
+	    {{Vector3m(2.5_m, 2_m - 1.1_m, 5_cm)}, CYLINDER_MULTICOLOR},
+	    {{Vector3m(64_mm, 2_m - 1.35_m, 5_cm)}, CYLINDER_MULTICOLOR},
+	    {{Vector3m(64_mm, 2_m - 1.35_m, 15.1_cm)}, CYLINDER_MULTICOLOR},
+	    {{Vector3m(64_mm, 2_m - 1.35_m, 25.2_cm)}, CYLINDER_MULTICOLOR},
+	    {{Vector3m(64_mm, 2_m - 1.35_m, 35.3_cm)}, CYLINDER_MULTICOLOR},
+	    {{Vector3m(2936_mm, 2_m - 1.35_m, 5_cm)}, CYLINDER_MULTICOLOR},
+	    {{Vector3m(2936_mm, 2_m - 1.35_m, 15.1_cm)}, CYLINDER_MULTICOLOR},
+	    {{Vector3m(2936_mm, 2_m - 1.35_m, 25.2_cm)}, CYLINDER_MULTICOLOR},
+	    {{Vector3m(2936_mm, 2_m - 1.35_m, 35.3_cm)}, CYLINDER_MULTICOLOR},
+	    {{Vector3m(90_cm, 2_m - 1.4_m, 5_cm)}, CYLINDER_MULTICOLOR},
+	    {{Vector3m(2.1_m, 2_m - 1.4_m, 5_cm)}, CYLINDER_MULTICOLOR},
+	    {{Vector3m(80_cm, 2_m - 1.85_m, 5_cm)}, CYLINDER_BLUE},
+	    {{Vector3m(2.2_m, 2_m - 1.85_m, 5_cm)}, CYLINDER_YELLOW}};
 
 
 	/// Construction de l'environnement :

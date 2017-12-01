@@ -10,11 +10,10 @@
 #ifndef ROBOT_TOUMAI_2015_H_
 #define ROBOT_TOUMAI_2015_H_
 
-#include "RobotLogic.h"
 #include <array>
-class FormeRobot2017;
 
 #include "Commun.h"
+#include "RobotLogic.h"
 #include "sockets/Socket.h"
 
 // Identifiants des cartes
@@ -33,7 +32,10 @@ class FormeRobot2017;
 
 using namespace Constantes;
 
-class Monde2017;
+// Note : Ce code n'a pas été concerné par la dernière refonte du simu.
+// Il peut donc être un peu impraticable par endroit
+// N'hésitez pas à le remodeler à votre convenance !
+// -- Louis
 
 class Robot2017 : public RobotLogicTemplate<IDCartesPrincipal::IDCartes, ConstantesPrincipal::CarteInfo, Constantes::RobotColor> {
 public:
@@ -42,21 +44,15 @@ public:
 	static const Mass MASSE_ROBOT;
 
 	// constructeur
-	Robot2017(World& world, const std::string& connexion, RobotColor col);
+	Robot2017(const std::string& connexion, RobotColor col);
 
 	// destructeur
 	virtual ~Robot2017();
 
-	// Accesseur sur FormeRobot
-	FormeRobot* getFormeRobot() {
-		return _obj;
-	};
+	void setPhysicalObject(IPhysicalInstance* object);
 
 	// mise à jour du robot
 	virtual void update(Duration elapsed) override;
-	void resetRobot(World& world);
-	// Recrée et ajoute la forme physique du robot au monde passé en paramètres.
-	void recreatePhysic(World& world);
 
 	// TODO : toutes les méthodes sont à faire + vérifier que j'ai fait le bon truc -Benjamin
 	// interface IServosIntelligents
@@ -77,17 +73,16 @@ public:
 
 	Constantes::RobotColor getColor();
 
-
 protected:
 	void listenSocket();
 
 private:
+	IPhysicalInstance* _obj = nullptr;
+
 	std::unique_ptr<ModuleMove> _moduleMove = nullptr;
 	std::unique_ptr<ModuleContactor> _moduleContactor = nullptr;
 	std::unique_ptr<ModuleServos> _moduleServos = nullptr;
 	// TODO : rajouter tous les modules
-
-	FormeRobot* _obj = nullptr;
 
 	std::unique_ptr<Socket> _socketSimu = nullptr;
 	std::thread _tcpServer;

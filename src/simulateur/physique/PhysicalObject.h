@@ -5,23 +5,27 @@
 #ifndef TESTBOX2D_PHYSICALOBJECT_H
 #define TESTBOX2D_PHYSICALOBJECT_H
 
-#include "PhysicalObjectDefinition.h"
+#include <list>
+
 #include <Box2D/Collision/Shapes/b2Shape.h>
 #include <Box2D/Dynamics/b2Fixture.h>
 #include <Box2D/Dynamics/b2World.h>
+
 #include <MathToolbox/MathToolbox.h>
-#include <Units/Frequency.h>
-#include <Units/Speed.h>
-#include <Units/Units.h>
+#include <Units.h>
+
+#include "../core/PhysicalToSimulationUnits.h"
+#include "IPhysicalInstance.h"
 
 class PhysicalObjectDefinition;
+class Box2DPhysicalContext;
 
 struct CircleDefinition {
 	b2Vec2 _pos;
 	float _radius;
 };
 
-class PhysicalObject {
+class PhysicalObject : public IPhysicalInstance {
 public:
 	/**
 	 * Crée un objet physique utilisable dans le moteur physique de box2D
@@ -29,21 +33,16 @@ public:
 	 * @param world monde du simulateur qui possède l'objet
 	 * @param position initiale de l'objet
 	 */
-	PhysicalObject(PhysicalObjectDefinition& def, b2World* world, Vector2m position = b2Vec2_zero);
-	PhysicalObject(PhysicalObjectDefinition& def, b2World* world, Length x, Length y);
+	PhysicalObject(PhysicalObjectDefinition& def, Box2DPhysicalContext* context, int id, Vector2m position = b2Vec2_zero);
+	PhysicalObject(PhysicalObjectDefinition& def, Box2DPhysicalContext* context, int id, Length x, Length y);
 
 	/**
 	 * Destruction de l'objet physique
 	 */
-	virtual ~PhysicalObject() {
-		if(_body) { // au cas où _body == nullptr
-			_world->DestroyBody(_body);
-		}
+	virtual ~PhysicalObject();
 
-		for(b2Joint* joint : _joints) {
-			_world->DestroyJoint(joint);
-			joint = nullptr;
-		}
+	int getId() const {
+		return _id;
 	}
 
 	/**
@@ -70,7 +69,7 @@ public:
 	/**
 	 * Obtient la position courante de l'objet
 	 */
-	const Vector2m getPosition();
+	Vector2m getPosition();
 
 	/**
 	 * Modifie la vitesse linéaire actuelle de l'objet
@@ -141,11 +140,20 @@ public:
 	 */
 	CircleDefinition getBodyCircleDef();
 
+	/**
+	 * Actualise la position de l'objet 3D passé en paramètre pour
+	 * qu'elle corresponde à la position de cet objet physique.
+	 * @param parent
+	 */
+	void update(Object3D& parent) override;
+
 private:
+	/// id de l'objet
+	int _id;
+	/// Contexte physique de l'objet.
+	Box2DPhysicalContext* _context;
 	/// body rigide de l'objet
 	b2Body* _body;
-	/// monde physique qui contient l'objet
-	b2World* _world;
 
 	/// liste des jointures avec d'autres objets physiques
 	std::vector<b2Joint*> _joints;

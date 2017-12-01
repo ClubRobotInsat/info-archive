@@ -7,6 +7,7 @@
 
 std::function<void()> exitHandler;
 
+// programme de test
 int main() {
 	SimuWebSocketServer server{5000};
 	server.start();

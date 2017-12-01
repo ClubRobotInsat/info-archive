@@ -5,12 +5,11 @@
 #ifndef ROOT_WORLD2017_H
 #define ROOT_WORLD2017_H
 
-#include "../graphique/Cube.h"
-#include "../graphique/server/SimuWebSocketServer.h"
+#include <Box2D/Dynamics/b2World.h>
+
 #include "ConstantesCommunes.h"
 #include "Object3D.h"
 #include "World.h"
-#include <Box2D/Dynamics/b2World.h>
 
 using namespace positionObjetsTable;
 
@@ -21,7 +20,7 @@ public:
 	 * Construction du monde de la simulation spécifique à l'année 2016-2017
 	 * @param gravity gravité à donner au moteur physique box2D
 	 */
-	World2017(b2Vec2 gravity);
+	World2017(IPhysicalContext* physics, IGraphicalContext* graphics);
 
 	/**
 	 * Obtient la taille de la table de jeu
@@ -37,13 +36,20 @@ public:
 	 * On crée tous les éléments de jeu dynamiques
 	 * @param robot si 0 : pas de robot ; si 1 : robot bleu donc en enlève le bon module ; si 2 : robot jaune, idem
 	 */
-	void createAllObjects(int robot);
+	void createAllObjects(Constantes::RobotColor color);
 
 	/**
-	 * Retourne le code xCode (std::string) de la couleur du cylindre
+	 * Crée l'objet 3D du robot, à sa position de départ, suivant
+	 * sa couleur.
+	 * @param color La couleur de la zone de départ du robot
+	 */
+	Object3D& createRobot(Constantes::RobotColor color);
+
+	/**
+	 * Traduit l'enum en couleur 3f
 	 * @param color BLUE, YELLOW ou MULTICOLOR
 	 */
-	std::string getColor(ColorLunarModule color);
+	Vector3f getColor(ColorLunarModule color);
 
 	/**
 	 * Fonction de débug

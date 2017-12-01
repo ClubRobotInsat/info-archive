@@ -7,13 +7,12 @@
 
 #define TARGET_SIMULATEUR
 
+#include <atomic>
 
-class Robot2017;
-#include "../graphique/server/SimuWebSocketServer.h"
 #include "ConstantesCommunes.h"
 #include "World2017.h"
 
-#include <atomic>
+class Robot2017;
 
 // permet de positionner plus facilement les objets
 struct CubeData {
@@ -51,6 +50,8 @@ private:
 	Vector3m position;
 };
 
+// TODO [Important] commandes du graphical context (notamment envoi de messages)
+
 class Simulateur {
 public:
 	/**
@@ -77,39 +78,13 @@ public:
 		return &_theWorld;
 	}
 
+	void sendTextMessage(const std::string& message);
+
 	/**
 	 * Mise à jour du monde et de l'état du robot
 	 * @param time 10_ms is good
 	 */
 	void update(Duration time);
-
-	/**
-	 * Allume le serveur graphique
-	 */
-	void activateWebServer();
-
-	/**
-	 * Eteint le serveur graphique
-	 */
-	void shutdownWebServer();
-
-	/**
-	 * Envoie toutes les données sur les objets produites par le monde depuis le dernier envoi
-	 */
-	void sendWorldData();
-
-	/**
-	 * Envoie un message de texte au serveur qui s'affichera dans une console
-	 * @param messageToSend message à afficher
-	 */
-	void sendTextMessage(std::string messageToSend);
-
-	/**
-	 * Obtient une référence sur le serveur graphique
-	 */
-	SimuWebSocketServer& getServer() {
-		return _server;
-	}
 
 	/**
 	 * Initialise la simulation et place tous les objets
@@ -155,11 +130,11 @@ private:
 	/// Unique instance du simulateur
 	static Simulateur* _instance;
 
+	std::unique_ptr<IGraphicalContext> _graphics;
+	std::unique_ptr<IPhysicalContext> _physics;
+
 	/// Le monde dans lequel on stocke tous les objets
 	World2017 _theWorld;
-
-	/// Unique serveur graphique
-	SimuWebSocketServer _server;
 
 	/// Robot simulé de l'année actuelle
 	std::unique_ptr<Robot2017> _robot;

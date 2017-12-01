@@ -1,33 +1,29 @@
-//
-// Created by louis on 07/02/16.
-//
-
 #include "Simulateur.h"
-#include "../communication/Robot2017.h"
-#include "SimulateurConstantes.h"
-#include <cstdlib>
 
 #include <csignal>
+#include <cstdlib>
 #include <functional>
 
+#include "../communication/Robot2017.h"
+#include "../graphique/WebGraphicalContext.h"
+#include "../physique/Box2DPhysicalContext.h"
+#include "SimulateurConstantes.h"
+
+using namespace Constantes;
 
 Simulateur* Simulateur::_instance = nullptr;
-std::function<void()> exitHandler;
 
-
-Simulateur::Simulateur() : _theWorld(b2Vec2(0, 0)), _server{5000}, _resetWorld(false), _enablePhysics(true) {
+Simulateur::Simulateur()
+        : _physics(std::make_unique<Box2DPhysicalContext>(b2Vec2(0, 0)))
+        , _graphics(std::make_unique<WebGraphicalContext>(5000))
+        , _theWorld(_physics.get(), _graphics.get())
+        , _resetWorld(false)
+        , _enablePhysics(true) {
 
 	_instance = this;
-	exitHandler = [&]() {
-		_server.stop();
-		exit(0);
-	};
-	std::signal(SIGTERM, [](int) { exitHandler(); });
-	std::signal(SIGINT, [](int) { exitHandler(); });
 }
 
 Simulateur::~Simulateur() {
-	shutdownWebServer();
 	endWorld();
 	_instance = nullptr;
 }
@@ -41,80 +37,48 @@ void Simulateur::update(Duration time) {
 
 	// Mise à jour du monde
 	_theWorld.update(time);
+
+	// Mise à jour de la communication avec l'IA
 	if(_robot != nullptr) {
 		_robot->update(time);
 	}
-
-	// Envoi des données à l'autre serveur
-	if(!_theWorld.getMessageList().empty()) {
-		auto const& json = _theWorld.getMessageList();
-		Json::FastWriter writer;
-		writer.omitEndingLineFeed();
-
-		std::string s = writer.write(json);
-
-		Simulateur::_server.broadcast(s);
-
-		_theWorld.clearMessageList();
-	}
 }
 
-void Simulateur::sendWorldData() {
-	if(!_theWorld.getMessageList().empty()) {
-		auto const& json = _theWorld.getMessageList();
-		Json::FastWriter writer;
-		writer.omitEndingLineFeed();
-
-		std::string s = writer.write(json);
-
-		Simulateur::_server.broadcast(s);
-
-		_theWorld.clearMessageList();
-	}
-}
+void Simulateur::sendTextMessage(const std::string& message) {}
 
 Vector3m const CubeData::getPosition() {
 	return Vector3m(position.x + size.x / 2, position.y + size.y / 2, position.z + size.z / 2);
 }
 
 void Simulateur::initWorld() {
-	// Permet de savoir si on place un module lunaire dans une  zone de départ et laquelle
-	int robot = 0;
-	if(_robot != nullptr and getRobotColor() == RobotColor::Yellow)
-		robot = 1;
-	if(_robot != nullptr and getRobotColor() == RobotColor::Blue)
-		robot = 2;
-
 	_theWorld.createTable();
-	_theWorld.createAllObjects(robot);
+	_theWorld.createAllObjects(getRobotColor());
 	//_theWorld.createDebugObjects();
 }
 
 void Simulateur::disableSimulation() {
-	_enablePhysics = false;
-	_theWorld.enableSimulation(false);
-	_robot->getFormeRobot()->enableSimulation(true);
+	// TODO disable simulation
 }
 
 void Simulateur::addRobot(Constantes::RobotColor color) {
-	_robot = std::make_unique<Robot2017>(_theWorld, "LOCAL", color);
+	_robot = std::make_unique<Robot2017>("LOCAL", color);
+	Object3D& robotObj = _theWorld.createRobot(color);
+	_robot->setPhysicalObject(&robotObj.getPhysics());
 }
 
 void Simulateur::resetWorld() {
-	logDebug5("Réinitialisation du simulateur");
+	// Suppression de tous les objets
 	_theWorld.removeAllObject();
-	sendWorldData();
 
-	_robot->resetRobot(_theWorld);
-	initWorld();
-
-	if(!_enablePhysics) {
-		disableSimulation();
-	}
-
-	_theWorld.sendWorldState();
+	// Reconstruction de la table
+	_theWorld.createTable();
+	_theWorld.createAllObjects(getRobotColor());
+	Object3D& robotObj = _theWorld.createRobot(getRobotColor());
+	_robot->setPhysicalObject(&robotObj.getPhysics());
 }
 
+// Est-ce que cette méthode est vraiment nécessaire ?
+// Le simu s'arrête à l'appel du destructeur dans tous les cas -- Louis
 void Simulateur::endWorld() {
 	if(_robot != nullptr)
 		_robot = nullptr;
@@ -122,28 +86,6 @@ void Simulateur::endWorld() {
 	_theWorld.removeAllObject();
 }
 
-void Simulateur::activateWebServer() {
-	_server.start();
-}
-
-void Simulateur::shutdownWebServer() {
-	if(_server.isClientConnected()) {
-		_server.stop();
-	}
-}
-
-void Simulateur::sendTextMessage(std::string messageToSend) {
-	JSON list;
-	JSON message;
-	message["type"] = "log";
-	message["message"] = messageToSend;
-	list.append(message);
-	Json::FastWriter writer;
-	writer.omitEndingLineFeed();
-	std::string messageConverted = writer.write(list);
-	_server.broadcast(messageConverted);
-}
-
 Constantes::RobotColor Simulateur::getRobotColor() {
-	return _robot->getColor();
+	return _robot == nullptr ? RobotColor::Undef : _robot->getColor();
 }

@@ -11,6 +11,8 @@
 
 const Length unitarySize = 1_dm;
 
+// TODO rename "toBox2D"
+
 inline double toSimulation(Distance const& d) {
 	return d.toDm<double>();
 }

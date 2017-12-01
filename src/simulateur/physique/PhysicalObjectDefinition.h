@@ -5,24 +5,21 @@
 #ifndef TESTBOX2D_PHYSICALOBJECTDEFINITION_H
 #define TESTBOX2D_PHYSICALOBJECTDEFINITION_H
 
-#include "../core/PhysicalToSimulationUnits.h"
-#include <Box2D/Collision/Shapes/b2CircleShape.h>
-#include <Box2D/Collision/Shapes/b2PolygonShape.h>
-#include <Box2D/Common/b2Math.h>
-#include <Box2D/Dynamics/b2Body.h>
-#include <Units.h>
 #include <iostream>
 #include <list>
 #include <memory>
 #include <vector>
 
-namespace mass {
-	const Mass LIGHT = 100_g;
-	const Mass MEDIUM = 1_kg;
-	const Mass HEAVY = 10000_kg;
-}
+#include <Box2D/Collision/Shapes/b2CircleShape.h>
+#include <Box2D/Collision/Shapes/b2PolygonShape.h>
+#include <Box2D/Common/b2Math.h>
+#include <Box2D/Dynamics/b2Body.h>
+#include <Units.h>
 
-enum Type { STATIC, KINEMATIC, DYNAMIC };
+#include "../core/PhysicalToSimulationUnits.h"
+#include "../core/SimulateurConstantes.h"
+
+enum Type { STATIC, KINEMATIC, DYNAMIC }; // TODO fusionner celui-ci avec Object3D::BodyType ?
 
 
 class PhysicalObjectDefinition {

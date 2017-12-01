@@ -5,9 +5,12 @@
 #ifndef ROOT_SIMULATIONTOWEBSERVER_H
 #define ROOT_SIMULATIONTOWEBSERVER_H
 
-#endif // ROOT_SIMULATIONTOWEBSERVER_H
-#include "petri/Runtime/Cpp/detail/jsoncpp/include/json/json.h"
+#include <iomanip>
+#include <sstream>
+
 #include <MathToolbox/MathToolbox.h>
+#include <Units.h>
+#include <petri/Runtime/Cpp/detail/jsoncpp/include/json/json.h>
 
 using JSON = Json::Value;
 
@@ -20,6 +23,10 @@ inline JSON toJVector3(double x, double y, double z) {
 	value["z"] = std::to_string(z);
 
 	return value;
+}
+
+inline JSON toJVector3(const Vector3f& vec) {
+	return toJVector3(vec.x, vec.y, vec.z);
 }
 
 template <typename T>
@@ -46,3 +53,32 @@ JSON toJSON(Matrix4<T> const& mat) {
 
 	return value;
 }
+
+/** Transforme une couleur représentée sur des floats (entre 0 et 1)
+ * en couleur hexadecimale. */
+inline std::string toHexColorStr(const Vector3f& vec) {
+	unsigned char r = (unsigned char)(vec.r * 255.99);
+	unsigned char g = (unsigned char)(vec.g * 255.99);
+	unsigned char b = (unsigned char)(vec.b * 255.99);
+
+	std::ostringstream stream;
+	stream << "0x" << std::hex << std::setw(2) << std::setfill('0') << (int)r << std::setw(2) << std::setfill('0')
+	       << (int)g << std::setw(2) << std::setfill('0') << (int)b;
+	return stream.str();
+}
+
+inline float toWebServer(const Length& l) {
+	return (float)l.toDm();
+}
+
+inline Vector3f toWebServer(const Vector3m& vec) {
+	return {toWebServer(vec.x), toWebServer(vec.y), toWebServer(vec.z)};
+}
+
+inline Vector3f toWebServer(const Vector3ang& vec) {
+	return {(float)vec.x.toDeg(), (float)vec.y.toDeg(), (float)vec.z.toDeg()};
+}
+
+// TODO float conversion ?
+
+#endif // ROOT_SIMULATIONTOWEBSERVER_H

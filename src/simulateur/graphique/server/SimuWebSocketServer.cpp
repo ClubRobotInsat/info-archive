@@ -12,6 +12,10 @@ SimuWebSocketServer::~SimuWebSocketServer() {
 	_server.stop();
 }
 
+void SimuWebSocketServer::addServerListener(IServerListener* listener) {
+	_listeners.push_back(listener);
+}
+
 void SimuWebSocketServer::onMessage(SimuWebSocketServer::Client, SimuWebSocketServer::Message message) {
 	std::cout << message->get_payload() << std::endl;
 }
@@ -20,7 +24,8 @@ void SimuWebSocketServer::onConnect(SimuWebSocketServer::Client client) {
 	sleep(1);
 	_clientConnected = true;
 	_clients.insert(client);
-	Simulateur::getInstance().getWorld()->sendWorldState();
+	for(auto listener : _listeners)
+		listener->onConnect(client);
 	std::cout << "Client connected." << std::endl;
 }
 

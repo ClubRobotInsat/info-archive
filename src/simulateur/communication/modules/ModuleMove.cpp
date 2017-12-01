@@ -5,9 +5,9 @@
 #include "ModuleMove.h"
 #include "log/Log.h"
 
-ModuleMove::ModuleMove(FormeRobot* obj) : _obj(obj) {}
+ModuleMove::ModuleMove(IPhysicalInstance* obj) : _obj(obj) {}
 
-void ModuleMove::setPhysicalObject(FormeRobot* obj) {
+void ModuleMove::setPhysicalObject(IPhysicalInstance* obj) {
 	_obj = obj;
 }
 // ----------------------------------

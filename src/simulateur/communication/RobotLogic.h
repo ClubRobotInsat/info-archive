@@ -3,15 +3,14 @@
 #ifndef ROBOT_H
 #define ROBOT_H
 
-#include "../communication/cartes/ICoordonneesAdversaire.h"
-#include "../graphique/robot/FormeRobot.h"
-#include "Commun.h"
-#include "cartes/Carte.h"
-#include "communication/Communicateur.h"
-#include <IConstantes.h>
-
 #include <string>
 #include <vector>
+
+#include "Commun.h"
+#include "cartes/Carte.h"
+#include "cartes/ICoordonneesAdversaire.h"
+#include "communication/Communicateur.h"
+#include <IConstantes.h>
 
 class RobotLogic : public ITrameListener {
 public:

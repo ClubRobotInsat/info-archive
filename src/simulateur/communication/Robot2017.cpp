@@ -5,8 +5,6 @@
 #include "Robot2017.h"
 #include "../core/Object3D.h"
 #include "../core/Simulateur.h"
-#include "../graphique/robot/FormeRobot.h"
-// #include "../environnement/Monde2017.h" // pour avoir accès aux robots adv
 
 #include "cartes/CarteAsservissement2009.h"
 #include "cartes/CarteContacteurs2011.h"
@@ -32,7 +30,7 @@ const Mass Robot2017::MASSE_ROBOT = 10_kg;
  * CONSTRUCTEUR *
  ****************/
 // FIXME : pouvoir choisir le port, là c'est dégueu
-Robot2017::Robot2017(World& world, const std::string& connexion, RobotColor col)
+Robot2017::Robot2017(const std::string& connexion, RobotColor col)
         : RobotLogicTemplate<IDCartes, CarteInfo, RobotColor>(std::make_unique<ConstantesCommunes>(),
                                                               std::make_unique<ConstantesRobotPrincipal>(),
                                                               col,
@@ -45,16 +43,12 @@ Robot2017::Robot2017(World& world, const std::string& connexion, RobotColor col)
 		_etatContacteur[i] = false;
 	}
 
-	// Initialisation de la forme physique (et du ModuleMove)
-	recreatePhysic(world);
-
 	// Initialisation des modules
 	_moduleContactor = std::make_unique<ModuleContactor>(*this);
 	_moduleServos = std::make_unique<ModuleServos>(*this);
 	// TODO : rajouter tous les modules
 
 	// Ajout des cartes
-	this->addCarteHelper<DEPLACEMENT>(*this, *this, *_moduleMove, world.getSize().y);
 	this->addCarteHelper<CAN_USB>(*this, *this);
 	this->addCarteHelper<IO>(*this, *this, *_moduleContactor);
 	// this->addCarteHelper<SERVOS>(*this, *this, *_moduleServos, enumToInt(ConstantesPrincipal::Servo::NBR));
@@ -83,46 +77,22 @@ void Robot2017::update(Duration elapsed) {
 	Base::update(elapsed);
 }
 
-void Robot2017::resetRobot(World& world) {
-	// On recrée la forme physique du robot
-	recreatePhysic(world);
+void Robot2017::setPhysicalObject(IPhysicalInstance* object) {
+	_obj = object;
 
 	// Initialisation des contacteurs
 	for(int i = 0; i < getNumberofContactor(); i++) {
 		_etatContacteur[i] = false;
 	}
 
-	// Position
-	const repere::Coordonnees coords_robot(START_ROBOT_POSITION,
-	                                       START_ROBOT_ANGLE,
-	                                       getColor() == RobotColor::Blue ? REFERENCE_BLUE : REFERENCE_YELLOW);
-
-	// TODO : changement de repère
-	_obj->setPosition(coords_robot.getPos2D(REFERENCE_SIMULATOR));
-	_obj->setAngle(coords_robot.getAngle(REFERENCE_SIMULATOR));
-
-	getCarte<DEPLACEMENT>().reset();
-}
-
-void Robot2017::recreatePhysic(World& world) {
-	// Les coordonnées du robot dans le simu dépend du repère de sa couleur
-	const repere::Coordonnees coords_robot(START_ROBOT_POSITION,
-	                                       START_ROBOT_ANGLE,
-	                                       getColor() == RobotColor::Blue ? REFERENCE_BLUE : REFERENCE_YELLOW);
-
-	// Recrée la forme physique en fonction de la couleur
-	world.removeObject(_obj);
-	_obj = &world.createObject<FormeRobot>(world,
-	                                       coords_robot.getPos3D(REFERENCE_SIMULATOR),
-	                                       Object3D::ObjectType::FRIEND_ROBOT_BIG,
-	                                       getColor());
-	_obj->setAngle(coords_robot.getAngle(REFERENCE_SIMULATOR));
-
 	if(_moduleMove != nullptr) {
 		_moduleMove->setPhysicalObject(_obj);
 	} else {
 		_moduleMove = std::make_unique<ModuleMove>(_obj);
+		this->addCarteHelper<DEPLACEMENT>(*this, *this, *_moduleMove, TABLE_SIZE.y);
 	}
+
+	getCarte<DEPLACEMENT>().reset();
 }
 
 /**************

@@ -3,102 +3,79 @@
 //
 
 #include "World.h"
-#include "../communication/Robot2017.h"
 #include "Simulateur.h"
 
 
-World::World(b2Vec2 gravity) : _physicWorld(gravity) {}
+World::World(IPhysicalContext* physics, IGraphicalContext* graphics)
+        : _maxId(-1), _physics(physics), _graphics(graphics) {}
 
 World::~World() {
-	clearMessageList();
 	removeAllObject();
 }
 
 
 void World::update(Duration time) {
-	_physicWorld.Step(time.toS(),
-	                  8,
-	                  2); // En secondes c'est très bien en fait : si on augmente le timestep trop haut, le PID déconne.
-	// Ajout des messages de mise à jour pour le serveur
-	for(std::unique_ptr<Object3D>& object : _objectList) {
-		auto message = object->getUpdateMessage();
-		if(!message.empty())
-			_messageList.append(message);
+	_physics->update();
+
+	for(auto& obj : _objectsList) {
+		obj->update();
 	}
+
+	_graphics->update();
+}
+
+Object3D& World::createCube(const Vector3m& dimensions, const Vector3m& position, Mass mass, BodyType type, const Vector3f& color) {
+	IPhysicalInstance* physicProp = _physics->createCuboid(position, mass, type, dimensions);
+	IGraphicalInstance* graphicProp = _graphics->createCuboid(position, dimensions);
+	graphicProp->setColor(color);
+	return createObject(graphicProp, physicProp, position);
+}
+
+Object3D& World::createCylinder(Length radius, Length height, const Vector3m& position, Mass mass, BodyType type, const Vector3f& color) {
+	IPhysicalInstance* physicProp = _physics->createCylinder(position, mass, type, radius, height);
+	IGraphicalInstance* graphicProp = _graphics->createCylinder(position, radius, height);
+	graphicProp->setColor(color);
+	return createObject(graphicProp, physicProp, position);
+}
+
+Object3D& World::createSphere(Length radius, const Vector3m& position, Mass mass, BodyType type, const Vector3f& color) {
+	// Attention, il faudra changer les propriétés physiques si on passe sur un moteur en 3D !
+	IPhysicalInstance* physicProp = _physics->createCylinder(position, mass, type, radius, 1_m);
+	IGraphicalInstance* graphicProp = _graphics->createSphere(position, radius);
+	graphicProp->setColor(color);
+	return createObject(graphicProp, physicProp, position);
+}
+
+Object3D& World::createModel(const Vector3m& position, Mass mass, BodyType type, const std::string& model, const Vector3f& color) {
+	IPhysicalInstance* physicProp = _physics->createDefaultObject(position, type);
+	IGraphicalInstance* graphicProp = _graphics->createModel(position, model);
+	graphicProp->setColor(color);
+	return createObject(graphicProp, physicProp, position);
 }
 
 void World::removeObject(const Object3D* object) {
-	auto it = _objectList.begin();
+	auto it = _objectsList.begin();
 
-	for(; it != _objectList.end(); it++) {
+	for(; it != _objectsList.end(); it++) {
 		if((*it).get() == object) {
-			auto message = (*it)->getRemoveMessage();
-			if(!message.empty())
-				_messageList.append(message);
-			_objectList.erase(it);
+			_physics->remove(&(*it)->getPhysics());
+			_graphics->remove(&(*it)->getGraphics());
+			_objectsList.erase(it);
 			return;
 		}
 	}
 }
 
 void World::removeAllObject() {
-	for(std::unique_ptr<Object3D> const& object : _objectList) {
-		auto message = object->getRemoveMessage();
-		if(!message.empty())
-			_messageList.append(message);
+	for(auto& object : _objectsList) {
+		_physics->remove(&object->getPhysics());
+		_graphics->remove(&object->getGraphics());
 	}
 
-	_objectList.clear();
+	_objectsList.clear();
 }
 
-void World::sendWorldState() const {
-	JSON list;
-
-	for(std::unique_ptr<Object3D> const& object : _objectList) {
-		list.append(object->getCreationMessage());
-	}
-
-	Json::FastWriter writer;
-	writer.omitEndingLineFeed();
-
-	std::string s = writer.write(list);
-	Simulateur::getInstance().getServer().broadcast(s);
-}
-
-void World::clearMessageList() {
-	_messageList.clear();
-}
-
-Cube& World::createCube(Length sizeX, Length sizeY, Length sizeZ, Vector3m position, Mass mass, Type type, std::string color) {
-	return createObject<Cube>(sizeX, sizeY, position, sizeZ, type, mass, *this, color);
-}
-
-Cube& World::createCube(Vector3m size, Vector3m position, Mass mass, Type type, std::string color) {
-	return createObject<Cube>(size.x, size.y, position, size.z, type, mass, *this, color);
-}
-
-Cylinder& World::createCylinder(Length radius, Length size_Z, Vector3m position, Mass mass, Type type, std::string color) {
-	return createObject<Cylinder>(radius, size_Z, position, type, mass, *this, color);
-}
-
-Sphere& World::createSphere(Length radius, Vector3m position, Mass mass, Type type, std::string color) {
-	return createObject<Sphere>(radius, position, type, mass, *this, color);
-}
-
-// acquisition de la liste des ID des différents objets
-std::vector<int> World::getListId(Object3D::ObjectType type) {
-	std::vector<int> listId;
-
-	for(std::unique_ptr<Object3D>& object : _objectList) {
-		if(object->getObjectType() == type)
-			listId.push_back(object->getId());
-	}
-
-	return listId;
-}
-
-void World::enableSimulation(bool enabled) {
-	for(std::unique_ptr<Object3D> const& object : _objectList) {
-		object->enableSimulation(enabled);
-	}
+int World::nextId() {
+	_maxId++;
+	return _maxId;
 }

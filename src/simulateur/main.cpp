@@ -2,14 +2,17 @@
 // Created by paul on 04/02/16.
 //
 
-#include "communication/Robot2017.h"
-#include "core/Simulateur.h"
-#include "core/SimulateurConstantes.h"
-#include "core/World2017.h"
-#include <Box2D/Box2D.h>
 #include <atomic>
 #include <getopt.h>
 #include <signal.h>
+
+//#include "communication/Robot2017.h"
+#include "Commun.h"
+#include "ConstantesCommunes.h"
+#include "core/Simulateur.h"
+#include "core/SimulateurConstantes.h"
+#include "core/World2017.h"
+#include "log/Log.h"
 
 using namespace std;
 
@@ -68,8 +71,8 @@ bool parseArgument(int argc, char** argv, Simulateur& simulateur) {
 		}
 	}
 
-
-	if(color == RobotColor::Undef) {
+	// TODO virer les vieux namespaces tous pourris comme Constantes (remplacer par des trucs logiques)
+	if(color == Constantes::RobotColor::Undef) {
 		logDebug5("Pas de couleur spécifiée.");
 		printHelp();
 		return false;
@@ -80,7 +83,8 @@ bool parseArgument(int argc, char** argv, Simulateur& simulateur) {
 	// Robot
 	if(robot) {
 		simulateur.addRobot(color);
-		logDebug5(std::string("Couleur du robot : ") + std::string(color == RobotColor::Blue ? "bleu" : "jaune"));
+		logDebug5(std::string("Couleur du robot : ") +
+		          std::string(color == Constantes::RobotColor::Blue ? "bleu" : "jaune"));
 	} else {
 		logDebug4("Aucun robot ajouté.");
 	}
@@ -110,8 +114,17 @@ void parseConsole() {
 
 	while(_simuAlive) {
 		// A chaque entrée console, on reset le simu
-		getchar();
-		_simu.setResetWorldFlag(true);
+		std::string input;
+		std::getline(std::cin, input);
+
+		if(input == std::string("q")) {
+			_simuAlive = false;
+		} else if(input == std::string("r")) {
+			_simu.setResetWorldFlag(true);
+		} else {
+			std::cout << "help : q (quit), r (reset)"
+			          << std::endl; // TO DO Afficher l'aide de façon synchrone avec un buffer
+		}
 	}
 }
 
@@ -119,13 +132,11 @@ int main(int argc, char** argv) {
 	// On coupe proprement le simu.
 	signal(SIGINT, [](int) {
 		_simuAlive = false;
-		_simu.getServer().stop();
-		exit(0);
+		std::cout << "Demande d'arrêt du simulateur" << std::endl;
 	});
 
 	if(parseArgument(argc, argv, _simu)) {
 		logDebug5("Starting simulator");
-		_simu.activateWebServer();
 
 		auto last = TimePoint::now();
 
@@ -133,19 +144,19 @@ int main(int argc, char** argv) {
 		std::thread consoleThread(std::bind(&parseConsole));
 
 		while(_simuAlive) {
-			while(true || _simu.getServer().isClientConnected()) {
-				_simu.update(10_ms);
+			_simu.update(10_ms);
 
-				// On se cale sur 60 fps.
-				auto now = TimePoint::now();
-				sleep(max(0_s, 1 / 60_Hz - (now - last)));
-				last = now;
-			}
-			sleep(50_ms);
+			// On se cale sur 60 fps.
+			auto now = TimePoint::now();
+			sleep(max(0_s, 1 / 60_Hz - (now - last)));
+			last = now;
 		}
-		_simu.shutdownWebServer();
-		_simu.endWorld();
+
+		consoleThread.join();
 	}
 
 	return EXIT_SUCCESS;
 }
+
+// TODO [BIG PROJECT] Lecture de la table en Json
+// TODO [BIG (?) PROJECT] Gestion de l'IA au sein du simu

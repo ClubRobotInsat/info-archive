@@ -5,19 +5,29 @@
 #ifndef ROOT_SIMULATEURCONSTANTES_H
 #define ROOT_SIMULATEURCONSTANTES_H
 
-#include "MathToolbox/Repere.h"
-#include "Units/Units.h"
+#include <iostream>
+
+#include <Units.h>
+
 #include <ConstantesCommunes.h>
 #include <MathToolbox/MathToolbox.h>
-#include <iostream>
+#include <MathToolbox/Repere.h>
 
 using namespace Units;
 using namespace UnitsLiterals;
+
+namespace mass {
+	const Mass LIGHT = 100_g;
+	const Mass MEDIUM = 1_kg;
+	const Mass HEAVY = 10000_kg;
+}
+
 
 /*****************************
  * Couleurs pour l'affichage *
  *****************************/
 
+// TODO [Important] Convertir tout ça en objets couleurs (Vector3f ou, mieux, Color3f)
 const std::string PINK = "0xFF32D2";
 const std::string PURPLE = "0x990099";
 const std::string LIGHT_BLUE = "0x10BAE8";
@@ -36,15 +46,15 @@ const std::string GREY = "0x888888";
 const std::string WHITE = "0xFFFFFF";
 
 namespace ConstantesSimu2017 {
-	const std::string COLOR_HOLD = BLACK;
-	const std::string COLOR_LUNAR_BUILDINGS = WHITE;
-	const std::string COLOR_SOL = GREY;
-	const std::string COLOR_TEAM_BLUE = BLUE;
-	const std::string COLOR_TEAM_YELLOW = YELLOW;
-	const std::string COLOR_WALL = "0x444444";
-	const std::string COLOR_CYLINDER_BLUE = BLUE;
-	const std::string COLOR_CYLINDER_YELLOW = YELLOW;
-	const std::string COLOR_CYLINDER_MULTICOLOR = "0xDDDDDD";
+	const Vector3f COLOR_HOLD = {0, 0, 0};
+	const Vector3f COLOR_LUNAR_BUILDINGS = {1, 1, 1};
+	const Vector3f COLOR_SOL = {0.5, 0.5, 0.5};
+	const Vector3f COLOR_TEAM_BLUE = {0, 0, 1};
+	const Vector3f COLOR_TEAM_YELLOW = {0.9, 1, 0};
+	const Vector3f COLOR_WALL = {0.5, 0.5, 0.5};
+	const Vector3f COLOR_CYLINDER_BLUE = {0, 0, 1};
+	const Vector3f COLOR_CYLINDER_YELLOW = {0.9, 1, 0};
+	const Vector3f COLOR_CYLINDER_MULTICOLOR = {0.5, 0.5, 0.5};
 }
 
 // Repère de la simulation
