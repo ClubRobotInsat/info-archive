@@ -6,6 +6,7 @@
 #define TESTBOX2D_PHYSICALOBJECT_H
 
 #include <list>
+#include <vector>
 
 #include <Box2D/Collision/Shapes/b2Shape.h>
 #include <Box2D/Dynamics/b2Fixture.h>

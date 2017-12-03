@@ -14,8 +14,8 @@ using namespace Constantes;
 Simulateur* Simulateur::_instance = nullptr;
 
 Simulateur::Simulateur()
-        : _physics(std::make_unique<Box2DPhysicalContext>(b2Vec2(0, 0)))
-        , _graphics(std::make_unique<WebGraphicalContext>(5000))
+        : _graphics(std::make_unique<WebGraphicalContext>(5000))
+        , _physics(std::make_unique<Box2DPhysicalContext>(b2Vec2(0, 0)))
         , _theWorld(_physics.get(), _graphics.get())
         , _resetWorld(false)
         , _enablePhysics(true) {

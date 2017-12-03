@@ -5,7 +5,12 @@
 #include "Enum/Enum.h"
 #include "MathToolbox/MathToolbox.h"
 #include "ResultatAction.h"
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wint-in-bool-context"
 #include "Trame.h"
+#pragma GCC diagnostic pop
+
 #include "Units.h"
 #include "Utils.h"
 #include <cstdint>

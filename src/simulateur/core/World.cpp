@@ -7,7 +7,7 @@
 
 
 World::World(IPhysicalContext* physics, IGraphicalContext* graphics)
-        : _maxId(-1), _physics(physics), _graphics(graphics) {}
+        : _physics(physics), _graphics(graphics), _maxId(-1) {}
 
 World::~World() {
 	removeAllObject();
