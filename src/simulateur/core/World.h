@@ -69,10 +69,10 @@ public:
 	}
 
 	// Refactorer les noms de fonctions pour garder une cohérence dans tous le projet
-	Object3D& createModel(const Vector3m& position, Mass mass, BodyType type, const std::string& model, const Vector3f& color);
-	Object3D& createCube(const Vector3m& dimensions, const Vector3m& position, Mass mass, BodyType type, const Vector3f& color);
-	Object3D& createCylinder(Length radius, Length height, const Vector3m& position, Mass mass, BodyType type, const Vector3f& color);
-	Object3D& createSphere(Length radius, const Vector3m& position, Mass mass, BodyType type, const Vector3f& color);
+	Object3D& createModel(const Vector3m& position, Mass mass, BodyType type, const std::string& model, const Color3f& color);
+	Object3D& createCube(const Vector3m& dimensions, const Vector3m& position, Mass mass, BodyType type, const Color3f& color);
+	Object3D& createCylinder(Length radius, Length height, const Vector3m& position, Mass mass, BodyType type, const Color3f& color);
+	Object3D& createSphere(Length radius, const Vector3m& position, Mass mass, BodyType type, const Color3f& color);
 
 	/**
 	 * Supprime un objet de la liste des objets.

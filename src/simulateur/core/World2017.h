@@ -49,7 +49,7 @@ public:
 	 * Traduit l'enum en couleur 3f
 	 * @param color BLUE, YELLOW ou MULTICOLOR
 	 */
-	Vector3f getColor(ColorLunarModule color);
+	Color3f getColor(ColorLunarModule color);
 
 	/**
 	 * Fonction de débug

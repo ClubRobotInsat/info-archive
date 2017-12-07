@@ -50,11 +50,11 @@ void WebObjectHandler::setAdditionalContent(JSON content) {
 	_additionalContent = content;
 }
 
-Vector3f WebObjectHandler::getColor() {
+Color3f WebObjectHandler::getColor() {
 	return _color;
 }
 
-void WebObjectHandler::setColor(const Vector3f& color) {
+void WebObjectHandler::setColor(const Color3f& color) {
 	_color = color;
 }
 
@@ -68,7 +68,7 @@ JSON WebObjectHandler::getCreationMessage() {
 	message["id"] = _id;
 	message["matrix"] = toJSON(generateTransformationMatrix());
 	message["angle"] = _rotation.z.toDeg();
-	message["color"] = toHexColorStr(_color);
+	message["color"] = _color.toHexStr();
 	return message;
 }
 

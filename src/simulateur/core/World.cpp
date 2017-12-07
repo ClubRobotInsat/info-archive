@@ -24,21 +24,21 @@ void World::update(Duration time) {
 	_graphics->update();
 }
 
-Object3D& World::createCube(const Vector3m& dimensions, const Vector3m& position, Mass mass, BodyType type, const Vector3f& color) {
+Object3D& World::createCube(const Vector3m& dimensions, const Vector3m& position, Mass mass, BodyType type, const Color3f& color) {
 	IPhysicalInstance* physicProp = _physics->createCuboid(position, mass, type, dimensions);
 	IGraphicalInstance* graphicProp = _graphics->createCuboid(position, dimensions);
 	graphicProp->setColor(color);
 	return createObject(graphicProp, physicProp, position);
 }
 
-Object3D& World::createCylinder(Length radius, Length height, const Vector3m& position, Mass mass, BodyType type, const Vector3f& color) {
+Object3D& World::createCylinder(Length radius, Length height, const Vector3m& position, Mass mass, BodyType type, const Color3f& color) {
 	IPhysicalInstance* physicProp = _physics->createCylinder(position, mass, type, radius, height);
 	IGraphicalInstance* graphicProp = _graphics->createCylinder(position, radius, height);
 	graphicProp->setColor(color);
 	return createObject(graphicProp, physicProp, position);
 }
 
-Object3D& World::createSphere(Length radius, const Vector3m& position, Mass mass, BodyType type, const Vector3f& color) {
+Object3D& World::createSphere(Length radius, const Vector3m& position, Mass mass, BodyType type, const Color3f& color) {
 	// Attention, il faudra changer les propriétés physiques si on passe sur un moteur en 3D !
 	IPhysicalInstance* physicProp = _physics->createCylinder(position, mass, type, radius, 1_m);
 	IGraphicalInstance* graphicProp = _graphics->createSphere(position, radius);
@@ -46,8 +46,9 @@ Object3D& World::createSphere(Length radius, const Vector3m& position, Mass mass
 	return createObject(graphicProp, physicProp, position);
 }
 
-Object3D& World::createModel(const Vector3m& position, Mass mass, BodyType type, const std::string& model, const Vector3f& color) {
+Object3D& World::createModel(const Vector3m& position, Mass mass, BodyType type, const std::string& model, const Color3f& color) {
 	IPhysicalInstance* physicProp = _physics->createDefaultObject(position, type);
+	// TODO changer le type de l'objet physique ?
 	IGraphicalInstance* graphicProp = _graphics->createModel(position, model);
 	graphicProp->setColor(color);
 	return createObject(graphicProp, physicProp, position);

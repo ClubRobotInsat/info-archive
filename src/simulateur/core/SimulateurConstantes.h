@@ -9,6 +9,7 @@
 
 #include <Units.h>
 
+#include <Color.h>
 #include <ConstantesCommunes.h>
 #include <MathToolbox/MathToolbox.h>
 #include <MathToolbox/Repere.h>
@@ -27,34 +28,33 @@ namespace mass {
  * Couleurs pour l'affichage *
  *****************************/
 
-// TODO [Important] Convertir tout ça en objets couleurs (Vector3f ou, mieux, Color3f)
-const std::string PINK = "0xFF32D2";
-const std::string PURPLE = "0x990099";
-const std::string LIGHT_BLUE = "0x10BAE8";
-const std::string AQUA = "0x00FFFF";
-const std::string BLUE = "0x318CE7";
-const std::string DARK_BLUE = "0x2346FF";
-const std::string DARK_GREEN = "0x316100";
-const std::string GREEN = "0x43E810";
-const std::string LIGHT_GREEN = "0x82FF00";
-const std::string YELLOW = "0xFEFF00";
-const std::string ORANGE = "0xFF6600";
-const std::string RED = "0xFF3300";
+const Color3f PINK = {1.0, 0.20, 0.82};
+const Color3f PURPLE = {0.6, 0.0, 0.6};
+const Color3f LIGHT_BLUE = {0.06, 0.73, 0.9};
+const Color3f AQUA = {0.0, 1.0, 1.0};
+const Color3f BLUE = {0.07, 0.55, 0.9};
+const Color3f DARK_BLUE = {0.14, 0.27, 1.0};
+const Color3f DARK_GREEN = {0.19, 0.38, 0.0};
+const Color3f GREEN = {0.26, 0.9, 0.06};
+const Color3f LIGHT_GREEN = {0.5, 1.0, 0.0};
+const Color3f YELLOW = {1.0, 1.0, 0.0};
+const Color3f ORANGE = {1.0, 0.4, 0.0};
+const Color3f RED = {1.0, 0.2, 0.0};
 
-const std::string BLACK = "0x000000";
-const std::string GREY = "0x888888";
-const std::string WHITE = "0xFFFFFF";
+const Color3f BLACK = {0.0, 0.0, 0.0};
+const Color3f GREY = {0.53, 0.53, 0.53};
+const Color3f WHITE = {1.0, 1.0, 1.0};
 
 namespace ConstantesSimu2017 {
-	const Vector3f COLOR_HOLD = {0, 0, 0};
-	const Vector3f COLOR_LUNAR_BUILDINGS = {1, 1, 1};
-	const Vector3f COLOR_SOL = {0.5, 0.5, 0.5};
-	const Vector3f COLOR_TEAM_BLUE = {0, 0, 1};
-	const Vector3f COLOR_TEAM_YELLOW = {0.9, 1, 0};
-	const Vector3f COLOR_WALL = {0.5, 0.5, 0.5};
-	const Vector3f COLOR_CYLINDER_BLUE = {0, 0, 1};
-	const Vector3f COLOR_CYLINDER_YELLOW = {0.9, 1, 0};
-	const Vector3f COLOR_CYLINDER_MULTICOLOR = {0.5, 0.5, 0.5};
+	const Color3f COLOR_HOLD = BLACK;
+	const Color3f COLOR_LUNAR_BUILDINGS = WHITE;
+	const Color3f COLOR_SOL = GREY;
+	const Color3f COLOR_TEAM_BLUE = BLUE;
+	const Color3f COLOR_TEAM_YELLOW = YELLOW;
+	const Color3f COLOR_WALL = GREY;
+	const Color3f COLOR_CYLINDER_BLUE = BLUE;
+	const Color3f COLOR_CYLINDER_YELLOW = YELLOW;
+	const Color3f COLOR_CYLINDER_MULTICOLOR = GREY;
 }
 
 // Repère de la simulation

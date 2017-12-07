@@ -54,19 +54,6 @@ JSON toJSON(Matrix4<T> const& mat) {
 	return value;
 }
 
-/** Transforme une couleur représentée sur des floats (entre 0 et 1)
- * en couleur hexadecimale. */
-inline std::string toHexColorStr(const Vector3f& vec) {
-	unsigned char r = (unsigned char)(vec.r * 255.99);
-	unsigned char g = (unsigned char)(vec.g * 255.99);
-	unsigned char b = (unsigned char)(vec.b * 255.99);
-
-	std::ostringstream stream;
-	stream << "0x" << std::hex << std::setw(2) << std::setfill('0') << (int)r << std::setw(2) << std::setfill('0')
-	       << (int)g << std::setw(2) << std::setfill('0') << (int)b;
-	return stream.str();
-}
-
 inline float toWebServer(const Length& l) {
 	return (float)l.toDm();
 }

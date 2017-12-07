@@ -20,8 +20,8 @@ public:
 
 	void setAdditionalContent(JSON content);
 
-	Vector3f getColor() override;
-	void setColor(const Vector3f& color) override;
+	Color3f getColor() override;
+	void setColor(const Color3f& color) override;
 	void setScale(const Vector3f& scale);
 
 	void update(Object3D& parent) override;
@@ -53,7 +53,7 @@ private:
 	Vector3f _scale;
 	Vector3ang _rotation;
 
-	Vector3f _color;
+	Color3f _color;
 	JSON _additionalContent;
 
 	// TODO peut-être une nouvelle classe (héritée de WebObjectHandler) pour les modèles ?

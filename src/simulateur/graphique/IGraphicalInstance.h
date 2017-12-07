@@ -5,6 +5,7 @@
 #ifndef ROOT_IGRAPHICALBEHAVIOR_H
 #define ROOT_IGRAPHICALBEHAVIOR_H
 
+#include <Color.h>
 #include <MathToolbox/MathToolbox.h>
 
 #include "../core/IBehavior.h"
@@ -17,8 +18,8 @@ public:
 
 	virtual void setScale(const Vector3f& scale) = 0;
 
-	virtual Vector3f getColor() = 0;
-	virtual void setColor(const Vector3f& color) = 0;
+	virtual Color3f getColor() = 0;
+	virtual void setColor(const Color3f& color) = 0;
 };
 
 #endif // ROOT_IGRAPHICALBEHAVIOR_H

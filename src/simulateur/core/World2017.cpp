@@ -173,7 +173,7 @@ void World2017::createTable() {
 	listTableObjects.clear();
 }
 
-Vector3f World2017::getColor(ColorLunarModule color) {
+Color3f World2017::getColor(ColorLunarModule color) {
 	switch(color) {
 		case ColorLunarModule::CYLINDER_BLUE:
 			return COLOR_CYLINDER_BLUE;
