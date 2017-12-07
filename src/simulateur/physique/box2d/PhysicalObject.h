@@ -15,8 +15,8 @@
 #include <MathToolbox/MathToolbox.h>
 #include <Units.h>
 
-#include "../core/PhysicalToSimulationUnits.h"
-#include "IPhysicalInstance.h"
+#include "../IPhysicalInstance.h"
+#include "PhysicalToSimulationUnits.h"
 
 class PhysicalObjectDefinition;
 class Box2DPhysicalContext;

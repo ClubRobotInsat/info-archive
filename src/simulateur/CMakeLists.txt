@@ -15,13 +15,13 @@ add_executable(Simu2017
 
         physique/IPhysicalContext.h
         physique/IPhysicalInstance.h
-        physique/PhysicalObjectDefinition.cpp
-        physique/PhysicalObject.cpp
-        physique/Box2DPhysicalContext.cpp
+        physique/box2d/PhysicalObjectDefinition.cpp
+        physique/box2d/PhysicalObject.cpp
+        physique/box2d/Box2DPhysicalContext.cpp
         graphique/IGraphicalContext.h
         graphique/IGraphicalInstance.h
-        graphique/WebGraphicalContext.cpp
-        graphique/WebObjectHandler.cpp
+        graphique/server/WebGraphicalContext.cpp
+        graphique/server/WebObjectHandler.cpp
         core/Object3D.cpp
 
         communication/cartes/CarteAsservissement2009.cpp

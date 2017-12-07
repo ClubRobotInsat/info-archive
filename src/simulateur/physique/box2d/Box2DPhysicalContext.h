@@ -12,7 +12,7 @@
 #include <Box2D/Dynamics/b2World.h>
 #include <Units/TimePoint.h>
 
-#include "IPhysicalContext.h"
+#include "../IPhysicalContext.h"
 #include "PhysicalObject.h"
 
 class Box2DPhysicalContext : public IPhysicalContext {

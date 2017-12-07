@@ -16,8 +16,8 @@
 #include <Box2D/Dynamics/b2Body.h>
 #include <Units.h>
 
-#include "../core/PhysicalToSimulationUnits.h"
-#include "../core/SimulateurConstantes.h"
+#include "../../core/SimulateurConstantes.h"
+#include "PhysicalToSimulationUnits.h"
 
 enum Type { STATIC, KINEMATIC, DYNAMIC }; // TODO fusionner celui-ci avec Object3D::BodyType ?
 

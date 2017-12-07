@@ -1,7 +1,7 @@
 #include "WebGraphicalContext.h"
 
-#include "../core/SimulationToWebserver.h"
-#include "IGraphicalInstance.h"
+#include "../IGraphicalInstance.h"
+#include "SimulationToWebserver.h"
 #include "WebObjectHandler.h"
 
 WebGraphicalContext::WebGraphicalContext(int port) : _server(port), _maxId(-1) {

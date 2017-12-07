@@ -5,8 +5,8 @@
 #include <functional>
 
 #include "../communication/Robot2017.h"
-#include "../graphique/WebGraphicalContext.h"
-#include "../physique/Box2DPhysicalContext.h"
+#include "../graphique/server/WebGraphicalContext.h"
+#include "../physique/box2d/Box2DPhysicalContext.h"
 #include "SimulateurConstantes.h"
 
 using namespace Constantes;

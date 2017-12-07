@@ -1,7 +1,7 @@
 // Asservissement.cpp
 
 #include "Asservissement.h"
-#include "../../../core/PhysicalToSimulationUnits.h"
+#include "../../../physique/box2d/PhysicalToSimulationUnits.h"
 #include <cmath>
 #include <iostream>
 

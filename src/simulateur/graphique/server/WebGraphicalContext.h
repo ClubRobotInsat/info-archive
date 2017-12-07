@@ -5,9 +5,9 @@
 #ifndef ROOT_WEBGRAPHICALCONTEXT_H
 #define ROOT_WEBGRAPHICALCONTEXT_H
 
-#include "IGraphicalContext.h"
+#include "../IGraphicalContext.h"
+#include "SimuWebSocketServer.h"
 #include "WebObjectHandler.h"
-#include "server/SimuWebSocketServer.h"
 
 class WebGraphicalContext : public IGraphicalContext, public IServerListener {
 public:

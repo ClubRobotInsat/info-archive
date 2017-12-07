@@ -5,8 +5,8 @@
 #ifndef ROOT_WEBOBJECTHANDLER_H
 #define ROOT_WEBOBJECTHANDLER_H
 
-#include "../core/SimulationToWebserver.h"
-#include "IGraphicalInstance.h"
+#include "../IGraphicalInstance.h"
+#include "SimulationToWebserver.h"
 
 class WebGraphicalContext;
 

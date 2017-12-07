@@ -4,7 +4,7 @@
 
 #include <Box2D/Dynamics/Joints/b2RevoluteJoint.h>
 
-#include "../core/Object3D.h"
+#include "../../core/Object3D.h"
 #include "Box2DPhysicalContext.h"
 #include "PhysicalObjectDefinition.h"
 

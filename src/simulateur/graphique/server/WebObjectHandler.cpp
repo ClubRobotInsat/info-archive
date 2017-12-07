@@ -4,9 +4,9 @@
 
 #include "WebObjectHandler.h"
 
-#include "../core/Object3D.h"
-#include "../core/PhysicalToSimulationUnits.h"
-#include "../core/SimulationToWebserver.h"
+#include "../../core/Object3D.h"
+#include "../../physique/box2d/PhysicalToSimulationUnits.h"
+#include "SimulationToWebserver.h"
 
 
 // *************** APPROXIMATIONS ********************

@@ -1,8 +1,8 @@
 // CarteDeplacement2009.cpp
 
 #include "CarteDeplacement2009.h"
-#include "../../core/PhysicalToSimulationUnits.h"
 #include "../../core/World.h"
+#include "../../physique/box2d/PhysicalToSimulationUnits.h"
 #include <cmath>
 using std::abs;
 
