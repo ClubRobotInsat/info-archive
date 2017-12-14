@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Arguments
-install_apt=1
+install_apt=0
 install_hook=0
 install_petri=0
 install_wii=0
@@ -9,22 +9,26 @@ install_wii=0
 if [ $# -ne "0" ]
     then for arg in $*
     do
-        if [ "$arg" = "petri" ]
+        if [ "$arg" = "all" ]
+            then install_apt=1
+            install_petri=1
+            install_hook=1
+            install_wii=1
+        elif [ "$arg" = "tools" ]
+            then install_apt=1
+        elif [ "$arg" = "petri" ]
             then install_petri=1
         elif [ "$arg" = "format" ]
             then install_hook=1
         elif [ "$arg" = "wii" ]
             then install_wii=1
         else
-            echo "Usage : $0 [petri|format|wii]"
+            echo "Usage : $0 [all|tools|petri|format|wii]"
             exit
         fi
-        install_apt=0
     done
 else
-    install_hook=1
-    install_petri=1
-    install_wii=1
+    echo "Usage : $0 [all|tools|petri|format|wii]"
 fi
 
 #echo -e
@@ -43,6 +47,7 @@ petri_installed=0
 
 if [ $install_apt -eq 1 ]
     then echo -e "${Yellow}Installation des logiciels nécessaires${End}"
+    sudo apt-get update
     sudo apt-get install mono-complete cmake subversion git libbox2d-dev gcc-5-multilib g++-5-multilib libbluetooth-dev build-essential libglfw-dev libglu1-mesa-dev curl libxrandr-dev libgtkmm-3.0-dev libusb-1.0-0-dev clang-format
 fi
 

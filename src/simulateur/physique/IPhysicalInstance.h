@@ -7,12 +7,17 @@
 
 #include "../core/IBehavior.h"
 
+/** Cette interface permet de manipuler la partie physique
+ * d'un objet du simulateur. */
 class IPhysicalInstance : public IBehavior {
 public:
 	virtual ~IPhysicalInstance() = default;
 
 	virtual int getId() const = 0;
 
+	/** Active ou desactive la simulation physique de cet
+	 * objet. Si un objet n'est pas simulé, il ne bouge pas
+	 * et n'interagit pas avec les autres objets. */
 	virtual void enableSimulation(bool enable) = 0;
 	virtual Mass getMass() = 0;
 

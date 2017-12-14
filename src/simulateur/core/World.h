@@ -35,11 +35,11 @@ public:
 	~World();
 
 	IPhysicalContext& getPhysics() {
-		return *_physics;
+		return *_physicalCtx;
 	}
 
 	IGraphicalContext& getGraphics() {
-		return *_graphics;
+		return *_graphicalCtx;
 	}
 
 	// TODO méthode à supprimer (remplacer par des constantes)
@@ -86,13 +86,11 @@ public:
 	void removeAllObject();
 
 private:
-	// TODO le nom de ces champs ressemble beaucoup aux champs de "Object3D". changer les noms ?
-
 	/// Le contexte physique, qui gère la simulation physique et alloue les données physiques des objets
-	IPhysicalContext* _physics;
+	IPhysicalContext* _physicalCtx;
 
 	/// Le contexte graphique, qui gère l'affichage des objets et alloue leurs données graphiques.
-	IGraphicalContext* _graphics;
+	IGraphicalContext* _graphicalCtx;
 
 	int _maxId;
 

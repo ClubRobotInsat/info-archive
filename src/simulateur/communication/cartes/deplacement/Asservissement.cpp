@@ -75,8 +75,8 @@ void Asservissement::calculer(Duration el,
 			commandeVitesseAngulaire = _commandeVitesseAngulairePrecedente - ACCELERATION_ANGULAIRE_MAX * elapsed;
 	}
 
-	*vitesseLongitudinale = fromSimulationVL(commandeVitesseLongitudinale);
-	*vitesseAngulaire = fromSimulationVA(commandeVitesseAngulaire);
+	*vitesseLongitudinale = fromBox2DVL(commandeVitesseLongitudinale);
+	*vitesseAngulaire = fromBox2DVA(commandeVitesseAngulaire);
 
 	_commandeVitesseAngulairePrecedente = commandeVitesseAngulaire;
 	_commandeVitesseLongitudinalePrecedente = commandeVitesseLongitudinale;

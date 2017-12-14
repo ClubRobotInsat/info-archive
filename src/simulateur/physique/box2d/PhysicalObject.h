@@ -83,8 +83,8 @@ public:
 	 */
 	Speed getLinearVelocity() {
 		b2Vec2 vec1 = _body->GetLinearVelocity();
-		Speed speedAbs = fromSimulationVL(sqrt(pow(vec1.x, 2) + pow(vec1.y, 2)));
-		b2Vec2 vec2 = b2Vec2(toSimulation(speedAbs) * cos(_body->GetAngle()), toSimulation(speedAbs) * sin(_body->GetAngle()));
+		Speed speedAbs = fromBox2DVL(sqrt(pow(vec1.x, 2) + pow(vec1.y, 2)));
+		b2Vec2 vec2 = b2Vec2(toBox2D(speedAbs) * cos(_body->GetAngle()), toBox2D(speedAbs) * sin(_body->GetAngle()));
 		// Obtient la vitesse relative à l'angle (positive ou négative).
 		if(vec1.x * vec2.x + vec2.y * vec1.y > 0)
 			return speedAbs;
@@ -108,7 +108,7 @@ public:
 	 * Obtient la vitesse angulaire de l'objet
 	 */
 	AngularSpeed getAngularVelocity() {
-		return fromSimulationVA(_body->GetAngularVelocity());
+		return fromBox2DVA(_body->GetAngularVelocity());
 	};
 
 	/**

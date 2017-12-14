@@ -17,10 +17,8 @@
 #include <Units.h>
 
 #include "../../core/SimulateurConstantes.h"
+#include "../IPhysicalContext.h"
 #include "PhysicalToSimulationUnits.h"
-
-enum Type { STATIC, KINEMATIC, DYNAMIC }; // TODO fusionner celui-ci avec Object3D::BodyType ?
-
 
 class PhysicalObjectDefinition {
 public:
@@ -92,7 +90,7 @@ public:
 	 * Modifie le type de l'objet selon l'énumération de la classe
 	 * @param type dynamic ou static
 	 */
-	void setType(Type type);
+	void setType(BodyType type);
 
 	/**
 	 * Obtient le type de l'objet selon l'énumération de la classe

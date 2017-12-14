@@ -14,9 +14,9 @@ WebGraphicalContext::~WebGraphicalContext() {
 }
 
 void WebGraphicalContext::update() {
-	// Actualisation des données des objets.
-	JSON list;
+	JSON& list = _messageBuf;
 
+	// Actualisation des données des objets.
 	for(auto& object : _objects) {
 		if(object->_created) {
 			list.append(object->getCreationMessage());
@@ -27,11 +27,22 @@ void WebGraphicalContext::update() {
 		}
 	}
 
+	// Envoi
 	Json::FastWriter writer;
 	writer.omitEndingLineFeed();
 
 	std::string s = writer.write(list);
 	_server.broadcast(s);
+
+	// Réinitialisation du buffer de messages
+	list.clear();
+}
+
+void WebGraphicalContext::displayMessage(std::string msg) {
+	JSON message;
+	message["type"] = "log";
+	message["message"] = msg;
+	_messageBuf.append(message);
 }
 
 IGraphicalInstance* WebGraphicalContext::createDefaultObject() {
@@ -87,7 +98,7 @@ IGraphicalInstance* WebGraphicalContext::createModel(const Vector3m& position, c
 void WebGraphicalContext::remove(IGraphicalInstance* object) {
 	for(auto it = _objects.begin(); it == _objects.end(); it++) {
 		if(object->getId() == (*it)->getId()) {
-			// TODO [Important] broadcast delete message
+			_messageBuf.append((*it)->getRemoveMessage());
 			_objects.erase(it);
 			return;
 		}
@@ -99,7 +110,7 @@ int WebGraphicalContext::nextId() {
 	return _maxId;
 }
 
-void WebGraphicalContext::onConnect(IServerListener::Client) {
+void WebGraphicalContext::onConnect(IServerListener::Client client) {
 	JSON allObjects;
 
 	for(auto& object : _objects) {
@@ -110,8 +121,7 @@ void WebGraphicalContext::onConnect(IServerListener::Client) {
 	writer.omitEndingLineFeed();
 
 	std::string s = writer.write(allObjects);
-	// FIXME broadcast est un peu problématique ici, car si plusieurs servers, on se retrouve avec des objets en double
-	_server.broadcast(s);
+	_server.sendToClient(client, s);
 }
 
 void WebGraphicalContext::onDisconnect(IServerListener::Client) {}

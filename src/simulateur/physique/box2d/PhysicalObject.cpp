@@ -13,7 +13,7 @@ PhysicalObject::PhysicalObject(PhysicalObjectDefinition& def, Box2DPhysicalConte
 	// Definition et création du body
 	b2BodyDef bodyDef;
 	bodyDef.type = def.getType();
-	bodyDef.position = b2Vec2(toSimulation(position.x), toSimulation(position.y));
+	bodyDef.position = b2Vec2(toBox2D(position.x), toBox2D(position.y));
 	_body = _context->getWorld().CreateBody(&bodyDef);
 
 	b2FixtureDef fixtureDef;
@@ -56,7 +56,7 @@ void PhysicalObject::setPosition(Vector2m position) {
 	std::cout << "BOX2D::"
 	          << "Setted Position To:" << position.x.toM() << " & " << position.y.toM() << std::endl;
 #endif
-	_body->SetTransform(b2Vec2(toSimulation(position.x), toSimulation(position.y)), _body->GetAngle());
+	_body->SetTransform(b2Vec2(toBox2D(position.x), toBox2D(position.y)), _body->GetAngle());
 }
 
 // ********************************************* //
@@ -69,7 +69,7 @@ void PhysicalObject::setLinearVelocity(Speed speed) {
 	          << "Setted Speed To:" << speed.toM_s() << std::endl;
 #endif
 	float angle = _body->GetAngle();
-	_body->SetLinearVelocity(b2Vec2(toSimulation(speed) * cos(angle), toSimulation(speed) * sin(angle)));
+	_body->SetLinearVelocity(b2Vec2(toBox2D(speed) * cos(angle), toBox2D(speed) * sin(angle)));
 }
 
 // ********************************************* //
@@ -80,7 +80,7 @@ void PhysicalObject::setAngularVelocity(AngularSpeed velocity) {
 	std::cout << "BOX2D::"
 	          << "Setted Angular Speed To:" << velocity.toDeg_s() << std::endl;
 #endif
-	_body->SetAngularVelocity(toSimulation(velocity));
+	_body->SetAngularVelocity(toBox2D(velocity));
 }
 
 void PhysicalObject::setAngle(Angle angle) {
@@ -146,9 +146,9 @@ std::list<b2Vec2> PhysicalObject::getBodyPoints() {
 
 			for(int i = 0; i < polygonShape->m_count; i++) {
 				b2Vec2 vertex = polygonShape->GetVertex(i);
-				result.push_back(b2Vec2(
-				    toSimulation(absolutePositionPoint(Vector2m(fromSimulation(vertex.x), fromSimulation(vertex.y))).x),
-				    toSimulation(absolutePositionPoint(Vector2m(fromSimulation(vertex.x), fromSimulation(vertex.y))).y)));
+				result.push_back(
+				    b2Vec2(toBox2D(absolutePositionPoint(Vector2m(fromBox2D(vertex.x), fromBox2D(vertex.y))).x),
+				           toBox2D(absolutePositionPoint(Vector2m(fromBox2D(vertex.x), fromBox2D(vertex.y))).y)));
 			}
 		}
 		// La shape est un cercle ?
@@ -158,15 +158,13 @@ std::list<b2Vec2> PhysicalObject::getBodyPoints() {
 			float angleStep = b2_pi / 4;
 			// permet de connaitre la position d'un point tous les PI/4 (en fonction de la pos initiale, des cos et sin)
 			for(int i = 0; i < 8; i++) {
-				result.push_back(
-				    b2Vec2((float)toSimulation(
-				               absolutePositionPoint(fromSimulation({(circleShape->m_radius * (float)cos(angleStep * i)),
-				                                                     (circleShape->m_radius * (float)sin(angleStep * i))}))
-				                   .x),
-				           (float)toSimulation(
-				               absolutePositionPoint(fromSimulation({(circleShape->m_radius * (float)cos(angleStep * i)),
-				                                                     (circleShape->m_radius * (float)sin(angleStep * i))}))
-				                   .y)));
+				result.push_back(b2Vec2(
+				    (float)toBox2D(absolutePositionPoint(fromBox2D({(circleShape->m_radius * (float)cos(angleStep * i)),
+				                                                    (circleShape->m_radius * (float)sin(angleStep * i))}))
+				                       .x),
+				    (float)toBox2D(absolutePositionPoint(fromBox2D({(circleShape->m_radius * (float)cos(angleStep * i)),
+				                                                    (circleShape->m_radius * (float)sin(angleStep * i))}))
+				                       .y)));
 			}
 		} else
 			std::cout
@@ -178,7 +176,7 @@ std::list<b2Vec2> PhysicalObject::getBodyPoints() {
 }
 
 void PhysicalObject::update(Object3D& parent) {
-	parent.setPosition(fromSimulation(_body->GetPosition()));
+	parent.setPosition(fromBox2D(_body->GetPosition()));
 	parent.rotation().z = getAngle();
 }
 
@@ -215,10 +213,10 @@ Vector2m PhysicalObject::absolutePositionPoint(Vector2m position) {
 	Vector2m result;
 	Angle angle = Angle::makeFromRad(_body->GetAngle());
 
-	result.x = fromSimulation(toSimulation(position.x) * cos(angle.toRad()) -
-	                          toSimulation(position.y) * sin(angle.toRad()) + toSimulation(getPosition().x));
-	result.y = fromSimulation(toSimulation(position.x) * sin(angle.toRad()) +
-	                          toSimulation(position.y) * cos(angle.toRad()) + toSimulation(getPosition().y));
+	result.x = fromBox2D(toBox2D(position.x) * cos(angle.toRad()) - toBox2D(position.y) * sin(angle.toRad()) +
+	                     toBox2D(getPosition().x));
+	result.y = fromBox2D(toBox2D(position.x) * sin(angle.toRad()) + toBox2D(position.y) * cos(angle.toRad()) +
+	                     toBox2D(getPosition().y));
 
 	return result;
 }
@@ -227,15 +225,15 @@ std::list<b2Vec2> PhysicalObject::absolutePositionList(const std::list<b2Vec2>& 
 	std::list<b2Vec2> result;
 
 	for(b2Vec2 vertex : points) {
-		result.push_back(b2Vec2(toSimulation(absolutePositionPoint(fromSimulation({vertex.x, vertex.y})).x),
-		                        toSimulation(absolutePositionPoint(fromSimulation({vertex.x, vertex.y})).x)));
+		result.push_back(b2Vec2(toBox2D(absolutePositionPoint(fromBox2D({vertex.x, vertex.y})).x),
+		                        toBox2D(absolutePositionPoint(fromBox2D({vertex.x, vertex.y})).x)));
 	}
 	return result;
 }
 
 void PhysicalObject::addRevoluteJoint(PhysicalObject& other, Vector2m commonPoint) {
 	b2RevoluteJointDef def;
-	def.Initialize(_body, other._body, b2Vec2(toSimulation(commonPoint.x), toSimulation(commonPoint.y)));
+	def.Initialize(_body, other._body, b2Vec2(toBox2D(commonPoint.x), toBox2D(commonPoint.y)));
 
 	b2Joint* joint = _context->getWorld().CreateJoint(&def);
 
@@ -245,8 +243,8 @@ void PhysicalObject::addRevoluteJoint(PhysicalObject& other, Vector2m commonPoin
 
 Vector2m PhysicalObject::getPosition() {
 	Vector2m position;
-	position.x = fromSimulation(_body->GetPosition().x);
-	position.y = fromSimulation(_body->GetPosition().y);
+	position.x = fromBox2D(_body->GetPosition().x);
+	position.y = fromBox2D(_body->GetPosition().y);
 #ifdef DEBUG_BOX2D
 	std::cout << "BOX2D::"
 	          << "Given Position To:" << position.x.toM() << " & " << position.y.toM() << std::endl;

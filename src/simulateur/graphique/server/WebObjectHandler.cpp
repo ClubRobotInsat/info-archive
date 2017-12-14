@@ -33,16 +33,6 @@ inline bool vecAngAlmostEquals(Vector3ang v1, Vector3ang v2) {
 // **************************************************
 
 
-// TODO [IMPORTANT] rendre cette fonction disponible partout
-Matrix4f getTransformationMatrix(const Vector3f& pos, const Vector3f& rot, const Vector3f& scale) {
-	Matrix4f matIdentity;
-	matIdentity *= Matrix4f::translationMatrix(pos) * Matrix4f::rotationMatrix({1, 0, 0}, rot.x) *
-	               Matrix4f::rotationMatrix({0, 1, 0}, rot.y) * Matrix4f::rotationMatrix({0, 0, 1}, rot.z) *
-	               Matrix4f::scaleMatrix(scale);
-	return matIdentity;
-}
-
-
 WebObjectHandler::WebObjectHandler(WebGraphicalContext& context, int id)
         : _context(context), _id(id), _scale({1, 1, 1}), _created(true), _changed(false) {}
 
@@ -98,8 +88,6 @@ void WebObjectHandler::update(Object3D& parent) {
 		_changed = true;
 		_rotation = parent.getRotation();
 	}
-
-	// TODO la scale n'est pas la même que celle de l'objet3D... bof bof
 }
 
 Matrix4f WebObjectHandler::generateTransformationMatrix() {

@@ -8,7 +8,7 @@
 #include "PhysicalObjectDefinition.h"
 
 Box2DPhysicalContext::Box2DPhysicalContext(const b2Vec2& gravity)
-        : _b2world(gravity), _lastUpdateTime(TimePoint::now()), _maxId(-1) {}
+        : _b2world(gravity), _stepDuration(20_s), _lastUpdateTime(TimePoint::now()), _maxId(-1) {}
 
 b2World& Box2DPhysicalContext::getWorld() {
 	return _b2world;
@@ -16,7 +16,7 @@ b2World& Box2DPhysicalContext::getWorld() {
 
 void Box2DPhysicalContext::update() {
 	Duration elapsed = TimePoint::now() - _lastUpdateTime;
-	Duration step = 20_ms; // TODO 20_ms à mettre en champ de classe
+	Duration step = _stepDuration;
 
 	while(elapsed > step) {
 		elapsed -= step;
@@ -26,16 +26,12 @@ void Box2DPhysicalContext::update() {
 	}
 }
 
-// Cette méthode pourra disparaître si on fusionne BodyType et Type
-Type conversion(BodyType type) {
-	return type == STATIC_BODY ? STATIC : DYNAMIC;
-}
 
 IPhysicalInstance* Box2DPhysicalContext::createDefaultObject(const Vector3m& position, BodyType type) {
 	// TODO changer l'objet par défaut
 
 	PhysicalObjectDefinition def;
-	def.setType(conversion(type));
+	def.setType(type);
 	return addObject(def, this, nextId(), position.x, position.y);
 }
 
@@ -43,7 +39,7 @@ IPhysicalInstance* Box2DPhysicalContext::createCuboid(const Vector3m& position, 
 	PhysicalObjectDefinition cubeDefinition;
 	cubeDefinition.setShapeRectangle(dimensions.x, dimensions.y);
 	cubeDefinition.setMass(mass);
-	cubeDefinition.setType(conversion(type));
+	cubeDefinition.setType(type);
 	return addObject(cubeDefinition, this, nextId(), position.x, position.y);
 }
 
@@ -52,7 +48,7 @@ IPhysicalInstance*
 	PhysicalObjectDefinition cylinderDefinition;
 	cylinderDefinition.setShapeCircle(radius);
 	cylinderDefinition.setMass(mass);
-	cylinderDefinition.setType(conversion(type));
+	cylinderDefinition.setType(type);
 	return addObject(cylinderDefinition, this, nextId(), position.x, position.y);
 }
 

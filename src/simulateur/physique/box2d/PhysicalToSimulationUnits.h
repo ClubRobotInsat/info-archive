@@ -11,62 +11,51 @@
 
 const Length unitarySize = 1_dm;
 
-// TODO rename "toBox2D"
-
-inline double toSimulation(Distance const& d) {
+inline double toBox2D(Distance const& d) {
 	return d.toDm<double>();
 }
 
-inline double toSimulation(Angle const& d) {
+inline double toBox2D(Angle const& d) {
 	return d.toRad<double>();
 }
 
-inline double toSimulation(Mass const& m) {
+inline double toBox2D(Mass const& m) {
 	return m.toKg<double>();
 }
 
-inline Distance fromSimulation(double d) {
+inline Distance fromBox2D(double d) {
 	return Distance::makeFromDm(d);
 }
 
-inline Speed fromSimulationVL(double d) {
+inline Speed fromBox2DVL(double d) {
 	return Speed::makeFromDm_s(d);
 }
 
-inline double toSimulation(Speed const& d) {
+inline double toBox2D(Speed const& d) {
 	return d.toDm_s<double>();
 }
 
-inline AngularSpeed fromSimulationVA(double d) {
+inline AngularSpeed fromBox2DVA(double d) {
 	return AngularSpeed::makeFromRad_s(d);
 }
 
-inline double toSimulation(AngularSpeed const& d) {
+inline double toBox2D(AngularSpeed const& d) {
 	return d.toRad_s<double>();
 }
 
-/*
-inline b2Vec2 toSimulation(Vector2m const& d) {
-    double x,y;
-    x = toSimulation(Vector2m.x);
-    y = toSimulation(Vector2m.y);
-    return b2Vec2(x, y);
-}
-*/
-
-inline b2Vec2 toSimulation(Vector2m const& d) {
-	return b2Vec2(toSimulation(d.x), toSimulation(d.y));
+inline b2Vec2 toBox2D(Vector2m const& d) {
+	return b2Vec2(toBox2D(d.x), toBox2D(d.y));
 }
 
-inline Vector2m fromSimulation(b2Vec2 const& d) {
-	return Vector2m(fromSimulation(d.x), fromSimulation(d.y));
+inline Vector2m fromBox2D(b2Vec2 const& d) {
+	return Vector2m(fromBox2D(d.x), fromBox2D(d.y));
 }
 
-inline Vector3m fromSimulation(Vector3f const& d) {
-	return Vector3m(fromSimulation(d.x), fromSimulation(d.y), fromSimulation(d.z));
+inline Vector3m fromBox2D(Vector3f const& d) {
+	return Vector3m(fromBox2D(d.x), fromBox2D(d.y), fromBox2D(d.z));
 }
 
-inline Vector3f toSimulation(Vector3m const& d) {
-	return Vector3f(toSimulation(d.x), toSimulation(d.y), toSimulation(d.z));
+inline Vector3f toBox2D(Vector3m const& d) {
+	return Vector3f(toBox2D(d.x), toBox2D(d.y), toBox2D(d.z));
 }
 #endif // ROOT_PHYSICALTOSIMULATIONUNITS_	H

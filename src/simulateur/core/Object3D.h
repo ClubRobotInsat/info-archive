@@ -70,14 +70,6 @@ public:
 		return _rotation;
 	}
 
-	void setScale(const Vector3f& scale);
-	Vector3f& scale() {
-		return _scale;
-	}
-	Vector3f getScale() const {
-		return _scale;
-	}
-
 private:
 	int _id;
 
@@ -86,7 +78,6 @@ private:
 
 	Vector3m _position;
 	Vector3ang _rotation;
-	Vector3f _scale;
 };
 
 #endif // ROOT_OBJECT3D_H

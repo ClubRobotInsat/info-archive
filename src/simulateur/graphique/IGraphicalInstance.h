@@ -10,6 +10,8 @@
 
 #include "../core/IBehavior.h"
 
+/** Cette interface permet de manipuler la partie graphique
+ * d'un objet du simulateur. */
 class IGraphicalInstance : public IBehavior {
 public:
 	virtual ~IGraphicalInstance() = default;

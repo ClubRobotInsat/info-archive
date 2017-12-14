@@ -5,6 +5,8 @@
 #ifndef ROOT_WEBGRAPHICALCONTEXT_H
 #define ROOT_WEBGRAPHICALCONTEXT_H
 
+#include <vector>
+
 #include "../IGraphicalContext.h"
 #include "SimuWebSocketServer.h"
 #include "WebObjectHandler.h"
@@ -15,6 +17,7 @@ public:
 	~WebGraphicalContext();
 
 	void update() override;
+	void displayMessage(std::string message) override;
 
 	IGraphicalInstance* createDefaultObject() override;
 
@@ -33,6 +36,8 @@ private:
 
 	int _maxId;
 	std::vector<std::unique_ptr<WebObjectHandler>> _objects;
+
+	JSON _messageBuf;
 
 	template <typename... Args>
 	WebObjectHandler* addObject(WebGraphicalContext& context, Args... args) {
