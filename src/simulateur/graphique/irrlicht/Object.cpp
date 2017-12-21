@@ -8,7 +8,7 @@
 
 Object::Object(int id, irr::scene::ISceneNode* ptr) : _id(id), _objectPtr(ptr) {}
 
-irr::scene::ISceneNode * Object::getInternalPtr() const {
+irr::scene::ISceneNode* Object::getInternalPtr() const {
 	return _objectPtr;
 }
 
@@ -43,7 +43,7 @@ void Object::setColor(const Color3f& color) {
 	material_object.DiffuseColor.setGreen(irr::u32(color.g * 255));
 }
 
-void Object::update(Object3D &parent) {
+void Object::update(Object3D& parent) {
 	_objectPtr->setPosition(SimulationToIrrlicht::VectorIrr(parent.getPosition()));
 	// TODO répercuter la rotation
 }

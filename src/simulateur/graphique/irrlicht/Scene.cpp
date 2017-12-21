@@ -23,13 +23,13 @@ void Scene::update() {
 	// TODO [URGENT] faire ça propre
 	static bool done = false;
 
-	if (!done) {
+	if(!done) {
 		AddCameraMaya(-1000.f, 200.f, 100.f);
 		PutCameraObjet();
 	}
 	done = true;
 
-	if (_device->run()) {
+	if(_device->run()) {
 		_driver->beginScene(true, true, irr::video::SColor(255, 255, 255, 255));
 		_scenemanager->drawAll();
 		_driver->endScene();
@@ -46,15 +46,12 @@ IGraphicalInstance* Scene::createDefaultObject() {
 
 	_listeObjet.push_back(std::make_unique<Object>(_objectId, node));
 
-    return _listeObjet.back().get();
+	return _listeObjet.back().get();
 };
 
 IGraphicalInstance* Scene::createCuboid(const Vector3m& position, const Vector3m& dimensions) {
-	irr::scene::IMeshSceneNode* cube = _scenemanager->addCubeSceneNode(1,
-	                                                                   0,
-	                                                                   -1,
-	                                                                   SimulationToIrrlicht::VectorIrr(position),
-	                                                                   irr::core::vector3df(0, 180, 0));
+	irr::scene::IMeshSceneNode* cube =
+	    _scenemanager->addCubeSceneNode(1, 0, -1, SimulationToIrrlicht::VectorIrr(position), irr::core::vector3df(0, 180, 0));
 	cube->setID(_objectId);
 
 	_listeObjet.push_back(std::make_unique<Object>(_objectId, cube));
@@ -64,7 +61,7 @@ IGraphicalInstance* Scene::createCuboid(const Vector3m& position, const Vector3m
 	irr::scene::IMeshManipulator* Mcube = _scenemanager->getMeshManipulator();
 	Mcube->scale(_cubeMesh, SimulationToIrrlicht::VectorIrr(dimensions));
 
-    return _listeObjet.back().get();
+	return _listeObjet.back().get();
 };
 
 IGraphicalInstance* Scene::createCylinder(const Vector3m& position, Length radius, Length height) {
@@ -82,7 +79,7 @@ IGraphicalInstance* Scene::createCylinder(const Vector3m& position, Length radiu
 	Scene::ChangePosition(SimulationToIrrlicht::VectorIrr(position), _objectId);
 	incrementId();
 
-    return _listeObjet.back().get();
+	return _listeObjet.back().get();
 };
 
 IGraphicalInstance* Scene::createSphere(const Vector3m& position, Length radius) {
@@ -94,15 +91,15 @@ IGraphicalInstance* Scene::createSphere(const Vector3m& position, Length radius)
 	                                                                   irr::core::vector3df(0, 0, 0),
 	                                                                   irr::core::vector3df(1.0f, 1.0f, 1.0));
 
-    sphere->setID(_objectId);
+	sphere->setID(_objectId);
 	_listeObjet.push_back(std::make_unique<Object>(_objectId, sphere));
 	incrementId();
 
-    return _listeObjet.back().get();
+	return _listeObjet.back().get();
 };
 
 IGraphicalInstance* Scene::createModel(const Vector3m& position, const std::string& model) {
-    // TODO à changer : il faut obtenir le IMeshLoader avec irrlicht
+	// TODO à changer : il faut obtenir le IMeshLoader avec irrlicht
 
 	// irr::scene::ISceneLoader::loadScene(model, _scenemanager);
 
@@ -114,14 +111,14 @@ IGraphicalInstance* Scene::createModel(const Vector3m& position, const std::stri
 	Scene::ChangePosition(SimulationToIrrlicht::VectorIrr(position), _objectId);
 	incrementId();*/
 
-    return createDefaultObject();
+	return createDefaultObject();
 }
 
 void Scene::remove(IGraphicalInstance* object) {
-    // TODO On peut pas faire comme ça, parce que IGraphicalInstance ne possède  [...]
-    // pas les méthodes de Object. Une manière propre de récupérer l'objet
-    // est de récuperer son Id, puis de récuperer l'objet dans la liste qui
-    // correspond à cet Id.
+	// TODO On peut pas faire comme ça, parce que IGraphicalInstance ne possède  [...]
+	// pas les méthodes de Object. Une manière propre de récupérer l'objet
+	// est de récuperer son Id, puis de récuperer l'objet dans la liste qui
+	// correspond à cet Id.
 
 	/*object.getInternalPtr()->remove();
 	int id = object->getId();
