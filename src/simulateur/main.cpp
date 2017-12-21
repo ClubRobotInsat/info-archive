@@ -110,17 +110,24 @@ namespace {
 	Simulateur _simu;
 }
 
+void stopSimu() {
+	_simuAlive = false;
+}
+
 void parseConsole() {
 
 	while(_simuAlive) {
-		// A chaque entrée console, on reset le simu
+		// Obtention de la commande de l'utilisateur.
 		std::string input;
 		std::getline(std::cin, input);
 
+		// quitter
 		if(input == std::string("q")) {
 			_simuAlive = false;
+			// reset
 		} else if(input == std::string("r")) {
 			_simu.setResetWorldFlag(true);
+			// commande inconnue, afficher l'aide
 		} else {
 			std::cout << "help : q (quit), r (reset)"
 			          << std::endl; // TO DO Afficher l'aide de façon synchrone avec un buffer
@@ -142,6 +149,7 @@ int main(int argc, char** argv) {
 
 		// Thread pour analyser les entrées console ("entrée" pour reset par exemple)
 		std::thread consoleThread(std::bind(&parseConsole));
+		consoleThread.detach();
 
 		while(_simuAlive) {
 			_simu.update(10_ms);
@@ -151,8 +159,6 @@ int main(int argc, char** argv) {
 			sleep(max(0_s, 1 / 60_Hz - (now - last)));
 			last = now;
 		}
-
-		consoleThread.join();
 	}
 
 	return EXIT_SUCCESS;

@@ -32,6 +32,7 @@ add_executable(Simu2017
 
         graphique/IGraphicalContext.h
         graphique/IGraphicalInstance.h
+        graphique/IGraphicalUserListener.h
         graphique/server/WebGraphicalContext.cpp
         graphique/server/WebObjectHandler.cpp
         graphique/irrlicht/SimulationToIrrlicht.h

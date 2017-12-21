@@ -6,7 +6,10 @@
 
 #include "../../core/Object3D.h"
 
-Object::Object(int id, irr::scene::ISceneNode* ptr) : _id(id), _objectPtr(ptr) {}
+Object::Object(int id, irr::scene::ISceneNode* ptr) : _id(id), _objectPtr(ptr) {
+	// Changement du materiau pour qu'il accepte la couleur diffuse
+	ptr->getMaterial(0).ColorMaterial = irr::video::ECM_NONE;
+}
 
 irr::scene::ISceneNode* Object::getInternalPtr() const {
 	return _objectPtr;
@@ -29,9 +32,9 @@ void Object::setScale(const Vector3f& scale) {
 }
 Color3f Object::getColor() {
 	irr::video::SMaterial& material_object = _objectPtr->getMaterial(0);
-	float r = material_object.DiffuseColor.getRed() / 255;
-	float b = material_object.DiffuseColor.getBlue() / 255;
-	float g = material_object.DiffuseColor.getGreen() / 255;
+	float r = material_object.DiffuseColor.getRed() / 255.f;
+	float b = material_object.DiffuseColor.getBlue() / 255.f;
+	float g = material_object.DiffuseColor.getGreen() / 255.f;
 
 	return Color3f(r, g, b);
 }
@@ -45,7 +48,7 @@ void Object::setColor(const Color3f& color) {
 
 void Object::update(Object3D& parent) {
 	_objectPtr->setPosition(SimulationToIrrlicht::VectorIrr(parent.getPosition()));
-	// TODO répercuter la rotation
+	_objectPtr->setRotation(SimulationToIrrlicht::VectorAngIrr(parent.getRotation()));
 }
 
 

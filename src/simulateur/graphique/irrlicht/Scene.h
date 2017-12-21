@@ -11,6 +11,7 @@
 
 #include "../IGraphicalContext.h"
 #include "../IGraphicalInstance.h"
+#include "../IGraphicalUserListener.h"
 #include "Object.h"
 
 class Scene : public IGraphicalContext {
@@ -38,6 +39,9 @@ public:
 	void PutCameraObjet();
 	void Loop();
 
+	void addWindowListener(IGraphicalUserListener* listener) {
+		_listeners.push_back(listener);
+	}
 
 private:
 	void incrementId();
@@ -46,6 +50,8 @@ private:
 	irr::IrrlichtDevice* _device;
 	irr::scene::ISceneManager* _scenemanager;
 	std::vector<std::unique_ptr<Object>> _listeObjet;
+
+	std::vector<IGraphicalUserListener*> _listeners;
 	int _objectId;
 };
 

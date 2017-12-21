@@ -10,6 +10,22 @@
 #include "../physique/box2d/Box2DPhysicalContext.h"
 #include "SimulateurConstantes.h"
 
+
+// Gestion de l'arrêt du simulateur.
+// TODO L'arrêt du simulateur doit être géré par le simulateur (retrait de la variable "simuAlive" dans le main)
+extern void stopSimu();
+
+class UserHandler : public IGraphicalUserListener {
+public:
+	static UserHandler instance;
+	void onExit() {
+		stopSimu();
+	}
+};
+
+UserHandler UserHandler::instance = UserHandler();
+
+
 using namespace Constantes;
 
 Simulateur* Simulateur::_instance = nullptr;
@@ -22,6 +38,9 @@ Simulateur::Simulateur()
         , _enablePhysics(true) {
 
 	_instance = this;
+
+	// Ajout du handler pour savoir quand la scène est fermée par l'utilisateur
+	static_cast<Scene&>(*_graphicalCtx).addWindowListener(&UserHandler::instance);
 }
 
 Simulateur::~Simulateur() {
@@ -74,10 +93,8 @@ void Simulateur::resetWorld() {
 	_theWorld.removeAllObject();
 
 	// Reconstruction de la table
-	_theWorld.createTable();
-	_theWorld.createAllObjects(getRobotColor());
-	Object3D& robotObj = _theWorld.createRobot(getRobotColor());
-	_robot->setPhysicalObject(&robotObj.getPhysics());
+	initWorld();
+	addRobot(getRobotColor());
 }
 
 // Est-ce que cette méthode est vraiment nécessaire ?

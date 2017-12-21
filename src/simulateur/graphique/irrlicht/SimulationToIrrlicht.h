@@ -20,12 +20,20 @@ public:
 		return (float)l.toDm();
 	};
 
+	static float AngleToIrrlicht(const Angle& angle) {
+		return (irr::f32)angle.toDeg();
+	}
+
 	static irr::core::vector3df VectorIrr(const Vector3m& vect) {
 		return irr::core::vector3df(ToIrrlicht(vect.x), ToIrrlicht(vect.z), ToIrrlicht(vect.y));
 	};
 
 	static irr::core::vector3df VectorIrr(const Vector3f& vect) {
 		return irr::core::vector3df(vect.x, vect.y, vect.z);
+	}
+
+	static irr::core::vector3df VectorAngIrr(const Vector3ang& vect) {
+		return irr::core::vector3df(AngleToIrrlicht(vect.x), -AngleToIrrlicht(vect.z), AngleToIrrlicht(vect.y));
 	}
 };
 
