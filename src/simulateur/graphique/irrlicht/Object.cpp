@@ -4,9 +4,11 @@
 
 #include "Object.h"
 
+#include "../../core/Object3D.h"
+
 Object::Object(int id, irr::scene::ISceneNode* ptr) : _id(id), _objectPtr(ptr) {}
 
-irr::scene::ISceneNode Object::getInternalPtr() const {
+irr::scene::ISceneNode * Object::getInternalPtr() const {
 	return _objectPtr;
 }
 
@@ -17,16 +19,16 @@ void Object::ObjectSetColor(irr::scene::ISceneNode* Target, irr::u32 a, irr::u32
 	material_object.DiffuseColor.set(a, r, g, b);
 };
 
-virtual int Object::getId() const {
+int Object::getId() const {
 	return _id;
 }
 
 
-virtual void Object::setScale(const Vector3f& scale) {
-	_objectPtr->setscale(SimulationToIrrlicht::VectorIrr(scale));
+void Object::setScale(const Vector3f& scale) {
+	_objectPtr->setScale(SimulationToIrrlicht::VectorIrr(scale));
 }
-virtual Color3f Object::getColor() {
-	irr::video::SMaterial& material_object = _objectPtr.getMaterial(_id);
+Color3f Object::getColor() {
+	irr::video::SMaterial& material_object = _objectPtr->getMaterial(0);
 	float r = material_object.DiffuseColor.getRed() / 255;
 	float b = material_object.DiffuseColor.getBlue() / 255;
 	float g = material_object.DiffuseColor.getGreen() / 255;
@@ -34,11 +36,16 @@ virtual Color3f Object::getColor() {
 	return Color3f(r, g, b);
 }
 
-virtual void Object::setColor(const Color3f& color) {
-	irr::video::SMaterial& material_object = _objectPtr.getMaterial(_id);
+void Object::setColor(const Color3f& color) {
+	irr::video::SMaterial& material_object = _objectPtr->getMaterial(0);
 	material_object.DiffuseColor.setBlue(irr::u32(color.b * 255));
 	material_object.DiffuseColor.setRed(irr::u32(color.r * 255));
 	material_object.DiffuseColor.setGreen(irr::u32(color.g * 255));
+}
+
+void Object::update(Object3D &parent) {
+	_objectPtr->setPosition(SimulationToIrrlicht::VectorIrr(parent.getPosition()));
+	// TODO répercuter la rotation
 }
 
 

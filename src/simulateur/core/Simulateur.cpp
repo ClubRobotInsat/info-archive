@@ -6,6 +6,7 @@
 
 #include "../communication/Robot2017.h"
 #include "../graphique/server/WebGraphicalContext.h"
+#include "../graphique/irrlicht/Scene.h"
 #include "../physique/box2d/Box2DPhysicalContext.h"
 #include "SimulateurConstantes.h"
 
@@ -14,7 +15,7 @@ using namespace Constantes;
 Simulateur* Simulateur::_instance = nullptr;
 
 Simulateur::Simulateur()
-        : _graphicalCtx(std::make_unique<WebGraphicalContext>(5000))
+        : _graphicalCtx(std::make_unique<Scene>())
         , _physicalCtx(std::make_unique<Box2DPhysicalContext>(b2Vec2(0, 0)))
         , _theWorld(_physicalCtx.get(), _graphicalCtx.get())
         , _resetWorld(false)

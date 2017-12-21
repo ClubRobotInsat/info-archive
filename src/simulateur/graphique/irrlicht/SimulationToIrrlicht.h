@@ -16,13 +16,17 @@ class SimulationToIrrlicht {
 public:
 	// une unite de irrlicht correspond a un decimetre
 
-	inline float ToIrrlicht(const Length& l) {
+	static float ToIrrlicht(const Length& l) {
 		return (float)l.toDm();
 	};
 
-	inline irr::core::vector3df VectorIrr(const Vector3m& vect) {
-		return irr::core::vector3df(ToIrrlicht(vect.x), ToIrrlicht(vect.y), ToIrrlicht(vect.z));
+	static irr::core::vector3df VectorIrr(const Vector3m& vect) {
+		return irr::core::vector3df(ToIrrlicht(vect.x), ToIrrlicht(vect.z), ToIrrlicht(vect.y));
 	};
+
+	static irr::core::vector3df VectorIrr(const Vector3f& vect) {
+		return irr::core::vector3df(vect.x, vect.y, vect.z);
+	}
 };
 
 

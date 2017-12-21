@@ -4,12 +4,14 @@
 
 #ifndef PROJECT_SCENE_H
 #define PROJECT_SCENE_H
-#include "Camera.h"
-#include "Object.h"
-#include <irrlicht/irrlicht.h>
 #include <string>
 #include <vector>
 
+#include <irrlicht/irrlicht.h>
+
+#include "../IGraphicalContext.h"
+#include "../IGraphicalInstance.h"
+#include "Object.h"
 
 class Scene : public IGraphicalContext {
 
@@ -18,6 +20,9 @@ public:
 	void AddCamera();
 	void AddCameraMaya(irr::f32 rotatespeed, irr::f32 zoomspeed, irr::f32 translationspeed);
 	void AddCube(float size, irr::core::vector3df position);
+
+	void update() override;
+	void displayMessage(std::string message) override;
 
 	virtual IGraphicalInstance* createDefaultObject();
 	virtual IGraphicalInstance* createCuboid(const Vector3m& position, const Vector3m& dimensions);
@@ -40,7 +45,7 @@ private:
 	irr::video::IVideoDriver* _driver;
 	irr::IrrlichtDevice* _device;
 	irr::scene::ISceneManager* _scenemanager;
-	std::vector<Object> _listeObjet;
+	std::vector<std::unique_ptr<Object>> _listeObjet;
 	int _objectId;
 };
 
