@@ -31,6 +31,7 @@ public:
 
 private:
 	b2World _b2world;
+	Time _stepDuration;
 	TimePoint _lastUpdateTime;
 
 	int _maxId;

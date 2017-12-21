@@ -50,8 +50,6 @@ private:
 	Vector3m position;
 };
 
-// TODO [Important] commandes du graphical context (notamment envoi de messages)
-
 class Simulateur {
 public:
 	/**
@@ -130,8 +128,8 @@ private:
 	/// Unique instance du simulateur
 	static Simulateur* _instance;
 
-	std::unique_ptr<IGraphicalContext> _graphics;
-	std::unique_ptr<IPhysicalContext> _physics;
+	std::unique_ptr<IGraphicalContext> _graphicalCtx;
+	std::unique_ptr<IPhysicalContext> _physicalCtx;
 
 	/// Le monde dans lequel on stocke tous les objets
 	World2017 _theWorld;

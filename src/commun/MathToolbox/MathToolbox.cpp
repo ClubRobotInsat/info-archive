@@ -21,6 +21,14 @@ Vector3m translationPourRotationExcentree(Vector3m centreAbsolu, Vector3m centre
 	        Units::Distance::makeFromM(translation.z)};
 }
 
+Matrix4f getTransformationMatrix(const Vector3f& pos, const Vector3f& rot, const Vector3f& scale) {
+	Matrix4f matIdentity;
+	matIdentity *= Matrix4f::translationMatrix(pos) * Matrix4f::rotationMatrix({1, 0, 0}, rot.x) *
+	               Matrix4f::rotationMatrix({0, 1, 0}, rot.y) * Matrix4f::rotationMatrix({0, 0, 1}, rot.z) *
+	               Matrix4f::scaleMatrix(scale);
+	return matIdentity;
+}
+
 Vector2m toVec2(Vector3m vec3) {
 	return Vector2m(vec3.x, vec3.y);
 }

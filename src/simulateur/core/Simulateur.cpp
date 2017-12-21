@@ -14,9 +14,9 @@ using namespace Constantes;
 Simulateur* Simulateur::_instance = nullptr;
 
 Simulateur::Simulateur()
-        : _graphics(std::make_unique<WebGraphicalContext>(5000))
-        , _physics(std::make_unique<Box2DPhysicalContext>(b2Vec2(0, 0)))
-        , _theWorld(_physics.get(), _graphics.get())
+        : _graphicalCtx(std::make_unique<WebGraphicalContext>(5000))
+        , _physicalCtx(std::make_unique<Box2DPhysicalContext>(b2Vec2(0, 0)))
+        , _theWorld(_physicalCtx.get(), _graphicalCtx.get())
         , _resetWorld(false)
         , _enablePhysics(true) {
 
@@ -44,7 +44,9 @@ void Simulateur::update(Duration time) {
 	}
 }
 
-void Simulateur::sendTextMessage(const std::string& message) {}
+void Simulateur::sendTextMessage(const std::string& message) {
+	_graphicalCtx->displayMessage(message);
+}
 
 Vector3m const CubeData::getPosition() {
 	return Vector3m(position.x + size.x / 2, position.y + size.y / 2, position.z + size.z / 2);
@@ -57,7 +59,7 @@ void Simulateur::initWorld() {
 }
 
 void Simulateur::disableSimulation() {
-	// TODO disable simulation
+	// TODO [Important] disable simulation
 }
 
 void Simulateur::addRobot(Constantes::RobotColor color) {

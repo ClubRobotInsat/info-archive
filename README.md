@@ -1,16 +1,40 @@
-# info
+# Info
+
+Clonage du repo
 ------------
-Installation de tout ce qu'il faut
+```
+svn checkout https://www.etud.insa-toulouse.fr/svn/roboinsat/CodeCommun --username votre_login_insa
+git clone https://votre_login_github@github.com/ClubRobotInsat/info.git
+cd info
+git clone https://github.com/ClubRobotInsat/websimulator
+```
+
+Installation des différents outils
 ------------
-
+L'installation se fait grâce au script d'installation
 ```
-sudo apt-get update
-sudo apt-get install mono-complete cmake subversion git libbox2d-dev gcc-5-multilib g++-5-multilib libbluetooth-dev build-essential libglfw-dev libglu1-mesa-dev curl libxrandr-dev libgtkmm-3.0-dev libusb-1.0-0-dev clang-format
-
+scripts/install.sh tools
 ```
 
+### Facultatif :
+Pour installer le hook (script lancé à chaque commit) qui formate le code comme il faut (**facultatif mais fortement recommandé**) :
+```
+scripts/install.sh format
+```
+Pour installer la lib Wiic nécessaire pour les démos à la wiimote
+```
+scripts/install.sh wii
+```
+Pour l'éditeur petri :
+```
+scripts/install.sh petri
+```
 
-
+Pour installer clang en tant que compilateur :
+```
+sudo apt-get install clang-3.8
+sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-3.8 100
+```
 Pour installer g++-6 et gcc-6, la méthode est la suivante :
 
 ```
@@ -20,46 +44,7 @@ sudo apt-get install gcc-6 g++-6
 sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-6 60 --slave /usr/bin/g++ g++ /usr/bin/g++-6
 ```
 
-### Facultatif :
-Pour installer la lib Wiic nécessaire pour les démos à la wiimote
-```
-pushd .
-cd /tmp
-git clone https://github.com/grandelli/WiiC.git
-cd WiiC
-cmake src
-make
-sudo make install
-```
-Pour installer le hook (script lancé à chaque commit) qui formate le code comme il faut (**facultatif mais fortement recommandé**) :
-```
-./install.sh
-```
-
-Pour installer clang en tant que compilateur :
-```
-sudo apt-get install clang-3.8
-sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-3.8 100
-```
-Pour l'éditeur petri :
-```
-sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
-echo "deb http://download.mono-project.com/repo/debian wheezy main" | sudo tee /etc/apt/sources.list.d/mono-xamarin.list
-```
-------------
-Clonage du repo
-------------
-```
-svn checkout https://www.etud.insa-toulouse.fr/svn/roboinsat/CodeCommun --username votre_login_insa
-git clone https://votre_login_github@github.com/ClubRobotInsat/info.git
-cd info
-
-git clone https://github.com/ClubRobotInsat/websimulator
-```
-
-------------
-Installation de CLion (facultatif, mais recommandé)
-------------
+### Installation de CLion (facultatif, mais recommandé)
 CLion est un IDE développé par JetBrains, qui est à la fois flexible, simple d'utilisation, multiplateforme et qui a la particularité d'utiliser nativement CMake, le système de build utilisé par notre code.
 Il est normalement payant, mais une version d'éducation (licence valide 1 an, renouvelable tant que l'on est étudiant) est disponible.
 
@@ -82,7 +67,6 @@ sudo usermod -a -G dialout NOM_UTILISATEUR
 - Aller dans Settings > Build, Execution, Deployment > CMake. Dans "CMake options", rajouter le paramètre `-DBITS=64`
 - Problème de clock skew ? Il suffit de lancer `find -exec touch \{\} \;` dans le dossier `info`. Attention, cela peut être un petit peu long.
 
---------------------------
 Pour lancer l'IA en mode Debug sur le simu
 --------------------------
 1. Tout compiler (choisir la target build all)
@@ -96,6 +80,7 @@ Pour lancer l'IA en mode Debug sur le simu
 9. Voilà c'est terminé, vous n'avez plus qu'à lancer votre réseau petri et admirer le résultat dans le simu !
 
 ------------
+
 Cross-Compilation pour Raspberry
 ------------
 ### Installation des outils :
@@ -170,17 +155,7 @@ Ensuite, pour pouvoir se ssh sur le RaspberryPI il suffit de lancer le script :
 ```
 Le mot de passe de l'utilisateur robot est "**robot**".
 
-
-
 Pour copier des fichiers il faut lancer un autre script, avec en argument le fichier à envoyer. Celui-ci se trouvera alors sur le bureau.
 ```
 ./send_file_to_rpi.sh build/robot/Principal/IAPrincipal
 ```
-
-
-LIGNE A SUPPRIMER SOON
-Si lors de la compilation, github nous demande notre mdp pour petri, c'est que Rémi a modifié l'hébergement de son code
-Pour y remédier, il faut :
-1. Modifier les fichiers de dépendance des submodules : dans info/.git/modules/petri/config, il faut modifier la ligne 8 par
-```url = ssh://git.remi-saurel.com/rsaurel/petri```
-2. Lancer scripts/install.sh (juste le début) : il va installer les clefs SSH privées qui permettent de se connecter sur le dépôt de petri

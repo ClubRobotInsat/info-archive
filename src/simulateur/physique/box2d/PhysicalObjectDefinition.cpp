@@ -14,12 +14,12 @@ void PhysicalObjectDefinition::createShape() {
 
 void PhysicalObjectDefinition::setShapeCircle(Length radius) {
 	_shape = std::make_unique<b2CircleShape>();
-	_shape->m_radius = toSimulation(radius);
+	_shape->m_radius = toBox2D(radius);
 }
 
 void PhysicalObjectDefinition::setShapeRectangle(Length width, Length height) {
 	std::shared_ptr<b2PolygonShape> shape = std::make_shared<b2PolygonShape>();
-	shape->SetAsBox(toSimulation(width) / 2, toSimulation(height) / 2);
+	shape->SetAsBox(toBox2D(width) / 2, toBox2D(height) / 2);
 	_shape = shape; // Le cast se fait tout seul
 }
 
@@ -40,17 +40,17 @@ void PhysicalObjectDefinition::setShapePoints(const std::list<b2Vec2>& points) {
 // ********************************************* //
 //                     Type                      //
 // ********************************************* //
-void PhysicalObjectDefinition::setType(Type type) {
+void PhysicalObjectDefinition::setType(BodyType type) {
 	switch(type) {
-		case STATIC:
+		case STATIC_BODY:
 			_type = b2_staticBody;
 			break;
-		case KINEMATIC:
-			_type = b2_kinematicBody;
-			break;
-		case DYNAMIC:
+		case DYNAMIC_BODY:
 			_type = b2_dynamicBody;
 			break;
+		/*case KINEMATIC_BODY:
+		    _type = b2_kinematicBody;
+		    break;*/
 		default:
 			throw std::string("PhysicalObjectDefinition:setType: invalid type");
 	}

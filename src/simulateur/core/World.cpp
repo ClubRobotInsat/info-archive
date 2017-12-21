@@ -7,7 +7,7 @@
 
 
 World::World(IPhysicalContext* physics, IGraphicalContext* graphics)
-        : _physics(physics), _graphics(graphics), _maxId(-1) {}
+        : _physicalCtx(physics), _graphicalCtx(graphics), _maxId(-1) {}
 
 World::~World() {
 	removeAllObject();
@@ -15,41 +15,41 @@ World::~World() {
 
 
 void World::update(Duration time) {
-	_physics->update();
+	_physicalCtx->update();
 
 	for(auto& obj : _objectsList) {
 		obj->update();
 	}
 
-	_graphics->update();
+	_graphicalCtx->update();
 }
 
 Object3D& World::createCube(const Vector3m& dimensions, const Vector3m& position, Mass mass, BodyType type, const Color3f& color) {
-	IPhysicalInstance* physicProp = _physics->createCuboid(position, mass, type, dimensions);
-	IGraphicalInstance* graphicProp = _graphics->createCuboid(position, dimensions);
+	IPhysicalInstance* physicProp = _physicalCtx->createCuboid(position, mass, type, dimensions);
+	IGraphicalInstance* graphicProp = _graphicalCtx->createCuboid(position, dimensions);
 	graphicProp->setColor(color);
 	return createObject(graphicProp, physicProp, position);
 }
 
 Object3D& World::createCylinder(Length radius, Length height, const Vector3m& position, Mass mass, BodyType type, const Color3f& color) {
-	IPhysicalInstance* physicProp = _physics->createCylinder(position, mass, type, radius, height);
-	IGraphicalInstance* graphicProp = _graphics->createCylinder(position, radius, height);
+	IPhysicalInstance* physicProp = _physicalCtx->createCylinder(position, mass, type, radius, height);
+	IGraphicalInstance* graphicProp = _graphicalCtx->createCylinder(position, radius, height);
 	graphicProp->setColor(color);
 	return createObject(graphicProp, physicProp, position);
 }
 
 Object3D& World::createSphere(Length radius, const Vector3m& position, Mass mass, BodyType type, const Color3f& color) {
 	// Attention, il faudra changer les propriétés physiques si on passe sur un moteur en 3D !
-	IPhysicalInstance* physicProp = _physics->createCylinder(position, mass, type, radius, 1_m);
-	IGraphicalInstance* graphicProp = _graphics->createSphere(position, radius);
+	IPhysicalInstance* physicProp = _physicalCtx->createCylinder(position, mass, type, radius, 1_m);
+	IGraphicalInstance* graphicProp = _graphicalCtx->createSphere(position, radius);
 	graphicProp->setColor(color);
 	return createObject(graphicProp, physicProp, position);
 }
 
 Object3D& World::createModel(const Vector3m& position, Mass mass, BodyType type, const std::string& model, const Color3f& color) {
-	IPhysicalInstance* physicProp = _physics->createDefaultObject(position, type);
-	// TODO changer le type de l'objet physique ?
-	IGraphicalInstance* graphicProp = _graphics->createModel(position, model);
+	IPhysicalInstance* physicProp = _physicalCtx->createDefaultObject(position, type);
+	// TODO Faire un objet physique adapté à la forme du robot ?
+	IGraphicalInstance* graphicProp = _graphicalCtx->createModel(position, model);
 	graphicProp->setColor(color);
 	return createObject(graphicProp, physicProp, position);
 }
@@ -59,8 +59,8 @@ void World::removeObject(const Object3D* object) {
 
 	for(; it != _objectsList.end(); it++) {
 		if((*it).get() == object) {
-			_physics->remove(&(*it)->getPhysics());
-			_graphics->remove(&(*it)->getGraphics());
+			_physicalCtx->remove(&(*it)->getPhysics());
+			_graphicalCtx->remove(&(*it)->getGraphics());
 			_objectsList.erase(it);
 			return;
 		}
@@ -69,8 +69,8 @@ void World::removeObject(const Object3D* object) {
 
 void World::removeAllObject() {
 	for(auto& object : _objectsList) {
-		_physics->remove(&object->getPhysics());
-		_graphics->remove(&object->getGraphics());
+		_physicalCtx->remove(&object->getPhysics());
+		_graphicalCtx->remove(&object->getGraphics());
 	}
 
 	_objectsList.clear();

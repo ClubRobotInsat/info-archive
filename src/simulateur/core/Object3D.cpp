@@ -29,7 +29,3 @@ void Object3D::setPosition(const Vector2m& position) {
 void Object3D::setRotation(const Vector3ang& rotation) {
 	_rotation = rotation;
 }
-
-void Object3D::setScale(const Vector3f& scale) {
-	_scale = scale;
-}

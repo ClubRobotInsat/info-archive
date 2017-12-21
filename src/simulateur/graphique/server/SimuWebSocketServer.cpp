@@ -54,6 +54,10 @@ void SimuWebSocketServer::stop() {
 	std::cout << "SimuWebSocketServer stopped !" << std::endl;
 }
 
+void SimuWebSocketServer::sendToClient(Client client, const std::string& message) {
+	_server.send(client, message, websocketpp::frame::opcode::text);
+}
+
 void SimuWebSocketServer::broadcast(const std::string& message) {
 	// std::cout << "Broadcast : " << message << std::endl;
 	for(auto& client : _clients) {

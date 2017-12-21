@@ -286,10 +286,9 @@ void CarteDeplacement2009::update(Duration elapsed) {
 	}
 
 	auto vitesseLineaireMesuree = abs(_depla.getLinearVelocity());
-	auto vitesseLineaireCommande = fromSimulationVL(abs((double)(_asservissement.getPIDPositionVersVitesse().getSortie())));
+	auto vitesseLineaireCommande = fromBox2DVL(abs((double)(_asservissement.getPIDPositionVersVitesse().getSortie())));
 	auto vitesseAngulaireMesuree = abs(_depla.getAngularVelocity());
-	auto vitesseAngulaireCommande =
-	    fromSimulationVA(abs((double)(_asservissement.getPIDAngleVersVitesseAngulaire().getSortie())));
+	auto vitesseAngulaireCommande = fromBox2DVA(abs((double)(_asservissement.getPIDAngleVersVitesseAngulaire().getSortie())));
 
 	// NB : en DEPLACEMENT_CONTROLE_VITESSE_LONG_ANG, on ne teste pas le bloquage
 	if(_typeDeplacement != DEPLACEMENT_CONTROLE_VITESSE_LONG_ANG && (!_deplacementTermine) &&

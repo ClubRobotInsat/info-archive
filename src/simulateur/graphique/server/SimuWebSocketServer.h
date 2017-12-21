@@ -33,6 +33,7 @@ public:
 	void onConnect(Client client);
 	void onDisconnect(Client client);
 
+	void sendToClient(Client client, const std::string& message);
 	void broadcast(const std::string& message);
 
 	void start();
