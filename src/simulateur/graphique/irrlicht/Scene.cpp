@@ -26,6 +26,9 @@ void Scene::update() {
 	if(!done) {
 		AddCameraMaya(-1000.f, 200.f, 100.f);
 		PutCameraObjet();
+		irr::scene::ILightSceneNode* light1 = _scenemanager->addLightSceneNode();
+		light1->setLightType(irr::video::ELT_DIRECTIONAL);
+		light1->setRotation(irr::core::vector3df(90, 0, 0));
 	}
 	done = true;
 
