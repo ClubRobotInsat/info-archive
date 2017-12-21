@@ -20,6 +20,11 @@ void Scene::AddCube(float size, irr::core::vector3df position) {
 };
 
 
+virtual Scene::IGraphicalInstance* createDefaultObject() {
+	_scenemanger->addEmptySceneNode(_objectId);
+	incrementID();
+};
+
 virtual Scene::IGraphicalInstance* createCuboid(const Vector3m& position, const Vector3m& dimensions) {
 	irr::scene::IMeshSceneNode* cube = _scenemanager->addCubeSceneNode(SimulationToIrrlicht::ToIrrlicht(dimensions.x),
 	                                                                   0,
@@ -67,6 +72,24 @@ virtual Scene::IGraphicalInstance* createSphere(const Vector3m& position, Length
 	_listeObjet.push_back(Object(_objectId, sphere));
 	incrementId();
 };
+
+virtual Scene::IGraphicalInstance* createModel(const Vector3m& position, const std::string& model) {
+	// irr::scene::ISceneLoader::loadScene(model, _scenemanager);
+
+	irr::scene::IAnimatedMesh* _animated_mesh = irr::scene::IMeshLoader::createMesh(model);
+	irr::scene::IMesh* _mesh = _animated_mesh->getMesh();
+	_meshnode = _scenemanger->addMeshSceneNode(_mesh);
+	_meshnode->setID(_objectID);
+	_listeObjet.push_back(Object(_objectId, _meshnode));
+	Scene::ChangePosition(SimulationToIrrlicht::VectorIrr(position), _objectId);
+	incrementId();
+}
+
+virtual void Scene::remove(IGraphicalInstance* object) {
+	object.getInternalPtr()->remove();
+	int id = object->getId();
+	_listeObjet.erase(_listeObjet.begin() + id);
+}
 
 
 void Scene::ChangePosition(irr::core::vector3df position, int id) {

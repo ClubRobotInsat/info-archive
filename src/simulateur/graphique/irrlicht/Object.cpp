@@ -6,7 +6,7 @@
 
 Object::Object(int id, irr::scene::ISceneNode* ptr) : _id(id), _objectPtr(ptr) {}
 
-std::shared_ptr<irr::scene::ISceneNode> Object::getInternalPtr() const {
+irr::scene::ISceneNode Object::getInternalPtr() const {
 	return _objectPtr;
 }
 
@@ -16,3 +16,13 @@ void Object::ObjectSetColor(irr::scene::ISceneNode* Target, irr::u32 a, irr::u32
 	material_object.SpecularColor.set(a, r, g, b);
 	material_object.DiffuseColor.set(a, r, g, b);
 };
+
+virtual int Object::getId() {
+	return _id;
+}
+
+/*
+virtual void Object::setColor(const Color3f& color) {
+   ObjectSetColor(getInternalPtr(), )
+}
+ */

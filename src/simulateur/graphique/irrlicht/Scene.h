@@ -19,9 +19,13 @@ public:
 	void AddCameraMaya(irr::f32 rotatespeed, irr::f32 zoomspeed, irr::f32 translationspeed);
 	void AddCube(float size, irr::core::vector3df position);
 
-	virtual IGraphicalInstance* createCuboid(const Vector3m& position, const Vector3m& dimensions) = 0;
-	virtual IGraphicalInstance* createCylinder(const Vector3m& position, Length radius, Length height) = 0;
-	virtual IGraphicalInstance* createSphere(const Vector3m& position, Length radius) = 0;
+	virtual IGraphicalInstance* createDefaultObject();
+	virtual IGraphicalInstance* createCuboid(const Vector3m& position, const Vector3m& dimensions);
+	virtual IGraphicalInstance* createCylinder(const Vector3m& position, Length radius, Length height);
+	virtual IGraphicalInstance* createSphere(const Vector3m& position, Length radius);
+	virtual IGraphicalInstance* createModel(const Vector3m& position, const std::string& model);
+	virtual void remove(IGraphicalInstance* object);
+
 
 	void ChangePosition(irr::core::vector3df position, int id);
 	void Rotation(irr::core::vector3df rotation, int id);

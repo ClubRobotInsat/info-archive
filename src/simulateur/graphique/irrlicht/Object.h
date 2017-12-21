@@ -14,14 +14,17 @@ class Object {
 public:
 	Object(int id, irr::scene::ISceneNode* ptr);
 
-	std::shared_ptr<irr::scene::ISceneNode> getInternalPtr() const;
+	irr::scene::ISceneNode* getInternalPtr() const;
 
 	void ObjectSetColor(irr::scene::ISceneNode* Target, irr::u32 a, irr::u32 r, irr::u32 g, irr::u32 b);
+
+	virtual int getId() const;
+	virtual void setColor(const Color3f& color) = 0;
 
 private:
 	int _id;
 
-	std::shared_ptr<irr::scene::ISceneNode> _objectPtr;
+	irr::scene::ISceneNode _objectPtr;
 };
 
 
