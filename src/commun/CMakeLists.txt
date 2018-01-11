@@ -1,5 +1,6 @@
 set(OUTILS_SOURCE
         ConstantesCommunes.cpp
+        Json.h
         log/Log.cpp
         log/LogHTML.cpp
         log/LogRTF.cpp

@@ -11,6 +11,7 @@
 #include <Box2D/Dynamics/b2World.h>
 
 #include <ConstantesCommunes.h>
+#include <Json.h>
 
 #include "../graphique/IGraphicalContext.h"
 #include "../physique/IPhysicalContext.h"
@@ -55,6 +56,14 @@ public:
 	 * @param time 10_ms is good
 	 */
 	void update(Duration time);
+
+	/**
+	 * Charge une liste d'objets contenus dans un fichier JSON.
+	 * Les objets lus sont ajoutés au monde.
+	 * @param json Le contenu du fichier, sous forme de JSON déjà
+	 * parsé.
+	 * */
+	void loadJSON(const Json::Value& json);
 
 	/**
 	 *

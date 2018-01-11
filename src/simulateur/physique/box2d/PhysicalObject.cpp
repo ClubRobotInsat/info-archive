@@ -176,7 +176,9 @@ std::list<b2Vec2> PhysicalObject::getBodyPoints() {
 }
 
 void PhysicalObject::update(Object3D& parent) {
-	parent.setPosition(fromBox2D(_body->GetPosition()));
+	Vector2m newpos = fromBox2D(_body->GetPosition());
+	parent.position().x = newpos.x;
+	parent.position().y = newpos.y;
 	parent.rotation().z = getAngle();
 }
 

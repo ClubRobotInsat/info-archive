@@ -65,6 +65,7 @@ public:
 	}
 
 	void setRotation(const Vector3ang& rotation);
+	void setAngle(const Angle& angle);
 	Vector3ang& rotation() {
 		return _rotation;
 	}

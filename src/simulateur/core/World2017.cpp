@@ -129,7 +129,7 @@ void World2017::createTable() {
 	for(int i = 0; i < LIST_CENTRAL.size(); i++) {
 		listTableObjects.push_back(
 		    &this->createCube(Vector3m(3_cm, 60_cm, 3_cm), LIST_CENTRAL[i].getPos3D(REFERENCE_SIMULATOR), mass::HEAVY, STATIC_BODY, COLOR_LUNAR_BUILDINGS));
-		listTableObjects[listTableObjects.size() - 1]->getPhysics().setAngle(LIST_CENTRAL[i].getAngle(REFERENCE_SIMULATOR));
+		listTableObjects[listTableObjects.size() - 1]->setAngle(LIST_CENTRAL[i].getAngle(REFERENCE_SIMULATOR));
 	}
 	Object3D& centralCylinder =
 	    this->createCylinder(20_cm, 3_cm, Vector3m(1.5_m, 0_m, 0_m), mass::HEAVY, STATIC_BODY, COLOR_LUNAR_BUILDINGS);
@@ -159,7 +159,7 @@ void World2017::createTable() {
 		stick.setPosition(LIST_DELIMITERS[i].getPos3D(REFERENCE_SIMULATOR));
 		listTableObjects.push_back(
 		    &this->createCube(stick.getSize(), stick.getPosition(), mass::HEAVY, STATIC_BODY, COLOR_LUNAR_BUILDINGS));
-		listTableObjects[listTableObjects.size() - 1]->getPhysics().setAngle(LIST_DELIMITERS[i].getAngle(REFERENCE_SIMULATOR));
+		listTableObjects[listTableObjects.size() - 1]->setAngle(LIST_DELIMITERS[i].getAngle(REFERENCE_SIMULATOR));
 	}
 
 	/* TODO Implementer les types d'objets (les tags* d'objets ?)

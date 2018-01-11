@@ -21,6 +21,7 @@ add_executable(Simu2017
 
         core/Simulateur.cpp
         core/World.cpp
+        core/WorldIO.cpp
         core/World2017.cpp
         core/Object3D.cpp
 

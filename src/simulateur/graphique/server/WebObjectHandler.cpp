@@ -56,7 +56,7 @@ JSON WebObjectHandler::getCreationMessage() {
 	// Partie qui envoie au serveur un nouvel objet
 	JSON message = _additionalContent;
 	message["id"] = _id;
-	message["matrix"] = toJSON(generateTransformationMatrix());
+	message["matrix"] = Json::toJSONMatrix(generateTransformationMatrix());
 	message["angle"] = _rotation.z.toDeg();
 	message["color"] = _color.toHexStr();
 	return message;
@@ -66,7 +66,7 @@ JSON WebObjectHandler::getUpdateMessage() {
 	JSON message;
 
 	message["type"] = "move";
-	message["matrix"] = toJSON(generateTransformationMatrix());
+	message["matrix"] = Json::toJSONMatrix(generateTransformationMatrix());
 	message["id"] = _id;
 
 	return message;

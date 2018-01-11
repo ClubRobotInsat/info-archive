@@ -19,15 +19,23 @@ void Object3D::update() {
 
 void Object3D::setPosition(const Vector3m& position) {
 	_position = position;
+	_physics->setPosition(toVec2(_position));
 }
 
 void Object3D::setPosition(const Vector2m& position) {
 	_position.x = position.x;
 	_position.y = position.y;
+	_physics->setPosition(toVec2(_position));
 }
 
 void Object3D::setRotation(const Vector3ang& rotation) {
 	_rotation = rotation;
+	_physics->setAngle(rotation.z);
+}
+
+void Object3D::setAngle(const Angle& angle) {
+	_rotation.z = angle;
+	_physics->setAngle(angle);
 }
 
 void Object3D::addTag(const std::string& tag) {

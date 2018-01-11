@@ -13,7 +13,6 @@ World::~World() {
 	removeAllObject();
 }
 
-
 void World::update(Duration time) {
 	_physicalCtx->update();
 
