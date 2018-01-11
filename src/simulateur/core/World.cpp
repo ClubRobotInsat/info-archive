@@ -4,7 +4,7 @@
 
 #include "World.h"
 #include "Simulateur.h"
-
+#include "SimulateurConstantes.h"
 
 World::World(IPhysicalContext* physics, IGraphicalContext* graphics)
         : _physicalCtx(physics), _graphicalCtx(graphics), _maxId(-1) {}
@@ -74,6 +74,16 @@ void World::removeAllObject() {
 	}
 
 	_objectsList.clear();
+}
+
+void World::enableCollisions(bool enable) {
+	for(auto& object : _objectsList) {
+		if(object->hasTag(TAG_ROBOT)) {
+			object->getPhysics().enableSimulation(true);
+		} else {
+			object->getPhysics().enableSimulation(enable);
+		}
+	}
 }
 
 int World::nextId() {

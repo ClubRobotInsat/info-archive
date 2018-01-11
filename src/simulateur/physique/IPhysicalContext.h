@@ -34,6 +34,8 @@ public:
 	/** Crée un objet physique avec une hitbox cylindrique. */
 	virtual IPhysicalInstance* createCylinder(const Vector3m& position, Mass mass, BodyType type, Length radius, Length height) = 0;
 
+	/** Supprime l'instance passée en paramètres. Le destructeur
+	 * est appelé, l'instance devient donc inutilisable. */
 	virtual void remove(IPhysicalInstance* object) = 0;
 };
 

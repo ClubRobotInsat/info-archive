@@ -76,8 +76,6 @@ public:
 		return &_theWorld;
 	}
 
-	void sendTextMessage(const std::string& message);
-
 	/**
 	 * Mise à jour du monde et de l'état du robot
 	 * @param time 10_ms is good
@@ -123,6 +121,8 @@ public:
 	 * L'affichage n'est pas compromis
 	 */
 	void disableSimulation();
+
+	void sendTextMessage(const std::string& message);
 
 private:
 	/// Unique instance du simulateur

@@ -68,7 +68,7 @@ public:
 		return *_objectsList.back();
 	}
 
-	// Refactorer les noms de fonctions pour garder une cohérence dans tous le projet
+	// Refactorer les noms de fonctions pour garder une cohérence dans tout le projet
 	Object3D& createModel(const Vector3m& position, Mass mass, BodyType type, const std::string& model, const Color3f& color);
 	Object3D& createCube(const Vector3m& dimensions, const Vector3m& position, Mass mass, BodyType type, const Color3f& color);
 	Object3D& createCylinder(Length radius, Length height, const Vector3m& position, Mass mass, BodyType type, const Color3f& color);
@@ -84,6 +84,9 @@ public:
 	 * Utile pour réinitialiser ou arrêter la simulation
 	 */
 	void removeAllObject();
+
+	/** Indique si on autorise les collisions sur le simulateur.*/
+	void enableCollisions(bool enable);
 
 private:
 	/// Le contexte physique, qui gère la simulation physique et alloue les données physiques des objets

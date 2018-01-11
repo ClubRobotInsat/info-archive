@@ -5,6 +5,8 @@
 #ifndef ROOT_OBJECT3D_H
 #define ROOT_OBJECT3D_H
 
+#include <set>
+
 #include <MathToolbox/MathToolbox.h>
 #include <Units.h>
 
@@ -70,6 +72,9 @@ public:
 		return _rotation;
 	}
 
+	void addTag(const std::string& tag);
+	bool hasTag(const std::string& tag);
+
 private:
 	int _id;
 
@@ -78,6 +83,8 @@ private:
 
 	Vector3m _position;
 	Vector3ang _rotation;
+
+	std::set<std::string> _tags;
 };
 
 #endif // ROOT_OBJECT3D_H

@@ -29,3 +29,11 @@ void Object3D::setPosition(const Vector2m& position) {
 void Object3D::setRotation(const Vector3ang& rotation) {
 	_rotation = rotation;
 }
+
+void Object3D::addTag(const std::string& tag) {
+	_tags.insert(tag);
+}
+
+bool Object3D::hasTag(const std::string& tag) {
+	return _tags.find(tag) != _tags.end();
+}

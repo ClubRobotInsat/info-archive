@@ -226,7 +226,10 @@ Object3D& World2017::createRobot(Constantes::RobotColor color) {
 	graphicProp->setColor(color == RobotColor::Blue ? COLOR_TEAM_BLUE : COLOR_TEAM_YELLOW);
 	graphicProp->setScale({0.008, 0.008, 0.012});
 
-	return createObject(graphicProp, physicProp, position);
+	Object3D& created = createObject(graphicProp, physicProp, position);
+	created.addTag(TAG_ROBOT);
+
+	return created;
 }
 
 void World2017::createDebugObjects() {}

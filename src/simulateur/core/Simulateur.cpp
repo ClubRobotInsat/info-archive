@@ -18,7 +18,7 @@ extern void stopSimu();
 class UserHandler : public IGraphicalUserListener {
 public:
 	static UserHandler instance;
-	void onExit() {
+	void onExit() override {
 		stopSimu();
 	}
 };
@@ -40,7 +40,9 @@ Simulateur::Simulateur()
 	_instance = this;
 
 	// Ajout du handler pour savoir quand la scène est fermée par l'utilisateur
-	static_cast<Scene&>(*_graphicalCtx).addWindowListener(&UserHandler::instance);
+	if(dynamic_cast<Scene*>(_graphicalCtx.get())) {
+		dynamic_cast<Scene&>(*_graphicalCtx).addWindowListener(&UserHandler::instance);
+	}
 }
 
 Simulateur::~Simulateur() {
@@ -64,10 +66,6 @@ void Simulateur::update(Duration time) {
 	}
 }
 
-void Simulateur::sendTextMessage(const std::string& message) {
-	_graphicalCtx->displayMessage(message);
-}
-
 Vector3m const CubeData::getPosition() {
 	return Vector3m(position.x + size.x / 2, position.y + size.y / 2, position.z + size.z / 2);
 }
@@ -79,7 +77,7 @@ void Simulateur::initWorld() {
 }
 
 void Simulateur::disableSimulation() {
-	// TODO [Important] disable simulation
+	_theWorld.enableCollisions(false);
 }
 
 void Simulateur::addRobot(Constantes::RobotColor color) {
@@ -104,6 +102,10 @@ void Simulateur::endWorld() {
 		_robot = nullptr;
 
 	_theWorld.removeAllObject();
+}
+
+void Simulateur::sendTextMessage(const std::string& message) {
+	_graphicalCtx->displayMessage(message);
 }
 
 Constantes::RobotColor Simulateur::getRobotColor() {
