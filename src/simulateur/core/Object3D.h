@@ -7,6 +7,7 @@
 
 #include <set>
 
+#include <Json.h>
 #include <MathToolbox/MathToolbox.h>
 #include <Units.h>
 
@@ -39,11 +40,14 @@ protected:
     ObjectType _objectType;
 };
 */
+namespace Json {
+	class Value;
+}
 
 class Object3D {
 public:
 	Object3D(int id, IGraphicalInstance* graphics, IPhysicalInstance* physics, const Vector3m& position = {0_m, 0_m, 0_m});
-	~Object3D();
+	virtual ~Object3D() = default;
 
 	void update();
 
@@ -76,6 +80,9 @@ public:
 	void addTag(const std::string& tag);
 	bool hasTag(const std::string& tag);
 
+	void setMetadata(const Json::Value& metadata);
+	const Json::Value& getMetadata() const;
+
 private:
 	int _id;
 
@@ -86,6 +93,7 @@ private:
 	Vector3ang _rotation;
 
 	std::set<std::string> _tags;
+	std::unique_ptr<Json::Value> _metadata;
 };
 
 #endif // ROOT_OBJECT3D_H

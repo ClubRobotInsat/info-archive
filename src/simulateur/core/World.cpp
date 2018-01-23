@@ -3,6 +3,9 @@
 //
 
 #include "World.h"
+
+#include <Json.h>
+
 #include "Simulateur.h"
 #include "SimulateurConstantes.h"
 
@@ -27,14 +30,31 @@ Object3D& World::createCube(const Vector3m& dimensions, const Vector3m& position
 	IPhysicalInstance* physicProp = _physicalCtx->createCuboid(position, mass, type, dimensions);
 	IGraphicalInstance* graphicProp = _graphicalCtx->createCuboid(position, dimensions);
 	graphicProp->setColor(color);
-	return createObject(graphicProp, physicProp, position);
+
+	Object3D& created = createObject(graphicProp, physicProp, position);
+
+	JSON metadata;
+	metadata["type"] = "cuboid";
+	metadata["dimensions"] = Json::fromVector3m(dimensions);
+	created.setMetadata(metadata);
+
+	return created;
 }
 
 Object3D& World::createCylinder(Length radius, Length height, const Vector3m& position, Mass mass, BodyType type, const Color3f& color) {
 	IPhysicalInstance* physicProp = _physicalCtx->createCylinder(position, mass, type, radius, height);
 	IGraphicalInstance* graphicProp = _graphicalCtx->createCylinder(position, radius, height);
 	graphicProp->setColor(color);
-	return createObject(graphicProp, physicProp, position);
+
+	Object3D& created = createObject(graphicProp, physicProp, position);
+
+	JSON metadata;
+	metadata["type"] = "cylinder";
+	metadata["radius"] = radius.toM();
+	metadata["height"] = height.toM();
+	created.setMetadata(metadata);
+
+	return created;
 }
 
 Object3D& World::createSphere(Length radius, const Vector3m& position, Mass mass, BodyType type, const Color3f& color) {
@@ -42,7 +62,15 @@ Object3D& World::createSphere(Length radius, const Vector3m& position, Mass mass
 	IPhysicalInstance* physicProp = _physicalCtx->createCylinder(position, mass, type, radius, 1_m);
 	IGraphicalInstance* graphicProp = _graphicalCtx->createSphere(position, radius);
 	graphicProp->setColor(color);
-	return createObject(graphicProp, physicProp, position);
+
+	Object3D& created = createObject(graphicProp, physicProp, position);
+
+	JSON metadata;
+	metadata["type"] = "sphere";
+	metadata["radius"] = radius.toM();
+	created.setMetadata(metadata);
+
+	return created;
 }
 
 Object3D& World::createModel(const Vector3m& position, Mass mass, BodyType type, const std::string& model, const Color3f& color) {
@@ -50,7 +78,15 @@ Object3D& World::createModel(const Vector3m& position, Mass mass, BodyType type,
 	// TODO Faire un objet physique adapté à la forme du robot ?
 	IGraphicalInstance* graphicProp = _graphicalCtx->createModel(position, model);
 	graphicProp->setColor(color);
-	return createObject(graphicProp, physicProp, position);
+
+	Object3D& created = createObject(graphicProp, physicProp, position);
+
+	JSON metadata;
+	metadata["type"] = "model";
+	metadata["model"] = model;
+	created.setMetadata(metadata);
+
+	return created;
 }
 
 void World::removeObject(const Object3D* object) {

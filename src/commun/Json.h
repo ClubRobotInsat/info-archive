@@ -3,6 +3,7 @@
 
 #include <Color.h>
 #include <MathToolbox/MathToolbox.h>
+#include <Units.h>
 #include <petri/Runtime/Cpp/detail/jsoncpp/include/json/json.h>
 
 using JSON = Json::Value;
@@ -19,6 +20,10 @@ namespace Json {
 		        Angle::makeFromDeg(json["y"].asDouble()),
 		        Angle::makeFromDeg(json["z"].asDouble())};
 	}
+
+	// TODO Rendre les conversions cohérentes vis-à-vis des erreurs qui peuvent survenir
+	// Exemple : si un champ du json n'est pas convertible en float, cette fonction lève une LogicError
+	// Voir le problème avec les NaN
 
 	inline Color3f toColor3f(const JSON& json) {
 		return {json["r"].asFloat(), json["g"].asFloat(), json["b"].asFloat()};
@@ -37,6 +42,22 @@ namespace Json {
 
 	inline JSON toJSONVector3(const Vector3f& vec) {
 		return toJSONVector3(vec.x, vec.y, vec.z);
+	}
+
+	inline JSON fromVector3m(const Vector3m& vec) {
+		JSON jsonVec;
+		jsonVec["x"] = vec.x.toM();
+		jsonVec["y"] = vec.y.toM();
+		jsonVec["z"] = vec.z.toM();
+		return jsonVec;
+	}
+
+	inline JSON fromColor3f(const Color3f& color) {
+		JSON value;
+		value["r"] = color.r;
+		value["g"] = color.g;
+		value["b"] = color.b;
+		return value;
 	}
 
 	template <typename T>
@@ -63,9 +84,5 @@ namespace Json {
 
 		return value;
 	}
-
-	/*JSON fromVector3m(const Vector3m & vec) {
-
-	}*/
 }
 #endif // ROOT_JSON_H

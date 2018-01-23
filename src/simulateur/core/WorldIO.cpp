@@ -1,5 +1,14 @@
 #include "World.h"
 
+#include <fstream>
+
+#include <Json.h>
+
+// TODO Définir le comportement lorsque l'utilisateur fait une erreur dans le json, ou en cas de problèmes de
+// lecture/écriture fichier
+// Actuellement, ça peut être une grosse exception, comme ça peut passer inaperçu
+// Peut-être essayer de charger le Json comme on peut, et afficher des warnings quand il y a des erreurs ?
+
 void World::loadJSON(const JSON& json) {
 	const JSON& objects = json["objects"];
 
@@ -35,4 +44,53 @@ void World::loadJSON(const JSON& json) {
 			createdObject->setAngle(angle);
 		}
 	}
+}
+
+void World::loadJSONFromFile(std::string filename) {
+	Json::CharReaderBuilder builder;
+	builder["collectComments"] = false;
+
+	JSON value;
+	std::string errs;
+	std::ifstream in(filename);
+	bool ok = parseFromStream(builder, in, &value, &errs);
+
+	in.close();
+
+	if(ok) {
+		loadJSON(value);
+	} else {
+		// TODO
+	}
+}
+
+Json::Value World::getJSON() const {
+	JSON world;
+	JSON objects;
+
+	for(const std::unique_ptr<Object3D>& object : _objectsList) {
+		JSON jsonObject(object->getMetadata());
+
+		jsonObject["position"] = Json::fromVector3m(object->getPosition());
+		jsonObject["angle"] = object->getRotation().z.toDeg();
+
+		auto& physics = object->getPhysics();
+		jsonObject["mass"] = physics.getMass().toKg();
+
+		auto& graphics = object->getGraphics();
+		jsonObject["color"] = Json::fromColor3f(graphics.getColor());
+
+		objects.append(jsonObject);
+	}
+	world["objects"] = objects;
+
+	return world;
+}
+
+void World::writeJSONToFile(std::string filename) const {
+	JSON json = getJSON();
+	std::ofstream file(filename);
+	Json::StyledWriter writer;
+	file << writer.write(json) << std::endl;
+	file.close();
 }

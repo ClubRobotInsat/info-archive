@@ -11,7 +11,6 @@
 #include <Box2D/Dynamics/b2World.h>
 
 #include <ConstantesCommunes.h>
-#include <Json.h>
 
 #include "../graphique/IGraphicalContext.h"
 #include "../physique/IPhysicalContext.h"
@@ -65,17 +64,22 @@ public:
 	 * */
 	void loadJSON(const Json::Value& json);
 
+	/** Charge le fichier indiqué. Le contenu du fichier doit
+	 * être un objet JSON décrivant l'état du monde. */
+	void loadJSONFromFile(std::string filename);
+
 	/**
-	 *
-	 * @tparam Args
-	 * @param args
-	 * @return
+	 * Ecrit le contenu du monde dans un json et le renvoit.
+	 * Ce json peut être chargé par un autre monde via la méthode
+	 * loadJSON()
+	 * @return Un json contenant toutes les informations nécessaires
+	 * pour recréer le monde.
 	 */
-	template <typename... Args>
-	Object3D& createObject(Args&&... args) {
-		_objectsList.push_back(std::make_unique<Object3D>(nextId(), args...));
-		return *_objectsList.back();
-	}
+	Json::Value getJSON() const;
+
+	/** Ecrit l'état du monde actuel sous forme d'objet JSON dans
+	 * le fichier indiqué. */
+	void writeJSONToFile(std::string filename) const;
 
 	// Refactorer les noms de fonctions pour garder une cohérence dans tout le projet
 	Object3D& createModel(const Vector3m& position, Mass mass, BodyType type, const std::string& model, const Color3f& color);
@@ -110,6 +114,20 @@ private:
 	std::vector<std::unique_ptr<Object3D>> _objectsList;
 
 	int nextId();
+
+protected:
+	/**
+	 * Crée un objet à partir des paramètres donnés et l'ajoute au monde.
+	 * @tparam Args Les types des paramètres du constructeur de l'objet.
+	 * @param args Les paramètres à donner au constructeur de l'Object3D.
+	 * L'id ne doit pas être donné, il est généré automatiquement.
+	 * @return Une référence vers l'objet créé.
+	 */
+	template <typename... Args>
+	Object3D& createObject(Args&&... args) {
+		_objectsList.push_back(std::make_unique<Object3D>(nextId(), args...));
+		return *_objectsList.back();
+	}
 };
 
 

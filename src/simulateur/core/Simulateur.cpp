@@ -71,9 +71,14 @@ Vector3m const CubeData::getPosition() {
 }
 
 void Simulateur::initWorld() {
+	// Pour lire à partir du JSON
+	//_theWorld.loadJSONFromFile("table.json");
+
+	// Pour obtenir le JSON à partir du code de création de la table
 	_theWorld.createTable();
 	_theWorld.createAllObjects(getRobotColor());
 	//_theWorld.createDebugObjects();
+	_theWorld.writeJSONToFile("table.json");
 }
 
 void Simulateur::disableSimulation() {
