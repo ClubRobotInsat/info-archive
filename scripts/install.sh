@@ -48,7 +48,7 @@ petri_installed=0
 if [ $install_apt -eq 1 ]
     then echo -e "${Yellow}Installation des logiciels nécessaires${End}"
     sudo apt-get update
-    sudo apt-get install mono-complete cmake subversion git libbox2d-dev gcc-5-multilib g++-5-multilib libbluetooth-dev build-essential libglfw-dev libglu1-mesa-dev curl libxrandr-dev libgtkmm-3.0-dev libusb-1.0-0-dev clang-format
+    sudo apt-get install mono-complete cmake subversion git libbox2d-dev gcc-5-multilib g++-5-multilib libbluetooth-dev build-essential libglfw-dev libglu1-mesa-dev curl libxrandr-dev libgtkmm-3.0-dev libusb-1.0-0-dev clang-format libirrlicht1.8
 fi
 
 if [ $install_hook -eq 1 ]

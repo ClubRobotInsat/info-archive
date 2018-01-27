@@ -49,6 +49,25 @@ PhysicalObject::~PhysicalObject() {
 }
 
 // ********************************************* //
+//                 Informations                  //
+// ********************************************* //
+int PhysicalObject::getId() const {
+	return _id;
+}
+
+void PhysicalObject::enableSimulation(bool enabled) {
+	_body->SetActive(enabled);
+}
+
+bool PhysicalObject::isEnabled() const {
+	return _body->IsActive();
+}
+
+bool PhysicalObject::isDynamic() const {
+	return _body->GetType() == b2BodyType::b2_dynamicBody;
+}
+
+// ********************************************* //
 //                   Position                    //
 // ********************************************* //
 void PhysicalObject::setPosition(Vector2m position) {
@@ -72,6 +91,17 @@ void PhysicalObject::setLinearVelocity(Speed speed) {
 	_body->SetLinearVelocity(b2Vec2(toBox2D(speed) * cos(angle), toBox2D(speed) * sin(angle)));
 }
 
+Speed PhysicalObject::getLinearVelocity() const {
+	b2Vec2 vec1 = _body->GetLinearVelocity();
+	Speed speedAbs = fromBox2DVL(sqrt(pow(vec1.x, 2) + pow(vec1.y, 2)));
+	b2Vec2 vec2 = b2Vec2(toBox2D(speedAbs) * cos(_body->GetAngle()), toBox2D(speedAbs) * sin(_body->GetAngle()));
+	// Obtient la vitesse relative à l'angle (positive ou négative).
+	if(vec1.x * vec2.x + vec2.y * vec1.y > 0)
+		return speedAbs;
+	else
+		return -speedAbs;
+}
+
 // ********************************************* //
 //                     Angle                     //
 // ********************************************* //
@@ -91,7 +121,7 @@ void PhysicalObject::setAngle(Angle angle) {
 	_body->SetTransform(_body->GetPosition(), angle.toRad());
 }
 
-Angle PhysicalObject::getAngle() {
+Angle PhysicalObject::getAngle() const {
 #ifdef DEBUG_BOX2D
 	std::cout << "BOX2D::"
 	          << "Given Angle To:" << _body->GetAngle() << std::endl;
@@ -100,7 +130,7 @@ Angle PhysicalObject::getAngle() {
 }
 
 
-Mass PhysicalObject::getMass() {
+Mass PhysicalObject::getMass() const {
 	return Mass::makeFromKg(_body->GetMass());
 }
 
@@ -108,7 +138,7 @@ Mass PhysicalObject::getMass() {
 // ********************************************* //
 //               pour l'Affichage                //
 // ********************************************* //
-b2Shape::Type PhysicalObject::getShapeType() {
+b2Shape::Type PhysicalObject::getShapeType() const {
 	b2Shape* mainShape = getMainShape();
 	if(mainShape == nullptr)
 		return b2Shape::Type::e_polygon;
@@ -116,7 +146,7 @@ b2Shape::Type PhysicalObject::getShapeType() {
 	return getMainShape()->GetType();
 }
 
-CircleDefinition PhysicalObject::getBodyCircleDef() {
+CircleDefinition PhysicalObject::getBodyCircleDef() const {
 	b2Shape* mainShape = getMainShape();
 
 	CircleDefinition result;
@@ -132,7 +162,7 @@ CircleDefinition PhysicalObject::getBodyCircleDef() {
 	return result;
 }
 
-std::list<b2Vec2> PhysicalObject::getBodyPoints() {
+std::list<b2Vec2> PhysicalObject::getBodyPoints() const {
 	std::list<b2Vec2> result;
 
 	// On se base sur la shape principale.
@@ -185,7 +215,7 @@ void PhysicalObject::update(Object3D& parent) {
 // *********** PRIVATE MEMBERS ****************** //
 
 
-b2Shape* PhysicalObject::getMainShape() {
+b2Shape* PhysicalObject::getMainShape() const {
 	b2Fixture* fixtureList = _body->GetFixtureList();
 
 	if(fixtureList != nullptr) {
@@ -195,7 +225,7 @@ b2Shape* PhysicalObject::getMainShape() {
 	}
 }
 
-std::vector<b2Shape*> PhysicalObject::getAllShapes() {
+std::vector<b2Shape*> PhysicalObject::getAllShapes() const {
 	b2Fixture* fixtureList = _body->GetFixtureList();
 	std::vector<b2Shape*> result;
 
@@ -211,7 +241,7 @@ std::vector<b2Shape*> PhysicalObject::getAllShapes() {
 	return result;
 }
 
-Vector2m PhysicalObject::absolutePositionPoint(Vector2m position) {
+Vector2m PhysicalObject::absolutePositionPoint(Vector2m position) const {
 	Vector2m result;
 	Angle angle = Angle::makeFromRad(_body->GetAngle());
 
@@ -223,7 +253,7 @@ Vector2m PhysicalObject::absolutePositionPoint(Vector2m position) {
 	return result;
 }
 
-std::list<b2Vec2> PhysicalObject::absolutePositionList(const std::list<b2Vec2>& points) {
+std::list<b2Vec2> PhysicalObject::absolutePositionList(const std::list<b2Vec2>& points) const {
 	std::list<b2Vec2> result;
 
 	for(b2Vec2 vertex : points) {
@@ -243,7 +273,7 @@ void PhysicalObject::addRevoluteJoint(PhysicalObject& other, Vector2m commonPoin
 	other._joints.push_back(joint);
 }
 
-Vector2m PhysicalObject::getPosition() {
+Vector2m PhysicalObject::getPosition() const {
 	Vector2m position;
 	position.x = fromBox2D(_body->GetPosition().x);
 	position.y = fromBox2D(_body->GetPosition().y);

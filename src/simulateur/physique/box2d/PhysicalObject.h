@@ -40,19 +40,25 @@ public:
 	/**
 	 * Destruction de l'objet physique
 	 */
-	virtual ~PhysicalObject();
+	virtual ~PhysicalObject() override;
 
-	int getId() const {
-		return _id;
-	}
+	int getId() const override;
 
 	/**
 	 * Active ou désactive la simulation physique de l'objet par le moteur physique box2D
 	 * @param enabled TRUE si activation, FALSE si désactivation
 	 */
-	void enableSimulation(bool enabled) {
-		_body->SetActive(enabled);
-	}
+	void enableSimulation(bool enabled) override;
+
+	/**
+	 * @return TRUE si la simulation physique de l'objet est activée, FALSE sinon
+	 */
+	bool isEnabled() const override;
+
+	/**
+	 * @return TRUE si l'objet est dynamic (s'il peut avoir des mouvements)
+	 */
+	bool isDynamic() const override;
 
 	/**
 	 * Réunit deux objets physiques en les jointant
@@ -65,67 +71,58 @@ public:
 	 * Modifie la position de l'objet
 	 * @param position nouvelle position
 	 */
-	void setPosition(Vector2m position);
+	void setPosition(Vector2m position) override;
 
 	/**
 	 * Obtient la position courante de l'objet
 	 */
-	Vector2m getPosition();
+	Vector2m getPosition() const override;
 
 	/**
 	 * Modifie la vitesse linéaire actuelle de l'objet
 	 * @param speed nouvelle vitesse
 	 */
-	void setLinearVelocity(Speed speed);
+	void setLinearVelocity(Speed speed) override;
 
 	/**
 	 * Récupère la vitesse actuelle de l'objet
 	 */
-	Speed getLinearVelocity() {
-		b2Vec2 vec1 = _body->GetLinearVelocity();
-		Speed speedAbs = fromBox2DVL(sqrt(pow(vec1.x, 2) + pow(vec1.y, 2)));
-		b2Vec2 vec2 = b2Vec2(toBox2D(speedAbs) * cos(_body->GetAngle()), toBox2D(speedAbs) * sin(_body->GetAngle()));
-		// Obtient la vitesse relative à l'angle (positive ou négative).
-		if(vec1.x * vec2.x + vec2.y * vec1.y > 0)
-			return speedAbs;
-		else
-			return -speedAbs;
-	};
+	Speed getLinearVelocity() const override;
 
 	/**
 	 * Modifie la vitesse angulaire de l'objet
 	 * @param velocity nouvelle vitesse
 	 */
-	void setAngularVelocity(AngularSpeed velocity);
+	void setAngularVelocity(AngularSpeed velocity) override;
 
 	/**
 	 * Modifie l'angle de l'objet
 	 * @param angle nouvel angle
 	 */
-	void setAngle(Angle angle);
+	void setAngle(Angle angle) override;
 
 	/**
 	 * Obtient la vitesse angulaire de l'objet
 	 */
-	AngularSpeed getAngularVelocity() {
+	AngularSpeed getAngularVelocity() const override {
 		return fromBox2DVA(_body->GetAngularVelocity());
 	};
 
 	/**
 	 * Obtient l'angle de lobjet
 	 */
-	Angle getAngle();
+	Angle getAngle() const override;
 
 	/**
 	 * Obtient la masse de l'objet
 	 */
-	Mass getMass();
+	Mass getMass() const override;
 
 	/**
 	 * Obtient le type box2D de la shape de l'objet
 	 * Utile pour l'affichage
 	 */
-	b2Shape::Type getShapeType();
+	b2Shape::Type getShapeType() const;
 
 	/**
 	 * Obtient la liste des points qui définissent la forme de l'objet
@@ -133,13 +130,13 @@ public:
 	 * Si l'objet est un cercle, renvoie lla liste des sommets de l'octogone régulier ressemblant au cercle
 	 * Utile pour l'affichage
 	 */
-	std::list<b2Vec2> getBodyPoints();
+	std::list<b2Vec2> getBodyPoints() const;
 	// Retourne un objet CircleDefinition qui contient la position et
 	// le rayon de la shape si la shape est de type "cercle".
 	/**
 	 * Obtient la paire {position, rayon} qui définit la shape d'un objet de type Circle
 	 */
-	CircleDefinition getBodyCircleDef();
+	CircleDefinition getBodyCircleDef() const;
 
 	/**
 	 * Actualise la position de l'objet 3D passé en paramètre pour
@@ -160,13 +157,13 @@ private:
 	std::vector<b2Joint*> _joints;
 
 	/// Obtient la première shape passée à l'objet, que l'on consière comme étant sa principale
-	b2Shape* getMainShape();
+	b2Shape* getMainShape() const;
 	/// Obtient toutes les shapes de l'objet.
-	std::vector<b2Shape*> getAllShapes();
+	std::vector<b2Shape*> getAllShapes() const;
 	/// Obtient la véritable position d'un point de l'objet selon son angle
-	Vector2m absolutePositionPoint(Vector2m position);
+	Vector2m absolutePositionPoint(Vector2m position) const;
 	/// Obtient la véritable position de tous les points d'un objet selon son angle
-	std::list<b2Vec2> absolutePositionList(const std::list<b2Vec2>& points);
+	std::list<b2Vec2> absolutePositionList(const std::list<b2Vec2>& points) const;
 };
 
 
