@@ -83,3 +83,5 @@ else ()
 
     add_subdirectory(Principal)
 endif()
+
+file(COPY Commun/Environnement/table_strat.json DESTINATION ${CMAKE_BINARY_DIR}/src/robot/commun)

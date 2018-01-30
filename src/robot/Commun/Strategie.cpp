@@ -10,6 +10,8 @@
 #include "../../commun/sockets/tcpSock.h"
 #include "../Cartes/CarteDeplacement2009.h"
 
+#include <Json.h>
+
 #define NO_CARE_OF_ENV
 
 namespace Commun {
@@ -202,15 +204,24 @@ namespace Commun {
 	/// Pointeurs vers l'environnement et le meca manager de l'année adéquate
 	// std::unique_ptr<Environnement2015> _env;
 	void Strategie::creerEnvironement() {
-		const float danger = Environment::DANGER_INFINITY;
+		const bool loadJSON{false};
 
-		for(auto rect : LIST_RECT_OBJECTS) {
-			this->_env->addStaticShape(std::make_unique<Rect>(
-			    danger, rect.coords.getPos2D(REFERENCE_ENVIRONMENT), rect.size, rect.coords.getAngle(REFERENCE_ENVIRONMENT)));
-		}
+		if(loadJSON) {
+			this->_env->loadFromJSON("../commun/table_strat.json");
+		} else {
+			const float danger{Environment::DANGER_INFINITY};
 
-		for(auto circle : LIST_CIRCLE_OBJECTS) {
-			this->_env->addStaticShape(std::make_unique<Circle>(danger, circle.radius, circle.coords.getPos2D(REFERENCE_ENVIRONMENT)));
+			for(auto rect : LIST_RECT_OBJECTS) {
+				this->_env->addStaticShape(std::make_unique<Rect>(danger,
+				                                                  rect.coords.getPos2D(REFERENCE_ENVIRONMENT),
+				                                                  rect.size,
+				                                                  rect.coords.getAngle(REFERENCE_ENVIRONMENT)));
+			}
+
+			for(auto circle : LIST_CIRCLE_OBJECTS) {
+				this->_env->addStaticShape(
+				    std::make_unique<Circle>(danger, circle.radius, circle.coords.getPos2D(REFERENCE_ENVIRONMENT)));
+			}
 		}
 	}
 

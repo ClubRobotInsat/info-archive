@@ -19,7 +19,7 @@ void World::loadJSON(const JSON& json) {
 		Angle angle(Angle::makeFromDeg(object["angle"].asDouble()));
 
 		Mass mass(Mass::makeFromKg(object["mass"].asDouble()));
-		BodyType bodyType(object["dynamic"] == true ? DYNAMIC_BODY : STATIC_BODY);
+		BodyType bodyType(object["dynamic"].asBool() ? DYNAMIC_BODY : STATIC_BODY);
 
 		Color3f color(Json::toColor3f(object["color"]));
 		Object3D* createdObject = nullptr;
@@ -42,7 +42,7 @@ void World::loadJSON(const JSON& json) {
 		if(createdObject != nullptr) {
 			createdObject->setAngle(angle);
 
-			if(object["enabled"] == false) {
+			if(!object["enabled"].asBool()) {
 				createdObject->getPhysics().enableSimulation(false);
 			}
 		}

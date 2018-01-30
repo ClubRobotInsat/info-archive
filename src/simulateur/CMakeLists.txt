@@ -64,4 +64,4 @@ add_executable(Simu2017
 
 target_link_libraries(Simu2017 Box2D Outils_Simu Server ${IRRLICHT_LIBRARIES})
 
-file(COPY core/table.json DESTINATION ${CMAKE_BINARY_DIR}/src/simulateur)
+file(COPY core/table_simu.json DESTINATION ${CMAKE_BINARY_DIR}/src/simulateur)

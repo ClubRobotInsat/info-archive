@@ -200,11 +200,13 @@ public:
 	/**
 	 * Effectue une sauvegarde de l'environnement (formes) dans un fichier tga.
 	 */
-	void saveToTGA(const char* path, std::vector<Vector2m> const& traj);
+	void saveToTGA(const char* path, std::vector<Vector2m> const& traj) const;
 	Distance getScale();
 	void clearDebugValues();
 
 	bool isForbidden(Vector2m const& position) const;
+
+	void loadFromJSON(std::string filename);
 
 private:
 	/**

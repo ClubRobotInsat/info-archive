@@ -9,6 +9,10 @@
 using JSON = Json::Value;
 
 namespace Json {
+	inline Vector2m toVector2m(const Json::Value& json) {
+		return {Distance::makeFromM(json["x"].asDouble()), Distance::makeFromM(json["y"].asDouble())};
+	}
+
 	inline Vector3m toVector3m(const Json::Value& json) {
 		return {Distance::makeFromM(json["x"].asDouble()),
 		        Distance::makeFromM(json["y"].asDouble()),
@@ -42,6 +46,13 @@ namespace Json {
 
 	inline JSON toJSONVector3(const Vector3f& vec) {
 		return toJSONVector3(vec.x, vec.y, vec.z);
+	}
+
+	inline JSON fromVector2m(const Vector2m& vec) {
+		JSON jsonVec;
+		jsonVec["x"] = vec.x.toM();
+		jsonVec["y"] = vec.y.toM();
+		return jsonVec;
 	}
 
 	inline JSON fromVector3m(const Vector3m& vec) {
