@@ -10,7 +10,7 @@
 #include <atomic>
 
 #include "ConstantesCommunes.h"
-#include "World2017.h"
+#include "World.h"
 
 class Robot2017;
 
@@ -50,6 +50,8 @@ private:
 	Vector3m position;
 };
 
+enum SIMU_YEAR { MOON = 2017, CITY = 2018 };
+
 class Simulateur {
 public:
 	/**
@@ -83,7 +85,7 @@ public:
 	void update(Duration time);
 
 	/**
-	 * Initialise la simulation et place tous les objets
+	 * Initialise la simulation et place tous les objets de l'année en cours
 	 */
 	void initWorld();
 
@@ -124,6 +126,8 @@ public:
 
 	void sendTextMessage(const std::string& message);
 
+	SIMU_YEAR year;
+
 private:
 	/// Unique instance du simulateur
 	static Simulateur* _instance;
@@ -132,7 +136,7 @@ private:
 	std::unique_ptr<IPhysicalContext> _physicalCtx;
 
 	/// Le monde dans lequel on stocke tous les objets
-	World2017 _theWorld;
+	World _theWorld;
 
 	/// Robot simulé de l'année actuelle
 	std::unique_ptr<Robot2017> _robot;

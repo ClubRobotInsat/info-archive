@@ -224,20 +224,24 @@ void Environment::loadFromJSON(std::string filename) {
 		const JSON& objects = json["objects"];
 
 		for(const Json::Value& object : objects) {
-			std::string type(object["type"].asString());
+			if(object["A*"]["enabled"].asBool()) {
+				std::string type(object["type"].asString());
 
-			Vector2m position(Json::toVector2m(object["position"]));
-			Angle angle(Angle::makeFromDeg(object["angle"].asDouble()));
+				Vector2m position(Json::toVector2m(object["position"]));
+				Angle angle(Angle::makeFromDeg(object["angle"].asDouble()));
 
-			if(type == "rectangle") {
-				Vector2m dimensions(Json::toVector2m(object["dimensions"]));
-				repere::Coordonnees coords(position, angle);
-				this->addStaticShape(std::make_unique<Rect>(
-				    danger, coords.getPos2D(REFERENCE_ENVIRONMENT), dimensions, coords.getAngle(REFERENCE_ENVIRONMENT)));
-			} else if(type == "circle") {
-				Length radius(Length::makeFromM(object["radius"].asDouble()));
-				repere::Coordonnees coords(position);
-				this->addStaticShape(std::make_unique<Circle>(danger, radius, coords.getPos2D(REFERENCE_ENVIRONMENT)));
+				if(type == "rectangle") {
+					Vector2m dimensions(Json::toVector2m(object["dimensions"]));
+					repere::Coordonnees coords(position, angle);
+					this->addStaticShape(std::make_unique<Rect>(
+					    danger, coords.getPos2D(REFERENCE_ENVIRONMENT), dimensions, coords.getAngle(REFERENCE_ENVIRONMENT)));
+					std::cout << "rectangle shape added" << std::endl;
+				} else if(type == "circle") {
+					Length radius(Length::makeFromM(object["radius"].asDouble()));
+					repere::Coordonnees coords(position);
+					this->addStaticShape(std::make_unique<Circle>(danger, radius, coords.getPos2D(REFERENCE_ENVIRONMENT)));
+					std::cout << "circle shape added" << std::endl;
+				}
 			}
 		}
 	} else {

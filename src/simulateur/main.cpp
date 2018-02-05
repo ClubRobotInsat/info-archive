@@ -11,13 +11,13 @@
 #include "ConstantesCommunes.h"
 #include "core/Simulateur.h"
 #include "core/SimulateurConstantes.h"
-#include "core/World2017.h"
+#include "core/World.h"
 #include "log/Log.h"
 
 using namespace std;
 
 void printHelp() {
-	std::cout << "Usage : --robot [on|off] --world [on|off] --color [blue|yellow] [--no-physics]" << std::endl;
+	std::cout << "Usage : --robot [on|off] --world [on|off] --color [blue|yellow] --year [2017|2018] [--no-physics]" << std::endl;
 }
 
 /** Cette fonction parse les arguments envoyés au simu et
@@ -32,17 +32,20 @@ bool parseArgument(int argc, char** argv, Simulateur& simulateur) {
 	bool no_physics = false;
 	bool robot = true;
 	bool world = true;
+	int year = 2018;
 	Constantes::RobotColor color = Constantes::RobotColor::Undef;
 
 	int arg;
 	static struct option long_options[] = {{"robot", required_argument, 0, 'r'},
 	                                       {"color", required_argument, 0, 'c'},
 	                                       {"world", required_argument, 0, 'w'},
+	                                       {"year", required_argument, 0, 'y'},
 	                                       {"no-physics", optional_argument, 0, 1},
+	                                       {"help", no_argument, 0, 'h'},
 	                                       {0, 0, 0, 0}};
 
 	int long_index = 0;
-	while((arg = getopt_long(argc, argv, "r:c:w:", long_options, &long_index)) != -1) {
+	while((arg = getopt_long(argc, argv, "r:c:w:y:h:", long_options, &long_index)) != -1) {
 
 		switch(arg) {
 			case 'r':
@@ -65,6 +68,12 @@ bool parseArgument(int argc, char** argv, Simulateur& simulateur) {
 			case 1:
 				no_physics = true;
 				break;
+			case 'y':
+				year = std::stoi(std::string(optarg));
+				if(year == 2017 || year == 2018) {
+					break;
+				}
+			case 'h':
 			default:
 				printHelp();
 				return false;
@@ -77,6 +86,7 @@ bool parseArgument(int argc, char** argv, Simulateur& simulateur) {
 		printHelp();
 		return false;
 	}
+	simulateur.year = (SIMU_YEAR)year;
 
 	logDebug5("Démarrage du simulateur");
 

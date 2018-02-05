@@ -1,7 +1,6 @@
 # Info
 
-Clonage du repo
-------------
+## Clonage du repo
 ```
 svn checkout https://www.etud.insa-toulouse.fr/svn/roboinsat/CodeCommun --username votre_login_insa
 git clone https://votre_login_github@github.com/ClubRobotInsat/info.git
@@ -9,8 +8,7 @@ cd info
 git clone https://github.com/ClubRobotInsat/websimulator
 ```
 
-Installation des différents outils
-------------
+##  Installation des différents outils
 L'installation se fait grâce au script d'installation
 ```
 scripts/install.sh tools
@@ -67,22 +65,18 @@ sudo usermod -a -G dialout NOM_UTILISATEUR
 - Aller dans Settings > Build, Execution, Deployment > CMake. Dans "CMake options", rajouter le paramètre `-DBITS=64`
 - Problème de clock skew ? Il suffit de lancer `find -exec touch \{\} \;` dans le dossier `info`. Attention, cela peut être un petit peu long.
 
-Pour lancer l'IA en mode Debug sur le simu
---------------------------
+## Pour lancer l'IA en mode Debug sur le simu
 1. Tout compiler (choisir la target build all)
-2. Ouvrir un premier terminal dans le dossier info, puis se placer dans le dossier ```cd build```.
+2. Ouvrir un premier terminal dans le dossier info, puis se placer dans le dossier ```cd build/src/simulateur```.
 3. Lancer le simu : ```./Simu2017 --robot on --color blue --world on```.
-4. Ouvrir un deuxième terminal dans le dossier info, puis lancer Petri : ```./petri/petri```.
+4. Ouvrir un deuxième terminal dans le dossier info, puis lancer Petri : ```../../../third_parties/petri/petri```.
 5. Dans Petri, charger l'IA (IA.petri ou IADebug.petri, situé dans ```/info/robot/Principal/petri```).
-6. Ouvrir un troisième terminal à coté du dossier info, puis lancer ```websimulator/serve.sh```.
-7. Dans le navigateur Web, se connecter sur ```localhost:8000``` puis cliquer sur connect. Après une petite seconde, vous devriez voir la table apparaître.
-8. Dans Petri, aller dans ```Debug -> Creat Host```, normalement tout est déjà configuré, vous n'avez qu'à cliquer sur Create Host. Sinon, il faut aller chercher les binaires de l'IA :```/bin/robot/Principal/IAPrincipal``` et indiquer comme argument : ```LOCAL```.
-9. Voilà c'est terminé, vous n'avez plus qu'à lancer votre réseau petri et admirer le résultat dans le simu !
+6. Dans Petri, aller dans ```Debug -> Create Host```, normalement tout est déjà configuré, vous n'avez qu'à cliquer sur **Create host**. Sinon, il faut aller chercher les binaires de l'IA : ```/info/build/src/robot/Principal/IAPrincipal``` et indiquer comme arguments ```LOCAL --color blue SIMU```
+7. Voilà c'est terminé, vous n'avez plus qu'à lancer votre réseau petri et admirer le résultat dans le simu !
 
 ------------
 
-Cross-Compilation pour Raspberry
-------------
+## Cross-Compilation pour Raspberry
 ### Installation des outils :
 ```
 sudo apt-get install gcc-5-arm-linux-gnueabihf g++-5-arm-linux-gnueabihf build-essential git
@@ -91,7 +85,7 @@ Pour compiler IAWiimote il faut copier les librairies précompilées pour ARM da
 
 
 Pour cela il suffit d'exécuter :
- 
+
 ```sudo cp precompiled-libraries/libbluetooth.so.3 precompiled-libraries/libwiicpp.so precompiled-libraries/libwiic.so /usr/arm-linux-gnueabihf/lib```
 #### Installation des libs pour la WiiMote
 ```
@@ -138,7 +132,7 @@ Une fois dans le menu de paramétrage de la connexion il faut modifier quelques 
   * Device : Normalement il n'y en a que un à chosir.
   S'il y en a plusieurs, il faut tous les essayer jusqu'à ce que ça marche.
 
-3. Onglet IPv4 Settings : 
+3. Onglet IPv4 Settings :
 
 
   * Method : Choisir "Shared to other computers"

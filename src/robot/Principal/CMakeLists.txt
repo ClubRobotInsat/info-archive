@@ -62,7 +62,7 @@ if (RASPI)
 	set_target_properties(libwiimotecpp PROPERTIES IMPORTED_LOCATION "../../../precompiled-libraries/libwiicpp.so")
 	set_target_properties(libwiimotec PROPERTIES IMPORTED_LOCATION "../../../precompiled-libraries/libwiic.so")
 
-	message(STATUS "Je vais chercher libwwimote dans ${PROJECT_SOURCE_DIR}/precompiled-libraries/libwiicpp.so")
+	message(STATUS "Je vais chercher libwiimote dans ${PROJECT_SOURCE_DIR}/precompiled-libraries/libwiicpp.so")
 
 	#link_directories(${PROJECT_SOURCE_DIR}/precompiled-libraries/)
 	#add_subdirectory(precompiled-libraries)

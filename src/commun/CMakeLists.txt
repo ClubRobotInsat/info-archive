@@ -16,3 +16,5 @@ set(OUTILS_SOURCE
 add_library(Outils_${SIMU_OU_ROBOT} STATIC ${OUTILS_SOURCE})
 target_link_libraries(Outils_${SIMU_OU_ROBOT} pthread)
 add_dependencies(Outils_${SIMU_OU_ROBOT} InfoSubmodules)
+
+file(COPY table_2017.json table_2018.json DESTINATION ${CMAKE_BINARY_DIR}/src)

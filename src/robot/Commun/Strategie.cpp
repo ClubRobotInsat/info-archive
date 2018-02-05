@@ -204,10 +204,10 @@ namespace Commun {
 	/// Pointeurs vers l'environnement et le meca manager de l'année adéquate
 	// std::unique_ptr<Environnement2015> _env;
 	void Strategie::creerEnvironement() {
-		const bool loadJSON{false};
+		const bool loadJSON{true};
 
 		if(loadJSON) {
-			this->_env->loadFromJSON("../commun/table_strat.json");
+			this->_env->loadFromJSON("../../table_2018.json");
 		} else {
 			const float danger{Environment::DANGER_INFINITY};
 

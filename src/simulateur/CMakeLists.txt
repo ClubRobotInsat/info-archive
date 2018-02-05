@@ -16,13 +16,12 @@ FIND_PACKAGE(Irrlicht)
 # A faire : messages d'erreurs si irrlicht pas trouvé
 include_directories(${IRRLICHT_INCLUDE_DIRS})
 
-add_executable(Simu2017
+add_executable(Simulator
         main.cpp
 
         core/Simulateur.cpp
         core/World.cpp
         core/WorldIO.cpp
-        core/World2017.cpp
         core/Object3D.cpp
 
         physique/IPhysicalContext.h
@@ -62,6 +61,4 @@ add_executable(Simu2017
         ${root_SOURCE_DIR}/third_parties/petri/Runtime/Cpp/detail/jsoncpp/src/lib_json/json_value.cpp
         ${root_SOURCE_DIR}/third_parties/petri/Runtime/Cpp/detail/jsoncpp/src/lib_json/json_writer.cpp)
 
-target_link_libraries(Simu2017 Box2D Outils_Simu Server ${IRRLICHT_LIBRARIES})
-
-file(COPY core/table_simu.json DESTINATION ${CMAKE_BINARY_DIR}/src/simulateur)
+target_link_libraries(Simulator Box2D Outils_Simu Server ${IRRLICHT_LIBRARIES})

@@ -42,14 +42,6 @@ public:
 		return *_graphicalCtx;
 	}
 
-	// TODO méthode à supprimer (remplacer par des constantes)
-	// -> cette méthode est aussi utilisée pour la carte déplacement 2009, il faudra utiliser un repère particulier
-	/**
-	 * Obtient la taille de la table de jeu
-	 * Méthode à surcharger dans les mondes propres à chaque année
-	 */
-	virtual Vector2m getSize() = 0;
-
 	/**
 	 * Mise à jour du monde envoie les messages d'update pour tous les objets
 	 * @param time 10_ms is good

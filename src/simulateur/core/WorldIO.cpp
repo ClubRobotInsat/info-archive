@@ -18,10 +18,10 @@ void World::loadJSON(const JSON& json) {
 		Vector3m position(Json::toVector3m(object["position"]));
 		Angle angle(Angle::makeFromDeg(object["angle"].asDouble()));
 
-		Mass mass(Mass::makeFromKg(object["mass"].asDouble()));
-		BodyType bodyType(object["dynamic"].asBool() ? DYNAMIC_BODY : STATIC_BODY);
+		Mass mass(Mass::makeFromKg(object["simulateur"]["mass"].asDouble()));
+		BodyType bodyType(object["simulateur"]["dynamic"].asBool() ? DYNAMIC_BODY : STATIC_BODY);
 
-		Color3f color(Json::toColor3f(object["color"]));
+		Color3f color(Json::toColor3f(object["simulateur"]["color"]));
 		Object3D* createdObject = nullptr;
 
 		if(type == "cuboid") {
@@ -78,12 +78,12 @@ Json::Value World::getJSON() const {
 		jsonObject["angle"] = object->getRotation().z.toDeg();
 
 		auto& physics = object->getPhysics();
-		jsonObject["mass"] = physics.getMass().toKg();
-		jsonObject["dynamic"] = physics.isDynamic();
-		jsonObject["enabled"] = physics.isEnabled();
+		jsonObject["simulateur"]["mass"] = physics.getMass().toKg();
+		jsonObject["simulateur"]["dynamic"] = physics.isDynamic();
+		jsonObject["simulateur"]["enabled"] = physics.isEnabled();
 
 		auto& graphics = object->getGraphics();
-		jsonObject["color"] = Json::fromColor3f(graphics.getColor());
+		jsonObject["simulateur"]["color"] = Json::fromColor3f(graphics.getColor());
 
 		objects.append(jsonObject);
 	}
