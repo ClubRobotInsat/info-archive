@@ -54,11 +54,15 @@ public:
 	 * @param json Le contenu du fichier, sous forme de JSON déjà
 	 * parsé.
 	 * */
-	void loadJSON(const Json::Value& json);
+	void loadWorldFromJSON(const Json::Value& json);
 
 	/** Charge le fichier indiqué. Le contenu du fichier doit
 	 * être un objet JSON décrivant l'état du monde. */
-	void loadJSONFromFile(std::string filename);
+	void loadWorldFromFile(std::string filename);
+
+	Object3D& createRobotFromJSON(const Json::Value& json, Constantes::RobotColor color);
+
+	Object3D& createRobotFromFile(std::string filename, Constantes::RobotColor color);
 
 	/**
 	 * Ecrit le contenu du monde dans un json et le renvoit.

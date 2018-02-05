@@ -1,3 +1,6 @@
+#include "RobotPrincipal/Constantes.h"
+#include "SimulateurConstantes.h"
+
 #include "World.h"
 
 #include <fstream>
@@ -9,7 +12,7 @@
 // Actuellement, ça peut être une grosse exception, comme ça peut passer inaperçu
 // Peut-être essayer de charger le Json comme on peut, et afficher des warnings quand il y a des erreurs ?
 
-void World::loadJSON(const JSON& json) {
+void World::loadWorldFromJSON(const JSON& json) {
 	const JSON& objects = json["objects"];
 
 	for(const Json::Value& object : objects) {
@@ -49,7 +52,7 @@ void World::loadJSON(const JSON& json) {
 	}
 }
 
-void World::loadJSONFromFile(std::string filename) {
+void World::loadWorldFromFile(std::string filename) {
 	Json::CharReaderBuilder builder;
 	builder["collectComments"] = false;
 
@@ -61,9 +64,57 @@ void World::loadJSONFromFile(std::string filename) {
 	in.close();
 
 	if(ok) {
-		loadJSON(value);
+		loadWorldFromJSON(value);
 	} else {
 		// TODO
+	}
+}
+
+Object3D& World::createRobotFromJSON(const Json::Value& json, Constantes::RobotColor color) {
+	const JSON& robot = json["robot"];
+
+	const repere::Coordonnees coords_robot(Json::toVector2m(robot["position"]),
+	                                       Angle::makeFromDeg(robot["angle"].asDouble()),
+	                                       color == Constantes::RobotColor::Blue ? ConstantesPrincipal::REFERENCE_BLUE :
+	                                                                               ConstantesPrincipal::REFERENCE_YELLOW);
+
+	auto position = coords_robot.getPos3D(REFERENCE_SIMULATOR);
+	auto angle = coords_robot.getAngle(REFERENCE_SIMULATOR);
+
+	Vector3m robotSize = Json::toVector3m(robot["size"]);
+	IPhysicalInstance* physicProp = getPhysics().createCuboid(position, mass::HEAVY, DYNAMIC_BODY, robotSize);
+	physicProp->setAngle(angle);
+
+	// TODO : load la shape du robot
+	// IGraphicalInstance* graphicProp = getGraphics().createModel(position, "robot");
+	// graphicProp->setScale({0.008, 0.008, 0.012});
+	IGraphicalInstance* graphicProp = getGraphics().createCuboid(position, robotSize);
+	graphicProp->setColor(color == Constantes::RobotColor::Blue ? Json::toColor3f(robot["color"]["blue"]) :
+	                                                              Json::toColor3f(robot["color"]["yellow"]));
+
+	Object3D& created = createObject(graphicProp, physicProp, position);
+	created.addTag(TAG_ROBOT);
+
+	return created;
+}
+
+Object3D& World::createRobotFromFile(std::string filename, Constantes::RobotColor color) {
+	Json::CharReaderBuilder builder;
+	builder["collectComments"] = false;
+
+	JSON value;
+	std::string errs;
+	std::ifstream in(filename);
+	bool ok = parseFromStream(builder, in, &value, &errs);
+
+	in.close();
+
+	if(ok) {
+		return createRobotFromJSON(value, color);
+	} else {
+		// TODO
+		Object3D* obj = &createCube({1_m, 1_m, 1_m}, {0_m, 0_m, 0_m}, 1_kg, STATIC_BODY, {0, 0, 0});
+		return *obj;
 	}
 }
 
@@ -72,20 +123,31 @@ Json::Value World::getJSON() const {
 	JSON objects;
 
 	for(const std::unique_ptr<Object3D>& object : _objectsList) {
-		JSON jsonObject(object->getMetadata());
+		if(object->hasTag("robot")) {
+			JSON robot;
+			robot["position"] = Json::fromVector3m(object->getPosition());
+			robot["angle"] = object->getRotation().z.toDeg();
+			robot["size"] = Json::fromVector3m({38_cm, 30_cm, 50_m});
+			robot["color"]["blue"] = Json::fromColor3f({0.07, 0.55, 0.9});
+			robot["color"]["yellow"] = Json::fromColor3f({1.0, 1.0, 0.0});
 
-		jsonObject["position"] = Json::fromVector3m(object->getPosition());
-		jsonObject["angle"] = object->getRotation().z.toDeg();
+			world["robot"] = robot;
+		} else {
+			JSON jsonObject(object->getMetadata());
 
-		auto& physics = object->getPhysics();
-		jsonObject["simulateur"]["mass"] = physics.getMass().toKg();
-		jsonObject["simulateur"]["dynamic"] = physics.isDynamic();
-		jsonObject["simulateur"]["enabled"] = physics.isEnabled();
+			jsonObject["position"] = Json::fromVector3m(object->getPosition());
+			jsonObject["angle"] = object->getRotation().z.toDeg();
 
-		auto& graphics = object->getGraphics();
-		jsonObject["simulateur"]["color"] = Json::fromColor3f(graphics.getColor());
+			auto& physics = object->getPhysics();
+			jsonObject["simulateur"]["mass"] = physics.getMass().toKg();
+			jsonObject["simulateur"]["dynamic"] = physics.isDynamic();
+			jsonObject["simulateur"]["enabled"] = physics.isEnabled();
 
-		objects.append(jsonObject);
+			auto& graphics = object->getGraphics();
+			jsonObject["simulateur"]["color"] = Json::fromColor3f(graphics.getColor());
+
+			objects.append(jsonObject);
+		}
 	}
 	world["objects"] = objects;
 

@@ -72,13 +72,13 @@ Vector3m const CubeData::getPosition() {
 
 void Simulateur::initWorld() {
 	// Pour lire à partir du JSON
-	_theWorld.loadJSONFromFile("../table_" + std::to_string(year) + ".json");
+	_theWorld.loadWorldFromFile("../table_" + std::to_string(year) + ".json");
 
 	// Pour obtenir le JSON à partir du code de création de la table
 	//_theWorld.createTable();
 	//_theWorld.createAllObjects(getRobotColor());
 	//_theWorld.createDebugObjects();
-	//_theWorld.writeJSONToFile("table_simu.json");
+	//_theWorld.writeJSONToFile("/tmp/table_simu.json");
 }
 
 void Simulateur::disableSimulation() {
@@ -86,9 +86,9 @@ void Simulateur::disableSimulation() {
 }
 
 void Simulateur::addRobot(Constantes::RobotColor color) {
-	/*_robot = std::make_unique<Robot2017>("LOCAL", color);
-	Object3D& robotObj = _theWorld.createRobot(color);
-	_robot->setPhysicalObject(&robotObj.getPhysics());*/
+	_robot = std::make_unique<Robot2017>("LOCAL", color);
+	Object3D& robotObj = _theWorld.createRobotFromFile("../table_" + std::to_string(year) + ".json", color);
+	_robot->setPhysicalObject(&robotObj.getPhysics());
 }
 
 void Simulateur::resetWorld() {

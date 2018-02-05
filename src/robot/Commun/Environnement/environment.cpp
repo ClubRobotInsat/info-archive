@@ -227,20 +227,20 @@ void Environment::loadFromJSON(std::string filename) {
 			if(object["A*"]["enabled"].asBool()) {
 				std::string type(object["type"].asString());
 
+				// TODO : offset à calculer entre le centre du robot (donné dans le JSON) et le coin en haut à gauche
+				// (attendu par l'environnement) en fonction de l'angle
 				Vector2m position(Json::toVector2m(object["position"]));
 				Angle angle(Angle::makeFromDeg(object["angle"].asDouble()));
 
-				if(type == "rectangle") {
+				if(type == "cuboid") {
 					Vector2m dimensions(Json::toVector2m(object["dimensions"]));
 					repere::Coordonnees coords(position, angle);
 					this->addStaticShape(std::make_unique<Rect>(
 					    danger, coords.getPos2D(REFERENCE_ENVIRONMENT), dimensions, coords.getAngle(REFERENCE_ENVIRONMENT)));
-					std::cout << "rectangle shape added" << std::endl;
-				} else if(type == "circle") {
+				} else if(type == "cylinder" || type == "sphere") {
 					Length radius(Length::makeFromM(object["radius"].asDouble()));
 					repere::Coordonnees coords(position);
 					this->addStaticShape(std::make_unique<Circle>(danger, radius, coords.getPos2D(REFERENCE_ENVIRONMENT)));
-					std::cout << "circle shape added" << std::endl;
 				}
 			}
 		}
