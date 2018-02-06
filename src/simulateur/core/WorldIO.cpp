@@ -71,7 +71,17 @@ void World::loadWorldFromFile(std::string filename) {
 }
 
 Object3D& World::createRobotFromJSON(const Json::Value& json, Constantes::RobotColor color) {
-	const JSON& robot = json["robot"];
+	// Permet de récupérer les spécificités du robot principal
+	auto it = std::find_if(json["robot"].begin(), json["robot"].end(), [](const Json::Value& j) {
+		return j["name"] == "principal";
+	});
+	if(it == json["robot"].end()) {
+		// TODO
+		Object3D* obj = &createCube({1_m, 1_m, 1_m}, {0_m, 0_m, 0_m}, 1_kg, STATIC_BODY, {0, 0, 0});
+		return *obj;
+	}
+
+	const JSON& robot = *it;
 
 	const repere::Coordonnees coords_robot(Json::toVector2m(robot["position"]),
 	                                       Angle::makeFromDeg(robot["angle"].asDouble()),

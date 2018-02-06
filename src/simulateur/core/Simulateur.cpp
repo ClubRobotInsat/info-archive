@@ -66,13 +66,17 @@ void Simulateur::update(Duration time) {
 	}
 }
 
+void Simulateur::setJSONFile(std::string file) {
+	_json_file = file;
+}
+
 Vector3m const CubeData::getPosition() {
 	return Vector3m(position.x + size.x / 2, position.y + size.y / 2, position.z + size.z / 2);
 }
 
 void Simulateur::initWorld() {
 	// Pour lire à partir du JSON
-	_theWorld.loadWorldFromFile("../table_" + std::to_string(year) + ".json");
+	_theWorld.loadWorldFromFile(_json_file);
 
 	// Pour obtenir le JSON à partir du code de création de la table
 	//_theWorld.createTable();
@@ -87,7 +91,7 @@ void Simulateur::disableSimulation() {
 
 void Simulateur::addRobot(Constantes::RobotColor color) {
 	_robot = std::make_unique<Robot2017>("LOCAL", color);
-	Object3D& robotObj = _theWorld.createRobotFromFile("../table_" + std::to_string(year) + ".json", color);
+	Object3D& robotObj = _theWorld.createRobotFromFile(_json_file, color);
 	_robot->setPhysicalObject(&robotObj.getPhysics());
 }
 

@@ -85,6 +85,11 @@ public:
 	void update(Duration time);
 
 	/**
+	 * Change de fichier JSON cible pour load toute la table et ajouter le robot
+	 */
+	void setJSONFile(std::string);
+
+	/**
 	 * Initialise la simulation et place tous les objets de l'année en cours
 	 */
 	void initWorld();
@@ -126,8 +131,6 @@ public:
 
 	void sendTextMessage(const std::string& message);
 
-	SIMU_YEAR year;
-
 private:
 	/// Unique instance du simulateur
 	static Simulateur* _instance;
@@ -149,6 +152,8 @@ private:
 
 	// Pour afficher sans simuler les objets de la table
 	//(parce que le robot est sensible et que ça fait n'importe quoi)
+
+	std::string _json_file;
 };
 
 #endif // ROOT_SIMULATEUR_H

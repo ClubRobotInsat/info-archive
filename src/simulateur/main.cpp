@@ -32,20 +32,20 @@ bool parseArgument(int argc, char** argv, Simulateur& simulateur) {
 	bool no_physics = false;
 	bool robot = true;
 	bool world = true;
-	int year = 2018;
+	std::string json_file{"../table_2018.json"};
 	Constantes::RobotColor color = Constantes::RobotColor::Undef;
 
 	int arg;
 	static struct option long_options[] = {{"robot", required_argument, 0, 'r'},
 	                                       {"color", required_argument, 0, 'c'},
 	                                       {"world", required_argument, 0, 'w'},
-	                                       {"year", required_argument, 0, 'y'},
+	                                       {"json", required_argument, 0, 'j'},
 	                                       {"no-physics", optional_argument, 0, 1},
 	                                       {"help", no_argument, 0, 'h'},
 	                                       {0, 0, 0, 0}};
 
 	int long_index = 0;
-	while((arg = getopt_long(argc, argv, "r:c:w:y:h:", long_options, &long_index)) != -1) {
+	while((arg = getopt_long(argc, argv, "r:c:w:j:h:", long_options, &long_index)) != -1) {
 
 		switch(arg) {
 			case 'r':
@@ -69,10 +69,8 @@ bool parseArgument(int argc, char** argv, Simulateur& simulateur) {
 				no_physics = true;
 				break;
 			case 'y':
-				year = std::stoi(std::string(optarg));
-				if(year == 2017 || year == 2018) {
-					break;
-				}
+				json_file = std::string(optarg);
+				break;
 			case 'h':
 			default:
 				printHelp();
@@ -86,9 +84,15 @@ bool parseArgument(int argc, char** argv, Simulateur& simulateur) {
 		printHelp();
 		return false;
 	}
-	simulateur.year = (SIMU_YEAR)year;
+	std::ifstream file(json_file.c_str());
+	if(!file) {
+		std::cout << "Warning: Fichier de la table inexistant ('" << json_file << "')" << std::endl;
+		printHelp();
+		return false;
+	}
 
 	logDebug5("Démarrage du simulateur");
+	simulateur.setJSONFile(json_file);
 
 	// Robot
 	if(robot) {
