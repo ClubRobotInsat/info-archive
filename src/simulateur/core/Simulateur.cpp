@@ -4,7 +4,7 @@
 #include <cstdlib>
 #include <functional>
 
-#include "../communication/Robot2017.h"
+#include "../communication/Robot2018.h"
 #include "../graphique/irrlicht/Scene.h"
 #include "../graphique/server/WebGraphicalContext.h"
 #include "../physique/box2d/Box2DPhysicalContext.h"
@@ -90,7 +90,7 @@ void Simulateur::disableSimulation() {
 }
 
 void Simulateur::addRobot(Constantes::RobotColor color) {
-	_robot = std::make_unique<Robot2017>("LOCAL", color);
+	_robot = std::make_unique<Robot2018>("LOCAL", color);
 	Object3D& robotObj = _theWorld.createRobotFromFile(_json_file, color);
 	_robot->setPhysicalObject(&robotObj.getPhysics());
 }

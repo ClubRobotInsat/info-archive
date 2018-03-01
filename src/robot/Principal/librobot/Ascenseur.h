@@ -52,7 +52,7 @@ public:
 	ResultatAction allerAPosition(ConstantesPrincipal::PositionAscenseur position);
 
 private:
-	ConstantesPrincipal::PositionAscenseur _positionAscenseur;
+	// ConstantesPrincipal::PositionAscenseur _positionAscenseur;
 };
 
 #endif /* defined(__Club_Robot__Ascenseur__) */

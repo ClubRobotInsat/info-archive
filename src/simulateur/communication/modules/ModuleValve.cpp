@@ -3,9 +3,9 @@
 //
 
 #include "ModuleValve.h"
-#include "../Robot2017.h"
+#include "../Robot2018.h"
 
-ModuleValve::ModuleValve(Robot2017& robot) : _robot(robot) {}
+ModuleValve::ModuleValve(Robot2018& robot) : _robot(robot) {}
 
 int ModuleValve::infoToElecID(unsigned char idVanne) const {
 	if(1 <= idVanne && idVanne <= 6) {

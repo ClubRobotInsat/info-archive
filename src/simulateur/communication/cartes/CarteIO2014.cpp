@@ -44,14 +44,14 @@ void CarteIO2014::envoyerValeurCapteur(Trame const& t) {
 	if(t.getDonnee(0) == 1) {
 		Trame aEnvoyer(this->getId(), 2);
 		aEnvoyer.addByte(t.getDonnee(0));
-		aEnvoyer.addByte(Simulateur::getInstance().getRobotColor() == Constantes::RobotColor::Blue ? 0x01_b : 0x00_b);
+		aEnvoyer.addByte(Simulateur::getInstance().getRobotColor() == Constantes::RobotColor::Green ? 0x01_b : 0x00_b);
 		this->envoyer(aEnvoyer);
 	}
 	//	Renvoie la tirette
 	if(t.getDonnee(0) == 2) {
 		Trame aEnvoyer(this->getId(), 2);
 		aEnvoyer.addByte(t.getDonnee(0));
-		aEnvoyer.addByte(Simulateur::getInstance().getRobotColor() == Constantes::RobotColor::Blue ? 0x01_b : 0x00_b);
+		aEnvoyer.addByte(Simulateur::getInstance().getRobotColor() == Constantes::RobotColor::Green ? 0x01_b : 0x00_b);
 		this->envoyer(aEnvoyer);
 	} // Envoie de l'état du capteur demandé
 	else if(t.getNbDonnees() == 1 && t.getDonnee(0) <= NBCAPTEURS &&

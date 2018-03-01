@@ -23,10 +23,10 @@ namespace ia_parsing {
 
 			switch(arg) {
 				case 'c':
-					if(std::string(optarg) == "blue") {
-						color = RobotColor::Blue;
-					} else if(std::string(optarg) == "yellow") {
-						color = RobotColor::Yellow;
+					if(std::string(optarg) == "orange") {
+						color = RobotColor::Orange;
+					} else if(std::string(optarg) == "green") {
+						color = RobotColor::Green;
 					}
 				default:;
 			}
@@ -34,8 +34,8 @@ namespace ia_parsing {
 
 		if(color == Constantes::RobotColor::Undef) {
 			std::cout << "Pas de couleur selectionnée. Utilisation de la couleur bleue par défaut..." << std::endl;
-			std::cout << "Usage : " << argv[0] << " --color [blue|yellow]" << std::endl;
-			color = RobotColor::Blue;
+			std::cout << "Usage : " << argv[0] << " --color [orange|green]" << std::endl;
+			color = RobotColor::Orange;
 		}
 
 		return color;

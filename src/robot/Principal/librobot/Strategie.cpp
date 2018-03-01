@@ -39,7 +39,7 @@ StrategiePrincipal::StrategiePrincipal(std::vector<std::string> const& args, Con
         : Strategie(std::make_unique<RobotPrincipal>(args), color) {
 	// logDebug("Initialisation du MecaManager");
 	_meca = std::make_unique<MecaManagerPrincipal>(getRobot());
-	_meca->setCouleurServos(color == RobotColor::Blue ? CarteServo::Couleur::BLEU : CarteServo::Couleur::JAUNE);
+	//_meca->setCouleurServos(color == RobotColor::Orange ? CarteServo::Couleur::ORANGE : CarteServo::Couleur::VERT);
 	logDebug("Chargement des réseaux de Pétri…");
 	try {
 		initDeplacementPetri(*this);
@@ -80,7 +80,7 @@ bool StrategiePrincipal::adversaireVersCible(Vector2m const& cible) {
 }
 
 void StrategiePrincipal::funnyAction() {
-	_meca->lancerEnginSpatial();
+	//_meca->lancerEnginSpatial();
 }
 
 /******* Placement du robot et definition des coordonnees avant le debut du match *******/

@@ -6,7 +6,7 @@
 #include "../../../commun/ConstantesCommunes.h"
 #include "../../../commun/RobotPrincipal/Constantes.h"
 #include "../../Commun/Servo.h"
-#include "Ascenseur.h"
+//#include "Ascenseur.h"
 #include "Robot.h"
 #include <functional>
 
@@ -35,7 +35,7 @@ public:
 	// Actions pour les trucs aux fesses du robot TODO
 
 	// Actions pour l'ascenseur du robot
-	ResultatAction ascenseurStockageHaut();
+	/*ResultatAction ascenseurStockageHaut();
 	ResultatAction ascenseurStockageBas();
 	ResultatAction ascenseurCylindreSol();
 	ResultatAction ascenseurAjustagePourSaisieCylindreBas();
@@ -64,7 +64,7 @@ public:
 	ResultatAction pencherPinceDevant();
 
 	ResultatAction lancerEnginSpatial();
-	ResultatAction initialiserEnginSpatial();
+	ResultatAction initialiserEnginSpatial();*/
 
 	/// Automatisation du stockage
 	/**
@@ -76,11 +76,11 @@ public:
 	 * @return Resultat REUSSI si tout s'est bien passé (un cylindre a été rajouté au stockage)
 	 * 					RATE si une action s'est mal passée pour une raison quelconque
 	 */
-	ResultatAction stockerCylindre();
+	// ResultatAction stockerCylindre();
 	/**
 	 * Le robot finit avec un cylindre dans sa pince fermée, en bas
 	 */
-	ResultatAction destockerCylindre();
+	/*ResultatAction destockerCylindre();
 
 	// retourne le nombre de cylindres stockés
 	int getNbrCylindres();
@@ -93,7 +93,7 @@ public:
 	ResultatAction fermerFesseDroite();
 
 	Ascenseur& getAscenseur() {
-		return _ascenseur;
+	    return _ascenseur;
 	}
 
 	void setCouleurServos(CarteServo::Couleur couleur);
@@ -104,18 +104,18 @@ public:
 	void setTousCylindresStockes();
 
 	// private:
-	Angle getPositionServo(uint8_t servo, uint8_t pos);
+	Angle getPositionServo(uint8_t servo, uint8_t pos);*/
 
 private:
 	RobotPrincipal& _robot;
 
-	Ascenseur _ascenseur;
+	// Ascenseur _ascenseur;
 	// On sait quelles zones sont utilisées pour le stockage
-	bool _cylindresStockes[PositionStockage::NBR] = {false, false, false};
-	ResultatAction ajouterCylindre(int i);
-	ResultatAction supprimerCylindre(int i);
+	// bool _cylindresStockes[PositionStockage::NBR] = {false, false, false};
+	// ResultatAction ajouterCylindre(int i);
+	// ResultatAction supprimerCylindre(int i);
 
-	Commun::ServoManager _servos;
+	// Commun::ServoManager _servos;
 };
 
 #endif

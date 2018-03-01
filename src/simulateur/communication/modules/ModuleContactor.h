@@ -8,11 +8,11 @@
 
 #include "../cartes/IContacteursV2.h"
 
-class Robot2017;
+class Robot2018;
 
 class ModuleContactor : public IContacteursV2 {
 public:
-	ModuleContactor(Robot2017& robot2017);
+	ModuleContactor(Robot2018& robot2018);
 	// TODO : virer les idCarte qui servent à rien...
 	virtual bool getContactorState(unsigned char numeroContact, unsigned char idCarte) const override;
 
@@ -20,7 +20,7 @@ public:
 
 private:
 	int infoToElecID(unsigned char cardID) const;
-	Robot2017& _robot;
+	Robot2018& _robot;
 };
 
 

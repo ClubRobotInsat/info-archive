@@ -6,11 +6,11 @@
 #define ROOT_MODULEVALVE_H
 #include "../cartes/IVanne.h"
 
-class Robot2016;
+class Robot2018;
 
 class ModuleValve : public IVanne {
 public:
-	ModuleValve(Robot2016& robot);
+	ModuleValve(Robot2018& robot);
 
 
 	virtual void setValveOn(unsigned char idVanne) override;
@@ -26,7 +26,7 @@ public:
 
 private:
 	int infoToElecID(unsigned char idVanne) const;
-	Robot2016& _robot;
+	Robot2018& _robot;
 };
 
 

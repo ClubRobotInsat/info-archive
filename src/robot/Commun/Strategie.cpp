@@ -204,25 +204,7 @@ namespace Commun {
 	/// Pointeurs vers l'environnement et le meca manager de l'année adéquate
 	// std::unique_ptr<Environnement2015> _env;
 	void Strategie::creerEnvironement() {
-		const bool loadJSON{true};
-
-		if(loadJSON) {
-			this->_env->loadFromJSON("../../table_2018.json");
-		} else {
-			const float danger{Environment::DANGER_INFINITY};
-
-			for(auto rect : LIST_RECT_OBJECTS) {
-				this->_env->addStaticShape(std::make_unique<Rect>(danger,
-				                                                  rect.coords.getPos2D(REFERENCE_ENVIRONMENT),
-				                                                  rect.size,
-				                                                  rect.coords.getAngle(REFERENCE_ENVIRONMENT)));
-			}
-
-			for(auto circle : LIST_CIRCLE_OBJECTS) {
-				this->_env->addStaticShape(
-				    std::make_unique<Circle>(danger, circle.radius, circle.coords.getPos2D(REFERENCE_ENVIRONMENT)));
-			}
-		}
+		this->_env->loadFromJSON("../../table_2018.json");
 	}
 
 	/**

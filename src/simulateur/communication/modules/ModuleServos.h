@@ -7,11 +7,11 @@
 #include "../cartes/IServosIntelligents.h"
 #include <log/Log.h>
 
-class Robot2017;
+class Robot2018;
 
 class ModuleServos : public IServosIntelligents {
 public:
-	ModuleServos(Robot2017& robot2017);
+	ModuleServos(Robot2018& robot2018);
 
 	virtual void setAngle(uint8_t idCarte, uint8_t numServo, Angle angle) override;
 	virtual Angle getAngle(uint8_t idCarte, uint8_t numServo) override;
@@ -20,7 +20,7 @@ public:
 	virtual bool isBlocked(uint8_t idCarte, uint8_t numServo) const override;
 
 private:
-	Robot2017& _robot;
+	Robot2018& _robot;
 };
 
 

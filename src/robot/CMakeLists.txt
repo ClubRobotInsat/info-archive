@@ -30,7 +30,6 @@ set(STRAT_SOURCE
         Commun/Environnement/TGAWriter.cpp
         Commun/Environnement/TGAWriter.h
 
-        Commun/ConstantesStrategie.h
         Commun/Strategie.cpp)
 
 add_library(Strategie STATIC ${STRAT_SOURCE})

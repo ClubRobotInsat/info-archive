@@ -85,8 +85,8 @@ Object3D& World::createRobotFromJSON(const Json::Value& json, Constantes::RobotC
 
 	const repere::Coordonnees coords_robot(Json::toVector2m(robot["position"]),
 	                                       Angle::makeFromDeg(robot["angle"].asDouble()),
-	                                       color == Constantes::RobotColor::Blue ? ConstantesPrincipal::REFERENCE_BLUE :
-	                                                                               ConstantesPrincipal::REFERENCE_YELLOW);
+	                                       color == Constantes::RobotColor::Orange ? ConstantesPrincipal::REFERENCE_ORANGE :
+	                                                                                 ConstantesPrincipal::REFERENCE_GREEN);
 
 	auto position = coords_robot.getPos3D(REFERENCE_SIMULATOR);
 	auto angle = coords_robot.getAngle(REFERENCE_SIMULATOR);
@@ -99,8 +99,8 @@ Object3D& World::createRobotFromJSON(const Json::Value& json, Constantes::RobotC
 	// IGraphicalInstance* graphicProp = getGraphics().createModel(position, "robot");
 	// graphicProp->setScale({0.008, 0.008, 0.012});
 	IGraphicalInstance* graphicProp = getGraphics().createCuboid(position, robotSize);
-	graphicProp->setColor(color == Constantes::RobotColor::Blue ? Json::toColor3f(robot["color"]["blue"]) :
-	                                                              Json::toColor3f(robot["color"]["yellow"]));
+	graphicProp->setColor(color == Constantes::RobotColor::Orange ? Json::toColor3f(robot["color"]["orange"]) :
+	                                                                Json::toColor3f(robot["color"]["green"]));
 
 	Object3D& created = createObject(graphicProp, physicProp, position);
 	created.addTag(TAG_ROBOT);
@@ -138,8 +138,8 @@ Json::Value World::getJSON() const {
 			robot["position"] = Json::fromVector3m(object->getPosition());
 			robot["angle"] = object->getRotation().z.toDeg();
 			robot["size"] = Json::fromVector3m({38_cm, 30_cm, 50_m});
-			robot["color"]["blue"] = Json::fromColor3f({0.07, 0.55, 0.9});
-			robot["color"]["yellow"] = Json::fromColor3f({1.0, 1.0, 0.0});
+			robot["color"]["orange"] = Json::fromColor3f({0.93, 0.5, 0.06});
+			robot["color"]["green"] = Json::fromColor3f({0.0, 1.0, 0.0});
 
 			world["robot"] = robot;
 		} else {
@@ -149,12 +149,12 @@ Json::Value World::getJSON() const {
 			jsonObject["angle"] = object->getRotation().z.toDeg();
 
 			auto& physics = object->getPhysics();
-			jsonObject["simulateur"]["mass"] = physics.getMass().toKg();
-			jsonObject["simulateur"]["dynamic"] = physics.isDynamic();
-			jsonObject["simulateur"]["enabled"] = physics.isEnabled();
+			jsonObject["simulator"]["mass"] = physics.getMass().toKg();
+			jsonObject["simulator"]["dynamic"] = physics.isDynamic();
+			jsonObject["simulator"]["enabled"] = physics.isEnabled();
 
 			auto& graphics = object->getGraphics();
-			jsonObject["simulateur"]["color"] = Json::fromColor3f(graphics.getColor());
+			jsonObject["simulator"]["color"] = Json::fromColor3f(graphics.getColor());
 
 			objects.append(jsonObject);
 		}

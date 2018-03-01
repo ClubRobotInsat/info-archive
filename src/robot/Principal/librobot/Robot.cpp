@@ -69,12 +69,13 @@ void RobotPrincipal::desactivation() {
 
 ///////////////// Fonction privée, appelée par le constructeur, qui assigne les cartes à leurs IDs //////////////////
 void RobotPrincipal::assignerCartes() {
-	this->assignerCarteHelper<CAN_USB>();
+	// this->assignerCarteHelper<CAN_USB>();
 	this->assignerCarteHelper<DEPLACEMENT>();
 	this->assignerCarteHelper<IO>();
 	this->assignerCarteHelper<EVITEMENT>();
-	this->assignerCarteHelper<ASCENSEUR>();
+	// this->assignerCarteHelper<ASCENSEUR>();
 	this->assignerCarteHelper<SERVOS>();
+	// this->assignerCarteHelper<MOTEURS>();
 	// TODO : on ajoute toutes les cartes du robot de l'année
 
 	_cartesInitialisees.notify_all();

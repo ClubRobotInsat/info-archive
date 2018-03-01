@@ -8,7 +8,7 @@
 
 class IATest : public StrategiePrincipal {
 public:
-	IATest(std::vector<std::string> const& args) : StrategiePrincipal(args, RobotColor::Blue) {
+	IATest(std::vector<std::string> const& args) : StrategiePrincipal(args, RobotColor::Orange) {
 		this->initialisation();
 	}
 

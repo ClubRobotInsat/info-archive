@@ -17,7 +17,7 @@
 using namespace std;
 
 void printHelp() {
-	std::cout << "Usage : --robot [on|off] --world [on|off] --color [blue|yellow] --year [2017|2018] [--no-physics]" << std::endl;
+	std::cout << "Usage : --robot [on|off] --world [on|off] --color [green|orange] --load <path.json> [--no-physics]" << std::endl;
 }
 
 /** Cette fonction parse les arguments envoyés au simu et
@@ -39,7 +39,7 @@ bool parseArgument(int argc, char** argv, Simulateur& simulateur) {
 	static struct option long_options[] = {{"robot", required_argument, 0, 'r'},
 	                                       {"color", required_argument, 0, 'c'},
 	                                       {"world", required_argument, 0, 'w'},
-	                                       {"json", required_argument, 0, 'j'},
+	                                       {"load", required_argument, 0, 'l'},
 	                                       {"no-physics", optional_argument, 0, 1},
 	                                       {"help", no_argument, 0, 'h'},
 	                                       {0, 0, 0, 0}};
@@ -54,10 +54,10 @@ bool parseArgument(int argc, char** argv, Simulateur& simulateur) {
 				}
 				break;
 			case 'c':
-				if(std::string(optarg) == "yellow") {
-					color = Constantes::RobotColor::Yellow;
-				} else if(std::string(optarg) == "blue") {
-					color = Constantes::RobotColor::Blue;
+				if(std::string(optarg) == "orange") {
+					color = Constantes::RobotColor::Orange;
+				} else if(std::string(optarg) == "green") {
+					color = Constantes::RobotColor::Green;
 				}
 				break;
 			case 'w':
@@ -68,7 +68,7 @@ bool parseArgument(int argc, char** argv, Simulateur& simulateur) {
 			case 1:
 				no_physics = true;
 				break;
-			case 'y':
+			case 'l':
 				json_file = std::string(optarg);
 				break;
 			case 'h':
@@ -97,8 +97,7 @@ bool parseArgument(int argc, char** argv, Simulateur& simulateur) {
 	// Robot
 	if(robot) {
 		simulateur.addRobot(color);
-		logDebug5(std::string("Couleur du robot : ") +
-		          std::string(color == Constantes::RobotColor::Blue ? "bleu" : "jaune"));
+		logDebug5(std::string("Couleur du robot : ") + std::string(color == Constantes::RobotColor::Orange ? "orange" : "vert"));
 	} else {
 		logDebug4("Aucun robot ajouté.");
 	}

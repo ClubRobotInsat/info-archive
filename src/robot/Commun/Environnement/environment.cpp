@@ -1,5 +1,5 @@
 ﻿#include "environment.h"
-#include "../ConstantesStrategie.h"
+#include "../../../commun/ConstantesCommunes.h"
 #include "TGAWriter.h"
 
 #include <Json.h>
@@ -8,6 +8,9 @@
 using namespace std;
 
 const float Environment::DANGER_INFINITY = 2;
+
+const repere::Repere REFERENCE_ENVIRONMENT =
+    repere::Repere({0_m, 0_m}, repere::Multiplicateur::SENS_POSITIF, repere::Multiplicateur::SENS_POSITIF);
 
 Neighbor::Neighbor(Distance distance, Node& n_) : dist(distance), n(n_) {}
 

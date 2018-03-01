@@ -3,10 +3,10 @@
 //
 #include "ModuleContactor.h"
 #include "../../../../../CodeCommun/Informations_cartesElec_2017.h"
-#include "../Robot2017.h"
+#include "../Robot2018.h"
 #include <log/Log.h>
 
-ModuleContactor::ModuleContactor(Robot2017& robot2017) : _robot(robot2017) {}
+ModuleContactor::ModuleContactor(Robot2018& robot2018) : _robot(robot2018) {}
 
 int ModuleContactor::infoToElecID(unsigned char idContact) const {
 

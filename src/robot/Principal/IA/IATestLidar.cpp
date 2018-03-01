@@ -11,7 +11,7 @@
 class IATestLidar : public StrategiePrincipal {
 public:
 	/// WARNING : Verifier que la couleur du robot c'est bon.
-	IATestLidar(std::vector<std::string> const& args) : StrategiePrincipal(args, RobotColor::Blue) {
+	IATestLidar(std::vector<std::string> const& args) : StrategiePrincipal(args, RobotColor::Green) {
 		this->initialisation();
 	}
 

@@ -21,85 +21,85 @@ void initServoPetri(StrategiePrincipal& strategie) {
 /*
 ResultatAction bougerBrasDroit(Angle angle) {
     return meca().bougerBrasBloquant(ConstantesPrincipal::Pince::DROIT, angle);
-}*/
+}
 
 
 ResultatAction ascenseurStockageHaut() {
-	return meca().ascenseurStockageHaut();
+    return meca().ascenseurStockageHaut();
 }
 
 ResultatAction ascenseurStockageBas() {
-	return meca().ascenseurStockageBas();
+    return meca().ascenseurStockageBas();
 }
 
 ResultatAction ascenseurCylindreSol() {
-	return meca().ascenseurCylindreSol();
+    return meca().ascenseurCylindreSol();
 }
 
 ResultatAction ascenseurAjustagePourSaisieCylindreBas() {
-	return meca().ascenseurAjustagePourSaisieCylindreBas();
+    return meca().ascenseurAjustagePourSaisieCylindreBas();
 }
 
 ResultatAction ascenseurPoserRails() {
-	return meca().ascenseurPoserRails();
+    return meca().ascenseurPoserRails();
 }
 
 ResultatAction ouvrirPince() {
-	return meca().ouvrirPince();
+    return meca().ouvrirPince();
 }
 
 ResultatAction fermerPince() {
-	return meca().fermerPince();
+    return meca().fermerPince();
 }
 
 ResultatAction attraperCylindre() {
-	return meca().attraperCylindre();
+    return meca().attraperCylindre();
 }
 
 ResultatAction orienterPinceAttraper() {
-	return meca().orienterPinceAttraper();
+    return meca().orienterPinceAttraper();
 }
 
 ResultatAction orienterPinceStocker() {
-	return meca().orienterPinceStocker();
+    return meca().orienterPinceStocker();
 }
 
 ResultatAction pencherPinceBas() {
-	return meca().pencherPinceBas();
+    return meca().pencherPinceBas();
 }
 
 ResultatAction pencherPinceDevant() {
-	return meca().pencherPinceDevant();
+    return meca().pencherPinceDevant();
 }
 
 ResultatAction stockerCylindre() {
-	return meca().stockerCylindre();
+    return meca().stockerCylindre();
 }
 
 ResultatAction destockerCylindre() {
-	return meca().destockerCylindre();
+    return meca().destockerCylindre();
 }
 
 int getNbrCylindres() {
-	return meca().getNbrCylindres();
+    return meca().getNbrCylindres();
 }
 
 ResultatAction printCylindres() {
-	return meca().printCylindres();
+    return meca().printCylindres();
 }
 
 ResultatAction ouvrirFesseGauche() {
-	return meca().ouvrirFesseGauche();
+    return meca().ouvrirFesseGauche();
 }
 
 ResultatAction ouvrirFesseDroite() {
-	return meca().ouvrirFesseDroite();
+    return meca().ouvrirFesseDroite();
 }
 
 ResultatAction fermerFesseGauche() {
-	return meca().fermerFesseGauche();
+    return meca().fermerFesseGauche();
 }
 
 ResultatAction fermerFesseDroite() {
-	return meca().fermerFesseDroite();
-}
+    return meca().fermerFesseDroite();
+}*/

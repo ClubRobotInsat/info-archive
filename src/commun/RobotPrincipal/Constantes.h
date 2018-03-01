@@ -35,7 +35,7 @@
 
 #endif
 
-#include "../../../../CodeCommun/Informations_cartesElec_2017.h"
+#include "../../../../CodeCommun/Informations_cartesElec_2018.h"
 
 #include "Commun.h"
 #include "ConstantesCommunes.h"
@@ -43,30 +43,31 @@
 
 namespace IDCartesPrincipal {
 	enum {
-		ID_CARTE_CAN_USB = 0,
-		ID_CARTE_DEPLACEMENT = ID_CARTE_INYANGA_DEPLACEMENT,
-		ID_CARTE_SERVOS = ID_CARTE_INYANGA_SERVOS,
-		ID_CARTE_IO = ID_CARTE_INYANGA_IO,
-		ID_CARTE_EVITEMENT = ID_CARTE_INYANGA_EVITEMENT,
-		ID_CARTE_ASCENSEUR = ID_CARTE_INYANGA_ASCENSEUR,
+		ID_CARTE_DEPLACEMENT = ID_CARTE_ELEC_DEPLACEMENT,
+		ID_CARTE_EVITEMENT = ID_CARTE_ELEC_EVITEMENT,
+		ID_CARTE_IO = ID_CARTE_ELEC_IO_TIRETTE,
+		ID_CARTE_SERVOS = ID_CARTE_ELEC_SERVOS,
+		ID_CARTE_MOTEUR_ASCENSEUR_G = ID_CARTE_ELEC_MOTEUR_ASCENSEUR_GAUCHE,
+		ID_CARTE_MOTEUR_ASCENSEUR_D = ID_CARTE_ELEC_MOTEUR_ASCENSEUR_DROIT,
+		ID_CARTE_MOTEUR_AVALEUR_G = ID_CARTE_ELEC_MOTEUR_AVALEUR_GAUCHE,
+		ID_CARTE_MOTEUR_AVALEUR_D = ID_CARTE_MOTEUR_ASCENSEUR_D,
 
 		/*ID_CARTE_DEBUG_DESSIN = 8*/
 	};
 
-	ENUM_NS(IDCartesPrincipal, IDCartes, SERVOS, CAN_USB, DEPLACEMENT, IO, EVITEMENT, ASCENSEUR)
+	ENUM_NS(IDCartesPrincipal, IDCartes, DEPLACEMENT, EVITEMENT, IO, SERVOS, MOTEUR_ASCENSEUR_G, MOTEUR_ASCENSEUR_D, MOTEUR_AVALEUR_G, MOTEUR_AVALEUR_D)
 
-
-	// TODO : AJOUTER ASCENSEUR ?
-	ENUM_CLASS_NS(IDCartesPrincipal, IDCartesServo, PINCE, LACET, TANGAGE, FUSEE, GAUCHE, DROITE)
+	ENUM_CLASS_NS(IDCartesPrincipal, IDCarteServos, PORTE_CUBE, PORTE_SOUTE_G, PORTE_SOUTE_D, ABEILLE_G, ABEILLE_D)
 }
 
 namespace ConstantesPrincipal {
 	using IDCartes = IDCartesPrincipal::IDCartes;
-	using IDCartesServo = IDCartesPrincipal::IDCartesServo;
+	using IDCartesServos = IDCartesPrincipal::IDCarteServos;
+	using IDCartesMoteurs = IDCartesPrincipal::IDCarteServos;
 
-	const repere::Repere REFERENCE_BLUE =
+	const repere::Repere REFERENCE_ORANGE =
 	    repere::Repere({0_m, 0_m}, repere::Multiplicateur::SENS_POSITIF, repere::Multiplicateur::SENS_POSITIF);
-	const repere::Repere REFERENCE_YELLOW =
+	const repere::Repere REFERENCE_GREEN =
 	    repere::Repere({3_m, 0_m}, repere::Multiplicateur::SENS_NEGATIF, repere::Multiplicateur::SENS_POSITIF);
 
 	const Vector3m START_ROBOT_POSITION(1.05_m - 29.4_cm / 2, 2_m - 29.4_cm / 2 - 2.1_cm, 15_cm);
@@ -76,80 +77,62 @@ namespace ConstantesPrincipal {
 	const Vector2m POSITION_TOURELLE(10_cm, 5_cm);
 
 	/////////////////// CONTACTEURS ///////////////////
+
 	// Numéros des contacteurs et les rôles associés
 	enum class Contacteur {
 		TIRETTE = 2,
 	};
 
-	enum class PositionAscenseur {
-		STOCKAGE_HAUT = 0,
-		STOCKAGE_BAS = 1,
-		SAISIE_CYLINDRE_SOL = 2,
-		SAISIE_CYLINDRE_STOCKAGE_BAS = 3,
-		POSER_DANS_RAILS = 4,
-		NBR = 5,
-	};
-
-	enum class Pince {
-		OUVERT = 0,
-		OUVERT_MAX = 1,
-		FERME = 2,
-		SEMI_OUVERT = 3,
-		NBR = 4,
-	};
-
-	enum class Fusee {
-		STOCKAGE = 0,
-		RELACHEMENT = 1,
-		NBR = 2,
-	};
-
-	enum class Gauche {
-		FERME = 0,
-		OUVERT = 1,
-		NBR = 2,
-	};
-
-	enum class Droite {
-		FERME = 0,
-		OUVERT = 1,
-		NBR = 2,
-	};
-
-	enum class Lacet {
-		ATTRAPER = 0,
-		RECALAGE = 1,
-		RANGER = 2,
-		NBR = 3,
-	};
-
-	enum class Tangage {
-		DEVANT = 0,
-		BAS = 1,
-		NBR = 2,
-	};
 	/////////////////// SERVOS ///////////////////
 
 	enum class Servo {
-		PINCE = ID_SERVO_INYANGA_PINCE,
-		LACET = ID_SERVO_INYANGA_LACET,     // mouvement de gauche à droite
-		TANGAGE = ID_SERVO_INYANGA_TANGAGE, // mouvement de bas en haut
-		FUSEE = ID_SERVO_INYANGA_FUSEE,
-		GAUCHE = ID_SERVO_INYANGA_GAUCHE, // servos à l'arrière
-		DROITE = ID_SERVO_INYANGE_DROITE,
+		PORTE_CUBES = ID_SERVO_OUVERTURE_PORTE_CUBES,
+		PORTE_SOUTE_GAUCHE = ID_SERVO_OUVERTURE_PORTE_SOUTE_GAUCHE,
+		PORTE_SOUTE_DROIT = ID_SERVO_OUVERTURE_PORTE_SOUTE_DROIT,
+		ABEILLE_GAUCHE = ID_SERVO_ABEILLE_GAUCHE,
+		ABEILLE_DROIT = ID_SERVO_ABEILLE_DROIT,
 
-		NBR = 6
+		NBR = 5
 	};
 
+	// Différentes positions des servos
+	enum class PorteCube { OUVERT = 0, FERME = 1, NBR = 2 };
 
-	/*enum class Servo_D { NBR = 2 };
-	enum class Servo_G { NBR = 3 };*/
+	enum class SouteGauche { OUVERT = 0, FERME = 1, NBR = 2 };
+
+	enum class SouteDroit { OUVERT = 0, FERME = 1, NBR = 2 };
+
+	enum class AbeilleGauche { OUVERT = 0, FERME = 1, NBR = 2 };
+
+	enum class AbeilleDroit { OUVERT = 0, FERME = 1, NBR = 2 };
+
+	extern Angle const positionPorteCube[enumToInt(PorteCube::NBR)];
+	extern Angle const positionSouteGauche[enumToInt(SouteGauche::NBR)];
+	extern Angle const positionSouteDroit[enumToInt(SouteDroit::NBR)];
+	extern Angle const positionAbeilleGauche[enumToInt(AbeilleGauche::NBR)];
+	extern Angle const positionAbeilleDroit[enumToInt(AbeilleDroit::NBR)];
+
+	/////////////////// MOTEURS ///////////////////
+
+	// Différentes positions des moteurs
+	enum class AvaleurGauche { POS_0 = 0, POS_1 = 1, NBR = 2 };
+
+	enum class AvaleurDroit { POS_0 = 0, POS_1 = 1, NBR = 2 };
+
+	enum class AscenseurGauche { POS_0 = 0, POS_1 = 1, POS_2 = 2, NBR = 3 };
+
+	enum class AscenseurDroit { POS_0 = 0, POS_1 = 1, POS_2 = 2, NBR = 3 };
+
+	extern Angle const positionAvaleurGauche[enumToInt(AvaleurGauche::NBR)];
+	extern Angle const positionAvaleurDroit[enumToInt(AvaleurDroit::NBR)];
+	extern Angle const positionAscenseurGauche[enumToInt(AscenseurGauche::NBR)];
+	extern Angle const positionAscenseurDroit[enumToInt(AscenseurDroit::NBR)];
 
 	// Durée attendue lors de l'envoi d'un message aux cartes élecs dans les fonctions blonquantes autre que les
 	// servos.
 	auto const TIMEOUT_ELEC = 100_ms;
 
-	// On reprend par défaut les mêmes valeur que la partie commune aux 2 robots, à changer si nécessaire
+	// On reprend par défaut les mêmes valeurs que la partie commune aux 2 robots, à changer si nécessaire
 	extern Duration const TIMEOUT_DEPLACEMENT_DEFAUT;
 	extern Duration const TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT;
 	extern Speed const VITESSE_LINEAIRE_DEFAUT;
@@ -166,28 +149,21 @@ namespace ConstantesPrincipal {
 
 	extern int const IDRobot;
 
-
-	extern Angle const positionAscenseur[enumToInt(PositionAscenseur::NBR)];
-	extern Angle const positionPince[enumToInt(Pince::NBR)];
-	extern Angle const positionTangage[enumToInt(Tangage::NBR)]; // De haut en bas
-	extern Angle const positionLacet[enumToInt(Lacet::NBR)];     // De droite à gauche
-	extern Angle const positionGauche[enumToInt(Gauche::NBR)];   // Fesse gauche
-	extern Angle const positionDroite[enumToInt(Droite::NBR)];   // Fesse droite
-	extern Angle const positionFusee[enumToInt(Fusee::NBR)];
-
 	/////////////////// CARTES ///////////////////
 
 	template <IDCartesPrincipal::IDCartes ID_CARTE>
 	struct CarteInfo {};
 
-	template <IDCartesPrincipal::IDCartesServo ID_CARTE>
+	template <IDCartesPrincipal::IDCarteServos ID_CARTE>
 	struct CarteServoInfo {};
 
-	template <>
+	// TODO : gérer la carte mère
+
+	/*template <>
 	struct CarteInfo<IDCartesPrincipal::CAN_USB> {
-		using typeCarte = CarteCAN_USB;
-		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_CAN_USB };
-	};
+	    using typeCarte = CarteCAN_USB;
+	    enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_CAN_USB };
+	};*/
 
 	template <>
 	struct CarteInfo<IDCartesPrincipal::DEPLACEMENT> {
@@ -196,11 +172,12 @@ namespace ConstantesPrincipal {
 	};
 
 	template <>
-	struct CarteInfo<IDCartesPrincipal::SERVOS> {
-		using typeCarte = CarteServosNova2017;
-		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_SERVOS };
+	struct CarteInfo<IDCartesPrincipal::EVITEMENT> {
+		using typeCarte = CarteDetectAdv2009;
+		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_EVITEMENT };
 	};
 
+	// TODO : refaire la carte IO, elle ne sert plus qu'à la tirette
 	template <>
 	struct CarteInfo<IDCartesPrincipal::IO> {
 		using typeCarte = CarteIO2014;
@@ -208,31 +185,42 @@ namespace ConstantesPrincipal {
 	};
 
 	template <>
-	struct CarteInfo<IDCartesPrincipal::EVITEMENT> {
-		using typeCarte = CarteDetectAdv2009;
-		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_EVITEMENT };
+	struct CarteInfo<IDCartesPrincipal::SERVOS> {
+		using typeCarte = CarteServosNova2017;
+		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_SERVOS };
+	};
+
+	// FIXME : voir si du côté élec ils ne préfèrent pas 2 interfaces moteur asservi / non asservi pour les moteurs
+	template <>
+	struct CarteInfo<IDCartesPrincipal::MOTEUR_ASCENSEUR_G> {
+		using typeCarte = CarteAsservissement2009;
+		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_MOTEUR_ASCENSEUR_G };
 	};
 
 	template <>
-	struct CarteInfo<IDCartesPrincipal::ASCENSEUR> {
+	struct CarteInfo<IDCartesPrincipal::MOTEUR_ASCENSEUR_D> {
 		using typeCarte = CarteAsservissement2009;
-		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_ASCENSEUR };
+		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_MOTEUR_ASCENSEUR_D };
 	};
 
+	template <>
+	struct CarteInfo<IDCartesPrincipal::MOTEUR_AVALEUR_G> {
+		using typeCarte = CarteAsservissement2009;
+		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_MOTEUR_AVALEUR_G };
+	};
 
-	// TODO : s'occuper des cartes ascenseur et aspiration
-	/*
-	    template <>
-	    struct CarteInfo<IDCartesPrincipal::ASPIRATION> {
-	        using typeCarte = CarteAspiration;
-	        enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_ASPIRATION };
-	    };
+	template <>
+	struct CarteInfo<IDCartesPrincipal::MOTEUR_AVALEUR_D> {
+		using typeCarte = CarteAsservissement2009;
+		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_MOTEUR_AVALEUR_D };
+	};
 
-	        template <>
-	        struct CarteInfo<IDCartesPrincipal::COLORIMETRIE> {
-	            using typeCarte = CarteColorimetre2014;
-	            enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_COLORIMETRIE };
-	        };*/
+	//----- pas utilisé cette année -----//
+	/*template <>
+	struct CarteInfo<IDCartesPrincipal::ASCENSEUR> {
+	    using typeCarte = CarteAsservissement2009;
+	    enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_ASCENSEUR };
+	};*/
 }
 
 struct ConstantesRobotPrincipal : public Commun::ConstantesRobot {

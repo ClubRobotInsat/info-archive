@@ -71,7 +71,7 @@ void IAPrincipal::initialisation() {
 
 	repere::Coordonnees coords_robot(START_ROBOT_POSITION,
 	                                 START_ROBOT_ANGLE,
-	                                 getCouleurEquipe() == RobotColor::Blue ? REFERENCE_BLUE : REFERENCE_YELLOW);
+	                                 getCouleurEquipe() == RobotColor::Orange ? REFERENCE_ORANGE : REFERENCE_GREEN);
 
 	getDeplacement().setRepere(coords_robot);
 
@@ -119,7 +119,7 @@ void IAPrincipal::executer() {
 }
 
 void IAPrincipal::funnyAction() {
-	_meca->lancerEnginSpatial();
+	//_meca->lancerEnginSpatial();
 }
 
 ResultatAction IAPrincipal::lancerPetri(bool debug) {

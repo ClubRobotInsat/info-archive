@@ -8,7 +8,7 @@
 class CalibrationDepla : public StrategiePrincipal {
 public:
 	CalibrationDepla(int argc, char* argv[])
-	        : StrategiePrincipal({argv, argv + argc}, RobotColor::Blue)
+	        : StrategiePrincipal({argv, argv + argc}, RobotColor::Green)
 	        , _deplacement(this->getRobot().getCarte<DEPLACEMENT>()) {
 		_angleBrutRobot = 0.0f;
 		_angleBrutRobot_Avant = 0.0f;

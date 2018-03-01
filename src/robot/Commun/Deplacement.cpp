@@ -8,6 +8,8 @@
 #include "../../commun/MathToolbox/MathToolbox.h"
 #include "Strategie.h"
 
+using namespace Constantes;
+
 namespace Commun {
 
 	Deplacement::Deplacement(Robot& robot, Environment& env, Evitement& evitement)

@@ -4,7 +4,7 @@ set(ROBOT_PRINC_SOURCE
         librobot/Robot.cpp
         librobot/MecaManager.cpp
         librobot/Strategie.cpp
-        librobot/Ascenseur.cpp
+        #librobot/Ascenseur.cpp
         petri/Deplacement.cpp
         petri/Servo.cpp
         petri/Utils.cpp

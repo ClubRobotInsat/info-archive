@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Document>
-  <Settings Name="IA" Enum="ResultatAction,REUSSI,RATE,TIMEOUT" SourceOutputPath="../petri/src" LibOutputPath="../../../build" Hostname="localhost" Port="12346" Language="Cpp" RunInEditor="False">
+<Document APIVersion="101">
+  <Settings Name="IA" Enum="ResultatAction,REUSSI,RATE,TIMEOUT" SourceOutputPath="../petri/src" LibOutputPath="../../../../build" Hostname="localhost" Port="12346" Language="Cpp" RunInEditor="False" OutputType="DynamicLib">
     <Compiler Invocation="/usr/bin/g++" />
     <IncludePaths>
-      <IncludePath Path="../../../petri" Recursive="true" />
+      <IncludePath Path="../../../../third_parties/petri" Recursive="true" />
       <IncludePath Path="../../../commun" Recursive="false" />
     </IncludePaths>
     <LibPaths />
     <Libs />
   </Settings>
-  <Window X="65" Y="24" W="1301" H="744" />
+  <Window X="67" Y="27" W="1301" H="744" />
   <Headers>
     <Header File="Deplacement.h" />
     <Header File="Servo.h" />
@@ -23,9 +23,10 @@
     <States>
       <Action ID="1" Name="3" X="260" Y="230" Active="true" RequiredTokens="0" Radius="20" Function="Petri::Utility::doNothing()" />
       <Action ID="2" Name="4" X="420" Y="170" Active="false" RequiredTokens="1" Radius="20" Function="allerA(1_m, 0.5_m)" />
+      <Exit ID="3" Name="End" X="300" Y="100" Active="false" RequiredTokens="0" Radius="25" Function="Petri::Utility::doNothing()" />
     </States>
     <Transitions>
-      <Transition ID="3" Name="3" X="340" Y="200" BeforeID="1" AfterID="2" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="170.88007490635061" />
+      <Transition ID="4" Name="3" X="340" Y="200" BeforeID="1" AfterID="2" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="170.88007490635061" />
     </Transitions>
   </PetriNet>
 </Document>

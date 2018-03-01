@@ -3,10 +3,10 @@
 //
 
 #include "ModulePneumatique.h"
-#include "../Robot2017.h"
+#include "../Robot2018.h"
 
 
-ModulePneumatique::ModulePneumatique(Robot2017& robot2017) : _robot(robot2017) {}
+ModulePneumatique::ModulePneumatique(Robot2018& robot2018) : _robot(robot2018) {}
 
 int ModulePneumatique::infoToElecID(unsigned char cardID) {
 	switch(cardID) {

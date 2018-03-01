@@ -9,7 +9,6 @@
 
 #include "../../commun/Commun.h"
 #include "../../commun/RobotPrincipal/Constantes.h"
-#include "ConstantesStrategie.h"
 #include "Deplacement.h"
 #include "Evitement.h"
 #include "Robot.h"
@@ -29,8 +28,8 @@ namespace Commun {
 		}
 
 		const repere::Repere& getReference() const {
-			return _couleurEquipe == Constantes::RobotColor::Blue ? ConstantesPrincipal::REFERENCE_BLUE :
-			                                                        ConstantesPrincipal::REFERENCE_YELLOW;
+			return _couleurEquipe == Constantes::RobotColor::Orange ? ConstantesPrincipal::REFERENCE_ORANGE :
+			                                                          ConstantesPrincipal::REFERENCE_GREEN;
 		}
 
 		/// Démarre la stratégie pour un match d'une durée donnée (en millisecondes)

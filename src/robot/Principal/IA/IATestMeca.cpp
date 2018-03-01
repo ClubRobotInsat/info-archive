@@ -51,9 +51,9 @@ void IATestMeca::executer() {
 				std::cin >> raw;
 				Angle value = Angle::makeFromDeg(raw);
 
-				logDebug1(_meca->getAscenseur().allerAngleBloquant(value),
+				/*logDebug1(_meca->getAscenseur().allerAngleBloquant(value),
 				          ", angle : ",
-				          _meca->getAscenseur().getAngleBloquant().toDeg());
+				          _meca->getAscenseur().getAngleBloquant().toDeg());*/
 			}
 			break;
 		case ia_parsing::TestMeca::LACET:
@@ -64,7 +64,8 @@ void IATestMeca::executer() {
 				std::cin >> raw;
 				Angle value = Angle::makeFromDeg(raw);
 
-				logDebug1(_meca->orienterPinceDe(value), ", angle : ", _meca->getPositionServo(2, enumToInt(Servo::LACET)));
+				// logDebug1(_meca->orienterPinceDe(value), ", angle : ", _meca->getPositionServo(2,
+				// enumToInt(Servo::LACET)));
 			}
 			break;
 		case ia_parsing::TestMeca::TANGAGE:
@@ -75,7 +76,8 @@ void IATestMeca::executer() {
 				std::cin >> raw;
 				Angle value = Angle::makeFromDeg(raw);
 
-				logDebug1(_meca->pencherPindeDe(value), ", angle : ", _meca->getPositionServo(2, enumToInt(Servo::TANGAGE)));
+				// logDebug1(_meca->pencherPindeDe(value), ", angle : ", _meca->getPositionServo(2,
+				// enumToInt(Servo::TANGAGE)));
 			}
 			break;
 		case ia_parsing::TestMeca::FUSEE:
@@ -86,7 +88,8 @@ void IATestMeca::executer() {
 				std::cin >> raw;
 				Angle value = Angle::makeFromDeg(raw);
 
-				logDebug1(_meca->bougerFuseeDe(value), ", angle : ", _meca->getPositionServo(2, enumToInt(Servo::FUSEE)));
+				// logDebug1(_meca->bougerFuseeDe(value), ", angle : ", _meca->getPositionServo(2,
+				// enumToInt(Servo::FUSEE)));
 			}
 			break;
 		case ia_parsing::TestMeca::GAUCHE:
@@ -97,7 +100,8 @@ void IATestMeca::executer() {
 				std::cin >> raw;
 				Angle value = Angle::makeFromDeg(raw);
 
-				logDebug1(_meca->ouvrirFesseGaucheDe(value), ", angle : ", _meca->getPositionServo(2, enumToInt(Servo::GAUCHE)));
+				// logDebug1(_meca->ouvrirFesseGaucheDe(value), ", angle : ", _meca->getPositionServo(2,
+				// enumToInt(Servo::GAUCHE)));
 			}
 			break;
 		case ia_parsing::TestMeca::DROITE:
@@ -108,7 +112,8 @@ void IATestMeca::executer() {
 				std::cin >> raw;
 				Angle value = Angle::makeFromDeg(raw);
 
-				logDebug1(_meca->ouvrirFesseDroiteDe(value), ", angle : ", _meca->getPositionServo(2, enumToInt(Servo::DROITE)));
+				// logDebug1(_meca->ouvrirFesseDroiteDe(value), ", angle : ", _meca->getPositionServo(2,
+				// enumToInt(Servo::DROITE)));
 			}
 			break;
 		case ia_parsing::TestMeca::PINCE:
@@ -119,22 +124,23 @@ void IATestMeca::executer() {
 				std::cin >> raw;
 				Angle value = Angle::makeFromDeg(raw);
 
-				logDebug1(_meca->ouvrirPinceDe(value), ", angle : ", _meca->getPositionServo(2, enumToInt(Servo::PINCE)));
+				// logDebug1(_meca->ouvrirPinceDe(value), ", angle : ", _meca->getPositionServo(2,
+				// enumToInt(Servo::PINCE)));
 			}
 			break;
 		case ia_parsing::TestMeca::STOCKER:
 			logDebug2("Lancement du test STOCKER");
 			for(int i = 1; i <= 3; ++i) {
 				getChar();
-				logDebug1(_meca->stockerCylindre(), " (cylindre n°", i, ")");
+				// logDebug1(_meca->stockerCylindre(), " (cylindre n°", i, ")");
 			}
 			break;
 		case ia_parsing::TestMeca::DESTOCKER:
 			logDebug2("Lancement du test DESTOCKER");
-			_meca->setTousCylindresStockes();
+			//_meca->setTousCylindresStockes();
 			for(int i = 3; i >= 1; --i) {
 				getChar();
-				logDebug1(_meca->destockerCylindre(), " (cylindre n°", i, ")");
+				// logDebug1(_meca->destockerCylindre(), " (cylindre n°", i, ")");
 			}
 			break;
 		case ia_parsing::TestMeca::SEQUENCE:
@@ -143,20 +149,20 @@ void IATestMeca::executer() {
 				std::string entry;
 				std::cout << "Quelle séquence à tester? <stocker|S,destocker|D> : ";
 				std::cin >> entry;
-				_meca->orienterPinceAttraper();
+				/*_meca->orienterPinceAttraper();
 				_meca->ouvrirPince();
 				_meca->ascenseurCylindreSol();
 				sleep(1_s);
 
 				if(entry == "stocker" || entry == "S" || entry == "s")
-					logDebug1("stockage : ", _meca->stockerCylindre());
+				    logDebug1("stockage : ", _meca->stockerCylindre());
 				else if(entry == "destocker" || entry == "D" || entry == "d")
-					logDebug1("destockage : ", _meca->destockerCylindre());
+				    logDebug1("destockage : ", _meca->destockerCylindre());
 				else if(entry == "exit" || entry == "quit" || entry == "e" || entry == "q")
-					exit(0);
+				    exit(0);
 				else
-					logWarn("Usage : <stocker|S,destocker|D>");
-				logDebug1("Il y a ", _meca->getNbrCylindres(), " cylindres stockes");
+				    logWarn("Usage : <stocker|S,destocker|D>");
+				logDebug1("Il y a ", _meca->getNbrCylindres(), " cylindres stockes");*/
 			}
 			break;
 		default:;

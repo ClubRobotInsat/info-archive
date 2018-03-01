@@ -30,7 +30,8 @@ int main() {
 	Distance sy = 30_cm;
 	Environment helloWorld({w, h}, Distance::makeFromM(gridSize), sy, (sqrt(sx * sx + sy * sy) / 2) * 1.2, Vector2m(0_m, 1_m));
 
-	using namespace positionObjetsTable;
+	const Distance WALLS_SIZE{3_cm};
+	const Vector2m WALLS_DIMENSIONS{3_m, 2_m};
 
 	const float danger = Environment::DANGER_INFINITY;
 

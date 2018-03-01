@@ -31,6 +31,6 @@ Distance mm(int64_t d) {
 	return Distance::makeFromMm(d);
 }
 
-bool couleurBleue() {
-	return _strategie->getCouleurEquipe() == Constantes::RobotColor::Blue;
+bool couleurOrange() {
+	return _strategie->getCouleurEquipe() == Constantes::RobotColor::Orange;
 }

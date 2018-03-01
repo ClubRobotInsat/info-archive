@@ -20,7 +20,7 @@ int main(int argc, char* argv[]) {
 }
 
 IAWiimote::IAWiimote(std::vector<std::string> const& args)
-        : StrategiePrincipal(args, Constantes::RobotColor::Blue), typeDeplacement(TypeDeplacement::IMMOBILE) {
+        : StrategiePrincipal(args, Constantes::RobotColor::Orange), typeDeplacement(TypeDeplacement::IMMOBILE) {
 
 	// On donne une vitesse angulaire pas trop grande dès le début
 	setVitesseAngulaire(getDeplacement().getVitesseAngulaire() * 0.5);
@@ -120,9 +120,9 @@ void IAWiimote::processWiimoteInput(WiimoteState& state) {
 #endif
 
 		if(state.isPressed(BUTTON_B)) {
-			stockerCylindre();
+			// stockerCylindre();
 		} else if(state.isPressed(BUTTON_A)) {
-			destockerCylindre();
+			// destockerCylindre();
 		} else
 		    // On revient à la position initiale
 		    if(state.isPressed(BUTTON_HOME)) {
