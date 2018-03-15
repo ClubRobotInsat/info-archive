@@ -15,8 +15,8 @@ endif()
 
 add_subdirectory(../commun commun)
 
-include_directories(${root_SOURCE_DIR}/petri)
-include_directories(${root_SOURCE_DIR}/petri/Runtime/Cpp/detail/jsoncpp/include)
+include_directories(${root_SOURCE_DIR}/third_parties/petri)
+include_directories(${root_SOURCE_DIR}/third_parties/petri/Runtime/Cpp/detail/jsoncpp/include)
 
 include_directories(Commun/Environnement)
 set(STRAT_SOURCE
