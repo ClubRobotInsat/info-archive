@@ -8,7 +8,7 @@
 
 #include "../../simulateur/communication/cartes/CarteAsservissement2009.h"
 #include "../../simulateur/communication/cartes/CarteCAN_USB.h"
-#include "../../simulateur/communication/cartes/CarteContacteurs2007.h"
+//#include "../../simulateur/communication/cartes/CarteContacteurs2007.h"
 #include "../../simulateur/communication/cartes/CarteDebugDessin.h"
 #include "../../simulateur/communication/cartes/CarteDeplacement2009.h"
 #include "../../simulateur/communication/cartes/CarteDetectAdv2009.h"
@@ -22,7 +22,7 @@
 #include "../../robot/Cartes/Carte.h"
 #include "../../robot/Cartes/CarteAsservissement2009.h"
 #include "../../robot/Cartes/CarteCAN_USB.h"
-#include "../../robot/Cartes/CarteContacteurs2007.h"
+//#include "../../robot/Cartes/CarteContacteurs2007.h"
 //#include "../../robot/Cartes/CarteDebugDessin.h"
 #include "../../robot/Cartes/CarteDeplacement2009.h"
 //#include "../../robot/Cartes/CarteElectrovannes2016.h"
@@ -45,12 +45,12 @@ namespace IDCartesPrincipal {
 	enum {
 		ID_CARTE_DEPLACEMENT = ID_CARTE_ELEC_DEPLACEMENT,
 		ID_CARTE_EVITEMENT = ID_CARTE_ELEC_EVITEMENT,
-		ID_CARTE_IO = ID_CARTE_ELEC_IO_TIRETTE,
+		ID_CARTE_IO = ID_CARTE_ELEC_IO,
 		ID_CARTE_SERVOS = ID_CARTE_ELEC_SERVOS,
 		ID_CARTE_MOTEUR_ASCENSEUR_G = ID_CARTE_ELEC_MOTEUR_ASCENSEUR_GAUCHE,
 		ID_CARTE_MOTEUR_ASCENSEUR_D = ID_CARTE_ELEC_MOTEUR_ASCENSEUR_DROIT,
 		ID_CARTE_MOTEUR_AVALEUR_G = ID_CARTE_ELEC_MOTEUR_AVALEUR_GAUCHE,
-		ID_CARTE_MOTEUR_AVALEUR_D = ID_CARTE_MOTEUR_ASCENSEUR_D,
+		ID_CARTE_MOTEUR_AVALEUR_D = ID_CARTE_ELEC_MOTEUR_ASCENSEUR_DROIT,
 
 		/*ID_CARTE_DEBUG_DESSIN = 8*/
 	};
@@ -80,8 +80,12 @@ namespace ConstantesPrincipal {
 
 	// Numéros des contacteurs et les rôles associés
 	enum class Contacteur {
-		TIRETTE = 2,
+		TIRETTE = ID_CONTACTEUR_TIRETTE,
+
+		NBR = 1
 	};
+
+	enum class PositionAscenseur { NBR = 0 };
 
 	/////////////////// SERVOS ///////////////////
 

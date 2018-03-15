@@ -2,7 +2,7 @@
 // Created by paul on 14/04/16.
 //
 #include "ModuleContactor.h"
-#include "../../../../../CodeCommun/Informations_cartesElec_2017.h"
+#include "../../../../../CodeCommun/Informations_cartesElec_2018.h"
 #include "../Robot2018.h"
 #include <log/Log.h>
 
@@ -19,7 +19,7 @@ int ModuleContactor::infoToElecID(unsigned char idContact) const {
 }
 
 bool ModuleContactor::getContactorState(unsigned char numeroContact, unsigned char idCarte) const {
-	if(idCarte == ID_CARTE_INYANGA_IO) {
+	if(idCarte == ID_CARTE_ELEC_IO) {
 		if(numeroContact >= 1 && numeroContact <= _robot.getNumberofContactor()) {
 			Simulateur::getInstance().sendTextMessage("Le robot a accédé au contacteur : " + std::to_string(numeroContact));
 			return _robot.getContactor(infoToElecID(numeroContact));
@@ -36,7 +36,7 @@ bool ModuleContactor::getContactorState(unsigned char numeroContact, unsigned ch
 }
 
 void ModuleContactor::setContactorState(unsigned char numeroContact, unsigned char idCarte) {
-	if(idCarte == ID_CARTE_INYANGA_IO) {
+	if(idCarte == ID_CARTE_ELEC_IO) {
 		if(numeroContact >= 1 && numeroContact <= _robot.getNumberofContactor()) {
 			_robot.getContactor(infoToElecID(numeroContact)) = not _robot.getContactor(infoToElecID(numeroContact)); // TODO : vérifier que c'est bien le comportement de la carte elec
 		} else {

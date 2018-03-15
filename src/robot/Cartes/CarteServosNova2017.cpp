@@ -67,9 +67,17 @@ void CarteServosNova2017::reglerPosition(uint8_t servo, Angle angle) {
 	_bloque[servo] = false;
 	debloquerVariables();
 
-
 	std::lock_guard<std::mutex> lk(_mutexPositions);
-	envoyerMessage(this->make_trame(REGLER_POSITION, servo, (angle).toDeg<uint16_t>()));
+	// Les servos attendent un nombre entre 0 et 1023 avec les correspondances suivantes :
+	//                 <---      OK      --->
+	// angle | -116.7 | -159.8 |  0  | 159.8 | 166.7
+	// num   |   0    |   21   | 512 | 1002  | 1023
+	uint16_t pos = static_cast<uint16_t>((angle.toMinusPiPi().toDeg() + 166.7) * 1023 / 333.4);
+	if(pos < 21 || pos > 1002) {
+		logWarn("Angle demandé en-dehors de l'intervalle [-159.8°; 159.8°] pour le servo n°", (int)servo);
+	}
+	pos = static_cast<uint16_t>(pos < 21 ? 21 : (pos > 1023 ? 1023 : pos));
+	envoyerMessage(this->make_trame(REGLER_POSITION, servo, pos));
 }
 
 void CarteServosNova2017::actualiserPosition(uint8_t servo) {

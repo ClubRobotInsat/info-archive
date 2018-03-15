@@ -10,7 +10,7 @@
 #ifdef HOMOLOGATION
 #include "../petri/src/Homologation.h"
 #else
-#include "../petri/src/IA2017.h"
+#include "../petri/src/IA.h"
 #endif
 
 class IAPrincipal : public StrategiePrincipal {

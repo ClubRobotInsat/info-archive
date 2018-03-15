@@ -15,6 +15,7 @@ include_directories(${root_SOURCE_DIR}/third_parties/petri/Runtime/Cpp/detail/js
 FIND_PACKAGE(Irrlicht)
 # A faire : messages d'erreurs si irrlicht pas trouvé
 include_directories(${IRRLICHT_INCLUDE_DIRS})
+message(STATUS "Irrlicht trouvé ici : ${IRRLICHT_INCLUDE_DIRS}")
 
 add_executable(Simulator
         main.cpp
@@ -48,7 +49,7 @@ add_executable(Simulator
         communication/cartes/deplacement/PID.cpp
 
         communication/cartes/Carte.cpp
-        communication/Robot2017.cpp
+        communication/Robot2018.cpp
         communication/modules/ModuleContactor.cpp
         communication/modules/ModuleMove.cpp
         communication/modules/ModuleServos.cpp
