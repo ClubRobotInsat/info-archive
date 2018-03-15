@@ -33,9 +33,9 @@ namespace ia_parsing {
 		}
 
 		if(color == Constantes::RobotColor::Undef) {
-			std::cout << "Pas de couleur selectionnée. Utilisation de la couleur bleue par défaut..." << std::endl;
+			std::cout << "Pas de couleur selectionnée. Utilisation de la couleur verte par défaut..." << std::endl;
 			std::cout << "Usage : " << argv[0] << " --color [orange|green]" << std::endl;
-			color = RobotColor::Orange;
+			color = RobotColor::Green;
 		}
 
 		return color;
@@ -51,84 +51,78 @@ namespace ia_parsing {
 	}
 
 	enum TestMeca {
-		PINCE = 0,
-		LACET = 1,
-		TANGAGE = 2,
-		FUSEE = 3,
-		GAUCHE = 4,
-		DROITE = 5,
-		ASCENSEUR = 6,
-		STOCKER = 7,
-		DESTOCKER = 8,
-		SEQUENCE = 9,
-		UNDEF = 10,
+		// servos
+		PORTE_CUBES = 0,
+		SOUTE_GAUCHE = 1,
+		SOUTE_DROITE = 2,
+		ABEILLE_GAUCHE = 3,
+		ABEILLE_DROITE = 4,
+
+		// moteurs
+		ASCENSEUR_GAUCHE = 5,
+		ASCENSEUR_DROIT = 6,
+		AVALEUR_GAUCHE = 7,
+		AVALEUR_DROIT = 8,
+
+		// séquences
+
+		UNDEF = 9,
 	};
 	TestMeca parseTestMeca(int argc, char* argv[]) {
-		static struct option long_options[] = {{"ascenseur", no_argument, 0, 'a'},
-		                                       {"pince", no_argument, 0, 'p'},
-		                                       {"lacet", no_argument, 0, 'l'},
-		                                       {"tangage", no_argument, 0, 't'},
-		                                       {"fusee", no_argument, 0, 'f'},
-		                                       {"gauche", no_argument, 0, 'g'},
-		                                       {"droite", no_argument, 0, 'd'},
-		                                       {"id", required_argument, 0, 'i'},
-		                                       {"stocker", no_argument, 0, 'o'},
-		                                       {"destocker", no_argument, 0, 'e'},
-		                                       {"sequence", no_argument, 0, 's'},
+		static struct option long_options[] = {{"cubes", no_argument, 0, 'c'},
+		                                       {"souteg", no_argument, 0, 's'},
+		                                       {"souted", no_argument, 0, 'x'},
+		                                       {"abeilleg", no_argument, 0, 'a'},
+		                                       {"abeilled", no_argument, 0, 'q'},
+		                                       {"ascenseurg", no_argument, 0, 'j'},
+		                                       {"ascenseurd", no_argument, 0, 'k'},
+		                                       {"avaleurg", no_argument, 0, 'l'},
+		                                       {"avaleurd", no_argument, 0, 'm'},
 		                                       {0, 0, 0, 0}};
 
 		int arg;
 		int long_index = 0;
 		TestMeca result = UNDEF;
 
-		while((arg = getopt_long(argc, argv, "apltfgdoes:", long_options, &long_index)) != -1) {
+		while((arg = getopt_long(argc, argv, "csxaqjklm:", long_options, &long_index)) != -1) {
 
 			switch(arg) {
-				case 'a':
-					result = TestMeca::ASCENSEUR;
-					break;
-				case 'p':
-					result = TestMeca::PINCE;
-					break;
-				case 'l':
-					result = TestMeca::LACET;
-					break;
-				case 't':
-					result = TestMeca::TANGAGE;
-					break;
-				case 'f':
-					result = TestMeca::FUSEE;
-					break;
-				case 'g':
-					result = TestMeca::GAUCHE;
-					break;
-				case 'd':
-					result = TestMeca::DROITE;
-					break;
-				case 'i': {
-					int id_servo = ((int)optarg[0]) - (int)'0';
-					if(id_servo >= 0 && id_servo <= 5)
-						result = (TestMeca)id_servo;
-					else
-						std::cout << "Usage : " << argv[0] << " --id <numéro du servo>" << std::endl;
-				} break;
-				case 'o':
-					result = TestMeca::STOCKER;
-					break;
-				case 'e':
-					result = TestMeca::DESTOCKER;
+				case 'c':
+					result = TestMeca::PORTE_CUBES;
 					break;
 				case 's':
-					result = TestMeca::SEQUENCE;
+					result = TestMeca::SOUTE_GAUCHE;
+					break;
+				case 'x':
+					result = TestMeca::SOUTE_DROITE;
+					break;
+				case 'a':
+					result = TestMeca::ABEILLE_GAUCHE;
+					break;
+				case 'q':
+					result = TestMeca::ABEILLE_DROITE;
+					break;
+				case 'j':
+					result = TestMeca::ASCENSEUR_GAUCHE;
+					break;
+				case 'k':
+					result = TestMeca::ASCENSEUR_DROIT;
+					break;
+				case 'l':
+					result = TestMeca::AVALEUR_GAUCHE;
+					break;
+				case 'm':
+					result = TestMeca::AVALEUR_DROIT;
+					break;
 				default:;
 			}
 		}
 
 		if(result == TestMeca::UNDEF) {
-			std::cout << "Pas de servo spécifié. Test de l'ascenseur par défaut." << std::endl;
-			std::cout << "Usage : " << argv[0] << " [--ascenseur|--lacet|--tangage|--fusee|--gauche|--droite|"
-			          << "--id <id_servo>|--stocker|--destocker|--sequence]" << std::endl;
-			result = ASCENSEUR;
+			std::cout << "Pas de servo spécifié. Test de la porte pour les cubes par défaut." << std::endl;
+			std::cout << "Usage : " << argv[0] << " [--cubes|--souteg|--souted|--abeilleg|--abeilled|--ascenseurg|"
+			          << "--ascenseurd|--avaleurg|--avaleurd]" << std::endl;
+			result = PORTE_CUBES;
 		}
 
 		return result;

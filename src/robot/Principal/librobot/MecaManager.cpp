@@ -30,9 +30,9 @@ using namespace IDCartesPrincipal;
 
 MecaManagerPrincipal::MecaManagerPrincipal(RobotPrincipal& robot)
         : _robot(robot)
-//, _ascenseur(_robot.getCarte<ASCENSEUR>(), positionAscenseur)
-//, _servos(robot.getCarte<SERVOS>(),
-//        std::bind(&MecaManagerPrincipal::getPositionServo, this, std::placeholders::_1, std::placeholders::_2))
+        //, _ascenseur(_robot.getCarte<ASCENSEUR>(), positionAscenseur)
+        , _servos(robot.getCarte<SERVOS>(),
+                  std::bind(&MecaManagerPrincipal::getPositionServo, this, std::placeholders::_1, std::placeholders::_2))
 /*
         , _servoX(_robot.getCarte<SERVO_X>(),
                                     std::bind(&MecaManagerPrincipal::getPositionServoX, this, std::placeholders::_1,
@@ -315,34 +315,31 @@ enumToInt(ConstantesPrincipal::Gauche::FERME));
 ResultatAction MecaManagerPrincipal::fermerFesseDroite() {
     return this->_servos.positionnerServoBloquant(enumToInt(Servo::DROITE),
 enumToInt(ConstantesPrincipal::Droite::FERME));
-}
+}*/
 
 Angle MecaManagerPrincipal::getPositionServo(uint8_t servo, uint8_t pos) {
-    switch(static_cast<Servo>(servo)) {
-        case Servo::PINCE:
-            return ConstantesPrincipal::positionPince[pos];
+	switch(static_cast<Servo>(servo)) {
+		case Servo::PORTE_CUBES:
+			return positionPorteCube[pos];
 
-        case Servo::FUSEE:
-            return ConstantesPrincipal::positionFusee[pos];
+		case Servo::PORTE_SOUTE_GAUCHE:
+			return positionSouteGauche[pos];
 
-        case Servo::DROITE:
-            return ConstantesPrincipal::positionDroite[pos];
+		case Servo::PORTE_SOUTE_DROIT:
+			return positionSouteDroit[pos];
 
-        case Servo::GAUCHE:
-            return ConstantesPrincipal::positionGauche[pos];
+		case Servo::ABEILLE_GAUCHE:
+			return positionAbeilleGauche[pos];
 
-        case Servo::TANGAGE:
-            return ConstantesPrincipal::positionTangage[pos];
+		case Servo::ABEILLE_DROIT:
+			return positionAbeilleDroit[pos];
 
-        case Servo::LACET:
-            return ConstantesPrincipal::positionLacet[pos];
-
-        default:
-            throw std::string("unimplemented");
-    }
+		default:
+			throw std::invalid_argument("unimplemented for the servo" + std::to_string(servo));
+	}
 }
 
-void MecaManagerPrincipal::setModeBlocageServos() {
+/*void MecaManagerPrincipal::setModeBlocageServos() {
     auto avec = CarteServo::ModeBlocage::MAINTIEN_SUR_BLOCAGE;
     auto sans = CarteServo::ModeBlocage::DEBLOCAGE;
 

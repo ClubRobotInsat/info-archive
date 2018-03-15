@@ -34,6 +34,15 @@ public:
 
 	// Actions pour les trucs aux fesses du robot TODO
 
+	// @Denis examples pour l'écriture des fonctions, il faut modifier les valeurs de ConstantesPrincipal
+	ResultatAction ouvrirPorteCube() {
+		return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::PORTE_CUBES),
+		                                              enumToInt(ConstantesPrincipal::PorteCube::OUVERT));
+	}
+	ResultatAction ouvrirPorteCubeDe(Angle val) {
+		return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::PORTE_CUBES), val);
+	}
+
 	// Actions pour l'ascenseur du robot
 	/*ResultatAction ascenseurStockageHaut();
 	ResultatAction ascenseurStockageBas();
@@ -101,10 +110,10 @@ public:
 	void setModeBlocageServos();
 
 	// Debug : permet de tester le destocker cylindre
-	void setTousCylindresStockes();
+	void setTousCylindresStockes();*/
 
 	// private:
-	Angle getPositionServo(uint8_t servo, uint8_t pos);*/
+	Angle getPositionServo(uint8_t servo, uint8_t pos);
 
 private:
 	RobotPrincipal& _robot;
@@ -115,7 +124,7 @@ private:
 	// ResultatAction ajouterCylindre(int i);
 	// ResultatAction supprimerCylindre(int i);
 
-	// Commun::ServoManager _servos;
+	Commun::ServoManager _servos;
 };
 
 #endif
