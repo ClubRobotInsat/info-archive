@@ -7,9 +7,9 @@
 #include <cstring>
 
 CarteServosNova2017::CarteServosNova2017(Commun::CAN& can, uint8_t id) : CarteServo(can, id) {
-	std::memset(_positions, 0, NB_MAX_SERVOS_NOVA);
-	std::memset(_termine, true, NB_MAX_SERVOS_NOVA);
-	std::memset(_bloque, false, NB_MAX_SERVOS_NOVA);
+	std::fill(std::begin(_positions), std::end(_positions), Angle{});
+	std::fill(std::begin(_termine), std::end(_termine), true);
+	std::fill(std::begin(_bloque), std::end(_bloque), false);
 }
 
 void CarteServosNova2017::traiterMessage(Trame const& message) {
