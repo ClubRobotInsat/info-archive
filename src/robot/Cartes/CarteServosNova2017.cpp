@@ -77,6 +77,12 @@ void CarteServosNova2017::reglerPosition(uint8_t servo, Angle angle) {
 		logWarn("Angle demandé en-dehors de l'intervalle [-159.8°; 159.8°] pour le servo n°", (int)servo);
 	}
 	pos = static_cast<uint16_t>(pos < 21 ? 21 : (pos > 1023 ? 1023 : pos));
+
+	// le make_trame inverse le MSB et LSR de pos (significative bits)
+	// le code ci-dessous permets de remettre dans le bon ordre (little Indian) pour les elecs
+	unsigned char* memp = reinterpret_cast<unsigned char*>(&pos);
+	std::reverse(memp, memp + sizeof(uint16_t));
+
 	envoyerMessage(this->make_trame(REGLER_POSITION, servo, pos));
 }
 
