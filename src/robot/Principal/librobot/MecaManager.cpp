@@ -319,7 +319,7 @@ enumToInt(ConstantesPrincipal::Droite::FERME));
 
 Angle MecaManagerPrincipal::getPositionServo(uint8_t servo, uint8_t pos) {
 	switch(static_cast<Servo>(servo)) {
-		case Servo::PORTE_CUBES:
+		case Servo::LOQUET:
 			return positionPorteCube[pos];
 
 		case Servo::PORTE_SOUTE_GAUCHE:
@@ -335,7 +335,7 @@ Angle MecaManagerPrincipal::getPositionServo(uint8_t servo, uint8_t pos) {
 			return positionAbeilleDroit[pos];
 
 		default:
-			throw std::invalid_argument("unimplemented for the servo" + std::to_string(servo));
+			throw std::invalid_argument("unimplemented for the servo " + std::to_string(servo));
 	}
 }
 

@@ -1,7 +1,7 @@
 #include "IAPrincipal.h"
 #include "../petri/Deplacement.h"
 #include "../petri/Servo.h"
-#include "../petri/src/IA2017.h"
+#include "../petri/src/IA2018.h"
 #include "Parsing.h"
 #include <petri/Runtime/Cpp/Petri.h>
 

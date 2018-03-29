@@ -10,11 +10,11 @@ set(ROBOT_PRINC_SOURCE
         petri/Utils.cpp
         petri/PetriCommon.cpp petri/Servo.cpp petri/Servo.h)
 
-include_directories(${root_SOURCE_DIR}/../petri)
+include_directories(${root_SOURCE_DIR}/../third-parties/petri)
 
 #Commenté car n'existe plus
 #compile_petri(TEST_PETRI petri/Test.petri Test.so)
-compile_petri(IA_PETRI petri/IA.petri IA.so)
+compile_petri(IA_PETRI petri/IA2018.petri IA2018.so)
 #compile_petri(HOMOLOGATION_PETRI petri/Homologation.petri Homologation.so)
 
 add_library(robotPrincipal STATIC ${ROBOT_PRINC_SOURCE})

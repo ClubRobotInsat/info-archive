@@ -36,11 +36,11 @@ public:
 
 	// @Denis examples pour l'écriture des fonctions, il faut modifier les valeurs de ConstantesPrincipal
 	ResultatAction ouvrirPorteCube() {
-		return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::PORTE_CUBES),
+		return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::LOQUET),
 		                                              enumToInt(ConstantesPrincipal::PorteCube::OUVERT));
 	}
 	ResultatAction ouvrirPorteCubeDe(Angle val) {
-		return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::PORTE_CUBES), val);
+		return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::LOQUET), val);
 	}
 
 	// Actions pour l'ascenseur du robot
