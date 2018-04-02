@@ -5,15 +5,40 @@
 #ifndef ROOT_ENVIRONMENT_H
 #define ROOT_ENVIRONMENT_H
 
-#include <list>
 #include <memory>
+#include <set>
 
-#include "Element.h"
+#include "Action.hpp"
+#include "Element.hpp"
 
 namespace StrategyGenerator {
-    class Element;
+	class Table : public std::set<std::shared_ptr<Element>> {
+		Vector2m _robot_position;
 
-    using Table = std::list<std::shared_ptr<Element>>;
+	public:
+		// using set::set;
+		Table(Vector2m robot_position) : _robot_position(robot_position) {}
+
+		std::size_t hash() {
+			std::size_t seed = this->size();
+			for(const std::shared_ptr<Element>& e : *this) {
+				seed ^= e->hash() + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+			}
+			return seed;
+		}
+
+		Vector2m get_robot_position() const {
+			return _robot_position;
+		}
+
+		/*std::vector<Action> get_all_actions() {
+		    std::vector<Action> result;
+		    for (auto it : *this) {
+		        result.push_back(it->getAssociatedAction());
+		    }
+		    return result;
+		}*/
+	};
 }
 
 #endif // ROOT_ENVIRONMENT_H
