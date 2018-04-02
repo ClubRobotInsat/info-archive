@@ -23,7 +23,7 @@ Pour installer la lib Wiic nécessaire pour les démos à la wiimote
 ```
 scripts/install.sh wii
 ```
-Pour l'éditeur petri :
+Pour l'éditeur petri (versions pour les systèmes Ubuntu 14.04 **Trusty** et Ubuntu 17.04 **Zesty** seulement)
 ```
 scripts/install.sh petri
 ```
