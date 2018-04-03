@@ -30,14 +30,6 @@ namespace StrategyGenerator {
 		Vector2m get_robot_position() const {
 			return _robot_position;
 		}
-
-		/*std::vector<Action> get_all_actions() {
-		    std::vector<Action> result;
-		    for (auto it : *this) {
-		        result.push_back(it->getAssociatedAction());
-		    }
-		    return result;
-		}*/
 	};
 }
 

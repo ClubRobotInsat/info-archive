@@ -5,7 +5,6 @@
 #ifndef ROOT_ACTION_H
 #define ROOT_ACTION_H
 
-//#include "Table.hpp"
 #include "../../librobot/libRobot.h"
 #include "Element.hpp"
 
@@ -63,7 +62,7 @@ namespace StrategyGenerator {
 		inline Duration get_execution_time(Vector2m initial_pos) const {
 			Distance dist{Distance::makeFromCm(std::sqrt(std::pow(initial_pos.x.toCm() - _start_position.x.toCm(), 2) +
 			                                             std::pow(initial_pos.y.toCm() - _start_position.y.toCm(), 2)))};
-			return _execution_time + dist / 10_cm_s;
+			return _execution_time + dist / 40_cm_s /*Constantes::LINEAR_SPEED_DEFAULT*/ + 5_s;
 		}
 
 		inline std::vector<Element> get_next_elements() const {
@@ -87,6 +86,16 @@ namespace StrategyGenerator {
 			    ia->stop();
 			}*/
 		}
+
+		friend bool operator==(const Action& a1, const Action& a2) {
+			return a1.get_start_position() == a2.get_start_position() && a1.get_start_angle() == a2.get_start_angle() &&
+			       a1.get_nr_points() == a2.get_nr_points() && a1.get_next_elements() == a2.get_next_elements() &&
+			       a1._execution_time == a2._execution_time;
+		}
+
+		friend bool operator!=(const Action& a1, const Action& a2) {
+			return !(a1 == a2);
+		}
 	};
 
 	class ActionWait : public Action {
@@ -97,32 +106,6 @@ namespace StrategyGenerator {
 			sleep(_execution_time);
 		}
 	};
-}
-
-namespace std {
-	// namespace StrategyGenerator {
-	template <>
-	struct numeric_limits<StrategyGenerator::Action> {
-		static constexpr bool is_specialized = true;
-		static bool has_infinity() {
-			return false;
-		}
-		static StrategyGenerator::Action max() {
-			return StrategyGenerator::Action(9000_s,
-			                                 std::numeric_limits<int>::max(),
-			                                 {5000_m, 5000_m},
-			                                 0_deg,
-			                                 std::vector<StrategyGenerator::Element>() /*, nullptr*/);
-		}
-		static StrategyGenerator::Action infinity() {
-			return StrategyGenerator::Action(9000_s,
-			                                 std::numeric_limits<int>::infinity(),
-			                                 {5000_m, 5000_m},
-			                                 0_deg,
-			                                 std::vector<StrategyGenerator::Element>() /*, nullptr*/);
-		}
-	};
-	//}
 }
 
 #endif // ROOT_ACTION_H

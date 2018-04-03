@@ -5,10 +5,11 @@
 #ifndef ROOT_MAGICSTRATEGY_H
 #define ROOT_MAGICSTRATEGY_H
 
+#include <thread>
+
 #include "Action.hpp"
 #include "Element.hpp"
 #include "Table.hpp"
-#include "graph.hpp"
 
 #include "DecisionalTree.hpp"
 
@@ -16,17 +17,17 @@ namespace StrategyGenerator {
 	class MagicStrategy {
 	private:
 		int _total_points;
-		using decisional_graph = graph_directed<int, Table, Action>;
 
 		std::map<StrategyGenerator::ElementType, std::function<StrategyGenerator::Action(Vector2m)>> _element_to_action;
 		std::map<StrategyGenerator::ElementType, std::function<bool()>> _element_actionable;
 
 		std::vector<std::pair<Table, Action>> _previous_actions;
 
-		int next_id;
-		// TODO: remember the best path
+		// executive thread; TODO : bind with a IAPrincipal function (access to _dep and _meca)
+		std::thread _execute_action;
+		pthread_t _id_thread;
+		Action _actual_action;
 
-		void generate_graph(decisional_graph& graph, Duration timeout);
 		void generate_tree(DecisionalTree& tree, Duration timeout);
 
 	public:
@@ -38,15 +39,21 @@ namespace StrategyGenerator {
 
 		void run(const Table& initial_table, Duration max_refresh_time);
 
-		// void calculate_best_path(Duration timeout);
+		// signature of called function for the executive thread
+		static void execute_action(/*std::mutex mutex_action_running, Action action, int &points*/) {
+			/*mutex_action_running.lock();
 
-		// void execute_best_path();
+			//_dep.allerA(action.get_start_position());
+			//_dep.tournerAbsolu(action.get_start_angle());
+			action.execute();
+			points += action.get_nr_points();
 
-		/*        void move_to(const Action &action) {
-		            /// on another thread:
-		            // _dep.AllerA(action.start_position);
-		            // _dep.TournerAbsolu(action.start_angle);
-		        }*/
+			mutex_action_running.unlock();*/
+		}
+
+		inline int get_total_points() const {
+			return _total_points;
+		}
 	};
 }
 

@@ -5,12 +5,9 @@
 #ifndef ROOT_ELEMENT_H
 #define ROOT_ELEMENT_H
 
-//#include "Table.hpp"
-//#include "/home/terae/Programs/Graph/single_include/graph.hpp"
 #include <MathToolbox/MathToolbox.h>
 #include <functional>
 #include <memory>
-//#include <vector>
 
 #include "Action.hpp"
 
@@ -24,11 +21,8 @@ namespace StrategyGenerator {
 		// Middle of the position
 		Vector2m _position;
 
-		// TRUE if initial position; FALSE if has was moved in the match
-		bool _initial_pos;
-
 	public:
-		explicit Element(ElementType type, const Vector2m& pos) : _type(type), _position(pos), _initial_pos(true) {}
+		explicit Element(ElementType type, const Vector2m& pos) : _type(type), _position(pos) {}
 
 		inline ElementType get_type() const {
 			return _type;
@@ -43,14 +37,13 @@ namespace StrategyGenerator {
 			       std::hash<double>()(_position.y.toMm());
 		}
 
-		/*Action get_associated_action() const {
-		    return _action_generator(_position);
+		friend bool operator==(const Element& e1, const Element& e2) {
+			return e1.get_type() == e2.get_type() && e1.get_position() == e2.get_position();
 		}
 
-		Table get_next_table(Table table) const {
-		    // TODO
-		    return table;
-		}*/
+		friend bool operator!=(const Element& e1, const Element& e2) {
+			return !(e1 == e2);
+		}
 	};
 }
 

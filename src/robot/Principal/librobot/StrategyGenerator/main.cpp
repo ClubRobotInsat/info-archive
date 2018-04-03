@@ -2,10 +2,6 @@
 // Created by terae on 08/02/18.
 //
 
-#include "Action.hpp"
-#include "Element.hpp"
-#include "Table.hpp"
-
 //#include "../../petri/src/Bee.h"
 //#include "../../petri/src/IA.h"
 #include "MagicStrategy.h"

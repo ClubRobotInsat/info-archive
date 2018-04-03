@@ -94,10 +94,10 @@ target_link_libraries(IATestLidar robotPrincipal)
 add_executable(IATestRobot IA/IATestRobot.cpp)
 target_link_libraries(IATestRobot robotPrincipal)
 
+link_libraries(pthread)
 add_executable(TestStrategyGenerator librobot/StrategyGenerator/Action.hpp
 									 librobot/StrategyGenerator/Element.hpp
 									 librobot/StrategyGenerator/Table.hpp
 									 librobot/StrategyGenerator/MagicStrategy.cpp
         							 librobot/StrategyGenerator/DecisionalTree.hpp
-									 librobot/StrategyGenerator/graph.hpp
 									 librobot/StrategyGenerator/main.cpp)
