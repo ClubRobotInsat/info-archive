@@ -3,7 +3,7 @@
 #include "MecaManager.h"
 //#include "../petri/src/Test.h"
 #include <cassert>
-#include <petri/Runtime/Cpp/DebugServer.h>
+#include <petrilab/Cpp/DebugServer.h>
 
 #define ADD(Vector, Function, ...) Vector.push_back(std::bind(&MecaManagerPrincipal::Function, this, ##__VA_ARGS__))
 #define NBR_PLACES_STOCKAGE 2

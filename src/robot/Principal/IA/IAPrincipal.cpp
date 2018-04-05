@@ -1,9 +1,9 @@
 #include "IAPrincipal.h"
 #include "../petri/Deplacement.h"
 #include "../petri/Servo.h"
-//#include "../petri/src/IA2018.h"
+#include "../petri/src/IA2018.h"
 #include "Parsing.h"
-#include <petri/Runtime/Cpp/Petri.h>
+#include <petrilab/Cpp/PetriLab.h>
 
 #define CHECK_LIST 0
 int main(int argc, char* argv[]) {
@@ -34,7 +34,7 @@ IAPrincipal::IAPrincipal(std::vector<std::string> const& args, Constantes::Robot
 #ifdef HOMOLOGATION
 	_petri = Petri::Generated::Homologation_createLib(".");
 #else
-	_petri = Petri::Generated::IA2017_createLib(".");
+	_petri = Petri::Generated::IA2018::createLib(".");
 #endif
 	_petri->load();
 }

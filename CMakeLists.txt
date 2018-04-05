@@ -70,9 +70,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wunused-value -Wuninitialized  -W
 
 function(compile_petri TARGET_NAME PATH_TO_DOC OUTPUT)
 	add_custom_target(${TARGET_NAME}
-			COMMAND ${root_SOURCE_DIR}/petri/petri --update --arch ${BITS} ${CMAKE_CURRENT_SOURCE_DIR}/${PATH_TO_DOC}
+			COMMAND petrilab --update --arch ${BITS} ${CMAKE_CURRENT_SOURCE_DIR}/${PATH_TO_DOC}
 			)
-	add_dependencies(${TARGET_NAME} PetriEditor)
 endfunction()
 
 # Il y a du code pour les ombres, apparamment. Ca a pas l'air de marcher.

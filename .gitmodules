@@ -1,6 +1,3 @@
-[submodule "third_parties/petri"]
-	path = third_parties/petri
-	url = ssh://git.remi-saurel.com/rsaurel/petri
 [submodule "third_parties/websocketpp"]
 	path = third_parties/websocketpp
 	url = https://github.com/zaphoyd/websocketpp.git
@@ -10,3 +7,6 @@
 [submodule "Units"]
 	path = third_parties/Units
 	url = https://github.com/rems4e/si-units.git
+[submodule "third_parties/threadpool"]
+	path = third_parties/threadpool
+	url = https://github.com/rems4e/threadpool

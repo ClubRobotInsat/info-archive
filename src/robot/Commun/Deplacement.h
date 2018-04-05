@@ -15,8 +15,8 @@
 #include "environment.h"
 #include <list>
 #include <memory>
-#include <petri/Runtime/Cpp/detail/ThreadPool.h>
 #include <stack>
+#include <threadpool/ThreadPool.h>
 
 namespace Commun {
 
@@ -290,7 +290,7 @@ namespace Commun {
 		Trajectoire _trajectoire;
 		Coordonnees _dernierePositionAdversaire;
 		bool _advPositionConnue = false;
-		Petri::ThreadPool<ResultatAction> _suiviTrajectoire;
+		ThreadPool::ThreadPool<ResultatAction> _suiviTrajectoire;
 		std::mutex _mutexTrajectoire;
 		std::atomic_bool _isDebugActive = {true};
 

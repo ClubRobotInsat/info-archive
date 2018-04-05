@@ -367,7 +367,7 @@ namespace Commun {
 
 		// On lance le suivi de la trajectoire
 		auto task = _suiviTrajectoire.addTask(
-		    Petri::make_callable([this, timeoutDate]() { return this->suivreTrajectoire(timeoutDate); }));
+		    ThreadPool::make_callable([this, timeoutDate]() { return this->suivreTrajectoire(timeoutDate); }));
 		task.waitForCompletion();
 		_carteDeplacement.arreter();
 
