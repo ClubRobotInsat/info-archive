@@ -2,7 +2,7 @@
 // Created by paul on 14/04/16.
 //
 #include "ModuleContactor.h"
-#include "../../../../../CodeCommun/Informations_cartesElec_2018.h"
+#include "../../../commun/ID_cartes_elecs/Informations_cartesElec_2018.h"
 #include "../Robot2018.h"
 #include <log/Log.h>
 
