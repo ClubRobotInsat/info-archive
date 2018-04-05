@@ -213,27 +213,20 @@ bool Environment::isForbidden(Vector2m const& position) const {
 void Environment::loadFromJSON(std::string filename) {
 	const float danger{Environment::DANGER_INFINITY};
 
-	Json::CharReaderBuilder builder;
-	builder["collectComments"] = false;
-
 	JSON json;
-	std::string errs;
 	std::ifstream in(filename);
-	bool ok = parseFromStream(builder, in, &json, &errs);
 
-	in.close();
-
-	if(ok) {
+	if(in >> json) {
 		const JSON& objects = json["objects"];
 
-		for(const Json::Value& object : objects) {
-			if(object["A*"]["enabled"].asBool()) {
-				std::string type(object["type"].asString());
+		for(const JSON& object : objects) {
+			if(object["A*"]["enabled"].get<bool>()) {
+				std::string type(object["type"].get<std::string>());
 
 				// TODO : offset à calculer entre le centre du robot (donné dans le JSON) et le coin en haut à gauche
 				// (attendu par l'environnement) en fonction de l'angle
 				Vector2m position(Json::toVector2m(object["position"]));
-				Angle angle(Angle::makeFromDeg(object["angle"].asDouble()));
+				Angle angle(Angle::makeFromDeg(object["angle"].get<double>()));
 
 				if(type == "cuboid") {
 					Vector2m dimensions(Json::toVector2m(object["dimensions"]));
@@ -241,7 +234,7 @@ void Environment::loadFromJSON(std::string filename) {
 					this->addStaticShape(std::make_unique<Rect>(
 					    danger, coords.getPos2D(REFERENCE_ENVIRONMENT), dimensions, coords.getAngle(REFERENCE_ENVIRONMENT)));
 				} else if(type == "cylinder" || type == "sphere") {
-					Length radius(Length::makeFromM(object["radius"].asDouble()));
+					Length radius(Length::makeFromM(object["radius"].get<double>()));
 					repere::Coordonnees coords(position);
 					this->addStaticShape(std::make_unique<Circle>(danger, radius, coords.getPos2D(REFERENCE_ENVIRONMENT)));
 				}
@@ -251,6 +244,8 @@ void Environment::loadFromJSON(std::string filename) {
 		std::cerr << "Warning: impossible to find the JSON file '" << filename << "'." << std::endl;
 		// TODO
 	}
+
+	in.close();
 }
 
 void Environment::addNeighbor(vector<Neighbor>& neighbors, int x, int y, Distance distance) {

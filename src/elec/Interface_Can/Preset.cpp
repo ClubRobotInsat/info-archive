@@ -6,6 +6,7 @@
 #include <fstream>
 #include <iostream>
 
+using JSON = nlohmann::json;
 
 Preset::Preset(uint8_t id, uint8_t cmd, uint8_t* data)
         : _id(id)
@@ -29,38 +30,34 @@ Preset::Preset(std::string /*rawPreset*/) {}
 
 
 PresetArray::PresetArray(std::string path) {
-	Json::Value json;
-	Json::Reader reader;
+	JSON json;
 	std::ifstream input(path);
-	// std::cin >> json;
 
-	bool parsingSuccessfull = reader.parse(input, json);
-
-	if(!parsingSuccessfull) {
-		throw std::runtime_error("Eroor while reading the JSON");
+	if(!(input >> json)) {
+		throw std::runtime_error("Error while reading the JSON");
 	} else {
-		const Json::Value array = json["presets"];
+		const JSON array = json["presets"];
 		for(int i = 0; i < array.size(); ++i) {
-			_preset.push_back(Preset(array[i].asString()));
+			_preset.push_back(Preset(array[i].get<std::string>()));
 		}
 	}
+	input.close();
 }
 
 
 void PresetArray::saveToFile(std::string path) {
 
-	Json::Value result;
-	result["presets"] = Json::Value(Json::arrayValue);
+	JSON result;
+	result["presets"] = JSON(JSON::array());
 
 	// Populate the array with strings representing a preset.
 	for(Preset preset : _preset) {
-		result.append(Json::Value(preset.toString()));
+		result.push_back(JSON(preset.toString()));
 	}
 
 	// Creating the final string and writing it to a file
-	Json::StyledStreamWriter writer;
 	std::ofstream outputStream(path);
-	writer.write(outputStream, result);
+	outputStream << result;
 	std::cout << result << std::endl;
 }
 

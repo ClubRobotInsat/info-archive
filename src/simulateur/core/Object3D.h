@@ -40,9 +40,6 @@ protected:
     ObjectType _objectType;
 };
 */
-namespace Json {
-	class Value;
-}
 
 class Object3D {
 public:
@@ -80,8 +77,8 @@ public:
 	void addTag(const std::string& tag);
 	bool hasTag(const std::string& tag);
 
-	void setMetadata(const Json::Value& metadata);
-	const Json::Value& getMetadata() const;
+	void setMetadata(const JSON& metadata);
+	const JSON& getMetadata() const;
 
 private:
 	int _id;
@@ -93,7 +90,7 @@ private:
 	Vector3ang _rotation;
 
 	std::set<std::string> _tags;
-	std::unique_ptr<Json::Value> _metadata;
+	std::unique_ptr<JSON> _metadata;
 };
 
 #endif // ROOT_OBJECT3D_H

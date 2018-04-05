@@ -15,14 +15,14 @@
 void World::loadWorldFromJSON(const JSON& json) {
 	const JSON& objects = json["objects"];
 
-	for(const Json::Value& object : objects) {
-		std::string type(object["type"].asString());
+	for(const JSON& object : objects) {
+		std::string type(object["type"].get<std::string>());
 
 		Vector3m position(Json::toVector3m(object["position"]));
-		Angle angle(Angle::makeFromDeg(object["angle"].asDouble()));
+		Angle angle(Angle::makeFromDeg(object["angle"].get<double>()));
 
-		Mass mass(Mass::makeFromKg(object["simulateur"]["mass"].asDouble()));
-		BodyType bodyType(object["simulateur"]["dynamic"].asBool() ? DYNAMIC_BODY : STATIC_BODY);
+		Mass mass(Mass::makeFromKg(object["simulateur"]["mass"].get<double>()));
+		BodyType bodyType(object["simulateur"]["dynamic"].get<bool>() ? DYNAMIC_BODY : STATIC_BODY);
 
 		Color3f color(Json::toColor3f(object["simulateur"]["color"]));
 		Object3D* createdObject = nullptr;
@@ -31,21 +31,21 @@ void World::loadWorldFromJSON(const JSON& json) {
 			Vector3m dimensions(Json::toVector3m(object["dimensions"]));
 			createdObject = &createCube(dimensions, position, mass, bodyType, color);
 		} else if(type == "cylinder") {
-			Length radius(Length::makeFromM(object["radius"].asDouble()));
-			Length height(Length::makeFromM(object["height"].asDouble()));
+			Length radius(Length::makeFromM(object["radius"].get<double>()));
+			Length height(Length::makeFromM(object["height"].get<double>()));
 			createdObject = &createCylinder(radius, height, position, mass, bodyType, color);
 		} else if(type == "sphere") {
-			Length radius(Length::makeFromM(object["radius"].asDouble()));
+			Length radius(Length::makeFromM(object["radius"].get<double>()));
 			createdObject = &createSphere(radius, position, mass, bodyType, color);
 		} else if(type == "model") {
-			std::string model(object["model"].asString());
+			std::string model(object["model"].get<std::string>());
 			createdObject = &createModel(position, mass, bodyType, model, color);
 		}
 
 		if(createdObject != nullptr) {
 			createdObject->setAngle(angle);
 
-			if(!object["enabled"].asBool()) {
+			if(!object["simulateur"]["enabled"].get<bool>()) {
 				createdObject->getPhysics().enableSimulation(false);
 			}
 		}
@@ -53,28 +53,21 @@ void World::loadWorldFromJSON(const JSON& json) {
 }
 
 void World::loadWorldFromFile(std::string filename) {
-	Json::CharReaderBuilder builder;
-	builder["collectComments"] = false;
-
-	JSON value;
-	std::string errs;
+	JSON json;
 	std::ifstream in(filename);
-	bool ok = parseFromStream(builder, in, &value, &errs);
 
-	in.close();
-
-	if(ok) {
-		loadWorldFromJSON(value);
+	if(in >> json) {
+		loadWorldFromJSON(json);
 	} else {
 		// TODO
 	}
+	in.close();
 }
 
-Object3D& World::createRobotFromJSON(const Json::Value& json, Constantes::RobotColor color) {
+Object3D& World::createRobotFromJSON(const JSON& json, Constantes::RobotColor color) {
 	// Permet de récupérer les spécificités du robot principal
-	auto it = std::find_if(json["robot"].begin(), json["robot"].end(), [](const Json::Value& j) {
-		return j["name"] == "principal";
-	});
+	auto it =
+	    std::find_if(json["robot"].begin(), json["robot"].end(), [](const JSON& j) { return j["name"] == "principal"; });
 	if(it == json["robot"].end()) {
 		// TODO
 		Object3D* obj = &createCube({1_m, 1_m, 1_m}, {0_m, 0_m, 0_m}, 1_kg, STATIC_BODY, {0, 0, 0});
@@ -84,7 +77,7 @@ Object3D& World::createRobotFromJSON(const Json::Value& json, Constantes::RobotC
 	const JSON& robot = *it;
 
 	const repere::Coordonnees coords_robot(Json::toVector2m(robot["position"]),
-	                                       Angle::makeFromDeg(robot["angle"].asDouble()),
+	                                       Angle::makeFromDeg(robot["angle"].get<double>()),
 	                                       color == Constantes::RobotColor::Orange ? ConstantesPrincipal::REFERENCE_ORANGE :
 	                                                                                 ConstantesPrincipal::REFERENCE_GREEN);
 
@@ -109,26 +102,21 @@ Object3D& World::createRobotFromJSON(const Json::Value& json, Constantes::RobotC
 }
 
 Object3D& World::createRobotFromFile(std::string filename, Constantes::RobotColor color) {
-	Json::CharReaderBuilder builder;
-	builder["collectComments"] = false;
-
-	JSON value;
-	std::string errs;
+	JSON json;
 	std::ifstream in(filename);
-	bool ok = parseFromStream(builder, in, &value, &errs);
 
-	in.close();
-
-	if(ok) {
-		return createRobotFromJSON(value, color);
+	if(in >> json) {
+		in.close();
+		return createRobotFromJSON(json, color);
 	} else {
+		in.close();
 		// TODO
 		Object3D* obj = &createCube({1_m, 1_m, 1_m}, {0_m, 0_m, 0_m}, 1_kg, STATIC_BODY, {0, 0, 0});
 		return *obj;
 	}
 }
 
-Json::Value World::getJSON() const {
+JSON World::getJSON() const {
 	JSON world;
 	JSON objects;
 
@@ -156,7 +144,7 @@ Json::Value World::getJSON() const {
 			auto& graphics = object->getGraphics();
 			jsonObject["simulator"]["color"] = Json::fromColor3f(graphics.getColor());
 
-			objects.append(jsonObject);
+			objects.push_back(jsonObject);
 		}
 	}
 	world["objects"] = objects;
@@ -165,9 +153,7 @@ Json::Value World::getJSON() const {
 }
 
 void World::writeJSONToFile(std::string filename) const {
-	JSON json = getJSON();
 	std::ofstream file(filename);
-	Json::StyledWriter writer;
-	file << writer.write(json) << std::endl;
+	file << getJSON() << std::endl;
 	file.close();
 }

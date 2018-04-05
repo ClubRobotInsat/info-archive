@@ -19,19 +19,19 @@ void WebGraphicalContext::update() {
 	// Actualisation des données des objets.
 	for(auto& object : _objects) {
 		if(object->_created) {
-			list.append(object->getCreationMessage());
+			list.push_back(object->getCreationMessage());
 			object->_created = false;
 		} else if(object->_changed) {
-			list.append(object->getUpdateMessage());
+			list.push_back(object->getUpdateMessage());
 			object->_changed = false;
 		}
 	}
 
 	// Envoi
-	Json::FastWriter writer;
-	writer.omitEndingLineFeed();
+	std::stringstream ss;
+	ss << list;
+	std::string s = ss.str();
 
-	std::string s = writer.write(list);
 	_server.broadcast(s);
 
 	// Réinitialisation du buffer de messages
@@ -42,7 +42,7 @@ void WebGraphicalContext::displayMessage(std::string msg) {
 	JSON message;
 	message["type"] = "log";
 	message["message"] = msg;
-	_messageBuf.append(message);
+	_messageBuf.push_back(message);
 }
 
 IGraphicalInstance* WebGraphicalContext::createDefaultObject() {
@@ -98,7 +98,7 @@ IGraphicalInstance* WebGraphicalContext::createModel(const Vector3m& position, c
 void WebGraphicalContext::remove(IGraphicalInstance* object) {
 	for(auto it = _objects.begin(); it == _objects.end(); it++) {
 		if(object->getId() == (*it)->getId()) {
-			_messageBuf.append((*it)->getRemoveMessage());
+			_messageBuf.push_back((*it)->getRemoveMessage());
 			_objects.erase(it);
 			return;
 		}
@@ -114,13 +114,12 @@ void WebGraphicalContext::onConnect(IServerListener::Client client) {
 	JSON allObjects;
 
 	for(auto& object : _objects) {
-		allObjects.append(object->getCreationMessage());
+		allObjects.push_back(object->getCreationMessage());
 	}
 
-	Json::FastWriter writer;
-	writer.omitEndingLineFeed();
-
-	std::string s = writer.write(allObjects);
+	std::stringstream ss;
+	ss << allObjects;
+	std::string s = ss.str();
 	_server.sendToClient(client, s);
 }
 

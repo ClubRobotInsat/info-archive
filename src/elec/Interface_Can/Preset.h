@@ -7,7 +7,7 @@
 
 
 #include <cstdint>
-#include <petri/Runtime/Cpp/detail/jsoncpp/include/json/json.h>
+#include <json.hpp>
 #include <string>
 #include <vector>
 

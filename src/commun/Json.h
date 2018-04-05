@@ -4,25 +4,25 @@
 #include <Color.h>
 #include <MathToolbox/MathToolbox.h>
 #include <Units.h>
-#include <petri/Runtime/Cpp/detail/jsoncpp/include/json/json.h>
+#include <json.hpp>
 
-using JSON = Json::Value;
+using JSON = nlohmann::json;
 
 namespace Json {
-	inline Vector2m toVector2m(const Json::Value& json) {
-		return {Distance::makeFromM(json["x"].asDouble()), Distance::makeFromM(json["y"].asDouble())};
+	inline Vector2m toVector2m(const JSON& json) {
+		return {Distance::makeFromM(json["x"].get<double>()), Distance::makeFromM(json["y"].get<double>())};
 	}
 
-	inline Vector3m toVector3m(const Json::Value& json) {
-		return {Distance::makeFromM(json["x"].asDouble()),
-		        Distance::makeFromM(json["y"].asDouble()),
-		        Distance::makeFromM(json["z"].asDouble())};
+	inline Vector3m toVector3m(const JSON& json) {
+		return {Distance::makeFromM(json["x"].get<double>()),
+		        Distance::makeFromM(json["y"].get<double>()),
+		        Distance::makeFromM(json["z"].get<double>())};
 	}
 
 	inline Vector3ang toVector3ang(const JSON& json) {
-		return {Angle::makeFromDeg(json["x"].asDouble()),
-		        Angle::makeFromDeg(json["y"].asDouble()),
-		        Angle::makeFromDeg(json["z"].asDouble())};
+		return {Angle::makeFromDeg(json["x"].get<double>()),
+		        Angle::makeFromDeg(json["y"].get<double>()),
+		        Angle::makeFromDeg(json["z"].get<double>())};
 	}
 
 	// TODO Rendre les conversions cohérentes vis-à-vis des erreurs qui peuvent survenir
@@ -30,7 +30,7 @@ namespace Json {
 	// Voir le problème avec les NaN
 
 	inline Color3f toColor3f(const JSON& json) {
-		return {json["r"].asFloat(), json["g"].asFloat(), json["b"].asFloat()};
+		return {json["r"].get<float>(), json["g"].get<float>(), json["b"].get<float>()};
 	}
 
 	inline JSON toJSONVector3(double x, double y, double z) {
@@ -76,22 +76,22 @@ namespace Json {
 		JSON value;
 
 		// Conversion column-major order vers row-major order.
-		value.append(std::to_string(mat[0]));
-		value.append(std::to_string(mat[4]));
-		value.append(std::to_string(mat[8]));
-		value.append(std::to_string(mat[12]));
-		value.append(std::to_string(mat[1]));
-		value.append(std::to_string(mat[5]));
-		value.append(std::to_string(mat[9]));
-		value.append(std::to_string(mat[13]));
-		value.append(std::to_string(mat[2]));
-		value.append(std::to_string(mat[6]));
-		value.append(std::to_string(mat[10]));
-		value.append(std::to_string(mat[14]));
-		value.append(std::to_string(mat[3]));
-		value.append(std::to_string(mat[7]));
-		value.append(std::to_string(mat[11]));
-		value.append(std::to_string(mat[15]));
+		value.push_back(std::to_string(mat[0]));
+		value.push_back(std::to_string(mat[4]));
+		value.push_back(std::to_string(mat[8]));
+		value.push_back(std::to_string(mat[12]));
+		value.push_back(std::to_string(mat[1]));
+		value.push_back(std::to_string(mat[5]));
+		value.push_back(std::to_string(mat[9]));
+		value.push_back(std::to_string(mat[13]));
+		value.push_back(std::to_string(mat[2]));
+		value.push_back(std::to_string(mat[6]));
+		value.push_back(std::to_string(mat[10]));
+		value.push_back(std::to_string(mat[14]));
+		value.push_back(std::to_string(mat[3]));
+		value.push_back(std::to_string(mat[7]));
+		value.push_back(std::to_string(mat[11]));
+		value.push_back(std::to_string(mat[15]));
 
 		return value;
 	}

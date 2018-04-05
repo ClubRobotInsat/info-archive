@@ -58,8 +58,6 @@ add_executable(Simulator
         ../commun/communication/CommunicateurSerie.cpp
         ../commun/communication/CommunicateurTCPIP.cpp
 
-        ${root_SOURCE_DIR}/third_parties/petri/Runtime/Cpp/detail/jsoncpp/src/lib_json/json_reader.cpp
-        ${root_SOURCE_DIR}/third_parties/petri/Runtime/Cpp/detail/jsoncpp/src/lib_json/json_value.cpp
-        ${root_SOURCE_DIR}/third_parties/petri/Runtime/Cpp/detail/jsoncpp/src/lib_json/json_writer.cpp)
+        ${root_SOURCE_DIR}/third_parties/json.hpp)
 
 target_link_libraries(Simulator Box2D Outils_Simu Server ${IRRLICHT_LIBRARIES})
