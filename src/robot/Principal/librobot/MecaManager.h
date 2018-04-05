@@ -39,9 +39,52 @@ public:
 		return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::LOQUET),
 		                                              enumToInt(ConstantesPrincipal::PorteCube::OUVERT));
 	}
+
 	ResultatAction ouvrirPorteCubeDe(Angle val) {
 		return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::LOQUET), val);
 	}
+
+
+	ResultatAction ouvrirSoute_D() {
+		return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::PORTE_SOUTE_DROIT),
+		                                              enumToInt(ConstantesPrincipal::SouteDroit::OUVERT));
+	}
+
+	ResultatAction fermerSoute_D() {
+		return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::PORTE_SOUTE_DROIT),
+		                                              enumToInt(ConstantesPrincipal::SouteDroit::FERME));
+	}
+
+	ResultatAction ouvrirSoute_G() {
+		return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::PORTE_SOUTE_GAUCHE),
+		                                              enumToInt(ConstantesPrincipal::SouteGauche::OUVERT));
+	}
+
+	ResultatAction fermerSoute_G() {
+		return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::PORTE_SOUTE_GAUCHE),
+		                                              enumToInt(ConstantesPrincipal::SouteGauche::FERME));
+	}
+
+	ResultatAction ouvrirAbeille_D() {
+		return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::ABEILLE_DROIT),
+		                                              enumToInt(ConstantesPrincipal::AbeilleDroit::OUVERT));
+	}
+
+	ResultatAction fermerAbeille_D() {
+		return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::ABEILLE_DROIT),
+		                                              enumToInt(ConstantesPrincipal::AbeilleDroit::FERME));
+	}
+
+	ResultatAction ouvrirAbeille_G() {
+		return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::ABEILLE_GAUCHE),
+		                                              enumToInt(ConstantesPrincipal::AbeilleGauche::OUVERT));
+	}
+
+	ResultatAction fermerAbeille_G() {
+		return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::ABEILLE_GAUCHE),
+		                                              enumToInt(ConstantesPrincipal::AbeilleGauche::FERME));
+	}
+
 
 	// Actions pour l'ascenseur du robot
 	/*ResultatAction ascenseurStockageHaut();
