@@ -10,3 +10,6 @@
 [submodule "third_parties/threadpool"]
 	path = third_parties/threadpool
 	url = https://github.com/rems4e/threadpool
+[submodule "third_parties/catch"]
+	path = third_parties/catch
+	url = https://github.com/philsquared/Catch.git

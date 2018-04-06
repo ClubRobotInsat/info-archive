@@ -5,8 +5,8 @@
 #ifndef ROOT_EVITEMENT_H
 #define ROOT_EVITEMENT_H
 
+#include "Environnement/environment.h"
 #include "Robot.h"
-#include "environment.h"
 
 namespace Commun {
 	class Evitement final {

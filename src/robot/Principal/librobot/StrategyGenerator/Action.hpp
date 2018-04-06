@@ -62,7 +62,7 @@ namespace StrategyGenerator {
 		inline Duration get_execution_time(Vector2m initial_pos) const {
 			Distance dist{Distance::makeFromCm(std::sqrt(std::pow(initial_pos.x.toCm() - _start_position.x.toCm(), 2) +
 			                                             std::pow(initial_pos.y.toCm() - _start_position.y.toCm(), 2)))};
-			return _execution_time + dist / 40_cm_s /*Constantes::LINEAR_SPEED_DEFAULT*/ + 5_s;
+			return _execution_time + dist / Constantes::LINEAR_SPEED_DEFAULT + 5_s;
 		}
 
 		inline std::vector<Element> get_next_elements() const {

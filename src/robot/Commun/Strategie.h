@@ -10,9 +10,9 @@
 #include "../../commun/Commun.h"
 #include "../../commun/RobotPrincipal/Constantes.h"
 #include "Deplacement.h"
+#include "Environnement/environment.h"
 #include "Evitement.h"
 #include "Robot.h"
-#include "environment.h"
 #include <algorithm>
 #include <memory>
 #include <thread>

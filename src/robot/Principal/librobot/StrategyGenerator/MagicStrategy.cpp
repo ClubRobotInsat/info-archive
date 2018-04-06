@@ -9,7 +9,7 @@ void StrategyGenerator::MagicStrategy::run(const Table& initial_table, Duration 
 	StopWatch start_time;
 	std::mutex mutex_action_running;
 
-	while(start_time.getElapsedTime() <= 90_s /*Constantes::MATCH_DURATION*/) {
+	while(start_time.getElapsedTime() <= Constantes::MATCH_DURATION) {
 		StopWatch calculation_time;
 		calculation_time.reset();
 
@@ -54,7 +54,7 @@ void StrategyGenerator::MagicStrategy::generate_tree(StrategyGenerator::Decision
 	DecisionalTree::node* actual_node;
 	while((actual_node = tree.pop_frontier_node()) != nullptr && calculation_time.getElapsedTime() < timeout) {
 		Duration actual_time{tree.calculate_cost(actual_node).second};
-		if(actual_time < 90_s /*Constantes::MATCH_DURATION*/) {
+		if(actual_time < Constantes::MATCH_DURATION) {
 			for(std::shared_ptr<Element> e : actual_node->data) {
 				if(_element_actionable[e->get_type()]()) {
 					Table next_table{tree.get_table(actual_node)};
