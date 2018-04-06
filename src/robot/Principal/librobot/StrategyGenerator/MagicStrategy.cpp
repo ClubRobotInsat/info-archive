@@ -5,25 +5,27 @@
 #include "MagicStrategy.h"
 #include <ConstantesCommunes.h>
 
-void StrategyGenerator::MagicStrategy::run(const Table& initial_table, Duration max_refresh_time) {
-	StopWatch start_time;
+void StrategyGenerator::MagicStrategy::run(Duration max_refresh_time) {
+	// TODO: test if all elements in the initial table and possible elements have good functions to call
+
+	_start_time.reset();
 	std::mutex mutex_action_running;
 
-	while(start_time.getElapsedTime() <= Constantes::MATCH_DURATION) {
+	while(_start_time.getElapsedTime() < Constantes::MATCH_DURATION) {
 		StopWatch calculation_time;
 		calculation_time.reset();
 
 		// ----------------------------------------------------------------- //
-		DecisionalTree action_tree(initial_table);
+		DecisionalTree action_tree(_initial_table);
 
 		action_tree.add_edge(action_tree.get_root(),
 		                     _previous_actions.back().first,
-		                     Action(start_time.getElapsedTime(),
+		                     Action(_start_time.getElapsedTime(),
 		                            _total_points,
 		                            _previous_actions.back().second.get_start_position(),
 		                            _previous_actions.back().second.get_start_angle(),
-		                            {} /*,
-                                                 nullptr*/));
+		                            {},
+		                            ActionType::NOTHING));
 
 		generate_tree(action_tree, 0.75 * max_refresh_time - calculation_time.getElapsedTime());
 		// std::cout << "max_points = " << action_tree.max_points << "; best_node = " << action_tree.best_node <<
@@ -37,6 +39,7 @@ void StrategyGenerator::MagicStrategy::run(const Table& initial_table, Duration 
 
 		// the robot should change its strategy (new action path found)
 		if(action_path.front() != _actual_action || mutex_action_running.try_lock()) {
+			// TODO: si en déplacement, interruption sur le allerA et lancement d'un thread pour le AllerA + action
 			mutex_action_running.unlock();
 			pthread_cancel(_id_thread);
 
@@ -46,6 +49,7 @@ void StrategyGenerator::MagicStrategy::run(const Table& initial_table, Duration 
 			_execute_action.join();
 		}
 	}
+	// TODO: stop everything
 }
 
 void StrategyGenerator::MagicStrategy::generate_tree(StrategyGenerator::DecisionalTree& tree, Duration timeout) {

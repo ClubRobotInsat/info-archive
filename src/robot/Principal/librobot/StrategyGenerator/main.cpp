@@ -10,24 +10,28 @@ int main() {
 	// Definition of all possible actions
 	// auto petri_bee  = std::make_shared<::Petri::MemberPetriDynamicLib>(false, "IA", 12346, "../../petri/src/Bee.h");
 	auto action_bee = [/*&petri_bee*/](Vector2m pos) -> StrategyGenerator::Action {
-		return StrategyGenerator::Action(5_s, 50, pos, -90_deg, {} /*, petri_bee*/);
+		return StrategyGenerator::Action(5_s, 50, pos, -90_deg, {}, StrategyGenerator::ActionType::BEE /*, petri_bee*/);
 	};
 
 	// auto petri_cube  = std::make_shared<::Petri::MemberPetriDynamicLib>(false, "IA", 12346,
 	// "../../petri/src/Cube.h");
 	auto action_cube = [/*&petri_cube*/](Vector2m pos) -> StrategyGenerator::Action {
-		return StrategyGenerator::Action(20_s, 30, pos, 20_deg, {} /*, petri_cube*/);
+		return StrategyGenerator::Action(20_s, 30, pos, 20_deg, {}, StrategyGenerator::ActionType::CUBE /*, petri_cube*/);
 	};
 
 	// auto petri_sphere  = std::make_shared<::Petri::MemberPetriDynamicLib>(false, "IA", 12346,
 	// "../../petri/src/Sphere.h");
 	auto action_sphere = [/*&petri_sphere, */ &action_cube](Vector2m pos) -> StrategyGenerator::Action {
-		return StrategyGenerator::Action(
-		    20_s, 80, pos, 50_deg, {StrategyGenerator::Element(StrategyGenerator::ElementType::CUBE, {1.5_m, 0_m})} /*, petri_sphere*/);
+		return StrategyGenerator::Action(20_s,
+		                                 80,
+		                                 pos,
+		                                 50_deg,
+		                                 {StrategyGenerator::Element(StrategyGenerator::ElementType::CUBE, {1.5_m, 0_m})},
+		                                 StrategyGenerator::ActionType::SPHERE /*, petri_sphere*/);
 	};
 
 	auto action_switch = [/*&petri_switch*/](Vector2m pos) -> StrategyGenerator::Action {
-		return StrategyGenerator::Action(3_s, 50, pos, -90_deg, {});
+		return StrategyGenerator::Action(3_s, 50, pos, -90_deg, {}, StrategyGenerator::ActionType::SWITCH);
 	};
 
 	std::map<StrategyGenerator::ElementType, std::function<StrategyGenerator::Action(Vector2m)>> element_to_action;
@@ -36,6 +40,7 @@ int main() {
 	element_to_action[StrategyGenerator::ElementType::SPHERE] = action_sphere;
 	element_to_action[StrategyGenerator::ElementType::SWITCH] = action_switch;
 
+	/// TODO: only one petri to run; into an Action: give it the good variable
 	// TODO: determine if an action is possible or not in function of the robot state
 	std::function<bool()> always_possible = []() -> bool { return true; };
 	std::map<StrategyGenerator::ElementType, std::function<bool()>> element_actionable;

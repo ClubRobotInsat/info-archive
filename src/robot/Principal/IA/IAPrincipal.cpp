@@ -69,11 +69,56 @@ void IAPrincipal::initialisation() {
 	logCyan("Couleur robot : ", this->getCouleurEquipe());
 	logDebug("Recalage du robot");
 
-	repere::Coordonnees coords_robot(START_ROBOT_POSITION,
-	                                 START_ROBOT_ANGLE,
-	                                 getCouleurEquipe() == RobotColor::Orange ? REFERENCE_ORANGE : REFERENCE_GREEN);
+	const repere::Repere& repere_match = (getCouleurEquipe() == RobotColor::Orange ? REFERENCE_ORANGE : REFERENCE_GREEN);
+	repere::Coordonnees robot_coords(START_ROBOT_POSITION, START_ROBOT_ANGLE, repere_match);
 
-	getDeplacement().setRepere(coords_robot);
+	getDeplacement().setRepere(robot_coords);
+
+
+	logDebug("StrategyGenerator");
+	// Action definitions
+	auto action_bee = [](Vector2m pos) -> StrategyGenerator::Action {
+		return StrategyGenerator::Action(5_s, 50, pos, -90_deg, {}, StrategyGenerator::ActionType::BEE);
+	};
+
+	auto action_cube = [](Vector2m pos) -> StrategyGenerator::Action {
+		return StrategyGenerator::Action(20_s, 30, pos, 20_deg, {}, StrategyGenerator::ActionType::CUBE);
+	};
+
+	auto action_sphere = [&repere_match](Vector2m pos) -> StrategyGenerator::Action {
+		return StrategyGenerator::Action(20_s,
+		                                 80,
+		                                 pos,
+		                                 50_deg,
+		                                 {StrategyGenerator::Element(StrategyGenerator::ElementType::CUBE,
+		                                                             Coordonnees({1.5_m, 0_m}, 0_deg, repere_match))},
+		                                 StrategyGenerator::ActionType::SPHERE);
+	};
+
+	auto action_switch = [](Vector2m pos) -> StrategyGenerator::Action {
+		return StrategyGenerator::Action(3_s, 50, pos, -90_deg, {}, StrategyGenerator::ActionType::SWITCH);
+	};
+
+	// Element definitions
+	std::function<bool()> always_possible = []() -> bool { return true; };
+
+	_strategy.associate_element(StrategyGenerator::ElementType::BEE, action_bee, always_possible);
+	_strategy.associate_element(StrategyGenerator::ElementType::SWITCH, action_switch, always_possible);
+	_strategy.associate_element(StrategyGenerator::ElementType::CUBE, action_cube, always_possible);
+	_strategy.associate_element(StrategyGenerator::ElementType::SPHERE, action_sphere, always_possible);
+
+
+	// Table generation
+	StrategyGenerator::Table table;
+	table.set_robot_coords(robot_coords);
+
+	table.emplace(std::make_shared<StrategyGenerator::Element>(
+	    StrategyGenerator::Element(StrategyGenerator::ElementType::BEE, Coordonnees({1_m, 1.5_m}, 0_deg, repere_match))));
+	table.emplace(std::make_shared<StrategyGenerator::Element>(
+	    StrategyGenerator::Element(StrategyGenerator::ElementType::SPHERE, Coordonnees({10_cm, 50_cm}, 0_deg, repere_match))));
+	table.emplace(std::make_shared<StrategyGenerator::Element>(
+	    StrategyGenerator::Element(StrategyGenerator::ElementType::SPHERE, Coordonnees({50_cm, 2_m}, 0_deg, repere_match))));
+
 
 /// Recalage
 /*_dep->avancer(3_cm, SensAvance::Avant, 500_ms);
@@ -111,7 +156,10 @@ void IAPrincipal::executer() {
 	_robot->setAngleDetectionAdv(0.4_PI);
 #endif
 
-	lancerPetri(_debugMode);
+	_strategy.run(500_ms);
+
+
+	// lancerPetri(_debugMode);
 
 	/*std::thread([=]() {
 	    logDebug(_robot->getPositionAdversaire());

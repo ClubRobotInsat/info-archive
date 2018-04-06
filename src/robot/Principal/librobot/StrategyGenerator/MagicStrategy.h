@@ -21,23 +21,34 @@ namespace StrategyGenerator {
 		std::map<StrategyGenerator::ElementType, std::function<StrategyGenerator::Action(Vector2m)>> _element_to_action;
 		std::map<StrategyGenerator::ElementType, std::function<bool()>> _element_actionable;
 
+		StopWatch _start_time;
+
 		std::vector<std::pair<Table, Action>> _previous_actions;
+
+		Table _initial_table;
 
 		// executive thread; TODO : bind with a IAPrincipal function (access to _dep and _meca)
 		std::thread _execute_action;
 		pthread_t _id_thread;
 		Action _actual_action;
 
+		std::unique_ptr<Petri::PetriDynamicLib> _petri;
+
 		void generate_tree(DecisionalTree& tree, Duration timeout);
 
 	public:
-		explicit MagicStrategy(std::map<StrategyGenerator::ElementType, std::function<StrategyGenerator::Action(Vector2m)>> element_to_action,
-		                       std::map<StrategyGenerator::ElementType, std::function<bool()>> element_actionable)
-		        : _total_points(0)
-		        , _element_to_action(std::move(element_to_action))
-		        , _element_actionable(std::move(element_actionable)) {}
+		MagicStrategy() : _total_points(0) {}
 
-		void run(const Table& initial_table, Duration max_refresh_time);
+		void associate_element(ElementType type, std::function<Action(Vector2m)> action, std::function<bool()> element_actionable) {
+			_element_to_action[type] = std::move(action);
+			_element_actionable[type] = std::move(element_actionable);
+		}
+
+		void set_initial_table(Table initial_table) {
+			_initial_table = std::move(initial_table);
+		}
+
+		void run(Duration max_refresh_time);
 
 		// signature of called function for the executive thread
 		static void execute_action(/*std::mutex mutex_action_running, Action action, int &points*/) {
@@ -45,7 +56,7 @@ namespace StrategyGenerator {
 
 			//_dep.allerA(action.get_start_position());
 			//_dep.tournerAbsolu(action.get_start_angle());
-			action.execute();
+			action.execute(*_petri);
 			points += action.get_nr_points();
 
 			mutex_action_running.unlock();*/

@@ -84,7 +84,7 @@ target_link_libraries(IATestSimu robotPrincipal)
 add_executable(IATestEvitement IA/IATestEvitement.cpp)
 target_link_libraries(IATestEvitement robotPrincipal)
 
-add_executable(IAPrincipal IA/IAPrincipal.cpp)
+add_executable(IAPrincipal IA/IAPrincipal.cpp librobot/StrategyGenerator/MagicStrategy.cpp)
 target_link_libraries(IAPrincipal robotPrincipal)
 #add_dependencies(IAPrincipal IA_PETRI HOMOLOGATION_PETRI)
 

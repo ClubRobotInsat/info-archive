@@ -10,10 +10,13 @@
 
 // TODO: include generated petri file (as "info/src/robot/Principal/petri/IA2017.h")
 //#include <memory>
-//#include <petri/Runtime/Cpp/MemberPetriDynamicLib.h>
+#include "Enum/Enum.h"
+#include <petrilab/Cpp/MemberPetriDynamicLib.h>
 
 namespace StrategyGenerator {
 	class Element;
+
+	ENUM_CLASS_NS(StrategyGenerator, ActionType, NOTHING, BEE, SWITCH, CUBE, SPHERE);
 
 	/**
 	* @brief Abstraction of an action in the Cup
@@ -33,18 +36,21 @@ namespace StrategyGenerator {
 		// return an empty list if the action is the last one
 		std::vector<Element> _elements_created_after_call;
 
+		ActionType _type;
+
 		// Associated Petri network to launch
 		// std::shared_ptr<Petri::PetriDynamicLib> _petri;
 
 	public:
-		Action() : Action(0_s, 0, {0_m, 0_m}, 0_deg, {}) {}
+		Action() : Action(0_s, 0, {0_m, 0_m}, 0_deg, {}, ActionType::NOTHING) {}
 
-		Action(Duration time, int points, Vector2m pos, Angle angle, std::vector<Element> elements_created_after_call /*, std::shared_ptr<Petri::PetriDynamicLib> petri*/)
+		Action(Duration time, int points, Vector2m pos, Angle angle, std::vector<Element> elements_created_after_call, ActionType type /*, std::shared_ptr<Petri::PetriDynamicLib> petri*/)
 		        : _execution_time(time)
 		        , _nr_points(points)
 		        , _start_position(pos)
 		        , _start_angle(angle)
-		        , _elements_created_after_call(std::move(elements_created_after_call)) /*, _petri(petri)*/ {}
+		        , _elements_created_after_call(std::move(elements_created_after_call))
+		        , _type(type) /*, _petri(petri)*/ {}
 
 		inline int get_nr_points() const {
 			return _nr_points;
@@ -69,22 +75,16 @@ namespace StrategyGenerator {
 			return _elements_created_after_call;
 		}
 
-		virtual void execute() {
-			/*bool debug{true};
-			if (debug) {
-			    Petri::DebugServer debugSession(*_petri);
-			    debugSession.start();
-			    debugSession.join();
-			} else {
-			    auto ia = _petri->createPetriNet();
-			    ia->run();
+		virtual void execute(Petri::PetriNet& petri, Duration remainingTime) {
+			StopWatch start;
+			petri.variables().pushVariables(static_cast<std::size_t>(_type));
+			petri.run();
 
-			    while (getTempsRestant() > 0_s) {
-			        sleep(50_ms);
-			    }
+			while(petri.running() && start.getElapsedTime() < remainingTime) {
+				sleep(50_ms);
+			}
 
-			    ia->stop();
-			}*/
+			petri.stop();
 		}
 
 		friend bool operator==(const Action& a1, const Action& a2) {
@@ -100,10 +100,10 @@ namespace StrategyGenerator {
 
 	class ActionWait : public Action {
 	public:
-		explicit ActionWait(Duration time) : Action(time, 0, {0_m, 0_m}, 0_deg, {} /*, nullptr*/) {}
+		explicit ActionWait(Duration time) : Action(time, 0, {0_m, 0_m}, 0_deg, {}, ActionType::NOTHING) {}
 
-		void execute() override {
-			sleep(_execution_time);
+		void execute(Petri::PetriNet&, Duration remainingTime) override {
+			sleep(std::min(_execution_time, remainingTime));
 		}
 	};
 }

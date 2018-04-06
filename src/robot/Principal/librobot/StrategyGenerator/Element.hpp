@@ -18,24 +18,23 @@ namespace StrategyGenerator {
 	class Element : public std::enable_shared_from_this<Element> {
 		ElementType _type;
 
-		// Middle of the position
-		Vector2m _position;
+		repere::Coordonnees _coordonnees;
 
 	public:
-		explicit Element(ElementType type, const Vector2m& pos) : _type(type), _position(pos) {}
+		explicit Element(ElementType type, const repere::Coordonnees& coords) : _type(type), _coordonnees(coords) {}
 
 		inline ElementType get_type() const {
 			return _type;
 		}
 
 		inline Vector2m get_position() const {
-			return _position;
+			return _coordonnees.getPos2D();
 		}
 
-		std::size_t hash() {
-			return std::hash<int>()(static_cast<int>(_type)) + std::hash<double>()(_position.x.toMm()) +
-			       std::hash<double>()(_position.y.toMm());
-		}
+		/*std::size_t hash() {
+		    return std::hash<int>()(static_cast<int>(_type)) + std::hash<double>()(_position.x.toMm()) +
+		           std::hash<double>()(_position.y.toMm());
+		}*/
 
 		friend bool operator==(const Element& e1, const Element& e2) {
 			return e1.get_type() == e2.get_type() && e1.get_position() == e2.get_position();

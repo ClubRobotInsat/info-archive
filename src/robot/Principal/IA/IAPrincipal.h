@@ -6,11 +6,12 @@
 #include "../librobot/libRobot.h"
 #include <Commun.h>
 
+#include "../librobot/StrategyGenerator/MagicStrategy.h"
 
 #ifdef HOMOLOGATION
 #include "../petri/src/Homologation.h"
 #else
-#include "../petri/src/IA.h"
+#include "../petri/src/IA2018.h"
 #endif
 
 class IAPrincipal : public StrategiePrincipal {
@@ -29,4 +30,6 @@ protected:
 	ResultatAction lancerPetri(bool debug);
 	std::unique_ptr<Petri::PetriDynamicLib> _petri;
 	bool _debugMode;
+
+	StrategyGenerator::MagicStrategy _strategy;
 };
