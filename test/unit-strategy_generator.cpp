@@ -11,11 +11,11 @@ TEST_CASE("StrategyGenerator") {
 
 	SECTION("Action") {
 		SECTION("get_execution_time") {
-			auto generator = [](Duration execution_time, Vector2m start_position) -> Action {
-				return Action(execution_time, 0, start_position, 0_deg, {} /*, nullptr*/);
+			auto generator = [](Duration execution_time, repere::Coordonnees start_coords) -> Action {
+				return Action(execution_time, 0, start_coords, {}, ActionType::NOTHING);
 			};
 
-			CHECK(generator(20_s, {0_m, 0_m}).get_execution_time({1.2_m, 0_m}) == 28_s);
+			CHECK(generator(20_s, repere::Coordonnees({0_m, 0_m})).get_execution_time(repere::Coordonnees({1.2_m, 0_m})) == 28_s);
 		}
 	}
 

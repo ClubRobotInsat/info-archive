@@ -77,26 +77,25 @@ void IAPrincipal::initialisation() {
 
 	logDebug("StrategyGenerator");
 	// Action definitions
-	auto action_bee = [](Vector2m pos) -> StrategyGenerator::Action {
-		return StrategyGenerator::Action(5_s, 50, pos, -90_deg, {}, StrategyGenerator::ActionType::BEE);
+	auto action_bee = [](repere::Coordonnees coords) -> StrategyGenerator::Action {
+		return StrategyGenerator::Action(5_s, 50, coords, {}, StrategyGenerator::ActionType::BEE);
 	};
 
-	auto action_cube = [](Vector2m pos) -> StrategyGenerator::Action {
-		return StrategyGenerator::Action(20_s, 30, pos, 20_deg, {}, StrategyGenerator::ActionType::CUBE);
+	auto action_cube = [](repere::Coordonnees coords) -> StrategyGenerator::Action {
+		return StrategyGenerator::Action(20_s, 30, coords, {}, StrategyGenerator::ActionType::CUBE);
 	};
 
-	auto action_sphere = [&repere_match](Vector2m pos) -> StrategyGenerator::Action {
+	auto action_sphere = [&repere_match](repere::Coordonnees coords) -> StrategyGenerator::Action {
 		return StrategyGenerator::Action(20_s,
 		                                 80,
-		                                 pos,
-		                                 50_deg,
+		                                 coords,
 		                                 {StrategyGenerator::Element(StrategyGenerator::ElementType::CUBE,
 		                                                             Coordonnees({1.5_m, 0_m}, 0_deg, repere_match))},
 		                                 StrategyGenerator::ActionType::SPHERE);
 	};
 
-	auto action_switch = [](Vector2m pos) -> StrategyGenerator::Action {
-		return StrategyGenerator::Action(3_s, 50, pos, -90_deg, {}, StrategyGenerator::ActionType::SWITCH);
+	auto action_switch = [](repere::Coordonnees coords) -> StrategyGenerator::Action {
+		return StrategyGenerator::Action(3_s, 50, coords, {}, StrategyGenerator::ActionType::SWITCH);
 	};
 
 	// Element definitions
@@ -118,6 +117,7 @@ void IAPrincipal::initialisation() {
 	    StrategyGenerator::Element(StrategyGenerator::ElementType::SPHERE, Coordonnees({10_cm, 50_cm}, 0_deg, repere_match))));
 	table.emplace(std::make_shared<StrategyGenerator::Element>(
 	    StrategyGenerator::Element(StrategyGenerator::ElementType::SPHERE, Coordonnees({50_cm, 2_m}, 0_deg, repere_match))));
+	_strategy.set_initial_table(table);
 
 
 /// Recalage

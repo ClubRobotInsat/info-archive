@@ -127,7 +127,7 @@ namespace repere {
 	};
 
 	// Repère absolu pour toutes les tables : (0, 0) en bas à gauche (contre le mur proche du tableau au club)
-	const repere::Repere ABSOLUTE_REFERENCE = repere::Repere({0_m, 0_m}, ::repere::SENS_POSITIF, ::repere::SENS_POSITIF);
+	extern Repere const ABSOLUTE_REFERENCE;
 
 	struct Orientation {
 		Orientation(Angle angle = 0_deg, const Repere& repere_parent = ABSOLUTE_REFERENCE);
@@ -243,6 +243,10 @@ namespace repere {
 	inline std::ostream& operator<<(std::ostream& os, const Coordonnees& coords) {
 		os << "[x=" << coords.getX() << ", y=" << coords.getY() << ", theta=" << coords.getAngle() << " deg]";
 		return os;
+	}
+
+	inline bool operator==(const Coordonnees& c1, const Coordonnees& c2) {
+		return c1.getPos3D() == c2.getPos3D() && c1.getAngle() == c2.getAngle();
 	}
 }
 

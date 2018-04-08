@@ -9,7 +9,7 @@ void StrategyGenerator::MagicStrategy::run(Duration max_refresh_time) {
 	// TODO: test if all elements in the initial table and possible elements have good functions to call
 
 	_start_time.reset();
-	std::mutex mutex_action_running;
+	std::mutex mutex_petri_running;
 
 	while(_start_time.getElapsedTime() < Constantes::MATCH_DURATION) {
 		StopWatch calculation_time;
@@ -18,14 +18,10 @@ void StrategyGenerator::MagicStrategy::run(Duration max_refresh_time) {
 		// ----------------------------------------------------------------- //
 		DecisionalTree action_tree(_initial_table);
 
-		action_tree.add_edge(action_tree.get_root(),
-		                     _previous_actions.back().first,
-		                     Action(_start_time.getElapsedTime(),
-		                            _total_points,
-		                            _previous_actions.back().second.get_start_position(),
-		                            _previous_actions.back().second.get_start_angle(),
-		                            {},
-		                            ActionType::NOTHING));
+		action_tree.add_edge(
+		    action_tree.get_root(),
+		    _previous_actions.back().first,
+		    Action(_start_time.getElapsedTime(), _total_points, _previous_actions.back().second.get_coordonnees(), {}, ActionType::NOTHING));
 
 		generate_tree(action_tree, 0.75 * max_refresh_time - calculation_time.getElapsedTime());
 		// std::cout << "max_points = " << action_tree.max_points << "; best_node = " << action_tree.best_node <<
@@ -33,18 +29,18 @@ void StrategyGenerator::MagicStrategy::run(Duration max_refresh_time) {
 		std::list<Action> action_path{action_tree.generate_action_path()};
 		std::cout << "Action path : " << action_path.size() << " different actions with " << action_tree.max_points << " points: ";
 		for(Action a : action_path) {
-			std::cout << '[' << a.get_start_position().x.toCm() << ',' << a.get_start_position().y.toCm() << "] ";
+			std::cout << a.get_coordonnees();
 		}
 		std::cout << "\n" << std::endl;
 
 		// the robot should change its strategy (new action path found)
-		if(action_path.front() != _actual_action || mutex_action_running.try_lock()) {
+		if(action_path.front() != _actual_action || mutex_petri_running.try_lock()) {
 			// TODO: si en déplacement, interruption sur le allerA et lancement d'un thread pour le AllerA + action
-			mutex_action_running.unlock();
+			mutex_petri_running.unlock();
 			pthread_cancel(_id_thread);
 
 			_actual_action = action_path.front();
-			_execute_action = std::thread(execute_action /*, mutex_action_running, _actual_action, _total_points*/);
+			_execute_action = std::thread(execute_action /*, mutex_petri_running, _actual_action, _total_points*/);
 			_id_thread = _execute_action.native_handle();
 			_execute_action.join();
 		}

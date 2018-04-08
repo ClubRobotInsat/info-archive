@@ -7,31 +7,32 @@
 #include "MagicStrategy.h"
 
 int main() {
-	// Definition of all possible actions
+	/*// Definition of all possible actions
 	// auto petri_bee  = std::make_shared<::Petri::MemberPetriDynamicLib>(false, "IA", 12346, "../../petri/src/Bee.h");
-	auto action_bee = [/*&petri_bee*/](Vector2m pos) -> StrategyGenerator::Action {
-		return StrategyGenerator::Action(5_s, 50, pos, -90_deg, {}, StrategyGenerator::ActionType::BEE /*, petri_bee*/);
+	auto action_bee = [](Vector2m pos) -> StrategyGenerator::Action {
+	    return StrategyGenerator::Action(5_s, 50, pos, -90_deg, {}, StrategyGenerator::ActionType::BEE);
 	};
 
 	// auto petri_cube  = std::make_shared<::Petri::MemberPetriDynamicLib>(false, "IA", 12346,
 	// "../../petri/src/Cube.h");
-	auto action_cube = [/*&petri_cube*/](Vector2m pos) -> StrategyGenerator::Action {
-		return StrategyGenerator::Action(20_s, 30, pos, 20_deg, {}, StrategyGenerator::ActionType::CUBE /*, petri_cube*/);
+	auto action_cube = [](Vector2m pos) -> StrategyGenerator::Action {
+	    return StrategyGenerator::Action(20_s, 30, pos, 20_deg, {}, StrategyGenerator::ActionType::CUBE);
 	};
 
 	// auto petri_sphere  = std::make_shared<::Petri::MemberPetriDynamicLib>(false, "IA", 12346,
 	// "../../petri/src/Sphere.h");
-	auto action_sphere = [/*&petri_sphere, */ &action_cube](Vector2m pos) -> StrategyGenerator::Action {
-		return StrategyGenerator::Action(20_s,
-		                                 80,
-		                                 pos,
-		                                 50_deg,
-		                                 {StrategyGenerator::Element(StrategyGenerator::ElementType::CUBE, {1.5_m, 0_m})},
-		                                 StrategyGenerator::ActionType::SPHERE /*, petri_sphere*/);
+	auto action_sphere = [&action_cube](Vector2m pos) -> StrategyGenerator::Action {
+	    return StrategyGenerator::Action(20_s,
+	                                     80,
+	                                     pos,
+	                                     50_deg,
+	                                     {StrategyGenerator::Element(StrategyGenerator::ElementType::CUBE, {1.5_m,
+	0_m})},
+	                                     StrategyGenerator::ActionType::SPHERE);
 	};
 
-	auto action_switch = [/*&petri_switch*/](Vector2m pos) -> StrategyGenerator::Action {
-		return StrategyGenerator::Action(3_s, 50, pos, -90_deg, {}, StrategyGenerator::ActionType::SWITCH);
+	auto action_switch = [](Vector2m pos) -> StrategyGenerator::Action {
+	    return StrategyGenerator::Action(3_s, 50, pos, -90_deg, {}, StrategyGenerator::ActionType::SWITCH);
 	};
 
 	std::map<StrategyGenerator::ElementType, std::function<StrategyGenerator::Action(Vector2m)>> element_to_action;
@@ -61,5 +62,5 @@ int main() {
 	    StrategyGenerator::Element(StrategyGenerator::ElementType::SPHERE, {50_cm, 2_m})));
 
 	StrategyGenerator::MagicStrategy best_ia_ever(element_to_action, element_actionable);
-	best_ia_ever.run(table, 500_ms);
+	best_ia_ever.run(table, 500_ms);*/
 }

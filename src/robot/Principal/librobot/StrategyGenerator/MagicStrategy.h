@@ -18,7 +18,7 @@ namespace StrategyGenerator {
 	private:
 		int _total_points;
 
-		std::map<StrategyGenerator::ElementType, std::function<StrategyGenerator::Action(Vector2m)>> _element_to_action;
+		std::map<StrategyGenerator::ElementType, std::function<StrategyGenerator::Action(repere::Coordonnees)>> _element_to_action;
 		std::map<StrategyGenerator::ElementType, std::function<bool()>> _element_actionable;
 
 		StopWatch _start_time;
@@ -37,9 +37,9 @@ namespace StrategyGenerator {
 		void generate_tree(DecisionalTree& tree, Duration timeout);
 
 	public:
-		MagicStrategy() : _total_points(0) {}
+		MagicStrategy() : _total_points(0), _id_thread(0), _actual_action(ActionWait(0_s)) {}
 
-		void associate_element(ElementType type, std::function<Action(Vector2m)> action, std::function<bool()> element_actionable) {
+		void associate_element(ElementType type, std::function<Action(repere::Coordonnees)> action, std::function<bool()> element_actionable) {
 			_element_to_action[type] = std::move(action);
 			_element_actionable[type] = std::move(element_actionable);
 		}

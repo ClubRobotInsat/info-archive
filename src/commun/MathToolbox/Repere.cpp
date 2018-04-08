@@ -6,6 +6,8 @@
 
 using namespace repere;
 
+repere::Repere const repere::ABSOLUTE_REFERENCE = repere::Repere({0_m, 0_m}, ::repere::SENS_POSITIF, ::repere::SENS_POSITIF);
+
 Orientation::Orientation(Angle angle, const Repere& repere_parent) : _angle(angle), _repere(repere_parent) {}
 
 Orientation::Orientation(const Orientation& other) : _angle(other._angle), _repere(other._repere) {}
