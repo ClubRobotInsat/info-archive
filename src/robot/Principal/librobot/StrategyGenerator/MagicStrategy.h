@@ -27,39 +27,56 @@ namespace StrategyGenerator {
 
 		Table _initial_table;
 
-		// executive thread; TODO : bind with a IAPrincipal function (access to _dep and _meca)
-		std::thread _execute_action;
-		pthread_t _id_thread;
 		Action _actual_action;
 
 		std::unique_ptr<Petri::PetriDynamicLib> _petri;
 
 		void generate_tree(DecisionalTree& tree, Duration timeout);
 
+		// MagicStrategy should be run only if it is completely set up
+		bool _initialized;
+
 	public:
-		MagicStrategy() : _total_points(0), _id_thread(0), _actual_action(ActionWait(0_s)) {}
+		MagicStrategy() : _total_points(0), _actual_action(ActionWait(0_s)), _initialized(false) {}
 
 		void associate_element(ElementType type, std::function<Action(repere::Coordonnees)> action, std::function<bool()> element_actionable) {
 			_element_to_action[type] = std::move(action);
 			_element_actionable[type] = std::move(element_actionable);
 		}
 
-		void set_initial_table(Table initial_table) {
+		void initialize(Table initial_table) {
 			_initial_table = std::move(initial_table);
+			_actual_action = Action(0_s, 0, _initial_table._robot_coords, {}, ActionType::NOTHING, "initial_action");
+
+			_initialized = true;
 		}
 
 		void run(Duration max_refresh_time);
 
-		// signature of called function for the executive thread
-		static void execute_action(/*std::mutex mutex_action_running, Action action, int &points*/) {
-			/*mutex_action_running.lock();
+		static void cleanup(void*) {
+			// TODO: stop AllerA (arret d'urgence)
+			logDebug("MagicStrategy::cleanup() called.");
+		}
 
+		// signature of called function for the executive thread
+		static void executioner(std::mutex& mutex_petri_running, const Action& action) {
+			pthread_cleanup_push(cleanup, nullptr);
+
+			logDebug("MagicStrategy::execute_action() called");
+
+			//_dep.arretUrgence();
 			//_dep.allerA(action.get_start_position());
 			//_dep.tournerAbsolu(action.get_start_angle());
-			action.execute(*_petri);
-			points += action.get_nr_points();
 
-			mutex_action_running.unlock();*/
+			pthread_cleanup_pop(1);
+
+			logDebug("launch of petri for the action '", action, "'");
+
+			// lock mutex at creation, unlock it at destruction
+			std::lock_guard<std::mutex> guard(mutex_petri_running);
+			sleep(5_s);
+			// action.execute_petri(*_petri, MATCH_DURATION - _start_time.getElapsedTime());
+			logDebug("end of execute_action");
 		}
 
 		inline int get_total_points() const {

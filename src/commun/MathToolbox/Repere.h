@@ -127,7 +127,7 @@ namespace repere {
 	};
 
 	// Repère absolu pour toutes les tables : (0, 0) en bas à gauche (contre le mur proche du tableau au club)
-	extern Repere const ABSOLUTE_REFERENCE;
+	const Repere ABSOLUTE_REFERENCE = repere::Repere({0_m, 0_m}, ::repere::SENS_POSITIF, ::repere::SENS_POSITIF);
 
 	struct Orientation {
 		Orientation(Angle angle = 0_deg, const Repere& repere_parent = ABSOLUTE_REFERENCE);
@@ -195,7 +195,7 @@ namespace repere {
 		/// Surcharge pour donner des coordonnées 2D
 		Coordonnees(Vector2m position, Angle angle = 0_rad, const Repere& repere_parent = ABSOLUTE_REFERENCE);
 
-		Coordonnees(Coordonnees const& coords);
+		Coordonnees(const Coordonnees& coords);
 
 		/// Getters
 		Distance getX(const Repere& repere = ABSOLUTE_REFERENCE) const {

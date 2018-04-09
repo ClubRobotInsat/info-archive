@@ -24,6 +24,7 @@ namespace StrategyGenerator {
 		std::deque<node*> frontier;
 
 	public:
+		std::size_t _size;
 		int max_points;
 		node* best_node;
 
@@ -48,8 +49,8 @@ namespace StrategyGenerator {
 		};
 
 
-		explicit DecisionalTree(Table initial_state) : max_points(0), best_node(nullptr) {
-			_first = new node(initial_state, edge(ActionWait(0_s), nullptr));
+		explicit DecisionalTree(Table initial_state) : _size(0), max_points(0), best_node(nullptr) {
+			_first = new node(std::move(initial_state), edge(ActionWait(0_s), nullptr));
 			frontier.push_back(_first);
 		}
 
@@ -59,6 +60,15 @@ namespace StrategyGenerator {
 
 		Table get_table(node* n) const {
 			return n->data;
+		}
+
+		Table get_table_after_action(const Action& action) const {
+			for(edge e : _first->out_edges) {
+				if(e.cost == action) {
+					return _first->data;
+				}
+			}
+			throw std::invalid_argument("The given action is inaccessible by the decisional tree.");
 		}
 
 		node* pop_frontier_node() {
@@ -82,7 +92,7 @@ namespace StrategyGenerator {
 				time += expanded->in_edge.cost.get_execution_time(robot_position);
 				expanded = expanded->in_edge.target;
 			}
-			if(n != nullptr && time < 90_s && points > max_points) {
+			if(n != nullptr && time < MATCH_DURATION && points > max_points) {
 				max_points = points;
 				best_node = n;
 			}
@@ -92,15 +102,21 @@ namespace StrategyGenerator {
 
 		void add_edge(node* n, Table table, Action action) {
 			frontier.push_back(n->add_child(std::move(table), action));
+			_size++;
+		}
+
+		inline std::size_t size() const {
+			return frontier.size();
 		}
 
 		std::list<Action> generate_action_path() {
 			std::list<Action> result;
 			node* n{best_node};
-			while(n != nullptr) {
+			while(n != nullptr && n != _first) {
 				result.push_front(n->in_edge.cost);
 				n = n->in_edge.target;
 			}
+			result.erase(result.cbegin());
 			return result;
 		}
 	};

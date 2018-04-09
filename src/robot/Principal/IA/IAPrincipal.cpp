@@ -78,11 +78,11 @@ void IAPrincipal::initialisation() {
 	logDebug("StrategyGenerator");
 	// Action definitions
 	auto action_bee = [](repere::Coordonnees coords) -> StrategyGenerator::Action {
-		return StrategyGenerator::Action(5_s, 50, coords, {}, StrategyGenerator::ActionType::BEE);
+		return StrategyGenerator::Action(5_s, 50, coords, {}, StrategyGenerator::ActionType::BEE, "bee");
 	};
 
 	auto action_cube = [](repere::Coordonnees coords) -> StrategyGenerator::Action {
-		return StrategyGenerator::Action(20_s, 30, coords, {}, StrategyGenerator::ActionType::CUBE);
+		return StrategyGenerator::Action(20_s, 30, coords, {}, StrategyGenerator::ActionType::CUBE, "cube");
 	};
 
 	auto action_sphere = [&repere_match](repere::Coordonnees coords) -> StrategyGenerator::Action {
@@ -91,11 +91,12 @@ void IAPrincipal::initialisation() {
 		                                 coords,
 		                                 {StrategyGenerator::Element(StrategyGenerator::ElementType::CUBE,
 		                                                             Coordonnees({1.5_m, 0_m}, 0_deg, repere_match))},
-		                                 StrategyGenerator::ActionType::SPHERE);
+		                                 StrategyGenerator::ActionType::SPHERE,
+		                                 "sphere");
 	};
 
 	auto action_switch = [](repere::Coordonnees coords) -> StrategyGenerator::Action {
-		return StrategyGenerator::Action(3_s, 50, coords, {}, StrategyGenerator::ActionType::SWITCH);
+		return StrategyGenerator::Action(3_s, 50, coords, {}, StrategyGenerator::ActionType::SWITCH, "switch");
 	};
 
 	// Element definitions
@@ -117,7 +118,9 @@ void IAPrincipal::initialisation() {
 	    StrategyGenerator::Element(StrategyGenerator::ElementType::SPHERE, Coordonnees({10_cm, 50_cm}, 0_deg, repere_match))));
 	table.emplace(std::make_shared<StrategyGenerator::Element>(
 	    StrategyGenerator::Element(StrategyGenerator::ElementType::SPHERE, Coordonnees({50_cm, 2_m}, 0_deg, repere_match))));
-	_strategy.set_initial_table(table);
+	table.emplace(std::make_shared<StrategyGenerator::Element>(
+	    StrategyGenerator::Element(StrategyGenerator::ElementType::SWITCH, Coordonnees({20_cm, 1.9_m}, 0_deg, repere_match))));
+	_strategy.initialize(table);
 
 
 /// Recalage

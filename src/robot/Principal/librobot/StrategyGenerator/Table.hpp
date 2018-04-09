@@ -15,6 +15,8 @@ namespace StrategyGenerator {
 	class Table : public std::set<std::shared_ptr<Element>> {
 		repere::Coordonnees _robot_coords;
 
+		friend class MagicStrategy;
+
 	public:
 		Table() = default;
 

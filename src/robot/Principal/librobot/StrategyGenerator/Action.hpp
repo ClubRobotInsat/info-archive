@@ -12,6 +12,7 @@
 //#include <memory>
 #include "Enum/Enum.h"
 #include <petrilab/Cpp/MemberPetriDynamicLib.h>
+#include <petrilab/Cpp/PetriLab.h>
 
 namespace StrategyGenerator {
 	class Element;
@@ -37,16 +38,18 @@ namespace StrategyGenerator {
 
 		ActionType _type;
 
+		std::string _name;
 		// Associated Petri network to launch
 		// std::unique_ptr<Petri::PetriDynamicLib> _petri;
 
 	public:
-		Action(Duration time, int points, repere::Coordonnees coords, std::vector<Element> elements_created_after_call, ActionType type /*, std::shared_ptr<Petri::PetriDynamicLib> petri*/)
+		Action(Duration time, int points, repere::Coordonnees coords, std::vector<Element> elements_created_after_call, ActionType type, std::string name)
 		        : _execution_time(time)
 		        , _nr_points(points)
-		        , _start_coords(std::move(coords))
+		        , _start_coords(coords)
 		        , _elements_created_after_call(std::move(elements_created_after_call))
-		        , _type(type) /*, _petri(petri)*/ {}
+		        , _type(type)
+		        , _name(name) {}
 
 		inline int get_nr_points() const {
 			return _nr_points;
@@ -68,12 +71,12 @@ namespace StrategyGenerator {
 			return _elements_created_after_call;
 		}
 
-		virtual void execute(Petri::PetriNet& petri, Duration remainingTime) {
+		virtual void execute_petri(Petri::PetriNet& petri, Duration remainingTime) const {
 			StopWatch start;
-			petri.variables().pushVariables(static_cast<std::size_t>(_type));
+			// petri.variables().pushVariables(static_cast<std::size_t>(_type));
 			petri.run();
 
-			while(petri.running() && start.getElapsedTime() < remainingTime) {
+			while(/*petri.running() && */ start.getElapsedTime() < remainingTime) {
 				sleep(50_ms);
 			}
 
@@ -81,18 +84,23 @@ namespace StrategyGenerator {
 		}
 
 		friend bool operator==(const Action& a1, const Action& a2) {
-			return a1.get_coordonnees() == a2.get_coordonnees() && a1.get_nr_points() == a2.get_nr_points() &&
+			return a1._start_coords == a2._start_coords && a1.get_nr_points() == a2.get_nr_points() &&
 			       a1.get_next_elements() == a2.get_next_elements() && a1._execution_time == a2._execution_time;
 		}
 
 		friend bool operator!=(const Action& a1, const Action& a2) {
 			return !(a1 == a2);
 		}
+
+		friend std::ostream& operator<<(std::ostream& os, const Action& action) {
+			return os << action._name;
+		}
 	};
 
 	class ActionWait : public Action {
 	public:
-		explicit ActionWait(Duration time) : Action(time, 0, repere::Coordonnees(), {}, ActionType::NOTHING) {}
+		explicit ActionWait(Duration time)
+		        : Action(time, 0, repere::Coordonnees(), {}, ActionType::NOTHING, "wait " + std::to_string(time.toMs()) + "ms") {}
 
 		void execute_petri(Petri::PetriNet&, Duration remainingTime) const override {
 			sleep(std::min(_execution_time, remainingTime));

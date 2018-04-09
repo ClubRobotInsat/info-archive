@@ -6,8 +6,6 @@
 
 using namespace repere;
 
-repere::Repere const repere::ABSOLUTE_REFERENCE = repere::Repere({0_m, 0_m}, ::repere::SENS_POSITIF, ::repere::SENS_POSITIF);
-
 Orientation::Orientation(Angle angle, const Repere& repere_parent) : _angle(angle), _repere(repere_parent) {}
 
 Orientation::Orientation(const Orientation& other) : _angle(other._angle), _repere(other._repere) {}
@@ -20,15 +18,13 @@ Position::Position(Distance x, Distance y, const Repere& repere_parent) : _pos(x
 
 Position::Position(const Position& other) : _pos(other._pos), _repere(other._repere) {}
 
-Coordonnees::Coordonnees(Vector3m position, Angle angle, const Repere& repere_parent) : _repere_parent(repere_parent) {
-	_pos = position;
-	_angle = angle;
-}
+Coordonnees::Coordonnees(Vector3m position, Angle angle, const Repere& repere_parent)
+        : _pos(position), _angle(angle), _repere_parent(repere_parent) {}
 
 Coordonnees::Coordonnees(Vector2m position, Angle angle, const Repere& repere_parent)
         : Coordonnees(Vector3m(position.x, position.y, 0_m), angle, repere_parent) {}
 
-Coordonnees::Coordonnees(Coordonnees const& coords) : Coordonnees(coords._pos, coords._angle, coords._repere_parent) {}
+Coordonnees::Coordonnees(const Coordonnees& coords) : Coordonnees(coords._pos, coords._angle, coords._repere_parent) {}
 
 Coordonnees& Coordonnees::operator=(const Coordonnees& coords) {
 	if(_repere_parent == coords._repere_parent) {
