@@ -3,20 +3,20 @@
  * Version 3.0.0-beta1
  */
 
-#ifndef PETRI_GENERATED_IA2017_H
-#define PETRI_GENERATED_IA2017_H
+#ifndef PETRI_GENERATED_IA2018_H
+#define PETRI_GENERATED_IA2018_H
 
 #include <memory>
 #include <petrilab/Cpp/MemberPetriDynamicLib.h>
 
 namespace Petri {
 	namespace Generated {
-		namespace IA2017 {
+		namespace IA2018 {
 			std::unique_ptr<::Petri::PetriNet> createPetriNet();
 			std::unique_ptr<::Petri::PetriDebug> createDebugPetriNet();
 
 			inline std::unique_ptr<::Petri::PetriDynamicLib> createLib(std::string const& customPath = "") {
-				return std::make_unique<::Petri::MemberPetriDynamicLib>(false, "IA2017", 12346, customPath);
+				return std::make_unique<::Petri::MemberPetriDynamicLib>(false, "IA2018", 12346, customPath);
 			}
 		}
 	}

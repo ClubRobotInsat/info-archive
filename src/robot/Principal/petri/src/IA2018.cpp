@@ -23,7 +23,7 @@ struct FillResult {
 
 static void fillVariables(Petri::VarSlot& variables) {}
 
-extern "C" Petri_actionResult_t IA2017_entryInit(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
+extern "C" Petri_actionResult_t IA2018_entryInit(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
 	if(!_PETRI_PRIVATE_GET_VARIABLES_.isFirstSlot()) {
 		_PETRI_PRIVATE_GET_VARIABLES_.pushVariables(0);
 	}
@@ -31,40 +31,51 @@ extern "C" Petri_actionResult_t IA2017_entryInit(VarSlot& _PETRI_PRIVATE_GET_VAR
 	return static_cast<actionResult_t>(Petri::Utility::doNothing());
 }
 
-extern "C" Petri_actionResult_t IA2017_exitAction(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
+extern "C" Petri_actionResult_t IA2018_exitAction(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
 	auto _PETRI_PRIVATE_EXEC_RESULT_ = static_cast<actionResult_t>(Petri::Utility::doNothing());
 	_PETRI_PRIVATE_GET_VARIABLES_.pop();
 	_PETRI_PRIVATE_GET_VARIABLES_.pushReturnValues(0);
 	return _PETRI_PRIVATE_EXEC_RESULT_;
 }
 
+static Petri_actionResult_t state_5_invocation(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
+	return static_cast<actionResult_t>(Petri::Utility::printText(static_cast<std::string const&>("caca")));
+}
 
-extern "C" FillResult IA2017_fill(PetriNet& petriNet,
+static bool transition_7_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_, Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
+	return true;
+}
+
+
+extern "C" FillResult IA2018_fill(PetriNet& petriNet,
                                   std::uint64_t entitiesOffset,
                                   bool firstLevel,
                                   Petri_actionResult_t (*initEntryPtr)(VarSlot&),
                                   Petri_actionResult_t (*exitActionPtr)(VarSlot&)) {
 	auto& state_0 = petriNet.addAction(Action(0 + entitiesOffset, "Root_Entry", initEntryPtr, 0), firstLevel);
 	auto& state_2 = petriNet.addAction(Action(2 + entitiesOffset, "Root_End", exitActionPtr, 0), false);
+	auto& state_5 = petriNet.addAction(Action(5 + entitiesOffset, "Root_", &state_5_invocation, 0), false);
 
+
+	state_0.addTransition(7 + entitiesOffset, "Root_Entry_to_", state_5, &transition_7_invocation);
 
 	return (FillResult){&state_0, &state_2};
 }
 namespace Petri {
 	namespace Generated {
-		namespace IA2017 {
+		namespace IA2018 {
 			std::unique_ptr<::Petri::PetriNet> createPetriNet() {
-				auto petriNet = std::make_unique<PetriNet>("IA2017", 0);
+				auto petriNet = std::make_unique<PetriNet>("IA2018", 0);
 				petriNet->setLogVerbosity(PetriNet::VerbosityNothing);
-				IA2017_fill(*petriNet, 0, true, &IA2017_entryInit, &IA2017_exitAction);
+				IA2018_fill(*petriNet, 0, true, &IA2018_entryInit, &IA2018_exitAction);
 				fillVariables(petriNet->variables());
 				return petriNet;
 			}
 
 			std::unique_ptr<::Petri::PetriDebug> createDebugPetriNet() {
-				auto petriNet = std::make_unique<PetriDebug>("IA2017", 0);
+				auto petriNet = std::make_unique<PetriDebug>("IA2018", 0);
 				petriNet->setLogVerbosity(PetriNet::VerbosityNothing);
-				IA2017_fill(*petriNet, 0, true, &IA2017_entryInit, &IA2017_exitAction);
+				IA2018_fill(*petriNet, 0, true, &IA2018_entryInit, &IA2018_exitAction);
 				fillVariables(petriNet->variables());
 				return petriNet;
 			}
@@ -72,22 +83,22 @@ namespace Petri {
 	}
 }
 
-extern "C" void* IA2017_create() {
-	return Petri::Generated::IA2017::createPetriNet().release();
+extern "C" void* IA2018_create() {
+	return Petri::Generated::IA2018::createPetriNet().release();
 }
 
-extern "C" void* IA2017_createDebug() {
-	return Petri::Generated::IA2017::createDebugPetriNet().release();
+extern "C" void* IA2018_createDebug() {
+	return Petri::Generated::IA2018::createDebugPetriNet().release();
 }
 
-extern "C" char* IA2017_evaluate(void* vars, char const* libPath) {
-	return Petri::Utility::loadEvaluateAndInvoke(vars, libPath, "IA2017");
+extern "C" char* IA2018_evaluate(void* vars, char const* libPath) {
+	return Petri::Utility::loadEvaluateAndInvoke(vars, libPath, "IA2018");
 }
-extern "C" char const* IA2017_getHash() {
-	return "BFA70A004A4BB423F4D26C975465633E7B1498A38E40C43BF238F27DEFC4EEC1";
+extern "C" char const* IA2018_getHash() {
+	return "41AC6DAB4FE409147F219D908C31F3F619185CFB3F45B2D7F220507526C608FC";
 }
 
 
-extern "C" void* IA2017_createLibForEditor() {
-	return ::Petri::MemberPetriDynamicLib::libForEditor("IA2017", 12346);
+extern "C" void* IA2018_createLibForEditor() {
+	return ::Petri::MemberPetriDynamicLib::libForEditor("IA2018", 12346);
 }

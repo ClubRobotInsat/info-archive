@@ -6,16 +6,15 @@
 #ifndef PETRI_GENERATED_IA_H
 #define PETRI_GENERATED_IA_H
 
-#include "Runtime/Cpp/MemberPetriDynamicLib.h"
 #include <memory>
+#include <petrilab/Cpp/MemberPetriDynamicLib.h>
 
 namespace Petri {
 	namespace Generated {
-		inline std::unique_ptr<::Petri::PetriDynamicLib> IA_createLib(std::string const &customPath = "") {
+		inline std::unique_ptr<::Petri::PetriDynamicLib> IA_createLib(std::string const& customPath = "") {
 			return std::make_unique<::Petri::MemberPetriDynamicLib>(false, "IA", 12346, customPath);
 		}
 	}
 }
 
 #endif
-
