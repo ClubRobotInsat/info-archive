@@ -65,12 +65,12 @@ namespace ConstantesPrincipal {
 	using IDCartesServos = IDCartesPrincipal::IDCarteServos;
 	using IDCartesMoteurs = IDCartesPrincipal::IDCarteServos;
 
-	const repere::Repere REFERENCE_ORANGE =
-	    repere::Repere({0_m, 0_m}, repere::Multiplicateur::SENS_POSITIF, repere::Multiplicateur::SENS_POSITIF);
 	const repere::Repere REFERENCE_GREEN =
+	    repere::Repere({0_m, 0_m}, repere::Multiplicateur::SENS_POSITIF, repere::Multiplicateur::SENS_POSITIF);
+	const repere::Repere REFERENCE_ORANGE =
 	    repere::Repere({3_m, 0_m}, repere::Multiplicateur::SENS_NEGATIF, repere::Multiplicateur::SENS_POSITIF);
 
-	const Vector3m START_ROBOT_POSITION(1.05_m - 29.4_cm / 2, 2_m - 29.4_cm / 2 - 2.1_cm, 15_cm);
+	const Vector3m START_ROBOT_POSITION(25_cm, 1.50_cm, 15_cm);
 	const Angle START_ROBOT_ANGLE(-90_deg);
 
 	// POSITION_TOURELLE = { décalage avant, décalage vers la droite }

@@ -1,1773 +1,1700 @@
 {
-   "objects" : [
-      {
-         "A*" : {
-            "" : "sol" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 3,
-            "y" : 2,
-            "z" : 0.02
-         },
-         "position" : {
-            "x" : 1.5,
-            "y" : 1,
-            "z" : -0.01
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0.52941179275512695,
-               "g" : 0.52941179275512695,
-               "r" : 0.52941179275512695
+    "objects": [
+        {
+            "A*": {
+                "": "sol",
+                "enabled": false
             },
-            "dynamic" : false,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "peinture verticale gauche" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 3,
-            "y" : 0.14,
-            "z" : 0.03
-         },
-         "position" : {
-            "x" : 1.5,
-            "y" : 1.650,
-            "z" : -0.01
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0.2,
-               "r" : 1.0
+            "angle": 0,
+            "dimensions": {
+                "x": 3,
+                "y": 2,
+                "z": 0.02
             },
-            "dynamic" : false,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "peinture verticale droite haut" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.590,
-            "y" : 0.14,
-            "z" : 0.03
-         },
-         "position" : {
-            "x" : 2.390,
-            "y" : 1.160,
-            "z" : -0.01
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0.2,
-               "r" : 1.0
+            "position": {
+                "x": 1.5,
+                "y": 1,
+                "z": -0.01
             },
-            "dynamic" : false,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "peinture verticale droite bas" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.590,
-            "y" : 0.14,
-            "z" : 0.03
-         },
-         "position" : {
-            "x" : 0.610,
-            "y" : 1.160,
-            "z" : -0.01
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0.2,
-               "r" : 1.0
+            "simulateur": {
+                "color": {
+                    "b": 0.529411792755127,
+                    "g": 0.529411792755127,
+                    "r": 0.529411792755127
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
             },
-            "dynamic" : false,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "peinture horizontale gauche bas" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.140,
-            "y" : 0.350,
-            "z" : 0.03
-         },
-         "position" : {
-            "x" : 1.130,
-            "y" : 1.825,
-            "z" : -0.01
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0.2,
-               "r" : 1.0
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "peinture verticale gauche",
+                "enabled": false
             },
-            "dynamic" : false,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "peinture horizontale gauche haut" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.140,
-            "y" : 0.350,
-            "z" : 0.03
-         },
-         "position" : {
-            "x" : 1.870,
-            "y" : 1.825,
-            "z" : -0.01
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0.2,
-               "r" : 1.0
+            "angle": 0,
+            "dimensions": {
+                "x": 3,
+                "y": 0.14,
+                "z": 0.03
             },
-            "dynamic" : false,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "peinture horizontale droite bas" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.140,
-            "y" : 1.350,
-            "z" : 0.03
-         },
-         "position" : {
-            "x" : 0.610,
-            "y" : 1.325,
-            "z" : -0.01
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0.2,
-               "r" : 1.0
+            "position": {
+                "x": 1.5,
+                "y": 1.65,
+                "z": -0.01
             },
-            "dynamic" : false,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "peinture horizontale droite haut" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.140,
-            "y" : 1.350,
-            "z" : 0.03
-         },
-         "position" : {
-            "x" : 2.390,
-            "y" : 1.325,
-            "z" : -0.01
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0.2,
-               "r" : 1.0
+            "simulateur": {
+                "color": {
+                    "b": 1.0,
+                    "g": 1.0,
+                    "r": 1.0
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
             },
-            "dynamic" : false,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "peinture depart orange" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.400,
-            "y" : 0.650,
-            "z" : 0.03
-         },
-         "position" : {
-            "x" : 2.800,
-            "y" : 1.675,
-            "z" : 0
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0.4,
-               "r" : 1
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "peinture verticale droite haut",
+                "enabled": false
             },
-            "dynamic" : false,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "peinture depart verte" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.400,
-            "y" : 0.650,
-            "z" : 0.03
-         },
-         "position" : {
-            "x" : 0.200,
-            "y" : 1.675,
-            "z" : 0
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0.26,
-               "g" : 0.9,
-               "r" : 0.06
+            "angle": 0,
+            "dimensions": {
+                "x": 0.59,
+                "y": 0.14,
+                "z": 0.03
             },
-            "dynamic" : false,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "mur droit" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 3,
-            "y" : 0.05,
-            "z" : 0.10
-         },
-         "position" : {
-            "x" : 1.5,
-            "y" : -0.025,
-            "z" : 0.05
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0,
-               "r" : 0
+            "position": {
+                "x": 2.39,
+                "y": 1.16,
+                "z": -0.01
             },
-            "dynamic" : false,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "mur gauche" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 3,
-            "y" : 0.05,
-            "z" : 0.1
-         },
-         "position" : {
-            "x" : 1.5,
-            "y" : 2.025,
-            "z" : 0.05
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0,
-               "r" : 0
+            "simulateur": {
+                "color": {
+                    "b": 1.0,
+                    "g": 1.0,
+                    "r": 1.0
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
             },
-            "dynamic" : false,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "mur bas" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.05,
-            "y" : 2,
-            "z" : 0.1
-         },
-         "position" : {
-            "x" : -0.025,
-            "y" : 1,
-            "z" : 0.05
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0,
-               "r" : 0
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "peinture verticale droite bas",
+                "enabled": false
             },
-            "dynamic" : false,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "mur haut" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.05,
-            "y" : 2,
-            "z" : 0.1
-         },
-         "position" : {
-            "x" : 3.025,
-            "y" : 1,
-            "z" : 0.05
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0,
-               "r" : 0
+            "angle": 0,
+            "dimensions": {
+                "x": 0.59,
+                "y": 0.14,
+                "z": 0.03
             },
-            "dynamic" : false,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "cube construction" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.058,
-            "y" : 0.058,
-            "z" : 0.058
-         },
-         "position" : {
-            "x" : 2.150,
-            "y" : 1.460,
-            "z" : 0.0029
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0,
-               "r" : 0
+            "position": {
+                "x": 0.61,
+                "y": 1.16,
+                "z": -0.01
             },
-            "dynamic" : true,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "cube construction" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.058,
-            "y" : 0.058,
-            "z" : 0.058
-         },
-         "position" : {
-            "x" : 2.208,
-            "y" : 1.460,
-            "z" : 0.0029
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0,
-               "r" : 0
+            "simulateur": {
+                "color": {
+                    "b": 1.0,
+                    "g": 1.0,
+                    "r": 1.0
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
             },
-            "dynamic" : true,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "cube construction" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.058,
-            "y" : 0.058,
-            "z" : 0.058
-         },
-         "position" : {
-            "x" : 2.092,
-            "y" : 1.460,
-            "z" : 0.0029
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0,
-               "r" : 0
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "peinture horizontale gauche bas",
+                "enabled": false
             },
-            "dynamic" : true,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "cube construction" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.058,
-            "y" : 0.058,
-            "z" : 0.058
-         },
-         "position" : {
-            "x" : 2.150,
-            "y" : 1.518,
-            "z" : 0.0029
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0,
-               "r" : 0
+            "angle": 0,
+            "dimensions": {
+                "x": 0.14,
+                "y": 0.35,
+                "z": 0.03
             },
-            "dynamic" : true,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "cube construction" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.058,
-            "y" : 0.058,
-            "z" : 0.058
-         },
-         "position" : {
-            "x" : 2.150,
-            "y" : 1.402,
-            "z" : 0.0029
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0,
-               "r" : 0
+            "position": {
+                "x": 1.13,
+                "y": 1.825,
+                "z": -0.01
             },
-            "dynamic" : true,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "cube construction" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.058,
-            "y" : 0.058,
-            "z" : 0.058
-         },
-         "position" : {
-            "x" : 0.850,
-            "y" : 1.460,
-            "z" : 0.0029
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0,
-               "r" : 0
+            "simulateur": {
+                "color": {
+                    "b": 1.0,
+                    "g": 1.0,
+                    "r": 1.0
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
             },
-            "dynamic" : true,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "cube construction" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.058,
-            "y" : 0.058,
-            "z" : 0.058
-         },
-         "position" : {
-            "x" : 0.798,
-            "y" : 1.460,
-            "z" : 0.0029
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0,
-               "r" : 0
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "peinture horizontale gauche haut",
+                "enabled": false
             },
-            "dynamic" : true,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "cube construction" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.058,
-            "y" : 0.058,
-            "z" : 0.058
-         },
-         "position" : {
-            "x" : 0.908,
-            "y" : 1.460,
-            "z" : 0.0029
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0,
-               "r" : 0
+            "angle": 0,
+            "dimensions": {
+                "x": 0.14,
+                "y": 0.35,
+                "z": 0.03
             },
-            "dynamic" : true,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "cube construction" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.058,
-            "y" : 0.058,
-            "z" : 0.058
-         },
-         "position" : {
-            "x" : 0.850,
-            "y" : 1.518,
-            "z" : 0.0029
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0,
-               "r" : 0
+            "position": {
+                "x": 1.87,
+                "y": 1.825,
+                "z": -0.01
             },
-            "dynamic" : true,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "cube construction" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.058,
-            "y" : 0.058,
-            "z" : 0.058
-         },
-         "position" : {
-            "x" : 0.850,
-            "y" : 1.402,
-            "z" : 0.0029
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0,
-               "r" : 0
+            "simulateur": {
+                "color": {
+                    "b": 1.0,
+                    "g": 1.0,
+                    "r": 1.0
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
             },
-            "dynamic" : true,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "cube construction" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.058,
-            "y" : 0.058,
-            "z" : 0.058
-         },
-         "position" : {
-            "x" : 2.700,
-            "y" : 0.810,
-            "z" : 0.0029
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0,
-               "r" : 0
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "peinture horizontale droite bas",
+                "enabled": false
             },
-            "dynamic" : true,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "cube construction" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.058,
-            "y" : 0.058,
-            "z" : 0.058
-         },
-         "position" : {
-            "x" : 2.758,
-            "y" : 0.810,
-            "z" : 0.0029
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0,
-               "r" : 0
+            "angle": 0,
+            "dimensions": {
+                "x": 0.14,
+                "y": 1.35,
+                "z": 0.03
             },
-            "dynamic" : true,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "cube construction" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.058,
-            "y" : 0.058,
-            "z" : 0.058
-         },
-         "position" : {
-            "x" : 2.642,
-            "y" : 0.810,
-            "z" : 0.0029
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0,
-               "r" : 0
+            "position": {
+                "x": 0.61,
+                "y": 1.325,
+                "z": -0.01
             },
-            "dynamic" : true,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "cube construction" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.058,
-            "y" : 0.058,
-            "z" : 0.058
-         },
-         "position" : {
-            "x" : 2.700,
-            "y" : 0.868,
-            "z" : 0.0029
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0,
-               "r" : 0
+            "simulateur": {
+                "color": {
+                    "b": 1.0,
+                    "g": 1.0,
+                    "r": 1.0
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
             },
-            "dynamic" : true,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "cube construction" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.058,
-            "y" : 0.058,
-            "z" : 0.058
-         },
-         "position" : {
-            "x" : 2.700,
-            "y" : 0.752,
-            "z" : 0.0029
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0,
-               "r" : 0
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "peinture horizontale droite haut",
+                "enabled": false
             },
-            "dynamic" : true,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "cube construction" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.058,
-            "y" : 0.058,
-            "z" : 0.058
-         },
-         "position" : {
-            "x" : 0.300,
-            "y" : 0.810,
-            "z" : 0.0029
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0,
-               "r" : 0
+            "angle": 0,
+            "dimensions": {
+                "x": 0.14,
+                "y": 1.35,
+                "z": 0.03
             },
-            "dynamic" : true,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "cube construction" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.058,
-            "y" : 0.058,
-            "z" : 0.058
-         },
-         "position" : {
-            "x" : 0.358,
-            "y" : 0.810,
-            "z" : 0.0029
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0,
-               "r" : 0
+            "position": {
+                "x": 2.39,
+                "y": 1.325,
+                "z": -0.01
             },
-            "dynamic" : true,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "cube construction" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.058,
-            "y" : 0.058,
-            "z" : 0.058
-         },
-         "position" : {
-            "x" : 0.242,
-            "y" : 0.810,
-            "z" : 0.0029
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0,
-               "r" : 0
+            "simulateur": {
+                "color": {
+                    "b": 1.0,
+                    "g": 1.0,
+                    "r": 1.0
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
             },
-            "dynamic" : true,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "cube construction" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.058,
-            "y" : 0.058,
-            "z" : 0.058
-         },
-         "position" : {
-            "x" : 0.300,
-            "y" : 0.868,
-            "z" : 0.0029
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0,
-               "r" : 0
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "peinture depart orange",
+                "enabled": false
             },
-            "dynamic" : true,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "cube construction" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.058,
-            "y" : 0.058,
-            "z" : 0.058
-         },
-         "position" : {
-            "x" : 0.300,
-            "y" : 0.752,
-            "z" : 0.0029
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0,
-               "r" : 0
+            "angle": 0,
+            "dimensions": {
+                "x": 0.4,
+                "y": 0.65,
+                "z": 0.03
             },
-            "dynamic" : true,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "cube construction" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.058,
-            "y" : 0.058,
-            "z" : 0.058
-         },
-         "position" : {
-            "x" : 1.100,
-            "y" : 0.500,
-            "z" : 0.0029
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0,
-               "r" : 0
+            "position": {
+                "x": 2.8,
+                "y": 1.675,
+                "z": 0
             },
-            "dynamic" : true,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "cube construction" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.058,
-            "y" : 0.058,
-            "z" : 0.058
-         },
-         "position" : {
-            "x" : 1.158,
-            "y" : 0.500,
-            "z" : 0.0029
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0,
-               "r" : 0
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 0.4,
+                    "r": 1
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
             },
-            "dynamic" : true,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "cube construction" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.058,
-            "y" : 0.058,
-            "z" : 0.058
-         },
-         "position" : {
-            "x" : 1.042,
-            "y" : 0.500,
-            "z" : 0.0029
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0,
-               "r" : 0
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "peinture depart verte",
+                "enabled": false
             },
-            "dynamic" : true,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "cube construction" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.058,
-            "y" : 0.058,
-            "z" : 0.058
-         },
-         "position" : {
-            "x" : 1.100,
-            "y" : 0.558,
-            "z" : 0.0029
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0,
-               "r" : 0
+            "angle": 0,
+            "dimensions": {
+                "x": 0.4,
+                "y": 0.65,
+                "z": 0.03
             },
-            "dynamic" : true,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "cube construction" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.058,
-            "y" : 0.058,
-            "z" : 0.058
-         },
-         "position" : {
-            "x" : 1.100,
-            "y" : 0.442,
-            "z" : 0.0029
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0,
-               "r" : 0
+            "position": {
+                "x": 0.2,
+                "y": 1.675,
+                "z": 0
             },
-            "dynamic" : true,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "cube construction" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.058,
-            "y" : 0.058,
-            "z" : 0.058
-         },
-         "position" : {
-            "x" : 1.900,
-            "y" : 0.500,
-            "z" : 0.0029
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0,
-               "r" : 0
+            "simulateur": {
+                "color": {
+                    "b": 0.26,
+                    "g": 0.9,
+                    "r": 0.06
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
             },
-            "dynamic" : true,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "cube construction" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.058,
-            "y" : 0.058,
-            "z" : 0.058
-         },
-         "position" : {
-            "x" : 1.958,
-            "y" : 0.500,
-            "z" : 0.0029
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0,
-               "r" : 0
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "mur droit",
+                "enabled": false
             },
-            "dynamic" : true,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "cube construction" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.058,
-            "y" : 0.058,
-            "z" : 0.058
-         },
-         "position" : {
-            "x" : 1.842,
-            "y" : 0.500,
-            "z" : 0.0029
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0,
-               "r" : 0
+            "angle": 0,
+            "dimensions": {
+                "x": 3,
+                "y": 0.05,
+                "z": 0.1
             },
-            "dynamic" : true,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "cube construction" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.058,
-            "y" : 0.058,
-            "z" : 0.058
-         },
-         "position" : {
-            "x" : 1.900,
-            "y" : 0.558,
-            "z" : 0.0029
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0,
-               "r" : 0
+            "position": {
+                "x": 1.5,
+                "y": -0.025,
+                "z": 0.05
             },
-            "dynamic" : true,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "cube construction" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.058,
-            "y" : 0.058,
-            "z" : 0.058
-         },
-         "position" : {
-            "x" : 1.900,
-            "y" : 0.442,
-            "z" : 0.0029
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0,
-               "r" : 0
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 0,
+                    "r": 0
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
             },
-            "dynamic" : true,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "reservoir eau bas gauche" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "height": 0.35,
-         "radius": 0.054,
-         "position" : {
-            "x" : 0.086,
-            "y" : 1.16,
-            "z" : 0.445
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0.4,
-               "g" : 0.4,
-               "r" : 0.4
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "mur gauche",
+                "enabled": false
             },
-            "dynamic" : false,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cylinder"
-      },
-
-      {
-         "A*" : {
-            "" : "reservoir eau bas gauche" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-
-         "height": 0.35,
-         "radius": 0.054,
-
-         "position" : {
-            "x" : 2.914,
-            "y" : 1.16,
-            "z" : 0.445
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0.4,
-               "g" : 0.4,
-               "r" : 0.4
+            "angle": 0,
+            "dimensions": {
+                "x": 3,
+                "y": 0.05,
+                "z": 0.1
             },
-            "dynamic" : false,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cylinder"
-      },
-
-      {
-         "A*" : {
-            "" : "reservoir eau bas gauche" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-
-         "height": 0.35,
-         "radius": 0.054,
-
-         "position" : {
-            "x" : 0.610,
-            "y" : 0.086,
-            "z" : 0.445
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0.4,
-               "g" : 0.4,
-               "r" : 0.4
+            "position": {
+                "x": 1.5,
+                "y": 2.025,
+                "z": 0.05
             },
-            "dynamic" : false,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cylinder"
-      },
-
-      {
-         "A*" : {
-            "" : "reservoir eau bas gauche" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-
-         "height": 0.35,
-         "radius": 0.054,
-
-         "position" : {
-            "x" : 2.390,
-            "y" : 0.086,
-            "z" : 0.445
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0.4,
-               "g" : 0.4,
-               "r" : 0.4
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 0,
+                    "r": 0
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
             },
-            "dynamic" : false,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cylinder"
-      },
-
-
-      {
-         "A*" : {
-            "" : "chateau d'eau orange" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.37,
-            "y" : 0.37,
-            "z" : 0.4
-         },
-         "position" : {
-            "x" : 0.185,
-            "y" : 2.285,
-            "z" : 0.2
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0.4,
-               "r" : 1
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "mur bas",
+                "enabled": false
             },
-            "dynamic" : false,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "chateau d'eau orange haut gauche" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.37,
-            "y" : 0.1,
-            "z" : 0.2
-         },
-         "position" : {
-            "x" : 0.185,
-            "y" : 2.47,
-            "z" : 0.5
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0.4,
-               "r" : 1
+            "angle": 0,
+            "dimensions": {
+                "x": 0.05,
+                "y": 2,
+                "z": 0.1
             },
-            "dynamic" : false,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "chateau d'eau orange haut bas" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.1,
-            "y" : 0.37,
-            "z" : 0.2
-         },
-         "position" : {
-            "x" : 0,
-            "y" : 2.285,
-            "z" : 0.5
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0.4,
-               "r" : 1
+            "position": {
+                "x": -0.025,
+                "y": 1,
+                "z": 0.05
             },
-            "dynamic" : false,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "chateau d'eau vert" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.37,
-            "y" : 0.37,
-            "z" : 0.4
-         },
-         "position" : {
-            "x" : 2.815,
-            "y" : 2.285,
-            "z" : 0.2
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0.26,
-               "g" : 0.9,
-               "r" : 0.06
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 0,
+                    "r": 0
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
             },
-            "dynamic" : false,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "chateau d'eau vert haut gauche" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.37,
-            "y" : 0.1,
-            "z" : 0.2
-         },
-         "position" : {
-            "x" : 2.815,
-            "y" : 2.47,
-            "z" : 0.5
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0.26,
-               "g" : 0.9,
-               "r" : 0.06
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "mur haut",
+                "enabled": false
             },
-            "dynamic" : false,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "chateau d'eau vert haut bas" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.1,
-            "y" : 0.37,
-            "z" : 0.2
-         },
-         "position" : {
-            "x" : 2.63,
-            "y" : 2.285,
-            "z" : 0.5
-         },
-         "simulateur" : {
-            "color" : {
-               "b" :  0.26,
-               "g" : 0.9,
-               "r" : 0.06
+            "angle": 0,
+            "dimensions": {
+                "x": 0.05,
+                "y": 2,
+                "z": 0.1
             },
-            "dynamic" : false,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "station épuration orange" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.6,
-            "y" : 0.25,
-            "z" : 0.14
-         },
-         "position" : {
-            "x" : 1.2,
-            "y" : 0.125,
-            "z" : 0.07
-         },
-         "simulateur" : {
-            "color" : {
-               "b" :  0,
-               "g" : 0.4,
-               "r" : 1
+            "position": {
+                "x": 3.025,
+                "y": 1,
+                "z": 0.05
             },
-            "dynamic" : false,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "station épuration verte" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.6,
-            "y" : 0.25,
-            "z" : 0.14
-         },
-         "position" : {
-            "x" : 1.7,
-            "y" : 0.125,
-            "z" : 0.07
-         },
-         "simulateur" : {
-            "color" : {
-               "b" :  0.26,
-               "g" : 0.9,
-               "r" : 0.06
-
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 0,
+                    "r": 0
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
             },
-            "dynamic" : false,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "fleur orange" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.23,
-            "y" : 0.23,
-            "z" : 0.2
-         },
-         "position" : {
-            "x" : 1.615,
-            "y" : -0.215,
-            "z" : 0.1
-         },
-         "simulateur" : {
-            "color" : {
-               "b" :  0,
-               "g" : 0.4,
-               "r" : 1
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "cube construction",
+                "enabled": false
             },
-            "dynamic" : false,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "chemin abeille bas" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 1.270,
-            "y" : 0.02,
-            "z" : 0.10
-         },
-         "position" : {
-            "x" : 0.635,
-            "y" : -0.149,
-            "z" : -0.01
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0,
-               "r" : 0
+            "angle": 0,
+            "dimensions": {
+                "x": 0.058,
+                "y": 0.058,
+                "z": 0.058
             },
-            "dynamic" : false,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "chemin abeille haut" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 1.270,
-            "y" : 0.02,
-            "z" : 0.10
-         },
-         "position" : {
-            "x" : 2.365,
-            "y" : -0.149,
-            "z" : -0.01
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0,
-               "g" : 0,
-               "r" : 0
+            "position": {
+                "x": 2.15,
+                "y": 1.46,
+                "z": 0.0029
             },
-            "dynamic" : false,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      },
-
-      {
-         "A*" : {
-            "" : "fleur verte" ,
-            "enabled" : false
-         },
-         "angle" : 0,
-         "dimensions" : {
-            "x" : 0.23,
-            "y" : 0.23,
-            "z" : 0.2
-         },
-         "position" : {
-            "x" : 1.385,
-            "y" : -0.215,
-            "z" : 0.1
-         },
-         "simulateur" : {
-            "color" : {
-               "b" : 0.26,
-               "g" : 0.9,
-               "r" : 0.06
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 0,
+                    "r": 0
+                },
+                "dynamic": true,
+                "enabled": false,
+                "mass": 0
             },
-            "dynamic" : false,
-            "enabled" : false,
-            "mass" : 0
-         },
-         "type" : "cuboid"
-      }
-
-
-
-   ],
-
-
-   "robot": [
-    {
-      "angle" : -90,
-      "color" : {
-         "orange" : {
-            "b" : 0,
-            "g" : 0.4,
-            "r" : 1
-         },
-         "green" : {
-            "b" : 0.26,
-            "g" : 0.9,
-            "r" : 0.06
-         }
-      },
-      "name" : "principal",
-      "position" : {
-         "x" : 0.90300000000000002,
-         "y" : 1.8320000000000001,
-         "z" : 0.51
-      },
-      "size" : {
-         "x" : 0.38,
-         "y" : 0.29999999999999999,
-         "z" : 0.50
-      }
-   }
-   ]
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "cube construction",
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 0.058,
+                "y": 0.058,
+                "z": 0.058
+            },
+            "position": {
+                "x": 2.208,
+                "y": 1.46,
+                "z": 0.0029
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 0.4,
+                    "r": 1.0
+                },
+                "dynamic": true,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "cube construction",
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 0.058,
+                "y": 0.058,
+                "z": 0.058
+            },
+            "position": {
+                "x": 2.092,
+                "y": 1.46,
+                "z": 0.0029
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0.26,
+                    "g": 0.9,
+                    "r": 0.06
+                },
+                "dynamic": true,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "cube construction",
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 0.058,
+                "y": 0.058,
+                "z": 0.058
+            },
+            "position": {
+                "x": 2.15,
+                "y": 1.518,
+                "z": 0.0029
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0.9,
+                    "g": 0.55,
+                    "r": 0.06
+                },
+                "dynamic": true,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "cube construction",
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 0.058,
+                "y": 0.058,
+                "z": 0.058
+            },
+            "position": {
+                "x": 2.15,
+                "y": 1.402,
+                "z": 0.0029
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 1.0,
+                    "r": 1.0
+                },
+                "dynamic": true,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "cube construction",
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 0.058,
+                "y": 0.058,
+                "z": 0.058
+            },
+            "position": {
+                "x": 0.85,
+                "y": 1.46,
+                "z": 0.0029
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 0,
+                    "r": 0
+                },
+                "dynamic": true,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "cube construction",
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 0.058,
+                "y": 0.058,
+                "z": 0.058
+            },
+            "position": {
+                "x": 0.79,
+                "y": 1.46,
+                "z": 0.0029
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0.26,
+                    "g": 0.9,
+                    "r": 0.06
+                },
+                "dynamic": true,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "cube construction",
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 0.058,
+                "y": 0.058,
+                "z": 0.058
+            },
+            "position": {
+                "x": 0.908,
+                "y": 1.46,
+                "z": 0.0029
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 0.4,
+                    "r": 1.0
+                },
+                "dynamic": true,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "cube construction",
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 0.058,
+                "y": 0.058,
+                "z": 0.058
+            },
+            "position": {
+                "x": 0.85,
+                "y": 1.518,
+                "z": 0.0029
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0.9,
+                    "g": 0.55,
+                    "r": 0.07
+                },
+                "dynamic": true,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "cube construction",
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 0.058,
+                "y": 0.058,
+                "z": 0.058
+            },
+            "position": {
+                "x": 0.85,
+                "y": 1.402,
+                "z": 0.0029
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 1.0,
+                    "r": 1.0
+                },
+                "dynamic": true,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "cube construction",
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 0.058,
+                "y": 0.058,
+                "z": 0.058
+            },
+            "position": {
+                "x": 2.7,
+                "y": 0.81,
+                "z": 0.0029
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 0,
+                    "r": 0
+                },
+                "dynamic": true,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "cube construction",
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 0.058,
+                "y": 0.058,
+                "z": 0.058
+            },
+            "position": {
+                "x": 2.758,
+                "y": 0.81,
+                "z": 0.0029
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 0.4,
+                    "r": 1.0
+                },
+                "dynamic": true,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "cube construction",
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 0.058,
+                "y": 0.058,
+                "z": 0.058
+            },
+            "position": {
+                "x": 2.642,
+                "y": 0.81,
+                "z": 0.0029
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0.26,
+                    "g": 0.9,
+                    "r": 0.06
+                },
+                "dynamic": true,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "cube construction",
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 0.058,
+                "y": 0.058,
+                "z": 0.058
+            },
+            "position": {
+                "x": 2.7,
+                "y": 0.868,
+                "z": 0.0029
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0.9,
+                    "g": 0.55,
+                    "r": 0.07
+                },
+                "dynamic": true,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "cube construction",
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 0.058,
+                "y": 0.058,
+                "z": 0.058
+            },
+            "position": {
+                "x": 2.7,
+                "y": 0.752,
+                "z": 0.0029
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 1.0,
+                    "r": 1.0
+                },
+                "dynamic": true,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "cube construction",
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 0.058,
+                "y": 0.058,
+                "z": 0.058
+            },
+            "position": {
+                "x": 0.3,
+                "y": 0.81,
+                "z": 0.0029
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 0,
+                    "r": 0
+                },
+                "dynamic": true,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "cube construction",
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 0.058,
+                "y": 0.058,
+                "z": 0.058
+            },
+            "position": {
+                "x": 0.358,
+                "y": 0.81,
+                "z": 0.0029
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 0.4,
+                    "r": 1.0
+                },
+                "dynamic": true,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "cube construction",
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 0.058,
+                "y": 0.058,
+                "z": 0.058
+            },
+            "position": {
+                "x": 0.238,
+                "y": 0.81,
+                "z": 0.0029
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0.26,
+                    "g": 0.9,
+                    "r": 0.06
+                },
+                "dynamic": true,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "cube construction",
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 0.058,
+                "y": 0.058,
+                "z": 0.058
+            },
+            "position": {
+                "x": 0.3,
+                "y": 0.868,
+                "z": 0.0029
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0.9,
+                    "g": 0.55,
+                    "r": 0.06
+                },
+                "dynamic": true,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "cube construction",
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 0.058,
+                "y": 0.058,
+                "z": 0.058
+            },
+            "position": {
+                "x": 0.3,
+                "y": 0.752,
+                "z": 0.0029
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 1.0,
+                    "r": 1.0
+                },
+                "dynamic": true,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "cube construction",
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 0.058,
+                "y": 0.058,
+                "z": 0.058
+            },
+            "position": {
+                "x": 1.1,
+                "y": 0.5,
+                "z": 0.0029
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 0.0,
+                    "r": 0.0
+                },
+                "dynamic": true,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "cube construction",
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 0.058,
+                "y": 0.058,
+                "z": 0.058
+            },
+            "position": {
+                "x": 1.158,
+                "y": 0.5,
+                "z": 0.0029
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0.0,
+                    "g": 0.4,
+                    "r": 1.0
+                },
+                "dynamic": true,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "cube construction",
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 0.058,
+                "y": 0.058,
+                "z": 0.058
+            },
+            "position": {
+                "x": 1.042,
+                "y": 0.5,
+                "z": 0.0029
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0.26,
+                    "g": 0.9,
+                    "r": 0.06
+                },
+                "dynamic": true,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "cube construction",
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 0.058,
+                "y": 0.058,
+                "z": 0.058
+            },
+            "position": {
+                "x": 1.1,
+                "y": 0.558,
+                "z": 0.0029
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0.9,
+                    "g": 0.55,
+                    "r": 0.07
+                },
+                "dynamic": true,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "cube construction",
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 0.058,
+                "y": 0.058,
+                "z": 0.058
+            },
+            "position": {
+                "x": 1.1,
+                "y": 0.442,
+                "z": 0.0029
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 1.0,
+                    "r": 1.0
+                },
+                "dynamic": true,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "cube construction",
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 0.058,
+                "y": 0.058,
+                "z": 0.058
+            },
+            "position": {
+                "x": 1.9,
+                "y": 0.5,
+                "z": 0.0029
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 0,
+                    "r": 0
+                },
+                "dynamic": true,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "cube construction",
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 0.058,
+                "y": 0.058,
+                "z": 0.058
+            },
+            "position": {
+                "x": 1.958,
+                "y": 0.5,
+                "z": 0.0029
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 0.4,
+                    "r": 1.0
+                },
+                "dynamic": true,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "cube construction",
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 0.058,
+                "y": 0.058,
+                "z": 0.058
+            },
+            "position": {
+                "x": 1.842,
+                "y": 0.5,
+                "z": 0.0029
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0.26,
+                    "g": 0.9,
+                    "r": 0.06
+                },
+                "dynamic": true,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "cube construction",
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 0.058,
+                "y": 0.058,
+                "z": 0.058
+            },
+            "position": {
+                "x": 1.9,
+                "y": 0.558,
+                "z": 0.0029
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0.9,
+                    "g": 0.55,
+                    "r": 0.07
+                },
+                "dynamic": true,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "cube construction",
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 0.058,
+                "y": 0.058,
+                "z": 0.058
+            },
+            "position": {
+                "x": 1.9,
+                "y": 0.442,
+                "z": 0.0029
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 1.0,
+                    "r": 1.0
+                },
+                "dynamic": true,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "reservoir eau bas gauche",
+                "enabled": false
+            },
+            "angle": 0,
+            "height": 0.35,
+            "position": {
+                "x": 0.086,
+                "y": 1.16,
+                "z": 0.445
+            },
+            "radius": 0.054,
+            "simulateur": {
+                "color": {
+                    "b": 0.4,
+                    "g": 0.4,
+                    "r": 0.4
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cylinder"
+        },
+        {
+            "A*": {
+                "": "reservoir eau bas gauche",
+                "enabled": false
+            },
+            "angle": 0,
+            "height": 0.35,
+            "position": {
+                "x": 2.914,
+                "y": 1.16,
+                "z": 0.445
+            },
+            "radius": 0.054,
+            "simulateur": {
+                "color": {
+                    "b": 0.4,
+                    "g": 0.4,
+                    "r": 0.4
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cylinder"
+        },
+        {
+            "A*": {
+                "": "reservoir eau bas gauche",
+                "enabled": false
+            },
+            "angle": 0,
+            "height": 0.35,
+            "position": {
+                "x": 0.61,
+                "y": 0.086,
+                "z": 0.445
+            },
+            "radius": 0.054,
+            "simulateur": {
+                "color": {
+                    "b": 0.4,
+                    "g": 0.4,
+                    "r": 0.4
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cylinder"
+        },
+        {
+            "A*": {
+                "": "reservoir eau bas gauche",
+                "enabled": false
+            },
+            "angle": 0,
+            "height": 0.35,
+            "position": {
+                "x": 2.39,
+                "y": 0.086,
+                "z": 0.445
+            },
+            "radius": 0.054,
+            "simulateur": {
+                "color": {
+                    "b": 0.4,
+                    "g": 0.4,
+                    "r": 0.4
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cylinder"
+        },
+        {
+            "A*": {
+                "": "chateau d'eau orange",
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 0.37,
+                "y": 0.37,
+                "z": 0.4
+            },
+            "position": {
+                "x": 0.185,
+                "y": 2.285,
+                "z": 0.2
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0.26,
+                    "g": 0.9,
+                    "r": 0.06
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "chateau d'eau orange haut gauche",
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 0.37,
+                "y": 0.1,
+                "z": 0.2
+            },
+            "position": {
+                "x": 0.185,
+                "y": 2.47,
+                "z": 0.5
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0.26,
+                    "g": 0.9,
+                    "r": 0.06
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "chateau d'eau orange haut bas",
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 0.1,
+                "y": 0.37,
+                "z": 0.2
+            },
+            "position": {
+                "x": 0,
+                "y": 2.285,
+                "z": 0.5
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0.26,
+                    "g": 0.9,
+                    "r": 0.06
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "chateau d'eau vert",
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 0.37,
+                "y": 0.37,
+                "z": 0.4
+            },
+            "position": {
+                "x": 2.815,
+                "y": 2.285,
+                "z": 0.2
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0.0,
+                    "g": 0.4,
+                    "r": 1.0
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "chateau d'eau vert haut gauche",
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 0.37,
+                "y": 0.1,
+                "z": 0.2
+            },
+            "position": {
+                "x": 2.815,
+                "y": 2.47,
+                "z": 0.5
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0.0,
+                    "g": 0.4,
+                    "r": 1.0
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "chateau d'eau vert haut bas",
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 0.1,
+                "y": 0.37,
+                "z": 0.2
+            },
+            "position": {
+                "x": 2.9939999999999998,
+                "y": 2.285,
+                "z": 0.5
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0.0,
+                    "g": 0.4,
+                    "r": 1.0
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "station \u00e9puration orange",
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 0.6,
+                "y": 0.25,
+                "z": 0.14
+            },
+            "position": {
+                "x": 1.2,
+                "y": 0.125,
+                "z": 0.07
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0.26,
+                    "g": 0.9,
+                    "r": 0.06
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "station \u00e9puration verte",
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 0.6,
+                "y": 0.25,
+                "z": 0.14
+            },
+            "position": {
+                "x": 1.8,
+                "y": 0.125,
+                "z": 0.07
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0.0,
+                    "g": 0.4,
+                    "r": 1.0
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "fleur orange",
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 0.23,
+                "y": 0.23,
+                "z": 0.2
+            },
+            "position": {
+                "x": 1.615,
+                "y": -0.215,
+                "z": 0.1
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 0.4,
+                    "r": 1
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "chemin abeille bas",
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 1.27,
+                "y": 0.02,
+                "z": 0.1
+            },
+            "position": {
+                "x": 0.635,
+                "y": -0.149,
+                "z": -0.01
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 0,
+                    "r": 0
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "chemin abeille haut",
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 1.27,
+                "y": 0.02,
+                "z": 0.1
+            },
+            "position": {
+                "x": 2.365,
+                "y": -0.149,
+                "z": -0.01
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 0,
+                    "r": 0
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "": "fleur verte",
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 0.23,
+                "y": 0.23,
+                "z": 0.2
+            },
+            "position": {
+                "x": 1.385,
+                "y": -0.215,
+                "z": 0.1
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0.26,
+                    "g": 0.9,
+                    "r": 0.06
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        }
+    ],
+    "robot": [
+        {
+            "angle": -90,
+            "color": {
+                "green": {
+                    "b": 0.26,
+                    "g": 0.9,
+                    "r": 0.06
+                },
+                "orange": {
+                    "b": 0,
+                    "g": 0.4,
+                    "r": 1
+                }
+            },
+            "name": "principal",
+            "position": {
+                "x": 0.25,
+                "y": 1.5,
+                "z": 0.51
+            },
+            "size": {
+                "x": 0.3,
+                "y": 0.3,
+                "z": 0.5
+            }
+        }
+    ]
 }
-
