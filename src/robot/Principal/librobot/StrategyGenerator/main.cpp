@@ -55,7 +55,7 @@ int main() {
 	best_ia_ever.associate_element(ElementType::SWITCH, action_switch, always_possible);
 
 	best_ia_ever.initialize(table);
-	best_ia_ever.generate_tree(tree, 500_ms);
+	// best_ia_ever.generate_tree(tree, 500_ms);
 	std::cout << tree << std::endl;
 	return 5;
 	best_ia_ever.run(500_ms);
