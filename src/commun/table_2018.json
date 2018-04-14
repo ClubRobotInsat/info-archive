@@ -303,7 +303,7 @@
                     "r": 0
                 },
                 "dynamic": false,
-                "enabled": false,
+                "enabled": true,
                 "mass": 0
             },
             "type": "cuboid"
@@ -331,7 +331,7 @@
                     "r": 0
                 },
                 "dynamic": false,
-                "enabled": false,
+                "enabled": true,
                 "mass": 0
             },
             "type": "cuboid"
@@ -359,7 +359,7 @@
                     "r": 0
                 },
                 "dynamic": false,
-                "enabled": false,
+                "enabled": true,
                 "mass": 0
             },
             "type": "cuboid"
@@ -387,7 +387,7 @@
                     "r": 0
                 },
                 "dynamic": false,
-                "enabled": false,
+                "enabled": true,
                 "mass": 0
             },
             "type": "cuboid"
@@ -415,7 +415,7 @@
                     "r": 0
                 },
                 "dynamic": true,
-                "enabled": false,
+                "enabled": true,
                 "mass": 0
             },
             "type": "cuboid"
@@ -443,7 +443,7 @@
                     "r": 1.0
                 },
                 "dynamic": true,
-                "enabled": false,
+                "enabled": true,
                 "mass": 0
             },
             "type": "cuboid"
@@ -471,7 +471,7 @@
                     "r": 0.06
                 },
                 "dynamic": true,
-                "enabled": false,
+                "enabled": true,
                 "mass": 0
             },
             "type": "cuboid"
@@ -499,7 +499,7 @@
                     "r": 0.06
                 },
                 "dynamic": true,
-                "enabled": false,
+                "enabled": true,
                 "mass": 0
             },
             "type": "cuboid"
@@ -527,7 +527,7 @@
                     "r": 1.0
                 },
                 "dynamic": true,
-                "enabled": false,
+                "enabled": true,
                 "mass": 0
             },
             "type": "cuboid"
@@ -555,7 +555,7 @@
                     "r": 0
                 },
                 "dynamic": true,
-                "enabled": false,
+                "enabled": true,
                 "mass": 0
             },
             "type": "cuboid"
@@ -583,7 +583,7 @@
                     "r": 0.06
                 },
                 "dynamic": true,
-                "enabled": false,
+                "enabled": true,
                 "mass": 0
             },
             "type": "cuboid"
@@ -611,7 +611,7 @@
                     "r": 1.0
                 },
                 "dynamic": true,
-                "enabled": false,
+                "enabled": true,
                 "mass": 0
             },
             "type": "cuboid"
@@ -639,7 +639,7 @@
                     "r": 0.07
                 },
                 "dynamic": true,
-                "enabled": false,
+                "enabled": true,
                 "mass": 0
             },
             "type": "cuboid"
@@ -667,7 +667,7 @@
                     "r": 1.0
                 },
                 "dynamic": true,
-                "enabled": false,
+                "enabled": true,
                 "mass": 0
             },
             "type": "cuboid"
@@ -695,7 +695,7 @@
                     "r": 0
                 },
                 "dynamic": true,
-                "enabled": false,
+                "enabled": true,
                 "mass": 0
             },
             "type": "cuboid"
@@ -723,7 +723,7 @@
                     "r": 1.0
                 },
                 "dynamic": true,
-                "enabled": false,
+                "enabled": true,
                 "mass": 0
             },
             "type": "cuboid"
@@ -751,7 +751,7 @@
                     "r": 0.06
                 },
                 "dynamic": true,
-                "enabled": false,
+                "enabled": true,
                 "mass": 0
             },
             "type": "cuboid"
@@ -779,7 +779,7 @@
                     "r": 0.07
                 },
                 "dynamic": true,
-                "enabled": false,
+                "enabled": true,
                 "mass": 0
             },
             "type": "cuboid"
@@ -807,7 +807,7 @@
                     "r": 1.0
                 },
                 "dynamic": true,
-                "enabled": false,
+                "enabled": true,
                 "mass": 0
             },
             "type": "cuboid"
@@ -835,7 +835,7 @@
                     "r": 0
                 },
                 "dynamic": true,
-                "enabled": false,
+                "enabled": true,
                 "mass": 0
             },
             "type": "cuboid"
@@ -863,7 +863,7 @@
                     "r": 1.0
                 },
                 "dynamic": true,
-                "enabled": false,
+                "enabled": true,
                 "mass": 0
             },
             "type": "cuboid"
@@ -891,7 +891,7 @@
                     "r": 0.06
                 },
                 "dynamic": true,
-                "enabled": false,
+                "enabled": true,
                 "mass": 0
             },
             "type": "cuboid"
@@ -919,7 +919,7 @@
                     "r": 0.06
                 },
                 "dynamic": true,
-                "enabled": false,
+                "enabled": true,
                 "mass": 0
             },
             "type": "cuboid"
@@ -947,7 +947,7 @@
                     "r": 1.0
                 },
                 "dynamic": true,
-                "enabled": false,
+                "enabled": true,
                 "mass": 0
             },
             "type": "cuboid"
@@ -975,7 +975,7 @@
                     "r": 0.0
                 },
                 "dynamic": true,
-                "enabled": false,
+                "enabled": true,
                 "mass": 0
             },
             "type": "cuboid"
@@ -1003,7 +1003,7 @@
                     "r": 1.0
                 },
                 "dynamic": true,
-                "enabled": false,
+                "enabled": true,
                 "mass": 0
             },
             "type": "cuboid"
@@ -1031,7 +1031,7 @@
                     "r": 0.06
                 },
                 "dynamic": true,
-                "enabled": false,
+                "enabled": true,
                 "mass": 0
             },
             "type": "cuboid"
@@ -1059,7 +1059,7 @@
                     "r": 0.07
                 },
                 "dynamic": true,
-                "enabled": false,
+                "enabled": true,
                 "mass": 0
             },
             "type": "cuboid"
@@ -1087,7 +1087,7 @@
                     "r": 1.0
                 },
                 "dynamic": true,
-                "enabled": false,
+                "enabled": true,
                 "mass": 0
             },
             "type": "cuboid"
@@ -1115,7 +1115,7 @@
                     "r": 0
                 },
                 "dynamic": true,
-                "enabled": false,
+                "enabled": true,
                 "mass": 0
             },
             "type": "cuboid"
@@ -1143,7 +1143,7 @@
                     "r": 1.0
                 },
                 "dynamic": true,
-                "enabled": false,
+                "enabled": true,
                 "mass": 0
             },
             "type": "cuboid"
@@ -1171,7 +1171,7 @@
                     "r": 0.06
                 },
                 "dynamic": true,
-                "enabled": false,
+                "enabled": true,
                 "mass": 0
             },
             "type": "cuboid"
@@ -1199,7 +1199,7 @@
                     "r": 0.07
                 },
                 "dynamic": true,
-                "enabled": false,
+                "enabled": true,
                 "mass": 0
             },
             "type": "cuboid"
@@ -1227,7 +1227,7 @@
                     "r": 1.0
                 },
                 "dynamic": true,
-                "enabled": false,
+                "enabled": true,
                 "mass": 0
             },
             "type": "cuboid"
@@ -1235,7 +1235,7 @@
         {
             "A*": {
                 "": "reservoir eau bas gauche",
-                "enabled": false
+                "enabled": true
             },
             "angle": 0,
             "height": 0.35,
@@ -1252,7 +1252,7 @@
                     "r": 0.4
                 },
                 "dynamic": false,
-                "enabled": false,
+                "enabled": true,
                 "mass": 0
             },
             "type": "cylinder"
@@ -1260,7 +1260,7 @@
         {
             "A*": {
                 "": "reservoir eau bas gauche",
-                "enabled": false
+                "enabled": true
             },
             "angle": 0,
             "height": 0.35,
@@ -1277,7 +1277,7 @@
                     "r": 0.4
                 },
                 "dynamic": false,
-                "enabled": false,
+                "enabled": true,
                 "mass": 0
             },
             "type": "cylinder"
@@ -1285,7 +1285,7 @@
         {
             "A*": {
                 "": "reservoir eau bas gauche",
-                "enabled": false
+                "enabled": true
             },
             "angle": 0,
             "height": 0.35,
@@ -1302,7 +1302,7 @@
                     "r": 0.4
                 },
                 "dynamic": false,
-                "enabled": false,
+                "enabled": true,
                 "mass": 0
             },
             "type": "cylinder"
@@ -1310,7 +1310,7 @@
         {
             "A*": {
                 "": "reservoir eau bas gauche",
-                "enabled": false
+                "enabled": true
             },
             "angle": 0,
             "height": 0.35,
@@ -1327,7 +1327,7 @@
                     "r": 0.4
                 },
                 "dynamic": false,
-                "enabled": false,
+                "enabled": true,
                 "mass": 0
             },
             "type": "cylinder"
@@ -1484,7 +1484,7 @@
                 "z": 0.2
             },
             "position": {
-                "x": 2.9939999999999998,
+                "x": 3,
                 "y": 2.285,
                 "z": 0.5
             },
@@ -1503,16 +1503,16 @@
         {
             "A*": {
                 "": "station \u00e9puration orange",
-                "enabled": false
+                "enabled": true
             },
             "angle": 0,
             "dimensions": {
-                "x": 0.6,
+                "x": 0.66,
                 "y": 0.25,
                 "z": 0.14
             },
             "position": {
-                "x": 1.2,
+                "x": 1.17,
                 "y": 0.125,
                 "z": 0.07
             },
@@ -1523,7 +1523,7 @@
                     "r": 0.06
                 },
                 "dynamic": false,
-                "enabled": false,
+                "enabled": true,
                 "mass": 0
             },
             "type": "cuboid"
@@ -1531,16 +1531,16 @@
         {
             "A*": {
                 "": "station \u00e9puration verte",
-                "enabled": false
+                "enabled": true
             },
             "angle": 0,
             "dimensions": {
-                "x": 0.6,
+                "x": 0.66,
                 "y": 0.25,
                 "z": 0.14
             },
             "position": {
-                "x": 1.8,
+                "x": 1.83,
                 "y": 0.125,
                 "z": 0.07
             },
@@ -1551,7 +1551,7 @@
                     "r": 1.0
                 },
                 "dynamic": false,
-                "enabled": false,
+                "enabled": true,
                 "mass": 0
             },
             "type": "cuboid"
