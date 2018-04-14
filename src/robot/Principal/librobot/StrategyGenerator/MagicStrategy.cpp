@@ -6,12 +6,33 @@
 #include <ConstantesCommunes.h>
 #include <cassert>
 
+void StrategyGenerator::MagicStrategy::check_element(std::map<ElementType, bool>& typeOk, Element element) const {
+	if(typeOk.find(element.get_type()) != typeOk.cend()) {
+		return;
+	}
+
+	assert(_element_to_action.find(element.get_type()) != _element_to_action.cend());
+	assert(_element_actionable.find(element.get_type()) != _element_actionable.cend());
+
+	typeOk[element.get_type()] = true;
+
+	for(auto e : _element_to_action.find(element.get_type())->second(repere::Coordonnees()).get_next_elements()) {
+		check_element(typeOk, e);
+	}
+}
+
 void StrategyGenerator::MagicStrategy::run(Duration max_refresh_time) {
 	using namespace std::chrono_literals;
 
+	// Check if all conditions are respected before launching the strategy
 	assert(_initialized);
-
-	// TODO: test if all elements in the initial table and possible elements have good functions to call
+	{
+		std::map<ElementType, bool> typeOk;
+		for(const auto& e : _initial_table) {
+			check_element(typeOk, *e);
+		}
+	}
+	logDebug("All conditions are respected, start of MagicStrategy::run(", max_refresh_time, ").");
 
 	_start_time.reset();
 	std::mutex mutex_petri_running;
@@ -23,8 +44,6 @@ void StrategyGenerator::MagicStrategy::run(Duration max_refresh_time) {
 	execute_action.detach();
 
 	pthread_t id_thread = 0;
-
-	logDebug("Début de MagicStrategy::run(", max_refresh_time, ").");
 
 	while(_start_time.getElapsedTime() < MATCH_DURATION * 10000) {
 		StopWatch calculation_time;
@@ -43,7 +62,8 @@ void StrategyGenerator::MagicStrategy::run(Duration max_refresh_time) {
 
 		generate_tree(action_tree, 0.75 * max_refresh_time - calculation_time.getElapsedTime());
 
-		std::list<Action> action_path{action_tree.generate_action_path()};
+		auto p = action_tree.generate_action_path();
+		std::list<Action> action_path = p.first;
 
 		if(0) {
 			std::cout << "\n\n\nTree generated: \n\n" << action_tree << "\n\n\n";
@@ -74,7 +94,8 @@ void StrategyGenerator::MagicStrategy::run(Duration max_refresh_time) {
 			if(petri_finished) {
 				// petri action has finished: update the previous actions and increment points; then calculate again the
 				// new best path
-				_previous_actions.emplace_back(action_tree.get_table_after_action(_actual_action), _actual_action);
+				_previous_actions.emplace_back(p.second, _actual_action);
+				//_previous_actions.emplace_back(action_tree.get_table_after_action(_actual_action), _actual_action);
 				_total_points += _actual_action.get_nr_points();
 				petri_finished = false;
 				logDebug1("The action '", _actual_action, "' has finished with success.");

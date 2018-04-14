@@ -7,6 +7,7 @@
 
 #include "Action.hpp"
 #include "Table.hpp"
+#include <assert.h>
 #include <iomanip>
 
 namespace StrategyGenerator {
@@ -122,18 +123,24 @@ namespace StrategyGenerator {
 			return frontier.size();
 		}
 
-		std::list<Action> generate_action_path() {
-			std::list<Action> result;
+		std::pair<std::list<Action>, Table> generate_action_path() {
+			std::list<Action> action_path;
+			Table* next_table = nullptr;
 			node* n{best_node};
 			while(n != nullptr && n != _first) {
-				result.push_front(n->in_edge.cost);
+				action_path.push_front(n->in_edge.cost);
 				n = n->in_edge.target;
+				next_table = &n->data;
 			}
-			// remove previous_actions from the path
-			if(!result.empty()) {
-				result.erase(result.cbegin());
+			// remove 'previous_actions' from the path
+			if(!action_path.empty()) {
+				assert(action_path.cbegin()->get_name() == "previous_actions");
+				action_path.erase(action_path.cbegin());
 			}
-			return result;
+			if(next_table == nullptr && !action_path.empty()) {
+				throw std::runtime_error("bad correspondence between table and action_path");
+			}
+			return std::make_pair(action_path, *next_table);
 		}
 
 		friend std::ostream& operator<<(std::ostream& os, const DecisionalTree& tree) {

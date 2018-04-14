@@ -31,6 +31,8 @@ namespace StrategyGenerator {
 
 		std::unique_ptr<Petri::PetriDynamicLib> _petri;
 
+		void check_element(std::map<ElementType, bool>& typeOk, Element element) const;
+
 		void generate_tree(DecisionalTree& tree, Duration timeout);
 
 		// MagicStrategy should be run only if it is completely set up
