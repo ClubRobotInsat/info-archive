@@ -1,6 +1,7 @@
 #pragma once
 
 //#define HOMOLOGATION
+#define USE_MAGIC_STRATEGY
 
 #include "../../../commun/ConstantesCommunes.h"
 #include "../librobot/libRobot.h"

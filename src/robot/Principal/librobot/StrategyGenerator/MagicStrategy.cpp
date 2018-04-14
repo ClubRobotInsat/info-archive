@@ -37,14 +37,23 @@ void StrategyGenerator::MagicStrategy::run(Duration max_refresh_time) {
 		                     _previous_actions.back().first,
 		                     Action(_start_time.getElapsedTime(),
 		                            _total_points,
-		                            _previous_actions.back().second.get_coordonnees(),
+		                            Element(ElementType::NOTHING, _previous_actions.back().second.get_coordonnees()),
 		                            {},
-		                            ActionType::NOTHING,
-		                            "transition_action"));
+		                            "previous_actions"));
 
 		generate_tree(action_tree, 0.75 * max_refresh_time - calculation_time.getElapsedTime());
 
 		std::list<Action> action_path{action_tree.generate_action_path()};
+
+		if(0) {
+			std::cout << "\n\n\nTree generated: \n\n" << action_tree << "\n\n\n";
+			std::cout << "action path: ";
+			for(Action a : action_path) {
+				std::cout << "--> " << a;
+			}
+			std::cout << std::endl;
+		}
+
 		// logDebug0("Tree generated successfully with ", action_tree.size(), " nodes inside. Associated path has ",
 		// action_path.size(), " actions to be run and it will give ", action_tree.max_points, " points.");
 
@@ -106,14 +115,14 @@ void StrategyGenerator::MagicStrategy::generate_tree(StrategyGenerator::Decision
 	StopWatch calculation_time;
 
 	DecisionalTree::node* actual_node;
-	while((actual_node = tree.pop_frontier_node()) != nullptr && calculation_time.getElapsedTime() < timeout) {
+	while((actual_node = tree.pop_frontier_node()) != nullptr /*&& calculation_time.getElapsedTime() < timeout*/) {
 		Duration actual_time{tree.calculate_cost(actual_node).second};
-		if(actual_time < Constantes::MATCH_DURATION) {
+		if(actual_time < MATCH_DURATION) {
 			for(std::shared_ptr<Element> e : actual_node->data) {
 				if(_element_actionable[e->get_type()]()) {
 					Table next_table{tree.get_table(actual_node)};
 					next_table.erase(e);
-					Action associated_action(_element_to_action[e->get_type()](e->get_position()));
+					Action associated_action(_element_to_action[e->get_type()](e->get_coordonnees()));
 					for(Element new_e : associated_action.get_next_elements()) {
 						next_table.emplace(std::make_shared<Element>(new_e));
 					}

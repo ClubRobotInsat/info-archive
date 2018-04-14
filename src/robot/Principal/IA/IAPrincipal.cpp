@@ -78,25 +78,24 @@ void IAPrincipal::initialisation() {
 	logDebug("StrategyGenerator");
 	// Action definitions
 	auto action_bee = [](repere::Coordonnees coords) -> StrategyGenerator::Action {
-		return StrategyGenerator::Action(5_s, 50, coords, {}, StrategyGenerator::ActionType::BEE, "bee");
+		return StrategyGenerator::Action(5_s, 50, StrategyGenerator::Element(StrategyGenerator::ElementType::BEE, coords), {}, "bee");
 	};
 
 	auto action_cube = [](repere::Coordonnees coords) -> StrategyGenerator::Action {
-		return StrategyGenerator::Action(20_s, 30, coords, {}, StrategyGenerator::ActionType::CUBE, "cube");
+		return StrategyGenerator::Action(20_s, 30, StrategyGenerator::Element(StrategyGenerator::ElementType::CUBE, coords), {}, "cube");
 	};
 
 	auto action_sphere = [&repere_match](repere::Coordonnees coords) -> StrategyGenerator::Action {
 		return StrategyGenerator::Action(20_s,
 		                                 80,
-		                                 coords,
+		                                 StrategyGenerator::Element(StrategyGenerator::ElementType::SPHERE, coords),
 		                                 {StrategyGenerator::Element(StrategyGenerator::ElementType::CUBE,
 		                                                             Coordonnees({1.5_m, 0_m}, 0_deg, repere_match))},
-		                                 StrategyGenerator::ActionType::SPHERE,
 		                                 "sphere");
 	};
 
 	auto action_switch = [](repere::Coordonnees coords) -> StrategyGenerator::Action {
-		return StrategyGenerator::Action(3_s, 50, coords, {}, StrategyGenerator::ActionType::SWITCH, "switch");
+		return StrategyGenerator::Action(3_s, 50, StrategyGenerator::Element(StrategyGenerator::ElementType::SWITCH, coords), {}, "switch");
 	};
 
 	// Element definitions
@@ -159,10 +158,11 @@ void IAPrincipal::executer() {
 	_robot->setAngleDetectionAdv(0.4_PI);
 #endif
 
+#ifdef USE_MAGIC_STRATEGY
 	_strategy.run(500_ms);
-
-
-	// lancerPetri(_debugMode);
+#else
+	lancerPetri(_debugMode);
+#endif
 
 	/*std::thread([=]() {
 	    logDebug(_robot->getPositionAdversaire());

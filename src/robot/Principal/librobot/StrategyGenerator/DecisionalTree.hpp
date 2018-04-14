@@ -7,6 +7,7 @@
 
 #include "Action.hpp"
 #include "Table.hpp"
+#include <iomanip>
 
 namespace StrategyGenerator {
 	class DecisionalTree {
@@ -30,11 +31,20 @@ namespace StrategyGenerator {
 
 	public:
 		struct node {
-			node(Table table, edge parent) : data(std::move(table)), in_edge(std::move(parent)) {}
+			node(Table table, edge parent, int previous_points, Duration previous_time)
+			        : data(std::move(table)), in_edge(std::move(parent)), cost(std::make_pair(previous_points, previous_time)) {}
+			~node() {
+				for(edge e : out_edges) {
+					delete e.target;
+				}
+			}
 
 			node* add_child(Table table, Action action) {
 				edge in(action, this);
-				node* next = new node(std::move(table), in);
+				node* next = new node(std::move(table),
+				                      in,
+				                      cost.first + action.get_nr_points(),
+				                      cost.second + action.get_execution_time(data.get_robot_position()));
 				out_edges.emplace_back(action, next);
 				return next;
 			}
@@ -46,12 +56,14 @@ namespace StrategyGenerator {
 			Table data;
 			std::list<edge> out_edges;
 			edge in_edge;
+			std::pair<int, Duration> cost;
 		};
 
-
 		explicit DecisionalTree(Table initial_state) : _size(0), max_points(0), best_node(nullptr) {
-			_first = new node(std::move(initial_state), edge(ActionWait(0_s), nullptr));
-			frontier.push_back(_first);
+			_first = new node(std::move(initial_state), edge(ActionWait(0_s), nullptr), 0, 0_s);
+		}
+		~DecisionalTree() {
+			delete _first;
 		}
 
 		node* get_root() const {
@@ -81,6 +93,7 @@ namespace StrategyGenerator {
 		}
 
 		std::pair<int, Duration> calculate_cost(node* n) {
+			// return n->cost;
 			int points{0};
 			Duration time{0_s};
 			node* expanded{n};
@@ -116,8 +129,52 @@ namespace StrategyGenerator {
 				result.push_front(n->in_edge.cost);
 				n = n->in_edge.target;
 			}
-			result.erase(result.cbegin());
+			// remove previous_actions from the path
+			if(!result.empty()) {
+				result.erase(result.cbegin());
+			}
 			return result;
+		}
+
+		friend std::ostream& operator<<(std::ostream& os, const DecisionalTree& tree) {
+			tree.print_rec(os, tree._first, 0);
+			return os;
+		}
+
+	private:
+		void print_rec(std::ostream& os, node* n, int depth) const {
+			if(n != nullptr) {
+				std::stringstream ss;
+				ss << n->data << '(' << n->cost.first << ", " << n->cost.second << ") ";
+				std::size_t size = ss.str().size();
+				os << "\033[34m" << n->data << "\033[0m(" << n->cost.first << ", " << n->cost.second << ") ";
+
+				if(n == best_node) {
+					os << "*";
+				}
+
+				if(!n->out_edges.empty()) {
+					std::size_t max_size_action = 0;
+					for(const edge& e : n->out_edges) {
+						std::stringstream ss;
+						ss << e.cost;
+						if(ss.str().size() > max_size_action) {
+							max_size_action = ss.str().size();
+						}
+					}
+
+					auto it = n->out_edges.cbegin();
+					os << "--> " << std::setw(max_size_action + 1) << std::left << it->cost << "--> ";
+					print_rec(os, it->target, size + max_size_action + 9 + depth);
+
+					while(++it != n->out_edges.cend()) {
+						os << "\n"
+						   << std::string(depth + size, ' ') << "--> " << std::setw(max_size_action + 1) << it->cost << "--> ";
+						print_rec(os, it->target, size + max_size_action + 9 + depth);
+					}
+					os << std::endl;
+				}
+			}
 		}
 	};
 }

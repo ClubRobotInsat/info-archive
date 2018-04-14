@@ -46,7 +46,8 @@ namespace StrategyGenerator {
 
 		void initialize(Table initial_table) {
 			_initial_table = std::move(initial_table);
-			_actual_action = Action(0_s, 0, _initial_table._robot_coords, {}, ActionType::NOTHING, "initial_action");
+			_actual_action =
+			    Action(0_s, 0, Element(ElementType::NOTHING, _initial_table._robot_coords), {}, "initial_action");
 
 			_initialized = true;
 		}

@@ -10,9 +10,11 @@
 #include <memory>
 
 #include "Action.hpp"
+#include "Enum/Enum.h"
 
 namespace StrategyGenerator {
-	enum class ElementType : std::size_t { BEE, SWITCH, CUBE, SPHERE };
+	ENUM_CLASS_NS(StrategyGenerator, ElementType, NOTHING, BEE, SWITCH, CUBE, SPHERE);
+
 	class Action;
 
 	class Element : public std::enable_shared_from_this<Element> {
@@ -27,8 +29,8 @@ namespace StrategyGenerator {
 			return _type;
 		}
 
-		inline Vector2m get_position() const {
-			return _coordonnees.getPos2D();
+		inline repere::Coordonnees get_coordonnees() const {
+			return _coordonnees;
 		}
 
 		/*std::size_t hash() {
@@ -37,7 +39,7 @@ namespace StrategyGenerator {
 		}*/
 
 		friend bool operator==(const Element& e1, const Element& e2) {
-			return e1.get_type() == e2.get_type() && e1.get_position() == e2.get_position();
+			return e1.get_type() == e2.get_type() && e1.get_coordonnees().getPos2D() == e2.get_coordonnees().getPos2D();
 		}
 
 		friend bool operator!=(const Element& e1, const Element& e2) {

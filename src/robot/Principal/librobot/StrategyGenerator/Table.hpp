@@ -20,8 +20,8 @@ namespace StrategyGenerator {
 	public:
 		Table() = default;
 
-		void set_robot_coords(repere::Coordonnees robot_coords) {
-			_robot_coords = std::move(robot_coords);
+		void set_robot_coords(const repere::Coordonnees& robot_coords) {
+			_robot_coords = robot_coords;
 		}
 
 		/*std::size_t hash() {
@@ -34,6 +34,33 @@ namespace StrategyGenerator {
 
 		Vector2m get_robot_position() const {
 			return _robot_coords.getPos2D();
+		}
+
+		friend std::ostream& operator<<(std::ostream& os, const Table table) {
+			os << '[';
+			for(auto it = table.cbegin(); it != table.cend();) {
+				switch((*it)->get_type()) {
+					case ElementType::SWITCH:
+						os << "switch";
+						break;
+					case ElementType::CUBE:
+						os << "cube";
+						break;
+					case ElementType::SPHERE:
+						os << "sphere";
+						break;
+					case ElementType::BEE:
+						os << "bee";
+						break;
+					case ElementType::NOTHING:
+						os << "nothing";
+						break;
+				}
+				if(++it != table.cend()) {
+					os << ", ";
+				}
+			}
+			return os << ']';
 		}
 	};
 }
