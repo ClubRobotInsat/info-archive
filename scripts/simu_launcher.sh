@@ -1,32 +1,30 @@
 #!/bin/bash
 
-color=blue
+color=green
 if `test $# -eq 1`
 then
-	if [ "$1" = "yellow" ]
+	if [ "$1" = "orange" ]
 	then
-		color=yellow
+		color=orange
 	fi
-elif ! [ "$1" = "blue" ]
+elif ! [ "$1" = "green" ]
 then
-	echo "Usage : simu_launcher.sh [blue|yellow]"
+	echo "Usage : simu_launcher.sh [green|orange]"
 	exit 1
 fi
 
-dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+echo -e "To launch Petri, run \033[0;44m'petrilab'\033[0;0m"
+echo ""
 
-echo "Launching web_server..."
-../websimulator/serve.sh &
-
-echo "Launching Petri..."
-"$dir"/petri/petri &
-
-if `test -e "$dir"/build/Simu2017`
+if `test -e "$dir"/build/src/simulateur/Simulator`
 then
 	echo "Launching simu..."
-	"$dir"/build/Simu2017 --robot on --world on --color "$color"
-elif `test -e "$dir"/cmake-build-debug/simulateur/Simu2017`
+	cd "$dir"/build/src/simulateur/
+	./Simulator --robot on --world on --color "$color" --load ../table_2018.json
+elif `test -e "$dir"/cmake-build-debug/src/simulateur/Simulator`
 then
 	echo "Launching simu..."
-	"$dir"/cmake-build-debug/simulateur/Simu2017 --robot on --world on --color "$color"
+	cd "$dir"/cmake-build-debug/src/simulateur/
+	./Simulator --robot on --world on --color "$color" --load ../table_2018.json
 fi
