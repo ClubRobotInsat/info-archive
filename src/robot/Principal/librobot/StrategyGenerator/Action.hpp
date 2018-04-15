@@ -17,8 +17,26 @@ namespace StrategyGenerator {
 	class Element;
 
 	/**
-	* @brief Abstraction of an action in the Cup
-	*/
+	 * @brief Abstraction d'une action d'un match
+	 *
+	 * Cette classe possède toutes les informations d'une action (points, durée, coords de départ, nom)
+	 * Lorsque l'acion est choisie pour être exécutée, elle lance le réseau pétri avec les bons arguments
+	 *
+	 * @code
+	 * // Ici, l'élément "bee" apparaît après l'appel de la fonction "cube"
+	 * Element next_element(ElementType::BEE, Coordonnees({1_m, 1_m}, 90_deg));
+	 * Action action(20_s, 30, Element(ElementType::CUBE, Coordonnees({50_cm, 1_m}), {next_element}, "cube");
+	 * // La durée d'exécution totale d'une action vaut la durée du petri + du déplacement (à vol d'oiseau)
+	 * assert(action.get_execution_time(Coordonnees({50_cm, 0_m}) == 20_s + 1_m / LINEAR_SPEED_DEFAULT);
+	 *
+	 * _dep.allerA(action.get_coordonnees().getPos2D());
+	 * _dep.tournerAbsolu(action.get_coordonnees().getAngle());
+	 *
+	 * // L'action va finir 5_s en avance (fin du chrono par exemple)
+	 * action.execute_petri(..., 5_s);
+	 * std::cout << "L'action '" << action.get_name() << "' s'est temrinée." << std::endl;
+	 * @endcode
+	 */
 	class Action {
 	protected:
 		// Execution time since the robot is at the good position & in the good angle (approximation)
@@ -52,7 +70,6 @@ namespace StrategyGenerator {
 			return _element.get_coordonnees();
 		}
 
-		// TODO: add deplacement time
 		inline Duration get_execution_time(const repere::Coordonnees& initial_coords) const {
 			Distance dist{Distance::makeFromCm(
 			    std::sqrt(std::pow(initial_coords.getX().toCm() - _element.get_coordonnees().getX().toCm(), 2) +
@@ -64,12 +81,13 @@ namespace StrategyGenerator {
 			return _elements_created_after_call;
 		}
 
-		virtual void execute_petri(Petri::PetriNet& petri, Duration remainingTime) const {
+		virtual void execute_petri(Petri::PetriNet& petri, Duration timeout) const {
+			logDebug("MagicStrategy::Action::execute_petri called for action ", _name, " with timeout = ", timeout);
 			StopWatch start;
 			// petri.variables().pushVariables(static_cast<std::size_t>(_type));
 			petri.run();
 
-			while(/*petri.running() && */ start.getElapsedTime() < remainingTime) {
+			while(petri.running() && start.getElapsedTime() < timeout) {
 				sleep(50_ms);
 			}
 

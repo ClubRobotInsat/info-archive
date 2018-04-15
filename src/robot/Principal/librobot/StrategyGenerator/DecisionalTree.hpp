@@ -11,6 +11,30 @@
 #include <iomanip>
 
 namespace StrategyGenerator {
+	/**
+	 * @brief Arbre de recherche pour déterminer la meilleure stratégie
+	 *
+	 * Cet arbre doit être rempli par une instance extérieure (MagicStrategy)
+	 * Il calcule au fur et à mesure la meilleure stratégie en fonction du nombre de points sans dépasser 90_s
+	 *
+	 * Chaque noeud représente une `Table` ainsi que le temps actuel et les points marqués
+	 * Chaque arc représente une `Action` du robot (déplacement inclus)
+	 *
+	 * Sa structure est la suivante :
+	 *
+	 *             NOTHING                     BEE                  CUBE
+	 * [table à 0s] ----> [BEE, CUBE, SPHERE] ----> [CUBE, SPHERE] ----> [SPHERE]
+	 *                                        CUBE
+	 *                                        ----> [BEE, SPHERE]
+	 *                                        SPHERE
+	 *                                        ----> [BEE, CUBE]
+	 *
+	 * La première action `NOTHING` permet à t=Xs l'ensemble des actions précédemment faites
+	 * Ca permet de prendre en compte le temps de jeu et les points marqués pour générer la suite
+	 *
+	 * Lorsque toute la table a été générée, il suffit d'appeler `generate_action_path()` qui retourne la table suivante
+	 * et le chemin optimal pour maximiser les points
+	 */
 	class DecisionalTree {
 	public:
 		struct node;
@@ -73,15 +97,6 @@ namespace StrategyGenerator {
 
 		Table get_table(node* n) const {
 			return n->data;
-		}
-
-		Table get_table_after_action(const Action& action) const {
-			for(edge e : _first->out_edges) {
-				if(e.cost == action) {
-					return _first->data;
-				}
-			}
-			throw std::invalid_argument("The given action is inaccessible by the decisional tree.");
 		}
 
 		node* pop_frontier_node() {

@@ -13,13 +13,26 @@
 #include "Enum/Enum.h"
 
 namespace StrategyGenerator {
+	/**
+	 * @brief Type d'un élément qui permet de lui associer une action spécifique
+	 *
+	 * Cette enum est à mettre à jour pour chaque stratégie/année
+	 */
 	ENUM_CLASS_NS(StrategyGenerator, ElementType, NOTHING, BEE, SWITCH, CUBE, SPHERE);
 
 	class Action;
 
+	/**
+	 * @brief Représente un élément sur la table sur lequel le robot doit faire une action
+	 *
+	 * Un élément peut être défini statiquement en début de match, ou être rajouté dynamiquement pendant le match
+	 *
+	 * @todo Créer une fonction qui génère un élément depuis des capteurs (reconnaissance de forme + position)
+	 */
 	class Element : public std::enable_shared_from_this<Element> {
 		ElementType _type;
 
+		/// Représente les coordonnées du centre de l'élément
 		repere::Coordonnees _coordonnees;
 
 	public:

@@ -12,6 +12,18 @@
 #include "Element.hpp"
 
 namespace StrategyGenerator {
+	/**
+	 * @brief Représente la table connue du robot à un instant t
+	 *
+	 * Une table dépend d'un ensemble d'éléments (type + coords) ainsi que la position du robot
+	 *
+	 * @code
+	 * Table t;
+	 * t.emplace(std::make_shared<Element>(ElementType::SPHERE, Coordonnees({10_cm, 50_cm})));
+	 * t.emplace(std::make_shared<Element>(ElementType::CUBE, Coordonnees({50_cm, 2_m})));
+	 * t.set_robot_coords(Coordonnees({1.5_m, 50_cm}, 40_deg));
+	 * @endcode
+	 */
 	class Table : public std::set<std::shared_ptr<Element>> {
 		repere::Coordonnees _robot_coords;
 
@@ -32,10 +44,12 @@ namespace StrategyGenerator {
 		    return seed;
 		}*/
 
+		/// @return Position du robot dans l'`ABSOLUTE_REFERENCE`
 		Vector2m get_robot_position() const {
 			return _robot_coords.getPos2D();
 		}
 
+		/// affichage pour le débug, à updater lors de l'ajout de nouveaux éléments
 		friend std::ostream& operator<<(std::ostream& os, const Table table) {
 			os << '[';
 			for(auto it = table.cbegin(); it != table.cend();) {

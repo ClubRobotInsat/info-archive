@@ -21,7 +21,7 @@ void StrategyGenerator::MagicStrategy::check_element(std::map<ElementType, bool>
 	}
 }
 
-void StrategyGenerator::MagicStrategy::run(Duration max_refresh_time) {
+void StrategyGenerator::MagicStrategy::run(Petri::PetriDynamicLib& petri, Duration max_refresh_time) {
 	using namespace std::chrono_literals;
 
 	// Check if all conditions are respected before launching the strategy
@@ -117,8 +117,8 @@ void StrategyGenerator::MagicStrategy::run(Duration max_refresh_time) {
 			// execution of the thread: first the action is running and then we stipulate that petri had time to finish
 			// its life
 			execute_action = std::thread(
-			    [&petri_finished](std::mutex& mutex_petri_running, const Action& action) {
-				    executioner(mutex_petri_running, action);
+			    [&](std::mutex& mutex_petri_running, const Action& action) {
+				    executioner(*(petri.createPetriNet()), mutex_petri_running, action, MATCH_DURATION - _start_time.getElapsedTime());
 				    petri_finished = true;
 				},
 			    std::ref(mutex_petri_running),

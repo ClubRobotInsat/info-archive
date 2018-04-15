@@ -159,7 +159,7 @@ void IAPrincipal::executer() {
 #endif
 
 #ifdef USE_MAGIC_STRATEGY
-	_strategy.run(500_ms);
+	_strategy.run(*_petri, 500_ms);
 #else
 	lancerPetri(_debugMode);
 #endif
