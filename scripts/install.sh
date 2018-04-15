@@ -5,6 +5,7 @@ install_apt=0
 install_hook=0
 install_petri=0
 install_wii=0
+install_raspi=0
 
 if [ $# -ne "0" ]
     then for arg in $*
@@ -14,6 +15,7 @@ if [ $# -ne "0" ]
             install_petri=1
             install_hook=1
             install_wii=1
+            install_raspi=1
         elif [ "$arg" = "tools" ]
             then install_apt=1
         elif [ "$arg" = "petri" ]
@@ -22,13 +24,15 @@ if [ $# -ne "0" ]
             then install_hook=1
         elif [ "$arg" = "wii" ]
             then install_wii=1
+		elif [ "$arg" = "raspi" ]
+			then install_raspi=1
         else
-            echo "Usage : $0 [all|tools|petri|format|wii]"
+            echo "Usage : $0 [all|tools|petri|format|wii|raspi]"
             exit
         fi
     done
 else
-    echo "Usage : $0 [all|tools|petri|format|wii]"
+    echo "Usage : $0 [all|tools|petri|format|wii|raspi]"
 fi
 
 #echo -e
@@ -44,6 +48,7 @@ dir=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 hook_installed=0
 wii_installed=0
 petri_installed=0
+raspi_installed=0
 
 if [ $install_apt -eq 1 ]
     then echo -e "${Yellow}Installation des logiciels nécessaires${End}"
@@ -83,10 +88,24 @@ if [ $install_wii -eq 1 ]
     cmake src
     make
     sudo make install
+	sudo ldconfig
 
     if [ $? -eq "0" ]
-        then echo -e "${Green}Installation du libwiic réussie${End}"
+        then echo -e "${Green}Installation de libwiic réussie${End}"
         wii_installed=1
         else echo -e "${Red}Installation de libwiic échouée${End}"
     fi
+fi
+
+if [ $install_raspi -eq 1 ]
+	then echo -e "${Yellow}Installation des outils ARM${End}"
+	sudo apt-get install gcc-5-arm-linux-gnueabihf g++-5-arm-linux-gnueabihf build-essential git
+	cd ${dir}
+	sudo cp precompiled-libraries/libbluetooth.so.3 precompiled-libraries/libwiicpp.so precompiled-libraries/libwiic.so /usr/arm-linux-gnueabihf/lib
+
+	if [ $? -eq "0" ]
+		then echo -e "${Green}Installation de la cross-compilation pour Raspberry réussie${End}"
+		raspi_installed=1
+		else echo -e "${Red}Installation de la cross-compilation pour Raspberry échouée${End}"
+	fi
 fi
