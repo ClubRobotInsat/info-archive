@@ -15,7 +15,7 @@ add_executable(${UNITTEST_TARGET_NAME}
         ${files})
 
 target_include_directories(${UNITTEST_TARGET_NAME} PRIVATE "../third_parties/catch/single_include")
-target_link_libraries(${UNITTEST_TARGET_NAME} Outils_Robot)
+target_link_libraries(${UNITTEST_TARGET_NAME} Outils_Robot robotPrincipal)
 
 add_test(NAME "${UNITTEST_TARGET_NAME}_default"
         COMMAND ${UNITTEST_TARGET_NAME}

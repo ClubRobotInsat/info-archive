@@ -58,5 +58,5 @@ int main() {
 	// best_ia_ever.generate_tree(tree, 500_ms);
 	std::cout << tree << std::endl;
 	return 5;
-	best_ia_ever.run(500_ms);
+	// best_ia_ever.run(500_ms);
 }

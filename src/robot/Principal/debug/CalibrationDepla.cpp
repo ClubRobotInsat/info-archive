@@ -1359,7 +1359,7 @@ void CalibrationDepla::facteurEchelleAuto() {
 
 	_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, true);
 
-	_deplacement.allerA(2.6_m, _robot->actualiserEtLireCoordonnees().getY(), SensAvance::Avant);
+	//_deplacement.allerA(2.6_m, _robot->actualiserEtLireCoordonnees().getY(), SensAvance::Avant);
 	this->attendreFinDeplacement();
 
 	_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, false);

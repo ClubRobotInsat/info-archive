@@ -6,7 +6,7 @@
 
 #include "../communication/Robot2018.h"
 #include "../graphique/irrlicht/Scene.h"
-#include "../graphique/server/WebGraphicalContext.h"
+//#include "../graphique/server/WebGraphicalContext.h"
 #include "../physique/box2d/Box2DPhysicalContext.h"
 #include "SimulateurConstantes.h"
 

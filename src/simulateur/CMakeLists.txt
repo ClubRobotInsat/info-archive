@@ -6,8 +6,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 cmake_minimum_required(VERSION 3.2)
 
 link_libraries(pthread)
-add_subdirectory(graphique/server)
-include_directories(SYSTEM ${root_SOURCE_DIR}/third_parties/websocketpp)
+#add_subdirectory(graphique/server)
+#include_directories(SYSTEM ${root_SOURCE_DIR}/third_parties/websocketpp)
 include_directories(SYSTEM ${root_SOURCE_DIR}/third_parties/asio/asio/include)
 include_directories(${root_SOURCE_DIR}/third_parties/petri/Runtime/Cpp/detail/jsoncpp/include)
 
@@ -34,8 +34,8 @@ add_executable(Simulator
         graphique/IGraphicalContext.h
         graphique/IGraphicalInstance.h
         graphique/IGraphicalUserListener.h
-        graphique/server/WebGraphicalContext.cpp
-        graphique/server/WebObjectHandler.cpp
+        #graphique/server/WebGraphicalContext.cpp
+        #graphique/server/WebObjectHandler.cpp
         graphique/irrlicht/SimulationToIrrlicht.h
         graphique/irrlicht/Object.cpp
         graphique/irrlicht/Scene.cpp
@@ -60,4 +60,5 @@ add_executable(Simulator
 
         ${root_SOURCE_DIR}/third_parties/json.hpp)
 
-target_link_libraries(Simulator Box2D Outils_Simu Server ${IRRLICHT_LIBRARIES})
+#target_link_libraries(Simulator Box2D Outils_Simu Server ${IRRLICHT_LIBRARIES})
+target_link_libraries(Simulator Box2D Outils_Simu ${IRRLICHT_LIBRARIES})

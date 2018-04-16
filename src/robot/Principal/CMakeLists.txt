@@ -8,7 +8,9 @@ set(ROBOT_PRINC_SOURCE
         petri/Deplacement.cpp
         petri/Servo.cpp
         petri/Utils.cpp
-        petri/PetriCommon.cpp petri/Servo.cpp petri/Servo.h)
+        petri/PetriCommon.cpp
+        petri/Servo.cpp
+        librobot/StrategyGenerator/MagicStrategy.cpp)
 
 include_directories(${root_SOURCE_DIR}/../third-parties/petri)
 
@@ -84,7 +86,7 @@ target_link_libraries(IATestSimu robotPrincipal)
 add_executable(IATestEvitement IA/IATestEvitement.cpp)
 target_link_libraries(IATestEvitement robotPrincipal)
 
-add_executable(IAPrincipal IA/IAPrincipal.cpp librobot/StrategyGenerator/MagicStrategy.cpp)
+add_executable(IAPrincipal IA/IAPrincipal.cpp)
 target_link_libraries(IAPrincipal robotPrincipal)
 #add_dependencies(IAPrincipal IA_PETRI HOMOLOGATION_PETRI)
 
@@ -100,4 +102,4 @@ add_executable(TestStrategyGenerator librobot/StrategyGenerator/Action.hpp
 									 librobot/StrategyGenerator/MagicStrategy.cpp
         							 librobot/StrategyGenerator/DecisionalTree.hpp
 									 librobot/StrategyGenerator/main.cpp)
-target_link_libraries(TestStrategyGenerator Outils_Robot)
+target_link_libraries(TestStrategyGenerator robotPrincipal)
