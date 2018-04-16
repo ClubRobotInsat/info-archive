@@ -47,17 +47,15 @@ namespace IDCartesPrincipal {
 		ID_CARTE_EVITEMENT = ID_CARTE_ELEC_EVITEMENT,
 		ID_CARTE_IO = ID_CARTE_ELEC_IO,
 		ID_CARTE_SERVOS = ID_CARTE_ELEC_SERVOS,
-		ID_CARTE_MOTEUR_ASCENSEUR_G = ID_CARTE_ELEC_MOTEUR_ASCENSEUR_GAUCHE,
-		ID_CARTE_MOTEUR_ASCENSEUR_D = ID_CARTE_ELEC_MOTEUR_ASCENSEUR_DROIT,
-		ID_CARTE_MOTEUR_AVALEUR_G = ID_CARTE_ELEC_MOTEUR_AVALEUR_GAUCHE,
-		ID_CARTE_MOTEUR_AVALEUR_D = ID_CARTE_ELEC_MOTEUR_ASCENSEUR_DROIT,
+		ID_CARTE_MOTEURS = ID_CARTE_ELEC_MOTEURS,
 
 		/*ID_CARTE_DEBUG_DESSIN = 8*/
 	};
 
-	ENUM_NS(IDCartesPrincipal, IDCartes, DEPLACEMENT, EVITEMENT, IO, SERVOS, MOTEUR_ASCENSEUR_G, MOTEUR_ASCENSEUR_D, MOTEUR_AVALEUR_G, MOTEUR_AVALEUR_D)
+	ENUM_NS(IDCartesPrincipal, IDCartes, DEPLACEMENT, EVITEMENT, IO, SERVOS, MOTEURS)
 
 	ENUM_CLASS_NS(IDCartesPrincipal, IDCarteServos, PORTE_CUBE, PORTE_SOUTE_G, PORTE_SOUTE_D, ABEILLE_G, ABEILLE_D)
+	ENUM_CLASS_NS(IDCartesPrincipal, IDCarteMoteurs, ASCENSEUR_DROIT, ASCENSEUR_GAUCHE, AVALEUR_DROIT, AVALEUR_GAUCHE)
 }
 
 namespace ConstantesPrincipal {
@@ -117,6 +115,15 @@ namespace ConstantesPrincipal {
 	extern Angle const positionAbeilleDroit[enumToInt(AbeilleDroit::NBR)];
 
 	/////////////////// MOTEURS ///////////////////
+
+	enum class Moteurs {
+		ASCENSEUR_GAUCHE = ID_MOTEUR_ASCENSEUR_GAUCHE,
+		ASCENSEUR_DROIT = ID_MOTEUR_ASCENSEUR_DROIT,
+		AVALEUR_GAUCHE = ID_MOTEUR_AVALEUR_GAUCHE,
+		AVALEUR_DROIT = ID_MOTEUR_AVALEUR_DROIT,
+
+		NBR = 5
+	};
 
 	// Différentes positions des moteurs
 	enum class AvaleurGauche { POS_0 = 0, POS_1 = 1, NBR = 2 };
@@ -194,29 +201,11 @@ namespace ConstantesPrincipal {
 		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_SERVOS };
 	};
 
-	// FIXME : voir si du côté élec ils ne préfèrent pas 2 interfaces moteur asservi / non asservi pour les moteurs
 	template <>
-	struct CarteInfo<IDCartesPrincipal::MOTEUR_ASCENSEUR_G> {
+	struct CarteInfo<IDCartesPrincipal::MOTEURS> {
+		// TODO : nouvelle carte Moteurs2018
 		using typeCarte = CarteAsservissement2009;
-		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_MOTEUR_ASCENSEUR_G };
-	};
-
-	template <>
-	struct CarteInfo<IDCartesPrincipal::MOTEUR_ASCENSEUR_D> {
-		using typeCarte = CarteAsservissement2009;
-		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_MOTEUR_ASCENSEUR_D };
-	};
-
-	template <>
-	struct CarteInfo<IDCartesPrincipal::MOTEUR_AVALEUR_G> {
-		using typeCarte = CarteAsservissement2009;
-		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_MOTEUR_AVALEUR_G };
-	};
-
-	template <>
-	struct CarteInfo<IDCartesPrincipal::MOTEUR_AVALEUR_D> {
-		using typeCarte = CarteAsservissement2009;
-		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_MOTEUR_AVALEUR_D };
+		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_MOTEURS };
 	};
 
 	//----- pas utilisé cette année -----//

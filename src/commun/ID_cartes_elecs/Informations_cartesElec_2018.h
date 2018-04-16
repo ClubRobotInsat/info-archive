@@ -25,13 +25,7 @@
 #define ID_CARTE_ELEC_SERVOS 2
 #define ID_CARTE_ELEC_IO 3
 #define ID_CARTE_ELEC_EVITEMENT 4
-// FIXME : 2 IDs pour une 'carte' moteurs asservis et une 'carte' moteurs non asservis + ID unique pour chaque moteur?
-#define ID_CARTE_ELEC_MOTEUR_ASCENSEUR_GAUCHE 5
-#define ID_CARTE_ELEC_MOTEUR_ASCENSEUR_DROIT 6
-#define ID_CARTE_ELEC_MOTEUR_AVALEUR_GAUCHE 7
-#define ID_CARTE_ELEC_MOTEUR_AVALEUR_DROIT 8
-// FIXME #define ID_CARTE_ELEC_MOTEURS_ASSERVIS 5
-// FIXME #define ID_CARTE_ELEC_MOTEURS_ASSERVIS 6
+#define ID_CARTE_ELEC_MOTEURS 5
 
 /// IDs des servos
 #define ID_SERVO_OUVERTURE_PORTE_SOUTE_DROIT 0
@@ -44,15 +38,12 @@
 /// IDs des contacteurs
 #define ID_CONTACTEUR_TIRETTE 2
 
-/* constantes dans le cas où on a 2 interfaces moteur côté élec
 /// IDs des moteurs
-// asservis
-#define ID_MOTEUR_ASCENSEUR_GAUCHE 0
-#define ID_MOTEUR_ASCENSEUR_DROIT  1
-
-// non asservis
-#define ID_MOTEUR_AVALEUR_GAUCHE 0
-#define ID_MOTEUR_AVALEUR_DROIT  1
-*/
+// Moteurs asservis
+#define ID_MOTEUR_ASCENSEUR_GAUCHE 5
+#define ID_MOTEUR_ASCENSEUR_DROIT 6
+// Moteurs non asservis
+#define ID_MOTEUR_AVALEUR_GAUCHE 7
+#define ID_MOTEUR_AVALEUR_DROIT 8
 
 #endif /* HEADER_COMMUN */
