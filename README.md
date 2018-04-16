@@ -2,7 +2,7 @@
 
 Ce document permets de recenser l'ensemble des commandes utiles pour prendre en main le code informatique.
 
-* :package: [Clone du repo](#clonage-du-repo)
+* :package: [Clonage du repo](#clonage-du-repo)
 * :hammer: [Installation des différents outils](#installation-des-differents-outils)
   - [Logiciels nécessaires](#logiciels-necessaires) **[REQUIS]**
   - [Formattage du code](#formattage-du-code) _[FACULTATIF] **[RECOMMANDE]**_
