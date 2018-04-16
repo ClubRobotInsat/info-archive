@@ -96,6 +96,9 @@ target_link_libraries(IATestLidar robotPrincipal)
 add_executable(IATestRobot IA/IATestRobot.cpp)
 target_link_libraries(IATestRobot robotPrincipal)
 
+add_executable(IATestServo IA/IATestServo.cpp)
+target_link_libraries(IATestServo robotPrincipal)
+
 add_executable(TestStrategyGenerator librobot/StrategyGenerator/Action.hpp
 									 librobot/StrategyGenerator/Element.hpp
 									 librobot/StrategyGenerator/Table.hpp

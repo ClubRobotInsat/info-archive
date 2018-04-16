@@ -28,9 +28,6 @@ namespace Commun {
 		pos += _offset[servo];
 		Angle anciennePos = lirePosition(servo);
 		_carte.reglerPosition(servo, pos);
-		if(servo == 0x03)
-			for(int i = 0; i < 15; i++)
-				_carte.reglerPosition(servo, pos);
 
 		while(true) {
 			if(_carte.verifierDeplacementTermine(servo)) {
