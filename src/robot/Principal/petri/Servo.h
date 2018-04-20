@@ -9,35 +9,24 @@
 #include "PetriCommon.h"
 #include <ResultatAction.h>
 
-// @Petri@ Servos
+// @PetriLab@ Servos
 
-ResultatAction ascenseurStockageHaut();
-ResultatAction ascenseurStockageBas();
-ResultatAction ascenseurCylindreSol();
-ResultatAction ascenseurAjustagePourSaisieCylindreBas();
-ResultatAction ascenseurPoserRails();
+// Actions pour l'ascenseur
+ResultatAction ouvrirPorteCube();
+ResultatAction fermerPorteCube();
 
-// Actions pour la pince du robot
-ResultatAction ouvrirPince();
-ResultatAction fermerPince();
-ResultatAction attraperCylindre();
+// Actions pour les soutes
+ResultatAction ouvrirSouteD();
+ResultatAction fermerSouteD();
 
-ResultatAction orienterPinceAttraper();
-ResultatAction orienterPinceStocker();
+ResultatAction ouvrirSouteG();
+ResultatAction fermerSouteG();
 
-ResultatAction pencherPinceBas();
-ResultatAction pencherPinceDevant();
+// Actions pour l'abeille
+ResultatAction ouvrirAbeilleD();
+ResultatAction fermerAbeilleD();
 
-// Automatisation du stockage
-ResultatAction stockerCylindre(); // on considère qu'un cylindre est juste devant la pince
-ResultatAction destockerCylindre();
-int getNbrCylindres();
-ResultatAction printCylindres();
-
-// Gestion des fesses du robot
-ResultatAction ouvrirFesseGauche();
-ResultatAction ouvrirFesseDroite();
-ResultatAction fermerFesseGauche();
-ResultatAction fermerFesseDroite();
+ResultatAction ouvrirAbeilleG();
+ResultatAction fermerAbeilleG();
 
 #endif // ROOT_SERVO_H

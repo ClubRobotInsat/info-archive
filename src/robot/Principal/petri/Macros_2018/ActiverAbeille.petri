@@ -6,15 +6,15 @@
       <Header File="../Servo.h" />
       <Header File="../Utils.h" />
       <Header File="../Deplacement.h" />
+      <Header File="../Moteur.h" />
     </Headers>
-    <Window X="65" Y="24" W="1301" H="744" />
+    <Window X="549" Y="18" W="1367" H="1041" />
     <Profiles Default="Default">
-      <Profile Name="Default" SourceOutputPath="../../petri/src" LibOutputPath="../../../../build" DeployMode="DoNothing" DeployPath="" DeployScript="#!/bin/sh&#xA;&#xA;/bin/cp &quot;$PETRI_LIB_PATH&quot; .&#xA;" DeployWhenDebug="True" Port="12346" DebugMode="Attach" Hostname="localhost" HostProgram="" HostProgramArguments="">
+      <Profile Name="Default" SourceOutputPath="../../petri/src" LibOutputPath="../../../../../build/src/robot/Principal/" DeployMode="DoNothing" DeployPath="" DeployScript="#!/bin/sh&#xA;&#xA;/bin/cp &quot;$PETRI_LIB_PATH&quot; .&#xA;" DeployWhenDebug="True" Port="12346" DebugMode="Attach" Hostname="localhost" HostProgram="" HostProgramArguments="">
         <Compiler Invocation="/usr/bin/g++" />
         <IncludePaths>
-          <IncludePath Path="../../../../petri" Recursive="false" />
+          <IncludePath Path="../../../../../third_parties/" Recursive="false" />
           <IncludePath Path="../../../../commun" Recursive="false" />
-          <IncludePath Path="../../petri" Recursive="false" />
         </IncludePaths>
         <LibPaths />
         <Libs />
@@ -29,15 +29,15 @@
     <States>
       <Exit ID="3" Name="End" X="880" Y="210" Active="false" RequiredTokens="1" Radius="25" Function="Petri::Utility::doNothing()" />
       <Action ID="4" Name="BEGIN" X="40" Y="300" Active="true" RequiredTokens="0" Radius="20" Function="Petri::Utility::doNothing()" />
-      <Action ID="5" Name="5" X="170" Y="220" Active="false" RequiredTokens="1" Radius="20" Function="avancerDe(20)" />
-      <Action ID="6" Name="6" X="310" Y="220" Active="false" RequiredTokens="1" Radius="20" Function="tournerAbsolu(45)" />
-      <Action ID="7" Name="7" X="440" Y="220" Active="false" RequiredTokens="1" Radius="20" Function="avancerDe(20)" />
-      <Action ID="8" Name="8" X="560" Y="220" Active="false" RequiredTokens="1" Radius="20" Function="ouvrirAbeille_D()" />
-      <Action ID="9" Name="9" X="660" Y="220" Active="false" RequiredTokens="1" Radius="20" Function="tournerAbsolu(70)" />
-      <Action ID="10" Name="10" X="780" Y="220" Active="false" RequiredTokens="1" Radius="20" Function="avancerDe(40)" />
+      <Action ID="5" Name="5" X="170" Y="220" Active="false" RequiredTokens="1" Radius="20" Function="avancerDe(20_cm)" />
+      <Action ID="6" Name="6" X="310" Y="220" Active="false" RequiredTokens="1" Radius="20" Function="tournerAbsolu(45_deg)" />
+      <Action ID="7" Name="7" X="440" Y="220" Active="false" RequiredTokens="1" Radius="20" Function="avancerDe(20_cm)" />
+      <Action ID="8" Name="8" X="560" Y="220" Active="false" RequiredTokens="1" Radius="20" Function="ouvrirAbeilleD()" />
+      <Action ID="9" Name="9" X="660" Y="220" Active="false" RequiredTokens="1" Radius="20" Function="tournerAbsolu(70_deg)" />
+      <Action ID="10" Name="10" X="780" Y="220" Active="false" RequiredTokens="1" Radius="20" Function="avancerDe(40_cm)" />
     </States>
     <Transitions>
-      <Transition ID="11" Name="12" X="130.7753340949952" Y="280.77101942237834" BeforeID="4" AfterID="5" Condition="" W="50" H="30" ShiftX="25.775334094995202" ShiftY="20.771019422378345" ShiftAmplitude="152.64337522473747" />
+      <Transition ID="11" Name="12" X="130.7753340949952" Y="280.77101942237834" BeforeID="4" AfterID="5" Condition="true" W="50" H="30" ShiftX="25.775334094995202" ShiftY="20.771019422378345" ShiftAmplitude="152.64337522473747" />
       <Transition ID="12" Name="13" X="240" Y="220" BeforeID="5" AfterID="6" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
       <Transition ID="13" Name="14" X="375" Y="220" BeforeID="6" AfterID="7" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="130" />
       <Transition ID="14" Name="15" X="500" Y="220" BeforeID="7" AfterID="8" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="120" />

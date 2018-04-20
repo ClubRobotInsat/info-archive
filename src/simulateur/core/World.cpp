@@ -16,7 +16,7 @@ World::~World() {
 	removeAllObject();
 }
 
-void World::update(Duration time) {
+void World::update(Duration /* time*/) {
 	_physicalCtx->update();
 
 	for(auto& obj : _objectsList) {

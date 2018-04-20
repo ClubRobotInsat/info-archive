@@ -6,15 +6,15 @@
       <Header File="../Servo.h" />
       <Header File="../Utils.h" />
       <Header File="../Deplacement.h" />
+      <Header File="../Moteur.h" />
     </Headers>
-    <Window X="65" Y="24" W="927" H="1028" />
+    <Window X="960" Y="18" W="956" H="1041" />
     <Profiles Default="Default">
-      <Profile Name="Default" SourceOutputPath="../../petri/src" LibOutputPath="../../../../build" DeployMode="DoNothing" DeployPath="" DeployScript="#!/bin/sh&#xA;&#xA;/bin/cp &quot;$PETRI_LIB_PATH&quot; .&#xA;" DeployWhenDebug="True" Port="12346" DebugMode="Attach" Hostname="localhost" HostProgram="" HostProgramArguments="">
+      <Profile Name="Default" SourceOutputPath="../../petri/src" LibOutputPath="../../../../../build/src/robot/Principal/" DeployMode="DoNothing" DeployPath="" DeployScript="#!/bin/sh&#xA;&#xA;/bin/cp &quot;$PETRI_LIB_PATH&quot; .&#xA;" DeployWhenDebug="True" Port="12346" DebugMode="Attach" Hostname="localhost" HostProgram="" HostProgramArguments="">
         <Compiler Invocation="/usr/bin/g++" />
         <IncludePaths>
-          <IncludePath Path="../../../../petri" Recursive="false" />
+          <IncludePath Path="../../../../../third_parties" Recursive="false" />
           <IncludePath Path="../../../../commun" Recursive="false" />
-          <IncludePath Path="../../petri" Recursive="false" />
         </IncludePaths>
         <LibPaths />
         <Libs />
@@ -27,29 +27,29 @@
     </Variables>
     <Comments>
       <Comment ID="1" Name="voir comment utiliser les moteurs ascenseurs" X="160" Y="460" Width="176" R="1" G="1" B="0.7" A="1" />
-      <Comment ID="17" Name="MonterCube ( a implementer)" X="320" Y="320" Width="176" R="1" G="1" B="0.7" A="1" />
-      <Comment ID="20" Name="MonterCube &#xA;( a implementer)" X="560" Y="400" Width="176" R="1" G="1" B="0.7" A="1" />
-      <Comment ID="21" Name="MonterCube &#xA;( a implementer)" X="740" Y="500" Width="530" R="1" G="1" B="0.7" A="1" />
-      <Comment ID="23" Name="Permet de gober et monter les 5 cubes formant une croix sur le plateau de jeu" X="160" Y="50" Width="176" R="1" G="1" B="0.7" A="1" />
-      <Comment ID="24" Name="Origine : robot placé en face d'un cube, orienté vers le cube" X="100" Y="140" Width="176" R="1" G="1" B="0.7" A="1" />
+      <Comment ID="2" Name="MonterCube ( a implementer)" X="320" Y="320" Width="176" R="1" G="1" B="0.7" A="1" />
+      <Comment ID="3" Name="MonterCube &#xA;( a implementer)" X="560" Y="400" Width="176" R="1" G="1" B="0.7" A="1" />
+      <Comment ID="4" Name="MonterCube &#xA;( a implementer)" X="740" Y="500" Width="530" R="1" G="1" B="0.7" A="1" />
+      <Comment ID="5" Name="Permet de gober et monter les 5 cubes formant une croix sur le plateau de jeu" X="160" Y="50" Width="176" R="1" G="1" B="0.7" A="1" />
+      <Comment ID="6" Name="Origine : robot placé en face d'un cube, orienté vers le cube" X="100" Y="140" Width="176" R="1" G="1" B="0.7" A="1" />
     </Comments>
     <States>
-      <Exit ID="3" Name="End" X="580" Y="570" Active="false" RequiredTokens="0" Radius="25" Function="Petri::Utility::doNothing()" />
-      <Action ID="4" Name="BEGIN" X="40" Y="250" Active="true" RequiredTokens="0" Radius="20" Function="Petri::Utility::doNothing()" />
-      <Action ID="5" Name="4" X="120" Y="260" Active="false" RequiredTokens="1" Radius="20" Function="avancerDe(12)" />
-      <Action ID="6" Name="5" X="260" Y="260" Active="false" RequiredTokens="1" Radius="20" Function="reculerDe(18)" />
-      <Action ID="7" Name="6" X="360" Y="260" Active="false" RequiredTokens="0" Radius="20" Function="tournerAbsolu(45)" />
-      <Action ID="8" Name="7" X="470" Y="260" Active="false" RequiredTokens="1" Radius="20" Function="avancerDe(26)" />
-      <Action ID="9" Name="8" X="580" Y="260" Active="false" RequiredTokens="1" Radius="20" Function="tournerAbsolu(-135)" />
-      <Action ID="10" Name="9" X="580" Y="350" Active="false" RequiredTokens="1" Radius="20" Function="avancerDe(12)" />
-      <Action ID="12" Name="11" X="580" Y="460" Active="false" RequiredTokens="0" Radius="20" Function="avancerDe(6)" />
+      <Exit ID="7" Name="End" X="580" Y="570" Active="false" RequiredTokens="0" Radius="25" Function="Petri::Utility::doNothing()" />
+      <Action ID="8" Name="BEGIN" X="40" Y="250" Active="true" RequiredTokens="0" Radius="20" Function="Petri::Utility::doNothing()" />
+      <Action ID="9" Name="4" X="120" Y="260" Active="false" RequiredTokens="1" Radius="20" Function="avancerDe(12_cm)" />
+      <Action ID="10" Name="5" X="260" Y="260" Active="false" RequiredTokens="1" Radius="20" Function="reculerDe(18_cm)" />
+      <Action ID="11" Name="6" X="360" Y="260" Active="false" RequiredTokens="0" Radius="20" Function="tournerAbsolu(45_deg)" />
+      <Action ID="12" Name="7" X="470" Y="260" Active="false" RequiredTokens="1" Radius="20" Function="avancerDe(26_cm)" />
+      <Action ID="13" Name="8" X="580" Y="260" Active="false" RequiredTokens="1" Radius="20" Function="tournerAbsolu(-135_deg)" />
+      <Action ID="14" Name="9" X="580" Y="350" Active="false" RequiredTokens="1" Radius="20" Function="avancerDe(12_cm)" />
+      <Action ID="15" Name="11" X="580" Y="460" Active="false" RequiredTokens="0" Radius="20" Function="avancerDe(6_cm)" />
     </States>
     <Transitions>
-      <Transition ID="13" Name="9" X="190" Y="260" BeforeID="5" AfterID="6" Condition="$var0 = $var0+1;" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
-      <Transition ID="14" Name="10" X="415" Y="260" BeforeID="7" AfterID="8" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="110" />
-      <Transition ID="15" Name="11" X="525" Y="260" BeforeID="8" AfterID="9" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="110" />
-      <Transition ID="16" Name="14" X="350" Y="115.26829268292676" BeforeID="9" AfterID="5" Condition="$var0&lt;3;" W="50" H="30" ShiftX="0" ShiftY="-144.73170731707324" ShiftAmplitude="460" />
-      <Transition ID="22" Name="12" X="580" Y="305" BeforeID="9" AfterID="10" Condition="$var0==3;" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="90" />
+      <Transition ID="16" Name="9" X="190" Y="260" BeforeID="9" AfterID="10" Condition="$var0 = $var0+1;" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
+      <Transition ID="17" Name="10" X="415" Y="260" BeforeID="11" AfterID="12" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="110" />
+      <Transition ID="18" Name="11" X="525" Y="260" BeforeID="12" AfterID="13" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="110" />
+      <Transition ID="19" Name="14" X="350" Y="115.26829268292676" BeforeID="13" AfterID="9" Condition="$var0&lt;3;" W="50" H="30" ShiftX="0" ShiftY="-144.73170731707324" ShiftAmplitude="460" />
+      <Transition ID="20" Name="12" X="580" Y="305" BeforeID="13" AfterID="14" Condition="$var0==3;" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="90" />
     </Transitions>
   </PetriNet>
 </Document>

@@ -47,11 +47,103 @@ void IATestMeca::executer() {
 			logDebug2("Lancement du test de la PORTE CUBES");
 			for(int i = 1; i < 1000; i++) {
 				int raw;
-				std::cout << "Entrez une valeur : ";
+				std::cout << "Entrez une valeur d'angle (en deg) : " << std::flush;
 				std::cin >> raw;
 				Angle value = Angle::makeFromDeg(raw);
 
-				logDebug1(_meca->ouvrirPorteCubeDe(value));
+				logDebug1(_meca->orienterPorteCubeDe(value));
+			}
+			break;
+
+		case ia_parsing::TestMeca::ABEILLE_DROITE:
+			logDebug2("Lancement du test de l'ABEILLE DROITE");
+			for(int i = 1; i < 1000; i++) {
+				int raw;
+				std::cout << "Entrez une valeur d'angle (en deg) : " << std::flush;
+				std::cin >> raw;
+				Angle value = Angle::makeFromDeg(raw);
+
+				logDebug1(_meca->orienterAbeilleDDe(value));
+			}
+			break;
+
+		case ia_parsing::TestMeca::ABEILLE_GAUCHE:
+			logDebug2("Lancement du test de l'ABEILLE GAUCHE");
+			for(int i = 1; i < 1000; i++) {
+				int raw;
+				std::cout << "Entrez une valeur d'angle (en deg) : " << std::flush;
+				std::cin >> raw;
+				Angle value = Angle::makeFromDeg(raw);
+
+				logDebug1(_meca->orienterAbeilleGDe(value));
+			}
+			break;
+
+		case ia_parsing::TestMeca::SOUTE_DROITE:
+			logDebug2("Lancement du test de la SOUTE DROITE");
+			for(int i = 1; i < 1000; i++) {
+				int raw;
+				std::cout << "Entrez une valeur d'angle (en deg) : " << std::flush;
+				std::cin >> raw;
+				Angle value = Angle::makeFromDeg(raw);
+
+				logDebug1(_meca->orienterSouteDDe(value));
+			}
+			break;
+
+		case ia_parsing::TestMeca::SOUTE_GAUCHE:
+			logDebug2("Lancement du test de la SOUTE GAUCHE");
+			for(int i = 1; i < 1000; i++) {
+				int raw;
+				std::cout << "Entrez une valeur d'angle (en deg) : " << std::flush;
+				std::cin >> raw;
+				Angle value = Angle::makeFromDeg(raw);
+
+				logDebug1(_meca->orienterSouteGDe(value));
+			}
+			break;
+
+		case ia_parsing::TestMeca::ASCENSEURS:
+			logDebug2("Lancement du test des ASCENSEURS");
+			for(int i = 1; i < 1000; i++) {
+				unsigned int raw;
+				std::cout << "Test de la position en angle (0) ou faire n tours ? " << std::flush;
+				std::cin >> raw;
+				if(raw == 0) {
+					std::cout << "Entrez une valeur d'angle (en deg) : " << std::flush;
+					std::cin >> raw;
+					Angle value = Angle::makeFromDeg(raw);
+					logDebug1("position en angle de ", value, " : ", _meca->monterAscenseursDe(value));
+				} else {
+					logDebug1("faire ", raw, " tours : ", _meca->monterAscenseursDe(raw));
+				}
+			}
+			break;
+
+		case ia_parsing::TestMeca::AVALEURS:
+			logDebug2("Lancement du test des AVALEURS");
+			for(int i = 1; i < 1000; i++) {
+				int raw;
+				std::cout << "0 : OFF ; 1 : tourner pour avaler ; 2 : tourner pour recracher " << std::flush;
+				std::cin >> raw;
+
+				switch(raw) {
+					case 0:
+						logDebug1("Arrêt des avaleurs : ", _meca->desactiverAvaleurs());
+						break;
+
+					case 1:
+						logDebug1("Sens AVALER : ", _meca->activerAvaleurs(AVALER));
+						break;
+
+					case 2:
+						logDebug1("Sens RECRACHER : ", _meca->activerAvaleurs(RECRACHER));
+						break;
+
+					default:
+						logWarn("Mauvaise valeur d'input, attendu : [0|1|2]");
+						break;
+				}
 			}
 			break;
 
@@ -63,85 +155,13 @@ void IATestMeca::executer() {
 			    logDebug2("Lancement du test de l'ASCENSEUR");
 			    for(int i = 1; i < 1000; i++) {
 			        int raw;
-			        std::cout << "Entrez une valeur : ";
+			        std::cout << "Entrez une valeur d'angle (en deg) : " << std::flush;
 			        std::cin >> raw;
 			        Angle value = Angle::makeFromDeg(raw);
 
 			        //logDebug1(_meca->getAscenseur().allerAngleBloquant(value),
 			        //          ", angle : ",
 			        //          _meca->getAscenseur().getAngleBloquant().toDeg());
-			    }
-			    break;
-			case ia_parsing::TestMeca::LACET:
-			    logDebug2("Lancement du test du LACET");
-			    for(int i = 1; i < 1000; i++) {
-			        int raw;
-			        std::cout << "Entrez une valeur : ";
-			        std::cin >> raw;
-			        Angle value = Angle::makeFromDeg(raw);
-
-			        // logDebug1(_meca->orienterPinceDe(value), ", angle : ", _meca->getPositionServo(2,
-			        // enumToInt(Servo::LACET)));
-			    }
-			    break;
-			case ia_parsing::TestMeca::TANGAGE:
-			    logDebug2("Lancement du test du TANGAGE");
-			    for(int i = 1; i < 1000; i++) {
-			        int raw;
-			        std::cout << "Entrez une valeur : ";
-			        std::cin >> raw;
-			        Angle value = Angle::makeFromDeg(raw);
-
-			        // logDebug1(_meca->pencherPindeDe(value), ", angle : ", _meca->getPositionServo(2,
-			        // enumToInt(Servo::TANGAGE)));
-			    }
-			    break;
-			case ia_parsing::TestMeca::FUSEE:
-			    logDebug2("Lancement du test de la FUSEE");
-			    for(int i = 1; i < 1000; i++) {
-			        int raw;
-			        std::cout << "Entrez une valeur : ";
-			        std::cin >> raw;
-			        Angle value = Angle::makeFromDeg(raw);
-
-			        // logDebug1(_meca->bougerFuseeDe(value), ", angle : ", _meca->getPositionServo(2,
-			        // enumToInt(Servo::FUSEE)));
-			    }
-			    break;
-			case ia_parsing::TestMeca::GAUCHE:
-			    logDebug2("Lancement du test de la fesse GAUCHE");
-			    for(int i = 1; i < 1000; i++) {
-			        int raw;
-			        std::cout << "Entrez une valeur : ";
-			        std::cin >> raw;
-			        Angle value = Angle::makeFromDeg(raw);
-
-			        // logDebug1(_meca->ouvrirFesseGaucheDe(value), ", angle : ", _meca->getPositionServo(2,
-			        // enumToInt(Servo::GAUCHE)));
-			    }
-			    break;
-			case ia_parsing::TestMeca::DROITE:
-			    logDebug2("Lancement du test de la fesse DROITE");
-			    for(int i = 1; i < 1000; i++) {
-			        int raw;
-			        std::cout << "Entrez une valeur : ";
-			        std::cin >> raw;
-			        Angle value = Angle::makeFromDeg(raw);
-
-			        // logDebug1(_meca->ouvrirFesseDroiteDe(value), ", angle : ", _meca->getPositionServo(2,
-			        // enumToInt(Servo::DROITE)));
-			    }
-			    break;
-			case ia_parsing::TestMeca::PINCE:
-			    logDebug2("Lancement du test de la PINCE");
-			    for(int i = 1; i < 1000; i++) {
-			        int raw;
-			        std::cout << "Entrez une valeur : ";
-			        std::cin >> raw;
-			        Angle value = Angle::makeFromDeg(raw);
-
-			        // logDebug1(_meca->ouvrirPinceDe(value), ", angle : ", _meca->getPositionServo(2,
-			        // enumToInt(Servo::PINCE)));
 			    }
 			    break;
 			case ia_parsing::TestMeca::STOCKER:

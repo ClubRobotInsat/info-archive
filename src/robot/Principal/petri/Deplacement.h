@@ -12,7 +12,7 @@ static const Time TIMEOUT_DEFAULT = 90_s;
 static const Time ADD_TIMEOUT_SECURITY = 1_s;
 
 
-// @Petri@ Déplacement
+// @PetriLab@ Déplacement
 
 // déplacements linéaires avec arret si adversaire
 ResultatAction avancerDe(Distance distance, SensAvance sens);
@@ -37,7 +37,7 @@ ResultatAction allerA_vec(Vector2m pos, SensAvance sens, Duration timeout = 25_s
 ResultatAction allerA_vec(Vector2m pos);
 
 
-// @Petri@
+// @PetriLab@
 
 // fonctions utilisées souvent
 ResultatAction tournerAbsolu(Angle angle);
@@ -56,7 +56,7 @@ double distanceRobotPosition(Distance x, Distance y);
 bool advProche(Distance distance = 50_cm);
 
 
-// @Petri@ Vitesses
+// @PetriLab@ Vitesses
 
 // changements d'allures
 ResultatAction setVitesseAngulaireLente();
