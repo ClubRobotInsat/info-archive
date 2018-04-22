@@ -36,8 +36,8 @@ Pour modifier ces constantes, il faut aller voir du côté [de ce document](http
 | 0x05 |    Moteur   |  Nucléo  |
 
 ## Carte deplacement
-### IDs des messages
-| ID |      Type     |    E/R    |                  Commentaires                 | Nbr données (octets) |
+### Commandes des messages
+| CMD |      Type     |    E/R    |                  Commentaires                 | Nbr données (octets) |
 |:--:|:-------------:|:---------:|:---------------------------------------------:|:--------------------:|
 |  0 |      PING     |           |                                               |                      |
 |  1 |      ACK      | réception |                    TypeAck                    |           1          |
@@ -184,12 +184,12 @@ _TODO_
 ## Carte IO
 Cette carte n'est utilisée que pour savoir si la tirette a été retirée ou non.
 
-|  ID  |        Type        |  Commentaires  |
+|  Cmd  |        Type        |  Commentaires  |
 |:----:|:------------------:|:--------------:|
 | 0x01 | Lecture contacteur | Réponds 0 ou 1 |
 
 ## Carte moteur
-|  ID  |      Type      | Moteur asservi ? |        Commentaires        | Nbr données (octets) |
+|  Cmd  |      Type      | Moteur asservi ? |        Commentaires        | Nbr données (octets) |
 |:----:|:--------------:|:----------------:|:--------------------------:|:--------------------:|
 | 0x01 | Position ANGLE |        oui       | angle sur [0;360]° : float |           4          |
 | 0x02 |  Position TOUR |        oui       | nbr tours \| sens (0 ou 1) |           2          |
