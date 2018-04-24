@@ -41,7 +41,7 @@ Pour modifier ces constantes, il faut aller voir du côté [de ce document](http
 | 0x04 |  Evitement  |   _CAN_  |
 | 0x05 |    Moteur   |  Nucléo  |
 
-## Attribution des IDs aux moteurs
+## Attribution des IDs aux servos
 |  ID  |        Servo       |
 |:----:|:------------------:|
 | 0x00 | Porte soute droite |
