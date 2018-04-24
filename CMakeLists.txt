@@ -20,7 +20,7 @@ SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules/")
 
 # Mise à jour des submodules Git.
 execute_process(
-		COMMAND git submodule update --init
+		COMMAND git submodule update --init --recursive --remote
 		WORKING_DIRECTORY ${root_SOURCE_DIR}
 )
 add_custom_target(InfoSubmodules

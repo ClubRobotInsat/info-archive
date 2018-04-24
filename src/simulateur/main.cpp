@@ -45,7 +45,7 @@ bool parseArgument(int argc, char** argv, Simulateur& simulateur) {
 	                                       {0, 0, 0, 0}};
 
 	int long_index = 0;
-	while((arg = getopt_long(argc, argv, "r:c:w:j:h:", long_options, &long_index)) != -1) {
+	while((arg = getopt_long(argc, argv, "r:c:w:l:h:", long_options, &long_index)) != -1) {
 
 		switch(arg) {
 			case 'r':
