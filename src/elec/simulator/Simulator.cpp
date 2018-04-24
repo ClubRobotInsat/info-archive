@@ -9,7 +9,12 @@ int main_elec();
 int main_robot(int argc, char** argv);
 
 int main_robot_2() {
-	return main_robot(0, nullptr);
+	char* arg1 = "RIEN";
+	char* arg2 = "DU TOUT";
+	char* args[2];
+	args[1] = arg1;
+	args[2] = arg2;
+	return main_robot(2, args);
 }
 
 int main() {
