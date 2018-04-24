@@ -1,5 +1,9 @@
 @[Benjamin BIGEY](https://github.com/Terae) - 22 avril 2018
 
+
+
+@[Paul FLORENCE](mailto::perso@florencepaul.com) - Avril/Mai 2018
+
 # Documentations des cartes de [ChocoBot'](https://scontent-cdg2-1.xx.fbcdn.net/v/t1.0-9/30516417_1028608243958446_3203690177092386816_n.png?_nc_cat=0&oh=e480ed380092c42ebe33e2baf028efa8&oe=5B99AE77)
 
 ## Sommaire et liens
@@ -179,7 +183,50 @@ enum class SensRotation : uint8_t {
 ```
 
 ## Carte servos
-_TODO_
+
+Les IDS sont toujours sur 1 octet interprété en non signé.
+
+## Trames CAN -> INFO
+
+#### Position
+
+|  Commande  |  Data  |
+|:----:|:----:|
+|0x02 | Angle sur 2 octets entre 0 et 1023 | 
+
+#### Servo bloqué
+
+|  Commande  |  Data  |
+|----|----|
+|0x04 | ID du servo + Booléen représentant un servo bloqué |
+
+#### Mouvement terminé
+
+|  Commande  |  Data  |
+|:----:|:----:|
+|0x03 | ID du servo + Booléen représentant un servo qui a fini son mouvement|
+
+## Trames INFO -> CAN
+
+#### Récuperer position
+
+|  Commande  |  Data  | Commentaires |
+|:----:|:----:|:----:|
+| 0x06 | Id du servo | La carte renvois un message [Position] |
+
+#### Mode Blocage :
+*** N'existe plus ***
+
+#### Réglage de la vitesse :
+
+***N'existe plus***
+
+#### Réglage de la position :
+Format de la trame :
+
+|  Commande  |  Data  | Commentaires |
+|:----:|:----:|:----:|
+| 0x05 | ID du servo + Angle sur 2 octets | L'angle est entre 0 et 1023 |
 
 ## Carte IO
 Cette carte n'est utilisée que pour savoir si la tirette a été retirée ou non.
