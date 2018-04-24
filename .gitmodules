@@ -13,3 +13,6 @@
 [submodule "third_parties/catch"]
 	path = third_parties/catch
 	url = https://github.com/philsquared/Catch.git
+[submodule "src/elec/code-elec-nucleo"]
+	path = src/elec/code-elec-nucleo
+	url = git@github.com:ClubRobotInsat/code-elec-nucleo.git

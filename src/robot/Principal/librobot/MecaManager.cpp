@@ -43,7 +43,7 @@ MecaManagerPrincipal::MecaManagerPrincipal(RobotPrincipal& robot)
 
 	logDebug("Initialisation de la meca");
 	// Test des servos
-	this->setModeBlocageServos();
+	// this->setModeBlocageServos(); // pas implémenté côté hard
 	this->setCouleurServos(CarteServo::Couleur::JAUNE);
 
 	this->ouvrirAbeilleD();
@@ -90,17 +90,17 @@ void MecaManagerPrincipal::couperMeca() {
 }
 
 ResultatAction MecaManagerPrincipal::ouvrirPorteCube() {
-	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::LOQUET),
+	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::PORTE_CUBE),
 	                                              enumToInt(ConstantesPrincipal::PorteCube::OUVERT));
 }
 
 ResultatAction MecaManagerPrincipal::fermerPorteCube() {
-	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::LOQUET),
+	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::PORTE_CUBE),
 	                                              enumToInt(ConstantesPrincipal::PorteCube::FERME));
 }
 
 ResultatAction MecaManagerPrincipal::orienterPorteCubeDe(Angle val) {
-	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::LOQUET), val);
+	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::PORTE_CUBE), val);
 }
 
 // @Denis appeler les fonctions du MoteurManager pour que ça fasse le job
@@ -326,7 +326,7 @@ int MecaManagerPrincipal::getNbrCylindres() {
 
 Angle MecaManagerPrincipal::getPositionServo(uint8_t servo, uint8_t pos) {
 	switch(static_cast<Servo>(servo)) {
-		case Servo::LOQUET:
+		case Servo::PORTE_CUBE:
 			return positionPorteCube[pos];
 
 		case Servo::PORTE_SOUTE_GAUCHE:
@@ -351,7 +351,7 @@ void MecaManagerPrincipal::setModeBlocageServos() {
 	auto sans = CarteServo::ModeBlocage::DEBLOCAGE;
 
 	// TODO: mettre 'avec' si on a besoin de forcer sur les servos
-	_servos.reglerModeBlocage(enumToInt(Servo::LOQUET), sans);
+	_servos.reglerModeBlocage(enumToInt(Servo::PORTE_CUBE), sans);
 	_servos.reglerModeBlocage(enumToInt(Servo::ABEILLE_DROIT), sans);
 	_servos.reglerModeBlocage(enumToInt(Servo::ABEILLE_GAUCHE), sans);
 	_servos.reglerModeBlocage(enumToInt(Servo::PORTE_SOUTE_DROIT), sans);

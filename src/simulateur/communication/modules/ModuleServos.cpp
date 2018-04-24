@@ -13,7 +13,7 @@ std::string generateMessage(uint8_t numServo, Angle angle) {
 ModuleServos::ModuleServos(Robot2018& robot2018) : _robot(robot2018) {}
 
 void ModuleServos::setAngle(uint8_t idCarte, uint8_t numServo, Angle angle) {
-	if(idCarte == ID_CARTE_ELEC_SERVOS) {
+	if(idCarte == ID_ELEC_CARD_SERVOS) {
 		if(numServo < (short)ConstantesPrincipal::Servo::NBR) {
 			Simulateur::getInstance().sendTextMessage(generateMessage(numServo, angle));
 			//_robot.setAngle(idCarte, numServo, angle);
@@ -25,7 +25,7 @@ void ModuleServos::setAngle(uint8_t idCarte, uint8_t numServo, Angle angle) {
 }
 
 Angle ModuleServos::getAngle(uint8_t idCarte, uint8_t numServo) {
-	if(idCarte == ID_CARTE_ELEC_SERVOS) {
+	if(idCarte == ID_ELEC_CARD_SERVOS) {
 		if(numServo < (short)ConstantesPrincipal::Servo::NBR) {
 			// return _robot.getAngle(idCarte, numServo);
 			return 0_deg;
@@ -40,7 +40,7 @@ Angle ModuleServos::getAngle(uint8_t idCarte, uint8_t numServo) {
 
 bool ModuleServos::isMovementCompleted(uint8_t idCarte, uint8_t numServo) {
 	switch(idCarte) {
-		case ID_CARTE_ELEC_SERVOS:
+		case ID_ELEC_CARD_SERVOS:
 			if(numServo < (short)ConstantesPrincipal::Servo::NBR) {
 				// return _robot.isMovementCompleted(idCarte, numServo);
 				return true;
@@ -58,7 +58,7 @@ bool ModuleServos::isMovementCompleted(uint8_t idCarte, uint8_t numServo) {
 
 void ModuleServos::setSpeed(uint8_t idCarte, uint8_t numServo, unsigned char /*speed*/) {
 	switch(idCarte) {
-		case ID_CARTE_ELEC_SERVOS:
+		case ID_ELEC_CARD_SERVOS:
 			if(numServo < (short)ConstantesPrincipal::Servo::NBR) {
 				; //_robot.setSpeed(idCarte, numServo, speed);
 			} else {
@@ -75,7 +75,7 @@ void ModuleServos::setSpeed(uint8_t idCarte, uint8_t numServo, unsigned char /*s
 
 bool ModuleServos::isBlocked(uint8_t idCarte, uint8_t numServo) const {
 	switch(idCarte) {
-		case ID_CARTE_ELEC_SERVOS:
+		case ID_ELEC_CARD_SERVOS:
 			if(numServo < (short)ConstantesPrincipal::Servo::NBR) {
 				// return _robot.isBlocked(idCarte, numServo);
 				return false;
