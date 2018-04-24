@@ -84,7 +84,7 @@ add_subdirectory(third_parties)
 
 add_subdirectory(src/robot)
 add_subdirectory(src/simulateur)
-add_subdirectory(src/elec/Interface_Can)
+add_subdirectory(src/elec)
 
 # Target pour les tests unitaires
 enable_testing()
