@@ -65,8 +65,7 @@ private:
 	bool angularVelocityFast = true;
 
 	const Vector2m _initial_position = toVec2(ConstantesPrincipal::START_ROBOT_POSITION);
-	int _positionAscenseur = 0;
-	bool _pinceOuverte = false;
+	bool _avaleurs_actives = false;
 };
 
 #endif // ROOT_IAWIIMOTE_H

@@ -55,7 +55,7 @@ void WiimoteInputProvider::startListening() {
 	// system("rfkill unblock bluetooth");
 	int numFound = wii.Find(5);
 	std::cout << "\033[3mSi le bluetooth est desactive (erreur : 'hci_get_route: No such device'), taper la commande : "
-	             "'\x1B[34m'rfkill unblock bluetooth\x1B[0m'"
+	             "\x1B[34m'rfkill unblock bluetooth\x1B[0m'"
 	          << std::endl;
 
 	if(numFound == 0) {

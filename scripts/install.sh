@@ -100,7 +100,7 @@ fi
 
 if [ $install_raspi -eq 1 ]
     then echo -e "${Yellow}Installation des outils ARM${End}"
-    sudo apt-get install gcc-5-arm-linux-gnueabihf g++-5-arm-linux-gnueabihf build-essential git
+    sudo apt-get install gcc-5-arm-linux-gnueabihf g++-5-arm-linux-gnueabihf build-essential git net-tools
     cd ${dir}
     sudo cp precompiled-libraries/libbluetooth.so.3 precompiled-libraries/libwiicpp.so precompiled-libraries/libwiic.so /usr/arm-linux-gnueabihf/lib
 

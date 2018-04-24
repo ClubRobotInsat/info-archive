@@ -34,6 +34,7 @@ const Duration StrategiePrincipal::DUREE_ATTENTE_ADVERSAIRE = 6_s;
 extern void initDeplacementPetri(StrategiePrincipal& strategie);
 extern void initUtilsPetri(StrategiePrincipal& strategie);
 extern void initServoPetri(StrategiePrincipal& strategie);
+extern void initMoteurPetri(StrategiePrincipal& strategie);
 
 StrategiePrincipal::StrategiePrincipal(std::vector<std::string> const& args, Constantes::RobotColor const& color)
         : Strategie(std::make_unique<RobotPrincipal>(args), color) {
@@ -45,6 +46,7 @@ StrategiePrincipal::StrategiePrincipal(std::vector<std::string> const& args, Con
 		initDeplacementPetri(*this);
 		initUtilsPetri(*this);
 		initServoPetri(*this);
+		initMoteurPetri(*this);
 	} catch(std::exception const& e) {
 		std::cout << "ERREUR lors du lancement de petri : " << e.what() << std::endl;
 	}

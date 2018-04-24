@@ -6,10 +6,11 @@
       <Header File="Servo.h" />
       <Header File="Utils.h" />
       <Header File="Deplacement.h" />
+      <Header File="Moteur.h" />
     </Headers>
-    <Window X="1985" Y="24" W="1855" H="1056" />
+    <Window X="640" Y="18" W="636" H="1041" />
     <Profiles Default="Default">
-      <Profile Name="Default" SourceOutputPath="../petri/src" LibOutputPath="../../../../build/src/robot/Principal/" DeployMode="DoNothing" DeployPath="" DeployScript="#!/bin/sh&#xA;&#xA;/bin/cp &quot;$PETRI_LIB_PATH&quot; .&#xA;" DeployWhenDebug="True" Port="12346" DebugMode="CreateHost" Hostname="localhost" HostProgram="../../../../build/src/robot/Principal/IAPrincipal" HostProgramArguments="LOCAL --color orange SIMU --debug">
+      <Profile Name="Default" SourceOutputPath="../petri/src" LibOutputPath="../../../build/src/robot/Principal/" DeployMode="DoNothing" DeployPath="" DeployScript="#!/bin/sh&#xA;&#xA;/bin/cp &quot;$PETRI_LIB_PATH&quot; .&#xA;" DeployWhenDebug="True" Port="12346" DebugMode="CreateHost" Hostname="localhost" HostProgram="../../../../build/src/robot/Principal/IAPrincipal" HostProgramArguments="LOCAL --color orange SIMU --debug">
         <Compiler Invocation="/usr/bin/g++" />
         <IncludePaths>
           <IncludePath Path="../../../../third_parties/" Recursive="false" />
@@ -28,10 +29,16 @@
       <Exit ID="2" Name="End" X="1650" Y="350" Active="false" RequiredTokens="0" Radius="25" Function="Petri::Utility::doNothing()" />
       <Action ID="3" Name="angulaire" X="1300" Y="320" Active="false" RequiredTokens="1" Radius="20" Function="setVitesseAngulaireLente()" />
       <Action ID="4" Name="lineaire" X="1200" Y="320" Active="false" RequiredTokens="0" Radius="20" Function="setVitesseLineaireLente()" />
-      <Action ID="5" Name="Action selector" X="680" Y="270" Active="true" RequiredTokens="0" Radius="20" Function="Petri::Utility::doNothing()" />
+      <PetriNetRef ID="5" Name="OuvrirReservoir" X="310" Y="420" Active="false" RequiredTokens="1" Radius="30" Path="Macros_2018/OuvrirReservoir.petri" />
+      <PetriNetRef ID="30" Name="GoberCube" X="170" Y="200" Active="false" RequiredTokens="1" Radius="30" Path="Macros_2018/GoberCube.petri" />
+      <PetriNetRef ID="53" Name="ActiverAbeille" X="460" Y="200" Active="false" RequiredTokens="1" Radius="30" Path="Macros_2018/ActiverAbeille.petri" />
+      <Action ID="73" Name="Action selector" X="310" Y="290" Active="true" RequiredTokens="0" Radius="20" Function="Petri::Utility::doNothing()" />
     </States>
     <Transitions>
-      <Transition ID="6" Name="208" X="1251" Y="321" BeforeID="4" AfterID="3" Condition="true" W="50" H="30" ShiftX="1" ShiftY="1" ShiftAmplitude="100" />
+      <Transition ID="74" Name="208" X="1251" Y="321" BeforeID="4" AfterID="3" Condition="true" W="50" H="30" ShiftX="1" ShiftY="1" ShiftAmplitude="100" />
+      <Transition ID="75" Name="" X="310" Y="355" BeforeID="73" AfterID="5" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="130" />
+      <Transition ID="76" Name="" X="240" Y="245" BeforeID="73" AfterID="30" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="166.43316977093238" />
+      <Transition ID="77" Name="" X="385" Y="245" BeforeID="73" AfterID="53" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="174.92855684535903" />
     </Transitions>
   </PetriNet>
 </Document>

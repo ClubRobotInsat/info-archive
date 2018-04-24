@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Document APIVersion="105">
+  <Settings Name="ActiverAbeille" Enum="ResultatAction,REUSSI,RATE,BLOQUE,BLOQUE_PAR_ADV,TIMEOUT,POSITION_MODIFIEE" Language="Cpp" OutputType="DynamicLib" DefaultExecutionVerbosity="Nothing" OverrideChildCompilationSettings="False">
+    <Macros />
+    <Headers>
+      <Header File="../Servo.h" />
+      <Header File="../Utils.h" />
+      <Header File="../Deplacement.h" />
+      <Header File="../Moteur.h" />
+    </Headers>
+    <Window X="321" Y="18" W="1595" H="1041" />
+    <Profiles Default="Default">
+      <Profile Name="Default" SourceOutputPath="../../petri/src" LibOutputPath="../../../../../build/src/robot/Principal/" DeployMode="DoNothing" DeployPath="" DeployScript="#!/bin/sh&#xA;&#xA;/bin/cp &quot;$PETRI_LIB_PATH&quot; .&#xA;" DeployWhenDebug="True" Port="12346" DebugMode="Attach" Hostname="localhost" HostProgram="" HostProgramArguments="">
+        <Compiler Invocation="/usr/bin/g++" />
+        <IncludePaths>
+          <IncludePath Path="../../../../../third_parties/" Recursive="false" />
+          <IncludePath Path="../../../../commun" Recursive="false" />
+        </IncludePaths>
+        <LibPaths />
+        <Libs />
+      </Profile>
+    </Profiles>
+  </Settings>
+  <PetriNet ID="0" Name="Root" X="0" Y="0" Active="true" RequiredTokens="0" Radius="30">
+    <Comments>
+      <Comment ID="1" Name="Fichier à copier pour faire de nouveaux réseaux pétri&#xA;--&gt; déjà configurée pour tout" X="386" Y="128" Width="260" R="0.5" G="0.8" B="1" A="1" />
+    </Comments>
+    <States>
+      <Exit ID="2" Name="End" X="520" Y="220" Active="false" RequiredTokens="1" Radius="25" Function="Petri::Utility::doNothing()" />
+      <Action ID="3" Name="BEGIN" X="240" Y="220" Active="true" RequiredTokens="0" Radius="20" Function="Petri::Utility::doNothing()" />
+    </States>
+    <Transitions>
+      <Transition ID="4" Name="" X="380" Y="220" BeforeID="3" AfterID="2" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="280" />
+    </Transitions>
+  </PetriNet>
+</Document>

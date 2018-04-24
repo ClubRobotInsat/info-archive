@@ -4,6 +4,7 @@
 
 #include "IAWiimote.h"
 #include "../petri/Deplacement.h"
+#include "../petri/Moteur.h"
 #include "../petri/Servo.h"
 
 //#define TEST_FCT_DEPLA
@@ -119,15 +120,28 @@ void IAWiimote::processWiimoteInput(WiimoteState& state) {
 		}
 #endif
 
+// ascenseurs
+#ifdef MANETTE_COUCHEE
 		if(state.isPressed(BUTTON_B)) {
-			// stockerCylindre();
+			monterAscenseursDe(1);
 		} else if(state.isPressed(BUTTON_A)) {
-			// destockerCylindre();
+#else
+		if(state.isPressed(BUTTON_1)) {
+			monterAscenseursDe(1);
+		} else if(state.isPressed(BUTTON_2)) {
+#endif
+			if(_avaleurs_actives) {
+				activerAvaleurs(SensAvaleurs::AVALER);
+			} else {
+				desactiverAvaleurs();
+			}
+			_avaleurs_actives = !_avaleurs_actives;
 		} else
 		    // On revient à la position initiale
 		    if(state.isPressed(BUTTON_HOME)) {
 			allerA_vec(_initial_position);
 			tournerAbsolu(0_deg);
+			std::cout << "Home sweet home" << std::endl;
 		} else if(state.isPressed(BUTTON_PLUS)) { // Modifie la vitesse de manière permanente (en plus de 1 et 2)
 			setVitesseLineaireRapide();
 			setVitesseAngulaireRapide();
@@ -294,3 +308,5 @@ TypeDeplacement IAWiimote::getTypeDeplacement(float angleNunchuk) {
 #endif // NUNCHUK_UTILISER_COURBES
 	return IMMOBILE;
 }
+
+#undef MANETTE_COUCHEE

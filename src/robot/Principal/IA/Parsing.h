@@ -59,14 +59,12 @@ namespace ia_parsing {
 		ABEILLE_DROITE = 4,
 
 		// moteurs
-		ASCENSEUR_GAUCHE = 5,
-		ASCENSEUR_DROIT = 6,
-		AVALEUR_GAUCHE = 7,
-		AVALEUR_DROIT = 8,
+		ASCENSEURS = 5,
+		AVALEURS = 6,
 
 		// séquences
 
-		UNDEF = 9,
+		UNDEF = 7,
 	};
 	TestMeca parseTestMeca(int argc, char* argv[]) {
 		static struct option long_options[] = {{"cubes", no_argument, 0, 'c'},
@@ -74,17 +72,15 @@ namespace ia_parsing {
 		                                       {"souted", no_argument, 0, 'x'},
 		                                       {"abeilleg", no_argument, 0, 'a'},
 		                                       {"abeilled", no_argument, 0, 'q'},
-		                                       {"ascenseurg", no_argument, 0, 'j'},
-		                                       {"ascenseurd", no_argument, 0, 'k'},
-		                                       {"avaleurg", no_argument, 0, 'l'},
-		                                       {"avaleurd", no_argument, 0, 'm'},
+		                                       {"ascenseur", no_argument, 0, 'j'},
+		                                       {"avaleur", no_argument, 0, 'v'},
 		                                       {0, 0, 0, 0}};
 
 		int arg;
 		int long_index = 0;
 		TestMeca result = UNDEF;
 
-		while((arg = getopt_long(argc, argv, "csxaqjklm:", long_options, &long_index)) != -1) {
+		while((arg = getopt_long(argc, argv, "csxaqjv:", long_options, &long_index)) != -1) {
 
 			switch(arg) {
 				case 'c':
@@ -103,16 +99,10 @@ namespace ia_parsing {
 					result = TestMeca::ABEILLE_DROITE;
 					break;
 				case 'j':
-					result = TestMeca::ASCENSEUR_GAUCHE;
+					result = TestMeca::ASCENSEURS;
 					break;
-				case 'k':
-					result = TestMeca::ASCENSEUR_DROIT;
-					break;
-				case 'l':
-					result = TestMeca::AVALEUR_GAUCHE;
-					break;
-				case 'm':
-					result = TestMeca::AVALEUR_DROIT;
+				case 'v':
+					result = TestMeca::AVALEURS;
 					break;
 				default:;
 			}
@@ -120,8 +110,8 @@ namespace ia_parsing {
 
 		if(result == TestMeca::UNDEF) {
 			std::cout << "Pas de servo spécifié. Test de la porte pour les cubes par défaut." << std::endl;
-			std::cout << "Usage : " << argv[0] << " [--cubes|--souteg|--souted|--abeilleg|--abeilled|--ascenseurg|"
-			          << "--ascenseurd|--avaleurg|--avaleurd]" << std::endl;
+			std::cout << "Usage : " << argv[0]
+			          << " [--cubes|--souteg|--souted|--abeilleg|--abeilled|--ascenseur|--avaleur]" << std::endl;
 			result = PORTE_CUBES;
 		}
 

@@ -40,10 +40,13 @@
 
 /// IDs des moteurs
 // Moteurs asservis
-#define ID_MOTEUR_ASCENSEUR_GAUCHE 5
-#define ID_MOTEUR_ASCENSEUR_DROIT 6
+#define ID_MOTEUR_ASCENSEUR_GAUCHE 1
+#define ID_MOTEUR_ASCENSEUR_DROIT 2
 // Moteurs non asservis
-#define ID_MOTEUR_AVALEUR_GAUCHE 7
-#define ID_MOTEUR_AVALEUR_DROIT 8
+#define ID_MOTEUR_AVALEUR_GAUCHE 3
+#define ID_MOTEUR_AVALEUR_DROIT 4
+// Brushless
+#define ID_BRUSHLESS_GAUCHE 5
+#define ID_BRUSHLESS_DROIT 6
 
 #endif /* HEADER_COMMUN */

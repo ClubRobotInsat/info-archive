@@ -7,9 +7,9 @@ set(ROBOT_PRINC_SOURCE
         #librobot/Ascenseur.cpp
         petri/Deplacement.cpp
         petri/Servo.cpp
+		petri/Moteur.cpp
         petri/Utils.cpp
         petri/PetriCommon.cpp
-        petri/Servo.cpp
         librobot/StrategyGenerator/MagicStrategy.cpp)
 
 include_directories(${root_SOURCE_DIR}/../third-parties/petri)

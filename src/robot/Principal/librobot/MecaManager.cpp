@@ -33,6 +33,7 @@ MecaManagerPrincipal::MecaManagerPrincipal(RobotPrincipal& robot)
         //, _ascenseur(_robot.getCarte<ASCENSEUR>(), positionAscenseur)
         , _servos(robot.getCarte<SERVOS>(),
                   std::bind(&MecaManagerPrincipal::getPositionServo, this, std::placeholders::_1, std::placeholders::_2))
+// TODO , _moteurs(robot.getCarte<MOTEURS>())
 /*
         , _servoX(_robot.getCarte<SERVO_X>(),
                                     std::bind(&MecaManagerPrincipal::getPositionServoX, this, std::placeholders::_1,
@@ -41,28 +42,41 @@ MecaManagerPrincipal::MecaManagerPrincipal(RobotPrincipal& robot)
 {
 
 	logDebug("Initialisation de la meca");
-	// for(int i = 0 ; i < 5 ; ++i) {
-	//  std::cout << "n°" << i << std::endl;
-	/*this->setModeBlocageServos();
+	// Test des servos
+	this->setModeBlocageServos();
+	this->setCouleurServos(CarteServo::Couleur::JAUNE);
 
-	this->pencherPinceDevant();
-	this->orienterPinceAttraper();
-	this->ouvrirPince();
-	//_ascenseur.initialiser(SensRotation::Trigo);
-	this->ascenseurCylindreSol();
-	this->fermerPince();
-	this->orienterPinceStocker();
-	this->fermerFesseGauche();
-	this->fermerFesseDroite();/
+	this->ouvrirAbeilleD();
+	this->ouvrirAbeilleG();
 
+	this->fermerAbeilleD();
+	this->fermerAbeilleG();
+
+	this->ouvrirSouteD();
+	this->ouvrirSouteG();
+
+	this->fermerSouteD();
+	this->fermerSouteG();
+
+	this->ouvrirPorteCube();
+	this->fermerPorteCube();
+
+	this->setCouleurServos(CarteServo::Couleur::VERT);
+
+	// Test des moteurs
+	this->activerAvaleurs(SensAvaleurs::AVALER);
+	sleep(1);
+	this->activerAvaleurs(SensAvaleurs::RECRACHER);
+	sleep(1);
+	this->desactiverAvaleurs();
+
+	this->monterAscenseursDe(1);
+
+	// _ascenseur.initialiser(SensRotation::Trigo);
 	// logDebug4("init de la fusee : ", this->bougerFuseeDe(360_deg));
-	this->initialiserEnginSpatial();
-	//}
+	// this->initialiserEnginSpatial();
 
-	for(int i = 0; i < PositionStockage::NBR - NBR_PLACES_STOCKAGE; ++i) {
-	    _cylindresStockes[i] = true;
-	}
-	logDebug("Fin initialisation Méca");*/
+	logDebug("Fin initialisation Méca");
 }
 
 MecaManagerPrincipal::~MecaManagerPrincipal() {
@@ -70,7 +84,100 @@ MecaManagerPrincipal::~MecaManagerPrincipal() {
 }
 
 void MecaManagerPrincipal::couperMeca() {
+	logDebug("couperMeca()");
+	this->desactiverAvaleurs();
 	// this->ouvrirPince();
+}
+
+ResultatAction MecaManagerPrincipal::ouvrirPorteCube() {
+	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::LOQUET),
+	                                              enumToInt(ConstantesPrincipal::PorteCube::OUVERT));
+}
+
+ResultatAction MecaManagerPrincipal::fermerPorteCube() {
+	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::LOQUET),
+	                                              enumToInt(ConstantesPrincipal::PorteCube::FERME));
+}
+
+ResultatAction MecaManagerPrincipal::orienterPorteCubeDe(Angle val) {
+	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::LOQUET), val);
+}
+
+// @Denis appeler les fonctions du MoteurManager pour que ça fasse le job
+ResultatAction MecaManagerPrincipal::monterAscenseursDe(int nbr_tours) {
+	// TODO : fonction bloquante mais parallélisation des deux ascenseurs
+	return ResultatAction::TIMEOUT;
+}
+
+ResultatAction MecaManagerPrincipal::monterAscenseursDe(Angle angle) {
+	// TODO
+	return ResultatAction::TIMEOUT;
+}
+
+ResultatAction MecaManagerPrincipal::activerAvaleurs(SensAvaleurs sens) {
+	// TODO : fonction bloquante mais parallélisation des deux avaleurs
+	return ResultatAction::TIMEOUT;
+}
+
+ResultatAction MecaManagerPrincipal::desactiverAvaleurs() {
+	// TODO
+	return ResultatAction::TIMEOUT;
+}
+
+ResultatAction MecaManagerPrincipal::ouvrirSouteD() {
+	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::PORTE_SOUTE_DROIT),
+	                                              enumToInt(ConstantesPrincipal::SouteDroit::OUVERT));
+}
+
+ResultatAction MecaManagerPrincipal::fermerSouteD() {
+	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::PORTE_SOUTE_DROIT),
+	                                              enumToInt(ConstantesPrincipal::SouteDroit::FERME));
+}
+
+ResultatAction MecaManagerPrincipal::orienterSouteDDe(Angle val) {
+	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::PORTE_SOUTE_DROIT), val);
+}
+
+ResultatAction MecaManagerPrincipal::ouvrirSouteG() {
+	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::PORTE_SOUTE_GAUCHE),
+	                                              enumToInt(ConstantesPrincipal::SouteGauche::OUVERT));
+}
+
+ResultatAction MecaManagerPrincipal::fermerSouteG() {
+	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::PORTE_SOUTE_GAUCHE),
+	                                              enumToInt(ConstantesPrincipal::SouteGauche::FERME));
+}
+
+ResultatAction MecaManagerPrincipal::orienterSouteGDe(Angle val) {
+	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::PORTE_SOUTE_GAUCHE), val);
+}
+
+ResultatAction MecaManagerPrincipal::ouvrirAbeilleD() {
+	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::ABEILLE_DROIT),
+	                                              enumToInt(ConstantesPrincipal::AbeilleDroit::OUVERT));
+}
+
+ResultatAction MecaManagerPrincipal::fermerAbeilleD() {
+	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::ABEILLE_DROIT),
+	                                              enumToInt(ConstantesPrincipal::AbeilleDroit::FERME));
+}
+
+ResultatAction MecaManagerPrincipal::orienterAbeilleDDe(Angle val) {
+	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::ABEILLE_DROIT), val);
+}
+
+ResultatAction MecaManagerPrincipal::ouvrirAbeilleG() {
+	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::ABEILLE_GAUCHE),
+	                                              enumToInt(ConstantesPrincipal::AbeilleGauche::OUVERT));
+}
+
+ResultatAction MecaManagerPrincipal::fermerAbeilleG() {
+	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::ABEILLE_GAUCHE),
+	                                              enumToInt(ConstantesPrincipal::AbeilleGauche::FERME));
+}
+
+ResultatAction MecaManagerPrincipal::orienterAbeilleGDe(Angle val) {
+	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::ABEILLE_GAUCHE), val);
 }
 
 /*ResultatAction MecaManagerPrincipal::ascenseurStockageHaut() {
@@ -96,26 +203,6 @@ ResultatAction MecaManagerPrincipal::ascenseurPoserRails() {
     return this->_ascenseur.allerAPosition(PositionAscenseur::POSER_DANS_RAILS);
 }
 
-ResultatAction MecaManagerPrincipal::ouvrirPince() {
-    return this->_servos.positionnerServoBloquant(enumToInt(Servo::PINCE),
-enumToInt(ConstantesPrincipal::Pince::OUVERT));
-}
-
-ResultatAction MecaManagerPrincipal::ouvrirPinceMax() {
-    return this->_servos.positionnerServoBloquant(enumToInt(Servo::PINCE),
-enumToInt(ConstantesPrincipal::Pince::OUVERT_MAX));
-}
-
-ResultatAction MecaManagerPrincipal::ouvrirPinceMoitie() {
-    return this->_servos.positionnerServoBloquant(enumToInt(Servo::PINCE),
-enumToInt(ConstantesPrincipal::Pince::SEMI_OUVERT));
-}
-
-ResultatAction MecaManagerPrincipal::fermerPince() {
-    return this->_servos.positionnerServoBloquant(enumToInt(Servo::PINCE),
-enumToInt(ConstantesPrincipal::Pince::FERME));
-}
-
 ResultatAction MecaManagerPrincipal::attraperCylindre() {
     auto action = fermerPince();
     logDebug1("fermerPince = ", action);
@@ -129,42 +216,6 @@ ResultatAction MecaManagerPrincipal::attraperCylindre() {
         default:
             return ResultatAction::RATE;
     }
-}
-
-ResultatAction MecaManagerPrincipal::orienterPinceAttraper() {
-    return this->_servos.positionnerServoBloquant(enumToInt(Servo::LACET),
-enumToInt(ConstantesPrincipal::Lacet::ATTRAPER));
-}
-
-ResultatAction MecaManagerPrincipal::orienterPinceStocker() {
-    return this->_servos.positionnerServoBloquant(enumToInt(Servo::LACET),
-enumToInt(ConstantesPrincipal::Lacet::RANGER));
-}
-
-ResultatAction MecaManagerPrincipal::orienterPinceRecalage() {
-    return this->_servos.positionnerServoBloquant(enumToInt(Servo::LACET),
-enumToInt(ConstantesPrincipal::Lacet::RECALAGE));
-}
-
-ResultatAction MecaManagerPrincipal::pencherPinceBas() {
-    return this->_servos.positionnerServoBloquant(enumToInt(Servo::TANGAGE),
-enumToInt(ConstantesPrincipal::Tangage::BAS));
-}
-
-ResultatAction MecaManagerPrincipal::pencherPinceDevant() {
-    return this->_servos.positionnerServoBloquant(enumToInt(Servo::TANGAGE),
-enumToInt(ConstantesPrincipal::Tangage::DEVANT));
-}
-
-ResultatAction MecaManagerPrincipal::lancerEnginSpatial() {
-    logDebug("Lancement de la fusée !");
-    return this->_servos.positionnerServoBloquant(enumToInt(Servo::FUSEE),
-enumToInt(ConstantesPrincipal::Fusee::RELACHEMENT));
-}
-
-ResultatAction MecaManagerPrincipal::initialiserEnginSpatial() {
-    return this->_servos.positionnerServoBloquant(enumToInt(Servo::FUSEE),
-enumToInt(ConstantesPrincipal::Fusee::STOCKAGE));
 }
 
 ResultatAction MecaManagerPrincipal::ajouterCylindre(int i) {
@@ -271,50 +322,6 @@ int MecaManagerPrincipal::getNbrCylindres() {
         if(_cylindresStockes[i])
             N++;
     return N - PositionStockage::NBR + NBR_PLACES_STOCKAGE;
-}
-
-ResultatAction MecaManagerPrincipal::printCylindres() {
-    logDebug1("je possede tant de cylindres : ", getNbrCylindres());
-    return ResultatAction::REUSSI;
-}
-
-ResultatAction MecaManagerPrincipal::orienterPinceDe(Angle val) {
-    return this->_servos.positionnerServoBloquant(enumToInt(Servo::LACET), val);
-}
-ResultatAction MecaManagerPrincipal::pencherPindeDe(Angle val) {
-    return this->_servos.positionnerServoBloquant(enumToInt(Servo::TANGAGE), val);
-}
-ResultatAction MecaManagerPrincipal::ouvrirPinceDe(Angle val) {
-    return this->_servos.positionnerServoBloquant(enumToInt(Servo::PINCE), val);
-}
-ResultatAction MecaManagerPrincipal::ouvrirFesseGaucheDe(Angle val) {
-    return this->_servos.positionnerServoBloquant(enumToInt(Servo::GAUCHE), val);
-}
-ResultatAction MecaManagerPrincipal::ouvrirFesseDroiteDe(Angle val) {
-    return this->_servos.positionnerServoBloquant(enumToInt(Servo::DROITE), val);
-}
-ResultatAction MecaManagerPrincipal::bougerFuseeDe(Angle val) {
-    return this->_servos.positionnerServoBloquant(enumToInt(Servo::FUSEE), val);
-}
-
-ResultatAction MecaManagerPrincipal::ouvrirFesseGauche() {
-    return this->_servos.positionnerServoBloquant(enumToInt(Servo::GAUCHE),
-enumToInt(ConstantesPrincipal::Gauche::OUVERT));
-}
-
-ResultatAction MecaManagerPrincipal::ouvrirFesseDroite() {
-    return this->_servos.positionnerServoBloquant(enumToInt(Servo::DROITE),
-enumToInt(ConstantesPrincipal::Droite::OUVERT));
-}
-
-ResultatAction MecaManagerPrincipal::fermerFesseGauche() {
-    return this->_servos.positionnerServoBloquant(enumToInt(Servo::GAUCHE),
-enumToInt(ConstantesPrincipal::Gauche::FERME));
-}
-
-ResultatAction MecaManagerPrincipal::fermerFesseDroite() {
-    return this->_servos.positionnerServoBloquant(enumToInt(Servo::DROITE),
-enumToInt(ConstantesPrincipal::Droite::FERME));
 }*/
 
 Angle MecaManagerPrincipal::getPositionServo(uint8_t servo, uint8_t pos) {
@@ -339,24 +346,24 @@ Angle MecaManagerPrincipal::getPositionServo(uint8_t servo, uint8_t pos) {
 	}
 }
 
-/*void MecaManagerPrincipal::setModeBlocageServos() {
-    auto avec = CarteServo::ModeBlocage::MAINTIEN_SUR_BLOCAGE;
-    auto sans = CarteServo::ModeBlocage::DEBLOCAGE;
+void MecaManagerPrincipal::setModeBlocageServos() {
+	auto avec = CarteServo::ModeBlocage::MAINTIEN_SUR_BLOCAGE;
+	auto sans = CarteServo::ModeBlocage::DEBLOCAGE;
 
-    _servos.reglerModeBlocage(enumToInt(Servo::PINCE), avec);
-    _servos.reglerModeBlocage(enumToInt(Servo::LACET), sans);
-    _servos.reglerModeBlocage(enumToInt(Servo::TANGAGE), sans);
-    _servos.reglerModeBlocage(enumToInt(Servo::FUSEE), avec);
-    _servos.reglerModeBlocage(enumToInt(Servo::GAUCHE), sans);
-    _servos.reglerModeBlocage(enumToInt(Servo::DROITE), sans);
+	// TODO: mettre 'avec' si on a besoin de forcer sur les servos
+	_servos.reglerModeBlocage(enumToInt(Servo::LOQUET), sans);
+	_servos.reglerModeBlocage(enumToInt(Servo::ABEILLE_DROIT), sans);
+	_servos.reglerModeBlocage(enumToInt(Servo::ABEILLE_GAUCHE), sans);
+	_servos.reglerModeBlocage(enumToInt(Servo::PORTE_SOUTE_DROIT), sans);
+	_servos.reglerModeBlocage(enumToInt(Servo::PORTE_SOUTE_GAUCHE), sans);
 }
 
 void MecaManagerPrincipal::setCouleurServos(CarteServo::Couleur couleur) {
-    for(uint8_t i = 0; i < enumToInt(Servo::NBR); ++i)
-        _servos.setCouleur(i, couleur);
+	for(uint8_t i = 0; i < enumToInt(Servo::NBR); ++i)
+		_servos.setCouleur(i, couleur);
 }
 
-void MecaManagerPrincipal::setTousCylindresStockes() {
+/*void MecaManagerPrincipal::setTousCylindresStockes() {
     for(int i = 0; i < PositionStockage::NBR; ++i)
         _cylindresStockes[i] = true;
 }*/
