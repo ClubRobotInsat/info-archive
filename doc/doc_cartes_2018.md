@@ -17,6 +17,7 @@
 		- [Motor.h](https://github.com/ClubRobotInsat/code-elec-nucleo/blob/master/src/Motor.h)
 		- [Servo.h](https://github.com/ClubRobotInsat/code-elec-nucleo/blob/master/src/Servo.h)
 * :clipboard: [Attribution des IDs aux cartes](#attribution-des-ids-aux-cartes)
+* :clipboard: [Attribution des IDs aux servos](#attribution-des-ids-aux-servos)
 * :clipboard: [Attribution des IDs aux moteurs](#attribution-des-ids-aux-moteurs)
 * Specs sur les différentes cartes
 	- :truck: [Carte déplacement](#carte-deplacement)
@@ -41,14 +42,23 @@ Pour modifier ces constantes, il faut aller voir du côté [de ce document](http
 | 0x05 |    Moteur   |  Nucléo  |
 
 ## Attribution des IDs aux moteurs
-| ID | Moteur |
-|:----:|:----:|
-| 0x01 | Moteur asservi gauche |
-| 0x02 | Moteur asservi droite |
+|  ID  |        Servo       |
+|:----:|:------------------:|
+| 0x00 | Porte soute droite |
+| 0x01 |       Loquet       |
+| 0x02 | Porte soute gauche |
+| 0x03 |   Abeille gauche   |
+| 0x04 |   Abeille droite   |
+
+## Attribution des IDs aux moteurs
+|  ID  |                Moteur               |
+|:----:|:-----------------------------------:|
+| 0x01 |        Moteur asservi gauche        |
+| 0x02 |        Moteur asservi droite        |
 | 0x03 | Moteur non asservi gauche (avaleur) |
 | 0x04 | Moteur non asservi droite (avaleur) |
-| 0x05 | Brushless gauche (ventilateur) |
-| 0x06 | Brushless droite (ventilateur) |
+| 0x05 |    Brushless gauche (ventilateur)   |
+| 0x06 |    Brushless droite (ventilateur)   |
 
 ## Carte deplacement
 ### Commandes des messages
@@ -118,79 +128,80 @@ Reçoit 6 octets :
 Utilisée par la commande **ACK** (n°1)
 ```cpp
 enum TypeAck : uint8_t {
-    ACK_RIEN,
-    ACK_MESSAGE_EXECUTE = 'R',
-    ACK_MESSAGE_IGNORE  = 'I'
-	};
+	ACK_RIEN,
+	ACK_MESSAGE_EXECUTE = 'R',
+	ACK_MESSAGE_IGNORE  = 'I'
+};
 ```
 
 ```cpp
 enum TypeMesure : uint8_t {
-		MESURE_POSITION         = 0,
-		MESURE_VITESSE_CONSIGNE = 1,
-		MESURE_VITESSE_MESUREE  = 2,
-		MESURE_COMMANDE         = 3
-	};
+	MESURE_POSITION         = 0,
+	MESURE_VITESSE_CONSIGNE = 1,
+	MESURE_VITESSE_MESUREE  = 2,
+	MESURE_COMMANDE         = 3
+};
 ```
 
 ```cpp
 enum TypeParam : uint8_t {
-		PID       = 0,
-		CINETIQUE = 1,
-		PRECISION = 2,
-		MECANIQUE = 3 };
+	PID       = 0,
+	CINETIQUE = 1,
+	PRECISION = 2,
+	MECANIQUE = 3
+};
 ```
 
 Utilisée par les commandes **ASSERV_ON_OFF** (n°6) et **MESURE** (n°12)
 ```cpp
 enum TypeGrandeur : uint8_t {
-		POSITION  = 'L',
-		ANGLE     = 'A',
-		DROITE    = 'D',
-		GAUCHE    = 'G',
-		VPOSITION = 'l',
-		VANGLE    = 'a'
-	};
+	POSITION  = 'L',
+	ANGLE     = 'A',
+	DROITE    = 'D',
+	GAUCHE    = 'G',
+	VPOSITION = 'l',
+	VANGLE    = 'a'
+};
 ```
 
 Utilisée par la commande **COMMANDE** (n°4)
 ```cpp
 enum TypeDeplacement : uint8_t {
-		DEPLACEMENT_RIEN,
-		DEPLACEMENT_ARRETER           = 0,
-		DEPLACEMENT_AVANCER           = 1,
-		DEPLACEMENT_TOURNER           = 2,
-		DEPLACEMENT_TOURNER_ABSOLU    = 3,
-		DEPLACEMENT_POINTER_VERS      = 4,
-		DEPLACEMENT_ALLER_VERS        = 5,
-		DEPLACEMENT_ALLER_A_DECOMPOSE = 6,
-		DEPLACEMENT_ALLER_A           = 7,
-		DEPLACEMENT_AVANCER_INFINI    = 8,
-		DEPLACEMENT_TOURNER_INFINI    = 9,
-		DEPLACEMENT_PASSER_PAR        = 10,
-		DEPLACEMENT_PIVOTER_DROITE    = 11,
-		DEPLACEMENT_PIVOTER_GAUCHE    = 12,
-		DEPLACEMENT_DISTANCE_DG       = 13,
-		DEPLACEMENT_VITESSE_DG        = 14,
-		DEPLACEMENT_ARRET_URGENCE     = 15,
-		DEPLACEMENT_CONTROLE_VITESSE  = 17
-	};
+	DEPLACEMENT_RIEN,
+	DEPLACEMENT_ARRETER           = 0,
+	DEPLACEMENT_AVANCER           = 1,
+	DEPLACEMENT_TOURNER           = 2,
+	DEPLACEMENT_TOURNER_ABSOLU    = 3,
+	DEPLACEMENT_POINTER_VERS      = 4,
+	DEPLACEMENT_ALLER_VERS        = 5,
+	DEPLACEMENT_ALLER_A_DECOMPOSE = 6,
+	DEPLACEMENT_ALLER_A           = 7,
+	DEPLACEMENT_AVANCER_INFINI    = 8,
+	DEPLACEMENT_TOURNER_INFINI    = 9,
+	DEPLACEMENT_PASSER_PAR        = 10,
+	DEPLACEMENT_PIVOTER_DROITE    = 11,
+	DEPLACEMENT_PIVOTER_GAUCHE    = 12,
+	DEPLACEMENT_DISTANCE_DG       = 13,
+	DEPLACEMENT_VITESSE_DG        = 14,
+	DEPLACEMENT_ARRET_URGENCE     = 15,
+	DEPLACEMENT_CONTROLE_VITESSE  = 17
+};
 ```
 
 Utilisée par la commande **COMMANDE** (n°4)
 ```cpp
 enum class SensAvance : uint8_t {
-		Arriere = 0,
-		Avant   = 1
-	};
+	Arriere = 0,
+	Avant   = 1
+};
 ```
 
 Utilisée par la commande **COMMANDE** (n°4)
 ```cpp
 enum class SensRotation : uint8_t {
-		Horaire = 0,
-		Trigo   = 1
-	};
+	Horaire = 0,
+	Trigo   = 1
+};
 ```
 
 ## Carte servos
@@ -203,7 +214,7 @@ Les IDS sont toujours sur 1 octet interprété en non signé.
 
 |  Commande  |  Data  |
 |:----:|:----:|
-|0x02 | Angle sur 2 octets entre 0 et 1023 | 
+|0x02 | Angle sur 2 octets entre 0 et 1023 |
 
 #### Servo bloqué
 
@@ -226,7 +237,7 @@ Les IDS sont toujours sur 1 octet interprété en non signé.
 | 0x06 | Id du servo | La carte renvois un message [Position](#position) |
 
 #### Mode Blocage :
-*** N'existe plus ***
+***N'existe plus***
 
 #### Réglage de la vitesse :
 
