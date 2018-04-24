@@ -20,8 +20,11 @@ compile_petri(IA_PETRI petri/IA2018.petri IA2018.so)
 #compile_petri(HOMOLOGATION_PETRI petri/Homologation.petri Homologation.so)
 
 add_library(robotPrincipal STATIC ${ROBOT_PRINC_SOURCE})
+add_library(robotPrincipalInterfaceElec STATIC ${ROBOT_PRINC_SOURCE})
+
 #add_dependencies(robotPrincipal HOMOLOGATION_PETRI)
 target_link_libraries(robotPrincipal Cartes Robot Strategie)
+target_link_libraries(robotPrincipalInterfaceElec Cartes Robot_Interfacer_Elec Strategie)
 
 #add_executable(debug_controle_clavier debug/ControleClavier.cpp)
 #target_link_libraries(debug_controle_clavier robotPrincipal glfw_Robot)
@@ -98,6 +101,9 @@ target_link_libraries(IATestRobot robotPrincipal)
 
 add_executable(IATestServo IA/IATestServo.cpp)
 target_link_libraries(IATestServo robotPrincipal)
+
+add_executable(IATestElecAndRobot IA/IATestRobot.cpp)
+target_link_libraries(IATestElecAndRobot robotPrincipalInterfaceElec)
 
 add_executable(TestStrategyGenerator librobot/StrategyGenerator/Action.hpp
 									 librobot/StrategyGenerator/Element.hpp

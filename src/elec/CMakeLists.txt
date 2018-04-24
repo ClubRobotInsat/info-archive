@@ -21,3 +21,4 @@ include_directories(code-elec-nucleo/src/herkulex)
 
 add_executable(nucleo ${SOURCE_FILES_NUCLEO})
 target_link_libraries(nucleo mbed-simulated)
+target_compile_definitions(nucleo PRIVATE SIMULATED_MAIN)

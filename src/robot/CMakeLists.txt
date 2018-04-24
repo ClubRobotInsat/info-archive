@@ -42,8 +42,22 @@ set(ROBOT_SOURCE
         Commun/Servo.cpp
         Commun/TCPIP.cpp
         Commun/Evitement.cpp)
+
+set(ROBOT_INTERFACE_ELEC
+		Commun/Robot.cpp
+		Commun/Deplacement.cpp
+		Commun/Ascenseur.cpp
+		Commun/CAN.cpp
+		Commun/RS232.cpp
+		../elec/simulator/Interface.cpp
+		Commun/Servo.cpp
+		Commun/TCPIP.cpp
+		Commun/Evitement.cpp)
+
 add_library(Robot STATIC ${ROBOT_SOURCE})
+add_library(Robot_Interfacer_Elec ${ROBOT_INTERFACE_ELEC})
 target_link_libraries(Robot Outils_Robot Strategie)
+target_link_libraries(Robot_Interfacer_Elec Outils_Robot Strategie)
 
 add_executable(debug_TestCAN Commun/Test/TestCan.cpp Cartes/Carte.cpp Commun/Test/CarteTestCAN.cpp)
 target_link_libraries(debug_TestCAN Robot)
