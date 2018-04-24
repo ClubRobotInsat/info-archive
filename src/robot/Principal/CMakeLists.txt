@@ -102,9 +102,6 @@ target_link_libraries(IATestRobot robotPrincipal)
 add_executable(IATestServo IA/IATestServo.cpp)
 target_link_libraries(IATestServo robotPrincipal)
 
-add_executable(IATestElecAndRobot IA/IATestRobot.cpp)
-target_link_libraries(IATestElecAndRobot robotPrincipalInterfaceElec)
-
 add_executable(TestStrategyGenerator librobot/StrategyGenerator/Action.hpp
 									 librobot/StrategyGenerator/Element.hpp
 									 librobot/StrategyGenerator/Table.hpp

@@ -71,7 +71,6 @@ add_executable(debug_TesteurRS232 Commun/Test/Testeur_RS232.cpp)
 target_link_libraries(debug_TesteurRS232 Robot)
 add_executable(debug_TesteurCAN Commun/Test/Testeur_CAN.cpp)
 target_link_libraries(debug_TesteurCAN Robot)
-
 add_executable(debug_TestRS23 Commun/Test/TestAscenseur.cpp)
 target_link_libraries(debug_TestRS23 robotPrincipal)
 

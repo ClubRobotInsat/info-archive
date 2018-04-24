@@ -15,7 +15,11 @@
 		getchar();                           \
 	}
 
+#ifdef SIMULATED_MAIN
+int main_robot(int argc, char* argv[]) {
+#else
 int main(int argc, char* argv[]) {
+#endif
 	Log::open(argc, argv, false);
 
 	RobotColor color = ia_parsing::parseColor(argc, argv);
