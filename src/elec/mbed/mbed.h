@@ -5,8 +5,6 @@
 #ifndef ROOT_MBED_H
 #define ROOT_MBED_H
 
-void mbed_assert_internal(const char* expr, const char* file, int line);
-
 #include <stdarg.h>
 #include <stdio.h>
 #include <tgmath.h>
