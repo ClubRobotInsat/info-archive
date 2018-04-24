@@ -17,6 +17,7 @@
 		- [Motor.h](https://github.com/ClubRobotInsat/code-elec-nucleo/blob/master/src/Motor.h)
 		- [Servo.h](https://github.com/ClubRobotInsat/code-elec-nucleo/blob/master/src/Servo.h)
 * :clipboard: [Attribution des IDs aux cartes](#attribution-des-ids-aux-cartes)
+* :clipboard: [Attribution des IDs aux moteurs](#attribution-des-ids-aux-moteurs)
 * Specs sur les différentes cartes
 	- :truck: [Carte déplacement](#carte-deplacement)
 		- [IDs des messages](#ids-des-messages)
@@ -38,6 +39,16 @@ Pour modifier ces constantes, il faut aller voir du côté [de ce document](http
 | 0x03 |      IO     |  Nucléo  |
 | 0x04 |  Evitement  |   _CAN_  |
 | 0x05 |    Moteur   |  Nucléo  |
+
+## Attribution des IDs aux moteurs
+| ID | Moteur |
+|:----:|:----:|
+| 0x01 | Moteur asservi gauche |
+| 0x02 | Moteur asservi droite |
+| 0x03 | Moteur non asservi gauche (avaleur) |
+| 0x04 | Moteur non asservi droite (avaleur) |
+| 0x05 | Brushless gauche (ventilateur) |
+| 0x06 | Brushless droite (ventilateur) |
 
 ## Carte deplacement
 ### Commandes des messages
@@ -212,7 +223,7 @@ Les IDS sont toujours sur 1 octet interprété en non signé.
 
 |  Commande  |  Data  | Commentaires |
 |:----:|:----:|:----:|
-| 0x06 | Id du servo | La carte renvois un message [Position] |
+| 0x06 | Id du servo | La carte renvois un message [Position](#position) |
 
 #### Mode Blocage :
 *** N'existe plus ***
@@ -238,9 +249,9 @@ Cette carte n'est utilisée que pour savoir si la tirette a été retirée ou no
 ## Carte moteur
 |  Cmd  |      Type      | Moteur asservi ? |        Commentaires        | Nbr données (octets) |
 |:----:|:--------------:|:----------------:|:--------------------------:|:--------------------:|
-| 0x01 | Position ANGLE |        oui       | angle sur [0;360]° : float |           4          |
-| 0x02 |  Position TOUR |        oui       | nbr tours \| sens (0 ou 1) |           2          |
-| 0x03 |       ON       |        non       |   sens rotation (0 ou 1)   |           1          |
-| 0x04 |       OFF      |        non       |              0             |           0          |
+| 0x01 | Position ANGLE |        oui       | ID \| angle sur [0;360]° : float |           5          |
+| 0x02 |  Position TOUR |        oui       | ID \| nbr tours \| sens (0 ou 1) |           4          |
+| 0x03 |       ON       |        non       | ID \| sens rotation (0 ou 1)   |           2          |
+| 0x04 |       OFF      |        non       | ID                         |           1          |
 
 Pour le sens de rotation, `0` correspond à une rotation **Horaire** et `1` à une rotation **Trigonométrique**.
