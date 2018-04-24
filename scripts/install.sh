@@ -82,6 +82,7 @@ fi
 
 if [ $install_wii -eq 1 ]
     then echo -e "${Yellow}Installation de la wiimote${End}"
+    sudo apt install libbluetooth-dev
     cd /tmp
     git clone https://github.com/grandelli/WiiC.git
     cd WiiC
