@@ -24,7 +24,7 @@ execute_process(
 		WORKING_DIRECTORY ${root_SOURCE_DIR}
 )
 add_custom_target(InfoSubmodules
-		COMMAND git submodule update --init
+		COMMAND git submodule update --init --recursive --remote
 		WORKING_DIRECTORY ${root_SOURCE_DIR}
 		)
 

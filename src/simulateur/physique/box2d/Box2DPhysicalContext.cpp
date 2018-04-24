@@ -8,7 +8,7 @@
 #include "PhysicalObjectDefinition.h"
 
 Box2DPhysicalContext::Box2DPhysicalContext(const b2Vec2& gravity)
-        : _b2world(gravity), _stepDuration(20_s), _lastUpdateTime(TimePoint::now()), _maxId(-1) {}
+        : _b2world(gravity), _stepDuration(20_ms), _lastUpdateTime(TimePoint::now()), _maxId(-1) {}
 
 b2World& Box2DPhysicalContext::getWorld() {
 	return _b2world;
