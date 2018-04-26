@@ -57,6 +57,7 @@ const PinName PB_11("PB_11");
 const PinName PB_12("PB_12");
 const PinName PB_13("PB_13");
 const PinName PB_14("PB_14");
+const PinName PB_15("PB_15");
 
 const PinName PC_0("PC_0");
 const PinName PC_1("PC_1");
@@ -73,6 +74,7 @@ const PinName PC_11("PC_11");
 const PinName PC_12("PC_12");
 const PinName PC_13("PC_13");
 const PinName PC_14("PC_14");
+const PinName PC_15("PC_15");
 
 const PinName NC("NC");
 const PinName USBTX("USBTX");

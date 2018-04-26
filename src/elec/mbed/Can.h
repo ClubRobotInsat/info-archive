@@ -9,14 +9,26 @@
 #include "Callback.h"
 #include "PinName.h"
 
-class CanMessage {};
+class CANMessage {
+public:
+	CANMessage() = default;
+	CANMessage(int l, char* d, uint8_t i) : len(l), data(d), id(i) {}
+
+	int len;
+	char* data;
+	uint8_t id;
+};
 
 class CAN {
 
 public:
 	CAN(PinName rx, PinName tx, int baudrate = 100000){};
-	int write(CanMessage message);
-	int read(CanMessage& msg, int handle = 0);
+	int write(CANMessage message) {
+		return 0;
+	}
+	int read(CANMessage& msg, int handle = 0) {
+		return 0;
+	}
 	void reset();
 
 	enum IrqType {
@@ -33,7 +45,7 @@ public:
 		IrqCnt
 	};
 
-	void attach(Callback<void()> func, IrqType type = RxIrq);
+	void attach(Callback<void()> func, IrqType type = RxIrq) {}
 };
 
 

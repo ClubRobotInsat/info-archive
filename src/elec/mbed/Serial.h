@@ -16,7 +16,7 @@ enum Event {
 	SERIAL_EVENT_RX_ALL,
 };
 
-enum DmaUsage {
+enum DMAUsage {
 	DMA_USAGE_OPPORTUNISTIC,
 	DMA_USAGE_NEVER,
 	DMA_USAGE_ALWAYS,
@@ -31,8 +31,8 @@ public:
 
 	void read(uint8_t* buffer, uint8_t size, event_callback_t c, Event e){};
 
-	void set_dma_usage_tx(DmaUsage usage){};
-	void set_dma_usage_rx(DmaUsage usage){};
+	void set_dma_usage_tx(DMAUsage usage){};
+	void set_dma_usage_rx(DMAUsage usage){};
 
 private:
 	std::vector<uint8_t> _rx;

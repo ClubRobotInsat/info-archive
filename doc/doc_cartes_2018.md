@@ -1,7 +1,5 @@
 @[Benjamin BIGEY](https://github.com/Terae) - 22 avril 2018
 
-
-
 @[Paul FLORENCE](mailto::perso@florencepaul.com) - Avril/Mai 2018
 
 # Documentations des cartes de [ChocoBot'](https://scontent-cdg2-1.xx.fbcdn.net/v/t1.0-9/30516417_1028608243958446_3203690177092386816_n.png?_nc_cat=0&oh=e480ed380092c42ebe33e2baf028efa8&oe=5B99AE77)
@@ -258,11 +256,12 @@ Cette carte n'est utilisée que pour savoir si la tirette a été retirée ou no
 | 0x01 | Lecture contacteur | Réponds 0 ou 1 |
 
 ## Carte moteur
-|  Cmd  |      Type      | Moteur asservi ? |        Commentaires        | Nbr données (octets) |
-|:----:|:--------------:|:----------------:|:--------------------------:|:--------------------:|
+|  Cmd |      Type      | Moteur asservi ? |           Commentaires           | Nbr données (octets) |
+|:----:|:--------------:|:----------------:|:--------------------------------:|:--------------------:|
 | 0x01 | Position ANGLE |        oui       | ID \| angle sur [0;360]° : float |           5          |
 | 0x02 |  Position TOUR |        oui       | ID \| nbr tours \| sens (0 ou 1) |           4          |
-| 0x03 |       ON       |        non       | ID \| sens rotation (0 ou 1)   |           2          |
-| 0x04 |       OFF      |        non       | ID                         |           1          |
+| 0x03 |       ON       |        non       | ID \| sens rotation (0 ou 1)     |           2          |
+| 0x04 |       OFF      |        non       | ID                               |           1          |
+| 0x05 |  ON Brushless  |        non       | ID                               |           1          |
 
 Pour le sens de rotation, `0` correspond à une rotation **Horaire** et `1` à une rotation **Trigonométrique**.
