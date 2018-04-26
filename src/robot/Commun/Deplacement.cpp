@@ -221,7 +221,8 @@ namespace Commun {
 	}
 
 	ResultatAction Deplacement::avancerInfini(SensAvance sens, Duration timeout) {
-		return this->avancer(1000_km, sens, timeout);
+		// La distance en mm est envoyée sur un int 16 bits signé (donc 10_m c'est l'infini)
+		return this->avancer(10_m, sens, timeout);
 	}
 
 	ResultatAction Deplacement::tournerAbsolu(Angle angle, Duration timeout) {

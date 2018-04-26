@@ -94,6 +94,86 @@ ResultatAction allerA_vec(Vector2m pos) {
 	return allerA_vec(pos, SensAvance::Avant);
 }
 
+ResultatAction recallageHaut(Distance y) {
+	ResultatAction result = tournerAbsolu(-90_deg);
+	if(result != ResultatAction::REUSSI) {
+		resetVitesseLineaire();
+		return result;
+	}
+
+	setVitesseLineaireLente();
+	result = dep().avancerInfini(SensAvance::Arriere, 10_s);
+	resetVitesseLineaire();
+
+	if(result != ResultatAction::REUSSI && result != ResultatAction::BLOQUE) {
+		dep().arreter();
+		return result;
+	}
+
+	dep().setRepere({positionRobot().x, y}, -90_deg);
+	return ResultatAction::REUSSI;
+}
+
+ResultatAction recallageBas(Distance y) {
+	ResultatAction result = tournerAbsolu(90_deg);
+	if(result != ResultatAction::REUSSI) {
+		resetVitesseLineaire();
+		return result;
+	}
+
+	setVitesseLineaireLente();
+	result = dep().avancerInfini(SensAvance::Arriere, 10_s);
+	resetVitesseLineaire();
+
+	if(result != ResultatAction::REUSSI && result != ResultatAction::BLOQUE) {
+		dep().arreter();
+		return result;
+	}
+
+	dep().setRepere({positionRobot().x, y}, 90_deg);
+	return ResultatAction::REUSSI;
+}
+
+ResultatAction recallageDroit(Distance x) {
+	ResultatAction result = tournerAbsolu(180_deg);
+	if(result != ResultatAction::REUSSI) {
+		resetVitesseLineaire();
+		return result;
+	}
+
+	setVitesseLineaireLente();
+	result = dep().avancerInfini(SensAvance::Arriere, 10_s);
+	resetVitesseLineaire();
+
+	if(result != ResultatAction::REUSSI && result != ResultatAction::BLOQUE) {
+		dep().arreter();
+		return result;
+	}
+
+	dep().setRepere({x, positionRobot().y}, 180_deg);
+	return ResultatAction::REUSSI;
+}
+
+ResultatAction recallageGauche(Distance x) {
+	ResultatAction result = tournerAbsolu(0_deg);
+	if(result != ResultatAction::REUSSI) {
+		resetVitesseLineaire();
+		return result;
+	}
+
+	setVitesseLineaireLente();
+	result = dep().avancerInfini(SensAvance::Arriere, 10_s);
+	resetVitesseLineaire();
+
+	if(result != ResultatAction::REUSSI && result != ResultatAction::BLOQUE) {
+		dep().arreter();
+		return result;
+	}
+
+	dep().setRepere({x, positionRobot().y}, 0_deg);
+	return ResultatAction::REUSSI;
+}
+
 // Déplacements avec détection de l'adversaire
 
 

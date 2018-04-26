@@ -283,7 +283,7 @@
         {
             "A*": {
                 "": "mur droit",
-                "enabled": false
+                "enabled": true
             },
             "angle": 0,
             "dimensions": {
@@ -311,7 +311,7 @@
         {
             "A*": {
                 "": "mur gauche",
-                "enabled": false
+                "enabled": true
             },
             "angle": 0,
             "dimensions": {
@@ -339,7 +339,7 @@
         {
             "A*": {
                 "": "mur bas",
-                "enabled": false
+                "enabled": true
             },
             "angle": 0,
             "dimensions": {
@@ -367,7 +367,7 @@
         {
             "A*": {
                 "": "mur haut",
-                "enabled": false
+                "enabled": true
             },
             "angle": 0,
             "dimensions": {

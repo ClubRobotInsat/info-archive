@@ -68,7 +68,7 @@ namespace ConstantesPrincipal {
 	const repere::Repere REFERENCE_ORANGE =
 	    repere::Repere({3_m, 0_m}, repere::Multiplicateur::SENS_NEGATIF, repere::Multiplicateur::SENS_POSITIF);
 
-	const Vector3m START_ROBOT_POSITION(25_cm, 1.50_cm, 15_cm);
+	const Vector3m START_ROBOT_POSITION(25_cm, 1.50_m, 15_cm);
 	const Angle START_ROBOT_ANGLE(-90_deg);
 
 	// POSITION_TOURELLE = { décalage avant, décalage vers la droite }

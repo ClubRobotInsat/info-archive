@@ -36,6 +36,12 @@ ResultatAction allerA(Distance x, Distance y, SensAvance sens, Duration timeout)
 ResultatAction allerA_vec(Vector2m pos, SensAvance sens, Duration timeout = 25_s);
 ResultatAction allerA_vec(Vector2m pos);
 
+// fonctions de recallage : le robot tourne dans le bon sens et il recule jusqu'à être bloqué
+// il mets ensuite à jour sa position ; /!\ aux objets sur la table !
+ResultatAction recallageHaut(Distance y = 2_m);
+ResultatAction recallageBas(Distance y = 0_m);
+ResultatAction recallageDroit(Distance x = 3_m);
+ResultatAction recallageGauche(Distance x = 0_m);
 
 // @PetriLab@
 
