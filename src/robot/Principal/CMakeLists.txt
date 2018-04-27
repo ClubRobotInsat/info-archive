@@ -108,4 +108,4 @@ add_executable(TestStrategyGenerator librobot/StrategyGenerator/Action.hpp
 									 librobot/StrategyGenerator/MagicStrategy.cpp
         							 librobot/StrategyGenerator/DecisionalTree.hpp
 									 librobot/StrategyGenerator/main.cpp)
-target_link_libraries(TestStrategyGenerator robotPrincipal)
+target_link_libraries(TestStrategyGenerator robotPrincipal Robot)
