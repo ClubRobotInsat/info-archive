@@ -9,6 +9,7 @@
 #include "Callback.h"
 #include "PinName.h"
 #include <cstdint>
+#include <mutex>
 #include <thread>
 #include <vector>
 
@@ -41,6 +42,9 @@ public:
 
 	void set_dma_usage_tx(DmaUsage usage){};
 	void set_dma_usage_rx(DmaUsage usage){};
+
+	static std::mutex _reading;
+	static std::mutex _writing;
 
 private:
 	std::thread _read;
