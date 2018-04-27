@@ -32,7 +32,7 @@ bool parseArgument(int argc, char** argv, Simulateur& simulateur) {
 	bool no_physics = false;
 	bool robot = true;
 	bool world = true;
-	std::string json_file{"../table_2018.json"};
+	std::string json_file;
 	Constantes::RobotColor color = Constantes::RobotColor::Undef;
 
 	int arg;
@@ -86,9 +86,8 @@ bool parseArgument(int argc, char** argv, Simulateur& simulateur) {
 	}
 	std::ifstream file(json_file.c_str());
 	if(!file) {
-		std::cout << "Warning: Fichier de la table inexistant ('" << json_file << "')" << std::endl;
-		printHelp();
-		return false;
+		// Utilisation de TABLE_2018 par défaut
+		json_file = "";
 	}
 
 	logDebug5("Démarrage du simulateur");

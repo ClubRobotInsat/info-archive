@@ -204,7 +204,8 @@ namespace Commun {
 	/// Pointeurs vers l'environnement et le meca manager de l'année adéquate
 	// std::unique_ptr<Environnement2015> _env;
 	void Strategie::creerEnvironement() {
-		this->_env->loadFromJSON("../../table_2018.json");
+		this->_env->loadFromJSON(Constantes::TABLE_2018);
+		// this->_env->loadFromFile("../../table_2018.json");
 	}
 
 	/**

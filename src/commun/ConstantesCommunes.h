@@ -11,6 +11,7 @@
 #include "Commun.h"
 #include "Enum/Enum.h"
 #include "IConstantes.h"
+#include "Json.h"
 #include "MathToolbox/Repere.h"
 
 namespace Constantes {
@@ -53,6 +54,11 @@ namespace Constantes {
 
 	const repere::Repere REFERENCE_ASTAR =
 	    repere::Repere({0_m, 0_m}, repere::Multiplicateur::SENS_POSITIF, repere::Multiplicateur::SENS_POSITIF);
+
+	// Convertir la table du fichier texte en un objet JSON à la pré-compilation
+	const JSON TABLE_2018 = nlohmann::json::parse(
+#include ".table_2018.json.includable"
+	    );
 }
 
 inline Constantes::RobotColor operator!(Constantes::RobotColor const& c) {

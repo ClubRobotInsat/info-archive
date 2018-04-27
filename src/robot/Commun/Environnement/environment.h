@@ -2,6 +2,7 @@
 #include "../../../commun/Commun.h"
 #include "node.h"
 #include "shapes.h"
+#include <Json.h>
 #include <algorithm>
 #include <cmath>
 #include <exception>
@@ -206,7 +207,8 @@ public:
 
 	bool isForbidden(Vector2m const& position) const;
 
-	void loadFromJSON(std::string filename);
+	bool loadFromFile(std::string filename);
+	void loadFromJSON(JSON json);
 
 private:
 	/**

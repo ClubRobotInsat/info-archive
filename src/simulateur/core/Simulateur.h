@@ -87,7 +87,7 @@ public:
 	/**
 	 * Change de fichier JSON cible pour load toute la table et ajouter le robot
 	 */
-	void setJSONFile(std::string);
+	void setJSONFile(const std::string&);
 
 	/**
 	 * Initialise la simulation et place tous les objets de l'année en cours
