@@ -15,7 +15,6 @@ set(SOURCE_FILES_SIMULATOR
         code-elec-nucleo/src/TrameReader.cpp
         code-elec-nucleo/src/Utils.cpp
         simulator/Serial.cpp
-        simulator/Interface.cpp
         simulator/Simulator.cpp
         mbed/mbed.h)
 

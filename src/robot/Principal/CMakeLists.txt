@@ -24,7 +24,7 @@ add_library(robotPrincipalInterfaceElec STATIC ${ROBOT_PRINC_SOURCE})
 
 #add_dependencies(robotPrincipal HOMOLOGATION_PETRI)
 target_link_libraries(robotPrincipal Cartes Robot Strategie)
-target_link_libraries(robotPrincipalInterfaceElec Cartes Robot_Interfacer_Elec Strategie)
+target_link_libraries(robotPrincipalInterfaceElec Robot_Interfacer_Elec Cartes Strategie)
 
 #add_executable(debug_controle_clavier debug/ControleClavier.cpp)
 #target_link_libraries(debug_controle_clavier robotPrincipal glfw_Robot)

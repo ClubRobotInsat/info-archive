@@ -4,11 +4,13 @@
 
 #include "Serial.h"
 #include "Interface.h"
+#include <thread>
 
 void Serial::write(uint8_t* data, uint8_t size, event_callback_t e, Event event) {
 	for(int i = 0; i < size; i++) {
 		interface_elec_info.elec_put_data(data[i]);
 	}
+	std::this_thread::sleep_for(std::chrono::milliseconds(1));
 	e.call(event);
 }
 

@@ -14,18 +14,12 @@
 namespace Commun {
 	class NullCommunicator : public Serie {
 	public:
-		NullCommunicator() = default;
-		~NullCommunicator() = default;
+		NullCommunicator();
+		~NullCommunicator();
 
-		virtual void ecrireOctets(uint8_t const*, std::size_t) override {}
+		virtual void ecrireOctets(uint8_t const*, std::size_t) override;
 
-		virtual void lireOctets(uint8_t* octets, std::size_t nombre) override {
-			while(nombre > 0) {
-				--nombre;
-				octets[nombre] = 0;
-			}
-			std::this_thread::sleep_for(std::chrono::milliseconds(1));
-		}
+		virtual void lireOctets(uint8_t* octets, std::size_t nombre) override;
 
 		bool estConnecte() {
 			return true;

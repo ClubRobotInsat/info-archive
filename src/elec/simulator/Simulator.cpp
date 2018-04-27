@@ -9,11 +9,11 @@ int main_elec();
 int main_robot(int argc, char** argv);
 
 int main_robot_2() {
-	char* arg1 = "RIEN";
-	char* arg2 = "DU TOUT";
-	char* args[2];
-	args[1] = arg1;
-	args[2] = arg2;
+	char** args = new char*[2];
+	const char* arg1 = "./toto";
+	const char* arg2 = "NULL";
+	args[0] = const_cast<char*>(arg1);
+	args[1] = const_cast<char*>(arg2);
 	return main_robot(2, args);
 }
 

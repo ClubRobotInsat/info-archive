@@ -40,6 +40,7 @@ set(ROBOT_SOURCE
         Commun/RS232.cpp
         Commun/Serie.cpp
         Commun/Servo.cpp
+		Commun/NullCommunicator.cpp
         Commun/TCPIP.cpp
         Commun/Evitement.cpp)
 
@@ -49,9 +50,10 @@ set(ROBOT_INTERFACE_ELEC
 		Commun/Ascenseur.cpp
 		Commun/CAN.cpp
 		Commun/RS232.cpp
-		../elec/simulator/Interface.cpp
+		Commun/Serie.cpp
 		Commun/Servo.cpp
 		Commun/TCPIP.cpp
+		../elec/simulator/Interface.cpp
 		Commun/Evitement.cpp)
 
 add_library(Robot STATIC ${ROBOT_SOURCE})
