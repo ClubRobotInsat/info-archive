@@ -13,9 +13,7 @@ class PwmOut {
 public:
 	PwmOut(PinName pin) : _pin(pin) {}
 
-	void write(float value) {
-		std::cout << "Mise du duty cycle du pin " << _pin << " a " << value << std::endl;
-	}
+	void write(float value) {}
 
 	void period(float seconds) {}
 	void period_ms(int ms) {}

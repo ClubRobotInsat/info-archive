@@ -12,7 +12,7 @@
 class Interface {
 
 public:
-	Interface() : _mutex_info(), _mutex_elec(), _from_info(), _from_elec() {}
+	Interface() {}
 
 	uint8_t info_get_data();
 
@@ -22,15 +22,16 @@ public:
 
 	void elec_put_data(uint8_t data);
 
-	long queue_size_elec() const;
+	long queue_size_elec();
 
-	long queue_size_info() const;
+	long queue_size_info();
+
+	static std::mutex _mutex_info;
+	static std::mutex _mutex_elec;
 
 private:
-	std::mutex _mutex_info;
-	std::mutex _mutex_elec;
-	std::queue<uint8_t> _from_info;
-	std::queue<uint8_t> _from_elec;
+	static std::queue<uint8_t> _from_info;
+	static std::queue<uint8_t> _from_elec;
 };
 
 

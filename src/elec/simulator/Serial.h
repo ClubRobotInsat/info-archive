@@ -9,6 +9,7 @@
 #include "Callback.h"
 #include "PinName.h"
 #include <cstdint>
+#include <thread>
 #include <vector>
 
 enum Event {
@@ -25,7 +26,14 @@ enum DmaUsage {
 class Serial {
 
 public:
-	Serial(PinName rx, PinName tx, int baudrate = 100000) : _rx{}, _tx{}, _rx_pin(rx), _tx_pin(tx) {}
+	Serial(PinName rx, PinName tx, int baudrate = 100000) : _read(), _write(), _rx{}, _tx{}, _rx_pin(rx), _tx_pin(tx) {}
+
+	~Serial() {
+		if(_read.joinable())
+			_read.join();
+		if(_write.joinable())
+			_write.join();
+	}
 
 	void write(uint8_t* data, uint8_t size, event_callback_t e, Event event);
 
@@ -35,6 +43,8 @@ public:
 	void set_dma_usage_rx(DmaUsage usage){};
 
 private:
+	std::thread _read;
+	std::thread _write;
 	std::vector<uint8_t> _rx;
 	std::vector<uint8_t> _tx;
 	PinName _rx_pin;
