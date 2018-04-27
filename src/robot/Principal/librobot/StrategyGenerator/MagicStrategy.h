@@ -93,7 +93,7 @@ namespace StrategyGenerator {
 		 * // Enjoy
 		 * strat.run(500_ms);
 		 */
-		void run(Petri::PetriDynamicLib& petri, Duration max_refresh_time);
+		void run(Commun::Deplacement& dep, Petri::PetriDynamicLib& petri, Duration max_refresh_time);
 
 		/**
 		 * Fonction `cleanup` appelée lors du kill du thread exécutif lors du changement d'action
@@ -109,14 +109,16 @@ namespace StrategyGenerator {
 		 * @param mutex_petri_running Empêche le thread principal de tuer le thread si l'action petri est en cours
 		 * @param action Action à exécuter
 		 */
-		static void executioner(Petri::PetriNet& petri, std::mutex& mutex_petri_running, const Action& action, Duration timeout) {
+		static void
+		    executioner(Commun::Deplacement& dep, Petri::PetriNet& petri, std::mutex& mutex_petri_running, const Action& action, Duration timeout) {
 			pthread_cleanup_push(cleanup, nullptr);
 
-			logDebug("MagicStrategy::execute_action() called");
+			logDebug("MagicStrategy::execute_action() called for the action ", action.get_name());
+			logDebug("allerA(", action.get_coordonnees().getPos2D(), ")");
 
-			//_dep.arretUrgence();
-			//_dep.allerA(action.get_start_position());
-			//_dep.tournerAbsolu(action.get_start_angle());
+			dep.arretUrgence();
+			dep.allerA(action.get_coordonnees().getPos2D());
+			dep.tournerAbsolu(action.get_coordonnees().getAngle());
 
 			pthread_cleanup_pop(1);
 

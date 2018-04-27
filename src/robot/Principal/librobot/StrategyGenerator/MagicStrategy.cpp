@@ -21,7 +21,7 @@ void StrategyGenerator::MagicStrategy::check_element(std::map<ElementType, bool>
 	}
 }
 
-void StrategyGenerator::MagicStrategy::run(Petri::PetriDynamicLib& petri, Duration max_refresh_time) {
+void StrategyGenerator::MagicStrategy::run(Commun::Deplacement& dep, Petri::PetriDynamicLib& petri, Duration max_refresh_time) {
 	using namespace std::chrono_literals;
 
 	// Check if all conditions are respected before launching the strategy
@@ -118,7 +118,11 @@ void StrategyGenerator::MagicStrategy::run(Petri::PetriDynamicLib& petri, Durati
 			// its life
 			execute_action = std::thread(
 			    [&](std::mutex& mutex_petri_running, const Action& action) {
-				    executioner(*(petri.createPetriNet()), mutex_petri_running, action, MATCH_DURATION - _start_time.getElapsedTime());
+				    executioner(dep,
+				                *(petri.createPetriNet()),
+				                mutex_petri_running,
+				                action,
+				                MATCH_DURATION - _start_time.getElapsedTime());
 				    petri_finished = true;
 				},
 			    std::ref(mutex_petri_running),
