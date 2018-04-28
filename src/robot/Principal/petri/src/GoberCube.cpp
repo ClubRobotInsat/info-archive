@@ -3,33 +3,33 @@
  * Version 3.0.0-beta1
  */
 
-#include "../Deplacement.h"
-#include "../Moteur.h"
-#include "../Servo.h"
-#include "../Utils.h"
 #include <cstdint>
 #include <petrilab/Cpp/Action.h>
+#include <petrilab/Cpp/Variable.h>
 #include <petrilab/Cpp/MemberPetriDynamicLib.h>
 #include <petrilab/Cpp/PetriDebug.h>
 #include <petrilab/Cpp/PetriUtils.h>
 #include <petrilab/Cpp/VarSlot.h>
-#include <petrilab/Cpp/Variable.h>
+#include "../Servo.h"
+#include "../Utils.h"
+#include "../Deplacement.h"
+#include "../Moteur.h"
 
 using namespace Petri;
 
 struct FillResult {
-	void* start;
-	void* end;
+	void *start;
+	void *end;
 };
 
-enum Petri_Var_Enum : std::uint_fast32_t { Petri_Var_Enum_Vvar0 = 0 };
+enum Petri_Var_Enum : std::uint_fast32_t {Petri_Var_Enum_Vvar0 = 0};
 
-static void fillVariables(Petri::VarSlot& variables) {
+static void fillVariables(Petri::VarSlot &variables) {
 	variables[Petri_Var_Enum_Vvar0].setName("$var0");
 	variables[Petri_Var_Enum_Vvar0].setDefaultValue(0);
 }
 
-extern "C" Petri_actionResult_t GoberCube_entryInit(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
+extern "C" Petri_actionResult_t GoberCube_entryInit(VarSlot &_PETRI_PRIVATE_GET_VARIABLES_) {
 	if(!_PETRI_PRIVATE_GET_VARIABLES_.isFirstSlot()) {
 		_PETRI_PRIVATE_GET_VARIABLES_.pushVariables(1);
 	}
@@ -37,120 +37,29 @@ extern "C" Petri_actionResult_t GoberCube_entryInit(VarSlot& _PETRI_PRIVATE_GET_
 	return static_cast<actionResult_t>(Petri::Utility::doNothing());
 }
 
-extern "C" Petri_actionResult_t GoberCube_exitAction(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
+extern "C" Petri_actionResult_t GoberCube_exitAction(VarSlot &_PETRI_PRIVATE_GET_VARIABLES_) {
 	auto _PETRI_PRIVATE_EXEC_RESULT_ = static_cast<actionResult_t>(Petri::Utility::doNothing());
 	_PETRI_PRIVATE_GET_VARIABLES_.pop();
 	_PETRI_PRIVATE_GET_VARIABLES_.pushReturnValues(0);
 	return _PETRI_PRIVATE_EXEC_RESULT_;
 }
 
-static Petri_actionResult_t state_8_invocation(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
+static Petri_actionResult_t state_8_invocation(VarSlot &_PETRI_PRIVATE_GET_VARIABLES_) {
 	return static_cast<actionResult_t>(Petri::Utility::doNothing());
 }
 
-static Petri_actionResult_t state_9_invocation(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
-	return static_cast<actionResult_t>(avancerDe(static_cast<Distance>(12_cm)));
-}
-
-static Petri_actionResult_t state_10_invocation(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
-	return static_cast<actionResult_t>(reculerDe(static_cast<Distance>(18_cm)));
-}
-
-static Petri_actionResult_t state_11_invocation(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
-	return static_cast<actionResult_t>(tournerAbsolu(static_cast<Angle>(45_deg)));
-}
-
-static Petri_actionResult_t state_12_invocation(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
-	return static_cast<actionResult_t>(avancerDe(static_cast<Distance>(26_cm)));
-}
-
-static Petri_actionResult_t state_13_invocation(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
-	return static_cast<actionResult_t>(tournerAbsolu(static_cast<Angle>(-135_deg)));
-}
-
-static Petri_actionResult_t state_14_invocation(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
-	return static_cast<actionResult_t>(avancerDe(static_cast<Distance>(12_cm)));
-}
-
-static Petri_actionResult_t state_15_invocation(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
-	return static_cast<actionResult_t>(avancerDe(static_cast<Distance>(6_cm)));
-}
-
-static bool transition_25_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_, Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return true;
-}
-
-static bool transition_16_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_, Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return _PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vvar0].value() =
-	           _PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vvar0].value() + 1;
-	;
-}
-
-static bool transition_17_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_, Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return true;
-}
-
-static bool transition_18_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_, Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return true;
-}
-
-static bool transition_19_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_, Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return _PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vvar0].value() < 3;
-	;
-}
-
-static bool transition_20_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_, Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return _PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vvar0].value() == 3;
-	;
-}
-
-static bool transition_21_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_, Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return true;
-}
-
-static bool transition_22_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_, Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return true;
-}
-
-static bool transition_23_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_, Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return true;
-}
-
-static bool transition_24_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_, Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
+static bool transition_21_invocation(VarSlot const &_PETRI_PRIVATE_GET_VARIABLES_, Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
 	return true;
 }
 
 
-extern "C" FillResult GoberCube_fill(PetriNet& petriNet,
-                                     std::uint64_t entitiesOffset,
-                                     bool firstLevel,
-                                     Petri_actionResult_t (*initEntryPtr)(VarSlot&),
-                                     Petri_actionResult_t (*exitActionPtr)(VarSlot&)) {
-	auto& state_0 = petriNet.addAction(Action(0 + entitiesOffset, "Root_Entry", initEntryPtr, 0), firstLevel);
-	auto& state_7 = petriNet.addAction(Action(7 + entitiesOffset, "Root_End", exitActionPtr, 1), false);
-	auto& state_8 = petriNet.addAction(Action(8 + entitiesOffset, "Root_BEGIN", &state_8_invocation, 0), false);
-	auto& state_9 = petriNet.addAction(Action(9 + entitiesOffset, "Root_4", &state_9_invocation, 1), false);
-	auto& state_10 = petriNet.addAction(Action(10 + entitiesOffset, "Root_5", &state_10_invocation, 1), false);
-	auto& state_11 = petriNet.addAction(Action(11 + entitiesOffset, "Root_6", &state_11_invocation, 1), false);
-	auto& state_12 = petriNet.addAction(Action(12 + entitiesOffset, "Root_7", &state_12_invocation, 1), false);
-	auto& state_13 = petriNet.addAction(Action(13 + entitiesOffset, "Root_8", &state_13_invocation, 1), false);
-	auto& state_14 = petriNet.addAction(Action(14 + entitiesOffset, "Root_9", &state_14_invocation, 1), false);
-	auto& state_15 = petriNet.addAction(Action(15 + entitiesOffset, "Root_11", &state_15_invocation, 1), false);
+extern "C" FillResult GoberCube_fill(PetriNet &petriNet, std::uint64_t entitiesOffset, bool firstLevel, Petri_actionResult_t (*initEntryPtr)(VarSlot &), Petri_actionResult_t (*exitActionPtr)(VarSlot &)) {
+	auto &state_0 = petriNet.addAction(Action(0 + entitiesOffset, "Root_Entry", initEntryPtr, 0), firstLevel);
+	auto &state_7 = petriNet.addAction(Action(7 + entitiesOffset, "Root_End", exitActionPtr, 0), false);
+	auto &state_8 = petriNet.addAction(Action(8 + entitiesOffset, "Root_BEGIN", &state_8_invocation, 0), false);
 
 
-	state_0.addTransition(25 + entitiesOffset, "Root_Entry_to_BEGIN", state_8, &transition_25_invocation);
-	auto& transition_16 = state_9.addTransition(16 + entitiesOffset, "Root_9", state_10, &transition_16_invocation);
-	transition_16.addVariable(Petri_Var_Enum_Vvar0);
-	state_11.addTransition(17 + entitiesOffset, "Root_10", state_12, &transition_17_invocation);
-	state_12.addTransition(18 + entitiesOffset, "Root_11", state_13, &transition_18_invocation);
-	auto& transition_19 = state_13.addTransition(19 + entitiesOffset, "Root_14", state_9, &transition_19_invocation);
-	transition_19.addVariable(Petri_Var_Enum_Vvar0);
-	auto& transition_20 = state_13.addTransition(20 + entitiesOffset, "Root_12", state_14, &transition_20_invocation);
-	transition_20.addVariable(Petri_Var_Enum_Vvar0);
-	state_10.addTransition(21 + entitiesOffset, "Root_", state_11, &transition_21_invocation);
-	state_14.addTransition(22 + entitiesOffset, "Root_", state_15, &transition_22_invocation);
-	state_15.addTransition(23 + entitiesOffset, "Root_", state_7, &transition_23_invocation);
-	state_8.addTransition(24 + entitiesOffset, "Root_", state_9, &transition_24_invocation);
+	state_0.addTransition(21 + entitiesOffset, "Root_Entry_to_BEGIN", state_8, &transition_21_invocation);
 
 	return (FillResult){&state_0, &state_7};
 }
@@ -176,22 +85,24 @@ namespace Petri {
 	}
 }
 
-extern "C" void* GoberCube_create() {
+extern "C" void *GoberCube_create() {
 	return Petri::Generated::GoberCube::createPetriNet().release();
 }
 
-extern "C" void* GoberCube_createDebug() {
+extern "C" void *GoberCube_createDebug() {
 	return Petri::Generated::GoberCube::createDebugPetriNet().release();
 }
 
-extern "C" char* GoberCube_evaluate(void* vars, char const* libPath) {
+extern "C" char *GoberCube_evaluate(void *vars, char const *libPath) {
 	return Petri::Utility::loadEvaluateAndInvoke(vars, libPath, "GoberCube");
 }
-extern "C" char const* GoberCube_getHash() {
-	return "F7D36485912B75BA15980C13085B602214CAEA8FC55E2444198C22E6F89952FB";
+extern "C" char const *GoberCube_getHash() {
+	return "5F4D275E648D786FE8067DB001BD51AF1E9FA5DD295764FD315AF7D0284B84A5";
 }
 
 
-extern "C" void* GoberCube_createLibForEditor() {
+extern "C" void *GoberCube_createLibForEditor() {
 	return ::Petri::MemberPetriDynamicLib::libForEditor("GoberCube", 12346);
 }
+
+

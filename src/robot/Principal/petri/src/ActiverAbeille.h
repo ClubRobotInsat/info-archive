@@ -6,8 +6,8 @@
 #ifndef PETRI_GENERATED_ActiverAbeille_H
 #define PETRI_GENERATED_ActiverAbeille_H
 
-#include <memory>
 #include <petrilab/Cpp/MemberPetriDynamicLib.h>
+#include <memory>
 
 namespace Petri {
 	namespace Generated {
@@ -15,7 +15,7 @@ namespace Petri {
 			std::unique_ptr<::Petri::PetriNet> createPetriNet();
 			std::unique_ptr<::Petri::PetriDebug> createDebugPetriNet();
 
-			inline std::unique_ptr<::Petri::PetriDynamicLib> createLib(std::string const& customPath = "") {
+			inline std::unique_ptr<::Petri::PetriDynamicLib> createLib(std::string const &customPath = "") {
 				return std::make_unique<::Petri::MemberPetriDynamicLib>(false, "ActiverAbeille", 12346, customPath);
 			}
 		}
@@ -23,3 +23,4 @@ namespace Petri {
 }
 
 #endif
+

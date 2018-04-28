@@ -6,16 +6,18 @@
 #ifndef PETRI_GENERATED_IA2018_H
 #define PETRI_GENERATED_IA2018_H
 
-#include <memory>
 #include <petrilab/Cpp/MemberPetriDynamicLib.h>
+#include <memory>
 
 namespace Petri {
 	namespace Generated {
 		namespace IA2018 {
+			enum Petri_Param_Enum : std::uint_fast32_t {Petri_Param_Enum_Vaction = 0};
+
 			std::unique_ptr<::Petri::PetriNet> createPetriNet();
 			std::unique_ptr<::Petri::PetriDebug> createDebugPetriNet();
 
-			inline std::unique_ptr<::Petri::PetriDynamicLib> createLib(std::string const& customPath = "") {
+			inline std::unique_ptr<::Petri::PetriDynamicLib> createLib(std::string const &customPath = "") {
 				return std::make_unique<::Petri::MemberPetriDynamicLib>(false, "IA2018", 12346, customPath);
 			}
 		}
@@ -23,3 +25,4 @@ namespace Petri {
 }
 
 #endif
+

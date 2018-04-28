@@ -3,21 +3,27 @@
 dir=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 cd ${dir}
 
-echo ""
-echo "Compilation du réseau Petri"
-petri/petri --generate --compile --compiler /usr/bin/arm-linux-gnueabihf-g++-5 -v --output ../../../build_arm/ robot/Principal/petri/IA2017.petri
-
-#/usr/bin/arm-linux-gnueabihf-g++-5 -c -fPIC -iquote'robot/Principal/petri/src' -I'robot/Principal/petri/src' -iquote'./petri' -I'./petri' -iquote'./commun' -I'./commun' -std=c++14 -o './build_arm/poserCylindre.o'  'robot/Principal/petri/src/poserCylindre.cpp'
-#/usr/bin/arm-linux-gnueabihf-g++-5 -c -fPIC -iquote'robot/Principal/petri/src' -I'robot/Principal/petri/src' -iquote'./petri' -I'./petri' -iquote'./commun' -I'./commun' -std=c++14 -o './build_arm/IA2017.o'  'robot/Principal/petri/src/IA2017.cpp'
-
-cd build_arm
+# echo -e
+Green='\033[0;42m'
+Red='\033[0;41m'
+Yellow='\033[0;43m'
+End='\033[0;0m'
 
 echo ""
-echo "Génération de la lib dynamique"
-#/usr/bin/arm-linux-gnueabihf-g++-5 -shared -fPIC -L'../Editor/bin' -iquote'../' -I'../' 'IA2017.o' -o 'IA2017.so'
+echo -e "${Yellow}Compilation du réseau Petri${End}"
+mkdir -p build_arm/src/robot/Principal
+# -u pour update : génère, compile et déploi la librairie dynamique
+petrilab -uv --profile ARM\ release src/robot/Principal/petri/IA2018.petri
+
+if [ $? -eq "0" ]
+	then echo -e "${Green}Compilation réussie${End}"
+	else
+		echo -e "${Red}Compilation échouée${End}"
+		exit 1
+fi
 
 echo ""
-cd ../scripts
-./send_file_to_rpi.sh ../build_arm/IA2017.so
+cd scripts
+./send_file_to_rpi.sh ../build_arm/robot/Principal/IA2018.so
 ./send_file_to_rpi.sh ../build_arm/robot/Principal/IAPrincipal
-./send_file_to_rpi.sh ../build_arm/petri/Runtime/libPetriRuntime.so
+./send_file_to_rpi.sh /usr/lib/libPetriRuntime.so

@@ -6,6 +6,7 @@
 #define ROOT_ACTION_H
 
 #include "../../librobot/libRobot.h"
+#include "../../petri/src/IA2018.h"
 #include "Element.hpp"
 
 // TODO: include generated petri file (as "info/src/robot/Principal/petri/IA2017.h")
@@ -51,8 +52,6 @@ namespace StrategyGenerator {
 		std::vector<Element> _elements_created_after_call;
 
 		std::string _name;
-		// Associated Petri network to launch
-		// std::unique_ptr<Petri::PetriDynamicLib> _petri;
 
 	public:
 		Action(Duration time, int points, Element element, std::vector<Element> elements_created_after_call, std::string name)
@@ -84,7 +83,8 @@ namespace StrategyGenerator {
 		virtual void execute_petri(Petri::PetriNet& petri, Duration timeout) const {
 			logDebug("MagicStrategy::Action::execute_petri called for action ", _name, " with timeout = ", timeout);
 			StopWatch start;
-			// petri.variables().pushVariables(static_cast<std::size_t>(_type));
+			petri.variables()[Petri::Generated::IA2018::Petri_Param_Enum_Vaction].value() =
+			    static_cast<std::int64_t>(_element.get_type());
 			petri.run();
 
 			while(petri.running() && start.getElapsedTime() < timeout) {
