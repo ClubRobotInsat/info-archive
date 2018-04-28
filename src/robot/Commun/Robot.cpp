@@ -148,6 +148,7 @@ namespace Commun {
 			} catch(std::exception& e) {
 				logError("Carte invalide !!!");
 				logError("Exception rencontrée : ", e.what());
+				logError("Id demandé : ", (int)trame.getId());
 			}
 		}
 	}
