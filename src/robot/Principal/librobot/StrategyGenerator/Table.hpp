@@ -49,30 +49,10 @@ namespace StrategyGenerator {
 			return _robot_coords.getPos2D();
 		}
 
-		/// affichage pour le débug, à updater lors de l'ajout de nouveaux éléments
 		friend std::ostream& operator<<(std::ostream& os, const Table table) {
 			os << '[';
 			for(auto it = table.cbegin(); it != table.cend();) {
-				switch((*it)->get_type()) {
-					case ElementType::SWITCH:
-						os << "switch";
-						break;
-					case ElementType::CUBE:
-						os << "cube";
-						break;
-					case ElementType::SPHERE:
-						os << "sphere";
-						break;
-					case ElementType::BEE:
-						os << "bee";
-						break;
-					case ElementType::NOTHING:
-						os << "nothing";
-						break;
-				}
-				if(++it != table.cend()) {
-					os << ", ";
-				}
+				os << toString((*it)->get_type()) << (++it != table.cend() ? ", " : "");
 			}
 			return os << ']';
 		}

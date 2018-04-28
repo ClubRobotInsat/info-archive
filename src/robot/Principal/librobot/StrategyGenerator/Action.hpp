@@ -54,12 +54,12 @@ namespace StrategyGenerator {
 		std::string _name;
 
 	public:
-		Action(Duration time, int points, Element element, std::vector<Element> elements_created_after_call, std::string name)
+		Action(Duration time, int points, Element element, std::vector<Element> elements_created_after_call)
 		        : _execution_time(time)
 		        , _nr_points(points)
 		        , _element(element)
 		        , _elements_created_after_call(std::move(elements_created_after_call))
-		        , _name(name) {}
+		        , _name(toString(element.get_type())) {}
 
 		inline int get_nr_points() const {
 			return _nr_points;
@@ -115,8 +115,7 @@ namespace StrategyGenerator {
 	class ActionWait : public Action {
 	public:
 		explicit ActionWait(Duration time)
-		        : Action(time, 0, Element(ElementType::NOTHING, repere::Coordonnees()), {}, "wait " + std::to_string(time.toMs()) + "ms") {
-		}
+		        : Action(time, 0, Element(ElementType::NOTHING, repere::Coordonnees()), {}) {}
 
 		void execute_petri(Petri::PetriNet&, Duration remainingTime) const override {
 			sleep(std::min(_execution_time, remainingTime));

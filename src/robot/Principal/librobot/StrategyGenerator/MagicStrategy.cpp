@@ -57,8 +57,7 @@ void StrategyGenerator::MagicStrategy::run(Commun::Deplacement& dep, Petri::Petr
 		                     Action(_start_time.getElapsedTime(),
 		                            _total_points,
 		                            Element(ElementType::NOTHING, _previous_actions.back().second.get_coordonnees()),
-		                            {},
-		                            "previous_actions"));
+		                            {}));
 
 		generate_tree(action_tree, 0.75 * max_refresh_time - calculation_time.getElapsedTime());
 

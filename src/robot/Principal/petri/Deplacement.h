@@ -8,7 +8,7 @@
 #include <MathToolbox/MathToolbox.h>
 #include <Units/Units.h>
 
-static const Time TIMEOUT_DEFAULT = 90_s;
+static const Time TIMEOUT_DEFAULT = Constantes::MATCH_DURATION;
 static const Time ADD_TIMEOUT_SECURITY = 1_s;
 
 

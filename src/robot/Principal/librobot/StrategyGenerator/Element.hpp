@@ -18,7 +18,7 @@ namespace StrategyGenerator {
 	 *
 	 * Cette enum est à mettre à jour pour chaque stratégie/année
 	 */
-	ENUM_CLASS_NS(StrategyGenerator, ElementType, NOTHING, BEE, SWITCH, CUBE, SPHERE);
+	ENUM_CLASS_NS(StrategyGenerator, ElementType, NOTHING, BEE, SWITCH, GET_CUBE, PUT_CUBE, GET_SPHERE, PUT_SPHERE);
 
 	class Action;
 

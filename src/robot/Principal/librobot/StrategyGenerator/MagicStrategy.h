@@ -58,8 +58,7 @@ namespace StrategyGenerator {
 
 		void initialize(Table initial_table) {
 			_initial_table = std::move(initial_table);
-			_actual_action =
-			    Action(0_s, 0, Element(ElementType::NOTHING, _initial_table._robot_coords), {}, "initial_action");
+			_actual_action = Action(0_s, 0, Element(ElementType::NOTHING, _initial_table._robot_coords), {});
 
 			_initialized = true;
 		}
@@ -126,7 +125,7 @@ namespace StrategyGenerator {
 
 			// lock mutex at creation, unlock it at destruction
 			std::lock_guard<std::mutex> guard(mutex_petri_running);
-			// sleep(5_s);
+
 			action.execute_petri(petri, timeout);
 			logDebug("end of execute_action");
 		}

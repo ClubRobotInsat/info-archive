@@ -78,47 +78,71 @@ void IAPrincipal::initialisation() {
 	logDebug("StrategyGenerator");
 	// Action definitions
 	auto action_bee = [](repere::Coordonnees coords) -> StrategyGenerator::Action {
-		return StrategyGenerator::Action(5_s, 50, StrategyGenerator::Element(StrategyGenerator::ElementType::BEE, coords), {}, "bee");
-	};
-
-	auto action_cube = [](repere::Coordonnees coords) -> StrategyGenerator::Action {
-		return StrategyGenerator::Action(20_s, 30, StrategyGenerator::Element(StrategyGenerator::ElementType::CUBE, coords), {}, "cube");
-	};
-
-	auto action_sphere = [&repere_match](repere::Coordonnees coords) -> StrategyGenerator::Action {
-		return StrategyGenerator::Action(20_s,
-		                                 80,
-		                                 StrategyGenerator::Element(StrategyGenerator::ElementType::SPHERE, coords),
-		                                 {StrategyGenerator::Element(StrategyGenerator::ElementType::CUBE,
-		                                                             Coordonnees({1.5_m, 0_m}, 0_deg, repere_match))},
-		                                 "sphere");
+		return StrategyGenerator::Action(12_s, 50, StrategyGenerator::Element(StrategyGenerator::ElementType::BEE, coords), {});
 	};
 
 	auto action_switch = [](repere::Coordonnees coords) -> StrategyGenerator::Action {
-		return StrategyGenerator::Action(3_s, 50, StrategyGenerator::Element(StrategyGenerator::ElementType::SWITCH, coords), {}, "switch");
+		return StrategyGenerator::Action(3_s, 25, StrategyGenerator::Element(StrategyGenerator::ElementType::SWITCH, coords), {});
+	};
+
+	auto action_get_cube = [&repere_match](repere::Coordonnees coords) -> StrategyGenerator::Action {
+		return StrategyGenerator::Action(35_s,
+		                                 0,
+		                                 StrategyGenerator::Element(StrategyGenerator::ElementType::GET_CUBE, coords),
+		                                 {StrategyGenerator::Element(StrategyGenerator::ElementType::PUT_CUBE,
+		                                                             Coordonnees({20_cm, 1.45_m}, 135_deg, repere_match))});
+	};
+
+	auto action_put_cube = [](repere::Coordonnees coords) -> StrategyGenerator::Action {
+		// Un immeuble de X étages rapporte X^2 points (on mise sur le maximum)
+		return StrategyGenerator::Action(5_s, 25, StrategyGenerator::Element(StrategyGenerator::ElementType::PUT_CUBE, coords), {});
+	};
+
+	auto action_get_sphere = [&repere_match](repere::Coordonnees coords) -> StrategyGenerator::Action {
+		return StrategyGenerator::Action(10_s,
+		                                 0,
+		                                 StrategyGenerator::Element(StrategyGenerator::ElementType::GET_SPHERE, coords),
+		                                 {StrategyGenerator::Element(StrategyGenerator::ElementType::PUT_SPHERE,
+		                                                             Coordonnees({55_cm, 60_cm}, -90_deg, repere_match))});
+	};
+
+	auto action_put_sphere = [](repere::Coordonnees coords) -> StrategyGenerator::Action {
+		return StrategyGenerator::Action(10_s, 30, StrategyGenerator::Element(StrategyGenerator::ElementType::PUT_SPHERE, coords), {});
 	};
 
 	// Element definitions
 	std::function<bool()> always_possible = []() -> bool { return true; };
+	std::function<bool()> get_cube_is_possible = [this]() -> bool { return _meca->nbrPlaceAscenseur() == 0; };
+	std::function<bool()> get_sphere_is_possible = [this]() -> bool {
+		return _meca->turbineDLibre() && _meca->turbineGLibre();
+	};
 
 	_strategy.associate_element(StrategyGenerator::ElementType::BEE, action_bee, always_possible);
 	_strategy.associate_element(StrategyGenerator::ElementType::SWITCH, action_switch, always_possible);
-	_strategy.associate_element(StrategyGenerator::ElementType::CUBE, action_cube, always_possible);
-	_strategy.associate_element(StrategyGenerator::ElementType::SPHERE, action_sphere, always_possible);
-
+	_strategy.associate_element(StrategyGenerator::ElementType::GET_CUBE, action_get_cube, get_cube_is_possible);
+	_strategy.associate_element(StrategyGenerator::ElementType::PUT_CUBE, action_put_cube, always_possible);
+	_strategy.associate_element(StrategyGenerator::ElementType::GET_SPHERE, action_get_sphere, get_sphere_is_possible);
+	_strategy.associate_element(StrategyGenerator::ElementType::PUT_SPHERE, action_put_sphere, always_possible);
 
 	// Table generation
 	StrategyGenerator::Table table;
 	table.set_robot_coords(robot_coords);
 
 	table.emplace(std::make_shared<StrategyGenerator::Element>(
-	    StrategyGenerator::Element(StrategyGenerator::ElementType::BEE, Coordonnees({1_m, 1.5_m}, 0_deg, repere_match))));
+	    StrategyGenerator::Element(StrategyGenerator::ElementType::BEE, Coordonnees({61_cm, 46_cm}, -90_deg, repere_match))));
 	table.emplace(std::make_shared<StrategyGenerator::Element>(
-	    StrategyGenerator::Element(StrategyGenerator::ElementType::SPHERE, Coordonnees({10_cm, 50_cm}, 0_deg, repere_match))));
+	    StrategyGenerator::Element(StrategyGenerator::ElementType::SWITCH, Coordonnees({1.13_m, 1.6_m}, 90_deg, repere_match))));
 	table.emplace(std::make_shared<StrategyGenerator::Element>(
-	    StrategyGenerator::Element(StrategyGenerator::ElementType::SPHERE, Coordonnees({50_cm, 2_m}, 0_deg, repere_match))));
+	    StrategyGenerator::Element(StrategyGenerator::ElementType::GET_CUBE, Coordonnees({60_cm, 1.46_m}, 0_deg, repere_match))));
 	table.emplace(std::make_shared<StrategyGenerator::Element>(
-	    StrategyGenerator::Element(StrategyGenerator::ElementType::SWITCH, Coordonnees({20_cm, 1.9_m}, 0_deg, repere_match))));
+	    StrategyGenerator::Element(StrategyGenerator::ElementType::GET_CUBE, Coordonnees({55_cm, 81_cm}, 180_deg, repere_match))));
+	table.emplace(std::make_shared<StrategyGenerator::Element>(
+	    StrategyGenerator::Element(StrategyGenerator::ElementType::GET_CUBE, Coordonnees({1.1_m, 75_cm}, -90_deg, repere_match))));
+	table.emplace(std::make_shared<StrategyGenerator::Element>(
+	    StrategyGenerator::Element(StrategyGenerator::ElementType::GET_SPHERE, Coordonnees({61_cm, 1.36_m}, -135_deg, repere_match))));
+	table.emplace(std::make_shared<StrategyGenerator::Element>(
+	    StrategyGenerator::Element(StrategyGenerator::ElementType::GET_SPHERE, Coordonnees({28_cm, 30_cm}, -45_deg, repere_match))));
+
 	_strategy.initialize(table);
 
 
