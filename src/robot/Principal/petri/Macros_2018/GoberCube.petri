@@ -32,8 +32,12 @@
   </Settings>
   <PetriNet ID="0" Name="Root" X="0" Y="0" Active="true" RequiredTokens="0" Radius="30">
     <Variables>
+      <Variable Name="$result" Value="0" />
       <Variable Name="$var0" Value="0" />
     </Variables>
+    <ReturnValues>
+      <ReturnValue Name="result" Value="$result" />
+    </ReturnValues>
     <Comments>
       <Comment ID="1" Name="voir comment utiliser les moteurs ascenseurs" X="160" Y="460" Width="176" R="1" G="1" B="0.7" A="1" />
       <Comment ID="2" Name="MonterCube ( a implementer)" X="320" Y="320" Width="176" R="1" G="1" B="0.7" A="1" />

@@ -64,31 +64,47 @@ extern "C" FillResult PoserCubes_fill(PetriNet& petriNet,
                                       Petri_actionResult_t (*exitActionPtr)(VarSlot&));
 extern "C" Petri_actionResult_t PoserCubes_entryInit(VarSlot&);
 extern "C" Petri_actionResult_t PoserCubes_exitAction(VarSlot&);
-enum Petri_Var_Enum : std::uint_fast32_t { Petri_Var_Enum_Vaction = 0 };
+enum Petri_Var_Enum : std::uint_fast32_t {
+	Petri_Var_Enum_Vaction = 0,
+	Petri_Var_Enum_Vresult = 1,
+	Petri_Var_Enum_Vresult_macro = 2
+};
 
 static void fillVariables(Petri::VarSlot& variables) {
 	variables[Petri_Var_Enum_Vaction].setName("$action");
 	variables[Petri_Var_Enum_Vaction].setDefaultValue(42);
+	variables[Petri_Var_Enum_Vresult].setName("$result");
+	variables[Petri_Var_Enum_Vresult].setDefaultValue(0);
+	variables[Petri_Var_Enum_Vresult_macro].setName("$result_macro");
+	variables[Petri_Var_Enum_Vresult_macro].setDefaultValue(0);
 }
 
 extern "C" Petri_actionResult_t IA2018_entryInit(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
 	if(!_PETRI_PRIVATE_GET_VARIABLES_.isFirstSlot()) {
-		_PETRI_PRIVATE_GET_VARIABLES_.pushVariables(1);
+		_PETRI_PRIVATE_GET_VARIABLES_.pushVariables(3);
 	}
 	fillVariables(_PETRI_PRIVATE_GET_VARIABLES_);
 	return static_cast<actionResult_t>(Petri::Utility::doNothing());
 }
 
 extern "C" Petri_actionResult_t IA2018_exitAction(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
-	auto _PETRI_PRIVATE_EXEC_RESULT_ = static_cast<actionResult_t>(Petri::Utility::doNothing());
+	auto _PETRI_PRIVATE_EXEC_RESULT_ = static_cast<actionResult_t>(Petri::Utility::printText(static_cast<std::string const&>(
+	    "End of petri for action n°" + std::to_string(_PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vaction].value()) +
+	    "; returned value = " + std::to_string(_PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vresult].value()))));
+	auto _PETRI_PRIVATE_GET_RETURN_VALUE_0_ = _PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vresult].value();
 	_PETRI_PRIVATE_GET_VARIABLES_.pop();
-	_PETRI_PRIVATE_GET_VARIABLES_.pushReturnValues(0);
+	_PETRI_PRIVATE_GET_VARIABLES_.pushReturnValues(1);
+	_PETRI_PRIVATE_GET_VARIABLES_[0].setName("result");
+	_PETRI_PRIVATE_GET_VARIABLES_[0].value() = _PETRI_PRIVATE_GET_RETURN_VALUE_0_;
 	return _PETRI_PRIVATE_EXEC_RESULT_;
 }
 
 static Petri_actionResult_t state_6_invocation(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
-	return static_cast<actionResult_t>(Petri::Utility::printText(static_cast<std::string const&>(
-	    "End of petri for action n°" + std::to_string(_PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vaction].value()))));
+	return static_cast<actionResult_t>(([&_PETRI_PRIVATE_GET_VARIABLES_]() {
+		_PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vresult].value() =
+		    _PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vresult_macro].value();
+		return (ResultatAction)Petri::Utility::doNothing();
+	})());
 }
 
 static Petri_actionResult_t state_14_invocation(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
@@ -112,7 +128,9 @@ static Petri_actionResult_t state_7_invocation(VarSlot& _PETRI_PRIVATE_GET_VARIA
 
 static Petri_actionResult_t state_7_fetchReturnValues(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
 	auto _PETRI_PRIVATE_EXEC_RESULT_ = PoserSpheres_exitAction(_PETRI_PRIVATE_GET_VARIABLES_);
+	auto _PETRI_PRIVATE_GET_RETURN_VALUE_result_macro = _PETRI_PRIVATE_GET_VARIABLES_[0].value(); // result
 	_PETRI_PRIVATE_GET_VARIABLES_.pop();
+	_PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vresult_macro].value() = _PETRI_PRIVATE_GET_RETURN_VALUE_result_macro;
 	return _PETRI_PRIVATE_EXEC_RESULT_;
 }
 
@@ -123,7 +141,9 @@ static Petri_actionResult_t state_15_invocation(VarSlot& _PETRI_PRIVATE_GET_VARI
 
 static Petri_actionResult_t state_15_fetchReturnValues(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
 	auto _PETRI_PRIVATE_EXEC_RESULT_ = GoberCube_exitAction(_PETRI_PRIVATE_GET_VARIABLES_);
+	auto _PETRI_PRIVATE_GET_RETURN_VALUE_result_macro = _PETRI_PRIVATE_GET_VARIABLES_[0].value(); // result
 	_PETRI_PRIVATE_GET_VARIABLES_.pop();
+	_PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vresult_macro].value() = _PETRI_PRIVATE_GET_RETURN_VALUE_result_macro;
 	return _PETRI_PRIVATE_EXEC_RESULT_;
 }
 
@@ -134,7 +154,9 @@ static Petri_actionResult_t state_39_invocation(VarSlot& _PETRI_PRIVATE_GET_VARI
 
 static Petri_actionResult_t state_39_fetchReturnValues(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
 	auto _PETRI_PRIVATE_EXEC_RESULT_ = OuvrirReservoir_exitAction(_PETRI_PRIVATE_GET_VARIABLES_);
+	auto _PETRI_PRIVATE_GET_RETURN_VALUE_result_macro = _PETRI_PRIVATE_GET_VARIABLES_[0].value(); // result
 	_PETRI_PRIVATE_GET_VARIABLES_.pop();
+	_PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vresult_macro].value() = _PETRI_PRIVATE_GET_RETURN_VALUE_result_macro;
 	return _PETRI_PRIVATE_EXEC_RESULT_;
 }
 
@@ -145,7 +167,9 @@ static Petri_actionResult_t state_64_invocation(VarSlot& _PETRI_PRIVATE_GET_VARI
 
 static Petri_actionResult_t state_64_fetchReturnValues(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
 	auto _PETRI_PRIVATE_EXEC_RESULT_ = ActiverSwitch_exitAction(_PETRI_PRIVATE_GET_VARIABLES_);
+	auto _PETRI_PRIVATE_GET_RETURN_VALUE_result_macro = _PETRI_PRIVATE_GET_VARIABLES_[0].value(); // result
 	_PETRI_PRIVATE_GET_VARIABLES_.pop();
+	_PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vresult_macro].value() = _PETRI_PRIVATE_GET_RETURN_VALUE_result_macro;
 	return _PETRI_PRIVATE_EXEC_RESULT_;
 }
 
@@ -156,7 +180,9 @@ static Petri_actionResult_t state_71_invocation(VarSlot& _PETRI_PRIVATE_GET_VARI
 
 static Petri_actionResult_t state_71_fetchReturnValues(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
 	auto _PETRI_PRIVATE_EXEC_RESULT_ = ActiverAbeille_exitAction(_PETRI_PRIVATE_GET_VARIABLES_);
+	auto _PETRI_PRIVATE_GET_RETURN_VALUE_result_macro = _PETRI_PRIVATE_GET_VARIABLES_[0].value(); // result
 	_PETRI_PRIVATE_GET_VARIABLES_.pop();
+	_PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vresult_macro].value() = _PETRI_PRIVATE_GET_RETURN_VALUE_result_macro;
 	return _PETRI_PRIVATE_EXEC_RESULT_;
 }
 
@@ -167,7 +193,9 @@ static Petri_actionResult_t state_93_invocation(VarSlot& _PETRI_PRIVATE_GET_VARI
 
 static Petri_actionResult_t state_93_fetchReturnValues(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
 	auto _PETRI_PRIVATE_EXEC_RESULT_ = PoserCubes_exitAction(_PETRI_PRIVATE_GET_VARIABLES_);
+	auto _PETRI_PRIVATE_GET_RETURN_VALUE_result_macro = _PETRI_PRIVATE_GET_VARIABLES_[0].value(); // result
 	_PETRI_PRIVATE_GET_VARIABLES_.pop();
+	_PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vresult_macro].value() = _PETRI_PRIVATE_GET_RETURN_VALUE_result_macro;
 	return _PETRI_PRIVATE_EXEC_RESULT_;
 }
 
@@ -264,8 +292,11 @@ extern "C" FillResult IA2018_fill(PetriNet& petriNet,
                                   Petri_actionResult_t (*exitActionPtr)(VarSlot&)) {
 	auto& state_0 = petriNet.addAction(Action(0 + entitiesOffset, "Root_Entry", initEntryPtr, 0), firstLevel);
 	auto& state_3 = petriNet.addAction(Action(3 + entitiesOffset, "Root_End", exitActionPtr, 1), false);
-	auto& state_6 = petriNet.addAction(Action(6 + entitiesOffset, "Root_end", &state_6_invocation, 1), false);
-	state_6.addVariable(Petri_Var_Enum_Vaction);
+	state_3.addVariable(Petri_Var_Enum_Vaction);
+	state_3.addVariable(Petri_Var_Enum_Vresult);
+	auto& state_6 = petriNet.addAction(Action(6 + entitiesOffset, "Root_Result", &state_6_invocation, 1), false);
+	state_6.addVariable(Petri_Var_Enum_Vresult);
+	state_6.addVariable(Petri_Var_Enum_Vresult_macro);
 	auto& state_14 = petriNet.addAction(Action(14 + entitiesOffset, "Root_Action selector", &state_14_invocation, 0), false);
 	auto& state_91 = petriNet.addAction(Action(91 + entitiesOffset, "Root_Déterministe", &state_91_invocation, 1), false);
 	auto& state_92 = petriNet.addAction(Action(92 + entitiesOffset, "Root_print", &state_92_invocation, 0), false);
@@ -334,7 +365,7 @@ namespace Petri {
 	namespace Generated {
 		namespace IA2018 {
 			std::unique_ptr<::Petri::PetriNet> createPetriNet() {
-				auto petriNet = std::make_unique<PetriNet>("IA2018", 1);
+				auto petriNet = std::make_unique<PetriNet>("IA2018", 3);
 				petriNet->setLogVerbosity(PetriNet::VerbosityNothing);
 				IA2018_fill(*petriNet, 0, true, &IA2018_entryInit, &IA2018_exitAction);
 				fillVariables(petriNet->variables());
@@ -342,7 +373,7 @@ namespace Petri {
 			}
 
 			std::unique_ptr<::Petri::PetriDebug> createDebugPetriNet() {
-				auto petriNet = std::make_unique<PetriDebug>("IA2018", 1);
+				auto petriNet = std::make_unique<PetriDebug>("IA2018", 3);
 				petriNet->setLogVerbosity(PetriNet::VerbosityNothing);
 				IA2018_fill(*petriNet, 0, true, &IA2018_entryInit, &IA2018_exitAction);
 				fillVariables(petriNet->variables());
@@ -364,7 +395,7 @@ extern "C" char* IA2018_evaluate(void* vars, char const* libPath) {
 	return Petri::Utility::loadEvaluateAndInvoke(vars, libPath, "IA2018");
 }
 extern "C" char const* IA2018_getHash() {
-	return "9FF4D3B6595AC8CADABADF22B6DF725EC7E9D66FDE36FC4981BFD4E0A1A69844";
+	return "25EDB55210671E451C3D2FF46E2EAA0CD69B8119BCE24A8353481A653FFA06F0";
 }
 
 

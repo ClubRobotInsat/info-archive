@@ -22,11 +22,16 @@ struct FillResult {
 	void* end;
 };
 
-static void fillVariables(Petri::VarSlot& variables) {}
+enum Petri_Var_Enum : std::uint_fast32_t { Petri_Var_Enum_Vresult = 0 };
+
+static void fillVariables(Petri::VarSlot& variables) {
+	variables[Petri_Var_Enum_Vresult].setName("$result");
+	variables[Petri_Var_Enum_Vresult].setDefaultValue(0);
+}
 
 extern "C" Petri_actionResult_t PoserSpheres_entryInit(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
 	if(!_PETRI_PRIVATE_GET_VARIABLES_.isFirstSlot()) {
-		_PETRI_PRIVATE_GET_VARIABLES_.pushVariables(0);
+		_PETRI_PRIVATE_GET_VARIABLES_.pushVariables(1);
 	}
 	fillVariables(_PETRI_PRIVATE_GET_VARIABLES_);
 	return static_cast<actionResult_t>(Petri::Utility::doNothing());
@@ -34,8 +39,11 @@ extern "C" Petri_actionResult_t PoserSpheres_entryInit(VarSlot& _PETRI_PRIVATE_G
 
 extern "C" Petri_actionResult_t PoserSpheres_exitAction(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
 	auto _PETRI_PRIVATE_EXEC_RESULT_ = static_cast<actionResult_t>(Petri::Utility::doNothing());
+	auto _PETRI_PRIVATE_GET_RETURN_VALUE_0_ = _PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vresult].value();
 	_PETRI_PRIVATE_GET_VARIABLES_.pop();
-	_PETRI_PRIVATE_GET_VARIABLES_.pushReturnValues(0);
+	_PETRI_PRIVATE_GET_VARIABLES_.pushReturnValues(1);
+	_PETRI_PRIVATE_GET_VARIABLES_[0].setName("result");
+	_PETRI_PRIVATE_GET_VARIABLES_[0].value() = _PETRI_PRIVATE_GET_RETURN_VALUE_0_;
 	return _PETRI_PRIVATE_EXEC_RESULT_;
 }
 
@@ -71,7 +79,7 @@ namespace Petri {
 	namespace Generated {
 		namespace PoserSpheres {
 			std::unique_ptr<::Petri::PetriNet> createPetriNet() {
-				auto petriNet = std::make_unique<PetriNet>("PoserSpheres", 0);
+				auto petriNet = std::make_unique<PetriNet>("PoserSpheres", 1);
 				petriNet->setLogVerbosity(PetriNet::VerbosityNothing);
 				PoserSpheres_fill(*petriNet, 0, true, &PoserSpheres_entryInit, &PoserSpheres_exitAction);
 				fillVariables(petriNet->variables());
@@ -79,7 +87,7 @@ namespace Petri {
 			}
 
 			std::unique_ptr<::Petri::PetriDebug> createDebugPetriNet() {
-				auto petriNet = std::make_unique<PetriDebug>("PoserSpheres", 0);
+				auto petriNet = std::make_unique<PetriDebug>("PoserSpheres", 1);
 				petriNet->setLogVerbosity(PetriNet::VerbosityNothing);
 				PoserSpheres_fill(*petriNet, 0, true, &PoserSpheres_entryInit, &PoserSpheres_exitAction);
 				fillVariables(petriNet->variables());
@@ -101,7 +109,7 @@ extern "C" char* PoserSpheres_evaluate(void* vars, char const* libPath) {
 	return Petri::Utility::loadEvaluateAndInvoke(vars, libPath, "PoserSpheres");
 }
 extern "C" char const* PoserSpheres_getHash() {
-	return "089D21D2D023F8E2DE83BF6D87DDD869553BF9FE44DF88852FE484D81BB2466E";
+	return "19DD95511AEB556B005E906BF92CEBF4FD643AAE25BB23E95E19A0B3F9EA716C";
 }
 
 

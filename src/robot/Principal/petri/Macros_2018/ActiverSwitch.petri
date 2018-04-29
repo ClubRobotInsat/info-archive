@@ -31,8 +31,14 @@
     </Profiles>
   </Settings>
   <PetriNet ID="0" Name="Root" X="0" Y="0" Active="true" RequiredTokens="0" Radius="30">
+    <Variables>
+      <Variable Name="$result" Value="0" />
+    </Variables>
+    <ReturnValues>
+      <ReturnValue Name="result" Value="$result" />
+    </ReturnValues>
     <Comments>
-      <Comment ID="5" Name="Appuyer sur l'interrupteur" X="380" Y="150" Width="106" R="1" G="0.7" B="0.7" A="1" />
+      <Comment ID="1" Name="Appuyer sur l'interrupteur" X="380" Y="150" Width="106" R="1" G="0.7" B="0.7" A="1" />
     </Comments>
     <States>
       <Exit ID="2" Name="End" X="520" Y="220" Active="false" RequiredTokens="1" Radius="25" Function="Petri::Utility::doNothing()" />

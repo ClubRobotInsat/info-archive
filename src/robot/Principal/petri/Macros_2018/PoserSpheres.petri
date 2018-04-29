@@ -31,6 +31,12 @@
     </Profiles>
   </Settings>
   <PetriNet ID="0" Name="Root" X="0" Y="0" Active="true" RequiredTokens="0" Radius="30">
+    <Variables>
+      <Variable Name="$result" Value="0" />
+    </Variables>
+    <ReturnValues>
+      <ReturnValue Name="result" Value="$result" />
+    </ReturnValues>
     <Comments>
       <Comment ID="1" Name="Balistique" X="390" Y="140" Width="84" R="1" G="0.7" B="0.7" A="1" />
     </Comments>

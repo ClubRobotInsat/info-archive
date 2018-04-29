@@ -22,16 +22,18 @@ struct FillResult {
 	void* end;
 };
 
-enum Petri_Var_Enum : std::uint_fast32_t { Petri_Var_Enum_Vvar0 = 0 };
+enum Petri_Var_Enum : std::uint_fast32_t { Petri_Var_Enum_Vresult = 0, Petri_Var_Enum_Vvar0 = 1 };
 
 static void fillVariables(Petri::VarSlot& variables) {
+	variables[Petri_Var_Enum_Vresult].setName("$result");
+	variables[Petri_Var_Enum_Vresult].setDefaultValue(0);
 	variables[Petri_Var_Enum_Vvar0].setName("$var0");
 	variables[Petri_Var_Enum_Vvar0].setDefaultValue(0);
 }
 
 extern "C" Petri_actionResult_t GoberCube_entryInit(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
 	if(!_PETRI_PRIVATE_GET_VARIABLES_.isFirstSlot()) {
-		_PETRI_PRIVATE_GET_VARIABLES_.pushVariables(1);
+		_PETRI_PRIVATE_GET_VARIABLES_.pushVariables(2);
 	}
 	fillVariables(_PETRI_PRIVATE_GET_VARIABLES_);
 	return static_cast<actionResult_t>(Petri::Utility::doNothing());
@@ -39,8 +41,11 @@ extern "C" Petri_actionResult_t GoberCube_entryInit(VarSlot& _PETRI_PRIVATE_GET_
 
 extern "C" Petri_actionResult_t GoberCube_exitAction(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
 	auto _PETRI_PRIVATE_EXEC_RESULT_ = static_cast<actionResult_t>(Petri::Utility::doNothing());
+	auto _PETRI_PRIVATE_GET_RETURN_VALUE_0_ = _PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vresult].value();
 	_PETRI_PRIVATE_GET_VARIABLES_.pop();
-	_PETRI_PRIVATE_GET_VARIABLES_.pushReturnValues(0);
+	_PETRI_PRIVATE_GET_VARIABLES_.pushReturnValues(1);
+	_PETRI_PRIVATE_GET_VARIABLES_[0].setName("result");
+	_PETRI_PRIVATE_GET_VARIABLES_[0].value() = _PETRI_PRIVATE_GET_RETURN_VALUE_0_;
 	return _PETRI_PRIVATE_EXEC_RESULT_;
 }
 
@@ -76,7 +81,7 @@ namespace Petri {
 	namespace Generated {
 		namespace GoberCube {
 			std::unique_ptr<::Petri::PetriNet> createPetriNet() {
-				auto petriNet = std::make_unique<PetriNet>("GoberCube", 1);
+				auto petriNet = std::make_unique<PetriNet>("GoberCube", 2);
 				petriNet->setLogVerbosity(PetriNet::VerbosityNothing);
 				GoberCube_fill(*petriNet, 0, true, &GoberCube_entryInit, &GoberCube_exitAction);
 				fillVariables(petriNet->variables());
@@ -84,7 +89,7 @@ namespace Petri {
 			}
 
 			std::unique_ptr<::Petri::PetriDebug> createDebugPetriNet() {
-				auto petriNet = std::make_unique<PetriDebug>("GoberCube", 1);
+				auto petriNet = std::make_unique<PetriDebug>("GoberCube", 2);
 				petriNet->setLogVerbosity(PetriNet::VerbosityNothing);
 				GoberCube_fill(*petriNet, 0, true, &GoberCube_entryInit, &GoberCube_exitAction);
 				fillVariables(petriNet->variables());
@@ -106,7 +111,7 @@ extern "C" char* GoberCube_evaluate(void* vars, char const* libPath) {
 	return Petri::Utility::loadEvaluateAndInvoke(vars, libPath, "GoberCube");
 }
 extern "C" char const* GoberCube_getHash() {
-	return "CF2BC762F9F9A8D4324C33AB88C623E0EDE4F0492A69DA60D89A60B8A4EC9136";
+	return "04B8338631F98187D15B76472BC042FD282D59AB0CDEBC22DA462F61104CE148";
 }
 
 
