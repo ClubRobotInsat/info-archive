@@ -108,8 +108,9 @@ namespace StrategyGenerator {
 		 * @param mutex_petri_running Empêche le thread principal de tuer le thread si l'action petri est en cours
 		 * @param action Action à exécuter
 		 */
-		static void
+		static bool
 		    executioner(Commun::Deplacement& dep, Petri::PetriNet& petri, std::mutex& mutex_petri_running, const Action& action, Duration timeout) {
+			bool ok = false;
 			pthread_cleanup_push(cleanup, nullptr);
 
 			logDebug("MagicStrategy::execute_action() called for the action ", action.get_name());
@@ -118,16 +119,22 @@ namespace StrategyGenerator {
 			dep.arretUrgence();
 			dep.allerA(action.get_coordonnees().getPos2D());
 			dep.tournerAbsolu(action.get_coordonnees().getAngle());
+			ok = true;
 
 			pthread_cleanup_pop(1);
 
-			logDebug("launch of petri for the action '", action, "'");
+			if(ok) {
+				logDebug("launch of petri for the action '", action, "'");
 
-			// lock mutex at creation, unlock it at destruction
-			std::lock_guard<std::mutex> guard(mutex_petri_running);
+				// lock mutex at creation, unlock it at destruction
+				std::lock_guard<std::mutex> guard(mutex_petri_running);
 
-			action.execute_petri(petri, timeout);
-			logDebug("end of execute_action");
+				action.execute_petri(petri, timeout);
+				// TODO : récupérer la valeur de retour de petri
+				logDebug("end of execute_action");
+			}
+
+			return ok;
 		}
 
 		inline int get_total_points() const {

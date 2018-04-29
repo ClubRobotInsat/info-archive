@@ -98,6 +98,10 @@ namespace StrategyGenerator {
 			return _name;
 		}
 
+		Element get_associated_element() const {
+			return _element;
+		}
+
 		friend bool operator==(const Action& a1, const Action& a2) {
 			return a1._element.get_coordonnees() == a2._element.get_coordonnees() && a1.get_nr_points() == a2.get_nr_points() &&
 			       a1.get_next_elements() == a2.get_next_elements() && a1._execution_time == a2._execution_time;

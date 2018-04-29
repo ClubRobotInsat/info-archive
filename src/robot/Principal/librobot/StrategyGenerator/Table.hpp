@@ -52,7 +52,7 @@ namespace StrategyGenerator {
 		friend std::ostream& operator<<(std::ostream& os, const Table table) {
 			os << '[';
 			for(auto it = table.cbegin(); it != table.cend();) {
-				os << toString((*it)->get_type()) << (++it != table.cend() ? ", " : "");
+				os << **it << (++it != table.cend() ? ", " : "");
 			}
 			return os << ']';
 		}

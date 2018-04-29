@@ -142,10 +142,10 @@ namespace StrategyGenerator {
 			std::list<Action> action_path;
 			Table* next_table = nullptr;
 			node* n{best_node};
-			while(n != nullptr && n != _first) {
+			while(n != nullptr && n != _first && n->in_edge.target != _first) {
 				action_path.push_front(n->in_edge.cost);
-				n = n->in_edge.target;
 				next_table = &n->data;
+				n = n->in_edge.target;
 			}
 			// remove 'previous_actions' from the path
 			if(!action_path.empty()) {

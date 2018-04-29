@@ -105,30 +105,6 @@ static Petri_actionResult_t state_92_invocation(VarSlot& _PETRI_PRIVATE_GET_VARI
 	    "Action choisie : n°" + std::to_string(_PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vaction].value()))));
 }
 
-static Petri_actionResult_t state_93_invocation(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
-	return static_cast<actionResult_t>(Petri::Utility::doNothing());
-}
-
-static Petri_actionResult_t state_94_invocation(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
-	return static_cast<actionResult_t>(Petri::Utility::doNothing());
-}
-
-static Petri_actionResult_t state_95_invocation(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
-	return static_cast<actionResult_t>(Petri::Utility::doNothing());
-}
-
-static Petri_actionResult_t state_96_invocation(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
-	return static_cast<actionResult_t>(Petri::Utility::doNothing());
-}
-
-static Petri_actionResult_t state_97_invocation(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
-	return static_cast<actionResult_t>(Petri::Utility::doNothing());
-}
-
-static Petri_actionResult_t state_105_invocation(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
-	return static_cast<actionResult_t>(Petri::Utility::doNothing());
-}
-
 static Petri_actionResult_t state_7_invocation(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
 	auto _PETRI_PRIVATE_TEMP_ = PoserSpheres_entryInit(_PETRI_PRIVATE_GET_VARIABLES_);
 	return _PETRI_PRIVATE_TEMP_;
@@ -184,100 +160,15 @@ static Petri_actionResult_t state_71_fetchReturnValues(VarSlot& _PETRI_PRIVATE_G
 	return _PETRI_PRIVATE_EXEC_RESULT_;
 }
 
-static Petri_actionResult_t state_98_invocation(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
+static Petri_actionResult_t state_93_invocation(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
 	auto _PETRI_PRIVATE_TEMP_ = PoserCubes_entryInit(_PETRI_PRIVATE_GET_VARIABLES_);
 	return _PETRI_PRIVATE_TEMP_;
 }
 
-static Petri_actionResult_t state_98_fetchReturnValues(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
+static Petri_actionResult_t state_93_fetchReturnValues(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
 	auto _PETRI_PRIVATE_EXEC_RESULT_ = PoserCubes_exitAction(_PETRI_PRIVATE_GET_VARIABLES_);
 	_PETRI_PRIVATE_GET_VARIABLES_.pop();
 	return _PETRI_PRIVATE_EXEC_RESULT_;
-}
-
-static bool transition_122_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
-                                      Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return true;
-}
-
-static bool transition_123_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
-                                      Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return true;
-}
-
-static bool transition_124_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
-                                      Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return true;
-}
-
-static bool transition_125_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
-                                      Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return true;
-}
-
-static bool transition_126_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
-                                      Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return true;
-}
-
-static bool transition_127_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
-                                      Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return true;
-}
-
-static bool transition_128_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
-                                      Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return true;
-}
-
-static bool transition_129_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
-                                      Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return true;
-}
-
-static bool transition_107_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
-                                      Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return true;
-}
-
-static bool transition_108_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
-                                      Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return _PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vaction].value() == 6;
-}
-
-static bool transition_109_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
-                                      Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return _PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vaction].value() == 3;
-}
-
-static bool transition_110_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
-                                      Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return _PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vaction].value() == 5;
-}
-
-static bool transition_111_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
-                                      Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return _PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vaction].value() == 2;
-}
-
-static bool transition_112_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
-                                      Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return _PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vaction].value() == 1;
-}
-
-static bool transition_113_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
-                                      Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return _PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vaction].value() == 42;
-}
-
-static bool transition_114_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
-                                      Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return true;
-}
-
-static bool transition_115_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
-                                      Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return true;
 }
 
 static bool transition_116_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
@@ -290,22 +181,77 @@ static bool transition_117_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLE
 	return true;
 }
 
-static bool transition_118_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
+static bool transition_101_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
                                       Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
 	return true;
 }
 
-static bool transition_119_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
+static bool transition_102_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
+                                      Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
+	return _PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vaction].value() == 6;
+}
+
+static bool transition_103_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
+                                      Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
+	return _PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vaction].value() == 3;
+}
+
+static bool transition_104_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
+                                      Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
+	return _PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vaction].value() == 5;
+}
+
+static bool transition_105_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
+                                      Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
+	return _PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vaction].value() == 2;
+}
+
+static bool transition_106_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
+                                      Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
+	return _PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vaction].value() == 1;
+}
+
+static bool transition_107_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
+                                      Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
+	return _PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vaction].value() == 42;
+}
+
+static bool transition_108_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
                                       Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
 	return true;
 }
 
-static bool transition_120_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
+static bool transition_109_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
+                                      Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
+	return true;
+}
+
+static bool transition_110_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
+                                      Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
+	return true;
+}
+
+static bool transition_111_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
+                                      Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
+	return true;
+}
+
+static bool transition_112_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
+                                      Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
+	return true;
+}
+
+static bool transition_113_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
+                                      Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
+	return true;
+}
+
+static bool transition_114_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
                                       Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
 	return _PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vaction].value() == 4;
 }
 
-static bool transition_121_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
+static bool transition_115_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
                                       Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
 	return true;
 }
@@ -324,12 +270,6 @@ extern "C" FillResult IA2018_fill(PetriNet& petriNet,
 	auto& state_91 = petriNet.addAction(Action(91 + entitiesOffset, "Root_Déterministe", &state_91_invocation, 1), false);
 	auto& state_92 = petriNet.addAction(Action(92 + entitiesOffset, "Root_print", &state_92_invocation, 0), false);
 	state_92.addVariable(Petri_Var_Enum_Vaction);
-	auto& state_93 = petriNet.addAction(Action(93 + entitiesOffset, "Root_Action selector", &state_93_invocation, 0), false);
-	auto& state_94 = petriNet.addAction(Action(94 + entitiesOffset, "Root_Action selector", &state_94_invocation, 0), false);
-	auto& state_95 = petriNet.addAction(Action(95 + entitiesOffset, "Root_Action selector", &state_95_invocation, 0), false);
-	auto& state_96 = petriNet.addAction(Action(96 + entitiesOffset, "Root_Action selector", &state_96_invocation, 0), false);
-	auto& state_97 = petriNet.addAction(Action(97 + entitiesOffset, "Root_Action selector", &state_97_invocation, 0), false);
-	auto& state_105 = petriNet.addAction(Action(105 + entitiesOffset, "Root_Action selector", &state_105_invocation, 0), false);
 	auto state_7_endpoints = PoserSpheres_fill(petriNet, entitiesOffset + 7, false, state_7_invocation, state_7_fetchReturnValues);
 	(*reinterpret_cast<Action*>(state_7_endpoints.start)).setRequiredTokens(1);
 	auto state_15_endpoints = GoberCube_fill(petriNet, entitiesOffset + 15, false, state_15_invocation, state_15_fetchReturnValues);
@@ -343,56 +283,50 @@ extern "C" FillResult IA2018_fill(PetriNet& petriNet,
 	auto state_71_endpoints =
 	    ActiverAbeille_fill(petriNet, entitiesOffset + 71, false, state_71_invocation, state_71_fetchReturnValues);
 	(*reinterpret_cast<Action*>(state_71_endpoints.start)).setRequiredTokens(1);
-	auto state_98_endpoints = PoserCubes_fill(petriNet, entitiesOffset + 98, false, state_98_invocation, state_98_fetchReturnValues);
-	(*reinterpret_cast<Action*>(state_98_endpoints.start)).setRequiredTokens(1);
+	auto state_93_endpoints = PoserCubes_fill(petriNet, entitiesOffset + 93, false, state_93_invocation, state_93_fetchReturnValues);
+	(*reinterpret_cast<Action*>(state_93_endpoints.start)).setRequiredTokens(1);
 
 
-	state_0.addTransition(122 + entitiesOffset, "Root_Entry_to_Action selector", state_14, &transition_122_invocation);
-	state_0.addTransition(123 + entitiesOffset, "Root_Entry_to_print", state_92, &transition_123_invocation);
-	state_0.addTransition(124 + entitiesOffset, "Root_Entry_to_Action selector", state_93, &transition_124_invocation);
-	state_0.addTransition(125 + entitiesOffset, "Root_Entry_to_Action selector", state_94, &transition_125_invocation);
-	state_0.addTransition(126 + entitiesOffset, "Root_Entry_to_Action selector", state_95, &transition_126_invocation);
-	state_0.addTransition(127 + entitiesOffset, "Root_Entry_to_Action selector", state_96, &transition_127_invocation);
-	state_0.addTransition(128 + entitiesOffset, "Root_Entry_to_Action selector", state_97, &transition_128_invocation);
-	state_0.addTransition(129 + entitiesOffset, "Root_Entry_to_Action selector", state_105, &transition_129_invocation);
-	state_6.addTransition(107 + entitiesOffset, "Root_", state_3, &transition_107_invocation);
-	auto& transition_108 =
-	    state_97.addTransition(108 + entitiesOffset, "Root_A == 6", (*reinterpret_cast<Action*>(state_7_endpoints.start)), &transition_108_invocation);
-	transition_108.addVariable(Petri_Var_Enum_Vaction);
-	auto& transition_109 = state_14.addTransition(109 + entitiesOffset,
+	state_0.addTransition(116 + entitiesOffset, "Root_Entry_to_Action selector", state_14, &transition_116_invocation);
+	state_0.addTransition(117 + entitiesOffset, "Root_Entry_to_print", state_92, &transition_117_invocation);
+	state_6.addTransition(101 + entitiesOffset, "Root_", state_3, &transition_101_invocation);
+	auto& transition_102 =
+	    state_14.addTransition(102 + entitiesOffset, "Root_A == 6", (*reinterpret_cast<Action*>(state_7_endpoints.start)), &transition_102_invocation);
+	transition_102.addVariable(Petri_Var_Enum_Vaction);
+	auto& transition_103 = state_14.addTransition(103 + entitiesOffset,
 	                                              "Root_A == 3",
 	                                              (*reinterpret_cast<Action*>(state_15_endpoints.start)),
-	                                              &transition_109_invocation);
-	transition_109.addVariable(Petri_Var_Enum_Vaction);
-	auto& transition_110 = state_96.addTransition(110 + entitiesOffset,
+	                                              &transition_103_invocation);
+	transition_103.addVariable(Petri_Var_Enum_Vaction);
+	auto& transition_104 = state_14.addTransition(104 + entitiesOffset,
 	                                              "Root_A == 5",
 	                                              (*reinterpret_cast<Action*>(state_39_endpoints.start)),
-	                                              &transition_110_invocation);
-	transition_110.addVariable(Petri_Var_Enum_Vaction);
-	auto& transition_111 = state_94.addTransition(111 + entitiesOffset,
+	                                              &transition_104_invocation);
+	transition_104.addVariable(Petri_Var_Enum_Vaction);
+	auto& transition_105 = state_14.addTransition(105 + entitiesOffset,
 	                                              "Root_A == 2",
 	                                              (*reinterpret_cast<Action*>(state_64_endpoints.start)),
-	                                              &transition_111_invocation);
-	transition_111.addVariable(Petri_Var_Enum_Vaction);
-	auto& transition_112 = state_93.addTransition(112 + entitiesOffset,
+	                                              &transition_105_invocation);
+	transition_105.addVariable(Petri_Var_Enum_Vaction);
+	auto& transition_106 = state_14.addTransition(106 + entitiesOffset,
 	                                              "Root_A == 1",
 	                                              (*reinterpret_cast<Action*>(state_71_endpoints.start)),
-	                                              &transition_112_invocation);
-	transition_112.addVariable(Petri_Var_Enum_Vaction);
-	auto& transition_113 = state_95.addTransition(113 + entitiesOffset, "Root_A == 42", state_91, &transition_113_invocation);
-	transition_113.addVariable(Petri_Var_Enum_Vaction);
-	(*reinterpret_cast<Action*>(state_71_endpoints.end)).addTransition(114 + entitiesOffset, "Root_end", state_6, &transition_114_invocation);
-	(*reinterpret_cast<Action*>(state_64_endpoints.end)).addTransition(115 + entitiesOffset, "Root_end", state_6, &transition_115_invocation);
-	(*reinterpret_cast<Action*>(state_15_endpoints.end)).addTransition(116 + entitiesOffset, "Root_end", state_6, &transition_116_invocation);
-	(*reinterpret_cast<Action*>(state_39_endpoints.end)).addTransition(117 + entitiesOffset, "Root_end", state_6, &transition_117_invocation);
-	(*reinterpret_cast<Action*>(state_7_endpoints.end)).addTransition(118 + entitiesOffset, "Root_end", state_6, &transition_118_invocation);
-	state_91.addTransition(119 + entitiesOffset, "Root_end", state_6, &transition_119_invocation);
-	auto& transition_120 = state_105.addTransition(120 + entitiesOffset,
-	                                               "Root_A == 4",
-	                                               (*reinterpret_cast<Action*>(state_98_endpoints.start)),
-	                                               &transition_120_invocation);
-	transition_120.addVariable(Petri_Var_Enum_Vaction);
-	(*reinterpret_cast<Action*>(state_98_endpoints.end)).addTransition(121 + entitiesOffset, "Root_end", state_6, &transition_121_invocation);
+	                                              &transition_106_invocation);
+	transition_106.addVariable(Petri_Var_Enum_Vaction);
+	auto& transition_107 = state_14.addTransition(107 + entitiesOffset, "Root_A == 42", state_91, &transition_107_invocation);
+	transition_107.addVariable(Petri_Var_Enum_Vaction);
+	(*reinterpret_cast<Action*>(state_71_endpoints.end)).addTransition(108 + entitiesOffset, "Root_end", state_6, &transition_108_invocation);
+	(*reinterpret_cast<Action*>(state_64_endpoints.end)).addTransition(109 + entitiesOffset, "Root_end", state_6, &transition_109_invocation);
+	(*reinterpret_cast<Action*>(state_15_endpoints.end)).addTransition(110 + entitiesOffset, "Root_end", state_6, &transition_110_invocation);
+	(*reinterpret_cast<Action*>(state_39_endpoints.end)).addTransition(111 + entitiesOffset, "Root_end", state_6, &transition_111_invocation);
+	(*reinterpret_cast<Action*>(state_7_endpoints.end)).addTransition(112 + entitiesOffset, "Root_end", state_6, &transition_112_invocation);
+	state_91.addTransition(113 + entitiesOffset, "Root_end", state_6, &transition_113_invocation);
+	auto& transition_114 = state_14.addTransition(114 + entitiesOffset,
+	                                              "Root_A == 4",
+	                                              (*reinterpret_cast<Action*>(state_93_endpoints.start)),
+	                                              &transition_114_invocation);
+	transition_114.addVariable(Petri_Var_Enum_Vaction);
+	(*reinterpret_cast<Action*>(state_93_endpoints.end)).addTransition(115 + entitiesOffset, "Root_end", state_6, &transition_115_invocation);
 
 	return (FillResult){&state_0, &state_3};
 }
@@ -430,7 +364,7 @@ extern "C" char* IA2018_evaluate(void* vars, char const* libPath) {
 	return Petri::Utility::loadEvaluateAndInvoke(vars, libPath, "IA2018");
 }
 extern "C" char const* IA2018_getHash() {
-	return "176CF1FE6C8AE9DEE523F23BF663267D01C8A9BC541FE7FCA5C47EBF74E2005E";
+	return "9FF4D3B6595AC8CADABADF22B6DF725EC7E9D66FDE36FC4981BFD4E0A1A69844";
 }
 
 

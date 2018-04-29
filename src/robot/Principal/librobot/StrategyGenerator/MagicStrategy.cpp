@@ -38,6 +38,7 @@ void StrategyGenerator::MagicStrategy::run(Commun::Deplacement& dep, Petri::Petr
 	std::mutex mutex_petri_running;
 
 	std::atomic<bool> petri_finished(false);
+	bool petri_returned_value;
 
 	_previous_actions.emplace_back(_initial_table, _actual_action);
 	std::thread execute_action = std::thread([] { std::this_thread::sleep_for(90s); });
@@ -91,19 +92,28 @@ void StrategyGenerator::MagicStrategy::run(Commun::Deplacement& dep, Petri::Petr
 			}
 
 			if(petri_finished) {
-				// petri action has finished: update the previous actions and increment points; then calculate again the
-				// new best path
-				_previous_actions.emplace_back(p.second, _actual_action);
-				//_previous_actions.emplace_back(action_tree.get_table_after_action(_actual_action), _actual_action);
-				_total_points += _actual_action.get_nr_points();
 				petri_finished = false;
-				logDebug1("The action '", _actual_action, "' has finished with success.");
-				logDebug1("_previous_actions.size() = ",
-				          _previous_actions.size(),
-				          "; _total_points = ",
-				          get_total_points(),
-				          "; action_path.size() = ",
-				          action_path.size());
+				if(petri_returned_value == true) {
+					// petri action has finished: update the previous actions and increment points; then calculate again
+					// the
+					// new best path
+					std::cout << "new table : " << p.second << std::endl;
+					std::cout << "_actual_action = " << _actual_action
+					          << " ; action_path.front() == " << p.first.front() << std::endl;
+
+					_previous_actions.emplace_back(p.second, _actual_action);
+					//_previous_actions.emplace_back(action_tree.get_table_after_action(_actual_action),
+					//_actual_action);
+					_total_points += _actual_action.get_nr_points();
+
+					logDebug1("The action '", _actual_action, "' has finished with success.");
+					logDebug1("_previous_actions.size() = ",
+					          _previous_actions.size(),
+					          "; _total_points = ",
+					          get_total_points(),
+					          "; action_path.size() = ",
+					          action_path.size());
+				}
 				continue;
 			}
 
@@ -113,21 +123,25 @@ void StrategyGenerator::MagicStrategy::run(Commun::Deplacement& dep, Petri::Petr
 			pthread_cancel(id_thread);
 
 			_actual_action = action_path.front();
+			std::cout << "=== Next table : " << p.second << std::endl;
 			// execution of the thread: first the action is running and then we stipulate that petri had time to finish
 			// its life
 			execute_action = std::thread(
 			    [&](std::mutex& mutex_petri_running, const Action& action) {
-				    executioner(dep,
-				                *(petri.createPetriNet()),
-				                mutex_petri_running,
-				                action,
-				                MATCH_DURATION - _start_time.getElapsedTime());
+				    petri_returned_value = executioner(dep,
+				                                       *(petri.createPetriNet()),
+				                                       mutex_petri_running,
+				                                       action,
+				                                       MATCH_DURATION - _start_time.getElapsedTime());
 				    petri_finished = true;
+				    std::cout << "MagicStrategy::executioner finished with return value : " << std::boolalpha
+				              << petri_returned_value << std::endl;
+				    pthread_exit(nullptr);
 				},
 			    std::ref(mutex_petri_running),
 			    std::cref(_actual_action));
 			id_thread = execute_action.native_handle();
-			execute_action.detach(); // FIXME: detach() or join() in this case?
+			execute_action.detach();
 		}
 		// TODO: sleep(500ms - execution_time) to always guarantee an execution of 500ms?
 	}
