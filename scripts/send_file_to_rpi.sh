@@ -41,7 +41,7 @@ else
 fi
 
 # Ligne à modifier si on a une interface Internet avec un nom bizarre (dans 'ssh_into_rpi.sh' aussi)
-ip_ssh=`arp -a | grep "enp4s0\|eth0\|enx00e02f7000b5" | cut -d ' ' -f 2 | cut -d '(' -f 2 | cut -d ')' -f 1`
+ip_ssh=`arp -a | grep "enp3s0\|enp4s0\|eth0\|enx00e02f7000b5" | cut -d ' ' -f 2 | cut -d '(' -f 2 | cut -d ')' -f 1`
 
 # Verification de l'adresse IP
 validateIP $ip_ssh
