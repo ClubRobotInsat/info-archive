@@ -263,5 +263,12 @@ Cette carte n'est utilisée que pour savoir si la tirette a été retirée ou no
 | 0x03 |       ON       |        non       | ID \| sens rotation (0 ou 1)     |           2          |
 | 0x04 |       OFF      |        non       | ID                               |           1          |
 | 0x05 |  ON Brushless  |        non       | ID                               |           1          |
+| 0x06 | Position Terminée |     oui       | _cf détails_                     |           1          |
+
+### Position des moteurs asservis
+La lecture de la position se fait en trois temps :
+* la fonction `actualiserPosition(uint8_t moteur)` demande à la carte élec si le déplacement est fini (enfin d'1 octet pour l'ID) avec la commande `0x06`
+* l'élec retourne l'ID du moteur concerné et un uint8_t pour dire si la position est atteinte (2 octets)
+* il faut enfin appeler la fonction `lirePosition(uint8_t moteur)` pour savoir si la position est atteinte côté info (l'info est stockée en interne)
 
 Pour le sens de rotation, `0` correspond à une rotation **Horaire** et `1` à une rotation **Trigonométrique**.
