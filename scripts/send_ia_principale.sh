@@ -9,6 +9,8 @@ Red='\033[0;41m'
 Yellow='\033[0;43m'
 End='\033[0;0m'
 
+scripts/build_arm.sh
+
 echo ""
 echo -e "${Yellow}Compilation du réseau Petri${End}"
 mkdir -p build_arm/src/robot/Principal

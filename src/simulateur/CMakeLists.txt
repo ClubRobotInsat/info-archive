@@ -1,3 +1,9 @@
+if (RASPI)
+    message(STATUS "No need to compile simulator for raspi")
+    return()
+endif(RASPI)
+
+
 SET(SIMU_OU_ROBOT Simu)
 
 add_subdirectory(../commun commun)
