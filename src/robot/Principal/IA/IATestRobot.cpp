@@ -22,7 +22,7 @@ int main(int argc, char* argv[]) {
 #endif
 	Log::open(argc, argv, false);
 
-	RobotColor color = ia_parsing::parseColor(argc, argv);
+	RobotColor color = ia_parsing::parsing_function(argc, argv).color;
 
 	logDebug6("Initialisation du robot...Veuillez patienter...");
 	IATestRobot strategie({argv, argv + argc}, color);

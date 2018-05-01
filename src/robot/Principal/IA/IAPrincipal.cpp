@@ -9,17 +9,17 @@
 #define CHECK_LIST 0
 int main(int argc, char* argv[]) {
 
-	// Couleur du robot
-	RobotColor color = ia_parsing::parseColor(argc, argv);
-	bool debugMode = ia_parsing::getDebugMode(argc, argv);
+	auto parsing = ia_parsing::parsing_function(argc, argv);
+
+	std::cout << parsing << std::endl;
 
 	Log::open(argc, argv, false);
 
 	logDebug6("Initialisation du robot...Veuillez patienter...");
-	IAPrincipal strategie({argv, argv + argc}, color, debugMode);
+	IAPrincipal strategie({argv, argv + argc}, parsing.color, parsing.debug_mode, parsing.magic_strategy);
 
 	logDebug6("Démarre la stratégie");
-	if(!debugMode) {
+	if(!parsing.debug_mode) {
 		strategie.demarrer(MATCH_DURATION);
 	} else {
 		strategie.demarrer(MATCH_DURATION * 100);
@@ -28,8 +28,8 @@ int main(int argc, char* argv[]) {
 	return 0;
 }
 
-IAPrincipal::IAPrincipal(std::vector<std::string> const& args, Constantes::RobotColor color, bool debugMode)
-        : StrategiePrincipal(args, color), _debugMode(debugMode) {
+IAPrincipal::IAPrincipal(std::vector<std::string> const& args, Constantes::RobotColor color, bool debugMode, bool magicStrategy)
+        : StrategiePrincipal(args, color), _debugMode(debugMode), _magicStrategy(magicStrategy) {
 	// main --> IAPrincipal() --> initialisation --> attendre tirette -> démarrer
 	this->initialisation();
 #ifdef HOMOLOGATION
@@ -182,12 +182,12 @@ void IAPrincipal::executer() {
 	_robot->setAngleDetectionAdv(0.4_PI);
 #endif
 
-#ifdef USE_MAGIC_STRATEGY
-	_strategy.run(*_dep, *_petri, 500_ms);
-	_nbr_points = _strategy.get_total_points();
-#else
-	lancerPetri(_debugMode);
-#endif
+	if(_magicStrategy) {
+		_strategy.run(*_dep, *_petri, 500_ms);
+		_nbr_points = _strategy.get_total_points();
+	} else {
+		lancerPetri(_debugMode);
+	}
 
 	/*std::thread([=]() {
 	    logDebug(_robot->getPositionAdversaire());

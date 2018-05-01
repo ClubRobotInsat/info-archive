@@ -17,7 +17,7 @@
 
 class IAPrincipal : public StrategiePrincipal {
 public:
-	IAPrincipal(std::vector<std::string> const& args, Constantes::RobotColor color, bool debugMode);
+	IAPrincipal(std::vector<std::string> const& args, Constantes::RobotColor color, bool debugMode, bool magicStrategy);
 
 protected:
 	void initialisation();
@@ -31,6 +31,7 @@ protected:
 	ResultatAction lancerPetri(bool debug);
 	std::unique_ptr<Petri::PetriDynamicLib> _petri;
 	bool _debugMode;
+	bool _magicStrategy;
 
 	StrategyGenerator::MagicStrategy _strategy;
 	int _nbr_points = 450;

@@ -10,44 +10,79 @@
 #endif // ROOT_PARSING_H
 namespace ia_parsing {
 
-	RobotColor parseColor(int argc, char* argv[]) {
+	struct ParsedArguments {
+		RobotColor color;
+		bool debug_mode;
+		bool magic_strategy;
+
+		friend std::ostream& operator<<(std::ostream& os, const ParsedArguments& obj) {
+			os << "Parsing des arguments :" << std::endl;
+			os << "\tCouleur du robot : " << toString(obj.color) << std::endl;
+			os << "\tDebug mode : " << std::boolalpha << obj.debug_mode << std::endl;
+			return os << "\tStrategie utilisée : " << (obj.magic_strategy ? "magicStrategy" : "petri") << std::endl;
+		}
+	};
+
+	void print_help(std::string prog) {
+		std::cout << "Usage: " << prog << " --color|-c <green|orange> [--debug|-d [on|off]] [--strat|-s <petri|magic>]"
+		          << std::endl;
+	}
+
+	ParsedArguments parsing_function(int argc, char* argv[]) {
 		static struct option long_options[] = {{"color", required_argument, 0, 'c'},
 		                                       {"debug", optional_argument, 0, 'd'},
+		                                       {"strat", optional_argument, 0, 's'},
 		                                       {0, 0, 0, 0}};
 
 		int arg;
 		int long_index = 0;
-		RobotColor color = RobotColor::Undef;
 
-		while((arg = getopt_long(argc, argv, "c:d", long_options, &long_index)) != -1) {
+		ParsedArguments result;
+		result.color = RobotColor::Undef;
+		result.debug_mode = false;
+		result.magic_strategy = false;
 
+		while((arg = getopt_long(argc, argv, "c:d:s", long_options, &long_index)) != -1) {
 			switch(arg) {
 				case 'c':
-					if(std::string(optarg) == "orange") {
-						color = RobotColor::Orange;
-					} else if(std::string(optarg) == "green") {
-						color = RobotColor::Green;
+					if(std::string(optarg) == "green") {
+						result.color = RobotColor::Green;
+					} else if(std::string(optarg) == "orange") {
+						result.color = RobotColor::Orange;
 					}
-				default:;
+					break;
+
+				case 'd':
+					if(std::string(optarg) == "off") {
+						result.debug_mode = false;
+					} else {
+						result.debug_mode = true;
+					}
+					break;
+
+				case 's':
+					if(std::string(optarg) == "petri") {
+						result.magic_strategy = false;
+					} else if(std::string(optarg) == "magic") {
+						result.magic_strategy = true;
+					} else {
+						print_help(argv[0]);
+					}
+					break;
+
+				default:
+					print_help(argv[0]);
+					break;
 			}
 		}
 
-		if(color == Constantes::RobotColor::Undef) {
+		if(result.color == Constantes::RobotColor::Undef) {
 			std::cout << "Pas de couleur selectionnée. Utilisation de la couleur verte par défaut..." << std::endl;
-			std::cout << "Usage : " << argv[0] << " --color [orange|green]" << std::endl;
-			color = RobotColor::Green;
+			print_help(argv[0]);
+			result.color = RobotColor::Green;
 		}
 
-		return color;
-	}
-
-	bool getDebugMode(int argc, char* argv[]) {
-		for(int i = 0; i < argc; i++) {
-			if(std::string(argv[i]) == "--debug" || std::string(argv[i]) == "-d") {
-				return true;
-			}
-		}
-		return false;
+		return result;
 	}
 
 	enum TestMeca {
