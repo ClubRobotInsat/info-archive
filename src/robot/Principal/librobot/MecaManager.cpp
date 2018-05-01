@@ -40,11 +40,12 @@ MecaManagerPrincipal::MecaManagerPrincipal(RobotPrincipal& robot)
    std::placeholders::_2))
         , _pompes{&_robot.getCarte<PNEUMATIQUE_1>(), &_robot.getCarte<PNEUMATIQUE_2>() */
 {
+	_elevator_counter.store(0);
 
 	logDebug("Initialisation de la meca");
 	// Test des servos
 	// this->setModeBlocageServos(); // pas implémenté côté hard
-	this->setCouleurServos(CarteServo::Couleur::JAUNE);
+	/*this->setCouleurServos(CarteServo::Couleur::JAUNE);
 
 	this->ouvrirAbeilleD();
 	this->ouvrirAbeilleG();
@@ -58,11 +59,6 @@ MecaManagerPrincipal::MecaManagerPrincipal(RobotPrincipal& robot)
 	this->fermerSouteD();
 	this->fermerSouteG();
 
-	this->ouvrirPorteCube();
-	this->fermerPorteCube();
-
-	this->setCouleurServos(CarteServo::Couleur::VERT);
-
 	// Test des moteurs
 	this->activerAvaleurs(SensAvaleurs::AVALER);
 	sleep(1);
@@ -71,6 +67,14 @@ MecaManagerPrincipal::MecaManagerPrincipal(RobotPrincipal& robot)
 	this->desactiverAvaleurs();
 
 	this->monterAscenseursDe(1);
+
+	this->activerTurbineD();
+	this->activerTurbineG();
+
+	this->ouvrirPorteCube();
+	this->fermerPorteCube();
+
+	this->setCouleurServos(CarteServo::Couleur::VERT);*/
 
 	// _ascenseur.initialiser(SensRotation::Trigo);
 	// logDebug4("init de la fusee : ", this->bougerFuseeDe(360_deg));
@@ -90,6 +94,7 @@ void MecaManagerPrincipal::couperMeca() {
 }
 
 ResultatAction MecaManagerPrincipal::ouvrirPorteCube() {
+	_elevator_counter = 0;
 	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::PORTE_CUBE),
 	                                              enumToInt(ConstantesPrincipal::PorteCube::OUVERT));
 }
@@ -105,6 +110,7 @@ ResultatAction MecaManagerPrincipal::orienterPorteCubeDe(Angle val) {
 
 // @Denis appeler les fonctions du MoteurManager pour que ça fasse le job
 ResultatAction MecaManagerPrincipal::monterAscenseursDe(int nbr_tours) {
+	_elevator_counter += nbr_tours;
 	// TODO : fonction bloquante mais parallélisation des deux ascenseurs
 	return ResultatAction::TIMEOUT;
 }
@@ -124,7 +130,12 @@ ResultatAction MecaManagerPrincipal::desactiverAvaleurs() {
 	return ResultatAction::TIMEOUT;
 }
 
+int MecaManagerPrincipal::nbrPlaceAscenseur() {
+	return MAX_ELEVATOR_SIZE - _elevator_counter;
+}
+
 ResultatAction MecaManagerPrincipal::ouvrirSouteD() {
+	_turbine_right_free = false;
 	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::PORTE_SOUTE_DROIT),
 	                                              enumToInt(ConstantesPrincipal::SouteDroit::OUVERT));
 }
@@ -138,7 +149,23 @@ ResultatAction MecaManagerPrincipal::orienterSouteDDe(Angle val) {
 	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::PORTE_SOUTE_DROIT), val);
 }
 
+ResultatAction MecaManagerPrincipal::activerTurbineD() {
+	_turbine_right_free = true;
+	// TODO
+	return ResultatAction::TIMEOUT;
+}
+
+ResultatAction MecaManagerPrincipal::desactiverTurbineD() {
+	// TODO
+	return ResultatAction::TIMEOUT;
+}
+
+bool MecaManagerPrincipal::turbineDLibre() {
+	return _turbine_right_free;
+}
+
 ResultatAction MecaManagerPrincipal::ouvrirSouteG() {
+	_turbine_left_free = false;
 	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::PORTE_SOUTE_GAUCHE),
 	                                              enumToInt(ConstantesPrincipal::SouteGauche::OUVERT));
 }
@@ -150,6 +177,21 @@ ResultatAction MecaManagerPrincipal::fermerSouteG() {
 
 ResultatAction MecaManagerPrincipal::orienterSouteGDe(Angle val) {
 	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::PORTE_SOUTE_GAUCHE), val);
+}
+
+ResultatAction MecaManagerPrincipal::activerTurbineG() {
+	_turbine_left_free = true;
+	// TODO
+	return ResultatAction::TIMEOUT;
+}
+
+ResultatAction MecaManagerPrincipal::desactiverTurbineG() {
+	// TODO
+	return ResultatAction::TIMEOUT;
+}
+
+bool MecaManagerPrincipal::turbineGLibre() {
+	return _turbine_left_free;
 }
 
 ResultatAction MecaManagerPrincipal::ouvrirAbeilleD() {

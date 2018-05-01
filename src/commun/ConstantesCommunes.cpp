@@ -19,7 +19,7 @@ AngularSpeed const Constantes::VITESSE_ANGULAIRE_EVITEMENT = 1_rad_s;
 
 Speed const Constantes::VITESSE_LINEAIRE_RECALAGE = 20_cm_s;
 
-Duration const Constantes::MATCH_DURATION = 90_s;
+Duration const Constantes::MATCH_DURATION = 100_s;
 
 int const Constantes::NOMBRE_BLOCAGE_LOGICIEL_MAX = 5;
 int const Constantes::NOMBRE_BLOCAGE_PHYSIQUE_MAX = 5;

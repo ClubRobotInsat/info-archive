@@ -142,15 +142,16 @@ namespace StrategyGenerator {
 			std::list<Action> action_path;
 			Table* next_table = nullptr;
 			node* n{best_node};
-			while(n != nullptr && n != _first) {
+			while(n != nullptr && n != _first && n->in_edge.target != _first) {
 				action_path.push_front(n->in_edge.cost);
-				n = n->in_edge.target;
 				next_table = &n->data;
+				n = n->in_edge.target;
 			}
 			// remove 'previous_actions' from the path
 			if(!action_path.empty()) {
-				assert(action_path.cbegin()->get_name() == "previous_actions");
-				action_path.erase(action_path.cbegin());
+				// std::cout << "before assert: " << action_path.cbegin()->get_name() << std::endl;
+				// assert(action_path.cbegin()->get_name() == "NOTHING");
+				// action_path.erase(action_path.cbegin());
 			}
 			if(next_table == nullptr && !action_path.empty()) {
 				throw std::runtime_error("bad correspondence between table and action_path");

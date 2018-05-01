@@ -31,6 +31,12 @@
     </Profiles>
   </Settings>
   <PetriNet ID="0" Name="Root" X="0" Y="0" Active="true" RequiredTokens="0" Radius="30">
+    <Variables>
+      <Variable Name="$result" Value="0" />
+    </Variables>
+    <ReturnValues>
+      <ReturnValue Name="result" Value="$result" />
+    </ReturnValues>
     <Comments>
       <Comment ID="1" Name="Fichier à copier pour faire de nouveaux réseaux pétri&#xA;--&gt; déjà configurée pour tout" X="386" Y="128" Width="260" R="0.5" G="0.8" B="1" A="1" />
     </Comments>

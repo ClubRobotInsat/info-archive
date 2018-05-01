@@ -31,6 +31,12 @@
     </Profiles>
   </Settings>
   <PetriNet ID="0" Name="Root" X="0" Y="0" Active="true" RequiredTokens="0" Radius="30">
+    <Variables>
+      <Variable Name="$result" Value="0" />
+    </Variables>
+    <ReturnValues>
+      <ReturnValue Name="result" Value="$result" />
+    </ReturnValues>
     <Comments>
       <Comment ID="1" Name="origine : le coin&#xA;Position depart : (610, 460)&#xA;robot de face vers l'abeille" X="130" Y="110" Width="176" R="1" G="1" B="0.7" A="1" />
       <Comment ID="2" Name="a faire la distinction de cas dans le petri" X="451" Y="90" Width="176" R="1" G="1" B="0.7" A="1" />

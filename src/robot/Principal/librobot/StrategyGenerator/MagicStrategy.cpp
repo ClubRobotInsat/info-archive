@@ -35,15 +35,11 @@ void StrategyGenerator::MagicStrategy::run(Commun::Deplacement& dep, Petri::Petr
 	logDebug("All conditions are respected, start of MagicStrategy::run(", max_refresh_time, ").");
 
 	_start_time.reset();
-	std::mutex mutex_petri_running;
 
-	std::atomic<bool> petri_finished(false);
+	std::thread execute_action =
+	    std::thread(&MagicStrategy::action_executor, this, std::ref(dep), std::ref(*(petri.createPetriNet())));
 
-	_previous_actions.emplace_back(_initial_table, _actual_action);
-	std::thread execute_action = std::thread([] { std::this_thread::sleep_for(90s); });
 	execute_action.detach();
-
-	pthread_t id_thread = 0;
 
 	while(_start_time.getElapsedTime() < MATCH_DURATION * 10000) {
 		StopWatch calculation_time;
@@ -56,9 +52,8 @@ void StrategyGenerator::MagicStrategy::run(Commun::Deplacement& dep, Petri::Petr
 		                     _previous_actions.back().first,
 		                     Action(_start_time.getElapsedTime(),
 		                            _total_points,
-		                            Element(ElementType::NOTHING, _previous_actions.back().second.get_coordonnees()),
-		                            {},
-		                            "previous_actions"));
+		                            Element(ElementType::NOTHING, _previous_actions.back().second->get_coordonnees()),
+		                            {}));
 
 		generate_tree(action_tree, 0.75 * max_refresh_time - calculation_time.getElapsedTime());
 
@@ -82,22 +77,39 @@ void StrategyGenerator::MagicStrategy::run(Commun::Deplacement& dep, Petri::Petr
 			break;
 		}
 
+		Action best_action = action_path.front();
+
 		// the robot should change its strategy (new action path found are previous action finished)
-		if((action_path.front() != _actual_action && mutex_petri_running.try_lock()) || petri_finished) {
-			mutex_petri_running.unlock();
+		if(_actual_action == nullptr || best_action != *_actual_action) {
+			std::cout << "decisioner: new best action found: " << best_action.get_name() << std::endl;
+			std::lock_guard<std::mutex> lk(_mut_action_available);
 
-			logDebug4("===== action path: =====");
-			for(Action a : action_path) {
-				logDebug4(a);
+			while(_state != ActionState::WAIT) {
+				if(_mut_petri_running.try_lock()) {
+					_mut_petri_running.unlock();
+
+					dep.arreter();
+				} else {
+					break;
+				}
 			}
+			std::cout << "decisioner: _state == WAIT" << std::endl;
 
-			if(petri_finished) {
-				// petri action has finished: update the previous actions and increment points; then calculate again the
-				// new best path
+			if(!_mut_petri_running.try_lock()) {
+				continue;
+			}
+			_mut_petri_running.unlock();
+
+			if(_last_petri_succeed == true) {
+				std::cout << "decisioner: last petri succeed" << std::endl;
+				std::cout << "new table : " << p.second << std::endl;
+				std::cout << "_actual_action = " << *_actual_action << " ; action_path.front() == " << p.first.front() << std::endl;
+
 				_previous_actions.emplace_back(p.second, _actual_action);
-				//_previous_actions.emplace_back(action_tree.get_table_after_action(_actual_action), _actual_action);
-				_total_points += _actual_action.get_nr_points();
-				petri_finished = false;
+				//_previous_actions.emplace_back(action_tree.get_table_after_action(_actual_action),
+				//_actual_action);
+				_total_points += _actual_action->get_nr_points();
+
 				logDebug1("The action '", _actual_action, "' has finished with success.");
 				logDebug1("_previous_actions.size() = ",
 				          _previous_actions.size(),
@@ -105,32 +117,12 @@ void StrategyGenerator::MagicStrategy::run(Commun::Deplacement& dep, Petri::Petr
 				          get_total_points(),
 				          "; action_path.size() = ",
 				          action_path.size());
-				continue;
+				_last_petri_succeed = false;
 			}
-
-			logDebug("new action found: abort '", _actual_action, "' and execution of '", action_path.front(), "'");
-
-			// kill the executive thread which will stop the robot before dying
-			pthread_cancel(id_thread);
-
-			_actual_action = action_path.front();
-			// execution of the thread: first the action is running and then we stipulate that petri had time to finish
-			// its life
-			execute_action = std::thread(
-			    [&](std::mutex& mutex_petri_running, const Action& action) {
-				    executioner(dep,
-				                *(petri.createPetriNet()),
-				                mutex_petri_running,
-				                action,
-				                MATCH_DURATION - _start_time.getElapsedTime());
-				    petri_finished = true;
-				},
-			    std::ref(mutex_petri_running),
-			    std::cref(_actual_action));
-			id_thread = execute_action.native_handle();
-			execute_action.detach(); // FIXME: detach() or join() in this case?
+			_actual_action = std::make_shared<Action>(best_action);
+			_ia_cv.notify_all();
+			std::cout << "decisioner: notify all" << std::endl;
 		}
-		// TODO: sleep(500ms - execution_time) to always guarantee an execution of 500ms?
 	}
 	sleep(MATCH_DURATION - _start_time.getElapsedTime());
 	// TODO: stop everything (deplacement + petri)

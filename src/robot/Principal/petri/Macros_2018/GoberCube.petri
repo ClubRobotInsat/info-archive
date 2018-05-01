@@ -32,8 +32,12 @@
   </Settings>
   <PetriNet ID="0" Name="Root" X="0" Y="0" Active="true" RequiredTokens="0" Radius="30">
     <Variables>
+      <Variable Name="$result" Value="0" />
       <Variable Name="$var0" Value="0" />
     </Variables>
+    <ReturnValues>
+      <ReturnValue Name="result" Value="$result" />
+    </ReturnValues>
     <Comments>
       <Comment ID="1" Name="voir comment utiliser les moteurs ascenseurs" X="160" Y="460" Width="176" R="1" G="1" B="0.7" A="1" />
       <Comment ID="2" Name="MonterCube ( a implementer)" X="320" Y="320" Width="176" R="1" G="1" B="0.7" A="1" />
@@ -43,7 +47,7 @@
       <Comment ID="6" Name="Origine : robot placé en face d'un cube, orienté vers le cube" X="100" Y="140" Width="176" R="1" G="1" B="0.7" A="1" />
     </Comments>
     <States>
-      <Exit ID="7" Name="End" X="580" Y="570" Active="false" RequiredTokens="0" Radius="25" Function="Petri::Utility::doNothing()" />
+      <Exit ID="7" Name="End" X="580" Y="570" Active="false" RequiredTokens="1" Radius="25" Function="Petri::Utility::doNothing()" />
       <Action ID="8" Name="BEGIN" X="40" Y="250" Active="true" RequiredTokens="0" Radius="20" Function="Petri::Utility::doNothing()" />
       <Action ID="9" Name="4" X="120" Y="260" Active="false" RequiredTokens="1" Radius="20" Function="avancerDe(12_cm)" />
       <Action ID="10" Name="5" X="260" Y="260" Active="false" RequiredTokens="1" Radius="20" Function="reculerDe(18_cm)" />
@@ -59,6 +63,7 @@
       <Transition ID="18" Name="11" X="525" Y="260" BeforeID="12" AfterID="13" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="110" />
       <Transition ID="19" Name="14" X="350" Y="115.26829268292676" BeforeID="13" AfterID="9" Condition="$var0&lt;3;" W="50" H="30" ShiftX="0" ShiftY="-144.73170731707324" ShiftAmplitude="460" />
       <Transition ID="20" Name="12" X="580" Y="305" BeforeID="13" AfterID="14" Condition="$var0==3;" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="90" />
+      <Transition ID="21" Name="" X="310" Y="410" BeforeID="8" AfterID="7" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="627.69419305900863" />
     </Transitions>
   </PetriNet>
 </Document>

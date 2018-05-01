@@ -54,12 +54,12 @@ namespace StrategyGenerator {
 		std::string _name;
 
 	public:
-		Action(Duration time, int points, Element element, std::vector<Element> elements_created_after_call, std::string name)
+		Action(Duration time, int points, Element element, std::vector<Element> elements_created_after_call)
 		        : _execution_time(time)
 		        , _nr_points(points)
 		        , _element(element)
 		        , _elements_created_after_call(std::move(elements_created_after_call))
-		        , _name(name) {}
+		        , _name(toString(element.get_type())) {}
 
 		inline int get_nr_points() const {
 			return _nr_points;
@@ -81,10 +81,14 @@ namespace StrategyGenerator {
 		}
 
 		virtual void execute_petri(Petri::PetriNet& petri, Duration timeout) const {
+			// FIXME : impossible d'appeler 'petri', il y a une segfault
 			logDebug("MagicStrategy::Action::execute_petri called for action ", _name, " with timeout = ", timeout);
+			std::cout << &petri << std::endl;
 			StopWatch start;
+			std::cout << "before setValue()" << std::endl;
 			petri.variables()[Petri::Generated::IA2018::Petri_Param_Enum_Vaction].value() =
 			    static_cast<std::int64_t>(_element.get_type());
+			std::cout << "after setValue()" << std::endl;
 			petri.run();
 
 			while(petri.running() && start.getElapsedTime() < timeout) {
@@ -96,6 +100,10 @@ namespace StrategyGenerator {
 
 		std::string get_name() const {
 			return _name;
+		}
+
+		Element get_associated_element() const {
+			return _element;
 		}
 
 		friend bool operator==(const Action& a1, const Action& a2) {
@@ -115,10 +123,10 @@ namespace StrategyGenerator {
 	class ActionWait : public Action {
 	public:
 		explicit ActionWait(Duration time)
-		        : Action(time, 0, Element(ElementType::NOTHING, repere::Coordonnees()), {}, "wait " + std::to_string(time.toMs()) + "ms") {
-		}
+		        : Action(time, 0, Element(ElementType::NOTHING, repere::Coordonnees()), {}) {}
 
 		void execute_petri(Petri::PetriNet&, Duration remainingTime) const override {
+			logDebug("MagicStrategy::Action::execute_petri called for ActionWait(", remainingTime, ")");
 			sleep(std::min(_execution_time, remainingTime));
 		}
 	};

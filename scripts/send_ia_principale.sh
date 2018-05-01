@@ -24,6 +24,7 @@ fi
 
 echo ""
 cd scripts
-./send_file_to_rpi.sh ../build_arm/robot/Principal/IA2018.so
-./send_file_to_rpi.sh ../build_arm/robot/Principal/IAPrincipal
+./send_file_to_rpi.sh ../build_arm/src/robot/Principal/IA2018.so
+./send_file_to_rpi.sh ../build_arm/src/robot/Principal/IAPrincipal
+# TODO : mettre à jour cette ligne pour envoyer la version ARM de petriRuntime
 ./send_file_to_rpi.sh /usr/lib/libPetriRuntime.so

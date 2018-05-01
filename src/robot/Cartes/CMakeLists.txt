@@ -23,6 +23,7 @@ set(CARTES_SOURCE
         CarteLcd2008.cpp
         CarteLcd2009.cpp
         CarteLed2008.cpp
+        CarteMoteurs2018.cpp
         CarteMoteursNonAsservis2008.cpp
         CarteServos2007.cpp
         CarteServosNova2017.cpp

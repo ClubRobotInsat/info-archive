@@ -18,7 +18,7 @@ namespace StrategyGenerator {
 	 *
 	 * Cette enum est à mettre à jour pour chaque stratégie/année
 	 */
-	ENUM_CLASS_NS(StrategyGenerator, ElementType, NOTHING, BEE, SWITCH, CUBE, SPHERE);
+	ENUM_CLASS_NS(StrategyGenerator, ElementType, NOTHING, BEE, SWITCH, GET_CUBE, PUT_CUBE, GET_SPHERE, PUT_SPHERE);
 
 	class Action;
 
@@ -57,6 +57,10 @@ namespace StrategyGenerator {
 
 		friend bool operator!=(const Element& e1, const Element& e2) {
 			return !(e1 == e2);
+		}
+
+		friend std::ostream& operator<<(std::ostream& os, const Element& e) {
+			return os << toString(e.get_type());
 		}
 	};
 }

@@ -11,6 +11,8 @@
 #include "Robot.h"
 #include <functional>
 
+#define MAX_ELEVATOR_SIZE 5
+
 /*// Le robot peut stocker 3 cylindres à la fois
 enum PositionStockage {
     HAUT = 0,
@@ -46,14 +48,24 @@ public:
 	ResultatAction activerAvaleurs(SensAvaleurs);
 	ResultatAction desactiverAvaleurs();
 
+	int nbrPlaceAscenseur();
+
 	// Actions pour les soutes
 	ResultatAction ouvrirSouteD();
 	ResultatAction fermerSouteD();
 	ResultatAction orienterSouteDDe(Angle);
 
+	ResultatAction activerTurbineD();
+	ResultatAction desactiverTurbineD();
+	bool turbineDLibre();
+
 	ResultatAction ouvrirSouteG();
 	ResultatAction fermerSouteG();
 	ResultatAction orienterSouteGDe(Angle);
+
+	ResultatAction activerTurbineG();
+	ResultatAction desactiverTurbineG();
+	bool turbineGLibre();
 
 	// Actions pour l'abeille
 	ResultatAction ouvrirAbeilleD();
@@ -112,6 +124,10 @@ private:
 
 	Commun::ServoManager _servos;
 	// Commun::MoteurManager _moteurs;
+
+	bool _turbine_left_free = true;
+	bool _turbine_right_free = true;
+	std::atomic_int _elevator_counter;
 };
 
 #endif

@@ -12,24 +12,22 @@ using namespace repere;
 int main() {
 	// Definition of all possible actions
 	// auto petri_bee  = std::make_shared<::Petri::MemberPetriDynamicLib>(false, "IA", 12346, "../../petri/src/Bee.h");
-	auto action_bee = [](Coordonnees coords) -> Action {
-		return Action(5_s, 50, Element(ElementType::BEE, coords), {}, "bee");
-	};
+	auto action_bee = [](Coordonnees coords) -> Action { return Action(5_s, 50, Element(ElementType::BEE, coords), {}); };
 
 	// auto petri_cube  = std::make_shared<::Petri::MemberPetriDynamicLib>(false, "IA", 12346,
 	// "../../petri/src/Cube.h");
 	auto action_cube = [](Coordonnees coords) -> Action {
-		return Action(20_s, 30, Element(ElementType::CUBE, coords), {}, "cube");
+		return Action(20_s, 30, Element(ElementType::PUT_CUBE, coords), {});
 	};
 
 	// auto petri_sphere  = std::make_shared<::Petri::MemberPetriDynamicLib>(false, "IA", 12346,
 	// "../../petri/src/Sphere.h");
 	auto action_sphere = [&action_cube](Coordonnees coords) -> Action {
-		return Action(20_s, 80, Element(ElementType::SPHERE, coords), {Element(ElementType::CUBE, Coordonnees({1.5_m, 0_m}, 0_deg))}, "sphere");
+		return Action(20_s, 80, Element(ElementType::GET_CUBE, coords), {Element(ElementType::PUT_CUBE, Coordonnees({1.5_m, 0_m}, 0_deg))});
 	};
 
 	auto action_switch = [](Coordonnees coords) -> Action {
-		return Action(3_s, 50, Element(ElementType::SWITCH, coords), {}, "switch");
+		return Action(3_s, 50, Element(ElementType::SWITCH, coords), {});
 	};
 
 	// Initial state
@@ -37,8 +35,8 @@ int main() {
 	Table table;
 
 	table.emplace(std::make_shared<Element>(ElementType::BEE, Coordonnees({1_m, 1.5_m})));
-	table.emplace(std::make_shared<Element>(ElementType::SPHERE, Coordonnees({10_cm, 50_cm})));
-	table.emplace(std::make_shared<Element>(ElementType::SPHERE, Coordonnees({50_cm, 2_m})));
+	table.emplace(std::make_shared<Element>(ElementType::GET_CUBE, Coordonnees({10_cm, 50_cm})));
+	table.emplace(std::make_shared<Element>(ElementType::GET_CUBE, Coordonnees({50_cm, 2_m})));
 
 	DecisionalTree tree(table);
 	tree.add_edge(tree.get_root(), table, ActionWait(0_s));
@@ -50,8 +48,8 @@ int main() {
 	// TODO: determine if an action is possible or not in function of the robot state
 	std::function<bool()> always_possible = []() -> bool { return true; };
 	best_ia_ever.associate_element(ElementType::BEE, action_bee, always_possible);
-	best_ia_ever.associate_element(ElementType::CUBE, action_cube, always_possible);
-	best_ia_ever.associate_element(ElementType::SPHERE, action_sphere, always_possible);
+	best_ia_ever.associate_element(ElementType::GET_CUBE, action_cube, always_possible);
+	best_ia_ever.associate_element(ElementType::PUT_CUBE, action_sphere, always_possible);
 	best_ia_ever.associate_element(ElementType::SWITCH, action_switch, always_possible);
 
 	best_ia_ever.initialize(table);
