@@ -31,7 +31,7 @@ namespace Commun {
 			exit(EXIT_FAILURE);
 		}
 
-		params.BaudRate = 921600;     // 921600 bauds
+		params.BaudRate = 115200;     // 115200 bauds
 		params.ByteSize = 8;          // char de 8 bits
 		params.StopBits = ONESTOPBIT; // 1 bit de stop
 		params.Parity = NOPARITY;     // pas de bit de parité
@@ -66,8 +66,8 @@ namespace Commun {
 #ifdef __APPLE__
 
 		tcgetattr(_fd, &params);
-		cfsetispeed(&params, 921600);
-		cfsetospeed(&params, 921600);
+		cfsetispeed(&params, 115200);
+		cfsetospeed(&params, 115200);
 		params.c_cflag &= ~PARENB;
 		params.c_cflag &= ~CSTOPB;
 		params.c_cflag &= ~CSIZE;
@@ -77,8 +77,8 @@ namespace Commun {
 #else // defined __APPLE__
 
 		params.c_cflag =
-		    B921600 | CS8 | CLOCAL |
-		    CREAD; // 921600 bauds, char de 8 bits, ignorer signaux de contrôle, lecture/écriture, 1 bit de stop
+		    B115200 | CS8 | CLOCAL |
+		    CREAD; // 115200 bauds, char de 8 bits, ignorer signaux de contrôle, lecture/écriture, 1 bit de stop
 
 #endif // defined __APPLE__
 
