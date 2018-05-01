@@ -8,8 +8,8 @@
       <Header File="Deplacement.h" />
       <Header File="Moteur.h" />
     </Headers>
-    <Window X="65" Y="24" W="1855" H="1056" />
-    <Profiles Default="Default">
+    <Window X="65" Y="24" W="1855" H="1028" />
+    <Profiles Default="ARM release">
       <Profile Name="Default" SourceOutputPath="../petri/src" LibOutputPath="../../../../build/src/robot/Principal/" DeployMode="DoNothing" DeployPath="" DeployScript="#!/bin/sh&#xA;&#xA;/bin/cp &quot;$PETRI_LIB_PATH&quot; .&#xA;" DeployWhenDebug="True" Port="12346" DebugMode="CreateHost" Hostname="localhost" HostProgram="../../../../build/src/robot/Principal/IAPrincipal" HostProgramArguments="LOCAL --color orange SIMU --debug">
         <Compiler Invocation="/usr/bin/g++" />
         <IncludePaths>

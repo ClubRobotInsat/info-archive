@@ -146,6 +146,9 @@ void IAPrincipal::initialisation() {
 	_strategy.initialize(table);
 
 
+	print_ascii_art(std::cout, std::to_string(_nbr_points));
+
+
 /// Recalage
 /*_dep->avancer(3_cm, SensAvance::Avant, 500_ms);
 sleep(1_s);
@@ -184,6 +187,7 @@ void IAPrincipal::executer() {
 
 #ifdef USE_MAGIC_STRATEGY
 	_strategy.run(*_dep, *_petri, 500_ms);
+	_nbr_points = _strategy.get_total_points();
 #else
 	lancerPetri(_debugMode);
 #endif
@@ -194,6 +198,7 @@ void IAPrincipal::executer() {
 }
 
 void IAPrincipal::funnyAction() {
+	print_ascii_art(std::cout, std::to_string(_nbr_points));
 	//_meca->lancerEnginSpatial();
 }
 
@@ -215,4 +220,34 @@ ResultatAction IAPrincipal::lancerPetri(bool debug) {
 	}
 
 	return ResultatAction::REUSSI;
+}
+
+void IAPrincipal::print_ascii_art(std::ostream& os, std::string to_print) const {
+	const std::string COLOR_IN{"\033[48;5;240m"};
+	const std::string COLOR_OUT{"\033[48;5;253m"};
+	const std::string RST{"\033[0;0m"};
+
+	os << std::string(35, '\n') << std::endl;
+
+	for(int i = 0; i < 16; ++i) {
+		for(char letter : to_print) {
+			auto it = ascii_art.find(letter);
+			if(it == ascii_art.cend()) {
+				logWarn("letter ", letter, " not existing");
+				return;
+			}
+			for(char c : it->second[i]) {
+				if(c == ' ') {
+					os << ' ';
+				} else if(c == ':') {
+					os << COLOR_IN << ' ' << RST;
+				} else {
+					os << COLOR_OUT << ' ' << RST;
+				}
+			}
+			os << ascii_art.find(' ')->second[i];
+		}
+		os << std::endl;
+	}
+	os << std::string(8, '\n') << std::endl;
 }

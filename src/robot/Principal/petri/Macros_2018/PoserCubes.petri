@@ -20,7 +20,7 @@
         <Libs />
       </Profile>
       <Profile Name="ARM release" SourceOutputPath="../../petri/src" LibOutputPath="../../../../../build_arm/src/robot/Principal/" DeployMode="DoNothing" DeployPath="" DeployScript="#!/bin/sh&#xA;&#xA;/bin/cp &quot;$PETRI_LIB_PATH&quot; .&#xA;" DeployWhenDebug="True" Port="12346" DebugMode="Attach" Hostname="localhost" HostProgram="" HostProgramArguments="">
-        <Compiler Invocation="/usr/bin/g++-5" />
+        <Compiler Invocation="/usr/bin/arm-linux-gnueabihf-g++-5" />
         <IncludePaths>
           <IncludePath Path="../../../../../third_parties/" Recursive="false" />
           <IncludePath Path="../../../../commun" Recursive="false" />

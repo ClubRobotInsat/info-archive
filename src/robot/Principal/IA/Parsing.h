@@ -43,7 +43,7 @@ namespace ia_parsing {
 
 	bool getDebugMode(int argc, char* argv[]) {
 		for(int i = 0; i < argc; i++) {
-			if(std::string(argv[i]) == "--debug") {
+			if(std::string(argv[i]) == "--debug" || std::string(argv[i]) == "-d") {
 				return true;
 			}
 		}
