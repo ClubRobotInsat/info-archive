@@ -145,17 +145,14 @@ namespace StrategyGenerator {
 					if(dep.tournerAbsolu(_actual_action->get_coordonnees().getAngle()) == ResultatAction::REUSSI) {
 						std::lock_guard<std::mutex> guard(_mut_petri_running);
 						_state = PETRI_RUNNING;
-						std::cout << "executor: petri '" << petri.name()
-						          << "' execution ; _actual_action: " << _actual_action->get_name() << std::endl;
 						_actual_action->execute_petri(petri, Constantes::MATCH_DURATION - _start_time.getElapsedTime());
-						std::cout << "executor: end of petri" << std::endl;
+
 						if(petri.variables().isReturnValues()) {
-							std::cout << "executor: Petri return values: " << std::endl;
-							for(auto& var : petri.variables()) {
-								std::cout << "\t" << var.name() << ": " << var.value() << std::endl;
+							if(petri.variables()[0].value() == 0) {
+								_last_petri_succeed = true;
 							}
 						}
-						_last_petri_succeed = true;
+						std::cout << "executor: Petri return value: " << _last_petri_succeed << std::endl;
 					}
 				}
 

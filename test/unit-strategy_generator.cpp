@@ -19,35 +19,37 @@ Table generate_table() {
 	return table;
 }
 
-MagicStrategy generate_strategy(Table table) {
-	auto action_bee = [](Coordonnees coords) -> Action { return Action(5_s, 50, Element(ElementType::BEE, coords), {}); };
+/*MagicStrategy generate_strategy(Table table) {
+    auto action_bee = [](Coordonnees coords) -> Action { return Action(5_s, 50, Element(ElementType::BEE, coords), {});
+};
 
-	auto action_cube = [](Coordonnees coords) -> Action {
-		return Action(20_s, 30, Element(ElementType::GET_CUBE, coords), {});
-	};
+    auto action_cube = [](Coordonnees coords) -> Action {
+        return Action(20_s, 30, Element(ElementType::GET_CUBE, coords), {});
+    };
 
-	auto action_sphere = [&action_cube](Coordonnees coords) -> Action {
-		return Action(20_s, 80, Element(ElementType::GET_SPHERE, coords), {Element(ElementType::GET_CUBE, Coordonnees({2_m, 1_m}, 0_deg))});
-	};
+    auto action_sphere = [&action_cube](Coordonnees coords) -> Action {
+        return Action(20_s, 80, Element(ElementType::GET_SPHERE, coords), {Element(ElementType::GET_CUBE,
+Coordonnees({2_m, 1_m}, 0_deg))});
+    };
 
-	auto action_switch = [](Coordonnees coords) -> Action {
-		return Action(3_s, 50, Element(ElementType::SWITCH, coords), {});
-	};
+    auto action_switch = [](Coordonnees coords) -> Action {
+        return Action(3_s, 50, Element(ElementType::SWITCH, coords), {});
+    };
 
-	MagicStrategy strategy;
+    MagicStrategy strategy;
 
-	std::function<bool()> always_possible = []() -> bool { return true; };
-	std::function<bool()> always_impossible = []() -> bool { return false; };
+    std::function<bool()> always_possible = []() -> bool { return true; };
+    std::function<bool()> always_impossible = []() -> bool { return false; };
 
-	strategy.associate_element(ElementType::BEE, action_bee, always_possible);
-	strategy.associate_element(ElementType::GET_CUBE, action_cube, always_impossible);
-	strategy.associate_element(ElementType::GET_SPHERE, action_sphere, always_possible);
-	strategy.associate_element(ElementType::SWITCH, action_switch, always_possible);
+    strategy.associate_element(ElementType::BEE, action_bee, always_possible);
+    strategy.associate_element(ElementType::GET_CUBE, action_cube, always_impossible);
+    strategy.associate_element(ElementType::GET_SPHERE, action_sphere, always_possible);
+    strategy.associate_element(ElementType::SWITCH, action_switch, always_possible);
 
-	strategy.initialize(std::move(table));
+    strategy.initialize(std::move(table));
 
-	return strategy;
-}
+    return strategy;
+}*/
 
 TEST_CASE("StrategyGenerator") {
 	SECTION("DecisionalTree") {

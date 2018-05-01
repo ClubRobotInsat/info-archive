@@ -85,10 +85,8 @@ namespace StrategyGenerator {
 			logDebug("MagicStrategy::Action::execute_petri called for action ", _name, " with timeout = ", timeout);
 			std::cout << &petri << std::endl;
 			StopWatch start;
-			std::cout << "before setValue()" << std::endl;
 			petri.variables()[Petri::Generated::IA2018::Petri_Param_Enum_Vaction].value() =
 			    static_cast<std::int64_t>(_element.get_type());
-			std::cout << "after setValue()" << std::endl;
 			petri.run();
 
 			while(petri.running() && start.getElapsedTime() < timeout) {

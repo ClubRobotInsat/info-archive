@@ -36,8 +36,8 @@ void StrategyGenerator::MagicStrategy::run(Commun::Deplacement& dep, Petri::Petr
 
 	_start_time.reset();
 
-	std::thread execute_action =
-	    std::thread(&MagicStrategy::action_executor, this, std::ref(dep), std::ref(*(petri.createPetriNet())));
+	auto petri_net = petri.createPetriNet();
+	std::thread execute_action = std::thread(&MagicStrategy::action_executor, this, std::ref(dep), std::ref(*petri_net));
 
 	execute_action.detach();
 
