@@ -28,6 +28,20 @@ namespace StrategyGenerator {
 	 */
 	class MagicStrategy {
 	private:
+		enum ActionState {
+			WAIT,
+
+			MOVE_RUNNING,
+			PETRI_RUNNING,
+		};
+
+		std::condition_variable _ia_cv;
+		std::atomic<ActionState> _state;
+		std::atomic_bool _last_petri_succeed;
+		std::mutex _mut_petri_running;
+		std::mutex _mut_action_available;
+
+
 		int _total_points;
 
 		std::map<StrategyGenerator::ElementType, std::function<StrategyGenerator::Action(repere::Coordonnees)>> _element_to_action;
@@ -35,11 +49,11 @@ namespace StrategyGenerator {
 
 		StopWatch _start_time;
 
-		std::vector<std::pair<Table, Action>> _previous_actions;
+		std::vector<std::pair<Table, std::shared_ptr<Action>>> _previous_actions;
 
 		Table _initial_table;
 
-		Action _actual_action;
+		std::shared_ptr<Action> _actual_action;
 
 		void check_element(std::map<ElementType, bool>& typeOk, Element element) const;
 
@@ -49,7 +63,7 @@ namespace StrategyGenerator {
 		bool _initialized;
 
 	public:
-		MagicStrategy() : _total_points(0), _actual_action(ActionWait(0_s)), _initialized(false) {}
+		MagicStrategy() : _total_points(0), _actual_action(nullptr), _initialized(false) {}
 
 		void associate_element(ElementType type, std::function<Action(repere::Coordonnees)> action, std::function<bool()> element_actionable) {
 			_element_to_action[type] = std::move(action);
@@ -58,7 +72,11 @@ namespace StrategyGenerator {
 
 		void initialize(Table initial_table) {
 			_initial_table = std::move(initial_table);
-			_actual_action = Action(0_s, 0, Element(ElementType::NOTHING, _initial_table._robot_coords), {});
+			_previous_actions.emplace_back(_initial_table,
+			                               std::make_shared<Action>(
+			                                   Action(0_s, 0, Element(ElementType::NOTHING, _initial_table._robot_coords), {})));
+
+			_last_petri_succeed = false;
 
 			_initialized = true;
 		}
@@ -94,51 +112,55 @@ namespace StrategyGenerator {
 		 */
 		void run(Commun::Deplacement& dep, Petri::PetriDynamicLib& petri, Duration max_refresh_time);
 
-		/**
-		 * Fonction `cleanup` appelée lors du kill du thread exécutif lors du changement d'action
-		 * Appelée lors du déplacement du robot avec `allerA` ; jamais appelé j=lors du run d'un petri
-		 */
-		static void cleanup(void*) {
-			// TODO: stop AllerA (arret d'urgence)
-			logDebug("MagicStrategy::cleanup() called.");
-		}
-
-		/**
-		 * Fonction appelée par le thread exécutif
-		 * @param mutex_petri_running Empêche le thread principal de tuer le thread si l'action petri est en cours
-		 * @param action Action à exécuter
-		 */
-		static bool
-		    executioner(Commun::Deplacement& dep, Petri::PetriNet& petri, std::mutex& mutex_petri_running, const Action& action, Duration timeout) {
-			bool ok = false;
-			pthread_cleanup_push(cleanup, nullptr);
-
-			logDebug("MagicStrategy::execute_action() called for the action ", action.get_name());
-			logDebug("allerA(", action.get_coordonnees().getPos2D(), ")");
-
-			dep.arretUrgence();
-			dep.allerA(action.get_coordonnees().getPos2D());
-			dep.tournerAbsolu(action.get_coordonnees().getAngle());
-			ok = true;
-
-			pthread_cleanup_pop(1);
-
-			if(ok) {
-				logDebug("launch of petri for the action '", action, "'");
-
-				// lock mutex at creation, unlock it at destruction
-				std::lock_guard<std::mutex> guard(mutex_petri_running);
-
-				action.execute_petri(petri, timeout);
-				// TODO : récupérer la valeur de retour de petri
-				logDebug("end of execute_action");
-			}
-
-			return ok;
-		}
-
 		inline int get_total_points() const {
 			return _total_points;
+		}
+
+	private:
+		/**
+		 * Fonction appelée par le thread exécutif
+		 * @param mutex_petri_running Empêche le thread principal de donner une autre action si l'action petri est en
+		 * cours
+		 * @param action Action à exécuter
+		 */
+		void action_executor(Commun::Deplacement& dep, Petri::PetriNet& petri) {
+			std::cout << "petri: " << petri.name() << std::endl;
+			while(_start_time.getElapsedTime() < Constantes::MATCH_DURATION) {
+				_state = WAIT;
+
+				std::unique_lock<std::mutex> lk(_mut_action_available);
+				std::cout << "executor: before waiting" << std::endl;
+				_ia_cv.wait(lk, [this]() { return _actual_action != nullptr; });
+				std::cout << "executor : wait passed" << std::endl;
+				lk.unlock();
+
+				if(_start_time.getElapsedTime() > Constantes::MATCH_DURATION) {
+					return;
+				}
+
+				_last_petri_succeed = false;
+
+				_state = MOVE_RUNNING;
+				if(dep.allerA(_actual_action->get_coordonnees().getPos2D()) == ResultatAction::REUSSI) {
+					if(dep.tournerAbsolu(_actual_action->get_coordonnees().getAngle()) == ResultatAction::REUSSI) {
+						std::lock_guard<std::mutex> guard(_mut_petri_running);
+						_state = PETRI_RUNNING;
+						std::cout << "executor: petri '" << petri.name()
+						          << "' execution ; _actual_action: " << _actual_action->get_name() << std::endl;
+						_actual_action->execute_petri(petri, Constantes::MATCH_DURATION - _start_time.getElapsedTime());
+						std::cout << "executor: end of petri" << std::endl;
+						if(petri.variables().isReturnValues()) {
+							std::cout << "executor: Petri return values: " << std::endl;
+							for(auto& var : petri.variables()) {
+								std::cout << "\t" << var.name() << ": " << var.value() << std::endl;
+							}
+						}
+						_last_petri_succeed = true;
+					}
+				}
+
+				_actual_action = nullptr;
+			}
 		}
 	};
 }

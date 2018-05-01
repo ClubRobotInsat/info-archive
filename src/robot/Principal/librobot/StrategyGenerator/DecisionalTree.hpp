@@ -149,8 +149,9 @@ namespace StrategyGenerator {
 			}
 			// remove 'previous_actions' from the path
 			if(!action_path.empty()) {
-				assert(action_path.cbegin()->get_name() == "NOTHING");
-				action_path.erase(action_path.cbegin());
+				// std::cout << "before assert: " << action_path.cbegin()->get_name() << std::endl;
+				// assert(action_path.cbegin()->get_name() == "NOTHING");
+				// action_path.erase(action_path.cbegin());
 			}
 			if(next_table == nullptr && !action_path.empty()) {
 				throw std::runtime_error("bad correspondence between table and action_path");

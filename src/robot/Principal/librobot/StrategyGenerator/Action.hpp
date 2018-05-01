@@ -81,10 +81,14 @@ namespace StrategyGenerator {
 		}
 
 		virtual void execute_petri(Petri::PetriNet& petri, Duration timeout) const {
+			// FIXME : impossible d'appeler 'petri', il y a une segfault
 			logDebug("MagicStrategy::Action::execute_petri called for action ", _name, " with timeout = ", timeout);
+			std::cout << &petri << std::endl;
 			StopWatch start;
+			std::cout << "before setValue()" << std::endl;
 			petri.variables()[Petri::Generated::IA2018::Petri_Param_Enum_Vaction].value() =
 			    static_cast<std::int64_t>(_element.get_type());
+			std::cout << "after setValue()" << std::endl;
 			petri.run();
 
 			while(petri.running() && start.getElapsedTime() < timeout) {
@@ -122,6 +126,7 @@ namespace StrategyGenerator {
 		        : Action(time, 0, Element(ElementType::NOTHING, repere::Coordonnees()), {}) {}
 
 		void execute_petri(Petri::PetriNet&, Duration remainingTime) const override {
+			logDebug("MagicStrategy::Action::execute_petri called for ActionWait(", remainingTime, ")");
 			sleep(std::min(_execution_time, remainingTime));
 		}
 	};
