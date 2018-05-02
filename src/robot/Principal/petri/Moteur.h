@@ -17,4 +17,10 @@ ResultatAction monterAscenseursDe(Angle value);
 ResultatAction activerAvaleurs(SensAvaleurs = AVALER);
 ResultatAction desactiverAvaleurs();
 
+ResultatAction activerTurbineD();
+ResultatAction activerTurbineG();
+
+ResultatAction desactiverTurbineD();
+ResultatAction desactiverTurbineG();
+
 #endif // ROOT_MOTEUR_H

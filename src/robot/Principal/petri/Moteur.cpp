@@ -32,3 +32,35 @@ ResultatAction activerAvaleurs(SensAvaleurs sens) {
 ResultatAction desactiverAvaleurs() {
 	return meca().desactiverAvaleurs();
 }
+
+ResultatAction activerTurbineD() {
+	if(_strategie->getCouleurEquipe() == RobotColor::Green) {
+		return meca().activerTurbineD();
+	} else {
+		return meca().activerTurbineG();
+	}
+}
+
+ResultatAction activerTurbineG() {
+	if(_strategie->getCouleurEquipe() == RobotColor::Green) {
+		return meca().activerTurbineG();
+	} else {
+		return meca().activerTurbineD();
+	}
+}
+
+ResultatAction desactiverTurbineD() {
+	if(_strategie->getCouleurEquipe() == RobotColor::Green) {
+		return meca().desactiverTurbineD();
+	} else {
+		return meca().desactiverTurbineG();
+	}
+}
+
+ResultatAction desactiverTurbineG() {
+	if(_strategie->getCouleurEquipe() == RobotColor::Green) {
+		return meca().desactiverTurbineG();
+	} else {
+		return meca().desactiverTurbineD();
+	}
+}

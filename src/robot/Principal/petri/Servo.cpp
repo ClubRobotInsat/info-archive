@@ -27,33 +27,65 @@ ResultatAction fermerPorteCube() {
 }
 
 ResultatAction ouvrirSouteD() {
-	return meca().ouvrirSouteD();
+	if(_strategie->getCouleurEquipe() == RobotColor::Green) {
+		return meca().ouvrirSouteD();
+	} else {
+		return meca().ouvrirSouteG();
+	}
 }
 
 ResultatAction fermerSouteD() {
-	return meca().fermerSouteD();
+	if(_strategie->getCouleurEquipe() == RobotColor::Green) {
+		return meca().fermerSouteD();
+	} else {
+		return meca().fermerSouteG();
+	}
 }
 
 ResultatAction ouvrirSouteG() {
-	return meca().ouvrirSouteG();
+	if(_strategie->getCouleurEquipe() == RobotColor::Green) {
+		return meca().ouvrirSouteG();
+	} else {
+		return meca().ouvrirSouteD();
+	}
 }
 
 ResultatAction fermerSouteG() {
-	return meca().fermerSouteG();
+	if(_strategie->getCouleurEquipe() == RobotColor::Green) {
+		return meca().fermerSouteG();
+	} else {
+		return meca().fermerAbeilleD();
+	}
 }
 
 ResultatAction ouvrirAbeilleD() {
-	return meca().ouvrirAbeilleD();
+	if(_strategie->getCouleurEquipe() == RobotColor::Green) {
+		return meca().ouvrirAbeilleD();
+	} else {
+		return meca().ouvrirAbeilleG();
+	}
 }
 
 ResultatAction fermerAbeilleD() {
-	return meca().fermerAbeilleD();
+	if(_strategie->getCouleurEquipe() == RobotColor::Green) {
+		return meca().fermerAbeilleD();
+	} else {
+		return meca().fermerAbeilleG();
+	}
 }
 
 ResultatAction ouvrirAbeilleG() {
-	return meca().ouvrirAbeilleG();
+	if(_strategie->getCouleurEquipe() == RobotColor::Green) {
+		return meca().ouvrirAbeilleG();
+	} else {
+		return meca().ouvrirAbeilleD();
+	}
 }
 
 ResultatAction fermerAbeilleG() {
-	return meca().fermerAbeilleG();
+	if(_strategie->getCouleurEquipe() == RobotColor::Green) {
+		return meca().fermerAbeilleG();
+	} else {
+		return meca().fermerAbeilleD();
+	}
 }
