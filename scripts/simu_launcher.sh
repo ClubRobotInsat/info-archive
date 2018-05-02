@@ -10,7 +10,7 @@ then
 elif ! [ "$1" = "green" ]
 then
 	echo "Usage : simu_launcher.sh [green|orange]"
-	exit 1
+	echo "Default behaviour: --robot green"
 fi
 
 dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"

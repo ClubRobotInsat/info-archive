@@ -31,7 +31,7 @@ namespace ia_parsing {
 	ParsedArguments parsing_function(int argc, char* argv[]) {
 		static struct option long_options[] = {{"color", required_argument, 0, 'c'},
 		                                       {"debug", optional_argument, 0, 'd'},
-		                                       {"strat", optional_argument, 0, 's'},
+		                                       {"strat", required_argument, 0, 's'},
 		                                       {0, 0, 0, 0}};
 
 		int arg;

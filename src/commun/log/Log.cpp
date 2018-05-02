@@ -75,6 +75,7 @@ void Log::open(int argc, char* argv[], bool desync_with_stdio) {
 	// --log=stderr
 	// --log=my_file.rtf
 	// --log=my_file.html or --log=my_file.htm
+	// --log=my_file.txt
 
 	// Wrapper qui va appeler automatiquement Log::closeAll à la fin du programme à travers son destructeur
 	static LogCloser logCloser;
