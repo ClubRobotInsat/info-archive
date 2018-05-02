@@ -75,7 +75,7 @@ void RobotPrincipal::assignerCartes() {
 	this->assignerCarteHelper<EVITEMENT>();
 	// this->assignerCarteHelper<ASCENSEUR>();
 	this->assignerCarteHelper<SERVOS>();
-	// this->assignerCarteHelper<MOTEURS>();
+	this->assignerCarteHelper<MOTEURS>();
 	// TODO : on ajoute toutes les cartes du robot de l'année
 
 	_cartesInitialisees.notify_all();

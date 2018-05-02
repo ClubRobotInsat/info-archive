@@ -27,6 +27,7 @@
 #include "../../robot/Cartes/CarteDeplacement2009.h"
 //#include "../../robot/Cartes/CarteElectrovannes2016.h"
 #include "../../robot/Cartes/CarteIO2014.h"
+#include "../../robot/Cartes/CarteMoteurs2018.h"
 //#include "../../robot/Cartes/CartePneumatique.h"
 //#include "../../robot/Cartes/CartePneumatique2014.h"
 //#include "../../robot/Cartes/CarteColorimetre2014.h"
@@ -127,20 +128,6 @@ namespace ConstantesPrincipal {
 		NBR = 6
 	};
 
-	// Différentes positions des moteurs
-	enum class AvaleurGauche { POS_0 = 0, POS_1 = 1, NBR = 2 };
-
-	enum class AvaleurDroit { POS_0 = 0, POS_1 = 1, NBR = 2 };
-
-	enum class AscenseurGauche { POS_0 = 0, POS_1 = 1, POS_2 = 2, NBR = 3 };
-
-	enum class AscenseurDroit { POS_0 = 0, POS_1 = 1, POS_2 = 2, NBR = 3 };
-
-	extern Angle const positionAvaleurGauche[enumToInt(AvaleurGauche::NBR)];
-	extern Angle const positionAvaleurDroit[enumToInt(AvaleurDroit::NBR)];
-	extern Angle const positionAscenseurGauche[enumToInt(AscenseurGauche::NBR)];
-	extern Angle const positionAscenseurDroit[enumToInt(AscenseurDroit::NBR)];
-
 	// Durée attendue lors de l'envoi d'un message aux cartes élecs dans les fonctions blonquantes autre que les
 	// servos.
 	auto const TIMEOUT_ELEC = 100_ms;
@@ -205,8 +192,7 @@ namespace ConstantesPrincipal {
 
 	template <>
 	struct CarteInfo<IDCartesPrincipal::MOTEURS> {
-		// TODO : nouvelle carte Moteurs2018
-		using typeCarte = CarteAsservissement2009;
+		using typeCarte = CarteMoteurs2018;
 		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_MOTEURS };
 	};
 
