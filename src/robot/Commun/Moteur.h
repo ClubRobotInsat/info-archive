@@ -2,8 +2,8 @@
 // Created by terae on 4/20/18.
 //
 
-#ifndef ROOT_MOTEUR_H
-#define ROOT_MOTEUR_H
+#ifndef ROOT_SIMU_MOTEUR_H
+#define ROOT_SIMU_MOTEUR_H
 
 #include "../Cartes/CarteMoteurs2018.h"
 #include "Robot.h"
@@ -16,9 +16,12 @@ namespace Commun {
 		MoteurManager(CarteMoteurs2018& carteMoteur) : _carte(carteMoteur){};
 
 		// fonctions pour activer plusieurs moteurs
-		ResultatAction positionnerMoteursBloquants(std::vector<uint8_t> moteurs, Angle pos);
+		ResultatAction positionnerNMoteursBloquants(std::vector<uint8_t> moteurs, Angle pos);
+		ResultatAction positionnerNMoteursBloquants(std::vector<std::pair<uint8_t, CarteMoteurs2018::SensRotation>> moteurs,
+		                                            std::size_t nbr_tours);
 
-		ResultatAction positionnerMoteursBloquants(std::vector<uint8_t> moteurs, std::size_t nbr_tours, CarteMoteurs2018::SensRotation sens);
+		ResultatAction tournerPlusieursOn(std::vector<std::pair<uint8_t, CarteMoteurs2018::SensRotation>> moteurs);
+		ResultatAction tournerPlusieursOff(std::vector<uint8_t> moteurs);
 
 
 		// fonctions pour moteurs asservis
@@ -39,4 +42,4 @@ namespace Commun {
 	};
 }
 
-#endif // ROOT_MOTEUR_H
+#endif // ROOT_SIMU_MOTEUR_H

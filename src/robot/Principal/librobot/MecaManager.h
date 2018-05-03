@@ -11,6 +11,7 @@
 #include "Robot.h"
 #include <functional>
 
+
 #define MAX_ELEVATOR_SIZE 5
 
 /*// Le robot peut stocker 3 cylindres à la fois
@@ -123,7 +124,7 @@ private:
 	// ResultatAction supprimerCylindre(int i);
 
 	Commun::ServoManager _servos;
-	// Commun::MoteurManager _moteurs;
+	Commun::MoteurManager _moteurs;
 
 	bool _turbine_left_free = true;
 	bool _turbine_right_free = true;
