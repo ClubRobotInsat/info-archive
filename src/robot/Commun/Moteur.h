@@ -2,8 +2,8 @@
 // Created by terae on 4/20/18.
 //
 
-#ifndef ROOT_SIMU_MOTEUR_H
-#define ROOT_SIMU_MOTEUR_H
+#ifndef Club_Robot_Moteur_h
+#define Club_Robot_Moteur_h
 
 #include "../Cartes/CarteMoteurs2018.h"
 #include "Robot.h"
@@ -12,7 +12,6 @@
 namespace Commun {
 	class MoteurManager {
 	public:
-		// TODO
 		MoteurManager(CarteMoteurs2018& carteMoteur) : _carte(carteMoteur){};
 
 		// fonctions pour activer plusieurs moteurs
@@ -42,4 +41,4 @@ namespace Commun {
 	};
 }
 
-#endif // ROOT_SIMU_MOTEUR_H
+#endif // Club_Robot_Moteur_h

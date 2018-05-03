@@ -108,7 +108,6 @@ ResultatAction MecaManagerPrincipal::orienterPorteCubeDe(Angle val) {
 	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::PORTE_CUBE), val);
 }
 
-// @Denis appeler les fonctions du MoteurManager pour que ça fasse le job
 ResultatAction MecaManagerPrincipal::monterAscenseursDe(int nbr_tours) {
 	_elevator_counter += nbr_tours;
 
@@ -219,9 +218,7 @@ ResultatAction MecaManagerPrincipal::activerTurbineG() {
 }
 
 ResultatAction MecaManagerPrincipal::desactiverTurbineG() {
-	// TODO
 	return this->_moteurs.tournerOff(enumToInt(ConstantesPrincipal::Moteurs::BRUSHLESS_GAUCHE));
-	// return ResultatAction::TIMEOUT;
 }
 
 bool MecaManagerPrincipal::turbineGLibre() {
