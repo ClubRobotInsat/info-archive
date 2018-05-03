@@ -42,5 +42,6 @@ set(CARTES_SOURCE
         CartePneumatique.cpp
         CartePneumatique2014.cpp
         CarteIO2014.cpp
+        CarteIO2018.cpp
         CarteCAN_USB.cpp)
 add_library(Cartes STATIC ${CARTES_SOURCE})
