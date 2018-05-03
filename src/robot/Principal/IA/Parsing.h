@@ -24,13 +24,12 @@ namespace ia_parsing {
 	};
 
 	void print_help(std::string prog) {
-		std::cout << "Usage: " << prog << " --color|-c <green|orange> [--debug|-d [on|off]] [--strat|-s <petri|magic>]"
-		          << std::endl;
+		std::cout << "Usage: " << prog << " --color|-c <green|orange> [--debug|-d] [--strat|-s <petri|magic>]" << std::endl;
 	}
 
 	ParsedArguments parsing_function(int argc, char* argv[]) {
 		static struct option long_options[] = {{"color", required_argument, 0, 'c'},
-		                                       {"debug", optional_argument, 0, 'd'},
+		                                       {"debug", no_argument, 0, 'd'},
 		                                       {"strat", required_argument, 0, 's'},
 		                                       {0, 0, 0, 0}};
 
@@ -53,11 +52,7 @@ namespace ia_parsing {
 					break;
 
 				case 'd':
-					if(std::string(optarg) == "off") {
-						result.debug_mode = false;
-					} else {
-						result.debug_mode = true;
-					}
+					result.debug_mode = true;
 					break;
 
 				case 's':
