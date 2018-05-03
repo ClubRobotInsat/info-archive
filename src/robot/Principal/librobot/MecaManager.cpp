@@ -33,7 +33,7 @@ MecaManagerPrincipal::MecaManagerPrincipal(RobotPrincipal& robot)
         //, _ascenseur(_robot.getCarte<ASCENSEUR>(), positionAscenseur)
         , _servos(robot.getCarte<SERVOS>(),
                   std::bind(&MecaManagerPrincipal::getPositionServo, this, std::placeholders::_1, std::placeholders::_2))
-// TODO , _moteurs(robot.getCarte<MOTEURS>())
+        , _moteurs(robot.getCarte<MOTEURS>())
 /*
         , _servoX(_robot.getCarte<SERVO_X>(),
                                     std::bind(&MecaManagerPrincipal::getPositionServoX, this, std::placeholders::_1,
@@ -111,23 +111,57 @@ ResultatAction MecaManagerPrincipal::orienterPorteCubeDe(Angle val) {
 // @Denis appeler les fonctions du MoteurManager pour que ça fasse le job
 ResultatAction MecaManagerPrincipal::monterAscenseursDe(int nbr_tours) {
 	_elevator_counter += nbr_tours;
-	// TODO : fonction bloquante mais parallélisation des deux ascenseurs
-	return ResultatAction::TIMEOUT;
+
+	if(nbr_tours >= 0) {
+		auto motor_one =
+		    std::make_pair<uint8_t, CarteMoteurs2018::SensRotation>(enumToInt(ConstantesPrincipal::Moteurs::ASCENSEUR_DROIT),
+		                                                            CarteMoteurs2018::SensRotation::Horaire);
+		auto motor_two =
+		    std::make_pair<uint8_t, CarteMoteurs2018::SensRotation>(enumToInt(ConstantesPrincipal::Moteurs::ASCENSEUR_GAUCHE),
+		                                                            CarteMoteurs2018::SensRotation::Trigo);
+		return this->_moteurs.positionnerNMoteursBloquants({motor_one, motor_two}, nbr_tours);
+	} else {
+		auto motor_one =
+		    std::make_pair<uint8_t, CarteMoteurs2018::SensRotation>(enumToInt(ConstantesPrincipal::Moteurs::ASCENSEUR_DROIT),
+		                                                            CarteMoteurs2018::SensRotation::Trigo);
+		auto motor_two =
+		    std::make_pair<uint8_t, CarteMoteurs2018::SensRotation>(enumToInt(ConstantesPrincipal::Moteurs::ASCENSEUR_GAUCHE),
+		                                                            CarteMoteurs2018::SensRotation::Horaire);
+		return this->_moteurs.positionnerNMoteursBloquants({motor_one, motor_two}, nbr_tours);
+	}
 }
 
 ResultatAction MecaManagerPrincipal::monterAscenseursDe(Angle angle) {
-	// TODO
-	return ResultatAction::TIMEOUT;
+	return this->_moteurs.positionnerNMoteursBloquants({enumToInt(ConstantesPrincipal::Moteurs::ASCENSEUR_DROIT),
+	                                                    enumToInt(ConstantesPrincipal::Moteurs::ASCENSEUR_GAUCHE)},
+	                                                   angle);
 }
 
 ResultatAction MecaManagerPrincipal::activerAvaleurs(SensAvaleurs sens) {
-	// TODO : fonction bloquante mais parallélisation des deux avaleurs
-	return ResultatAction::TIMEOUT;
+	std::pair<uint8_t, CarteMoteurs2018::SensRotation> motor_one;
+	std::pair<uint8_t, CarteMoteurs2018::SensRotation> motor_two;
+	switch(sens) {
+		case AVALER:
+			motor_one = std::make_pair<uint8_t, CarteMoteurs2018::SensRotation>(enumToInt(ConstantesPrincipal::Moteurs::AVALEUR_DROIT),
+			                                                                    CarteMoteurs2018::SensRotation::Trigo);
+			motor_two = std::make_pair<uint8_t, CarteMoteurs2018::SensRotation>(enumToInt(ConstantesPrincipal::Moteurs::AVALEUR_GAUCHE),
+			                                                                    CarteMoteurs2018::SensRotation::Horaire);
+			break;
+
+		case RECRACHER:
+			motor_one = std::make_pair<uint8_t, CarteMoteurs2018::SensRotation>(enumToInt(ConstantesPrincipal::Moteurs::AVALEUR_DROIT),
+			                                                                    CarteMoteurs2018::SensRotation::Horaire);
+			motor_two = std::make_pair<uint8_t, CarteMoteurs2018::SensRotation>(enumToInt(ConstantesPrincipal::Moteurs::AVALEUR_GAUCHE),
+			                                                                    CarteMoteurs2018::SensRotation::Trigo);
+			break;
+	}
+
+	return this->_moteurs.tournerPlusieursOn({motor_one, motor_two});
 }
 
 ResultatAction MecaManagerPrincipal::desactiverAvaleurs() {
-	// TODO
-	return ResultatAction::TIMEOUT;
+	return this->_moteurs.tournerPlusieursOff({enumToInt(ConstantesPrincipal::Moteurs::AVALEUR_GAUCHE),
+	                                           enumToInt(ConstantesPrincipal::Moteurs::AVALEUR_DROIT)});
 }
 
 int MecaManagerPrincipal::nbrPlaceAscenseur() {
@@ -151,13 +185,11 @@ ResultatAction MecaManagerPrincipal::orienterSouteDDe(Angle val) {
 
 ResultatAction MecaManagerPrincipal::activerTurbineD() {
 	_turbine_right_free = true;
-	// TODO
-	return ResultatAction::TIMEOUT;
+	return this->_moteurs.tournerOnBrushless(enumToInt(ConstantesPrincipal::Moteurs::BRUSHLESS_DROIT));
 }
 
 ResultatAction MecaManagerPrincipal::desactiverTurbineD() {
-	// TODO
-	return ResultatAction::TIMEOUT;
+	return this->_moteurs.tournerOff(enumToInt(ConstantesPrincipal::Moteurs::BRUSHLESS_DROIT));
 }
 
 bool MecaManagerPrincipal::turbineDLibre() {
@@ -182,12 +214,14 @@ ResultatAction MecaManagerPrincipal::orienterSouteGDe(Angle val) {
 ResultatAction MecaManagerPrincipal::activerTurbineG() {
 	_turbine_left_free = true;
 	// TODO
-	return ResultatAction::TIMEOUT;
+	return this->_moteurs.tournerOnBrushless(enumToInt(ConstantesPrincipal::Moteurs::BRUSHLESS_GAUCHE));
+	// return ResultatAction::TIMEOUT;
 }
 
 ResultatAction MecaManagerPrincipal::desactiverTurbineG() {
 	// TODO
-	return ResultatAction::TIMEOUT;
+	return this->_moteurs.tournerOff(enumToInt(ConstantesPrincipal::Moteurs::BRUSHLESS_GAUCHE));
+	// return ResultatAction::TIMEOUT;
 }
 
 bool MecaManagerPrincipal::turbineGLibre() {
