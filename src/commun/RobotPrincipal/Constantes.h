@@ -12,6 +12,7 @@
 #include "../../simulateur/communication/cartes/CarteDebugDessin.h"
 #include "../../simulateur/communication/cartes/CarteDeplacement2009.h"
 #include "../../simulateur/communication/cartes/CarteDetectAdv2009.h"
+#include "../../simulateur/communication/cartes/CarteMoteurs2018.h"
 //#include "../../simulateur/cartes/CarteElectrovannes2016.h"
 #include "../../simulateur/communication/cartes/Carte.h"
 #include "../../simulateur/communication/cartes/CarteIO2014.h"
