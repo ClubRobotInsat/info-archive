@@ -27,7 +27,7 @@
 //#include "../../robot/Cartes/CarteDebugDessin.h"
 #include "../../robot/Cartes/CarteDeplacement2009.h"
 //#include "../../robot/Cartes/CarteElectrovannes2016.h"
-#include "../../robot/Cartes/CarteIO2014.h"
+#include "../../robot/Cartes/CarteIO2018.h"
 #include "../../robot/Cartes/CarteMoteurs2018.h"
 //#include "../../robot/Cartes/CartePneumatique.h"
 //#include "../../robot/Cartes/CartePneumatique2014.h"
@@ -178,10 +178,9 @@ namespace ConstantesPrincipal {
 		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_EVITEMENT };
 	};
 
-	// TODO : refaire la carte IO, elle ne sert plus qu'à la tirette
 	template <>
 	struct CarteInfo<IDCartesPrincipal::IO> {
-		using typeCarte = CarteIO2014;
+		using typeCarte = CarteIO2018;
 		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_IO };
 	};
 

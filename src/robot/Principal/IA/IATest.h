@@ -28,8 +28,8 @@ protected:
 
 		// Tirette
 		logInfo("Attente tirette…");
-		//		attendreTirette();
-		getchar();
+		attendreTirette();
+		// getchar();
 	}
 
 	/// Contient la logique de la stratégie elle-même
