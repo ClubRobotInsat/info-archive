@@ -50,7 +50,7 @@ add_executable(Simulator
         communication/cartes/CarteCAN_USB.cpp
         communication/cartes/CarteDeplacement2009.cpp
         communication/cartes/CarteDetectAdv2009.cpp
-        communication/cartes/CarteIO2014.cpp
+        communication/cartes/CarteIO2018.cpp
         communication/cartes/CarteMoteurs2018.cpp
         communication/cartes/deplacement/Asservissement.cpp
         communication/cartes/deplacement/PID.cpp
