@@ -7,7 +7,7 @@
 
 #include <stdio.h>
 
-#include "../../Cartes/CarteIO2014.h"
+#include "../../Cartes/CarteIO2018.h"
 #include "../RS232.h"
 #include <stdio.h>
 
@@ -46,7 +46,7 @@ int main(int argc, char** argv) {
 	auto reception = std::thread(&traiterMessage, can.get());
 
 	// ID carte en 2e paramètre
-	CarteIO2014 carte(*can, 4);
+	CarteIO2018 carte(*can, 4);
 	cartes.push_back(&carte);
 
 	carte.envoyerPing();
@@ -60,7 +60,7 @@ int main(int argc, char** argv) {
 	}
 
 	while(true) {
-		for(int i = 0; i < CarteIO2014::NBCAPTEURS; ++i) {
+		for(int i = 0; i < CarteIO2018::NBCAPTEURS; ++i) {
 			carte.actualiserUnCapteur(i);
 			logBleu(carte.lireUnCapteur(i));
 		}

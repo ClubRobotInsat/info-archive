@@ -14,6 +14,9 @@
 ResultatAction monterAscenseursDe(int nbr_tours);
 ResultatAction monterAscenseursDe(Angle value);
 
+// Retourne le nombre de places libres pour les cubes dans l'ascenseur
+int cubesLibres();
+
 ResultatAction activerAvaleurs(SensAvaleurs = AVALER);
 ResultatAction desactiverAvaleurs();
 

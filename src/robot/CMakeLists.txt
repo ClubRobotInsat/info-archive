@@ -66,7 +66,7 @@ add_executable(debug_TestCAN Commun/Test/TestCan.cpp Cartes/Carte.cpp Commun/Tes
 target_link_libraries(debug_TestCAN Robot)
 add_executable(debug_TestServo Commun/Test/TestServo.cpp Cartes/Carte.cpp Cartes/CarteServosNova2017.cpp)
 target_link_libraries(debug_TestServo Robot)
-add_executable(debug_TestContacteur Commun/Test/TestContacteur.cpp Cartes/Carte.cpp Cartes/CarteIO2014.cpp)
+add_executable(debug_TestContacteur Commun/Test/TestContacteur.cpp Cartes/Carte.cpp Cartes/CarteIO2018.cpp)
 target_link_libraries(debug_TestContacteur Robot)
 add_executable(debug_TestAscenseur Commun/Test/TestAscenseur.cpp Cartes/Carte.cpp Cartes/CarteAsservissement2009.cpp)
 target_link_libraries(debug_TestAscenseur Robot)

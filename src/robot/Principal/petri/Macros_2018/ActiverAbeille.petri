@@ -8,7 +8,7 @@
       <Header File="../Deplacement.h" />
       <Header File="../Moteur.h" />
     </Headers>
-    <Window X="549" Y="24" W="1367" H="1028" />
+    <Window X="65" Y="24" W="1855" H="1056" />
     <Profiles Default="Default">
       <Profile Name="Default" SourceOutputPath="../../petri/src" LibOutputPath="../../../../../build/src/robot/Principal/" DeployMode="DoNothing" DeployPath="" DeployScript="#!/bin/sh&#xA;&#xA;/bin/cp &quot;$PETRI_LIB_PATH&quot; .&#xA;" DeployWhenDebug="True" Port="12346" DebugMode="Attach" Hostname="localhost" HostProgram="" HostProgramArguments="">
         <Compiler Invocation="/usr/bin/g++" />
@@ -40,25 +40,24 @@
     <Comments>
       <Comment ID="1" Name="origine : le coin&#xA;Position depart : (610, 460)&#xA;robot de face vers l'abeille" X="130" Y="110" Width="176" R="1" G="1" B="0.7" A="1" />
       <Comment ID="2" Name="a faire la distinction de cas dans le petri" X="451" Y="90" Width="176" R="1" G="1" B="0.7" A="1" />
+      <Comment ID="16" Name="TODO : à refaire (un seul servo pour l'abeille ; penser à le refermer)" X="680" Y="120" Width="198" R="1" G="0.7" B="0.7" A="1" />
     </Comments>
     <States>
-      <Exit ID="3" Name="End" X="880" Y="210" Active="false" RequiredTokens="1" Radius="25" Function="Petri::Utility::doNothing()" />
-      <Action ID="4" Name="BEGIN" X="40" Y="300" Active="true" RequiredTokens="0" Radius="20" Function="Petri::Utility::doNothing()" />
-      <Action ID="5" Name="5" X="170" Y="220" Active="false" RequiredTokens="1" Radius="20" Function="avancerDe(20_cm)" />
-      <Action ID="6" Name="6" X="310" Y="220" Active="false" RequiredTokens="1" Radius="20" Function="tournerAbsolu(45_deg)" />
-      <Action ID="7" Name="7" X="440" Y="220" Active="false" RequiredTokens="1" Radius="20" Function="avancerDe(20_cm)" />
-      <Action ID="8" Name="8" X="560" Y="220" Active="false" RequiredTokens="1" Radius="20" Function="ouvrirAbeilleD()" />
-      <Action ID="9" Name="9" X="660" Y="220" Active="false" RequiredTokens="1" Radius="20" Function="tournerAbsolu(70_deg)" />
-      <Action ID="10" Name="10" X="780" Y="220" Active="false" RequiredTokens="1" Radius="20" Function="avancerDe(40_cm)" />
+      <Exit ID="3" Name="End" X="940" Y="240" Active="false" RequiredTokens="1" Radius="25" Function="Petri::Utility::doNothing()" />
+      <Action ID="4" Name="Avancer" X="220" Y="240" Active="true" RequiredTokens="0" Radius="20" Function="avancerDe(20_cm)" />
+      <Action ID="5" Name="6" X="360" Y="240" Active="false" RequiredTokens="1" Radius="20" Function="tournerAbsolu(45_deg)" />
+      <Action ID="6" Name="7" X="500" Y="240" Active="false" RequiredTokens="1" Radius="20" Function="avancerDe(20_cm)" />
+      <Action ID="7" Name="8" X="620" Y="240" Active="false" RequiredTokens="1" Radius="20" Function="ouvrirAbeille()" />
+      <Action ID="8" Name="9" X="720" Y="240" Active="false" RequiredTokens="1" Radius="20" Function="tournerAbsolu(70_deg)" />
+      <Action ID="9" Name="10" X="840" Y="240" Active="false" RequiredTokens="1" Radius="20" Function="avancerDe(40_cm)" />
     </States>
     <Transitions>
-      <Transition ID="11" Name="12" X="130.7753340949952" Y="280.77101942237834" BeforeID="4" AfterID="5" Condition="true" W="50" H="30" ShiftX="25.775334094995202" ShiftY="20.771019422378345" ShiftAmplitude="152.64337522473747" />
-      <Transition ID="12" Name="13" X="240" Y="220" BeforeID="5" AfterID="6" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
-      <Transition ID="13" Name="14" X="375" Y="220" BeforeID="6" AfterID="7" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="130" />
-      <Transition ID="14" Name="15" X="500" Y="220" BeforeID="7" AfterID="8" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="120" />
-      <Transition ID="15" Name="16" X="610" Y="220" BeforeID="8" AfterID="9" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="100" />
-      <Transition ID="16" Name="17" X="720" Y="220" BeforeID="9" AfterID="10" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="120" />
-      <Transition ID="17" Name="18" X="830" Y="215" BeforeID="10" AfterID="3" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="100.4987562112089" />
+      <Transition ID="10" Name="13" X="290" Y="240" BeforeID="4" AfterID="5" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
+      <Transition ID="11" Name="14" X="430" Y="240" BeforeID="5" AfterID="6" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
+      <Transition ID="12" Name="15" X="560" Y="240" BeforeID="6" AfterID="7" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="120" />
+      <Transition ID="13" Name="16" X="670" Y="240" BeforeID="7" AfterID="8" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="100" />
+      <Transition ID="14" Name="17" X="780" Y="240" BeforeID="8" AfterID="9" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="120" />
+      <Transition ID="15" Name="18" X="890" Y="240" BeforeID="9" AfterID="3" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="100" />
     </Transitions>
   </PetriNet>
 </Document>

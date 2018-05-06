@@ -1518,9 +1518,9 @@
             },
             "simulateur": {
                 "color": {
-                    "b": 0.26,
-                    "g": 0.9,
-                    "r": 0.06
+                    "b": 0.0,
+                    "g": 0.4,
+                    "r": 1.0
                 },
                 "dynamic": false,
                 "enabled": true,
@@ -1546,9 +1546,9 @@
             },
             "simulateur": {
                 "color": {
-                    "b": 0.0,
-                    "g": 0.4,
-                    "r": 1.0
+                    "b": 0.26,
+                    "g": 0.9,
+                    "r": 0.06
                 },
                 "dynamic": false,
                 "enabled": true,

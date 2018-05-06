@@ -9,7 +9,7 @@ Red='\033[0;41m'
 Yellow='\033[0;43m'
 End='\033[0;0m'
 
-scripts/build_arm.sh
+scripts/build_arm.sh 4 principal
 
 echo ""
 echo -e "${Yellow}Compilation du réseau Petri${End}"
