@@ -93,10 +93,9 @@ namespace ConstantesPrincipal {
 		PORTE_CUBE = ID_SERVO_CUBE_DOOR,
 		PORTE_SOUTE_GAUCHE = ID_SERVO_HOLD_DOOR_LEFT,
 		PORTE_SOUTE_DROIT = ID_SERVO_HOLD_DOOR_RIGHT,
-		ABEILLE_GAUCHE = ID_SERVO_BEE_LEFT,
-		ABEILLE_DROIT = ID_SERVO_BEE_RIGHT,
+		ABEILLE = ID_SERVO_BEE,
 
-		NBR = 5
+		NBR = 4
 	};
 
 	// Différentes positions des servos
@@ -106,15 +105,12 @@ namespace ConstantesPrincipal {
 
 	enum class SouteDroit { OUVERT = 0, FERME = 1, NBR = 2 };
 
-	enum class AbeilleGauche { OUVERT = 0, FERME = 1, NBR = 2 };
-
-	enum class AbeilleDroit { OUVERT = 0, FERME = 1, NBR = 2 };
+	enum class Abeille { OUVERT = 0, FERME = 1, NBR = 2 };
 
 	extern Angle const positionPorteCube[enumToInt(PorteCube::NBR)];
 	extern Angle const positionSouteGauche[enumToInt(SouteGauche::NBR)];
 	extern Angle const positionSouteDroit[enumToInt(SouteDroit::NBR)];
-	extern Angle const positionAbeilleGauche[enumToInt(AbeilleGauche::NBR)];
-	extern Angle const positionAbeilleDroit[enumToInt(AbeilleDroit::NBR)];
+	extern Angle const positionAbeille[enumToInt(Abeille::NBR)];
 
 	/////////////////// MOTEURS ///////////////////
 

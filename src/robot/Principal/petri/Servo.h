@@ -23,10 +23,7 @@ ResultatAction ouvrirSouteG();
 ResultatAction fermerSouteG();
 
 // Actions pour l'abeille
-ResultatAction ouvrirAbeilleD();
-ResultatAction fermerAbeilleD();
-
-ResultatAction ouvrirAbeilleG();
-ResultatAction fermerAbeilleG();
+ResultatAction ouvrirAbeille();
+ResultatAction fermerAbeille();
 
 #endif // ROOT_SERVO_H

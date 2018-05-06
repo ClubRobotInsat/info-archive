@@ -10,11 +10,11 @@
 namespace ConstantesPrincipal {
 
 	/// TODO
+	//                                                         ouvert / ferme
 	Angle const positionPorteCube[enumToInt(PorteCube::NBR)] = {0_deg, 0_deg};
 	Angle const positionSouteGauche[enumToInt(SouteGauche::NBR)] = {0_deg, 0_deg};
 	Angle const positionSouteDroit[enumToInt(SouteDroit::NBR)] = {0_deg, 0_deg};
-	Angle const positionAbeilleGauche[enumToInt(AbeilleGauche::NBR)] = {0_deg, 0_deg};
-	Angle const positionAbeilleDroit[enumToInt(AbeilleDroit::NBR)] = {0_deg, 0_deg};
+	Angle const positionAbeille[enumToInt(Abeille::NBR)] = {0_deg, 0_deg};
 
 	//                                                                  haut   bas      sol      saisie   rails
 	// Angle const positionAscenseur[enumToInt(PositionAscenseur::NBR)] = {0_deg, 350_deg, 670_deg, 560_deg, 250_deg};

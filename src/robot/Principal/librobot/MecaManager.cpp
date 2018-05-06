@@ -225,32 +225,18 @@ bool MecaManagerPrincipal::turbineGLibre() {
 	return _turbine_left_free;
 }
 
-ResultatAction MecaManagerPrincipal::ouvrirAbeilleD() {
-	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::ABEILLE_DROIT),
-	                                              enumToInt(ConstantesPrincipal::AbeilleDroit::OUVERT));
+ResultatAction MecaManagerPrincipal::ouvrirAbeille() {
+	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::ABEILLE),
+	                                              enumToInt(ConstantesPrincipal::Abeille::OUVERT));
 }
 
-ResultatAction MecaManagerPrincipal::fermerAbeilleD() {
-	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::ABEILLE_DROIT),
-	                                              enumToInt(ConstantesPrincipal::AbeilleDroit::FERME));
+ResultatAction MecaManagerPrincipal::fermerAbeille() {
+	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::ABEILLE),
+	                                              enumToInt(ConstantesPrincipal::Abeille::FERME));
 }
 
-ResultatAction MecaManagerPrincipal::orienterAbeilleDDe(Angle val) {
-	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::ABEILLE_DROIT), val);
-}
-
-ResultatAction MecaManagerPrincipal::ouvrirAbeilleG() {
-	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::ABEILLE_GAUCHE),
-	                                              enumToInt(ConstantesPrincipal::AbeilleGauche::OUVERT));
-}
-
-ResultatAction MecaManagerPrincipal::fermerAbeilleG() {
-	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::ABEILLE_GAUCHE),
-	                                              enumToInt(ConstantesPrincipal::AbeilleGauche::FERME));
-}
-
-ResultatAction MecaManagerPrincipal::orienterAbeilleGDe(Angle val) {
-	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::ABEILLE_GAUCHE), val);
+ResultatAction MecaManagerPrincipal::orienterAbeilleDe(Angle val) {
+	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::ABEILLE), val);
 }
 
 /*ResultatAction MecaManagerPrincipal::ascenseurStockageHaut() {
@@ -408,11 +394,8 @@ Angle MecaManagerPrincipal::getPositionServo(uint8_t servo, uint8_t pos) {
 		case Servo::PORTE_SOUTE_DROIT:
 			return positionSouteDroit[pos];
 
-		case Servo::ABEILLE_GAUCHE:
-			return positionAbeilleGauche[pos];
-
-		case Servo::ABEILLE_DROIT:
-			return positionAbeilleDroit[pos];
+		case Servo::ABEILLE:
+			return positionAbeille[pos];
 
 		default:
 			throw std::invalid_argument("unimplemented for the servo " + std::to_string(servo));
@@ -425,8 +408,7 @@ void MecaManagerPrincipal::setModeBlocageServos() {
 
 	// TODO: mettre 'avec' si on a besoin de forcer sur les servos
 	_servos.reglerModeBlocage(enumToInt(Servo::PORTE_CUBE), sans);
-	_servos.reglerModeBlocage(enumToInt(Servo::ABEILLE_DROIT), sans);
-	_servos.reglerModeBlocage(enumToInt(Servo::ABEILLE_GAUCHE), sans);
+	_servos.reglerModeBlocage(enumToInt(Servo::ABEILLE), sans);
 	_servos.reglerModeBlocage(enumToInt(Servo::PORTE_SOUTE_DROIT), sans);
 	_servos.reglerModeBlocage(enumToInt(Servo::PORTE_SOUTE_GAUCHE), sans);
 }

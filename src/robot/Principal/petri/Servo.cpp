@@ -54,38 +54,14 @@ ResultatAction fermerSouteG() {
 	if(_strategie->getCouleurEquipe() == RobotColor::Green) {
 		return meca().fermerSouteG();
 	} else {
-		return meca().fermerAbeilleD();
+		return meca().fermerSouteD();
 	}
 }
 
-ResultatAction ouvrirAbeilleD() {
-	if(_strategie->getCouleurEquipe() == RobotColor::Green) {
-		return meca().ouvrirAbeilleD();
-	} else {
-		return meca().ouvrirAbeilleG();
-	}
+ResultatAction ouvrirAbeille() {
+	return meca().ouvrirAbeille();
 }
 
 ResultatAction fermerAbeilleD() {
-	if(_strategie->getCouleurEquipe() == RobotColor::Green) {
-		return meca().fermerAbeilleD();
-	} else {
-		return meca().fermerAbeilleG();
-	}
-}
-
-ResultatAction ouvrirAbeilleG() {
-	if(_strategie->getCouleurEquipe() == RobotColor::Green) {
-		return meca().ouvrirAbeilleG();
-	} else {
-		return meca().ouvrirAbeilleD();
-	}
-}
-
-ResultatAction fermerAbeilleG() {
-	if(_strategie->getCouleurEquipe() == RobotColor::Green) {
-		return meca().fermerAbeilleG();
-	} else {
-		return meca().fermerAbeilleD();
-	}
+	return meca().fermerAbeille();
 }

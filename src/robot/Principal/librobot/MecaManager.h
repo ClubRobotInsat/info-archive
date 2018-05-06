@@ -69,13 +69,9 @@ public:
 	bool turbineGLibre();
 
 	// Actions pour l'abeille
-	ResultatAction ouvrirAbeilleD();
-	ResultatAction fermerAbeilleD();
-	ResultatAction orienterAbeilleDDe(Angle);
-
-	ResultatAction ouvrirAbeilleG();
-	ResultatAction fermerAbeilleG();
-	ResultatAction orienterAbeilleGDe(Angle);
+	ResultatAction ouvrirAbeille();
+	ResultatAction fermerAbeille();
+	ResultatAction orienterAbeilleDe(Angle);
 
 	// Actions pour l'ascenseur du robot
 	/*ResultatAction ascenseurStockageHaut();
