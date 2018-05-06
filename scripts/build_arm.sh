@@ -41,9 +41,7 @@ echo -e "${Green}Compiling with -j ${cores}${End}"
 dir=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 cd ${dir}
 
-mkdir -p build_arm
-
-cd build_arm
+rm -rf build_arm.LAST_SAVE && mv build_arm build_arm.LAST_SAVE && mkdir build_arm && cd build_arm
 
 echo -e "${Green} Generating CMakeFile${End}"
 cmake .. -DBITS=64 -DRASPI="1" -DCMAKE_TOOLCHAIN_FILE="../Cross-Compilation.cmake"
