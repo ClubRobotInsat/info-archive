@@ -59,7 +59,11 @@ set(wiimote_sources IA/IAWiimote.cpp wiimote/Wiimote.cpp)
 add_executable(IAWiimote ${wiimote_sources})
 include_directories(/usr/local/include/wiic/)
 
+add_executable(IAPrincipal IA/IAPrincipal.cpp)
+#add_dependencies(IAPrincipal IA_PETRI HOMOLOGATION_PETRI)
+
 if (RASPI)
+	# WiiMote #
 	message(STATUS "Compiling IAWiimote for the raspi")
 
 	add_library(libwiimotecpp SHARED IMPORTED)
@@ -72,8 +76,15 @@ if (RASPI)
 	#link_directories(${PROJECT_SOURCE_DIR}/precompiled-libraries/)
 	#add_subdirectory(precompiled-libraries)
 	target_link_libraries(IAWiimote robotPrincipal libwiimotecpp libwiimotec)
+
+	# IAPrincipal #
+	message(STATUS "Compiling IAPrincipal for the raspi")
+	link_directories(/usr/arm-linux-gnueabihf/lib)
+	target_link_libraries(IAPrincipal robotPrincipal PetriRuntime dl)
+
 else()
 	target_link_libraries(IAWiimote robotPrincipal wiicpp)
+	target_link_libraries(IAPrincipal robotPrincipal)
 endif()
 
 
@@ -88,10 +99,6 @@ target_link_libraries(IATestSimu robotPrincipal)
 
 add_executable(IATestEvitement IA/IATestEvitement.cpp)
 target_link_libraries(IATestEvitement robotPrincipal)
-
-add_executable(IAPrincipal IA/IAPrincipal.cpp)
-target_link_libraries(IAPrincipal robotPrincipal)
-#add_dependencies(IAPrincipal IA_PETRI HOMOLOGATION_PETRI)
 
 add_executable(IATestLidar IA/IATestLidar.cpp)
 target_link_libraries(IATestLidar robotPrincipal)

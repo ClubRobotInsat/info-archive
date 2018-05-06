@@ -102,7 +102,7 @@ if [ $install_raspi -eq 1 ]
     then echo -e "${Yellow}Installation des outils ARM${End}"
     sudo apt-get install gcc-5-arm-linux-gnueabihf g++-5-arm-linux-gnueabihf build-essential git net-tools dnsmasq-base
     cd ${dir}
-    sudo cp precompiled-libraries/libbluetooth.so.3 precompiled-libraries/libwiicpp.so precompiled-libraries/libwiic.so /usr/arm-linux-gnueabihf/lib
+    sudo cp precompiled-libraries/libbluetooth.so.3 precompiled-libraries/libwiicpp.so precompiled-libraries/libwiic.so precompiled-libraries/libPetriRuntime.a /usr/arm-linux-gnueabihf/lib
 
     if [ $? -eq "0" ]
         then echo -e "${Green}Installation de la cross-compilation pour Raspberry réussie${End}"
