@@ -85,11 +85,12 @@ namespace ia_parsing {
 		PORTE_CUBES = 0,
 		SOUTE_GAUCHE = 1,
 		SOUTE_DROITE = 2,
-		ABEILLE = 3,
+		ABEILLE_GAUCHE = 3,
+		ABEILLE_DROITE = 4,
 
 		// moteurs
-		ASCENSEURS = 4,
-		AVALEURS = 5,
+		ASCENSEURS = 5,
+		AVALEURS = 6,
 
 		// séquences
 
@@ -99,7 +100,8 @@ namespace ia_parsing {
 		static struct option long_options[] = {{"cubes", no_argument, 0, 'c'},
 		                                       {"souteg", no_argument, 0, 's'},
 		                                       {"souted", no_argument, 0, 'x'},
-		                                       {"abeille", no_argument, 0, 'a'},
+		                                       {"abeilleg", no_argument, 0, 'a'},
+		                                       {"abeilled", no_argument, 0, 'q'},
 		                                       {"ascenseur", no_argument, 0, 'j'},
 		                                       {"avaleur", no_argument, 0, 'v'},
 		                                       {0, 0, 0, 0}};
@@ -108,7 +110,7 @@ namespace ia_parsing {
 		int long_index = 0;
 		TestMeca result = UNDEF;
 
-		while((arg = getopt_long(argc, argv, "csxajv:", long_options, &long_index)) != -1) {
+		while((arg = getopt_long(argc, argv, "csxaqjv:", long_options, &long_index)) != -1) {
 
 			switch(arg) {
 				case 'c':
@@ -121,7 +123,10 @@ namespace ia_parsing {
 					result = TestMeca::SOUTE_DROITE;
 					break;
 				case 'a':
-					result = TestMeca::ABEILLE;
+					result = TestMeca::ABEILLE_GAUCHE;
+					break;
+				case 'q':
+					result = TestMeca::ABEILLE_DROITE;
 					break;
 				case 'j':
 					result = TestMeca::ASCENSEURS;
@@ -135,7 +140,8 @@ namespace ia_parsing {
 
 		if(result == TestMeca::UNDEF) {
 			std::cout << "Pas de servo spécifié. Test de la porte pour les cubes par défaut." << std::endl;
-			std::cout << "Usage : " << argv[0] << " [--cubes|--souteg|--souted|--abeille|--ascenseur|--avaleur]" << std::endl;
+			std::cout << "Usage : " << argv[0]
+			          << " [--cubes|--souteg|--souted|--abeilleg|--abeilled|--ascenseur|--avaleur]" << std::endl;
 			result = PORTE_CUBES;
 		}
 
