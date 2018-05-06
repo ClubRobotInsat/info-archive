@@ -25,6 +25,10 @@ ResultatAction monterAscenseursDe(Angle value) {
 	return meca().monterAscenseursDe(value);
 }
 
+int cubesLibres() {
+	return meca().nbrPlaceAscenseur();
+}
+
 ResultatAction activerAvaleurs(SensAvaleurs sens) {
 	return meca().activerAvaleurs(sens);
 }
