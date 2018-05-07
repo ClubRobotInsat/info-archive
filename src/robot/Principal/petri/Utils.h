@@ -30,10 +30,8 @@ Distance robotDy(Distance dy);
 Distance mm(int64_t d);
 
 /**
- * Retourne true si la couleur de l'équipe est violet, false si elle est verte.
+ * Retourne true si la couleur de l'équipe est verte, false si elle est orange.
  */
-bool couleurBleue();
-
-int getSeashellMap();
-
-bool cubeDetecte(CONTACTEUR contacteur);
+bool couleurVerte();
+bool couleurOrange();
+bool couleurUndef();
