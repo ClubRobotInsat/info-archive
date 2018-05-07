@@ -33,7 +33,7 @@ IAPrincipal::IAPrincipal(std::vector<std::string> const& args, Constantes::Robot
 	// main --> IAPrincipal() --> initialisation --> attendre tirette -> démarrer
 	this->initialisation();
 #ifdef HOMOLOGATION
-	_petri = Petri::Generated::Homologation_createLib(".");
+	_petri = Petri::Generated::Homologation::createLib(".");
 #else
 	_petri = Petri::Generated::IA2018::createLib(".");
 #endif

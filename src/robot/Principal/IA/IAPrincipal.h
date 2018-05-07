@@ -34,5 +34,5 @@ protected:
 	bool _magicStrategy;
 
 	StrategyGenerator::MagicStrategy _strategy;
-	int _nbr_points = 450;
+	int _nbr_points = 10;
 };
