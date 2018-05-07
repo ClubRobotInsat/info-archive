@@ -204,15 +204,44 @@ void IATestDeplacement::executer() {
 	//    _deplacement.allerADecompose(1000_mm, 1000_mm, SensAvance::Avant);
 	//    return;
 
-	_dep->avancer(100_cm, SensAvance::Avant);
+	std::cout << "===== Déplacements simples =====\n" << std::endl;
+	std::cout << "\navancerDe(10_cm) : " << std::flush;
+	getchar();
+	std::cout << toString(_dep->avancer(10_cm, SensAvance::Avant)) << std::endl;
+
+	std::cout << "\nreculerDe(10_cm) : " << std::flush;
+	getchar();
+	std::cout << toString(_dep->avancer(10_cm, SensAvance::Arriere)) << std::endl;
+
+	std::cout << "\ntournerAbsolu(45_deg) : " << std::flush;
+	getchar();
+	std::cout << toString(_dep->tournerAbsolu(45_deg)) << std::endl;
+
+	std::cout << "\ntournerAbsolu(-45_deg) : " << std::flush;
+	getchar();
+	std::cout << toString(_dep->tournerAbsolu(-45_deg)) << std::endl;
+
+	std::cout << "\ntournerRelatif(45_deg) : " << std::flush;
+	getchar();
+	std::cout << toString(_dep->tournerRelatif(45_deg)) << std::endl;
+
+	std::cout << "\ntournerRelatif(-45_deg) : " << std::flush;
+	getchar();
+	std::cout << toString(_dep->tournerRelatif(-45_deg)) << std::endl;
+
+	return;
+
+	/*dep->avancer(100_cm, SensAvance::Avant);
 	_dep->tournerRelatif(-0.5_PI);
 	getchar();
 	_dep->avancer(60_cm, SensAvance::Avant);
 	_dep->tournerRelatif(-0.5_PI);
 	getchar();
 	_dep->avancer(100_cm, SensAvance::Avant);
-	return;
-	/*_dep->tournerAbsolu(0_PI);
+
+
+
+	_dep->tournerAbsolu(0_PI);
 	_dep->pushVitesseLineaire(100_cm_s);
 
 	CarteInfo<DEPLACEMENT>::type &_deplacement = this->getRobot().getCarte<DEPLACEMENT>();
