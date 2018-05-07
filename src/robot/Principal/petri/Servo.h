@@ -23,7 +23,13 @@ ResultatAction ouvrirSouteG();
 ResultatAction fermerSouteG();
 
 // Actions pour l'abeille
-ResultatAction ouvrirAbeille();
-ResultatAction fermerAbeille();
+ResultatAction ouvrirAbeilleG();
+ResultatAction fermerAbeilleG();
+
+ResultatAction ouvrirAbeilleD();
+ResultatAction fermerAbeilleD();
+
+ResultatAction monterLoquet();
+ResultatAction descendreLoquet();
 
 #endif // ROOT_SERVO_H

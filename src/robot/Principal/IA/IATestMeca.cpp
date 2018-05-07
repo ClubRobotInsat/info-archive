@@ -55,15 +55,27 @@ void IATestMeca::executer() {
 			}
 			break;
 
-		case ia_parsing::TestMeca::ABEILLE:
-			logDebug2("Lancement du test de l'ABEILLE");
+		case ia_parsing::TestMeca::ABEILLE_DROITE:
+			logDebug2("Lancement du test de l'ABEILLE DROITE");
 			for(int i = 1; i < 1000; i++) {
 				int raw;
 				std::cout << "Entrez une valeur d'angle (en deg) : " << std::flush;
 				std::cin >> raw;
 				Angle value = Angle::makeFromDeg(raw);
 
-				logDebug1(_meca->orienterAbeilleDe(value));
+				logDebug1(_meca->orienterAbeilleDDe(value));
+			}
+			break;
+
+		case ia_parsing::TestMeca::ABEILLE_GAUCHE:
+			logDebug2("Lancement du test de l'ABEILLE GAUCHE");
+			for(int i = 1; i < 1000; i++) {
+				int raw;
+				std::cout << "Entrez une valeur d'angle (en deg) : " << std::flush;
+				std::cin >> raw;
+				Angle value = Angle::makeFromDeg(raw);
+
+				logDebug1(_meca->orienterAbeilleGDe(value));
 			}
 			break;
 

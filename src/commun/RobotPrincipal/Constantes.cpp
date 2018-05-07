@@ -16,7 +16,9 @@ namespace ConstantesPrincipal {
 	0x2DC pour fermé */
 	Angle const positionSouteDroit[enumToInt(SouteDroit::NBR)] = {159.808_deg, -60.763_deg};   /* 0x3EA pour ouvert et
 	                                                                                              0x145 pour fermé */
-	Angle const positionAbeille[enumToInt(Abeille::NBR)] = {0_deg, 0_deg};
+	Angle const positionAbeilleDroite[enumToInt(AbeilleDroite::NBR)] = {0_deg, 0_deg};
+	Angle const positionAbeilleGauche[enumToInt(AbeilleGauche::NBR)] = {0_deg, 0_deg};
+	Angle const positionLoquet[enumToInt(Loquet::NBR)] = {0_deg, 0_deg}; // haut / bas
 
 	//                                                                  haut   bas      sol      saisie   rails
 	// Angle const positionAscenseur[enumToInt(PositionAscenseur::NBR)] = {0_deg, 350_deg, 670_deg, 560_deg, 250_deg};

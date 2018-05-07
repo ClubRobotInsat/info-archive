@@ -225,18 +225,46 @@ bool MecaManagerPrincipal::turbineGLibre() {
 	return _turbine_left_free;
 }
 
-ResultatAction MecaManagerPrincipal::ouvrirAbeille() {
-	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::ABEILLE),
-	                                              enumToInt(ConstantesPrincipal::Abeille::OUVERT));
+ResultatAction MecaManagerPrincipal::ouvrirAbeilleD() {
+	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::ABEILLE_DROITE),
+	                                              enumToInt(ConstantesPrincipal::AbeilleDroite::OUVERT));
 }
 
-ResultatAction MecaManagerPrincipal::fermerAbeille() {
-	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::ABEILLE),
-	                                              enumToInt(ConstantesPrincipal::Abeille::FERME));
+ResultatAction MecaManagerPrincipal::fermerAbeilleD() {
+	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::ABEILLE_DROITE),
+	                                              enumToInt(ConstantesPrincipal::AbeilleDroite::FERME));
 }
 
-ResultatAction MecaManagerPrincipal::orienterAbeilleDe(Angle val) {
-	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::ABEILLE), val);
+ResultatAction MecaManagerPrincipal::orienterAbeilleDDe(Angle val) {
+	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::ABEILLE_DROITE), val);
+}
+
+ResultatAction MecaManagerPrincipal::ouvrirAbeilleG() {
+	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::ABEILLE_GAUCHE),
+	                                              enumToInt(ConstantesPrincipal::AbeilleGauche::OUVERT));
+}
+
+ResultatAction MecaManagerPrincipal::fermerAbeilleG() {
+	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::ABEILLE_GAUCHE),
+	                                              enumToInt(ConstantesPrincipal::AbeilleGauche::FERME));
+}
+
+ResultatAction MecaManagerPrincipal::orienterAbeilleGDe(Angle val) {
+	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::ABEILLE_GAUCHE), val);
+}
+
+ResultatAction MecaManagerPrincipal::monterLoquet() {
+	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::LOQUET),
+	                                              enumToInt(ConstantesPrincipal::Loquet::HAUT));
+}
+
+ResultatAction MecaManagerPrincipal::descendreLoquet() {
+	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::LOQUET),
+	                                              enumToInt(ConstantesPrincipal::Loquet::BAS));
+}
+
+ResultatAction MecaManagerPrincipal::orienterLoquetDe(Angle val) {
+	return this->_servos.positionnerServoBloquant(enumToInt(ConstantesPrincipal::Servo::LOQUET), val);
 }
 
 /*ResultatAction MecaManagerPrincipal::ascenseurStockageHaut() {
@@ -394,8 +422,14 @@ Angle MecaManagerPrincipal::getPositionServo(uint8_t servo, uint8_t pos) {
 		case Servo::PORTE_SOUTE_DROIT:
 			return positionSouteDroit[pos];
 
-		case Servo::ABEILLE:
-			return positionAbeille[pos];
+		case Servo::ABEILLE_GAUCHE:
+			return positionAbeilleGauche[pos];
+
+		case Servo::ABEILLE_DROITE:
+			return positionAbeilleDroite[pos];
+
+		case Servo::LOQUET:
+			return positionLoquet[pos];
 
 		default:
 			throw std::invalid_argument("unimplemented for the servo " + std::to_string(servo));
@@ -408,9 +442,11 @@ void MecaManagerPrincipal::setModeBlocageServos() {
 
 	// TODO: mettre 'avec' si on a besoin de forcer sur les servos
 	_servos.reglerModeBlocage(enumToInt(Servo::PORTE_CUBE), sans);
-	_servos.reglerModeBlocage(enumToInt(Servo::ABEILLE), sans);
+	_servos.reglerModeBlocage(enumToInt(Servo::ABEILLE_GAUCHE), sans);
+	_servos.reglerModeBlocage(enumToInt(Servo::ABEILLE_DROITE), sans);
 	_servos.reglerModeBlocage(enumToInt(Servo::PORTE_SOUTE_DROIT), sans);
 	_servos.reglerModeBlocage(enumToInt(Servo::PORTE_SOUTE_GAUCHE), sans);
+	_servos.reglerModeBlocage(enumToInt(Servo::LOQUET), sans);
 }
 
 void MecaManagerPrincipal::setCouleurServos(CarteServo::Couleur couleur) {
