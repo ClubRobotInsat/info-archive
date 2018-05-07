@@ -15,4 +15,4 @@
 	url = https://github.com/philsquared/Catch.git
 [submodule "src/elec/code-elec-nucleo"]
 	path = src/elec/code-elec-nucleo
-	url = git@github.com:ClubRobotInsat/code-elec-nucleo.git
+	url = https://github.com/ClubRobotInsat/code-elec-nucleo.git
