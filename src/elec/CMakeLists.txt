@@ -9,6 +9,7 @@ set(SOURCE_FILES_SIMULATOR
         code-elec-nucleo/src/main.cpp
         code-elec-nucleo/src/Brushless.cpp
         code-elec-nucleo/src/Motor.cpp
+        code-elec-nucleo/src/Motor2018.cpp
         code-elec-nucleo/src/Robot.cpp
         code-elec-nucleo/src/SimpleMotor.cpp
         code-elec-nucleo/src/Trame.cpp

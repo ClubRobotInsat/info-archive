@@ -50,6 +50,7 @@ set(ROBOT_INTERFACE_ELEC
 		Commun/Deplacement.cpp
 		Commun/Ascenseur.cpp
 		Commun/CAN.cpp
+		Commun/Moteur.cpp
 		Commun/RS232.cpp
 		Commun/Serie.cpp
 		Commun/Servo.cpp
