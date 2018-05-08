@@ -41,7 +41,7 @@ public:
 	void positionAngle(uint8_t moteur, Angle angle);
 
 	// void Tourner_Moteur (IDMoteurs ID);
-	void positionTour(uint8_t moteur, std::size_t nbr_tours, SensRotation);
+	void positionTour(uint8_t moteur, uint8_t nbr_tours, SensRotation);
 
 	bool lirePosition(uint8_t moteur);
 

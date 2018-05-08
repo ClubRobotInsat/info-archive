@@ -34,7 +34,7 @@ void CarteMoteurs2018::activerBrushless(uint8_t moteur) {
 	envoyerMessage(ACTIVER_BRUSHLESS, moteur);
 }
 
-void CarteMoteurs2018::positionTour(uint8_t moteur, std::size_t nbr_tours, SensRotation sens) {
+void CarteMoteurs2018::positionTour(uint8_t moteur, uint8_t nbr_tours, SensRotation sens) {
 	bloquerVariables();
 	_termine[moteur] = false;
 	debloquerVariables();
@@ -47,7 +47,7 @@ void CarteMoteurs2018::positionAngle(uint8_t moteur, Angle angle) {
 	_termine[moteur] = false;
 	debloquerVariables();
 	std::lock_guard<std::mutex> lk(_mutexPositions);
-	envoyerMessage(this->make_trame(POSITION_ANGLE, moteur, angle));
+	envoyerMessage(this->make_trame(POSITION_ANGLE, moteur, angle.toMinusPiPi().toDeg<float>()));
 }
 
 bool CarteMoteurs2018::lirePosition(uint8_t moteur) {
