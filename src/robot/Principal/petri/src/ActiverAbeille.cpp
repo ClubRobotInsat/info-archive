@@ -60,15 +60,15 @@ static Petri_actionResult_t state_7_invocation(VarSlot& _PETRI_PRIVATE_GET_VARIA
 }
 
 static Petri_actionResult_t state_8_invocation(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
-	return static_cast<actionResult_t>(ouvrirAbeille());
-}
-
-static Petri_actionResult_t state_9_invocation(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
 	return static_cast<actionResult_t>(tournerAbsolu(static_cast<Angle>(70_deg)));
 }
 
-static Petri_actionResult_t state_10_invocation(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
+static Petri_actionResult_t state_9_invocation(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
 	return static_cast<actionResult_t>(avancerDe(static_cast<Distance>(40_cm)));
+}
+
+static Petri_actionResult_t state_10_invocation(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
+	return static_cast<actionResult_t>(ouvrirAbeilleD());
 }
 
 static bool transition_17_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_, Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
@@ -110,18 +110,18 @@ extern "C" FillResult ActiverAbeille_fill(PetriNet& petriNet,
 	auto& state_5 = petriNet.addAction(Action(5 + entitiesOffset, "Root_Avancer", &state_5_invocation, 0), false);
 	auto& state_6 = petriNet.addAction(Action(6 + entitiesOffset, "Root_6", &state_6_invocation, 1), false);
 	auto& state_7 = petriNet.addAction(Action(7 + entitiesOffset, "Root_7", &state_7_invocation, 1), false);
-	auto& state_8 = petriNet.addAction(Action(8 + entitiesOffset, "Root_8", &state_8_invocation, 1), false);
-	auto& state_9 = petriNet.addAction(Action(9 + entitiesOffset, "Root_9", &state_9_invocation, 1), false);
-	auto& state_10 = petriNet.addAction(Action(10 + entitiesOffset, "Root_10", &state_10_invocation, 1), false);
+	auto& state_8 = petriNet.addAction(Action(8 + entitiesOffset, "Root_9", &state_8_invocation, 1), false);
+	auto& state_9 = petriNet.addAction(Action(9 + entitiesOffset, "Root_10", &state_9_invocation, 1), false);
+	auto& state_10 = petriNet.addAction(Action(10 + entitiesOffset, "Root_8", &state_10_invocation, 1), false);
 
 
 	state_0.addTransition(17 + entitiesOffset, "Root_Entry_to_Avancer", state_5, &transition_17_invocation);
 	state_5.addTransition(11 + entitiesOffset, "Root_13", state_6, &transition_11_invocation);
 	state_6.addTransition(12 + entitiesOffset, "Root_14", state_7, &transition_12_invocation);
-	state_7.addTransition(13 + entitiesOffset, "Root_15", state_8, &transition_13_invocation);
-	state_8.addTransition(14 + entitiesOffset, "Root_16", state_9, &transition_14_invocation);
-	state_9.addTransition(15 + entitiesOffset, "Root_17", state_10, &transition_15_invocation);
-	state_10.addTransition(16 + entitiesOffset, "Root_18", state_4, &transition_16_invocation);
+	state_8.addTransition(13 + entitiesOffset, "Root_17", state_9, &transition_13_invocation);
+	state_9.addTransition(14 + entitiesOffset, "Root_18", state_4, &transition_14_invocation);
+	state_7.addTransition(15 + entitiesOffset, "Root_15", state_10, &transition_15_invocation);
+	state_10.addTransition(16 + entitiesOffset, "Root_16", state_8, &transition_16_invocation);
 
 	return (FillResult){&state_0, &state_4};
 }
@@ -159,7 +159,7 @@ extern "C" char* ActiverAbeille_evaluate(void* vars, char const* libPath) {
 	return Petri::Utility::loadEvaluateAndInvoke(vars, libPath, "ActiverAbeille");
 }
 extern "C" char const* ActiverAbeille_getHash() {
-	return "D3C4C2354BC48E2D30EE19B023C9905464F4CD601E999D109D42D6A151F516C8";
+	return "03ADD824BA0211103162879BD6D29FABF323CD0A6ED84CD11F21007CDDDED361";
 }
 
 
