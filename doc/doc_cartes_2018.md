@@ -259,7 +259,7 @@ Cette carte n'est utilisée que pour savoir si la tirette a été retirée ou no
 |  Cmd |      Type      | Moteur asservi ? |           Commentaires           | Nbr données (octets) |
 |:----:|:--------------:|:----------------:|:--------------------------------:|:--------------------:|
 | 0x01 | Position ANGLE |        oui       | ID \| angle sur [0;360]° : float |           5          |
-| 0x02 |  Position TOUR |        oui       | ID \| nbr tours \| sens (0 ou 1) |           4          |
+| 0x02 |  Position TOUR |        oui       | ID \| nbr tours \| sens (0 ou 1) |           3          |
 | 0x03 |       ON       |        non       | ID \| sens rotation (0 ou 1)     |           2          |
 | 0x04 |       OFF      |        non       | ID                               |           1          |
 | 0x05 |  ON Brushless  |        non       | ID                               |           1          |
