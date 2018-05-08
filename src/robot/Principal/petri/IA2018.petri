@@ -8,7 +8,7 @@
       <Header File="Deplacement.h" />
       <Header File="Moteur.h" />
     </Headers>
-    <Window X="452" Y="24" W="1464" H="1028" />
+    <Window X="65" Y="24" W="1855" H="1056" />
     <Profiles Default="Default">
       <Profile Name="Default" SourceOutputPath="../petri/src" LibOutputPath="../../../../build/src/robot/Principal/" DeployMode="DoNothing" DeployPath="" DeployScript="#!/bin/sh&#xA;&#xA;/bin/cp &quot;$PETRI_LIB_PATH&quot; .&#xA;" DeployWhenDebug="True" Port="12346" DebugMode="CreateHost" Hostname="localhost" HostProgram="../../../../build/src/robot/Principal/IAPrincipal" HostProgramArguments="LOCAL --color green SIMU --debug">
         <Compiler Invocation="/usr/bin/g++" />
@@ -60,51 +60,56 @@
           <ReturnValueDestination Name="result" Value="$result_macro" />
         </ReturnValuesDestination>
       </PetriNetRef>
-      <PetriNetRef ID="125" Name="OuvrirReservoir" X="340" Y="520" Active="false" RequiredTokens="1" Radius="30" Path="Macros_2018/OuvrirReservoir.petri">
+      <PetriNetRef ID="128" Name="OuvrirReservoir" X="340" Y="520" Active="false" RequiredTokens="1" Radius="30" Path="Macros_2018/OuvrirReservoir.petri">
         <ReturnValuesDestination>
           <ReturnValueDestination Name="result" Value="$result_macro" />
         </ReturnValuesDestination>
       </PetriNetRef>
-      <PetriNetRef ID="150" Name="ActiverSwitch" X="340" Y="280" Active="false" RequiredTokens="1" Radius="30" Path="Macros_2018/ActiverSwitch.petri">
+      <PetriNetRef ID="153" Name="ActiverSwitch" X="340" Y="280" Active="false" RequiredTokens="1" Radius="30" Path="Macros_2018/ActiverSwitch.petri">
         <ReturnValuesDestination>
           <ReturnValueDestination Name="result" Value="$result_macro" />
         </ReturnValuesDestination>
       </PetriNetRef>
-      <PetriNetRef ID="157" Name="ActiverAbeille" X="340" Y="190" Active="false" RequiredTokens="1" Radius="30" Path="Macros_2018/ActiverAbeille.petri">
+      <PetriNetRef ID="160" Name="ActiverAbeille" X="340" Y="190" Active="false" RequiredTokens="1" Radius="30" Path="Macros_2018/ActiverAbeille.petri">
         <ReturnValuesDestination>
           <ReturnValueDestination Name="result" Value="$result_macro" />
         </ReturnValuesDestination>
       </PetriNetRef>
-      <Action ID="176" Name="print" X="700" Y="620" Active="true" RequiredTokens="0" Radius="20" Function="Petri::Utility::printText(&quot;Action choisie : n°&quot; + std::to_string($action))" />
-      <PetriNetRef ID="177" Name="PoserCubes" X="340" Y="440" Active="false" RequiredTokens="1" Radius="30" Path="Macros_2018/PoserCubes.petri">
+      <Action ID="179" Name="print" X="700" Y="620" Active="true" RequiredTokens="0" Radius="20" Function="Petri::Utility::printText(&quot;Action choisie : n°&quot; + std::to_string($action))" />
+      <PetriNetRef ID="180" Name="PoserCubes" X="340" Y="440" Active="false" RequiredTokens="1" Radius="30" Path="Macros_2018/PoserCubes.petri">
         <ReturnValuesDestination>
           <ReturnValueDestination Name="result" Value="$result_macro" />
         </ReturnValuesDestination>
       </PetriNetRef>
-      <PetriNet ID="184" Name="Déterministe" X="700" Y="90" Active="false" RequiredTokens="1" Radius="30">
+      <PetriNet ID="205" Name="Déterministe" X="700" Y="90" Active="false" RequiredTokens="1" Radius="30">
         <Comments>
-          <Comment ID="196" Name="Début : récupération des sphères devant le robot" X="410" Y="100" Width="196" R="1" G="1" B="0.7" A="1" />
+          <Comment ID="217" Name="Début : récupération des sphères devant le robot" X="1030" Y="130" Width="196" R="1" G="1" B="0.7" A="1" />
+          <Comment ID="218" Name="Prendre cubes en [54_cm, 85_cm]" X="1010" Y="310" Width="198" R="1" G="1" B="0.7" A="1" />
+          <Comment ID="219" Name="Poser les cubes à gauche de la zone" X="1030" Y="450" Width="198" R="1" G="1" B="0.7" A="1" />
+          <Comment ID="583" Name="Activation du switch" X="1020" Y="590" Width="160" R="1" G="1" B="0.7" A="1" />
+          <Comment ID="595" Name="Activation de l'abeille" X="1000" Y="850" Width="170" R="1" G="1" B="0.7" A="1" />
+          <Comment ID="599" Name="Prendre cubes en [30_cm, 12_cm]" X="1020" Y="730" Width="198" R="1" G="1" B="0.7" A="1" />
         </Comments>
         <States>
-          <Exit ID="197" Name="End" X="1090" Y="270" Active="false" RequiredTokens="0" Radius="25" Function="Petri::Utility::doNothing()" />
-          <Action ID="198" Name="Avancer" X="350" Y="370" Active="false" RequiredTokens="1" Radius="20" Function="avancerDe(50_cm)" />
-          <Action ID="199" Name="SouteD" X="350" Y="180" Active="false" RequiredTokens="1" Radius="20" Function="ouvrirSouteD()" />
-          <Action ID="200" Name="V lente" X="410" Y="270" Active="false" RequiredTokens="1" Radius="20" Function="setVitesseLineaireLente()" />
-          <Action ID="201" Name="BEGIN" X="127" Y="274" Active="false" RequiredTokens="0" Radius="20" Function="Petri::Utility::doNothing()" />
-          <Action ID="202" Name="" X="560" Y="270" Active="false" RequiredTokens="3" Radius="20" Function="Petri::Utility::doNothing()" />
-          <Action ID="203" Name="reset V" X="720" Y="330" Active="false" RequiredTokens="1" Radius="20" Function="resetVitesseLineaire()" />
-          <Action ID="204" Name="SouteD" X="720" Y="210" Active="false" RequiredTokens="1" Radius="20" Function="fermerSouteD()" />
-          <Action ID="205" Name="Sphères OK" X="870" Y="270" Active="false" RequiredTokens="2" Radius="20" Function="Petri::Utility::doNothing()" />
-          <Action ID="206" Name="sleep" X="280" Y="270" Active="false" RequiredTokens="1" Radius="20" Function="Petri::Utility::pause(100ms)" />
-          <Action ID="207" Name="BEE" X="160" Y="630" Active="false" RequiredTokens="0" Radius="20" Function="allerA(61_cm, 46_cm)" />
-          <PetriNetRef ID="208" Name="ActiverAbeille" X="500" Y="630" Active="false" RequiredTokens="1" Radius="30" Path="Macros_2018/ActiverAbeille.petri">
+          <Exit ID="220" Name="End" X="1270" Y="340" Active="false" RequiredTokens="0" Radius="25" Function="Petri::Utility::doNothing()" />
+          <Action ID="221" Name="Avancer" X="310" Y="230" Active="false" RequiredTokens="1" Radius="20" Function="avancerDe(50_cm)" />
+          <Action ID="222" Name="SouteD" X="310" Y="50" Active="false" RequiredTokens="1" Radius="20" Function="ouvrirSouteD()" />
+          <Action ID="223" Name="V lente" X="370" Y="130" Active="false" RequiredTokens="1" Radius="20" Function="setVitesseLineaireLente()" />
+          <Action ID="224" Name="BEGIN" X="110" Y="130" Active="true" RequiredTokens="0" Radius="20" Function="Petri::Utility::doNothing()" />
+          <Action ID="225" Name="" X="520" Y="130" Active="false" RequiredTokens="3" Radius="20" Function="Petri::Utility::doNothing()" />
+          <Action ID="226" Name="reset V" X="680" Y="220" Active="false" RequiredTokens="1" Radius="20" Function="resetVitesseLineaire()" />
+          <Action ID="227" Name="SouteD" X="680" Y="60" Active="false" RequiredTokens="1" Radius="20" Function="fermerSouteD()" />
+          <Action ID="228" Name="Sphères OK" X="850" Y="130" Active="false" RequiredTokens="2" Radius="20" Function="Petri::Utility::doNothing()" />
+          <Action ID="229" Name="sleep" X="250" Y="130" Active="false" RequiredTokens="1" Radius="20" Function="Petri::Utility::pause(100ms)" />
+          <Action ID="230" Name="allerA" X="400" Y="850" Active="false" RequiredTokens="1" Radius="20" Function="allerA(61_cm, 46_cm)" />
+          <PetriNetRef ID="231" Name="ActiverAbeille" X="850" Y="850" Active="false" RequiredTokens="1" Radius="30" Path="Macros_2018/ActiverAbeille.petri">
             <ReturnValuesDestination>
               <ReturnValueDestination Name="result" Value="$result_macro" />
             </ReturnValuesDestination>
           </PetriNetRef>
-          <Action ID="227" Name="" X="340" Y="630" Active="false" RequiredTokens="1" Radius="20" Function="tournerAbsolu(90_deg)" />
-          <Action ID="228" Name="CUBES" X="180" Y="490" Active="true" RequiredTokens="0" Radius="20" Function="reculerDe(30_cm)" />
-          <PetriNetRef ID="229" Name="GoberCube" X="640" Y="490" Active="false" RequiredTokens="1" Radius="30" Path="Macros_2018/GoberCube.petri">
+          <Action ID="250" Name="turn" X="620" Y="850" Active="false" RequiredTokens="1" Radius="20" Function="tournerAbsolu(90_deg)" />
+          <Action ID="251" Name="CUBES" X="150" Y="730" Active="false" RequiredTokens="0" Radius="20" Function="Petri::Utility::doNothing()" />
+          <PetriNetRef ID="252" Name="GoberCube" X="850" Y="730" Active="false" RequiredTokens="1" Radius="30" Path="Macros_2018/GoberCube.petri">
             <Arguments>
               <Argument Name="$commande" Value="1" />
             </Arguments>
@@ -112,75 +117,115 @@
               <ReturnValueDestination Name="result" Value="$result_macro" />
             </ReturnValuesDestination>
           </PetriNetRef>
-          <Action ID="338" Name="allerA" X="330" Y="490" Active="false" RequiredTokens="1" Radius="20" Function="allerA(75_cm, 80_cm)" />
-          <Action ID="339" Name="turn" X="470" Y="490" Active="false" RequiredTokens="1" Radius="20" Function="tournerAbsolu(180_deg)" />
-          <Action ID="340" Name="" X="638" Y="383" Active="false" RequiredTokens="0" Radius="20" Function="Petri::Utility::doNothing()" />
+          <Action ID="364" Name="allerA" X="410" Y="730" Active="false" RequiredTokens="1" Radius="20" Function="allerA(75_cm, 80_cm)" />
+          <Action ID="365" Name="turn" X="630" Y="730" Active="false" RequiredTokens="1" Radius="20" Function="tournerAbsolu(180_deg)" />
+          <Action ID="366" Name="CUBES" X="850" Y="310" Active="false" RequiredTokens="1" Radius="20" Function="reculerDe(20_cm)" />
+          <PetriNetRef ID="367" Name="GoberCube" X="150" Y="310" Active="false" RequiredTokens="1" Radius="30" Path="Macros_2018/GoberCube.petri">
+            <Arguments>
+              <Argument Name="$commande" Value="0" />
+            </Arguments>
+            <ReturnValuesDestination>
+              <ReturnValueDestination Name="result" Value="$result_macro" />
+            </ReturnValuesDestination>
+          </PetriNetRef>
+          <Action ID="479" Name="allerA" X="630" Y="310" Active="false" RequiredTokens="1" Radius="20" Function="allerA(97_cm, 1.46_m)" />
+          <Action ID="480" Name="turn" X="410" Y="310" Active="false" RequiredTokens="1" Radius="20" Function="tournerAbsolu(0_deg)" />
+          <PetriNetRef ID="481" Name="PoserCubes" X="850" Y="450" Active="false" RequiredTokens="1" Radius="30" Path="Macros_2018/PoserCubes.petri">
+            <ReturnValuesDestination>
+              <ReturnValueDestination Name="result" Value="$result_macro" />
+            </ReturnValuesDestination>
+          </PetriNetRef>
+          <Action ID="506" Name="CUBES" X="150" Y="450" Active="false" RequiredTokens="1" Radius="20" Function="Petri::Utility::doNothing()" />
+          <Action ID="507" Name="allerA" X="410" Y="450" Active="false" RequiredTokens="1" Radius="20" Function="allerA(55_cm, 30_cm)" />
+          <Action ID="508" Name="turn" X="630" Y="450" Active="false" RequiredTokens="1" Radius="20" Function="tournerAbsolu(90_deg)" />
+          <Action ID="580" Name="SWITCH" X="850" Y="590" Active="false" RequiredTokens="1" Radius="20" Function="Petri::Utility::doNothing()" />
+          <Action ID="588" Name="allerA" X="630" Y="590" Active="false" RequiredTokens="1" Radius="20" Function="allerA(1.6_m, 1.14_m)" />
+          <Action ID="589" Name="turn" X="410" Y="590" Active="false" RequiredTokens="1" Radius="20" Function="tournerAbsolu(-90_deg)" />
+          <PetriNetRef ID="592" Name="ActiverSwitch" X="150" Y="590" Active="false" RequiredTokens="1" Radius="30" Path="Macros_2018/ActiverSwitch.petri">
+            <ReturnValuesDestination>
+              <ReturnValueDestination Name="result" Value="$result_macro" />
+            </ReturnValuesDestination>
+          </PetriNetRef>
+          <Action ID="596" Name="BEE" X="150" Y="850" Active="false" RequiredTokens="0" Radius="20" Function="Petri::Utility::doNothing()" />
         </States>
         <Transitions>
-          <Transition ID="341" Name="" X="238.5" Y="322" BeforeID="201" AfterID="198" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="242.78591392418136" />
-          <Transition ID="342" Name="" X="238.5" Y="227" BeforeID="201" AfterID="199" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="242.00206610688264" />
-          <Transition ID="343" Name="" X="485" Y="270" BeforeID="200" AfterID="202" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="150" />
-          <Transition ID="344" Name="" X="455" Y="225" BeforeID="199" AfterID="202" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="228.47319317591726" />
-          <Transition ID="345" Name="" X="640" Y="300" BeforeID="202" AfterID="203" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="170.88007490635061" />
-          <Transition ID="346" Name="" X="640" Y="240" BeforeID="202" AfterID="204" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="170.88007490635061" />
-          <Transition ID="347" Name="" X="795" Y="240" BeforeID="204" AfterID="205" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="161.55494421403512" />
-          <Transition ID="348" Name="" X="795" Y="300" BeforeID="203" AfterID="205" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="161.55494421403512" />
-          <Transition ID="349" Name="" X="203.5" Y="272" BeforeID="201" AfterID="206" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="153.05227865013967" />
-          <Transition ID="350" Name="" X="345" Y="270" BeforeID="206" AfterID="200" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="130" />
-          <Transition ID="351" Name="" X="455" Y="320" BeforeID="198" AfterID="202" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="232.59406699226014" />
-          <Transition ID="352" Name="" X="250" Y="630" BeforeID="207" AfterID="227" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="180" />
-          <Transition ID="353" Name="" X="420" Y="630" BeforeID="227" AfterID="208" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="160" />
-          <Transition ID="354" Name="" X="255" Y="490" BeforeID="228" AfterID="338" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="150" />
-          <Transition ID="355" Name="" X="400" Y="490" BeforeID="338" AfterID="339" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
-          <Transition ID="356" Name="" X="555" Y="490" BeforeID="339" AfterID="229" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="170" />
+          <Transition ID="509" Name="" X="210" Y="180" BeforeID="224" AfterID="221" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="223.60679774997897" />
+          <Transition ID="510" Name="" X="210" Y="90" BeforeID="224" AfterID="222" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="215.40659228538016" />
+          <Transition ID="511" Name="" X="445" Y="130" BeforeID="223" AfterID="225" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="150" />
+          <Transition ID="512" Name="" X="415" Y="90" BeforeID="222" AfterID="225" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="224.72205054244233" />
+          <Transition ID="513" Name="" X="600" Y="175" BeforeID="225" AfterID="226" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="183.5755975068582" />
+          <Transition ID="514" Name="" X="600" Y="95" BeforeID="225" AfterID="227" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="174.64249196572982" />
+          <Transition ID="515" Name="" X="765" Y="95" BeforeID="227" AfterID="228" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="183.84776310850236" />
+          <Transition ID="516" Name="" X="765" Y="175" BeforeID="226" AfterID="228" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="192.35384061671346" />
+          <Transition ID="517" Name="" X="180" Y="130" BeforeID="224" AfterID="229" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
+          <Transition ID="518" Name="" X="310" Y="130" BeforeID="229" AfterID="223" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="120" />
+          <Transition ID="519" Name="" X="415" Y="180" BeforeID="221" AfterID="225" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="232.59406699226014" />
+          <Transition ID="520" Name="" X="510" Y="850" BeforeID="230" AfterID="250" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="220" />
+          <Transition ID="521" Name="" X="735" Y="850" BeforeID="250" AfterID="231" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="230" />
+          <Transition ID="522" Name="" X="280" Y="730" BeforeID="251" AfterID="364" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="260" />
+          <Transition ID="523" Name="" X="520" Y="730" BeforeID="364" AfterID="365" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="220" />
+          <Transition ID="524" Name="" X="740" Y="730" BeforeID="365" AfterID="252" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="220" />
+          <Transition ID="525" Name="" X="740" Y="310" BeforeID="366" AfterID="479" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="220" />
+          <Transition ID="526" Name="" X="520" Y="310" BeforeID="479" AfterID="480" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="220" />
+          <Transition ID="527" Name="" X="280" Y="310" BeforeID="480" AfterID="367" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="260" />
+          <Transition ID="528" Name="" X="850" Y="220" BeforeID="228" AfterID="366" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="180" />
+          <Transition ID="529" Name="" X="150" Y="380" BeforeID="367" AfterID="506" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
+          <Transition ID="530" Name="" X="280" Y="450" BeforeID="506" AfterID="507" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="260" />
+          <Transition ID="531" Name="" X="520" Y="450" BeforeID="507" AfterID="508" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="220" />
+          <Transition ID="532" Name="" X="740" Y="450" BeforeID="508" AfterID="481" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="220" />
+          <Transition ID="581" Name="" X="850" Y="520" BeforeID="481" AfterID="580" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
+          <Transition ID="587" Name="" X="520" Y="590" BeforeID="588" AfterID="589" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="220" />
+          <Transition ID="590" Name="" X="740" Y="590" BeforeID="580" AfterID="588" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="220" />
+          <Transition ID="593" Name="" X="280" Y="590" BeforeID="589" AfterID="592" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="260" />
+          <Transition ID="597" Name="" X="275" Y="850" BeforeID="596" AfterID="230" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="250" />
         </Transitions>
       </PetriNet>
-      <Action ID="185" Name="" X="971" Y="523" Active="false" RequiredTokens="1" Radius="20" Function="Petri::Utility::doNothing()" />
-      <Action ID="186" Name="porte" X="1100" Y="470" Active="false" RequiredTokens="1" Radius="20" Function="ouvrirPorteCube()" />
-      <Action ID="187" Name="souteD" X="1103" Y="529" Active="false" RequiredTokens="1" Radius="20" Function="ouvrirSouteD()" />
-      <Action ID="188" Name="souteG" X="1111" Y="578" Active="false" RequiredTokens="1" Radius="20" Function="ouvrirSouteG()" />
-      <Action ID="189" Name="loquet" X="1093" Y="630" Active="false" RequiredTokens="1" Radius="20" Function="monterLoquet()" />
-      <Action ID="190" Name="sleep" X="1233" Y="545" Active="false" RequiredTokens="4" Radius="20" Function="Petri::Utility::pause(500ms)" />
-      <Action ID="191" Name="porte" X="1371" Y="455" Active="false" RequiredTokens="1" Radius="20" Function="fermerPorteCube()" />
-      <Action ID="192" Name="souteD" X="1364" Y="514" Active="false" RequiredTokens="1" Radius="20" Function="fermerSouteD()" />
-      <Action ID="193" Name="souteG" X="1357" Y="591" Active="false" RequiredTokens="1" Radius="20" Function="fermerSouteG()" />
-      <Action ID="194" Name="loquet" X="1373" Y="660" Active="false" RequiredTokens="1" Radius="20" Function="descendreLoquet()" />
-      <Action ID="195" Name="sleep" X="1480" Y="551" Active="false" RequiredTokens="4" Radius="20" Function="Petri::Utility::pause(500ms)" />
+      <Action ID="206" Name="" X="971" Y="523" Active="false" RequiredTokens="1" Radius="20" Function="Petri::Utility::doNothing()" />
+      <Action ID="207" Name="porte" X="1100" Y="470" Active="false" RequiredTokens="1" Radius="20" Function="ouvrirPorteCube()" />
+      <Action ID="208" Name="souteD" X="1103" Y="529" Active="false" RequiredTokens="1" Radius="20" Function="ouvrirSouteD()" />
+      <Action ID="209" Name="souteG" X="1111" Y="578" Active="false" RequiredTokens="1" Radius="20" Function="ouvrirSouteG()" />
+      <Action ID="210" Name="loquet" X="1093" Y="630" Active="false" RequiredTokens="1" Radius="20" Function="monterLoquet()" />
+      <Action ID="211" Name="sleep" X="1233" Y="545" Active="false" RequiredTokens="4" Radius="20" Function="Petri::Utility::pause(500ms)" />
+      <Action ID="212" Name="porte" X="1371" Y="455" Active="false" RequiredTokens="1" Radius="20" Function="fermerPorteCube()" />
+      <Action ID="213" Name="souteD" X="1364" Y="514" Active="false" RequiredTokens="1" Radius="20" Function="fermerSouteD()" />
+      <Action ID="214" Name="souteG" X="1357" Y="591" Active="false" RequiredTokens="1" Radius="20" Function="fermerSouteG()" />
+      <Action ID="215" Name="loquet" X="1373" Y="660" Active="false" RequiredTokens="1" Radius="20" Function="descendreLoquet()" />
+      <Action ID="216" Name="sleep" X="1480" Y="551" Active="false" RequiredTokens="4" Radius="20" Function="Petri::Utility::pause(500ms)" />
     </States>
     <Transitions>
-      <Transition ID="357" Name="208" X="1251" Y="321" BeforeID="6" AfterID="5" Condition="true" W="50" H="30" ShiftX="1" ShiftY="1" ShiftAmplitude="100" />
-      <Transition ID="358" Name="" X="705" Y="400" BeforeID="7" AfterID="4" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="250" />
-      <Transition ID="359" Name="A == 6" X="250" Y="620" BeforeID="15" AfterID="8" Condition="$action == 6" W="50" H="30" ShiftX="0" ShiftY="130" ShiftAmplitude="316.22776601683796" />
-      <Transition ID="360" Name="A == 3" X="250" Y="360" BeforeID="15" AfterID="16" Condition="$action == 3" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="180" />
-      <Transition ID="361" Name="A == 5" X="250" Y="520" BeforeID="15" AfterID="125" Condition="$action == 5" W="50" H="30" ShiftX="0" ShiftY="80" ShiftAmplitude="240.8318915758459" />
-      <Transition ID="362" Name="A == 2" X="250" Y="280" BeforeID="15" AfterID="150" Condition="$action == 2" W="50" H="30" ShiftX="0" ShiftY="-40" ShiftAmplitude="196.97715603592209" />
-      <Transition ID="363" Name="A == 1" X="250" Y="190" BeforeID="15" AfterID="157" Condition="$action == 1" W="50" H="30" ShiftX="0" ShiftY="-85" ShiftAmplitude="247.58836806279893" />
-      <Transition ID="364" Name="end" X="460" Y="295" BeforeID="157" AfterID="7" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="318.90437438203946" />
-      <Transition ID="365" Name="end" X="460" Y="338.96796862576934" BeforeID="150" AfterID="7" Condition="true" W="50" H="30" ShiftX="0" ShiftY="-1.0320313742306553" ShiftAmplitude="268.32815729997475" />
-      <Transition ID="366" Name="end" X="458.98620624495027" Y="380" BeforeID="16" AfterID="7" Condition="true" W="50" H="30" ShiftX="-1.0137937550497327" ShiftY="0" ShiftAmplitude="243.31050121192879" />
-      <Transition ID="367" Name="end" X="462.06406274846114" Y="460" BeforeID="125" AfterID="7" Condition="true" W="50" H="30" ShiftX="2.06406274846114" ShiftY="0" ShiftAmplitude="268.32815729997475" />
-      <Transition ID="368" Name="end" X="460" Y="510" BeforeID="8" AfterID="7" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="325.57641192199412" />
-      <Transition ID="369" Name="A == 4" X="250" Y="440" BeforeID="15" AfterID="177" Condition="$action == 4" W="50" H="30" ShiftX="0" ShiftY="40" ShiftAmplitude="196.97715603592209" />
-      <Transition ID="370" Name="end" X="460" Y="420" BeforeID="177" AfterID="7" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="243.31050121192879" />
-      <Transition ID="371" Name="end" X="680.72088683955747" Y="252.46248590882007" BeforeID="184" AfterID="7" Condition="true" W="50" H="30" ShiftX="40.720886839557465" ShiftY="7.4624859088200708" ShiftAmplitude="332.41540277189324" />
-      <Transition ID="372" Name="A == 42" X="329" Y="53" BeforeID="15" AfterID="184" Condition="$action == 42" W="50" H="30" ShiftX="-101" ShiftY="-172" ShiftAmplitude="603.73835392494323" />
-      <Transition ID="373" Name="" X="1035.5" Y="496.5" BeforeID="185" AfterID="186" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="139.46325680981354" />
-      <Transition ID="374" Name="" X="1037" Y="526" BeforeID="185" AfterID="187" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="132.13629327327143" />
-      <Transition ID="375" Name="" X="1041" Y="550.5" BeforeID="185" AfterID="188" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="150.41608956491322" />
-      <Transition ID="376" Name="" X="1032" Y="576.5" BeforeID="185" AfterID="189" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="162.27445886522005" />
-      <Transition ID="377" Name="" X="1166.5" Y="507.5" BeforeID="186" AfterID="190" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="152.68922686293229" />
-      <Transition ID="378" Name="" X="1168" Y="537" BeforeID="187" AfterID="190" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="130.98091464026353" />
-      <Transition ID="379" Name="" X="1172" Y="561.5" BeforeID="188" AfterID="190" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="126.38433447227548" />
-      <Transition ID="380" Name="" X="1163" Y="587.5" BeforeID="189" AfterID="190" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="163.783393541592" />
-      <Transition ID="381" Name="" X="1302" Y="500" BeforeID="190" AfterID="191" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="164.75436261295178" />
-      <Transition ID="382" Name="" X="1298.5" Y="529.5" BeforeID="190" AfterID="192" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="134.61797799699713" />
-      <Transition ID="383" Name="" X="1295" Y="568" BeforeID="190" AfterID="193" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="132.25732493892352" />
-      <Transition ID="384" Name="" X="1303" Y="602.5" BeforeID="190" AfterID="194" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="181.17670931993439" />
-      <Transition ID="385" Name="" X="1425.5" Y="503" BeforeID="191" AfterID="195" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="145.24806367039804" />
-      <Transition ID="386" Name="" X="1422" Y="532.5" BeforeID="192" AfterID="195" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="121.75795661885921" />
-      <Transition ID="387" Name="" X="1418.5" Y="571" BeforeID="193" AfterID="195" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="129.34063553268942" />
-      <Transition ID="388" Name="" X="1426.5" Y="605.5" BeforeID="194" AfterID="195" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="152.74161188098023" />
-      <Transition ID="389" Name="" X="1237.5" Y="761" BeforeID="195" AfterID="185" Condition="true" W="50" H="30" ShiftX="12" ShiftY="224" ShiftAmplitude="509.76955577986411" />
+      <Transition ID="533" Name="208" X="1251" Y="321" BeforeID="6" AfterID="5" Condition="true" W="50" H="30" ShiftX="1" ShiftY="1" ShiftAmplitude="100" />
+      <Transition ID="534" Name="" X="705" Y="400" BeforeID="7" AfterID="4" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="250" />
+      <Transition ID="535" Name="A == 6" X="250" Y="620" BeforeID="15" AfterID="8" Condition="$action == 6" W="50" H="30" ShiftX="0" ShiftY="130" ShiftAmplitude="316.22776601683796" />
+      <Transition ID="536" Name="A == 3" X="250" Y="360" BeforeID="15" AfterID="16" Condition="$action == 3" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="180" />
+      <Transition ID="537" Name="A == 5" X="250" Y="520" BeforeID="15" AfterID="128" Condition="$action == 5" W="50" H="30" ShiftX="0" ShiftY="80" ShiftAmplitude="240.8318915758459" />
+      <Transition ID="538" Name="A == 2" X="250" Y="280" BeforeID="15" AfterID="153" Condition="$action == 2" W="50" H="30" ShiftX="0" ShiftY="-40" ShiftAmplitude="196.97715603592209" />
+      <Transition ID="539" Name="A == 1" X="250" Y="190" BeforeID="15" AfterID="160" Condition="$action == 1" W="50" H="30" ShiftX="0" ShiftY="-85" ShiftAmplitude="247.58836806279893" />
+      <Transition ID="540" Name="end" X="460" Y="295" BeforeID="160" AfterID="7" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="318.90437438203946" />
+      <Transition ID="541" Name="end" X="460" Y="338.96796862576934" BeforeID="153" AfterID="7" Condition="true" W="50" H="30" ShiftX="0" ShiftY="-1.0320313742306553" ShiftAmplitude="268.32815729997475" />
+      <Transition ID="542" Name="end" X="458.98620624495027" Y="380" BeforeID="16" AfterID="7" Condition="true" W="50" H="30" ShiftX="-1.0137937550497327" ShiftY="0" ShiftAmplitude="243.31050121192879" />
+      <Transition ID="543" Name="end" X="462.06406274846114" Y="460" BeforeID="128" AfterID="7" Condition="true" W="50" H="30" ShiftX="2.06406274846114" ShiftY="0" ShiftAmplitude="268.32815729997475" />
+      <Transition ID="544" Name="end" X="460" Y="510" BeforeID="8" AfterID="7" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="325.57641192199412" />
+      <Transition ID="545" Name="A == 4" X="250" Y="440" BeforeID="15" AfterID="180" Condition="$action == 4" W="50" H="30" ShiftX="0" ShiftY="40" ShiftAmplitude="196.97715603592209" />
+      <Transition ID="546" Name="end" X="460" Y="420" BeforeID="180" AfterID="7" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="243.31050121192879" />
+      <Transition ID="547" Name="end" X="680.72088683955747" Y="252.46248590882007" BeforeID="205" AfterID="7" Condition="true" W="50" H="30" ShiftX="40.720886839557465" ShiftY="7.4624859088200708" ShiftAmplitude="332.41540277189324" />
+      <Transition ID="548" Name="A == 42" X="329" Y="53" BeforeID="15" AfterID="205" Condition="$action == 42" W="50" H="30" ShiftX="-101" ShiftY="-172" ShiftAmplitude="603.73835392494323" />
+      <Transition ID="549" Name="" X="1035.5" Y="496.5" BeforeID="206" AfterID="207" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="139.46325680981354" />
+      <Transition ID="550" Name="" X="1037" Y="526" BeforeID="206" AfterID="208" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="132.13629327327143" />
+      <Transition ID="551" Name="" X="1041" Y="550.5" BeforeID="206" AfterID="209" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="150.41608956491322" />
+      <Transition ID="552" Name="" X="1032" Y="576.5" BeforeID="206" AfterID="210" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="162.27445886522005" />
+      <Transition ID="553" Name="" X="1166.5" Y="507.5" BeforeID="207" AfterID="211" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="152.68922686293229" />
+      <Transition ID="554" Name="" X="1168" Y="537" BeforeID="208" AfterID="211" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="130.98091464026353" />
+      <Transition ID="555" Name="" X="1172" Y="561.5" BeforeID="209" AfterID="211" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="126.38433447227548" />
+      <Transition ID="556" Name="" X="1163" Y="587.5" BeforeID="210" AfterID="211" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="163.783393541592" />
+      <Transition ID="557" Name="" X="1302" Y="500" BeforeID="211" AfterID="212" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="164.75436261295178" />
+      <Transition ID="558" Name="" X="1298.5" Y="529.5" BeforeID="211" AfterID="213" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="134.61797799699713" />
+      <Transition ID="559" Name="" X="1295" Y="568" BeforeID="211" AfterID="214" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="132.25732493892352" />
+      <Transition ID="560" Name="" X="1303" Y="602.5" BeforeID="211" AfterID="215" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="181.17670931993439" />
+      <Transition ID="561" Name="" X="1425.5" Y="503" BeforeID="212" AfterID="216" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="145.24806367039804" />
+      <Transition ID="562" Name="" X="1422" Y="532.5" BeforeID="213" AfterID="216" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="121.75795661885921" />
+      <Transition ID="563" Name="" X="1418.5" Y="571" BeforeID="214" AfterID="216" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="129.34063553268942" />
+      <Transition ID="564" Name="" X="1426.5" Y="605.5" BeforeID="215" AfterID="216" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="152.74161188098023" />
+      <Transition ID="565" Name="" X="1237.5" Y="761" BeforeID="216" AfterID="206" Condition="true" W="50" H="30" ShiftX="12" ShiftY="224" ShiftAmplitude="509.76955577986411" />
     </Transitions>
   </PetriNet>
 </Document>

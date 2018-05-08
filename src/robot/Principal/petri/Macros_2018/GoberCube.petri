@@ -42,7 +42,7 @@
     <Comments>
       <Comment ID="1" Name=" Disposition :            1&#xA;                               2  3  4&#xA;                                   5&#xA;&#xA;Début : robot à 20cm en face du cube 1" X="680" Y="60" Width="302" R="0.5" G="0.8" B="1" A="1" />
       <Comment ID="2" Name="* Commande == 0 : 1 ; 2 ; 5 ; 4 ; 3&#xA;* Commande == 1 : 1 ; 2 ; 4 ; 3 ; 5" X="1000" Y="60" Width="258" R="0.7" G="1" B="0.7" A="1" />
-      <Comment ID="3" Name="Récupération des 4 cubes périphériques" X="1230" Y="240" Width="176" R="1" G="1" B="0.7" A="1" />
+      <Comment ID="3" Name="Récupération des 4 cubes périphériques" X="1240" Y="230" Width="176" R="1" G="1" B="0.7" A="1" />
       <Comment ID="4" Name="Cube central" X="990" Y="420" Width="108" R="1" G="1" B="0.7" A="1" />
       <Comment ID="5" Name="Cubes 1 et 2" X="250" Y="160" Width="110" R="1" G="1" B="0.7" A="1" />
       <Comment ID="6" Name="Cube 4" X="180" Y="590" Width="66" R="1" G="1" B="0.7" A="1" />
@@ -54,30 +54,30 @@
       <Exit ID="10" Name="End" X="1120" Y="830" Active="false" RequiredTokens="2" Radius="25" Function="Petri::Utility::doNothing()" />
       <Action ID="11" Name="BEGIN" X="650" Y="260" Active="true" RequiredTokens="0" Radius="20" Function="avancerDe(10_cm)" />
       <Action ID="12" Name="switch" X="990" Y="240" Active="false" RequiredTokens="1" Radius="20" Function="Petri::Utility::doNothing()" />
-      <Action ID="13" Name="avance" X="1150" Y="160" Active="false" RequiredTokens="1" Radius="20" Function="avancerDe(12_cm)" />
+      <Action ID="13" Name="avance" X="1140" Y="150" Active="false" RequiredTokens="1" Radius="20" Function="avancerDe(12_cm)" />
       <Action ID="14" Name="Avaleurs" X="650" Y="140" Active="false" RequiredTokens="1" Radius="20" Function="activerAvaleurs(SensAvaleurs::AVALER)" />
-      <Action ID="15" Name="ascenseur" X="1290" Y="160" Active="false" RequiredTokens="1" Radius="20" Function="monterAscenseursDe(1)" />
-      <Action ID="16" Name="reculer" X="1410" Y="160" Active="false" RequiredTokens="1" Radius="20" Function="reculerDe(12_cm)" />
-      <Action ID="17" Name="turn" X="1430" Y="260" Active="false" RequiredTokens="1" Radius="20" Function="tournerRelatif(45_deg)" />
-      <Action ID="18" Name="avancer" X="1390" Y="340" Active="false" RequiredTokens="1" Radius="20" Function="avancerDe(36_cm)" />
-      <Action ID="19" Name="turn" X="1310" Y="380" Active="false" RequiredTokens="1" Radius="20" Function="tournerRelatif(-135_deg)" />
-      <Action ID="20" Name="C++" X="1150" Y="320" Active="false" RequiredTokens="1" Radius="20" Function="$count = $count + 1" />
-      <Action ID="21" Name="avancer" X="1030" Y="340" Active="false" RequiredTokens="1" Radius="20" Function="avancerDe(8_cm)" />
-      <Action ID="22" Name="ascenseur" X="1070" Y="440" Active="false" RequiredTokens="1" Radius="20" Function="monterAscenseursDe(1)" />
+      <Action ID="15" Name="ascenseur" X="1300" Y="140" Active="false" RequiredTokens="1" Radius="20" Function="monterAscenseursDe(1)" />
+      <Action ID="16" Name="reculer" X="1440" Y="390" Active="false" RequiredTokens="1" Radius="20" Function="reculerDe(12_cm)" />
+      <Action ID="17" Name="turn" X="1340" Y="350" Active="false" RequiredTokens="1" Radius="20" Function="tournerRelatif(45_deg)" />
+      <Action ID="18" Name="avancer" X="1250" Y="320" Active="false" RequiredTokens="1" Radius="20" Function="avancerDe(45_cm)" />
+      <Action ID="19" Name="turn" X="1120" Y="290" Active="false" RequiredTokens="1" Radius="20" Function="tournerRelatif(-135_deg)" />
+      <Action ID="20" Name="C++" X="1430" Y="210" Active="false" RequiredTokens="1" Radius="20" Function="$count = $count + 1" />
+      <Action ID="21" Name="avancer" X="1120" Y="430" Active="false" RequiredTokens="1" Radius="20" Function="avancerDe(8_cm)" />
+      <Action ID="22" Name="ascenseur" X="1080" Y="500" Active="false" RequiredTokens="1" Radius="20" Function="monterAscenseursDe(1)" />
       <Action ID="23" Name="result" X="870" Y="700" Active="false" RequiredTokens="1" Radius="20" Function="Petri::Utility::doNothing()" />
       <Action ID="24" Name="Avaleurs" X="1160" Y="730" Active="false" RequiredTokens="1" Radius="20" Function="desactiverAvaleurs()" />
       <Action ID="25" Name="switch" X="530" Y="280" Active="false" RequiredTokens="1" Radius="20" Function="Petri::Utility::doNothing()" />
       <Action ID="26" Name="avance" X="430" Y="100" Active="false" RequiredTokens="1" Radius="20" Function="avancerDe(12_cm)" />
-      <Action ID="27" Name="ascenseur" X="310" Y="60" Active="false" RequiredTokens="1" Radius="20" Function="monterAscenseursDe(1)" />
-      <Action ID="28" Name="reculer" X="210" Y="80" Active="false" RequiredTokens="1" Radius="20" Function="reculerDe(12_cm)" />
-      <Action ID="29" Name="turn" X="90" Y="140" Active="false" RequiredTokens="1" Radius="20" Function="tournerRelatif(45_deg)" />
-      <Action ID="30" Name="avancer" X="70" Y="260" Active="false" RequiredTokens="1" Radius="20" Function="avancerDe(36_cm)" />
-      <Action ID="31" Name="turn" X="250" Y="320" Active="false" RequiredTokens="1" Radius="20" Function="tournerRelatif(-135_deg)" />
-      <Action ID="32" Name="C++" X="410" Y="300" Active="false" RequiredTokens="1" Radius="20" Function="$count = $count + 1" />
-      <Action ID="33" Name="turn" X="470" Y="400" Active="false" RequiredTokens="1" Radius="20" Function="tournerRelatif(45_deg)" />
-      <Action ID="34" Name="avancer" X="350" Y="440" Active="false" RequiredTokens="1" Radius="20" Function="avancerDe(10_cm)" />
-      <Action ID="35" Name="turn" X="250" Y="460" Active="false" RequiredTokens="1" Radius="20" Function="tournerRelatif(-45_deg)" />
-      <Action ID="36" Name="avancer" X="110" Y="480" Active="false" RequiredTokens="1" Radius="20" Function="avancerDe(10_cm)" />
+      <Action ID="27" Name="ascenseur" X="290" Y="60" Active="false" RequiredTokens="1" Radius="20" Function="monterAscenseursDe(1)" />
+      <Action ID="28" Name="reculer" X="60" Y="230" Active="false" RequiredTokens="1" Radius="20" Function="reculerDe(12_cm)" />
+      <Action ID="29" Name="turn" X="170" Y="260" Active="false" RequiredTokens="1" Radius="20" Function="tournerRelatif(45_deg)" />
+      <Action ID="30" Name="avancer" X="280" Y="280" Active="false" RequiredTokens="1" Radius="20" Function="avancerDe(45_cm)" />
+      <Action ID="31" Name="turn" X="400" Y="280" Active="false" RequiredTokens="1" Radius="20" Function="tournerRelatif(-135_deg)" />
+      <Action ID="32" Name="C++" X="120" Y="110" Active="false" RequiredTokens="1" Radius="20" Function="$count = $count + 1" />
+      <Action ID="33" Name="turn" X="280" Y="370" Active="false" RequiredTokens="1" Radius="20" Function="tournerRelatif(45_deg)" />
+      <Action ID="34" Name="avancer" X="200" Y="400" Active="false" RequiredTokens="1" Radius="20" Function="avancerDe(10_cm)" />
+      <Action ID="35" Name="turn" X="120" Y="440" Active="false" RequiredTokens="1" Radius="20" Function="tournerRelatif(-45_deg)" />
+      <Action ID="36" Name="avancer" X="50" Y="480" Active="false" RequiredTokens="1" Radius="20" Function="avancerDe(10_cm)" />
       <Action ID="37" Name="turn" X="30" Y="540" Active="false" RequiredTokens="1" Radius="20" Function="tournerRelatif(-45_deg)" />
       <Action ID="38" Name="avancer" X="50" Y="600" Active="false" RequiredTokens="1" Radius="20" Function="avancerDe(10_cm)" />
       <Action ID="39" Name="turn" X="110" Y="660" Active="false" RequiredTokens="1" Radius="20" Function="tournerRelatif(135_deg)" />
@@ -94,62 +94,65 @@
       <Action ID="50" Name="ascenseur" X="410" Y="1040" Active="false" RequiredTokens="1" Radius="20" Function="monterAscenseursDe(1)" />
       <Action ID="51" Name="C++" X="460" Y="860" Active="false" RequiredTokens="1" Radius="20" Function="$count = $count + 1" />
       <Action ID="52" Name="C++" X="570" Y="1120" Active="false" RequiredTokens="1" Radius="20" Function="$count = $count + 1" />
-      <Action ID="53" Name="C++" X="1090" Y="500" Active="false" RequiredTokens="1" Radius="20" Function="$count = $count + 1" />
+      <Action ID="53" Name="C++" X="980" Y="600" Active="false" RequiredTokens="1" Radius="20" Function="$count = $count + 1" />
       <Action ID="54" Name="print" X="1080" Y="910" Active="false" RequiredTokens="1" Radius="20" Function="Petri::Utility::printText(&quot;Nombre de cubes dans l'ascenseur : &quot; + std::to_string(cubesLibres()))" />
     </States>
     <Transitions>
       <Transition ID="55" Name="CMD 0" X="820" Y="250" BeforeID="11" AfterID="12" Condition="$commande == 0" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="340.58772731852804" />
-      <Transition ID="56" Name="4 cubes" X="1070" Y="200" BeforeID="12" AfterID="13" Condition="cubesLibres() &gt; 0 &amp;&amp; $count &lt; 4" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="178.88543819998318" />
+      <Transition ID="56" Name="4 cubes" X="1065" Y="195" BeforeID="12" AfterID="13" Condition="cubesLibres() &gt; 0 &amp;&amp; $count &lt; 4" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="174.92855684535903" />
       <Transition ID="57" Name="" X="650" Y="200" BeforeID="11" AfterID="14" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="120" />
-      <Transition ID="58" Name="" X="1220" Y="160" BeforeID="13" AfterID="15" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
-      <Transition ID="59" Name="" X="1350" Y="160" BeforeID="15" AfterID="16" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="120" />
-      <Transition ID="60" Name="" X="1420" Y="210" BeforeID="16" AfterID="17" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="101.9803902718557" />
-      <Transition ID="61" Name="" X="1410" Y="300" BeforeID="17" AfterID="18" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="89.442719099991592" />
-      <Transition ID="62" Name="" X="1350" Y="360" BeforeID="18" AfterID="19" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="89.442719099991592" />
-      <Transition ID="63" Name="" X="1230" Y="350" BeforeID="19" AfterID="20" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="170.88007490635061" />
-      <Transition ID="64" Name="" X="1070" Y="280" BeforeID="20" AfterID="12" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="178.88543819998318" />
-      <Transition ID="65" Name="1 cube" X="1010" Y="290" BeforeID="12" AfterID="21" Condition="cubesLibres() &gt; 0 &amp;&amp; $count == 4" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="107.70329614269008" />
-      <Transition ID="66" Name="" X="1050" Y="390" BeforeID="21" AfterID="22" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="107.70329614269008" />
-      <Transition ID="67" Name="" X="980" Y="600" BeforeID="53" AfterID="23" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="297.3213749463701" />
-      <Transition ID="68" Name="" X="995" Y="765" BeforeID="23" AfterID="10" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="281.78005607210741" />
-      <Transition ID="69" Name="" X="1015" Y="715" BeforeID="23" AfterID="24" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="291.547594742265" />
-      <Transition ID="70" Name="" X="1140" Y="780" BeforeID="24" AfterID="10" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="107.70329614269008" />
-      <Transition ID="71" Name="2 cubes" X="480" Y="190" BeforeID="25" AfterID="26" Condition="cubesLibres() &gt; 0 &amp;&amp; $count &lt; 2" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="205.91260281974002" />
-      <Transition ID="72" Name="" X="370" Y="80" BeforeID="26" AfterID="27" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="126.49110640673517" />
-      <Transition ID="73" Name="" X="260" Y="70" BeforeID="27" AfterID="28" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="101.9803902718557" />
-      <Transition ID="74" Name="" X="150" Y="110" BeforeID="28" AfterID="29" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="134.16407864998737" />
-      <Transition ID="75" Name="" X="80" Y="200" BeforeID="29" AfterID="30" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="121.6552506059644" />
-      <Transition ID="76" Name="" X="160" Y="290" BeforeID="30" AfterID="31" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="189.73665961010275" />
-      <Transition ID="77" Name="" X="330" Y="310" BeforeID="31" AfterID="32" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="161.24515496597098" />
-      <Transition ID="78" Name="" X="470" Y="290" BeforeID="32" AfterID="25" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="121.6552506059644" />
-      <Transition ID="79" Name="CMD 1" X="590" Y="270" BeforeID="11" AfterID="25" Condition="$commande == 1" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="121.6552506059644" />
-      <Transition ID="80" Name="1 cube" X="500" Y="340" BeforeID="25" AfterID="33" Condition="cubesLibres() &gt; 0 &amp;&amp; $count == 2" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="134.16407864998737" />
-      <Transition ID="81" Name="no free" X="849.71735550935432" Y="463.23878529509841" BeforeID="12" AfterID="23" Condition="cubesLibres() == 0" W="50" H="30" ShiftX="-80.28264449064568" ShiftY="-6.76121470490159" ShiftAmplitude="475.3945729601885" />
-      <Transition ID="82" Name="" X="410" Y="420" BeforeID="33" AfterID="34" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="126.49110640673517" />
-      <Transition ID="83" Name="" X="300" Y="450" BeforeID="34" AfterID="35" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="101.9803902718557" />
-      <Transition ID="84" Name="" X="180" Y="470" BeforeID="35" AfterID="36" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="141.42135623730951" />
-      <Transition ID="85" Name="" X="40" Y="570" BeforeID="37" AfterID="38" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="63.245553203367585" />
-      <Transition ID="86" Name="" X="80" Y="630" BeforeID="38" AfterID="39" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="84.8528137423857" />
-      <Transition ID="87" Name="" X="70" Y="510" BeforeID="36" AfterID="37" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="100" />
-      <Transition ID="88" Name="" X="160" Y="660" BeforeID="39" AfterID="40" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="100" />
-      <Transition ID="89" Name="" X="270" Y="660" BeforeID="40" AfterID="41" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="120" />
-      <Transition ID="90" Name="no free" X="653.54082923667193" Y="562.16854526822976" BeforeID="25" AfterID="23" Condition="cubesLibres() == 0" W="50" H="30" ShiftX="-46.459170763328075" ShiftY="72.168545268229764" ShiftAmplitude="540.37024344425186" />
-      <Transition ID="91" Name="no free" X="710" Y="680" BeforeID="42" AfterID="23" Condition="cubesLibres() == 0" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="322.49030993194197" />
-      <Transition ID="92" Name="" X="380" Y="660" BeforeID="41" AfterID="43" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="100" />
-      <Transition ID="93" Name="" X="490" Y="660" BeforeID="43" AfterID="42" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="120" />
-      <Transition ID="94" Name="" X="380" Y="770" BeforeID="44" AfterID="45" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="141.42135623730951" />
-      <Transition ID="95" Name="" X="260" Y="790" BeforeID="45" AfterID="46" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="101.9803902718557" />
-      <Transition ID="96" Name="1 cube" X="500" Y="710" BeforeID="42" AfterID="44" Condition="cubesLibres() &gt; 0 &amp;&amp; $count == 3" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="141.42135623730951" />
-      <Transition ID="97" Name="" X="275" Y="895" BeforeID="47" AfterID="48" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="150.33296378372907" />
-      <Transition ID="98" Name="" X="205" Y="845" BeforeID="46" AfterID="47" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="90.553851381374173" />
-      <Transition ID="99" Name="" X="420" Y="995" BeforeID="49" AfterID="50" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="92.195444572928878" />
-      <Transition ID="100" Name="1 cube" X="445" Y="905" BeforeID="51" AfterID="49" Condition="cubesLibres() &gt; 0 &amp;&amp; $count == 4" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="94.868329805051374" />
-      <Transition ID="101" Name="no free" X="629.44348181437579" Y="787.91833619957208" BeforeID="51" AfterID="23" Condition="cubesLibres() == 0" W="50" H="30" ShiftX="-35.556518185624213" ShiftY="7.9183361995720816" ShiftAmplitude="440.11362169330772" />
-      <Transition ID="102" Name="" X="760.89434350812917" Y="913.89469938172681" BeforeID="52" AfterID="23" Condition="true" W="50" H="30" ShiftX="40.894343508129168" ShiftY="3.8946993817268094" ShiftAmplitude="516.13951602255759" />
-      <Transition ID="103" Name="" X="405" Y="880" BeforeID="48" AfterID="51" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="117.04699910719626" />
-      <Transition ID="104" Name="" X="490" Y="1080" BeforeID="50" AfterID="52" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="178.88543819998318" />
-      <Transition ID="105" Name="" X="1080" Y="470" BeforeID="22" AfterID="53" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="63.245553203367585" />
-      <Transition ID="106" Name="" X="975" Y="805" BeforeID="23" AfterID="54" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="296.98484809834997" />
+      <Transition ID="58" Name="" X="1220" Y="145" BeforeID="13" AfterID="15" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="160.31219541881399" />
+      <Transition ID="59" Name="again" X="1390" Y="370" BeforeID="16" AfterID="17" Condition="cubesLibres() &gt; 0 &amp;&amp; $count &lt; 4" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="107.70329614269008" />
+      <Transition ID="60" Name="" X="1295" Y="335" BeforeID="17" AfterID="18" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="94.868329805051374" />
+      <Transition ID="61" Name="" X="1185" Y="305" BeforeID="18" AfterID="19" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="133.41664064126334" />
+      <Transition ID="62" Name="1 cube" X="1055" Y="335" BeforeID="12" AfterID="21" Condition="cubesLibres() &gt; 0 &amp;&amp; $count == 4" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="230.21728866442677" />
+      <Transition ID="63" Name="" X="1100" Y="465" BeforeID="21" AfterID="22" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="80.622577482985491" />
+      <Transition ID="64" Name="" X="925" Y="650" BeforeID="53" AfterID="23" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="148.66068747318505" />
+      <Transition ID="65" Name="" X="995" Y="765" BeforeID="23" AfterID="10" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="281.78005607210741" />
+      <Transition ID="66" Name="" X="1015" Y="715" BeforeID="23" AfterID="24" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="291.547594742265" />
+      <Transition ID="67" Name="" X="1140" Y="780" BeforeID="24" AfterID="10" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="107.70329614269008" />
+      <Transition ID="68" Name="2 cubes" X="480" Y="190" BeforeID="25" AfterID="26" Condition="cubesLibres() &gt; 0 &amp;&amp; $count &lt; 2" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="205.91260281974002" />
+      <Transition ID="69" Name="" X="115" Y="245" BeforeID="28" AfterID="29" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="114.0175425099138" />
+      <Transition ID="70" Name="" X="225" Y="270" BeforeID="29" AfterID="30" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="111.80339887498948" />
+      <Transition ID="71" Name="" X="340" Y="280" BeforeID="30" AfterID="31" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="120" />
+      <Transition ID="72" Name="CMD 1" X="590" Y="270" BeforeID="11" AfterID="25" Condition="$commande == 1" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="121.6552506059644" />
+      <Transition ID="73" Name="1 cube" X="405" Y="325" BeforeID="25" AfterID="33" Condition="cubesLibres() &gt; 0 &amp;&amp; $count == 2" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="265.70660511172844" />
+      <Transition ID="74" Name="no free" X="849.71735550935432" Y="463.23878529509841" BeforeID="12" AfterID="23" Condition="cubesLibres() == 0" W="50" H="30" ShiftX="-80.28264449064568" ShiftY="-6.76121470490159" ShiftAmplitude="475.3945729601885" />
+      <Transition ID="75" Name="" X="240" Y="385" BeforeID="33" AfterID="34" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="85.440037453175307" />
+      <Transition ID="76" Name="" X="160" Y="420" BeforeID="34" AfterID="35" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="89.442719099991592" />
+      <Transition ID="77" Name="" X="85" Y="460" BeforeID="35" AfterID="36" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="80.622577482985491" />
+      <Transition ID="78" Name="" X="40" Y="570" BeforeID="37" AfterID="38" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="63.245553203367585" />
+      <Transition ID="79" Name="" X="80" Y="630" BeforeID="38" AfterID="39" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="84.8528137423857" />
+      <Transition ID="80" Name="" X="40" Y="510" BeforeID="36" AfterID="37" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="63.245553203367585" />
+      <Transition ID="81" Name="" X="160" Y="660" BeforeID="39" AfterID="40" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="100" />
+      <Transition ID="82" Name="" X="270" Y="660" BeforeID="40" AfterID="41" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="120" />
+      <Transition ID="83" Name="no free" X="653.54082923667193" Y="562.16854526822976" BeforeID="25" AfterID="23" Condition="cubesLibres() == 0" W="50" H="30" ShiftX="-46.459170763328075" ShiftY="72.168545268229764" ShiftAmplitude="540.37024344425186" />
+      <Transition ID="84" Name="no free" X="710" Y="680" BeforeID="42" AfterID="23" Condition="cubesLibres() == 0" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="322.49030993194197" />
+      <Transition ID="85" Name="" X="380" Y="660" BeforeID="41" AfterID="43" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="100" />
+      <Transition ID="86" Name="" X="490" Y="660" BeforeID="43" AfterID="42" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="120" />
+      <Transition ID="87" Name="" X="380" Y="770" BeforeID="44" AfterID="45" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="141.42135623730951" />
+      <Transition ID="88" Name="" X="260" Y="790" BeforeID="45" AfterID="46" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="101.9803902718557" />
+      <Transition ID="89" Name="1 cube" X="500" Y="710" BeforeID="42" AfterID="44" Condition="cubesLibres() &gt; 0 &amp;&amp; $count == 3" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="141.42135623730951" />
+      <Transition ID="90" Name="" X="275" Y="895" BeforeID="47" AfterID="48" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="150.33296378372907" />
+      <Transition ID="91" Name="" X="205" Y="845" BeforeID="46" AfterID="47" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="90.553851381374173" />
+      <Transition ID="92" Name="" X="420" Y="995" BeforeID="49" AfterID="50" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="92.195444572928878" />
+      <Transition ID="93" Name="1 cube" X="445" Y="905" BeforeID="51" AfterID="49" Condition="cubesLibres() &gt; 0 &amp;&amp; $count == 4" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="94.868329805051374" />
+      <Transition ID="94" Name="no free" X="629.44348181437579" Y="787.91833619957208" BeforeID="51" AfterID="23" Condition="cubesLibres() == 0" W="50" H="30" ShiftX="-35.556518185624213" ShiftY="7.9183361995720816" ShiftAmplitude="440.11362169330772" />
+      <Transition ID="95" Name="" X="760.89434350812917" Y="913.89469938172681" BeforeID="52" AfterID="23" Condition="true" W="50" H="30" ShiftX="40.894343508129168" ShiftY="3.8946993817268094" ShiftAmplitude="516.13951602255759" />
+      <Transition ID="96" Name="" X="405" Y="880" BeforeID="48" AfterID="51" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="117.04699910719626" />
+      <Transition ID="97" Name="" X="490" Y="1080" BeforeID="50" AfterID="52" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="178.88543819998318" />
+      <Transition ID="98" Name="" X="1030" Y="550" BeforeID="22" AfterID="53" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="141.42135623730951" />
+      <Transition ID="99" Name="" X="975" Y="805" BeforeID="23" AfterID="54" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="296.98484809834997" />
+      <Transition ID="100" Name="" X="1365" Y="175" BeforeID="15" AfterID="20" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="147.648230602334" />
+      <Transition ID="101" Name="" X="1435" Y="300" BeforeID="20" AfterID="16" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="180.27756377319946" />
+      <Transition ID="102" Name="" X="1055" Y="265" BeforeID="19" AfterID="12" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="139.28388277184121" />
+      <Transition ID="103" Name="no free" X="1264.8013294184434" Y="599.9006647092217" BeforeID="16" AfterID="23" Condition="cubesLibres() == 0 || $count == 5" W="50" H="30" ShiftX="109.8013294184434" ShiftY="54.9006647092217" ShiftAmplitude="648.84512790033341" />
+      <Transition ID="104" Name="1 cube" X="1280" Y="410" BeforeID="16" AfterID="21" Condition="cubesLibres() &gt; 0 &amp;&amp; $count == 4" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="322.49030993194197" />
+      <Transition ID="105" Name="" X="205" Y="85" BeforeID="27" AfterID="32" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="177.20045146669349" />
+      <Transition ID="106" Name="" X="90" Y="170" BeforeID="32" AfterID="28" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="134.16407864998737" />
+      <Transition ID="107" Name="" X="465" Y="280" BeforeID="31" AfterID="25" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="130" />
+      <Transition ID="108" Name="" X="360" Y="80" BeforeID="26" AfterID="27" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="145.60219778561037" />
+      <Transition ID="109" Name="1 cube" X="152" Y="325" BeforeID="28" AfterID="33" Condition="cubesLibres() &gt; 0 &amp;&amp; $count == 2" W="50" H="30" ShiftX="-18" ShiftY="25" ShiftAmplitude="260.76809620810593" />
     </Transitions>
   </PetriNet>
 </Document>

@@ -84,11 +84,11 @@ static Petri_actionResult_t state_17_invocation(VarSlot& _PETRI_PRIVATE_GET_VARI
 }
 
 static Petri_actionResult_t state_18_invocation(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
-	return static_cast<actionResult_t>(avancerDe(static_cast<Distance>(26_cm)));
+	return static_cast<actionResult_t>(avancerDe(static_cast<Distance>(36_cm)));
 }
 
 static Petri_actionResult_t state_19_invocation(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
-	return static_cast<actionResult_t>(tournerRelatif(static_cast<Angle>(-45_deg)));
+	return static_cast<actionResult_t>(tournerRelatif(static_cast<Angle>(-135_deg)));
 }
 
 static Petri_actionResult_t state_20_invocation(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
@@ -256,7 +256,7 @@ static Petri_actionResult_t state_54_invocation(VarSlot& _PETRI_PRIVATE_GET_VARI
 	    static_cast<std::string const&>("Nombre de cubes dans l'ascenseur : " + std::to_string(cubesLibres()))));
 }
 
-static bool transition_107_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
+static bool transition_110_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
                                       Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
 	return true;
 }
@@ -282,7 +282,7 @@ static bool transition_59_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES
 }
 
 static bool transition_60_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_, Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return true;
+	return cubesLibres() > 0 && _PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vcount].value() < 4;
 }
 
 static bool transition_61_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_, Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
@@ -290,7 +290,7 @@ static bool transition_61_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES
 }
 
 static bool transition_62_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_, Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return true;
+	return cubesLibres() > 0 && _PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vcount].value() == 4;
 }
 
 static bool transition_63_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_, Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
@@ -302,7 +302,7 @@ static bool transition_64_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES
 }
 
 static bool transition_65_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_, Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return cubesLibres() > 0 && _PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vcount].value() == 4;
+	return true;
 }
 
 static bool transition_66_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_, Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
@@ -314,7 +314,7 @@ static bool transition_67_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES
 }
 
 static bool transition_68_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_, Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return true;
+	return cubesLibres() > 0 && _PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vcount].value() < 2;
 }
 
 static bool transition_69_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_, Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
@@ -326,19 +326,19 @@ static bool transition_70_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES
 }
 
 static bool transition_71_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_, Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return cubesLibres() > 0 && _PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vcount].value() < 2;
+	return true;
 }
 
 static bool transition_72_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_, Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return true;
+	return _PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vcommande].value() == 1;
 }
 
 static bool transition_73_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_, Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return true;
+	return cubesLibres() > 0 && _PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vcount].value() == 2;
 }
 
 static bool transition_74_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_, Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return true;
+	return cubesLibres() == 0;
 }
 
 static bool transition_75_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_, Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
@@ -358,15 +358,15 @@ static bool transition_78_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES
 }
 
 static bool transition_79_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_, Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return _PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vcommande].value() == 1;
+	return true;
 }
 
 static bool transition_80_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_, Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return cubesLibres() > 0 && _PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vcount].value() == 2;
+	return true;
 }
 
 static bool transition_81_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_, Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return cubesLibres() == 0;
+	return true;
 }
 
 static bool transition_82_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_, Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
@@ -374,11 +374,11 @@ static bool transition_82_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES
 }
 
 static bool transition_83_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_, Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return true;
+	return cubesLibres() == 0;
 }
 
 static bool transition_84_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_, Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return true;
+	return cubesLibres() == 0;
 }
 
 static bool transition_85_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_, Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
@@ -398,15 +398,15 @@ static bool transition_88_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES
 }
 
 static bool transition_89_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_, Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return true;
+	return cubesLibres() > 0 && _PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vcount].value() == 3;
 }
 
 static bool transition_90_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_, Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return cubesLibres() == 0;
+	return true;
 }
 
 static bool transition_91_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_, Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return cubesLibres() == 0;
+	return true;
 }
 
 static bool transition_92_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_, Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
@@ -414,11 +414,11 @@ static bool transition_92_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES
 }
 
 static bool transition_93_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_, Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return true;
+	return cubesLibres() > 0 && _PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vcount].value() == 4;
 }
 
 static bool transition_94_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_, Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return true;
+	return cubesLibres() == 0;
 }
 
 static bool transition_95_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_, Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
@@ -426,7 +426,7 @@ static bool transition_95_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES
 }
 
 static bool transition_96_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_, Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return cubesLibres() > 0 && _PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vcount].value() == 3;
+	return true;
 }
 
 static bool transition_97_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_, Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
@@ -443,12 +443,12 @@ static bool transition_99_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES
 
 static bool transition_100_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
                                       Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return cubesLibres() > 0 && _PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vcount].value() == 4;
+	return true;
 }
 
 static bool transition_101_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
                                       Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return cubesLibres() == 0;
+	return true;
 }
 
 static bool transition_102_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
@@ -458,12 +458,12 @@ static bool transition_102_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLE
 
 static bool transition_103_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
                                       Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return true;
+	return cubesLibres() == 0 || _PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vcount].value() == 5;
 }
 
 static bool transition_104_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
                                       Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
-	return true;
+	return cubesLibres() > 0 && _PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vcount].value() == 4;
 }
 
 static bool transition_105_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
@@ -474,6 +474,21 @@ static bool transition_105_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLE
 static bool transition_106_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
                                       Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
 	return true;
+}
+
+static bool transition_107_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
+                                      Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
+	return true;
+}
+
+static bool transition_108_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
+                                      Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
+	return true;
+}
+
+static bool transition_109_invocation(VarSlot const& _PETRI_PRIVATE_GET_VARIABLES_,
+                                      Petri_actionResult_t _PETRI_PRIVATE_GET_ACTION_RESULT_) {
+	return cubesLibres() > 0 && _PETRI_PRIVATE_GET_VARIABLES_[Petri_Var_Enum_Vcount].value() == 2;
 }
 
 
@@ -536,67 +551,74 @@ extern "C" FillResult GoberCube_fill(PetriNet& petriNet,
 	auto& state_54 = petriNet.addAction(Action(54 + entitiesOffset, "Root_print", &state_54_invocation, 1), false);
 
 
-	state_0.addTransition(107 + entitiesOffset, "Root_Entry_to_BEGIN", state_11, &transition_107_invocation);
+	state_0.addTransition(110 + entitiesOffset, "Root_Entry_to_BEGIN", state_11, &transition_110_invocation);
 	auto& transition_55 = state_11.addTransition(55 + entitiesOffset, "Root_CMD 0", state_12, &transition_55_invocation);
 	transition_55.addVariable(Petri_Var_Enum_Vcommande);
 	auto& transition_56 = state_12.addTransition(56 + entitiesOffset, "Root_4 cubes", state_13, &transition_56_invocation);
 	transition_56.addVariable(Petri_Var_Enum_Vcount);
 	state_11.addTransition(57 + entitiesOffset, "Root_", state_14, &transition_57_invocation);
 	state_13.addTransition(58 + entitiesOffset, "Root_", state_15, &transition_58_invocation);
-	state_15.addTransition(59 + entitiesOffset, "Root_", state_16, &transition_59_invocation);
-	state_16.addTransition(60 + entitiesOffset, "Root_", state_17, &transition_60_invocation);
-	state_17.addTransition(61 + entitiesOffset, "Root_", state_18, &transition_61_invocation);
-	state_18.addTransition(62 + entitiesOffset, "Root_", state_19, &transition_62_invocation);
-	state_19.addTransition(63 + entitiesOffset, "Root_", state_20, &transition_63_invocation);
-	state_20.addTransition(64 + entitiesOffset, "Root_", state_12, &transition_64_invocation);
-	auto& transition_65 = state_12.addTransition(65 + entitiesOffset, "Root_1 cube", state_21, &transition_65_invocation);
-	transition_65.addVariable(Petri_Var_Enum_Vcount);
-	state_21.addTransition(66 + entitiesOffset, "Root_", state_22, &transition_66_invocation);
-	state_53.addTransition(67 + entitiesOffset, "Root_", state_23, &transition_67_invocation);
-	state_23.addTransition(68 + entitiesOffset, "Root_", state_10, &transition_68_invocation);
-	state_23.addTransition(69 + entitiesOffset, "Root_", state_24, &transition_69_invocation);
-	state_24.addTransition(70 + entitiesOffset, "Root_", state_10, &transition_70_invocation);
-	auto& transition_71 = state_25.addTransition(71 + entitiesOffset, "Root_2 cubes", state_26, &transition_71_invocation);
-	transition_71.addVariable(Petri_Var_Enum_Vcount);
-	state_26.addTransition(72 + entitiesOffset, "Root_", state_27, &transition_72_invocation);
-	state_27.addTransition(73 + entitiesOffset, "Root_", state_28, &transition_73_invocation);
-	state_28.addTransition(74 + entitiesOffset, "Root_", state_29, &transition_74_invocation);
-	state_29.addTransition(75 + entitiesOffset, "Root_", state_30, &transition_75_invocation);
-	state_30.addTransition(76 + entitiesOffset, "Root_", state_31, &transition_76_invocation);
-	state_31.addTransition(77 + entitiesOffset, "Root_", state_32, &transition_77_invocation);
-	state_32.addTransition(78 + entitiesOffset, "Root_", state_25, &transition_78_invocation);
-	auto& transition_79 = state_11.addTransition(79 + entitiesOffset, "Root_CMD 1", state_25, &transition_79_invocation);
-	transition_79.addVariable(Petri_Var_Enum_Vcommande);
-	auto& transition_80 = state_25.addTransition(80 + entitiesOffset, "Root_1 cube", state_33, &transition_80_invocation);
-	transition_80.addVariable(Petri_Var_Enum_Vcount);
-	state_12.addTransition(81 + entitiesOffset, "Root_no free", state_23, &transition_81_invocation);
-	state_33.addTransition(82 + entitiesOffset, "Root_", state_34, &transition_82_invocation);
-	state_34.addTransition(83 + entitiesOffset, "Root_", state_35, &transition_83_invocation);
-	state_35.addTransition(84 + entitiesOffset, "Root_", state_36, &transition_84_invocation);
-	state_37.addTransition(85 + entitiesOffset, "Root_", state_38, &transition_85_invocation);
-	state_38.addTransition(86 + entitiesOffset, "Root_", state_39, &transition_86_invocation);
-	state_36.addTransition(87 + entitiesOffset, "Root_", state_37, &transition_87_invocation);
-	state_39.addTransition(88 + entitiesOffset, "Root_", state_40, &transition_88_invocation);
-	state_40.addTransition(89 + entitiesOffset, "Root_", state_41, &transition_89_invocation);
-	state_25.addTransition(90 + entitiesOffset, "Root_no free", state_23, &transition_90_invocation);
-	state_42.addTransition(91 + entitiesOffset, "Root_no free", state_23, &transition_91_invocation);
-	state_41.addTransition(92 + entitiesOffset, "Root_", state_43, &transition_92_invocation);
-	state_43.addTransition(93 + entitiesOffset, "Root_", state_42, &transition_93_invocation);
-	state_44.addTransition(94 + entitiesOffset, "Root_", state_45, &transition_94_invocation);
-	state_45.addTransition(95 + entitiesOffset, "Root_", state_46, &transition_95_invocation);
-	auto& transition_96 = state_42.addTransition(96 + entitiesOffset, "Root_1 cube", state_44, &transition_96_invocation);
-	transition_96.addVariable(Petri_Var_Enum_Vcount);
-	state_47.addTransition(97 + entitiesOffset, "Root_", state_48, &transition_97_invocation);
-	state_46.addTransition(98 + entitiesOffset, "Root_", state_47, &transition_98_invocation);
-	state_49.addTransition(99 + entitiesOffset, "Root_", state_50, &transition_99_invocation);
-	auto& transition_100 = state_51.addTransition(100 + entitiesOffset, "Root_1 cube", state_49, &transition_100_invocation);
-	transition_100.addVariable(Petri_Var_Enum_Vcount);
-	state_51.addTransition(101 + entitiesOffset, "Root_no free", state_23, &transition_101_invocation);
-	state_52.addTransition(102 + entitiesOffset, "Root_", state_23, &transition_102_invocation);
-	state_48.addTransition(103 + entitiesOffset, "Root_", state_51, &transition_103_invocation);
-	state_50.addTransition(104 + entitiesOffset, "Root_", state_52, &transition_104_invocation);
-	state_22.addTransition(105 + entitiesOffset, "Root_", state_53, &transition_105_invocation);
-	state_23.addTransition(106 + entitiesOffset, "Root_", state_54, &transition_106_invocation);
+	state_16.addTransition(59 + entitiesOffset, "Root_", state_17, &transition_59_invocation);
+	auto& transition_60 = state_17.addTransition(60 + entitiesOffset, "Root_again", state_18, &transition_60_invocation);
+	transition_60.addVariable(Petri_Var_Enum_Vcount);
+	state_18.addTransition(61 + entitiesOffset, "Root_", state_19, &transition_61_invocation);
+	auto& transition_62 = state_12.addTransition(62 + entitiesOffset, "Root_1 cube", state_21, &transition_62_invocation);
+	transition_62.addVariable(Petri_Var_Enum_Vcount);
+	state_21.addTransition(63 + entitiesOffset, "Root_", state_22, &transition_63_invocation);
+	state_53.addTransition(64 + entitiesOffset, "Root_", state_23, &transition_64_invocation);
+	state_23.addTransition(65 + entitiesOffset, "Root_", state_10, &transition_65_invocation);
+	state_23.addTransition(66 + entitiesOffset, "Root_", state_24, &transition_66_invocation);
+	state_24.addTransition(67 + entitiesOffset, "Root_", state_10, &transition_67_invocation);
+	auto& transition_68 = state_25.addTransition(68 + entitiesOffset, "Root_2 cubes", state_26, &transition_68_invocation);
+	transition_68.addVariable(Petri_Var_Enum_Vcount);
+	state_28.addTransition(69 + entitiesOffset, "Root_", state_29, &transition_69_invocation);
+	state_29.addTransition(70 + entitiesOffset, "Root_", state_30, &transition_70_invocation);
+	state_30.addTransition(71 + entitiesOffset, "Root_", state_31, &transition_71_invocation);
+	auto& transition_72 = state_11.addTransition(72 + entitiesOffset, "Root_CMD 1", state_25, &transition_72_invocation);
+	transition_72.addVariable(Petri_Var_Enum_Vcommande);
+	auto& transition_73 = state_25.addTransition(73 + entitiesOffset, "Root_1 cube", state_33, &transition_73_invocation);
+	transition_73.addVariable(Petri_Var_Enum_Vcount);
+	state_12.addTransition(74 + entitiesOffset, "Root_no free", state_23, &transition_74_invocation);
+	state_33.addTransition(75 + entitiesOffset, "Root_", state_34, &transition_75_invocation);
+	state_34.addTransition(76 + entitiesOffset, "Root_", state_35, &transition_76_invocation);
+	state_35.addTransition(77 + entitiesOffset, "Root_", state_36, &transition_77_invocation);
+	state_37.addTransition(78 + entitiesOffset, "Root_", state_38, &transition_78_invocation);
+	state_38.addTransition(79 + entitiesOffset, "Root_", state_39, &transition_79_invocation);
+	state_36.addTransition(80 + entitiesOffset, "Root_", state_37, &transition_80_invocation);
+	state_39.addTransition(81 + entitiesOffset, "Root_", state_40, &transition_81_invocation);
+	state_40.addTransition(82 + entitiesOffset, "Root_", state_41, &transition_82_invocation);
+	state_25.addTransition(83 + entitiesOffset, "Root_no free", state_23, &transition_83_invocation);
+	state_42.addTransition(84 + entitiesOffset, "Root_no free", state_23, &transition_84_invocation);
+	state_41.addTransition(85 + entitiesOffset, "Root_", state_43, &transition_85_invocation);
+	state_43.addTransition(86 + entitiesOffset, "Root_", state_42, &transition_86_invocation);
+	state_44.addTransition(87 + entitiesOffset, "Root_", state_45, &transition_87_invocation);
+	state_45.addTransition(88 + entitiesOffset, "Root_", state_46, &transition_88_invocation);
+	auto& transition_89 = state_42.addTransition(89 + entitiesOffset, "Root_1 cube", state_44, &transition_89_invocation);
+	transition_89.addVariable(Petri_Var_Enum_Vcount);
+	state_47.addTransition(90 + entitiesOffset, "Root_", state_48, &transition_90_invocation);
+	state_46.addTransition(91 + entitiesOffset, "Root_", state_47, &transition_91_invocation);
+	state_49.addTransition(92 + entitiesOffset, "Root_", state_50, &transition_92_invocation);
+	auto& transition_93 = state_51.addTransition(93 + entitiesOffset, "Root_1 cube", state_49, &transition_93_invocation);
+	transition_93.addVariable(Petri_Var_Enum_Vcount);
+	state_51.addTransition(94 + entitiesOffset, "Root_no free", state_23, &transition_94_invocation);
+	state_52.addTransition(95 + entitiesOffset, "Root_", state_23, &transition_95_invocation);
+	state_48.addTransition(96 + entitiesOffset, "Root_", state_51, &transition_96_invocation);
+	state_50.addTransition(97 + entitiesOffset, "Root_", state_52, &transition_97_invocation);
+	state_22.addTransition(98 + entitiesOffset, "Root_", state_53, &transition_98_invocation);
+	state_23.addTransition(99 + entitiesOffset, "Root_", state_54, &transition_99_invocation);
+	state_15.addTransition(100 + entitiesOffset, "Root_", state_20, &transition_100_invocation);
+	state_20.addTransition(101 + entitiesOffset, "Root_", state_16, &transition_101_invocation);
+	state_19.addTransition(102 + entitiesOffset, "Root_", state_12, &transition_102_invocation);
+	auto& transition_103 = state_16.addTransition(103 + entitiesOffset, "Root_no free", state_23, &transition_103_invocation);
+	transition_103.addVariable(Petri_Var_Enum_Vcount);
+	auto& transition_104 = state_16.addTransition(104 + entitiesOffset, "Root_1 cube", state_21, &transition_104_invocation);
+	transition_104.addVariable(Petri_Var_Enum_Vcount);
+	state_27.addTransition(105 + entitiesOffset, "Root_", state_32, &transition_105_invocation);
+	state_32.addTransition(106 + entitiesOffset, "Root_", state_28, &transition_106_invocation);
+	state_31.addTransition(107 + entitiesOffset, "Root_", state_25, &transition_107_invocation);
+	state_26.addTransition(108 + entitiesOffset, "Root_", state_27, &transition_108_invocation);
+	auto& transition_109 = state_28.addTransition(109 + entitiesOffset, "Root_1 cube", state_33, &transition_109_invocation);
+	transition_109.addVariable(Petri_Var_Enum_Vcount);
 
 	return (FillResult){&state_0, &state_10};
 }
@@ -634,7 +656,7 @@ extern "C" char* GoberCube_evaluate(void* vars, char const* libPath) {
 	return Petri::Utility::loadEvaluateAndInvoke(vars, libPath, "GoberCube");
 }
 extern "C" char const* GoberCube_getHash() {
-	return "1D87AEE5F1ED25C2B8EC8D6D5FD052E7CCF8961E191BFA3416A547EB3DEE3462";
+	return "4E57E26DEA07E60BB093FCA63A53906AD660A7D375499BD27B64E2D60D322D2D";
 }
 
 

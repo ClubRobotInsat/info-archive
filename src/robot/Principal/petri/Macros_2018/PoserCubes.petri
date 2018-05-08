@@ -38,14 +38,32 @@
       <ReturnValue Name="result" Value="$result" />
     </ReturnValues>
     <Comments>
-      <Comment ID="1" Name="Pose 5 étages dans la zone de construction" X="390" Y="130" Width="194" R="1" G="0.7" B="0.7" A="1" />
+      <Comment ID="7" Name="On en profite pour se recaller en haut" X="250" Y="110" Width="158" R="1" G="1" B="0.7" A="1" />
     </Comments>
     <States>
-      <Exit ID="2" Name="End" X="520" Y="220" Active="false" RequiredTokens="1" Radius="25" Function="Petri::Utility::doNothing()" />
-      <Action ID="3" Name="BEGIN" X="240" Y="220" Active="true" RequiredTokens="0" Radius="20" Function="Petri::Utility::doNothing()" />
+      <Exit ID="2" Name="End" X="1270" Y="240" Active="false" RequiredTokens="1" Radius="25" Function="Petri::Utility::doNothing()" />
+      <Action ID="3" Name="BEGIN" X="50" Y="240" Active="true" RequiredTokens="0" Radius="20" Function="Petri::Utility::doNothing()" />
+      <Action ID="5" Name="recallage" X="230" Y="180" Active="false" RequiredTokens="1" Radius="20" Function="recallageHaut(0_m)" />
+      <Action ID="9" Name="avaleurs" X="230" Y="300" Active="false" RequiredTokens="1" Radius="20" Function="desactiverAvaleurs()" />
+      <Action ID="11" Name="reculer" X="430" Y="240" Active="false" RequiredTokens="2" Radius="20" Function="reculerDe(5_cm)" />
+      <Action ID="14" Name="loquet" X="610" Y="240" Active="false" RequiredTokens="1" Radius="20" Function="descendreLoquet()" />
+      <Action ID="15" Name="porte" X="790" Y="180" Active="false" RequiredTokens="1" Radius="20" Function="ouvrirPorteCube()" />
+      <Action ID="18" Name="vitesse" X="790" Y="310" Active="false" RequiredTokens="1" Radius="20" Function="setVitesseLineaireLente()" />
+      <Action ID="20" Name="reculer" X="950" Y="240" Active="false" RequiredTokens="1" Radius="20" Function="reculerDe(10_cm)" />
+      <Action ID="24" Name="vitesse" X="1120" Y="240" Active="false" RequiredTokens="1" Radius="20" Function="resetVitesseLineaire()" />
     </States>
     <Transitions>
-      <Transition ID="4" Name="" X="380" Y="220" BeforeID="3" AfterID="2" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="280" />
+      <Transition ID="6" Name="" X="140" Y="210" BeforeID="3" AfterID="5" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="189.73665961010275" />
+      <Transition ID="10" Name="" X="140" Y="270" BeforeID="3" AfterID="9" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="189.73665961010275" />
+      <Transition ID="12" Name="" X="330" Y="210" BeforeID="5" AfterID="11" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="208.806130178211" />
+      <Transition ID="13" Name="" X="330" Y="270" BeforeID="9" AfterID="11" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="208.806130178211" />
+      <Transition ID="16" Name="" X="520" Y="240" BeforeID="11" AfterID="14" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="180" />
+      <Transition ID="17" Name="" X="700" Y="210" BeforeID="14" AfterID="15" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="189.73665961010275" />
+      <Transition ID="19" Name="" X="700" Y="275" BeforeID="14" AfterID="18" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="193.13207915827965" />
+      <Transition ID="21" Name="" X="870" Y="210" BeforeID="15" AfterID="20" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="170.88007490635061" />
+      <Transition ID="22" Name="" X="870" Y="275" BeforeID="18" AfterID="20" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="174.64249196572982" />
+      <Transition ID="25" Name="" X="1035" Y="240" BeforeID="20" AfterID="24" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="170" />
+      <Transition ID="26" Name="" X="1195" Y="240" BeforeID="24" AfterID="2" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="150" />
     </Transitions>
   </PetriNet>
 </Document>
