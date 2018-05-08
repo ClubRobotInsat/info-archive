@@ -136,11 +136,11 @@ static Petri_actionResult_t state_29_invocation(VarSlot& _PETRI_PRIVATE_GET_VARI
 }
 
 static Petri_actionResult_t state_30_invocation(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
-	return static_cast<actionResult_t>(avancerDe(static_cast<Distance>(26_cm)));
+	return static_cast<actionResult_t>(avancerDe(static_cast<Distance>(36_cm)));
 }
 
 static Petri_actionResult_t state_31_invocation(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
-	return static_cast<actionResult_t>(tournerRelatif(static_cast<Angle>(-45_deg)));
+	return static_cast<actionResult_t>(tournerRelatif(static_cast<Angle>(-135_deg)));
 }
 
 static Petri_actionResult_t state_32_invocation(VarSlot& _PETRI_PRIVATE_GET_VARIABLES_) {
@@ -634,7 +634,7 @@ extern "C" char* GoberCube_evaluate(void* vars, char const* libPath) {
 	return Petri::Utility::loadEvaluateAndInvoke(vars, libPath, "GoberCube");
 }
 extern "C" char const* GoberCube_getHash() {
-	return "8F8A577B87A3409CF74214B816A8D7892E2D3047DB3600D96D6CC26E13CF759A";
+	return "1D87AEE5F1ED25C2B8EC8D6D5FD052E7CCF8961E191BFA3416A547EB3DEE3462";
 }
 
 
