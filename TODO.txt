@@ -1,0 +1,113 @@
++------------------------------------------------------------------------------+
+| Urgent coupe !                                                               |
++------------------------------------------------------------------------------+
+* Tests
+  o à faire ASAP
+    # Evitement
+    # Tirette
+  o Urgents mais moins
+    # AllerA (normal + adversaire)
+    # tournerRelatif & tournerAbsolu -> en symétrie avec la couleur ?
+    # Double check que le robot s'arrête au bout de 100s et qu'il affiche des points
+    # Recallages sur une vraie table
+
+* Elec - nucléo
+  o Fix du CAN : gestion à moitié par la nucléo
+
+* Homologation
+  o Evitement
+    # Tester son bon fonctionnement
+    # Relancer un `avancerDe` si **BLOQUE_PAR_ADV**
+  o Code à changer
+    # Lancer avec la tirette (et non pas avec un `getchar()`)
+    # Si libPetriRuntime.so non trouvé : changement le lancement des IAs avec `LD_LIBRARY_PATH`
+
+* Petri
+  o /!\ Fix pour se connecter en débug sur le robot (actuellement : "Host has closed the connection")
+    / dans `src/robot/Commun/Robot.cpp` ligne ~64
+	/ segfault dans IAPrincipal en appelant `auto ptr_can = new CAN(std::make_unique<RS232>(args[i + 1]))`
+	/ Ca vient de la création d'un `CAN*` saeulement en connection avec le robot (pas sur le simu)
+	/ L'argument args[i + 1] (/dev/ttyUSB0) est bon ; je n'ai pas eu le temps de plus débuguer
+  o Test des déplacements 'en brut' sur le simu
+  o Calibration des déplacements précis sur une table
+  o Faire la strat de Butinator 2000 (1 servo dans le dos et tourner)
+  o === AMELIORER L'IA ===
+  o Trucs à dire à Rémi pour améliorer Petrilab
+    # Ajouter des variables dans les macros 'simples' pour compter les points et les retourner
+    # Commentaires
+	  x Choisir alignement droite / gauche / milieu
+	  x Plus d'options de personnalisation : taille des caractère, ...
+	  x Support du markdown [et des images]
+
+* Simu
+  o Avoir une shape pour le robot (connaître sa direction)                                   [?]
+  o Collision entre le robot et un mur pour les recallages                                   [?]
+
+* Autres
+  o Merge entre `propre` et `master` puis créer une nouvelle branche `coupe`
+  o Cacher les logDebug pour n'avoir que la sortie `std::cout` sur l'écran (print Chocobot + points)
+  o Afficher en permanence Chocobot, voire afficher de temps en temps le nombre de points marqués
+
++------------------------------------------------------------------------------+
+| A faire après la coupe                                                       |
++------------------------------------------------------------------------------+
+
+* Ajouter le simu élec dans le simu info
+* Faire marcher `MagicStrategy` pour le producteur - consommateur
+* MAJ du README et de la doc pour une formation et un maintien des connaissances plus simples
+
+
+
+
+
+
+
+
+
+ --- Old TODO ---
+
++------------------------------------------------------------------------------+
+| Commun                                                                       |
++------------------------------------------------------------------------------+
+* Refactoring :
+  o Factorisation du code                                             [en cours]
+    # entre cartes simu et cartes robot                               [en cours]
+    # faire un header partagé info/élec                               [en cours]
+      x isoler les constantes communes
+
+* Recherche de bugs
+  o Synchronisation entre threads
+
+* Mise à jour wiki (beaucoup de boulot, pas urgent (été 2015))
+
+* Unités matricielles (douce utopie…)
+
++------------------------------------------------------------------------------+
+| IA                                                                           |
++------------------------------------------------------------------------------+
+
+* Constantes
+  o Regroupement des constantes : y'en a partout (Constantes2015, Robot2015, Strategie2015…)
+
++------------------------------------------------------------------------------+
+| Simu                                                                         |
++------------------------------------------------------------------------------+
+* Servos robot secondaire
+
+* Envisager l'utilisation de shaders pour l'affichage
+  o Boulot
+  o Boulot
+  o Encore boulot
+
+* Affichage d'infos de débug
+
+* Amélioration des performances des collisions
+
+* Utilisation de la classe Socket de Commun
+
+* Affichage formes physiques simu
+
++------------------------------------------------------------------------------+
+| Divers                                                                       |
++------------------------------------------------------------------------------+
+

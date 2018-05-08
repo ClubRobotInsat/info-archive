@@ -8,7 +8,7 @@
       <Header File="Deplacement.h" />
       <Header File="Moteur.h" />
     </Headers>
-    <Window X="0" Y="18" W="956" H="1041" />
+    <Window X="65" Y="24" W="956" H="1028" />
     <Profiles Default="Default">
       <Profile Name="Default" SourceOutputPath="../petri/src" LibOutputPath="../../../../build/src/robot/Principal/" DeployMode="DoNothing" DeployPath="" DeployScript="#!/bin/sh&#xA;&#xA;/bin/cp &quot;$PETRI_LIB_PATH&quot; .&#xA;" DeployWhenDebug="True" Port="12346" DebugMode="CreateHost" Hostname="localhost" HostProgram="../../../../build/src/robot/Principal/IAPrincipal" HostProgramArguments="LOCAL --color orange SIMU --debug">
         <Compiler Invocation="/usr/bin/g++" />
@@ -20,7 +20,9 @@
         <Libs />
       </Profile>
       <Profile Name="ARM release" SourceOutputPath="../petri/src" LibOutputPath="../../../../build_arm/src/robot/Principal/" DeployMode="DoNothing" DeployPath="" DeployScript="#!/bin/sh&#xA;&#xA;/bin/cp &quot;$PETRI_LIB_PATH&quot; .&#xA;" DeployWhenDebug="True" Port="12346" DebugMode="CreateHost" Hostname="localhost" HostProgram="../../../../build/src/robot/Principal/IAPrincipal" HostProgramArguments="LOCAL --color orange SIMU --debug">
-        <Compiler Invocation="/usr/bin/arm-linux-gnueabihf-g++-5" />
+        <Compiler Invocation="/usr/bin/arm-linux-gnueabihf-g++-5">
+          <LinkerFlag Value="/home/pi/Desktop/libPetriRuntime.so" />
+        </Compiler>
         <IncludePaths>
           <IncludePath Path="../../../../third_parties/" Recursive="false" />
           <IncludePath Path="../../../commun/" Recursive="false" />
@@ -38,10 +40,11 @@
       <Exit ID="2" Name="End" X="600" Y="240" Active="false" RequiredTokens="1" Radius="25" Function="Petri::Utility::doNothing()" />
       <Action ID="3" Name="Soutes" X="300" Y="240" Active="true" RequiredTokens="0" Radius="20" Function="ouvrirSouteD()" />
       <Action ID="4" Name="AvancerDe(40_cm)" X="440" Y="240" Active="false" RequiredTokens="1" Radius="20" Function="avancerDe(40_cm)" />
+      <Action ID="5" Name="print" X="150" Y="440" Active="true" RequiredTokens="0" Radius="20" Function="Petri::Utility::printText(&quot;Petri d'homologation&quot;)" />
     </States>
     <Transitions>
-      <Transition ID="5" Name="" X="370" Y="240" BeforeID="3" AfterID="4" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
-      <Transition ID="6" Name="" X="520" Y="240" BeforeID="4" AfterID="2" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="160" />
+      <Transition ID="6" Name="" X="370" Y="240" BeforeID="3" AfterID="4" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
+      <Transition ID="7" Name="" X="520" Y="240" BeforeID="4" AfterID="2" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="160" />
     </Transitions>
   </PetriNet>
 </Document>
