@@ -35,3 +35,7 @@ Distance mm(int64_t d);
 bool couleurVerte();
 bool couleurOrange();
 bool couleurUndef();
+
+ResultatAction setPoints(int);
+ResultatAction addPoints(int);
+int getPoints();

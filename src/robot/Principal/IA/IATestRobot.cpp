@@ -48,7 +48,7 @@ void IATestRobot::executer() {
 	_dep->setDebugState(true);
 
 	_robot->setAngleDetectionAdv(0.5_PI);
-	_robot->setEnvoiPositionAdversaireAuto(true);
+	//_robot->setEnvoiPositionAdversaireAuto(true);
 
 	//    while(true)
 	//        logDebug("present :", _robot->adversairePresent(SensAvance::Avant));

@@ -3,6 +3,7 @@
 +------------------------------------------------------------------------------+
 * Tests
   o à faire ASAP
+    # Déplacement
     # Evitement
     # Tirette
   o Urgents mais moins
@@ -32,21 +33,13 @@
   o Calibration des déplacements précis sur une table
   o Faire la strat de Butinator 2000 (1 servo dans le dos et tourner)
   o === AMELIORER L'IA ===
-  o Trucs à dire à Rémi pour améliorer Petrilab
-    # Ajouter des variables dans les macros 'simples' pour compter les points et les retourner
-    # Commentaires
-	  x Choisir alignement droite / gauche / milieu
-	  x Plus d'options de personnalisation : taille des caractère, ...
-	  x Support du markdown [et des images]
 
 * Simu
   o Avoir une shape pour le robot (connaître sa direction)                                   [?]
   o Collision entre le robot et un mur pour les recallages                                   [?]
 
 * Autres
-  o Merge entre `propre` et `master` puis créer une nouvelle branche `coupe`
   o Cacher les logDebug pour n'avoir que la sortie `std::cout` sur l'écran (print Chocobot + points)
-  o Afficher en permanence Chocobot, voire afficher de temps en temps le nombre de points marqués
 
 +------------------------------------------------------------------------------+
 | A faire après la coupe                                                       |

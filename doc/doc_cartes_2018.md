@@ -17,6 +17,8 @@
 * :clipboard: [Attribution des IDs aux cartes](#attribution-des-ids-aux-cartes)
 * :clipboard: [Attribution des IDs aux servos](#attribution-des-ids-aux-servos)
 * :clipboard: [Attribution des IDs aux moteurs](#attribution-des-ids-aux-moteurs)
+* :clipboard: [Attribution des IDs aux contacteurs](#attribution-des-ids-aux-contacteurs)
+* :clipboard: [Attribution des IDs à l'évitement](#attribution-des-ids-a-levitement)
 * Specs sur les différentes cartes
 	- :truck: [Carte déplacement](#carte-deplacement)
 		- [IDs des messages](#ids-des-messages)
@@ -57,6 +59,23 @@ Pour modifier ces constantes, il faut aller voir du côté [de ce document](http
 | 0x04 | Moteur non asservi droite (avaleur) |
 | 0x05 |    Brushless gauche (ventilateur)   |
 | 0x06 |    Brushless droite (ventilateur)   |
+
+## Attribution des IDs aux contacteurs
+|  ID  | Contacteur |
+|:----:|:----------:|
+| 0x01 | Etat       |
+
+* En **réception**, il y a 2 bits : numéro contacteur | état
+* En **envoi**, il y a 1 bit : le numéro du contacteur
+
+Il n'y a qu'un contacteur : la tirette, de numéroi 2
+
+## Attribution des IDs a l'evitement
+|  ID  |    Commande   |
+|:----:|:-------------:|
+| 0x05 | ACTUALISATION |
+
+Les élecs nous retournent régulièrement si un robot adverse est détecté sur 1 bit (1 si détecté), ainsi que l'angle détecté sur un float et en degré (actuellement toujours à 0deg parce que voilà c'est pas la grande priorité!!)
 
 ## Carte deplacement
 ### Commandes des messages

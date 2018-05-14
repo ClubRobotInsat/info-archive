@@ -34,5 +34,6 @@ protected:
 	bool _magicStrategy;
 
 	StrategyGenerator::MagicStrategy _strategy;
-	int _nbr_points = 10;
+
+	std::thread _points_printer;
 };

@@ -60,8 +60,13 @@ public:
 
 	RobotPrincipal& getRobot();
 
+	void setPoints(int);
+	int getPoints() const;
+
 protected:
 	std::unique_ptr<MecaManagerPrincipal> _meca;
+
+	std::atomic_int _nbr_points;
 };
 
 #endif

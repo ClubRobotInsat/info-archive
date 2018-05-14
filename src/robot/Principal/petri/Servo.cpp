@@ -58,20 +58,12 @@ ResultatAction fermerSouteG() {
 	}
 }
 
-ResultatAction ouvrirAbeilleD() {
-	return meca().ouvrirAbeilleD();
+ResultatAction ouvrirAbeille() {
+	return meca().ouvrirAbeille();
 }
 
-ResultatAction fermerAbeilleD() {
-	return meca().fermerAbeilleD();
-}
-
-ResultatAction ouvrirAbeilleG() {
-	return meca().ouvrirAbeilleG();
-}
-
-ResultatAction fermerAbeilleG() {
-	return meca().fermerAbeilleG();
+ResultatAction fermerAbeille() {
+	return meca().fermerAbeille();
 }
 
 ResultatAction monterLoquet() {

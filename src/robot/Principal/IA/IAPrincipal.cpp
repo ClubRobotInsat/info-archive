@@ -8,6 +8,8 @@
 
 #define CHECK_LIST 0
 int main(int argc, char* argv[]) {
+	AsciiArt art(std::cout);
+	art.print_chocobot();
 
 	auto parsing = ia_parsing::parsing_function(argc, argv);
 
@@ -175,6 +177,21 @@ _dep->avancer(3_cm, SensAvance::Arriere, 500_ms);*/
 void IAPrincipal::executer() {
 	_dep->setDebugState(true);
 
+	if(!_debugMode) {
+		_points_printer = std::thread([this]() {
+			AsciiArt art(std::cout);
+
+			while(true) {
+				art.print_chocobot();
+				sleep(2_s);
+				art.print_number(_nbr_points);
+				sleep(2_s);
+				art.print_string("INSA", AsciiArt::COLOR_RED, AsciiArt::COLOR_RED);
+				sleep(2_s);
+			}
+		});
+	}
+
 	logDebug5("Debut exécuter");
 #ifdef HOMOLOGATION
 	_robot->setAngleDetectionAdv(0.5_PI);
@@ -195,13 +212,6 @@ void IAPrincipal::executer() {
 }
 
 void IAPrincipal::funnyAction() {
-	AsciiArt art(std::cout);
-	while(true) {
-		art.print_chocobot();
-		sleep(3_s);
-		art.print_number(_nbr_points);
-		sleep(3_s);
-	}
 	//_meca->lancerEnginSpatial();
 }
 

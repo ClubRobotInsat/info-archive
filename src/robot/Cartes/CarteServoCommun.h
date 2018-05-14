@@ -10,7 +10,7 @@
 
 #include "Carte.h"
 
-#define NB_MAX_SERVOS_NOVA 8
+#define NB_MAX_SERVOS_NOVA 255
 
 class CarteServo : public Carte {
 public:

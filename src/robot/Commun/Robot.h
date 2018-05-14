@@ -89,8 +89,17 @@ namespace Commun {
 		 * croissants) et à droite lorsque sa position angulaire est
 		 * 90 degrés (sens horaire).
 		 * Si aucun adversaire n'est détecté, retourne 0 radians.*/
-		virtual Angle getAngleAdversaireDetecte() = 0;
+		/*virtual Angle getAngleAdversaireDetecte() = 0;
 		virtual void setEnvoiPositionAdversaireAuto(bool value) = 0;
+		virtual Vector2m getPositionTourelle() const;*/
+
+		// *** CarteEvitement2018 ***
+		/**
+		* Retourne vrai si l'adversaire est détecté par le capteur
+		* d'évitement. On ne prends pas en compte l'angle tant que
+		* que les élecs ne fournissent pas
+		*/
+		virtual bool isAdversaireDetecte() = 0;
 		virtual Vector2m getPositionTourelle() const;
 
 		///////////////////////////
@@ -255,9 +264,14 @@ namespace Commun {
 			return this->getCarteDeplacement().lireMesure(type);
 		}
 
-		// *** CarteEvitement2012 ***
+		/*// *** CarteEvitement2012 ***
 		virtual Angle getAngleAdversaireDetecte() override;
-		virtual void setEnvoiPositionAdversaireAuto(bool value) override;
+		virtual void setEnvoiPositionAdversaireAuto(bool value) override;*/
+
+
+		// *** CarteEvitement2018 ***
+		virtual bool isAdversaireDetecte() override;
+
 		/// Tirette
 		virtual void attenteTirette() override;
 

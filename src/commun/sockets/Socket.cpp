@@ -12,7 +12,8 @@
 
 Socket::Socket(SockProtocol protocol) : _protocol(protocol) {
 	_fd = socket(AF_INET, SOCK_STREAM, 0); // AF_INET : internet; SOCK_STREAM : par flux; 0 : protocol (TCP)
-
+	int val = 1;
+	setsockopt(_fd, SOL_SOCKET, SO_REUSEPORT | SO_REUSEADDR, &val, sizeof(val));
 	if(
 #ifdef WIN32
 	    _fd == INVALID_SOCKET

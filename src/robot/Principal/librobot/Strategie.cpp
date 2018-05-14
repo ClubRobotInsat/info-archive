@@ -50,9 +50,20 @@ StrategiePrincipal::StrategiePrincipal(std::vector<std::string> const& args, Con
 	} catch(std::exception const& e) {
 		std::cout << "ERREUR lors du lancement de petri : " << e.what() << std::endl;
 	}
+
+	_nbr_points = 0;
 }
 
 StrategiePrincipal::~StrategiePrincipal() = default;
+
+void StrategiePrincipal::setPoints(int points) {
+	_nbr_points = points;
+}
+
+int StrategiePrincipal::getPoints() const {
+	return _nbr_points;
+}
+
 
 RobotPrincipal& StrategiePrincipal::getRobot() {
 	return static_cast<RobotPrincipal&>(*_robot);
@@ -67,7 +78,17 @@ RobotPrincipal& StrategiePrincipal::getRobot() {
 bool StrategiePrincipal::adversaireVersCible(Vector2m const& cible) {
 	Angle anglePointCible = cible.angle();
 	Angle angleRobot = _robot->lireCoordonnees().getAngle();
-	Angle anglePointCibleRelatifRobot = anglePointCible - angleRobot;
+	// Angle anglePointCibleRelatifRobot = anglePointCible - angleRobot;
+
+	auto dataAdv = getRobot().getCarte<EVITEMENT>().lirePositionAdversaire();
+	return dataAdv.first;
+
+	/*if (dataAdv.first) {
+	    Angle angleAdv = dataAdv.second;
+	    angleAdv = angleAdv.toMod2Pi();
+	}
+
+
 	Angle angleAdv = getRobot().getCarte<EVITEMENT>().getAngle();
 
 	angleAdv = angleAdv.toMod2Pi();
@@ -75,10 +96,10 @@ bool StrategiePrincipal::adversaireVersCible(Vector2m const& cible) {
 
 	if(abs(angleAdv) > 0.001_rad && angleAdv < (anglePointCibleRelatifRobot + 1_PI / 3.0) &&
 	   angleAdv > (anglePointCibleRelatifRobot - 1_PI / 3.0)) {
-		return true;
+	    return true;
 	} else {
-		return false;
-	}
+	    return false;
+	}*/
 }
 
 void StrategiePrincipal::funnyAction() {

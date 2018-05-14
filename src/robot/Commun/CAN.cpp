@@ -111,7 +111,13 @@ namespace Commun {
 
 	Trame CAN::recevoirTrameBloquant() {
 		std::atomic_bool always_false(false);
-		return this->recevoirTrame(always_false);
+		while(true) {
+			try {
+				return this->recevoirTrame(always_false);
+			} catch(Trame::ErreurTropDeDonnees t) {
+				logError("Exception attrapée : ", t.what());
+			}
+		}
 	}
 
 	/// Attend l'arrivee d'une trame complete et la retourne - BLOQUANT

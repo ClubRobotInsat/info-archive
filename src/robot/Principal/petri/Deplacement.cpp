@@ -94,15 +94,21 @@ ResultatAction allerA_vec(Vector2m pos) {
 	return allerA_vec(pos, SensAvance::Avant);
 }
 
-ResultatAction recallageHaut(Distance y) {
-	ResultatAction result = tournerAbsolu(-90_deg);
+// Ces constantes permettent aux recallages d'etre immunisés à un cube farceur qui se glisse entre le robot et un mur
+static constexpr Angle OFFSET_ANGLE_MAX_RECALLAGE = 8_deg;
+static constexpr Distance OFFSET_DISTANCE_MAX_RECALLAGE = 5_cm;
+
+// @param isX : true si en fonction de X, false si en fonction de Y
+ResultatAction recallageHelper(SensAvance sens, Distance D, std::pair<Angle, Angle> angles, bool isX) {
+	Angle angle = (sens == SensAvance::Avant ? angles.first : angles.second);
+	ResultatAction result = tournerAbsolu(angle);
 	if(result != ResultatAction::REUSSI) {
 		resetVitesseLineaire();
 		return result;
 	}
 
 	setVitesseLineaireLente();
-	result = dep().avancerInfini(SensAvance::Arriere, 10_s);
+	result = dep().avancerInfini(sens, 10_s);
 	resetVitesseLineaire();
 
 	if(result != ResultatAction::REUSSI && result != ResultatAction::BLOQUE) {
@@ -110,68 +116,48 @@ ResultatAction recallageHaut(Distance y) {
 		return result;
 	}
 
-	dep().setRepere({positionRobot().x, y}, -90_deg);
+	Vector2m pos_old = positionRobot();
+	Angle angle_old = angleRobot();
+
+	Distance distance_old = (isX ? pos_old.x : pos_old.y);
+
+	Distance variation_distance = (distance_old >= D ? distance_old - D : D - distance_old);
+	Angle variation_angle = (angle_old >= angle ? angle_old - angle : angle - angle_old).toMinusPiPi();
+
+	if(variation_distance > OFFSET_DISTANCE_MAX_RECALLAGE) {
+		logWarn("Problème lors du recallage détecté : variation entre la position actuelle et la position attendue en ",
+		        (isX ? "X" : "Y"),
+		        " de ",
+		        variation_distance);
+		return ResultatAction::BLOQUE;
+	}
+	if(variation_angle > OFFSET_ANGLE_MAX_RECALLAGE) {
+		logWarn("Problème lors du recallage détecté : variation entre l'angle actuel et la position attendue de ", variation_angle);
+		return ResultatAction::BLOQUE;
+	}
+
+	if(isX) {
+		dep().setRepere({D, distance_old}, angle);
+	} else {
+		dep().setRepere({distance_old, D}, angle);
+	}
 	return ResultatAction::REUSSI;
 }
 
-ResultatAction recallageBas(Distance y) {
-	ResultatAction result = tournerAbsolu(90_deg);
-	if(result != ResultatAction::REUSSI) {
-		resetVitesseLineaire();
-		return result;
-	}
-
-	setVitesseLineaireLente();
-	result = dep().avancerInfini(SensAvance::Arriere, 10_s);
-	resetVitesseLineaire();
-
-	if(result != ResultatAction::REUSSI && result != ResultatAction::BLOQUE) {
-		dep().arreter();
-		return result;
-	}
-
-	dep().setRepere({positionRobot().x, y}, 90_deg);
-	return ResultatAction::REUSSI;
+ResultatAction recallageHaut(SensAvance sens, Distance y) {
+	return recallageHelper(sens, y, std::make_pair(90_deg, -90_deg), false);
 }
 
-ResultatAction recallageDroit(Distance x) {
-	ResultatAction result = tournerAbsolu(180_deg);
-	if(result != ResultatAction::REUSSI) {
-		resetVitesseLineaire();
-		return result;
-	}
-
-	setVitesseLineaireLente();
-	result = dep().avancerInfini(SensAvance::Arriere, 10_s);
-	resetVitesseLineaire();
-
-	if(result != ResultatAction::REUSSI && result != ResultatAction::BLOQUE) {
-		dep().arreter();
-		return result;
-	}
-
-	dep().setRepere({x, positionRobot().y}, 180_deg);
-	return ResultatAction::REUSSI;
+ResultatAction recallageBas(SensAvance sens, Distance y) {
+	return recallageHelper(sens, y, std::make_pair(-90_deg, 90_deg), false);
 }
 
-ResultatAction recallageGauche(Distance x) {
-	ResultatAction result = tournerAbsolu(0_deg);
-	if(result != ResultatAction::REUSSI) {
-		resetVitesseLineaire();
-		return result;
-	}
+ResultatAction recallageDroit(SensAvance sens, Distance x) {
+	return recallageHelper(sens, x, std::make_pair(0_deg, 180_deg), true);
+}
 
-	setVitesseLineaireLente();
-	result = dep().avancerInfini(SensAvance::Arriere, 10_s);
-	resetVitesseLineaire();
-
-	if(result != ResultatAction::REUSSI && result != ResultatAction::BLOQUE) {
-		dep().arreter();
-		return result;
-	}
-
-	dep().setRepere({x, positionRobot().y}, 0_deg);
-	return ResultatAction::REUSSI;
+ResultatAction recallageGauche(SensAvance sens, Distance x) {
+	return recallageHelper(sens, x, std::make_pair(180_deg, 0_deg), true);
 }
 
 // Déplacements avec détection de l'adversaire
@@ -205,12 +191,12 @@ Vector2m positionRobot() {
 	return robot().lireCoordonnees().getPos2D();
 }
 
-double angleRobot() {
-	return robot().lireCoordonnees().getAngle().toDeg();
+Angle angleRobot() {
+	return robot().lireCoordonnees().getAngle();
 }
 
-double distanceRobotPosition(Distance x, Distance y) {
-	return (positionRobot() - Position(x, y, robot().getStrategie().getReference()).getPos2D(ABSOLUTE_REFERENCE)).norm().toMm();
+Distance distanceRobotPosition(Distance x, Distance y) {
+	return (positionRobot() - Position(x, y, robot().getStrategie().getReference()).getPos2D(ABSOLUTE_REFERENCE)).norm();
 }
 
 bool advProche(Distance distance) {

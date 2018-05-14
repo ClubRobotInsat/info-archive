@@ -61,7 +61,7 @@ namespace Commun {
 					logError("Utilisation avec RS232 : \"", args[0], " RS232 /dev/ttyUSB0\"\n");
 					exit(EXIT_FAILURE);
 				} else {
-					_busCAN.reset(new CAN(std::make_unique<RS232>(args[i + 1])));
+					_busCAN = std::make_unique<CAN>(std::make_unique<RS232>(args[i + 1]));
 					_busCAN->setTemporisation(10_ms); // Temporisation de 10 ms entre chaque trame pour le bus CAN
 					// électronique (pas de tempo pour le simu)
 					_connecte = true;

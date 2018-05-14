@@ -11,7 +11,7 @@
 //#include "../../simulateur/communication/cartes/CarteContacteurs2007.h"
 #include "../../simulateur/communication/cartes/CarteDebugDessin.h"
 #include "../../simulateur/communication/cartes/CarteDeplacement2009.h"
-#include "../../simulateur/communication/cartes/CarteDetectAdv2009.h"
+#include "../../simulateur/communication/cartes/CarteEvitement2018.h"
 #include "../../simulateur/communication/cartes/CarteMoteurs2018.h"
 //#include "../../simulateur/cartes/CarteElectrovannes2016.h"
 #include "../../simulateur/communication/cartes/Carte.h"
@@ -32,7 +32,7 @@
 //#include "../../robot/Cartes/CartePneumatique.h"
 //#include "../../robot/Cartes/CartePneumatique2014.h"
 //#include "../../robot/Cartes/CarteColorimetre2014.h"
-#include "../../robot/Cartes/CarteDetectAdv2009.h"
+#include "../../robot/Cartes/CarteEvitement2018.h"
 #include "../../robot/Cartes/CarteServosNova2017.h"
 
 #endif
@@ -93,8 +93,7 @@ namespace ConstantesPrincipal {
 		PORTE_CUBE = ID_SERVO_CUBE_DOOR,
 		PORTE_SOUTE_GAUCHE = ID_SERVO_HOLD_DOOR_LEFT,
 		PORTE_SOUTE_DROIT = ID_SERVO_HOLD_DOOR_RIGHT,
-		ABEILLE_GAUCHE = ID_SERVO_BEE_LEFT,
-		ABEILLE_DROITE = ID_SERVO_BEE_RIGHT,
+		ABEILLE = ID_SERVO_BEE,
 		LOQUET = ID_SERVO_LOQUET,
 
 		NBR = 5
@@ -107,17 +106,14 @@ namespace ConstantesPrincipal {
 
 	enum class SouteDroit { OUVERT = 0, FERME = 1, NBR = 2 };
 
-	enum class AbeilleGauche { OUVERT = 0, FERME = 1, NBR = 2 };
-
-	enum class AbeilleDroite { OUVERT = 0, FERME = 1, NBR = 2 };
+	enum class Abeille { OUVERT = 0, FERME = 1, NBR = 2 };
 
 	enum class Loquet { HAUT = 0, BAS = 1, NBR = 2 };
 
 	extern Angle const positionPorteCube[enumToInt(PorteCube::NBR)];
 	extern Angle const positionSouteGauche[enumToInt(SouteGauche::NBR)];
 	extern Angle const positionSouteDroit[enumToInt(SouteDroit::NBR)];
-	extern Angle const positionAbeilleGauche[enumToInt(AbeilleGauche::NBR)];
-	extern Angle const positionAbeilleDroite[enumToInt(AbeilleDroite::NBR)];
+	extern Angle const positionAbeille[enumToInt(Abeille::NBR)];
 	extern Angle const positionLoquet[enumToInt(Loquet::NBR)];
 
 	/////////////////// MOTEURS ///////////////////
@@ -176,7 +172,7 @@ namespace ConstantesPrincipal {
 
 	template <>
 	struct CarteInfo<IDCartesPrincipal::EVITEMENT> {
-		using typeCarte = CarteDetectAdv2009;
+		using typeCarte = CarteEvitement2018;
 		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_EVITEMENT };
 	};
 

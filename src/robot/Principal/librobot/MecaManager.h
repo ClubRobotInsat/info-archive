@@ -69,13 +69,9 @@ public:
 	bool turbineGLibre();
 
 	// Actions pour l'abeille
-	ResultatAction ouvrirAbeilleD();
-	ResultatAction fermerAbeilleD();
-	ResultatAction orienterAbeilleDDe(Angle);
-
-	ResultatAction ouvrirAbeilleG();
-	ResultatAction fermerAbeilleG();
-	ResultatAction orienterAbeilleGDe(Angle);
+	ResultatAction ouvrirAbeille();
+	ResultatAction fermerAbeille();
+	ResultatAction orienterAbeilleDe(Angle);
 
 	// Actions pour le loquet
 	ResultatAction monterLoquet();
@@ -112,9 +108,6 @@ public:
 	void setCouleurServos(CarteServo::Couleur couleur);
 
 	void setModeBlocageServos();
-
-	// Debug : permet de tester le destocker cylindre
-	// void setTousCylindresStockes();
 
 	// private:
 	Angle getPositionServo(uint8_t servo, uint8_t pos);

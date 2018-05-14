@@ -23,11 +23,8 @@ ResultatAction ouvrirSouteG();
 ResultatAction fermerSouteG();
 
 // Actions pour l'abeille
-ResultatAction ouvrirAbeilleG();
-ResultatAction fermerAbeilleG();
-
-ResultatAction ouvrirAbeilleD();
-ResultatAction fermerAbeilleD();
+ResultatAction ouvrirAbeille();
+ResultatAction fermerAbeille();
 
 ResultatAction monterLoquet();
 ResultatAction descendreLoquet();

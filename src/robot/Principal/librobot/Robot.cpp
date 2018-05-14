@@ -39,7 +39,7 @@ void RobotPrincipal::initialisation() {
 	logDebug2("Actualisation des contacteurs");
 	logDebug2("Contacteurs actualises");
 
-	this->getCarte<EVITEMENT>().activerEnvoiMesureAdvAuto();
+	// this->getCarte<EVITEMENT>().activerEnvoiMesureAdvAuto();
 }
 
 Vector2m RobotPrincipal::getPositionTourelle() const {
@@ -62,7 +62,7 @@ void RobotPrincipal::desactivation() {
 	this->getCarte<DEPLACEMENT>().activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::DROITE, false);
 	this->getCarte<DEPLACEMENT>().activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::GAUCHE, false);
 
-	this->getCarte<EVITEMENT>().desactiverEnvoiMesureAdvAuto();
+	// this->getCarte<EVITEMENT>().desactiverEnvoiMesureAdvAuto();
 
 	getStrategie().getMecaManager().couperMeca();
 }

@@ -111,22 +111,27 @@ namespace Commun {
 	}
 
 	template <typename _Strategie, typename _IDCartes, template <_IDCartes> class _CarteInfo, typename Contacteurs>
+	bool RobotAnnee<_Strategie, _IDCartes, _CarteInfo, Contacteurs>::isAdversaireDetecte() {
+		return this->getCarte<_IDCartes::EVITEMENT>().lirePositionAdversaire().first;
+	}
+
+	/*template <typename _Strategie, typename _IDCartes, template <_IDCartes> class _CarteInfo, typename Contacteurs>
 	void RobotAnnee<_Strategie, _IDCartes, _CarteInfo, Contacteurs>::setEnvoiPositionAdversaireAuto(bool value) {
-		if(value)
-			this->getCarte<_IDCartes::EVITEMENT>().activerEnvoiMesureAdvAuto();
-		else
-			this->getCarte<_IDCartes::EVITEMENT>().desactiverEnvoiMesureAdvAuto();
+	    if(value)
+	        this->getCarte<_IDCartes::EVITEMENT>().activerEnvoiMesureAdvAuto();
+	    else
+	        this->getCarte<_IDCartes::EVITEMENT>().desactiverEnvoiMesureAdvAuto();
 	}
 
 	template <typename _Strategie, typename _IDCartes, template <_IDCartes> class _CarteInfo, typename Contacteurs>
 	Angle RobotAnnee<_Strategie, _IDCartes, _CarteInfo, Contacteurs>::getAngleAdversaireDetecte() {
-		Angle angleAdv = this->getCarte<_IDCartes::EVITEMENT>().getAngle();
-		if(abs(angleAdv) > 0.001_rad) {
-			return (angleAdv + this->constantes().getOffsetAngleAdv());
-		} else {
-			return 0_rad;
-		}
-	}
+	    Angle angleAdv = this->getCarte<_IDCartes::EVITEMENT>().getAngle();
+	    if(abs(angleAdv) > 0.001_rad) {
+	        return (angleAdv + this->constantes().getOffsetAngleAdv());
+	    } else {
+	        return 0_rad;
+	    }
+	}*/
 
 	template <typename _Strategie, typename _IDCartes, template <_IDCartes> class _CarteInfo, typename Contacteurs>
 	template <_IDCartes ID, typename... T>

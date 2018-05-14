@@ -29,10 +29,7 @@ public:
 		    << std::endl;
 	}
 
-	void print_string(std::string to_print) {
-		const std::string COLOR_IN = COLOR_GRAY;
-		const std::string COLOR_OUT = COLOR_WHITE;
-
+	void print_string(std::string to_print, const std::string& COLOR_IN = COLOR_GRAY, const std::string& COLOR_OUT = COLOR_WHITE) {
 		_os << std::string(8, '\n') << std::endl;
 
 		for(int i = 0; i < 16; ++i) {
@@ -62,26 +59,26 @@ public:
 		print_string(std::to_string(to_print));
 	}
 
+	static constexpr const char* RST{"\033[0;0m"};
+	static constexpr const char* COLOR_BLACK{"\033[0;30m"};
+	static constexpr const char* COLOR_GRAY{"\033[1;30m"};
+	static constexpr const char* COLOR_RED{"\033[0;31m"};
+	static constexpr const char* COLOR_LIGHT_RED{"\033[1;31m"};
+	static constexpr const char* COLOR_GREEN{"\033[1;32m"};
+	static constexpr const char* COLOR_LIGHT_GREEN{"\033[1;32m"};
+	static constexpr const char* COLOR_BROWN{"\033[0;33m"};
+	static constexpr const char* COLOR_YELLOW{"\033[1;33m"};
+	static constexpr const char* COLOR_BLUE{"\033[0;34m"};
+	static constexpr const char* COLOR_LIGHT_BLUE{"\033[1;34m"};
+	static constexpr const char* COLOR_PURPLE{"\033[0;35m"};
+	static constexpr const char* COLOR_LIGHT_PURPLE{"\033[1;35m"};
+	static constexpr const char* COLOR_CYAN{"\033[0;36m"};
+	static constexpr const char* COLOR_LIGHT_CYAN{"\033[1;36m"};
+	static constexpr const char* COLOR_LIGHT_GRAY{"\033[0;37m"};
+	static constexpr const char* COLOR_WHITE{"\033[1;37m"};
+
 private:
 	std::ostream& _os;
-
-	const std::string RST{"\033[0;0m"};
-	const std::string COLOR_BLACK{"\033[0;30m"};
-	const std::string COLOR_GRAY{"\033[1;30m"};
-	const std::string COLOR_RED{"\033[0;31m"};
-	const std::string COLOR_LIGHT_RED{"\033[1;31m"};
-	const std::string COLOR_GREEN{"\033[1;32m"};
-	const std::string COLOR_LIGHT_GREEN{"\033[1;32m"};
-	const std::string COLOR_BROWN{"\033[0;33m"};
-	const std::string COLOR_YELLOW{"\033[1;33m"};
-	const std::string COLOR_BLUE{"\033[0;34m"};
-	const std::string COLOR_LIGHT_BLUE{"\033[1;34m"};
-	const std::string COLOR_PURPLE{"\033[0;35m"};
-	const std::string COLOR_LIGHT_PURPLE{"\033[1;35m"};
-	const std::string COLOR_CYAN{"\033[0;36m"};
-	const std::string COLOR_LIGHT_CYAN{"\033[1;36m"};
-	const std::string COLOR_LIGHT_GRAY{"\033[0;37m"};
-	const std::string COLOR_WHITE{"\033[1;37m"};
 
 	const std::array<std::string, 28> CHOCOBOT = {
 	    {"                   /((((((\\                                                  ",
@@ -115,22 +112,22 @@ private:
 
 	const std::map<char, std::array<std::string, 16>> _letter_converter = {
 	    {'A',
-	     {"               AAA               ",
-	      "              A:::A              ",
-	      "             A:::::A             ",
-	      "            A:::::::A            ",
-	      "           A:::::::::A           ",
-	      "          A:::::A:::::A          ",
-	      "         A:::::A A:::::A         ",
-	      "        A:::::A   A:::::A        ",
-	      "       A:::::A     A:::::A       ",
-	      "      A:::::AAAAAAAAA:::::A      ",
-	      "     A:::::::::::::::::::::A     ",
-	      "    A:::::AAAAAAAAAAAAA:::::A    ",
-	      "   A:::::A             A:::::A   ",
-	      "  A:::::A               A:::::A  ",
-	      " A:::::A                 A:::::A ",
-	      "AAAAAAA                   AAAAAAA"}},
+	     {"            AAA            ",
+	      "           A:::A           ",
+	      "          A:::::A          ",
+	      "         A:::::::A         ",
+	      "        A:::::::::A        ",
+	      "       A:::::A:::::A       ",
+	      "      A:::::A A:::::A      ",
+	      "     A:::::A   A:::::A     ",
+	      "    A:::::A     A:::::A    ",
+	      "   A:::::AAAAAAAAA:::::A   ",
+	      "  A:::::::::::::::::::::A  ",
+	      " A:::::AAAAAAAAAAAAA:::::A ",
+	      "A:::::A             A:::::A",
+	      "A:::::A             A:::::A",
+	      "A:::::A             A:::::A",
+	      "AAAAAAA             AAAAAAA"}},
 
 	    {'B',
 	     {"BBBBBBBBBBBBBBBBB   ",
@@ -421,22 +418,22 @@ private:
 	      "RRRRRRRR     RRRRRRR"}},
 
 	    {'S',
-	     {"   SSSSSSSSSSSSSSS ",
-	      " SS:::::::::::::::S",
-	      "S:::::SSSSSS::::::S",
-	      "S:::::S     SSSSSSS",
-	      "S:::::S            ",
-	      "S:::::S            ",
-	      " S::::SSSS         ",
-	      "  SS::::::SSSSS    ",
-	      "    SSS::::::::SS  ",
-	      "       SSSSSS::::S ",
-	      "            S:::::S",
-	      "            S:::::S",
-	      "SSSSSSS     S:::::S",
-	      "S::::::SSSSSS:::::S",
-	      "S:::::::::::::::SS ",
-	      " SSSSSSSSSSSSSSS   "}},
+	     {"   SSSSSSSSSSSSSS ",
+	      " SS::::::::::::::S",
+	      "S:::::SSSSS::::::S",
+	      "S:::::S    SSSSSSS",
+	      "S:::::S           ",
+	      "S:::::S           ",
+	      " S::::SSS         ",
+	      "  SS:::::SSSSS    ",
+	      "    SSS:::::::SS  ",
+	      "       SSSSS::::S ",
+	      "           S:::::S",
+	      "           S:::::S",
+	      "SSSSSSS    S:::::S",
+	      "S::::::SSSSS:::::S",
+	      "S::::::::::::::SS ",
+	      " SSSSSSSSSSSSSS   "}},
 
 	    {'T',
 	     {"TTTTTTTTTTTTTTTTTTTTTTT",

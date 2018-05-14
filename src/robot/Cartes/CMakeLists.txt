@@ -3,7 +3,6 @@
 set(CARTES_SOURCE
         Carte.cpp
         CarteExemple.cpp
-        CarteElectrovannes2016.cpp
         CarteActionneurs2007.cpp
         CarteAlimentation2009.cpp
         CarteAsservissement2008.cpp
@@ -20,6 +19,8 @@ set(CARTES_SOURCE
         CarteDebug2011.cpp
         CarteDeplacement2009.cpp
         CarteDetectAdv2009.cpp
+        CarteElectrovannes2016.cpp
+        CarteEvitement2018.cpp
         CarteLcd2008.cpp
         CarteLcd2009.cpp
         CarteLed2008.cpp

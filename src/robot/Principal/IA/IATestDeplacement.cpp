@@ -205,13 +205,15 @@ void IATestDeplacement::executer() {
 	//    return;
 
 	std::cout << "===== Déplacements simples =====\n" << std::endl;
-	std::cout << "\navancerDe(10_cm) : " << std::flush;
-	getchar();
-	std::cout << toString(_dep->avancer(10_cm, SensAvance::Avant)) << std::endl;
+	while(true) {
+		std::cout << "\navancerDe(50_cm) : " << std::flush;
+		getchar();
+		std::cout << toString(_dep->avancer(50_cm, SensAvance::Avant)) << std::endl;
+	}
 
-	std::cout << "\nreculerDe(10_cm) : " << std::flush;
+	std::cout << "\nreculerDe(50_cm) : " << std::flush;
 	getchar();
-	std::cout << toString(_dep->avancer(10_cm, SensAvance::Arriere)) << std::endl;
+	std::cout << toString(_dep->avancer(50_cm, SensAvance::Arriere)) << std::endl;
 
 	std::cout << "\ntournerAbsolu(45_deg) : " << std::flush;
 	getchar();

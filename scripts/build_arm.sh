@@ -4,7 +4,7 @@
 compile_principal=0
 compile_wii=0
 compile_test=0
-cores=4
+cores=$(nproc)
 
 if [ $# -ne "0" ]
 	then for arg in $*
@@ -19,15 +19,13 @@ if [ $# -ne "0" ]
 			then compile_wii=1
 		elif [ "$arg" = "test" ]
 			then compile_test=1
-		elif ( [[ "$arg" =~ ^[-+]?[0-9]+$ ]] )
-			then cores=$arg
 		else
-			echo "Usage : $0 <nbr of cores> [all|principal|wii|test]"
+			echo "Usage : $0 [all|principal|wii|test]"
 			exit
 		fi
 	done
 else
-	echo "Usage : $0 <nbr of cores> [all|principal|wii|test]"
+	echo "Usage : $0 [all|principal|wii|test]"
 	compile_principal=1
 	compile_wii=1
 	compile_test=1
@@ -41,10 +39,10 @@ echo -e "${Green}Compiling with -j ${cores}${End}"
 dir=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 cd ${dir}
 
-rm -rf build_arm.LAST_SAVE && mv build_arm build_arm.LAST_SAVE && mkdir build_arm && cd build_arm
+mkdir -p build_arm & cd build_arm
 
 echo -e "${Green} Generating CMakeFile${End}"
-cmake .. -DBITS=64 -DRASPI="1" -DCMAKE_TOOLCHAIN_FILE="../Cross-Compilation.cmake"
+cmake .. -DRASPI="1" -DCMAKE_TOOLCHAIN_FILE="../Cross-Compilation.cmake"
 
 if [ $compile_principal -eq 1 ]
 	then echo -e "${Green} Building IAPrincipal${End}"

@@ -38,10 +38,10 @@ ResultatAction allerA_vec(Vector2m pos);
 
 // fonctions de recallage : le robot tourne dans le bon sens et il recule jusqu'à être bloqué
 // il mets ensuite à jour sa position ; /!\ aux objets sur la table !
-ResultatAction recallageHaut(Distance y = 2_m);
-ResultatAction recallageBas(Distance y = 0_m);
-ResultatAction recallageDroit(Distance x = 3_m);
-ResultatAction recallageGauche(Distance x = 0_m);
+ResultatAction recallageHaut(SensAvance sens = SensAvance::Avant, Distance y = 2_m);
+ResultatAction recallageBas(SensAvance sens = SensAvance::Avant, Distance y = 0_m);
+ResultatAction recallageDroit(SensAvance sens = SensAvance::Avant, Distance x = 3_m);
+ResultatAction recallageGauche(SensAvance sens = SensAvance::Avant, Distance x = 0_m);
 
 // @PetriLab@
 
@@ -54,9 +54,9 @@ ResultatAction allerA(Distance x, Distance y);
 
 // retourne la position actuelle
 Vector2m positionRobot();
-double angleRobot();
+Angle angleRobot();
 // Renvoie la distance en vol d'oiseau entre le robot et un point
-double distanceRobotPosition(Distance x, Distance y);
+Distance distanceRobotPosition(Distance x, Distance y);
 
 /// @return true si le robot adverse se trouve à une distance inférieure à celle spécifiée
 bool advProche(Distance distance = 50_cm);

@@ -20,13 +20,15 @@ namespace Commun {
 	}
 
 	Coordonnees Evitement::getPositionAdversaire() {
+		logWarn("On n'a pas la position de l'adversaire!");
 		const repere::Repere& reference = _robot.getCarteDeplacement().getReference();
+		return Coordonnees({0_m, 0_m}, 0_deg, reference);
 
-		Coordonnees start = _robot.lireCoordonnees();
+		/*Coordonnees start = _robot.lireCoordonnees();
 		// L'angle est récupéré selon le repère de la carte déplacement
 		Angle angleAdv = -_robot.getAngleAdversaireDetecte().toMinusPiPi();
 		if(abs(angleAdv) < 0.001_deg) // si la carte nous dit qu'il n'y a pas d'adv
-			return Coordonnees(Vector2m(-1_m, -1_m), 0_deg, reference);
+		    return Coordonnees(Vector2m(-1_m, -1_m), 0_deg, reference);
 		Distance dst = _env.getRobotRadius();
 
 		// Repère du robot
@@ -44,31 +46,36 @@ namespace Commun {
 		// On considère le robot adverse comme étant juste devant notre robot.
 		Vector2m advPosition = start.getPos2D() + positionOffset + advDirection * 2.3 * dst.toM();
 
-		return Coordonnees(advPosition, 0_deg, reference);
+		return Coordonnees(advPosition, 0_deg, reference);*/
 	}
 
 	Angle Evitement::getPositionAngulaireAdversaire() {
-		Angle angleAdv = _robot.getAngleAdversaireDetecte();
+		logWarn("On n'a pas l'angle de l'adversaire!");
+		return 0_deg;
+
+		/*Angle angleAdv = _robot.getAngleAdversaireDetecte();
 
 		if(angleAdv < 0.001_deg) {
-			return angleAdv;
+		    return angleAdv;
 		} else {
-			return shiftAngle(angleAdv);
-		}
+		    return shiftAngle(angleAdv);
+		}*/
 	}
 
 	bool Evitement::adversaireDetecte() {
-		return _robot.getAngleAdversaireDetecte().toMinusPiPi() >= 0.001_deg;
+		return _robot.isAdversaireDetecte();
+		// return _robot.getAngleAdversaireDetecte().toMinusPiPi() >= 0.001_deg;
 	}
 
-	bool Evitement::adversairePresent(SensAvance sens) {
-		Angle angleAdv = getPositionAngulaireAdversaire();
+	bool Evitement::adversairePresent(SensAvance) {
+		return _robot.isAdversaireDetecte();
+		/*Angle angleAdv = getPositionAngulaireAdversaire();
 		Angle demiConeDetection = Angle::makeFromMilliRad(_robot.getAngleDetectionAdv());
 		bool present =
 		    abs(angleAdv) >= 0.001_deg && ((sens == SensAvance::Avant && abs(angleAdv) < demiConeDetection) ||
 		                                   (sens == SensAvance::Arriere && abs(angleAdv) > (1_PI - demiConeDetection)));
 		// logMagenta("Adv present : ", present);
-		return present;
+		return present;*/
 	}
 
 	Angle Evitement::shiftAngle(Angle angle) {

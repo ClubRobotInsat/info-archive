@@ -42,3 +42,19 @@ bool couleurOrange() {
 bool couleurUndef() {
 	return _strategie->getCouleurEquipe() == Constantes::RobotColor::Undef;
 }
+
+ResultatAction setPoints(int points) {
+	_strategie->setPoints(points);
+	return ResultatAction::REUSSI;
+}
+
+ResultatAction addPoints(int points) {
+	static std::mutex _mutex_points;
+	std::lock_guard<std::mutex> lk(_mutex_points);
+	_strategie->setPoints(_strategie->getPoints() + points);
+	return ResultatAction::REUSSI;
+}
+
+int getPoints() {
+	return _strategie->getPoints();
+}

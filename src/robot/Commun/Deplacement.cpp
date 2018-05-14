@@ -205,7 +205,7 @@ namespace Commun {
 			else
 				_carteDeplacement.avancer(-distance);
 			res = this->attendreFinTrajectoire(this->testDeplacementUnitaireTermine(), timeoutDate, true, true, sens);
-			//_carteDeplacement.arreter();
+			_carteDeplacement.arreter();
 		} else {
 			logDebug3("Carte non disponible");
 		}
