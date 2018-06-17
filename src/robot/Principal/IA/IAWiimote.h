@@ -65,6 +65,7 @@ private:
 	bool angularVelocityFast = true;
 
 	const Vector2m _initial_position = toVec2(ConstantesPrincipal::START_ROBOT_POSITION);
+	const Angle _initial_angle = ConstantesPrincipal::START_ROBOT_ANGLE;
 	bool _avaleurs_actives = false;
 };
 

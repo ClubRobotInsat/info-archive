@@ -33,6 +33,8 @@ cd info
 #  Installation des differents outils
 :rotating_light: **Etapes requises** :rotating_light:
 
+L'installation est automatique à condition d'être sur un système Ubuntu.
+
 ## Logiciels necessaires
 Installation de tous les outils nécessaires au développement
 ```bash

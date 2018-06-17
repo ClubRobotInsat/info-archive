@@ -59,6 +59,8 @@ MecaManagerPrincipal::MecaManagerPrincipal(RobotPrincipal& robot)
 	// Test des moteurs
 	this->activerAvaleurs(SensAvaleurs::AVALER);
 	sleep(1);
+	this->desactiverAvaleurs();
+	sleep(1);
 	this->activerAvaleurs(SensAvaleurs::RECRACHER);
 	sleep(1);
 	this->desactiverAvaleurs();

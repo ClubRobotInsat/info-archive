@@ -204,8 +204,8 @@ namespace Commun {
 				_carteDeplacement.avancer(distance);
 			else
 				_carteDeplacement.avancer(-distance);
-			res = this->attendreFinTrajectoire(this->testDeplacementUnitaireTermine(), timeoutDate, true, true, sens);
-			_carteDeplacement.arreter();
+			this->attendreFinTrajectoire(this->testDeplacementUnitaireTermine(), timeoutDate, true, true, sens);
+			//_carteDeplacement.arreter();
 		} else {
 			logDebug3("Carte non disponible");
 		}

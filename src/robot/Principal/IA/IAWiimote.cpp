@@ -28,7 +28,7 @@ IAWiimote::IAWiimote(std::vector<std::string> const& args)
 
 	inputProvider.registerEventHandler(this);
 
-	getDeplacement().setRepere(_initial_position);
+	getDeplacement().setRepere(Coordonnees{_initial_position, _initial_angle});
 }
 
 void IAWiimote::executer() {
@@ -96,13 +96,13 @@ void IAWiimote::processWiimoteInput(WiimoteState& state) {
 // Soit on tient la manette comme dans mario kart, soit comme dans Wii Sport Resort
 #ifdef MANETTE_COUCHEE
 		if(state.isPressed(BUTTON_UP)) {
-			tourner(SensRotation::Trigo);
-		} else if(state.isPressed(BUTTON_LEFT)) {
-			avancer(SensAvance::Avant);
-		} else if(state.isPressed(BUTTON_RIGHT)) {
-			avancer(SensAvance::Arriere);
-		} else if(state.isPressed(BUTTON_DOWN)) {
 			tourner(SensRotation::Horaire);
+		} else if(state.isPressed(BUTTON_LEFT)) {
+			avancer(SensAvance::Arriere);
+		} else if(state.isPressed(BUTTON_RIGHT)) {
+			avancer(SensAvance::Avant);
+		} else if(state.isPressed(BUTTON_DOWN)) {
+			tourner(SensRotation::Trigo);
 		} else {
 			stop();
 		}
@@ -140,7 +140,7 @@ void IAWiimote::processWiimoteInput(WiimoteState& state) {
 		    // On revient à la position initiale
 		    if(state.isPressed(BUTTON_HOME)) {
 			allerA_vec(_initial_position);
-			tournerAbsolu(0_deg);
+			tournerAbsolu(_initial_angle);
 			std::cout << "Home sweet home" << std::endl;
 		} else if(state.isPressed(BUTTON_PLUS)) { // Modifie la vitesse de manière permanente (en plus de 1 et 2)
 			setVitesseLineaireRapide();
