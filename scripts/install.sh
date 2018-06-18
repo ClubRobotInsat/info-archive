@@ -70,9 +70,8 @@ fi
 
 if [ $install_petri -eq 1 ]
 	then echo -e "${Yellow}Installation de PetriLab${End}"
-	cd ${dir}/third_parties/petri_deb
-	petri_file="petrilab_$(lsb_release -c | rev | cut -f1 | rev).deb"
-	sudo dpkg -i ${petri_file}
+	cd ${dir}/scripts/petrilab/
+	./install.sh
     if [ $? -eq "0" ]
         then echo -e "${Green}Installation de petri réussie${End}"
         petri_installed=1
