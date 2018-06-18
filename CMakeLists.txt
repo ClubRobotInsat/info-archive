@@ -5,7 +5,7 @@ project(root)
 option(TARGET "Architecture cible" pc)
 option(COLOR "Sortie en couleur de la compilation" ON)
 option(DEBUG "Compilation avec les symboles de debug et sans optimisations" OFF)
-set(BITS "32" CACHE . "Build en 32 ou 64 bits")
+set(BITS "64" CACHE . "Build en 32 ou 64 bits")
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -std=gnu++14")
 set(CMAKE_CXX_STANDARD 14)
