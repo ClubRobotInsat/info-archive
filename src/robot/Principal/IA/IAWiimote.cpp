@@ -122,21 +122,38 @@ void IAWiimote::processWiimoteInput(WiimoteState& state) {
 
 // ascenseurs
 #ifdef MANETTE_COUCHEE
-		if(state.isPressed(BUTTON_B)) {
-			monterAscenseursDe(1);
-		} else if(state.isPressed(BUTTON_A)) {
+		if(state.isPressed(BUTTON_B) || state.isPressed(BUTTON_PLUS)) {
+			if (_soutes_ouvertes) {
+				fermerSouteG();
+				fermerSouteD();
+			} else {
+				ouvrirSouteD();
+				ouvrirSouteG();
+			}
+
+			_soutes_ouvertes = !_soutes_ouvertes;
+			//monterAscenseursDe(1);
+		} else if(state.isPressed(BUTTON_A) || state.isPressed(BUTTON_MINUS)) {
 #else
 		if(state.isPressed(BUTTON_1)) {
 			monterAscenseursDe(1);
 		} else if(state.isPressed(BUTTON_2)) {
 #endif
-			if(_avaleurs_actives) {
-				activerAvaleurs(SensAvaleurs::AVALER);
+			if(_abeille_ouverte) {
+				fermerAbeille();
 			} else {
-				desactiverAvaleurs();
+				ouvrirAbeille();
 			}
-			_avaleurs_actives = !_avaleurs_actives;
-		} else
+			_abeille_ouverte = !_abeille_ouverte;
+		} else if(state.isPressed(BUTTON_HOME)) {
+			if (_porte_ouverte) {
+				fermerPorteCube();
+			} else {
+				ouvrirPorteCube();
+			}
+			_porte_ouverte = !_porte_ouverte;
+		}
+		/*else
 		    // On revient à la position initiale
 		    if(state.isPressed(BUTTON_HOME)) {
 			allerA_vec(_initial_position);
@@ -148,7 +165,7 @@ void IAWiimote::processWiimoteInput(WiimoteState& state) {
 		} else if(state.isPressed(BUTTON_MINUS)) {
 			setVitesseLineaireLente();
 			setVitesseAngulaireLente();
-		} else
+		}*/ else
 
 // accélération - décélération
 #ifdef MANETTE_COUCHEE

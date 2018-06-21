@@ -66,7 +66,9 @@ private:
 
 	const Vector2m _initial_position = toVec2(ConstantesPrincipal::START_ROBOT_POSITION);
 	const Angle _initial_angle = ConstantesPrincipal::START_ROBOT_ANGLE;
-	bool _avaleurs_actives = false;
+	bool _soutes_ouvertes = false;
+	bool _porte_ouverte = false;
+	bool _abeille_ouverte = false;
 };
 
 #endif // ROOT_IAWIIMOTE_H

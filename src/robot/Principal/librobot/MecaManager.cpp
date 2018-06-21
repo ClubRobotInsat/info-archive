@@ -56,14 +56,14 @@ MecaManagerPrincipal::MecaManagerPrincipal(RobotPrincipal& robot)
 	this->fermerSouteD();
 	this->fermerSouteG();
 
-	// Test des moteurs
+	/*// Test des moteurs
 	this->activerAvaleurs(SensAvaleurs::AVALER);
 	sleep(1);
 	this->desactiverAvaleurs();
 	sleep(1);
 	this->activerAvaleurs(SensAvaleurs::RECRACHER);
 	sleep(1);
-	this->desactiverAvaleurs();
+	this->desactiverAvaleurs();*/
 
 	// this->monterAscenseursDe(1);
 
