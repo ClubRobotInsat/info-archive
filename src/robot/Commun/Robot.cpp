@@ -6,7 +6,7 @@
 //
 
 #include "Robot.h"
-#include "NullCommunicator.h"
+#include "Communication/NullCommunicator.h"
 #include "Strategie.h"
 
 namespace Commun {

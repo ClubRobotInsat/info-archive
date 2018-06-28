@@ -5,7 +5,7 @@
 #ifndef ROOT_APPLICATION_H
 #define ROOT_APPLICATION_H
 
-#include "../../robot/Commun/CAN.h"
+#include "../../robot/Commun/Communication/CAN.h"
 #include "Header.h"
 #include "Monitor.h"
 #include "Start_Screen.h"

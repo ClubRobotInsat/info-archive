@@ -5,7 +5,7 @@
 //  Created by Rémi on 31/01/2015.
 //
 
-#include "../RS232.h"
+#include "../Communication/RS232.h"
 #include "CarteTestCAN.h"
 #include <stdio.h>
 

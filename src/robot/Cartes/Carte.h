@@ -1,7 +1,7 @@
 #ifndef _CARTE_H_
 #define _CARTE_H_
 
-#include "../Commun/CAN.h"
+#include "../Commun/Communication/CAN.h"
 #include <Commun.h>
 #include <atomic>
 #include <log/Log.h>

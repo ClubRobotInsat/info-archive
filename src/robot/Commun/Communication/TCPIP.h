@@ -11,7 +11,7 @@
 #include <unistd.h>
 #endif
 
-#include "../../commun/Commun.h"
+#include "Commun.h"
 
 #include "Serie.h"
 

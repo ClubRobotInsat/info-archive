@@ -4,9 +4,9 @@
 
 #ifndef ROOT_CANLISTENER_H
 #define ROOT_CANLISTENER_H
-#include "../../robot/Commun/CAN.h"
-#include "../../robot/Commun/RS232.h"
-#include "../../robot/Commun/TCPIP.h"
+#include "../../robot/Commun/Communication/CAN.h"
+#include "../../robot/Commun/Communication/RS232.h"
+#include "../../robot/Commun/Communication/TCPIP.h"
 #include "Header.h"
 #include <chrono>
 

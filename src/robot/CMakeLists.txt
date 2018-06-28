@@ -36,25 +36,25 @@ set(ROBOT_SOURCE
         Commun/Robot.cpp
         Commun/Deplacement.cpp
         Commun/Ascenseur.cpp
-        Commun/CAN.cpp
+        Commun/Communication/CAN.cpp
 		Commun/Moteur.cpp
-        Commun/RS232.cpp
-        Commun/Serie.cpp
+        Commun/Communication/RS232.cpp
+        Commun/Communication/Serie.cpp
         Commun/Servo.cpp
-		Commun/NullCommunicator.cpp
-        Commun/TCPIP.cpp
+        Commun/Communication/NullCommunicator.cpp
+        Commun/Communication/TCPIP.cpp
         Commun/Evitement.cpp)
 
 set(ROBOT_INTERFACE_ELEC
 		Commun/Robot.cpp
 		Commun/Deplacement.cpp
 		Commun/Ascenseur.cpp
-		Commun/CAN.cpp
+        Commun/Communication/CAN.cpp
 		Commun/Moteur.cpp
-		Commun/RS232.cpp
-		Commun/Serie.cpp
+        Commun/Communication/RS232.cpp
+        Commun/Communication/Serie.cpp
 		Commun/Servo.cpp
-		Commun/TCPIP.cpp
+        Commun/Communication/TCPIP.cpp
 		../elec/simulator/Interface.cpp
 		Commun/Evitement.cpp)
 

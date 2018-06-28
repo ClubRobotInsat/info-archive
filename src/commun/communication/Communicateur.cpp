@@ -69,9 +69,40 @@ void Communicateur::onEnvoye(Trame const& t, bool isAck) {
 		logError("erreur d'envoi de trame : le client n'est pas encore connecte");
 }
 
+bool Communicateur::lireOctets(uint8_t &id_cmd, uint8_t &idFort, uint8_t &nbDonnees, uint8_t *donnees, uint8_t &num_paquet) {
+	uint8_t numDonnee, octet;
+
+	// NB : un appel à that->lire() est susceptible de changer l'état de "connecté"
+	// à "déconnecté". Si l'on est déconnecté, lire() renvoie 0.
+
+	// attendre l'octet début de trame (ignorer les autres)
+	while(this->lire() != Trame::OCTET_DEBUT_TRAME_1 && this->estConnecte())
+		;
+
+	if(this->lire() != Trame::OCTET_DEBUT_TRAME_2 || !this->estConnecte())
+		return false;
+	if(this->lire() != Trame::OCTET_DEBUT_TRAME_3 || !this->estConnecte())
+		return false;
+	if(this->lire() != Trame::OCTET_DEBUT_TRAME_4_NORMAL || !this->estConnecte())
+		return false;
+
+	num_paquet = this->lire(); // numPaquet
+	// printf("Num paquet : %d\n", num_paquet);
+
+	// lire la trame octet par octet
+	id_cmd = this->lire();
+	idFort = this->lire();
+	nbDonnees = this->lire(); // NB : au pire, si l'on s'est déconnecté au milieu, nbDonnees == 0
+	for(numDonnee = 0; numDonnee < nbDonnees; numDonnee++) {
+		octet = this->lire();
+		donnees[numDonnee] = octet;
+	}
+	return true;
+}
+
 // thread de reception des trames
 void Communicateur::threadReception() {
-	uint8_t id_cmd, idFort, nbDonnees, donnees[255], numDonnee, octet, num_paquet;
+	uint8_t id_cmd, idFort, nbDonnees, donnees[255], num_paquet;
 	setThreadName("Réception messages");
 
 	while(true) {
@@ -89,30 +120,8 @@ void Communicateur::threadReception() {
 		}
 
 		while(this->estConnecte()) {
-			// NB : un appel à that->lire() est susceptible de changer l'état de "connecté"
-			// à "déconnecté". Si l'on est déconnecté, lire() renvoie 0.
-
-			// attendre l'octet début de trame (ignorer les autres)
-			while(this->lire() != Trame::OCTET_DEBUT_TRAME_1 && this->estConnecte())
-				;
-
-			if(this->lire() != Trame::OCTET_DEBUT_TRAME_2 || !this->estConnecte())
+			if (!lireOctets(id_cmd, idFort, nbDonnees, donnees, num_paquet)) {
 				continue;
-			if(this->lire() != Trame::OCTET_DEBUT_TRAME_3 || !this->estConnecte())
-				continue;
-			if(this->lire() != Trame::OCTET_DEBUT_TRAME_4_NORMAL || !this->estConnecte())
-				continue;
-
-			num_paquet = this->lire(); // numPaquet
-			// printf("Num paquet : %d\n", num_paquet);
-
-			// lire la trame octet par octet
-			id_cmd = this->lire();
-			idFort = this->lire();
-			nbDonnees = this->lire(); // NB : au pire, si l'on s'est déconnecté au milieu, nbDonnees == 0
-			for(numDonnee = 0; numDonnee < nbDonnees; numDonnee++) {
-				octet = this->lire();
-				donnees[numDonnee] = octet;
 			}
 
 			// si le client est toujours connecté, on a normalement reçu une trame correcte,

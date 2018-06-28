@@ -3,7 +3,7 @@
 /* robot/Lidar/Driver/hokuyoLidar.h                                2015-03-05 */
 /* Club Robot INSA Toulouse                                      Félix Poisot */
 /******************************************************************************/
-#include "../../Commun/RS232.h"
+#include "../../Commun/Communication/RS232.h"
 #include "lidar.h"
 #include <libusb-1.0/libusb.h>
 /******************************************************************************/

@@ -9,7 +9,7 @@
 
 #include "../../Cartes/CarteAsservissement2009.h"
 #include "../Ascenseur.h"
-#include "../RS232.h"
+#include "../Communication/RS232.h"
 #include <stdio.h>
 
 std::vector<Carte*> cartes;

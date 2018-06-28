@@ -29,21 +29,21 @@ public:
 	Serie(const std::string& port, ITrameListener& robot);
 	// lève ErreurOuvertureCommunicationSerie si imposible d'ouvrir la connection
 
-	~Serie();
+	~Serie() override;
 
 	// Ecrit un octet sur le port
-	void envoyer(unsigned char octet);
+	void envoyer(unsigned char octet) override;
 
 	// Attend un octet sur le port et retourne le premier arrivé - BLOQUANT
-	unsigned char lire();
+	unsigned char lire() override;
 
 	// force une déconnexion (ferme le port), et attend la fin du thread de réception.
-	virtual void cleanUp();
+	void cleanUp() override;
 
 	// erreur si la connection n'est pas ouverte
 	class ErreurOuvertureSerie : public Communicateur::ErreurOuvertureCommunication {
 	public:
-		ErreurOuvertureSerie(std::string msg) : ErreurOuvertureCommunication(msg) {}
+		explicit ErreurOuvertureSerie(std::string msg) : ErreurOuvertureCommunication(msg) {}
 	};
 
 private:

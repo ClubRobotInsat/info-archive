@@ -1,7 +1,7 @@
-#include "../CAN.h"
-#include "../RS232.h"
-#include "../Serie.h"
-#include "../TCPIP.h"
+#include "../Communication/CAN.h"
+#include "../Communication/RS232.h"
+#include "../Communication/Serie.h"
+#include "../Communication/TCPIP.h"
 #include <log/Log.h>
 
 using namespace Commun;

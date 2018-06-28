@@ -8,7 +8,7 @@
 #include <stdio.h>
 
 #include "../../Cartes/CarteServosNova2017.h"
-#include "../RS232.h"
+#include "../Communication/RS232.h"
 #include "../Servo.h"
 #include <stdio.h>
 

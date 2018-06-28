@@ -8,11 +8,11 @@
 #include "../../commun/Trame.h"
 #include "../Cartes/Carte.h"
 #include "../Cartes/CarteDeplacementCommun.h"
-#include "CAN.h"
+#include "Communication/CAN.h"
 #include "IDebugDessin.h"
-#include "RS232.h"
-#include "Serie.h"
-#include "TCPIP.h"
+#include "Communication/RS232.h"
+#include "Communication/Serie.h"
+#include "Communication/TCPIP.h"
 #include <atomic>
 #include <condition_variable>
 #include <memory>

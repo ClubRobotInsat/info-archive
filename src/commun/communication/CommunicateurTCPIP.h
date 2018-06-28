@@ -24,38 +24,38 @@ public:
 	TCPIP(unsigned short port, ITrameListener& robot);
 	// lève ErreurOuvertureCommunicationTCPIP si imposible d'ouvrir la connexion
 
-	virtual ~TCPIP();
+	~TCPIP() override;
 
 	// attendre que le client se connecte pour les communicateurs avec connexion
-	virtual void attendreClient();
+	void attendreClient() override;
 
 	// Ecrit un octet sur le port
-	virtual void envoyer(unsigned char octet);
+	void envoyer(unsigned char octet) override;
 	// lève ErreurEmissionTCPIP si erreur lors de l'envoie d'un octet
 
 	// Attend un octet sur le port et retourne le premier arrivé - BLOQUANT
-	virtual unsigned char lire();
+	unsigned char lire() override;
 	// si le client c'est deconnecte retourne 0 et met a false clientConnecte
 
 	// force une déconnexion et attend la fin du thread de réception
-	virtual void cleanUp();
+	void cleanUp() override;
 
 	// erreur si la connexion n'est pas ouverte
 	class ErreurOuvertureTCPIP : public Communicateur::ErreurOuvertureCommunication {
 	public:
-		ErreurOuvertureTCPIP(std::string msg) : ErreurOuvertureCommunication(msg) {}
+		explicit ErreurOuvertureTCPIP(std::string msg) : ErreurOuvertureCommunication(msg) {}
 	};
 
 	// erreur de lecture dans le canal de communication
 	class ErreurReceptionTCPIP : public Communicateur::ErreurReceptionCommunication {
 	public:
-		ErreurReceptionTCPIP(std::string msg) : ErreurReceptionCommunication(msg) {}
+		explicit ErreurReceptionTCPIP(std::string msg) : ErreurReceptionCommunication(msg) {}
 	};
 
 	// erreur d'ecriture dans le canal de communication
 	class ErreurEmissionTCPIP : public Communicateur::ErreurEmissionCommunication {
 	public:
-		ErreurEmissionTCPIP(std::string msg) : ErreurEmissionCommunication(msg) {}
+		explicit ErreurEmissionTCPIP(std::string msg) : ErreurEmissionCommunication(msg) {}
 	};
 
 private:

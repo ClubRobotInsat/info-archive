@@ -6,8 +6,8 @@
 #define ROOT_INTERFACE_H
 
 #include "Interface.h"
-#include "../../robot/Commun/NullCommunicator.h"
-#include "../../robot/Commun/Serie.h"
+#include "../../robot/Commun/Communication/NullCommunicator.h"
+#include "../../robot/Commun/Communication/Serie.h"
 
 void delay() {
 	std::this_thread::sleep_for(std::chrono::microseconds(1));
