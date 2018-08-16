@@ -1,7 +1,9 @@
-// Trame.h
+//
+// Created by terae on 8/16/18.
+//
 
-#ifndef TRAME_H_
-#define TRAME_H_
+#ifndef ROOT_IFRAME_H
+#define ROOT_IFRAME_H
 
 #include "Utils.h"
 
@@ -46,7 +48,10 @@ inline constexpr Byte makeFromString(std::string value) {
 }
 */
 
-class Trame final {
+/// Cette classe de base permets de créer des trames génériques,
+/// à la fois pour une architecture avec des cartes (IDs et commandes) comme avant 2019
+/// mais aussi avec une architecture où tout l'état du robot est envoyé en permanence
+class GlobalFrame {
 public:
 	/// Valeurs constantes de certains octets des trames
 	enum {
@@ -57,19 +62,12 @@ public:
 		OCTET_DEBUT_TRAME_4_ACK = 0xbb,
 	};
 
-	// indice max d'une carte
-	enum { NUM_CMD_MAX = 15, NB_CARTES_MAX = 16, DONNEES_TRAME_MAX = 8, BITS_ID_TRAME = 7, BITS_CMD_TRAME = 4 };
-
-	// erreur l'indice de la carte est trop grand
-	class ErreurIdCarteTropGrand : public std::runtime_error {
-	public:
-		ErreurIdCarteTropGrand(uint8_t id) : std::runtime_error("L'id " + to_string(id) + " n'est pas un id valide") {}
-	};
+	enum { NB_MODULES_MAX = 16, DONNEES_TRAME_MAX = 8 };
 
 	// erreur si une trame n'est pas traitée
 	class ErreurTrameNonTraitee : public std::runtime_error {
 	public:
-		ErreurTrameNonTraitee(const Trame& t)
+		ErreurTrameNonTraitee(const GlobalFrame& t)
 		        : std::runtime_error("La trame " + to_string(t) + " n'a pas été traitée") {}
 	};
 
@@ -94,41 +92,9 @@ public:
 		                             " est invalide : il doit être comprit entre 0 et 7 inclu ") {}
 	};
 
-	// erreur si la distance entre la camera au centre d'observation est négative
-	class ErreurNumCommandeTropGrand : public std::runtime_error {
-	public:
-		ErreurNumCommandeTropGrand(uint8_t num)
-		        : std::runtime_error("Le numéro de commande demandé n'existe pas : " + to_string(num)) {}
-	};
+	GlobalFrame() {}
 
-public:
-	// constructeur : état par défaut, id = cmd = numPaquet = 0, pas de données
-	Trame() : Trame(0, 0) {}
-
-	Trame operator=(Trame const& t2);
-
-	// constructeur : sans données
-	// lève ErreurIdCarteTropGrand si l'id de la carte est trop grand
-	// lève ErreurNumCommandeTropGrand si la commande est trop grande
-	explicit Trame(uint8_t id, uint8_t cmd) : Trame(id, cmd, {}) {}
-
-	// constructeur, avec plusieurs données pour le 1er et 2e et une seule pour le 3e
-	// lève ErreurIdCarteTropGrand si l'id de la carte est trop grand
-	// lève ErreurIdCarteTropGrand si l'id de la carte est trop grand
-	// lève ErreurNumCommandeTropGrand si la commande est 0xFtrop grande
-	explicit Trame(uint8_t id, uint8_t cmd, std::initializer_list<uint8_t> donnees);
-	explicit Trame(uint8_t id, uint8_t cmd, uint8_t nbDonnees, uint8_t const donnees[]);
-	explicit Trame(uint8_t id, uint8_t cmd, uint8_t donnee) : Trame(id, cmd, {donnee}) {}
-
-	Trame(Trame const& t) = default;
-	Trame(Trame&& t) = default;
-
-	// destructeur
-	~Trame() = default;
-
-	// accesseur
-	uint8_t getId() const;
-	uint8_t getCmd() const;
+	// accesseurs
 	uint8_t getNbDonnees() const;
 	uint8_t getNumPaquet() const;
 
@@ -158,39 +124,31 @@ public:
 	         bool valeurBit); // lève ErreurNumeroDonneeTropGrand et ErreurNumeroBitTropGrand
 
 	void setNumPaquet(uint8_t num_paquet);
-	void setCmd(uint8_t cmd);
-	void setId(uint8_t id);
+
 	void setDonnees(uint8_t nbDonnees, uint8_t const donnees[]);
 	void setDonnee(uint8_t donnee) {
 		this->setDonnees(1, &donnee);
 	}
 
-	// Les 11 bits d'en-tête d'une trame CAN, regroupés en 2 fois 8 bits, dans l'ordre .first et .second
-	using MuxedIdAndCmd = std::pair<uint8_t, uint8_t>;
-
-	// Ces 2 fonctions vont permettre l'extraction de l'ID ou de la commande depuis les 11 bits d'en-tête d'une trame
-	// CAN (regroupés en 2 fois 8 bits).
-	static uint8_t demultiplexId(MuxedIdAndCmd const& idAndCmd);
-	static uint8_t demultiplexId(uint8_t first, uint8_t second) {
-		return demultiplexId({first, second});
-	}
-	static uint8_t demultiplexCmd(MuxedIdAndCmd const& idAndCmd);
-	static uint8_t demultiplexCmd(uint8_t first, uint8_t second) {
-		return demultiplexCmd({first, second});
-	}
-
-	// Retourne les 2 octets contenant les 11 bits d'en-tête CAN, à partir de l'ID de carte et de la commande
-	static MuxedIdAndCmd multiplexIdAndCmd(uint8_t id, uint8_t cmd);
-
 	// afficher la trame sur le flux de sortie
-	friend std::ostream& operator<<(std::ostream&, const Trame&);
+	friend std::ostream& operator<<(std::ostream&, const GlobalFrame&);
 
-	// convertir la trame en chaîne de caractères lisible et avec les nombres en base décimale
-	std::string toStringLong() const;
+	// Opérateurs de concaténation des trames
+	// Les informations annexes des '_donnees' sont copiées depuis la variable de gauche
+	GlobalFrame operator+(const GlobalFrame& f) const;
+	GlobalFrame& operator+=(const GlobalFrame& f);
 
-	friend bool operator==(Trame const& t1, Trame const& t2) {
-		return t1._id == t2._id && t1._cmd == t2._cmd && t1._num_paquet == t2._num_paquet && t1._donnees == t2._donnees;
-	}
+protected:
+	// Constructeurs
+	explicit GlobalFrame(std::initializer_list<uint8_t> donnees);
+	explicit GlobalFrame(uint8_t nbDonnees, uint8_t const donnees[]);
+	explicit GlobalFrame(uint8_t donnee) : GlobalFrame({donnee}) {}
+
+	// numéro de paquet (pour les ack)
+	uint8_t _num_paquet = 0;
+
+	// tableau des données
+	std::vector<uint8_t> _donnees;
 
 private:
 	void addDonneesInternal() {}
@@ -199,23 +157,11 @@ private:
 	void addDonneesInternal(T&& value, Args&&... values);
 	template <typename... Args>
 	void addDonneesInternal(Byte const& value, Args&&... values);
-
-	// numéro de la carte à qui est adressée cette trame
-	uint8_t _id = 0;
-
-	// numéro de la commande
-	uint8_t _cmd = 0;
-
-	// numéro de paquet (pour les ack)
-	uint8_t _num_paquet = 0;
-
-	// tableau des données
-	std::vector<uint8_t> _donnees;
 };
 
 template <typename T>
-T Trame::getDonnee(uint8_t numero) const {
-	static_assert(sizeof(T) <= DONNEES_TRAME_MAX, "Le type demandé ne peut pas contenir dans une trame !");
+T GlobalFrame::getDonnee(uint8_t numero) const {
+	static_assert(sizeof(T) <= GlobalFrame::DONNEES_TRAME_MAX, "Le type demandé ne peut pas contenir dans une trame !");
 	if(numero + sizeof(T) > _donnees.size())
 		throw ErreurNumeroDonneeTropGrand(numero);
 
@@ -226,7 +172,7 @@ T Trame::getDonnee(uint8_t numero) const {
 	return value;
 }
 
-inline bool Trame::getDonneeBool(uint8_t numero, uint8_t bit) {
+inline bool GlobalFrame::getDonneeBool(uint8_t numero, uint8_t bit) {
 	if(numero >= _donnees.size())
 		throw ErreurNumeroDonneeTropGrand(numero);
 	if(bit >= 8)
@@ -236,8 +182,8 @@ inline bool Trame::getDonneeBool(uint8_t numero, uint8_t bit) {
 }
 
 template <typename T, typename... Args>
-void Trame::addDonneesInternal(T&& value, Args&&... values) {
-	if(this->getNbDonnees() + sizeof(T) > Trame::DONNEES_TRAME_MAX)
+void GlobalFrame::addDonneesInternal(T&& value, Args&&... values) {
+	if(this->getNbDonnees() + sizeof(T) > GlobalFrame::DONNEES_TRAME_MAX)
 		throw ErreurTropDeDonnees(this->getNbDonnees() + sizeof(T));
 
 	auto pointer = reinterpret_cast<uint8_t const*>(&value);
@@ -247,8 +193,8 @@ void Trame::addDonneesInternal(T&& value, Args&&... values) {
 }
 
 template <typename... Args>
-void Trame::addDonneesInternal(Byte const& value, Args&&... values) {
-	if(this->getNbDonnees() + 1 > Trame::DONNEES_TRAME_MAX)
+void GlobalFrame::addDonneesInternal(Byte const& value, Args&&... values) {
+	if(this->getNbDonnees() + 1 > GlobalFrame::DONNEES_TRAME_MAX)
 		throw ErreurTropDeDonnees(this->getNbDonnees() + 1);
 
 	auto byte = value.value();
@@ -257,5 +203,4 @@ void Trame::addDonneesInternal(Byte const& value, Args&&... values) {
 	this->addDonneesInternal(values...);
 }
 
-
-#endif /*TRAME_H_*/
+#endif // ROOT_IFRAME_H

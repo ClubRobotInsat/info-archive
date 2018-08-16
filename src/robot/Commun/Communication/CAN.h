@@ -17,10 +17,10 @@
 
 #include "Serie.h"
 #include <Clock.h>
-#include <Trame.h>
 #include <Units/Time.h>
 #include <array>
 #include <atomic>
+#include <communication/Trame.h>
 #include <deque>
 #include <memory>
 #include <mutex>

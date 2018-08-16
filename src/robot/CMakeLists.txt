@@ -32,34 +32,36 @@ set(STRAT_SOURCE
 add_library(Strategie STATIC ${STRAT_SOURCE})
 target_link_libraries(Strategie)
 
+set(COMMUNICATION_SOURCE
+		Commun/Communication/CAN.cpp
+		Commun/Communication/RS232.cpp
+		Commun/Communication/Serie.cpp
+		Commun/Communication/NullCommunicator.cpp
+		Commun/Communication/TCPIP.cpp
+		Commun/Communication/NamedPipe.cpp
+		Commun/RobotPhysique/Modules/Module.cpp
+		Commun/RobotPhysique/Modules/ModuleManager.cpp
+		)
+
 set(ROBOT_SOURCE
         Commun/Robot.cpp
         Commun/Deplacement.cpp
         Commun/Ascenseur.cpp
-        Commun/Communication/CAN.cpp
 		Commun/Moteur.cpp
-        Commun/Communication/RS232.cpp
-        Commun/Communication/Serie.cpp
         Commun/Servo.cpp
-        Commun/Communication/NullCommunicator.cpp
-        Commun/Communication/TCPIP.cpp
         Commun/Evitement.cpp)
 
 set(ROBOT_INTERFACE_ELEC
 		Commun/Robot.cpp
 		Commun/Deplacement.cpp
 		Commun/Ascenseur.cpp
-        Commun/Communication/CAN.cpp
 		Commun/Moteur.cpp
-        Commun/Communication/RS232.cpp
-        Commun/Communication/Serie.cpp
 		Commun/Servo.cpp
-        Commun/Communication/TCPIP.cpp
 		../elec/simulator/Interface.cpp
 		Commun/Evitement.cpp)
 
-add_library(Robot STATIC ${ROBOT_SOURCE})
-add_library(Robot_Interfacer_Elec ${ROBOT_INTERFACE_ELEC})
+add_library(Robot STATIC ${ROBOT_SOURCE} ${COMMUNICATION_SOURCE})
+add_library(Robot_Interfacer_Elec ${ROBOT_INTERFACE_ELEC} ${COMMUNICATION_SOURCE})
 target_link_libraries(Robot Outils_Robot Strategie)
 target_link_libraries(Robot_Interfacer_Elec Outils_Robot Strategie)
 

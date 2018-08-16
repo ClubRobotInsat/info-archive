@@ -8,7 +8,7 @@
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wint-in-bool-context"
-#include "Trame.h"
+#include "communication/Trame.h"
 #pragma GCC diagnostic pop
 
 #include "Units.h"

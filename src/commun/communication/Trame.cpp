@@ -9,25 +9,12 @@
 #include <iostream>
 #include <sstream>
 
-std::ostream& operator<<(std::ostream& s, Byte const& b) {
-	/*std::ios oldState(nullptr);
-	oldState.copyfmt(s);
-	*/
-	s << "0x" << std::hex << (int)b.value();
-
-	// s.copyfmt(oldState);
-
-	return s;
-}
-
-Trame::Trame(uint8_t id, uint8_t cmd, uint8_t nbDonnees, uint8_t const donnees[]) {
-	this->addBytes(nbDonnees, donnees);
+Trame::Trame(uint8_t id, uint8_t cmd, std::initializer_list<uint8_t> donnees) : GlobalFrame(donnees) {
 	this->setId(id);
 	this->setCmd(cmd);
 }
 
-Trame::Trame(uint8_t id, uint8_t cmd, std::initializer_list<uint8_t> donnees) {
-	this->addBytes(donnees);
+Trame::Trame(uint8_t id, uint8_t cmd, uint8_t nbDonnees, uint8_t const donnees[]) : GlobalFrame(nbDonnees, donnees) {
 	this->setId(id);
 	this->setCmd(cmd);
 }
@@ -40,22 +27,6 @@ uint8_t Trame::getCmd() const {
 	return _cmd;
 }
 
-uint8_t Trame::getNbDonnees() const {
-	return _donnees.size();
-}
-
-uint8_t Trame::getNumPaquet() const {
-	return _num_paquet;
-}
-
-uint8_t const* Trame::getDonnees() const {
-	return &_donnees[0];
-}
-
-void Trame::setNumPaquet(uint8_t num_paquet) {
-	_num_paquet = num_paquet;
-}
-
 void Trame::setCmd(uint8_t cmd) {
 	if(_cmd >= NUM_CMD_MAX)
 		throw ErreurNumCommandeTropGrand(cmd);
@@ -66,39 +37,6 @@ void Trame::setId(uint8_t id) {
 	if(_id >= NB_CARTES_MAX)
 		throw ErreurIdCarteTropGrand(id);
 	_id = id;
-}
-
-void Trame::addBytes(std::initializer_list<uint8_t> donnees) {
-	if(donnees.size() + this->getNbDonnees() > Trame::DONNEES_TRAME_MAX)
-		throw ErreurTropDeDonnees(donnees.size());
-
-	_donnees.insert(_donnees.end(), donnees.begin(), donnees.end());
-}
-
-void Trame::addBytes(uint8_t nbDonnees, uint8_t const donnees[]) {
-	if(nbDonnees + this->getNbDonnees() > Trame::DONNEES_TRAME_MAX)
-		throw ErreurTropDeDonnees(nbDonnees);
-
-	_donnees.insert(_donnees.end(), donnees, donnees + nbDonnees);
-}
-
-void Trame::setDonnees(uint8_t nbDonnees, uint8_t const donnees[]) {
-	_donnees.clear();
-	this->addBytes(nbDonnees, donnees);
-}
-
-void Trame::set(uint8_t numero, uint8_t bit, bool valeur) {
-	// lève ErreurNumeroDonneeTropGrand si numero trop grand
-	// lève ErreurNumeroBitTropGrand si bit trop grand
-	if(numero >= _donnees.size())
-		throw ErreurNumeroDonneeTropGrand(numero);
-	if(bit >= 8)
-		throw ErreurNumeroBitTropGrand(bit);
-
-	if(valeur)
-		_donnees[numero] |= 1 << bit;
-	else
-		_donnees[numero] &= ~(1 << bit);
 }
 
 uint8_t Trame::demultiplexId(MuxedIdAndCmd const& idAndCmd) {

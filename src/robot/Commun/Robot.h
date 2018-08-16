@@ -5,15 +5,15 @@
 #include <IConstantes.h>
 
 #include "../../commun/MathToolbox/MathToolbox.h"
-#include "../../commun/Trame.h"
+#include "../../commun/communication/Trame.h"
 #include "../Cartes/Carte.h"
 #include "../Cartes/CarteDeplacementCommun.h"
 #include "Communication/CAN.h"
-#include "IDebugDessin.h"
 #include "Communication/NamedPipe.h"
 #include "Communication/RS232.h"
 #include "Communication/Serie.h"
 #include "Communication/TCPIP.h"
+#include "IDebugDessin.h"
 #include <atomic>
 #include <condition_variable>
 #include <memory>

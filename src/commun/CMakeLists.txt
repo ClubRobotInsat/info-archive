@@ -11,7 +11,8 @@ set(OUTILS_SOURCE
         RobotPrincipal/Constantes.cpp
         sockets/Socket.cpp
         sockets/tcpSock.cpp
-        Trame.cpp
+        communication/GlobalFrame.cpp
+        communication/Trame.cpp
         ../../third_parties/Units/Units.cpp)
 
 add_library(Outils_${SIMU_OU_ROBOT} STATIC ${OUTILS_SOURCE})
