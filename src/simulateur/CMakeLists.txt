@@ -65,6 +65,7 @@ add_executable(Simulator
         ../commun/communication/Communicateur.cpp
         ../commun/communication/CommunicateurSerie.cpp
         ../commun/communication/CommunicateurTCPIP.cpp
+        ../commun/communication/CommunicateurPipe.cpp
 
         ${root_SOURCE_DIR}/third_parties/json.hpp)
 

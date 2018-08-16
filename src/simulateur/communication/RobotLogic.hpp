@@ -2,9 +2,9 @@
 
 #include "../core/Simulateur.h"
 #include "communication/Communicateur.h"
+#include "communication/CommunicateurPipe.h"
 #include "communication/CommunicateurSerie.h"
 #include "communication/CommunicateurTCPIP.h"
-
 
 #include <cstdio>
 
@@ -27,7 +27,8 @@ inline void RobotLogic::onEnvoye(Trame const& t, bool isAck) {
 }
 
 
-// L'argument 'connexion' est soit "", soit de la forme "RS232:/dev/ttyS0" ou "TCPIP:1234"
+// L'argument 'connexion' est soit "", soit de la forme "RS232:/dev/ttyS0" ou "TCPIP:1234" ou encore
+// "PIPES:/tmp/read.pipe:/tmp/write.pipe"
 template <typename _IDCartes, template <_IDCartes> class _CarteInfo, typename _CouleurEquipe>
 RobotLogicTemplate<_IDCartes, _CarteInfo, _CouleurEquipe>::RobotLogicTemplate(std::unique_ptr<Commun::ConstantesCommunes> constantesCommunes,
                                                                               std::unique_ptr<Commun::ConstantesRobot> constantes,
@@ -43,6 +44,11 @@ RobotLogicTemplate<_IDCartes, _CarteInfo, _CouleurEquipe>::RobotLogicTemplate(st
 			_communicateur = std::make_unique<TCPIP>(Utils::strToNumber<uint16_t>(connexion.substr(6)), *this);
 		} else if(type.compare("LOCAL") == 0) {
 			_communicateur = std::make_unique<TCPIP>(this->constantes().getPortTCPIPDefault(), *this);
+		} else if(type.compare("PIPES") == 0) {
+			std::string args = connexion.substr(6);
+			std::string path_read = args.substr(0, args.find_first_of(":"));
+			std::string path_write = args.substr(args.find_first_of(":") + 1);
+			_communicateur = std::make_unique<NamedPipe>(path_read, path_write, *this);
 		} else if(type.compare("conso") == 0) {
 			// _communicateur = std::make_unique<Console>(*this);
 		} else

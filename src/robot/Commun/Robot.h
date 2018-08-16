@@ -10,6 +10,7 @@
 #include "../Cartes/CarteDeplacementCommun.h"
 #include "Communication/CAN.h"
 #include "IDebugDessin.h"
+#include "Communication/NamedPipe.h"
 #include "Communication/RS232.h"
 #include "Communication/Serie.h"
 #include "Communication/TCPIP.h"
@@ -25,7 +26,7 @@ namespace Commun {
 
 	class Strategie;
 
-	enum class ModeConnexion { RS232, LOCAL, OTHERS };
+	enum class ModeConnexion { RS232, LOCAL, PIPES, OTHERS };
 
 	class Robot {
 	public:

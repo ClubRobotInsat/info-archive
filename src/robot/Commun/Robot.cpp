@@ -82,6 +82,13 @@ namespace Commun {
 
 				break;
 			}
+			// - PIPES :
+			else if(args[i] == "PIPES") {
+				logDebug9("Initialisation de la connection au CAN local par pipes nommés");
+				_busCAN = std::make_unique<CAN>(std::make_unique<NamedPipe>("/tmp/read.pipe", "/tmp/write.pipe"));
+				_connecte = true;
+				_modeConnexion = ModeConnexion::PIPES;
+			}
 			// - LOCAL :
 			else if(args[i] == "LOCAL") {
 				logDebug9("Initialisation de la connexion au CAN local");
@@ -106,6 +113,7 @@ namespace Commun {
 			logInfo("- ", args[0], " RS232 [peripherique] (ex : \"", args[0], " RS232 /dev/ttyUSB0\")");
 			logInfo("- ", args[0], " TCPIP [adresse IP] [port] (ex : \"", args[0], " TCPIP 127.0.0.1 1234\")");
 			logInfo("- ", args[0], " LOCAL --color [color]");
+			logInfo("- ", args[0], " PIPES");
 			logInfo("Ajouter SIMU pour établir une connection avec le socket du simu.");
 			exit(EXIT_FAILURE);
 		}
