@@ -39,9 +39,11 @@ set(COMMUNICATION_SOURCE
 		Commun/Communication/NullCommunicator.cpp
 		Commun/Communication/TCPIP.cpp
 		Commun/Communication/NamedPipe.cpp
-		Commun/RobotPhysique/Modules/Module.cpp
-		Commun/RobotPhysique/Modules/ModuleManager.cpp
+		Commun/Modules/Module.hpp
+		Commun/Modules/ModuleManager.cpp
+		Commun/Modules/ModuleServos2019.cpp
 		)
+add_library(SharedWithRust Commun/Modules/SharedWithRust.c)
 
 set(ROBOT_SOURCE
         Commun/Robot.cpp
@@ -62,8 +64,8 @@ set(ROBOT_INTERFACE_ELEC
 
 add_library(Robot STATIC ${ROBOT_SOURCE} ${COMMUNICATION_SOURCE})
 add_library(Robot_Interfacer_Elec ${ROBOT_INTERFACE_ELEC} ${COMMUNICATION_SOURCE})
-target_link_libraries(Robot Outils_Robot Strategie)
-target_link_libraries(Robot_Interfacer_Elec Outils_Robot Strategie)
+target_link_libraries(Robot Outils_Robot Strategie SharedWithRust)
+target_link_libraries(Robot_Interfacer_Elec Outils_Robot Strategie SharedWithRust)
 
 add_executable(debug_TestCAN Commun/Test/TestCan.cpp Cartes/Carte.cpp Commun/Test/CarteTestCAN.cpp)
 target_link_libraries(debug_TestCAN Robot)

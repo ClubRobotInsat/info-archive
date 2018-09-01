@@ -5,7 +5,7 @@ set_target_properties(catch_main PROPERTIES
         COMPILE_DEFINITIONS "$<$<CXX_COMPILER_ID:MSVC>:_SCL_SECURE_NO_WARNINGS>"
         COMPILE_DEFINITIONS "$<$<CXX_COMPILER_ID:MSVC>:_SCL_SECURE_NO_WARNINGS>"
         )
-target_include_directories(catch_main PRIVATE "../third_parties/catch/single_include")
+target_include_directories(catch_main PRIVATE "../third_parties/catch/single_include/catch2")
 
 file(GLOB files "unit-*.cpp")
 
@@ -14,7 +14,7 @@ add_executable(${UNITTEST_TARGET_NAME}
         $<TARGET_OBJECTS:catch_main>
         ${files})
 
-target_include_directories(${UNITTEST_TARGET_NAME} PRIVATE "../third_parties/catch/single_include")
+target_include_directories(${UNITTEST_TARGET_NAME} PRIVATE "../third_parties/catch/single_include/catch2")
 target_link_libraries(${UNITTEST_TARGET_NAME} Outils_Robot robotPrincipal)
 
 add_test(NAME "${UNITTEST_TARGET_NAME}_default"
