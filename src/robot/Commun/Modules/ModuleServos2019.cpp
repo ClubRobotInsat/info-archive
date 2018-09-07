@@ -32,7 +32,7 @@ namespace Commun {
 	}
 
 	uint8_t ModuleServos2019::get_frame_size() const {
-		return static_cast<uint8_t>(1 + get_nbr_servos() * 6);
+		return static_cast<uint8_t>(1 + get_nbr_servos() * 7);
 	}
 
 	void ModuleServos2019::set_position(uint8_t id, Angle angle) {
@@ -95,8 +95,6 @@ namespace Commun {
 	}
 
 	SharedServos2019 ModuleServos2019::generate_shared() const {
-		std::lock_guard<std::mutex> lk(_mutexVariables);
-
 		SharedServos2019 s = {};
 		for(uint8_t i = 0; i < NB_MAX_SERVOS; ++i) {
 			if(_servos[i]) {
@@ -127,8 +125,6 @@ namespace Commun {
 	}
 
 	void ModuleServos2019::message_processing(const SharedServos2019& s) {
-		std::lock_guard<std::mutex> lk(_mutexVariables);
-
 		for(uint8_t i = 0; i < NB_MAX_SERVOS; ++i) {
 			if(_servos[i] && s.servos[i].id != 0) {
 				auto uint16t_to_angle = [](uint16_t pos) -> Angle {

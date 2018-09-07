@@ -29,37 +29,37 @@ uint8_t test_write_frame(uint8_t* buf, uint8_t buf_size, const SharedStructTest*
 	return 0;
 }
 
+class ModuleTest : public Module<SharedStructTest> {
+public:
+	explicit ModuleTest(uint8_t id) : Module(id, test_read_frame, test_write_frame), _a(1), _b(2) {}
+
+	inline uint8_t get_frame_size() const override {
+		return 2;
+	}
+
+	// Accesseurs pour les tests
+	inline uint8_t get_a_value() const {
+		return _a;
+	}
+	inline uint8_t get_b_value() const {
+		return _b;
+	}
+
+private:
+	SharedStructTest generate_shared() const override {
+		SharedStructTest s = {_a, _b};
+		return s;
+	}
+
+	void message_processing(const SharedStructTest& s) override {
+		_a.exchange(s.a);
+		_b.exchange(s.b);
+	}
+
+	std::atomic_uint8_t _a, _b;
+};
+
 TEST_CASE("Basic module") {
-
-	class ModuleTest : public Module<SharedStructTest> {
-	public:
-		explicit ModuleTest(uint8_t id) : Module(id, test_read_frame, test_write_frame), _a(1), _b(2) {}
-
-		inline uint8_t get_frame_size() const override {
-			return 2;
-		}
-
-		// Accesseurs pour les tests
-		inline uint8_t get_a_value() const {
-			return _a;
-		}
-		inline uint8_t get_b_value() const {
-			return _b;
-		}
-
-	private:
-		SharedStructTest generate_shared() const override {
-			SharedStructTest s = {_a, _b};
-			return s;
-		}
-
-		void message_processing(const SharedStructTest& s) override {
-			_a.exchange(s.a);
-			_b.exchange(s.b);
-		}
-
-		std::atomic_uint8_t _a, _b;
-	};
 
 	SECTION("Simple tests.") {
 		ModuleTest my_module(5);
@@ -241,6 +241,11 @@ TEST_CASE("Servos 2019 Module") {
 				CHECK_FALSE(s.servos[3].blocked);
 				CHECK(s.servos[3].blocking_mode == 1);
 				CHECK(s.servos[3].color == 0b000);
+
+				buf[0] = 0;
+				REQUIRE_FALSE((s = servo_read_frame(buf, 1)).parsing_failed);
+				CHECK(s.servos[0].id == 0);
+				CHECK(s.servos[2].id == 0);
 			}
 		}
 
@@ -268,32 +273,101 @@ TEST_CASE("Servos 2019 Module") {
 			}
 
 			SECTION("good arguments") {
-				uint8_t buf[SIZE];
-				auto servos = new SharedServos2019();
-				for(int i = 0; i < 8; ++i) {
-					servos->servos[i].id = 0;
+				SECTION("empty") {
+					uint8_t buf[1];
+					auto servos = new SharedServos2019();
+					for(int i = 0; i < 8; ++i) {
+						servos->servos[i].id = 0;
+					}
+					REQUIRE(servo_write_frame(buf, 1, servos) == 1);
+					CHECK(buf[0] == 0);
 				}
-				servos->servos[1] = {1, 0b00001111'11110000, 0b01010101'10101010, 0b00110011, true, 1, 0b100};
-				servos->servos[3] = {3, 0b00000000'00000000, 0b11111111'11111111, 0b00011101, false, 0, 0b010};
 
-				REQUIRE(servo_write_frame(buf, SIZE, servos) == SIZE);
-				CHECK(buf[0] == 2);
-				CHECK(buf[1] == 1);
-				CHECK(buf[2] == 0b00001111);
-				CHECK(buf[3] == 0b11110000);
-				CHECK(buf[4] == 0b01010101);
-				CHECK(buf[5] == 0b10101010);
-				CHECK(buf[6] == 0b00110011);
-				CHECK(buf[7] == 0b11100);
+				SECTION("2 servos declared") {
+					uint8_t buf[SIZE];
+					auto servos = new SharedServos2019();
+					for(int i = 0; i < 8; ++i) {
+						servos->servos[i].id = 0;
+					}
+					servos->servos[1] = {1, 0b00001111'11110000, 0b01010101'10101010, 0b00110011, true, 1, 0b100};
+					servos->servos[3] = {3, 0b00000000'00000000, 0b11111111'11111111, 0b00011101, false, 0, 0b010};
 
-				CHECK(buf[8] == 3);
-				CHECK(buf[9] == 0b00000000);
-				CHECK(buf[10] == 0b00000000);
-				CHECK(buf[11] == 0b11111111);
-				CHECK(buf[12] == 0b11111111);
-				CHECK(buf[13] == 0b00011101);
-				CHECK(buf[14] == 0b00010);
+					REQUIRE(servo_write_frame(buf, SIZE, servos) == SIZE);
+					CHECK(buf[0] == 2);
+					CHECK(buf[1] == 1);
+					CHECK(buf[2] == 0b00001111);
+					CHECK(buf[3] == 0b11110000);
+					CHECK(buf[4] == 0b01010101);
+					CHECK(buf[5] == 0b10101010);
+					CHECK(buf[6] == 0b00110011);
+					CHECK(buf[7] == 0b11100);
+
+					CHECK(buf[8] == 3);
+					CHECK(buf[9] == 0b00000000);
+					CHECK(buf[10] == 0b00000000);
+					CHECK(buf[11] == 0b11111111);
+					CHECK(buf[12] == 0b11111111);
+					CHECK(buf[13] == 0b00011101);
+					CHECK(buf[14] == 0b00010);
+				}
 			}
+		}
+	}
+}
+
+#include "../src/robot/Commun/Communication/NamedPipe.h"
+
+TEST_CASE("ModuleManager") {
+	auto can = std::make_unique<CAN>(std::make_unique<NamedPipe>("/tmp/read.pipe", "/tmp/write.pipe"));
+
+	SECTION("basic functions") {
+		ModuleManager manager(*can);
+
+		REQUIRE_THROWS_WITH(manager.get_module<ModuleServos2019>(), "The module doesn't exist.");
+		CHECK_FALSE(manager.has_module<ModuleServos2019>());
+		CHECK_FALSE(manager.has_module(8));
+
+		REQUIRE_THROWS_WITH(manager.add_module<ModuleTest>(42), "Impossible to add module n°42 (> 16).");
+		CHECK(manager.get_nb_modules() == 0);
+		manager.add_module<ModuleTest>(5);
+		CHECK(manager.get_nb_modules() == 1);
+		CHECK(manager.has_module<ModuleTest>());
+		CHECK(manager.has_module(5));
+		REQUIRE_THROWS_WITH(manager.add_module<ModuleTest>(5), "Double assignment of the module n°5.");
+		REQUIRE_THROWS_WITH(manager.add_module<ModuleTest>(8), "Double assignment of the module type: 10ModuleTest");
+		manager.add_module<ModuleServos2019>(6);
+		CHECK(manager.get_nb_modules() == 2);
+
+		REQUIRE_THROWS_WITH(manager.get_module_by_id(42), "Impossible to get module n°42 (> 16).");
+		REQUIRE_THROWS_WITH(manager.get_module_by_id(8), "The module n°8 doesn't exist.");
+		REQUIRE_NOTHROW(manager.get_module_by_id(5));
+
+		// ne compile pas car 'int' n'hérite pas de BaseModule
+		// CHECK_NOTHROW(manager.get_module<int>());
+		REQUIRE_NOTHROW(manager.get_module<ModuleTest>());
+		CHECK(manager.get_module<ModuleTest>().get_id() == 5);
+		CHECK(manager.get_module<ModuleServos2019>().get_id() == 6);
+	}
+
+	SECTION("Frame manipulation") {
+		ModuleManager manager(*can);
+		manager.add_module<ModuleTest>(5);
+		auto& module_servo = manager.add_module<ModuleServos2019>(15);
+		module_servo.add_servo(2, 50_deg);
+
+		SECTION("GlobalFrame make_state_frame()") {
+			auto frame = manager.make_state_frame();
+			const uint8_t wanted_size = (uint8_t)6 + manager.get_module<ModuleServos2019>().get_frame_size();
+			REQUIRE(frame.getNbDonnees() == wanted_size);
+			const uint8_t* array = frame.getDonnees();
+			// ID n°5 : ModuleTest  v
+			CHECK(array[0] == 0b00001000);
+			// ID n°15 : ModuleServos v
+			CHECK(array[1] == 0b00000010);
+		}
+
+		SECTION("update_all") {
+			// TODO
 		}
 	}
 }

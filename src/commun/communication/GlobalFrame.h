@@ -67,32 +67,37 @@ public:
 	// erreur si une trame n'est pas traitée
 	class ErreurTrameNonTraitee : public std::runtime_error {
 	public:
-		ErreurTrameNonTraitee(const GlobalFrame& t)
+		explicit ErreurTrameNonTraitee(const GlobalFrame& t)
 		        : std::runtime_error("La trame " + to_string(t) + " n'a pas été traitée") {}
 	};
 
 	// erreur si le numero de la donnée est trop grand
 	class ErreurNumeroDonneeTropGrand : public std::runtime_error {
 	public:
-		ErreurNumeroDonneeTropGrand(uint8_t num)
+		explicit ErreurNumeroDonneeTropGrand(uint8_t num)
 		        : std::runtime_error("Le nombre de données dans la trame est trop petit pour accéder au numero " + to_string(num)) {}
 	};
 
 	// erreur si la quantité de données est trop grande
 	class ErreurTropDeDonnees : public std::runtime_error {
 	public:
-		ErreurTropDeDonnees(uint8_t num) : std::runtime_error("Trop de données dans la trame : " + to_string(num)) {}
+		explicit ErreurTropDeDonnees(uint8_t num)
+		        : std::runtime_error("Trop de données dans la trame : " + to_string(num)) {}
 	};
 
 	// erreur si le numero du bit dans l'octet est trop grand
 	class ErreurNumeroBitTropGrand : public std::runtime_error {
 	public:
-		ErreurNumeroBitTropGrand(uint8_t num)
+		explicit ErreurNumeroBitTropGrand(uint8_t num)
 		        : std::runtime_error("Le numero du bit " + to_string((short)num) +
 		                             " est invalide : il doit être comprit entre 0 et 7 inclu ") {}
 	};
 
-	GlobalFrame() {}
+	// Constructeurs
+	GlobalFrame() = default;
+	GlobalFrame(std::initializer_list<uint8_t> donnees);
+	explicit GlobalFrame(uint8_t nbDonnees, uint8_t const donnees[]);
+	explicit GlobalFrame(uint8_t donnee) : GlobalFrame({donnee}) {}
 
 	// accesseurs
 	uint8_t getNbDonnees() const;
@@ -139,11 +144,6 @@ public:
 	GlobalFrame& operator+=(const GlobalFrame& f);
 
 protected:
-	// Constructeurs
-	explicit GlobalFrame(std::initializer_list<uint8_t> donnees);
-	explicit GlobalFrame(uint8_t nbDonnees, uint8_t const donnees[]);
-	explicit GlobalFrame(uint8_t donnee) : GlobalFrame({donnee}) {}
-
 	// numéro de paquet (pour les ack)
 	uint8_t _num_paquet = 0;
 
