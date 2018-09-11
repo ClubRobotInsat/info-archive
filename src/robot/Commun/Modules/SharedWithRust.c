@@ -15,21 +15,21 @@ SharedServos2019 servo_read_frame(const uint8_t* message, uint8_t size) {
 		return s;
 	}
 	uint8_t count = 0;
-	uint8_t servo_nb = message[count++];
+	uint8_t nb_servo = message[count++];
 
-	if(size != FRAME_SERVO_SIZE(servo_nb)) {
+	if(size != FRAME_SERVO_SIZE(nb_servo)) {
 		s.parsing_failed = 1;
 		return s;
 	}
 
-	for(uint8_t i = 0; i < 8; ++i) {
+	for(uint8_t i = 0; i < MAX_SERVOS; ++i) {
 		s.servos[i].id = 0;
 	}
 
-	for(int i = 0; i < servo_nb; ++i) {
+	for(int i = 0; i < nb_servo; ++i) {
 		uint8_t id = message[count++];
 
-		if(id == 0 || id >= 8) {
+		if(id == 0 || id >= MAX_SERVOS) {
 			s.parsing_failed = 1;
 			return s;
 		}
@@ -60,25 +60,25 @@ SharedServos2019 servo_read_frame(const uint8_t* message, uint8_t size) {
 
 uint8_t servo_write_frame(uint8_t* buf, uint8_t buf_size, const SharedServos2019* obj) {
 	uint8_t size = 0;
-	uint8_t servo_nb = 0;
+	uint8_t nb_servo = 0;
 
 	if(buf == NULL || obj == NULL || buf_size == 0) {
 		return 0;
 	}
 
-	for(uint8_t id = 0; id < 8; ++id) {
+	for(uint8_t id = 0; id < MAX_SERVOS; ++id) {
 		if(obj->servos[id].id > 0) {
-			++servo_nb;
+			++nb_servo;
 		}
 	}
 
 	// Il n'y a pas assez de place dans le buffer : on n'écrit rien dedans
-	if(buf_size < FRAME_SERVO_SIZE(servo_nb)) {
+	if(buf_size < FRAME_SERVO_SIZE(nb_servo)) {
 		return 0;
 	}
 
-	buf[size++] = servo_nb;
-	for(uint8_t id = 0; id < 8; ++id) {
+	buf[size++] = nb_servo;
+	for(uint8_t id = 0; id < MAX_SERVOS; ++id) {
 		if(obj->servos[id].id > 0) {
 			buf[size++] = obj->servos[id].id;
 

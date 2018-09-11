@@ -15,7 +15,7 @@ namespace Commun {
 			throw std::runtime_error("Double assignation du servo "s + std::to_string(id) + " !");
 		}
 
-		_servos[id] = std::make_unique<Servo2019>(id, start_position, mode);
+		_servos[id] = std::make_unique<Servo>(id, start_position, mode);
 	}
 
 	uint8_t ModuleServos2019::get_nbr_servos() const {

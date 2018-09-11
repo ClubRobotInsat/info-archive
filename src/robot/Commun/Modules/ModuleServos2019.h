@@ -28,7 +28,7 @@ namespace Commun {
 			NBR
 		};
 
-		static const int NB_MAX_SERVOS = 8;
+		static const int NB_MAX_SERVOS = MAX_SERVOS;
 
 		void add_servo(uint8_t id, Angle start_position, BlockingMode = UNBLOCKING);
 
@@ -57,8 +57,8 @@ namespace Commun {
 		SharedServos2019 generate_shared() const override;
 		void message_processing(const SharedServos2019&) override;
 
-		struct Servo2019 {
-			Servo2019(uint8_t id, Angle start_position, BlockingMode mode)
+		struct Servo {
+			Servo(uint8_t id, Angle start_position, BlockingMode mode)
 			        : id(id)
 			        , position(start_position)
 			        , wanted_position(start_position)
@@ -78,7 +78,7 @@ namespace Commun {
 			std::atomic<Color> color;
 		};
 
-		std::unique_ptr<Servo2019> _servos[NB_MAX_SERVOS];
+		std::unique_ptr<Servo> _servos[NB_MAX_SERVOS];
 	};
 }
 

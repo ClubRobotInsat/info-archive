@@ -8,6 +8,8 @@
 
 #include <stdint.h>
 
+#define MAX_SERVOS 8
+
 // Allows the header to be use from both C (so Rust) and C++
 #ifdef __cplusplus
 extern "C" {
@@ -24,16 +26,17 @@ typedef struct SharedServos2019 {
 		char blocked;
 		uint8_t blocking_mode;
 		uint8_t color;
-	};
+	} servos[MAX_SERVOS];
 
-	struct Servo2019 servos[8];
 	uint8_t parsing_failed;
 
 } SharedServos2019;
 
 /// Fonctions définies en C et utilisées à la fois dans le code C++ et Rust
-/// Format d'une trame : <servo_nb: uint8_t> <[<id: uint8_t> <position: uint16_t> <wanted_position: uint16_t> <speed:
-/// uint8_t> <block infos, color: uint8_t>] ...>
+
+// Format d'une trame :
+// <nb_servo: u8>
+// <[<id: u8> <position: u16> <wanted_position: u16> <speed: u8> <blocking data, color: u8>] ...>
 extern SharedServos2019 servo_read_frame(const uint8_t* message, uint8_t size);
 extern uint8_t servo_write_frame(uint8_t* buf, uint8_t buf_size, const SharedServos2019* obj);
 
