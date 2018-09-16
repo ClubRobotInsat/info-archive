@@ -66,6 +66,7 @@ pub struct ControlledMotor2019 {
 pub struct UncontrolledMotor2019 {
     pub id: libc::uint8_t,
     pub on_off: libc::uint8_t,
+    pub rotation: libc::uint8_t,
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
@@ -94,7 +95,7 @@ impl PartialEq for ControlledMotor2019 {
 }
 impl PartialEq for UncontrolledMotor2019 {
     fn eq(&self, other: &UncontrolledMotor2019) -> bool {
-        self.id == other.id && (self.id == 0 || (self.on_off == other.on_off))
+        self.id == other.id && (self.id == 0 || (self.on_off == other.on_off && self.rotation == other.rotation))
     }
 }
 impl PartialEq for Brushless2019 {

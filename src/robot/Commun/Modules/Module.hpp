@@ -53,19 +53,19 @@ namespace Commun {
 
 	protected:
 		/// Bloque l'accés aux variables membres
-		void lockVariables() {
-			_mutexVariables.lock();
+		void lock_variables() {
+			_mutex_variables.lock();
 		}
 
 		/// Débloque l'accès aux variables membres
-		void unlockVariables() {
-			_mutexVariables.unlock();
+		void unlock_variables() {
+			_mutex_variables.unlock();
 		}
 
 		/// Mutex permettant de bloquer l'accès aux variables membres
 		// Cette variable est 'mutable' pour permettre la fonction 'make_frame()' d'être constante malgré l'appel à un
 		// 'lock_guard'
-		mutable std::mutex _mutexVariables;
+		mutable std::mutex _mutex_variables;
 
 	private:
 		/// ID du module dans le robot
@@ -87,9 +87,9 @@ namespace Commun {
 		/// Traite les données fournies par le robot
 		// Le gros du travail est à implémenter dans chaque module par l'override de 'message_processing'
 		void update(const GlobalFrame& f) final {
-			lockVariables();
+			lock_variables();
 			message_processing(_wrapper.read_frame(f.getDonnees(), f.getNbDonnees()));
-			unlockVariables();
+			unlock_variables();
 		}
 
 		/// Construit la trame du module
@@ -99,7 +99,7 @@ namespace Commun {
 			GlobalFrame f;
 			uint8_t buf[get_frame_size()];
 
-			std::lock_guard<std::mutex> lk(_mutexVariables);
+			std::lock_guard<std::mutex> lk(_mutex_variables);
 			SharedStruct s = generate_shared();
 			uint8_t size = _wrapper.write_frame(buf, get_frame_size(), &s);
 
@@ -132,6 +132,6 @@ namespace Commun {
 
 		FunctorWrapper _wrapper;
 	};
-}
+} // namespace Commun
 
 #endif //_MODULE_H

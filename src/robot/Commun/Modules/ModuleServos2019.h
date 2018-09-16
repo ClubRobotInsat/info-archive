@@ -38,13 +38,15 @@ namespace Commun {
 
 		inline uint8_t get_frame_size() const override;
 
-		void set_position(uint8_t servo, Angle angle);
+		void set_position(uint8_t servo, Angle);
 
 		void set_speed(uint8_t servo, uint8_t speed);
 
 		Angle read_position(uint8_t servo) const;
 
-		void set_color(uint8_t servo, Color color);
+		void set_color(uint8_t servo, Color);
+
+		void set_blocking_mode(uint8_t servo, BlockingMode);
 
 		bool is_blocking(uint8_t servo) const;
 
@@ -74,13 +76,13 @@ namespace Commun {
 			Angle wanted_position;
 			std::atomic_uint8_t speed;
 			std::atomic_bool blocked;
-			const BlockingMode blocking_mode;
+			BlockingMode blocking_mode;
 			std::atomic<Color> color;
 		};
 
 		std::unique_ptr<Servo> _servos[NB_MAX_SERVOS];
 	};
-}
+} // namespace Commun
 
 
 #endif // ROOT_SERVOS2019_H

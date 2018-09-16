@@ -40,10 +40,10 @@ namespace Commun {
 			throw std::runtime_error("Numéro du servo demandé invalide : "s + std::to_string(id));
 		}
 
-		lockVariables();
+		lock_variables();
 		_servos[id]->blocked = false;
 		_servos[id]->wanted_position = angle;
-		unlockVariables();
+		unlock_variables();
 	}
 
 	void ModuleServos2019::set_speed(uint8_t id, uint8_t speed) {
@@ -51,9 +51,9 @@ namespace Commun {
 			throw std::runtime_error("Numéro du servo demandé invalide : "s + std::to_string(id));
 		}
 
-		lockVariables();
+		lock_variables();
 		_servos[id]->speed = speed;
-		unlockVariables();
+		unlock_variables();
 	}
 
 	Angle ModuleServos2019::read_position(uint8_t id) const {
@@ -61,7 +61,7 @@ namespace Commun {
 			throw std::runtime_error("Numéro du servo demandé invalide : "s + std::to_string(id));
 		}
 
-		std::lock_guard<std::mutex> lk(_mutexVariables);
+		std::lock_guard<std::mutex> lk(_mutex_variables);
 		return _servos[id]->position;
 	}
 
@@ -70,9 +70,19 @@ namespace Commun {
 			throw std::runtime_error("Numéro du servo demandé invalide : "s + std::to_string(id));
 		}
 
-		lockVariables();
+		lock_variables();
 		_servos[id]->color = color;
-		unlockVariables();
+		unlock_variables();
+	}
+
+	void ModuleServos2019::set_blocking_mode(uint8_t id, Commun::ModuleServos2019::BlockingMode mode) {
+		if(!is_servo_ok(id)) {
+			throw std::runtime_error("Numéro du servo demandé invalide : "s + std::to_string(id));
+		}
+
+		lock_variables();
+		_servos[id]->blocking_mode = mode;
+		unlock_variables();
 	}
 
 	bool ModuleServos2019::is_blocking(uint8_t id) const {
@@ -80,7 +90,7 @@ namespace Commun {
 			throw std::runtime_error("Numéro du servo demandé invalide : "s + std::to_string(id));
 		}
 
-		std::lock_guard<std::mutex> lk(_mutexVariables);
+		std::lock_guard<std::mutex> lk(_mutex_variables);
 		return _servos[id]->blocked;
 	}
 
@@ -89,7 +99,7 @@ namespace Commun {
 			throw std::runtime_error("Numéro du servo demandé invalide : "s + std::to_string(id));
 		}
 
-		std::lock_guard<std::mutex> lk(_mutexVariables);
+		std::lock_guard<std::mutex> lk(_mutex_variables);
 		// TODO : voir s'il faut mettre un seuil pour considérer le mouvement terminé, ou si les élecs nous le disent
 		return _servos[id]->position == _servos[id]->wanted_position;
 	}
@@ -121,25 +131,28 @@ namespace Commun {
 			}
 		}
 
+		s.parsing_failed = 0;
 		return s;
 	}
 
 	void ModuleServos2019::message_processing(const SharedServos2019& s) {
-		for(uint8_t i = 0; i < NB_MAX_SERVOS; ++i) {
-			if(_servos[i] && s.servos[i].id != 0) {
-				auto uint16t_to_angle = [](uint16_t pos) -> Angle {
-					Angle angle = 0_deg;
-					return angle;
-				};
-				auto uint8t_to_color = [](uint8_t val) -> Color {
-					return (val >= Color::NBR ? RED : static_cast<Color>(val));
-				};
+		if(s.parsing_failed == 0) {
+			for(uint8_t i = 0; i < NB_MAX_SERVOS; ++i) {
+				if(_servos[i] && s.servos[i].id != 0) {
+					auto uint16t_to_angle = [](uint16_t pos) -> Angle {
+						Angle angle = 0_deg;
+						return angle;
+					};
+					auto uint8t_to_color = [](uint8_t val) -> Color {
+						return (val >= Color::NBR ? RED : static_cast<Color>(val));
+					};
 
-				_servos[i]->position = uint16t_to_angle(s.servos[i].position);
-				_servos[i]->blocked.exchange(s.servos[i].blocked);
-				_servos[i]->speed.exchange(s.servos[i].speed);
-				_servos[i]->color.exchange(uint8t_to_color(s.servos[i].color));
+					_servos[i]->position = uint16t_to_angle(s.servos[i].position);
+					_servos[i]->blocked.exchange(s.servos[i].blocked);
+					_servos[i]->speed.exchange(s.servos[i].speed);
+					_servos[i]->color.exchange(uint8t_to_color(s.servos[i].color));
+				}
 			}
 		}
 	}
-}
+} // namespace Commun

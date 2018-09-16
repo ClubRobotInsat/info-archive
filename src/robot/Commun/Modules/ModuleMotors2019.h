@@ -31,16 +31,33 @@ namespace Commun {
 		uint8_t get_nbr_uncontrolled() const;
 		uint8_t get_nbr_brushless() const;
 
+		void position_angle(uint8_t motor, Angle);
+
+		void position_turns(uint8_t motor, uint8_t nb_turns, RotatingDirection);
+
+		void activate_uncontrolled_motor(uint8_t motor, RotatingDirection);
+
+		void deactivate_uncontrolled_motor(uint8_t motor);
+
+		void activate_brushless(uint8_t motor);
+
+		void deactivate_brushless(uint8_t motor);
+
 	private:
+		// Retourne 'true' si le moteur associé à 'id' a été déclaré précédemment
+		bool test_is_controlled_ok(uint8_t id) const;
+		bool test_is_uncontrolled_ok(uint8_t id) const;
+		bool test_is_brushless_ok(uint8_t id) const;
+
 		SharedMotors2019 generate_shared() const override;
 		void message_processing(const SharedMotors2019&) override;
 
 		struct ControlledMotor {
 			ControlledMotor(uint8_t id, RotatingDirection rotation)
-			        : id(id), wanted_position(0), wanted_nb_turns(0), finished(true), rotation(rotation) {}
+			        : id(id), wanted_position(0_deg), wanted_nb_turns(0), finished(true), rotation(rotation) {}
 
 			const uint8_t id;
-			std::atomic_uint8_t wanted_position;
+			std::atomic<Angle> wanted_position;
 			std::atomic_uint8_t wanted_nb_turns;
 			std::atomic_bool finished;
 			std::atomic<RotatingDirection> rotation;
@@ -51,6 +68,7 @@ namespace Commun {
 
 			const uint8_t id;
 			std::atomic_bool on_off;
+			std::atomic<RotatingDirection> rotation;
 		};
 
 		struct Brushless {

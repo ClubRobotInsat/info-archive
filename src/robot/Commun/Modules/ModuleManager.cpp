@@ -7,39 +7,9 @@
 #include <log/Log.h>
 
 namespace Commun {
-	ModuleManager::ModuleManager(Commun::CAN& can) : _busCAN(can) {}
-
-	/// Verifie que la carte a répondu par un pong
-	bool ModuleManager::verify_pong() {
-		// Si _pongRecu, _pongRecu = false. On retourne l'acienne valeur dans tous les cas
-		return _pongRecu.exchange(false);
-	}
-
-	bool ModuleManager::ping_pong() {
-		this->send_ping();
-		int retries = 0;
-		while(retries <= 150) {
-			if(this->verify_pong()) {
-				return true;
-			}
-			retries += 1;
-			sleep(10_ms);
-		}
-		return false;
-	}
-
-	void ModuleManager::send_state() {
-		this->send_message(make_state_frame());
-	}
 
 	bool ModuleManager::has_module(uint8_t id) {
 		return _modules[id] != nullptr;
-	}
-
-	/// Transmet les données pour envoi vers l'électronique
-	void ModuleManager::send_message(GlobalFrame frame, bool replay) {
-		// TODO : modifs sur le CAN pour accepter n'importe quelle trame
-		//_busCAN.envoyerTrame(std::move(frame), replay);
 	}
 
 	GlobalFrame ModuleManager::make_state_frame() const {
@@ -138,4 +108,4 @@ namespace Commun {
 
 		return *_modules[id];
 	}
-}
+} // namespace Commun

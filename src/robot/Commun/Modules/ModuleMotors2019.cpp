@@ -29,6 +29,83 @@ namespace Commun {
 		return count;
 	}
 
+	void ModuleMotors2019::position_angle(uint8_t id, Angle angle) {
+		test_is_controlled_ok(id);
+
+		lock_variables();
+		_controlled[id]->wanted_position = angle;
+		unlock_variables();
+	}
+
+	void ModuleMotors2019::position_turns(uint8_t id, uint8_t nb_turns, RotatingDirection rotation) {
+		test_is_controlled_ok(id);
+
+		lock_variables();
+		_controlled[id]->wanted_nb_turns = nb_turns;
+		_controlled[id]->rotation = rotation;
+		unlock_variables();
+	}
+
+	void ModuleMotors2019::activate_uncontrolled_motor(uint8_t id, RotatingDirection rotation) {
+		test_is_uncontrolled_ok(id);
+
+		lock_variables();
+		_uncontrolled[id]->on_off = true;
+		_uncontrolled[id]->rotation = rotation;
+		unlock_variables();
+	}
+
+	void ModuleMotors2019::deactivate_uncontrolled_motor(uint8_t id) {
+		test_is_uncontrolled_ok(id);
+
+		lock_variables();
+		_uncontrolled[id]->on_off = false;
+		unlock_variables();
+	}
+
+	void ModuleMotors2019::activate_brushless(uint8_t id) {
+		test_is_brushless_ok(id);
+
+		lock_variables();
+		_brushless[id]->on_off = true;
+		unlock_variables();
+	}
+
+	void ModuleMotors2019::deactivate_brushless(uint8_t id) {
+		test_is_brushless_ok(id);
+
+		lock_variables();
+		_brushless[id]->on_off = false;
+		unlock_variables();
+	}
+
+	bool ModuleMotors2019::test_is_controlled_ok(uint8_t id) const {
+		// 'id == 0' veut dire qu'il n'y a pas de moteur dans la représentation C
+		bool result = id > 0 && id < NB_MAX_CONTROLLED_MOTORS && static_cast<bool>(_controlled[id]);
+		if(!result) {
+			throw std::runtime_error("Numéro du moteur asservi demandé invalide : "s + std::to_string(id));
+		}
+		return result;
+	}
+
+	bool ModuleMotors2019::test_is_uncontrolled_ok(uint8_t id) const {
+		// 'id == 0' veut dire qu'il n'y a pas de moteur dans la représentation C
+		bool result = id > 0 && id < NB_MAX_UNCONTROLLED_MOTORS && static_cast<bool>(_uncontrolled[id]);
+		if(!result) {
+			throw std::runtime_error("Numéro du moteur non-asservi demandé invalide : "s + std::to_string(id));
+		}
+		return result;
+	}
+
+	bool ModuleMotors2019::test_is_brushless_ok(uint8_t id) const {
+		// 'id == 0' veut dire qu'il n'y a pas de moteur dans la représentation C
+		bool result = id > 0 && id < NB_MAX_BRUSHLESS && static_cast<bool>(_brushless[id]);
+		if(!result) {
+			throw std::runtime_error("Numéro du brushless demandé invalide : "s + std::to_string(id));
+		}
+		return result;
+	}
+
 	uint8_t ModuleMotors2019::get_frame_size() const {
 		return static_cast<uint8_t>(3 + get_nbr_controlled() * 4 + get_nbr_uncontrolled() * 2 + get_nbr_brushless() * 2);
 	}
@@ -87,10 +164,13 @@ namespace Commun {
 
 		// TODO : uncontrolled & brushless
 
+		s.parsing_failed = 0;
 		return s;
 	}
 
-	void ModuleMotors2019::message_processing(const SharedMotors2019&) {
-		// TODO
+	void ModuleMotors2019::message_processing(const SharedMotors2019& s) {
+		if(s.parsing_failed == 0) {
+			// TODO
+		}
 	}
 } // namespace Commun

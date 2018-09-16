@@ -47,6 +47,7 @@ typedef struct SharedMotors2019 {
 	struct UncontrolledMotor2019 {
 		uint8_t id;
 		uint8_t on_off;
+		uint8_t rotation;
 	} uncontrolled_motors[MAX_UNCONTROLLED_MOTORS];
 
 	struct Brushless2019 {
@@ -57,6 +58,11 @@ typedef struct SharedMotors2019 {
 	uint8_t parsing_failed;
 
 } SharedMotors2019;
+
+typedef struct SharedIO2019 {
+	uint8_t tirette; // 1 correspond à 'tirette mise', 0 à 'tirette enlevée'
+	uint8_t parsing_failed;
+} SharedIO2019;
 
 /// Fonctions définies en C et utilisées à la fois dans le code C++ et Rust
 
@@ -75,6 +81,11 @@ extern uint8_t servo_write_frame(uint8_t* buf, uint8_t buf_size, const SharedSer
 // <[<id: u8> <on_off: u8>] ...>
 extern SharedMotors2019 motor_read_frame(const uint8_t* message, uint8_t size);
 extern uint8_t motor_write_frame(uint8_t* buf, uint8_t buf_size, const SharedMotors2019* obj);
+
+// Format d'une trame :
+// <tirette: uint8_t>
+extern SharedIO2019 io_read_frame(const uint8_t* message, uint8_t size);
+extern uint8_t io_write_frame(uint8_t* buf, uint8_t buf_size, const SharedIO2019* obj);
 
 #ifdef __cplusplus
 }

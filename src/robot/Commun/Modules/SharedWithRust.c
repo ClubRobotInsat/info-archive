@@ -160,7 +160,9 @@ SharedMotors2019 motor_read_frame(const uint8_t* message, uint8_t size) {
 		}
 
 		s.uncontrolled_motors[id].id = id;
-		s.uncontrolled_motors[id].on_off = message[count++];
+		uint8_t infos = message[count++];
+		s.uncontrolled_motors[id].on_off = (uint8_t)((0b00000010 & infos) >> 1);
+		s.uncontrolled_motors[id].rotation = (uint8_t)(0b00000001 & infos);
 	}
 
 	for(int i = 0; i < nb_brushless; ++i) {
@@ -236,7 +238,10 @@ uint8_t motor_write_frame(uint8_t* buf, uint8_t buf_size, const SharedMotors2019
 		if(obj->uncontrolled_motors[id].id > 0) {
 			buf[size++] = obj->uncontrolled_motors[id].id;
 
-			buf[size++] = obj->uncontrolled_motors[id].on_off;
+			uint8_t infos = obj->uncontrolled_motors[id].on_off;
+			infos <<= 1;
+			infos |= obj->uncontrolled_motors[id].rotation;
+			buf[size++] = infos;
 		}
 	}
 
@@ -250,3 +255,29 @@ uint8_t motor_write_frame(uint8_t* buf, uint8_t buf_size, const SharedMotors2019
 
 	return size;
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+SharedIO2019 io_read_frame(const uint8_t* message, uint8_t size) {
+	SharedIO2019 s;
+
+	if(message == NULL || size == 0) {
+		s.parsing_failed = 1;
+		return s;
+	}
+
+	s.tirette = message[0];
+	s.parsing_failed = 0;
+
+	return s;
+}
+
+uint8_t io_write_frame(uint8_t* buf, uint8_t buf_size, const SharedIO2019* obj) {
+	if(buf == NULL || obj == NULL || buf_size == 0) {
+		return 0;
+	}
+
+	buf[0] = obj->tirette;
+	return 1;
+}
+

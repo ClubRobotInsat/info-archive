@@ -6,6 +6,12 @@
 #define ROOT_MODULEMANAGER_H
 
 #include "Module.hpp"
+
+#include "ModuleIO2019.h"
+#include "ModuleMotors2019.h"
+#include "ModuleMoving2019.h"
+#include "ModuleServos2019.h"
+
 #include <memory>
 #include <tuple>
 #include <typeinfo>
@@ -15,17 +21,7 @@
 namespace Commun {
 	class ModuleManager final {
 	public:
-		explicit ModuleManager(CAN& can);
-
-		/// Envoie un ping à la carte
-		void send_ping() {} // TODO
-
-		/// Verifie que la carte a répondu par un pong
-		bool verify_pong();
-
-		bool ping_pong();
-
-		void send_state();
+		ModuleManager() = default;
 
 		template <typename Module, typename... T>
 		Module& add_module(uint8_t id, T... params);
@@ -37,31 +33,17 @@ namespace Commun {
 
 		uint8_t get_nb_modules() const;
 
-		// protected:
-		// Transmet les données pour envoi vers l'électronique
-		void send_message(GlobalFrame frame, bool replay = true);
-
-		// TODO : voir comment envoyer un PING
-		/*void sendMessage(uint8_t donnee) {
-		    this->sendMessage(this->make_trame(cmd, donnee), false);
-		}*/
-
-		GlobalFrame make_state_frame() const;
-
-		void update_all(const GlobalFrame&);
-
 		BaseModule& get_module_by_id(uint8_t id);
 
 		template <typename Module>
 		Module& get_module();
 
+		GlobalFrame make_state_frame() const;
+
+		void update_all(const GlobalFrame&);
+
 	private:
 		std::unique_ptr<BaseModule> _modules[GlobalFrame::NB_MODULES_MAX];
-
-		/// Bus CAN à utiliser pour communiquer avec l'électronique
-		CAN& _busCAN;
-
-		std::atomic_bool _pongRecu;
 	};
 
 	/////////////////////////////////////////
@@ -100,8 +82,7 @@ namespace Commun {
 
 	template <typename Module>
 	Module& ModuleManager::get_module() {
-		static_assert(std::is_base_of<BaseModule, Module>::value,
-		              "The specified module must inherit Module as public.");
+		static_assert(std::is_base_of<BaseModule, Module>::value, "The specified module must inherit Module as public.");
 		for(uint8_t id = 0; id < GlobalFrame::NB_MODULES_MAX; ++id) {
 			if(_modules[id] != nullptr) {
 				try {
@@ -113,6 +94,6 @@ namespace Commun {
 
 		throw std::runtime_error("The module doesn't exist.");
 	}
-}
+} // namespace Commun
 
 #endif // ROOT_MODULEMANAGER_H
