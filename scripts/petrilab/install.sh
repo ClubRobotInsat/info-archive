@@ -1,7 +1,7 @@
 #!/bin/bash
 
 help() {
-	echo "Petrilab is currently distributed for Ubuntu [14.04|17.04|18.07]."
+	echo "Petrilab is currently distributed for Ubuntu [14.04|17.04|18.04]."
 	exit 1
 }
 
@@ -11,6 +11,7 @@ if [[ "$RELEASE" != "Ubuntu" ]]; then
 fi
 
 VERSION=$(lsb_release -d | cut -f2 | cut -d' ' -f2)
+VERSION="${VERSION:0:5}" # Cas où la version est "18.04.1" au lieu de "18.04"
 if [[ "$VERSION" != "14.04" && "$VERSION" != "17.04" && "$VERSION" != "18.04" ]]; then
 	help
 fi
