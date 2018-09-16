@@ -42,6 +42,7 @@ set(COMMUNICATION_SOURCE
 		Commun/Modules/Module.hpp
 		Commun/Modules/ModuleManager.cpp
 		Commun/Modules/ModuleServos2019.cpp
+        Commun/Modules/ModuleMotors2019.cpp
 		)
 add_library(SharedWithRust Commun/Modules/SharedWithRust.c)
 
