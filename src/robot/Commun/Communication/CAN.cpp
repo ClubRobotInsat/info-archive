@@ -34,21 +34,21 @@ namespace Commun {
 		}
 	}
 
-	bool CAN::ajouterAttenteAcquittement(Trame trame, bool rejeu) {
-		trame.setNumPaquet(_compteurPaquets);
+	bool CAN::ajouterAttenteAcquittement(GlobalFrame frame, bool rejeu) {
+		frame.setNumPaquet(_compteurPaquets);
 
 		// Si on ne veut pas renvoyer le message malgré un timout d'acquittement,
 		// on renverra un ping.
 		if(rejeu == false) {
-			trame.setCmd(0_b); // on met 0 pour le ping
-			trame.setDonnee(0x55_b);
+			// frame.setCmd(0_b); // on met 0 pour le ping
+			// frame.setDonnee(0x55_b);
 		}
 
 		// On l'ajoute dans la fenêtre
-		return saveForAck(std::move(trame));
+		return saveForAck(std::move(frame));
 	}
 
-	void CAN::envoyerTrame(Trame t, bool rejeu) {
+	void CAN::envoyerTrame(GlobalFrame t, bool rejeu) {
 		std::lock_guard<std::mutex> lk(_mutexVector);
 
 		envoyerTrameSansAcquittement(_compteurPaquets, t);
@@ -67,23 +67,23 @@ namespace Commun {
 	}
 
 	/// Envoie une trame de commande avec l'ID et les donnees fournis
-	void CAN::envoyerTrameSansAcquittement(uint8_t numPaquet, Trame const& t) {
+	void CAN::envoyerTrameSansAcquittement(uint8_t numPaquet, GlobalFrame const& t) {
 		if(_debugActive) {
-			logDebug("SEND ", t, "\n\ttime : ", _canClock.getElapsedTime());
+			// logDebug("SEND ", t, "\n\ttime : ", _canClock.getElapsedTime());
 		}
 
 		std::lock_guard<std::mutex> lk(_mutexEcriture);
 
-		_serie->ecrireOctet(Trame::OCTET_DEBUT_TRAME_1); // Debut de trame
-		_serie->ecrireOctet(Trame::OCTET_DEBUT_TRAME_2);
-		_serie->ecrireOctet(Trame::OCTET_DEBUT_TRAME_3);
-		_serie->ecrireOctet(Trame::OCTET_DEBUT_TRAME_4_NORMAL);
+		_serie->ecrireOctet(GlobalFrame::OCTET_DEBUT_TRAME_1); // Debut de trame
+		_serie->ecrireOctet(GlobalFrame::OCTET_DEBUT_TRAME_2);
+		_serie->ecrireOctet(GlobalFrame::OCTET_DEBUT_TRAME_3);
+		_serie->ecrireOctet(GlobalFrame::OCTET_DEBUT_TRAME_4_NORMAL);
 
 		_serie->ecrireOctet(numPaquet);
 
-		auto muxedIdAndCmd = Trame::multiplexIdAndCmd(t.getId(), t.getCmd());
-		_serie->ecrireOctet(muxedIdAndCmd.first);  // Poids faible de l'ID
-		_serie->ecrireOctet(muxedIdAndCmd.second); // Poids fort de l'ID
+		// auto muxedIdAndCmd = Trame::multiplexIdAndCmd(t.getId(), t.getCmd());
+		//_serie->ecrireOctet(muxedIdAndCmd.first);  // Poids faible de l'ID
+		//_serie->ecrireOctet(muxedIdAndCmd.second); // Poids fort de l'ID
 
 		_serie->ecrireOctet(t.getNbDonnees());                  // Taille des données
 		_serie->ecrireOctets(t.getDonnees(), t.getNbDonnees()); // Données
@@ -94,10 +94,10 @@ namespace Commun {
 	/*void CAN::envoyerAcquittement(uint8_t numPaquet, Trame const &t) {
 	    std::lock_guard<std::mutex> lk(_mutexEcriture);
 
-	    _serie->ecrireOctet(Trame::OCTET_DEBUT_TRAME_1); // Debut de trame
-	    _serie->ecrireOctet(Trame::OCTET_DEBUT_TRAME_2);
-	    _serie->ecrireOctet(Trame::OCTET_DEBUT_TRAME_3);
-	    _serie->ecrireOctet(Trame::OCTET_DEBUT_TRAME_4_ACK);
+	    _serie->ecrireOctet(GlobalFrame::OCTET_DEBUT_TRAME_1); // Debut de trame
+	    _serie->ecrireOctet(GlobalFrame::OCTET_DEBUT_TRAME_2);
+	    _serie->ecrireOctet(GlobalFrame::OCTET_DEBUT_TRAME_3);
+	    _serie->ecrireOctet(GlobalFrame::OCTET_DEBUT_TRAME_4_ACK);
 
 	    _serie->ecrireOctet(numPaquet);
 
@@ -109,68 +109,68 @@ namespace Commun {
 	}*/
 
 
-	Trame CAN::recevoirTrameBloquant() {
+	GlobalFrame CAN::recevoirTrameBloquant() {
 		std::atomic_bool always_false(false);
 		while(true) {
 			try {
 				return this->recevoirTrame(always_false);
-			} catch(Trame::ErreurTropDeDonnees t) {
-				logError("Exception attrapée : ", t.what());
+			} catch(GlobalFrame::ErreurTropDeDonnees t) {
+				// logError("Exception attrapée : ", t.what());
 			}
 		}
 	}
 
 	/// Attend l'arrivee d'une trame complete et la retourne - BLOQUANT
 	/// Retourne FALSE si la trame est un ack !
-	Trame CAN::recevoirTrame(const std::atomic_bool& abandonner) {
-		static uint8_t donnees[Trame::DONNEES_TRAME_MAX];
+	GlobalFrame CAN::recevoirTrame(const std::atomic_bool& abandonner) {
+		static uint8_t donnees[GlobalFrame::DONNEES_TRAME_MAX];
 		while(not abandonner) {
 			// Debut de trame - BLOQUANT !!!
-			while(_serie->lireOctet() != Trame::OCTET_DEBUT_TRAME_1)
+			while(_serie->lireOctet() != GlobalFrame::OCTET_DEBUT_TRAME_1)
 				;
 
-			if(_serie->lireOctet() == Trame::OCTET_DEBUT_TRAME_2) {
-				if(_serie->lireOctet() == Trame::OCTET_DEBUT_TRAME_3) {
+			if(_serie->lireOctet() == GlobalFrame::OCTET_DEBUT_TRAME_2) {
+				if(_serie->lireOctet() == GlobalFrame::OCTET_DEBUT_TRAME_3) {
 					uint8_t typeTrame = _serie->lireOctet();
 
-					if(typeTrame == Trame::OCTET_DEBUT_TRAME_4_NORMAL) {
+					if(typeTrame == GlobalFrame::OCTET_DEBUT_TRAME_4_NORMAL) {
 
-						Trame::MuxedIdAndCmd muxedIdAndCmd = {_serie->lireOctet(),  // Poids faible de l'ID
-						                                      _serie->lireOctet()}; // Poids fort de l'ID
+						// Trame::MuxedIdAndCmd muxedIdAndCmd = {_serie->lireOctet(),  // Poids faible de l'ID
+						//                                      _serie->lireOctet()}; // Poids fort de l'ID
 
 						uint8_t taille = _serie->lireOctet(); // Taille des donnees
-						if(taille > Trame::DONNEES_TRAME_MAX) {
-							logError("id trame :", int(Trame::demultiplexId(muxedIdAndCmd)), ":", int(Trame::demultiplexCmd(muxedIdAndCmd)));
-							throw Trame::ErreurTropDeDonnees(taille);
+						if(taille > GlobalFrame::DONNEES_TRAME_MAX) {
+							// logError("id trame :", int(Trame::demultiplexId(muxedIdAndCmd)), ":", int(Trame::demultiplexCmd(muxedIdAndCmd)));
+							throw GlobalFrame::ErreurTropDeDonnees(taille);
 						}
 						_serie->lireOctets(donnees, taille); // Donnees
 
-						Trame trameRecue(Trame::demultiplexId(muxedIdAndCmd), Trame::demultiplexCmd(muxedIdAndCmd));
+						GlobalFrame trameRecue /*(Trame::demultiplexId(muxedIdAndCmd), Trame::demultiplexCmd(muxedIdAndCmd))*/;
 						trameRecue.setDonnees(taille, donnees);
 
 						if(_debugActive) {
-							logDebug("RECV ", trameRecue, "\n\ttime : ", _canClock.getElapsedTime());
+							// logDebug("RECV ", trameRecue, "\n\ttime : ", _canClock.getElapsedTime());
 						}
 
 						return trameRecue; // La trame est bien formée, on sort de la boucle bloquante
-					} else if(typeTrame == Trame::OCTET_DEBUT_TRAME_4_ACK) {
+					} else if(typeTrame == GlobalFrame::OCTET_DEBUT_TRAME_4_ACK) {
 						uint8_t num_paquet = _serie->lireOctet(); // Numéro de paquet
 
-						Trame::MuxedIdAndCmd muxedIdAndCmd = {_serie->lireOctet(),  // Poids faible de l'ID
-						                                      _serie->lireOctet()}; // Poids fort de l'ID
+						// Trame::MuxedIdAndCmd muxedIdAndCmd = {_serie->lireOctet(),  // Poids faible de l'ID
+						//                                      _serie->lireOctet()}; // Poids fort de l'ID
 
 						uint8_t taille = _serie->lireOctet(); // Taille des donnees
 						if(_debugActive) {
-							logDebug("ACK ",
+							/*logDebug("ACK ",
 							         num_paquet,
 							         " | id ",
-							         Trame::demultiplexId(muxedIdAndCmd),
+							         //Trame::demultiplexId(muxedIdAndCmd),
 							         " | cmd ",
-							         Trame::demultiplexCmd(muxedIdAndCmd),
+							         //Trame::demultiplexCmd(muxedIdAndCmd),
 							         " | size ",
 							         taille,
 							         "\n\ttime : ",
-							         _canClock.getElapsedTime());
+							         _canClock.getElapsedTime());*/
 						}
 
 						marquerAckRecu(num_paquet);
@@ -232,7 +232,7 @@ namespace Commun {
 			//(int)(numPaquet+WIN_SIZE-1)%RANGE_MSG_NUMBER,"]");
 		}
 		if(!found && _debugActive) {
-			logWarn("On reçoit un ack pour le message ", (int)numPaquet, ", déjà évacué de la fenêtre");
+			// logWarn("On reçoit un ack pour le message ", (int)numPaquet, ", déjà évacué de la fenêtre");
 		}
 	}
 
@@ -281,17 +281,17 @@ namespace Commun {
 		}
 	}
 
-	bool CAN::saveForAck(Trame m) {
+	bool CAN::saveForAck(GlobalFrame m) {
 		// On insère l'attente de ack dans la queue de messages en attente
 
 		// Todo : trouver un fix moins déguelasse
 		// On sait que l'ID de la carte déplacement est 1 dans nos robots
 		// et que la commande pour l'arrêt d'urgence estla commande numéro 5
-		if(m.getId() == 1 && m.getCmd() == 5) {
-			// dans ce cas, on a envoyé une commande d'arrêt d'urgence
-			logDebug2("Arrêt d'urgence reçu, flush du pipe de messages du CAN");
-			_tableauAttentesAcks.clear();
-		}
+		/*if(m.getId() == 1 && m.getCmd() == 5) {
+		    // dans ce cas, on a envoyé une commande d'arrêt d'urgence
+		    logDebug2("Arrêt d'urgence reçu, flush du pipe de messages du CAN");
+		    _tableauAttentesAcks.clear();
+		}*/
 		_tableauAttentesAcks.emplace_back(std::move(m), false, _canClock.getElapsedTime(), false, true);
 
 		return true;
@@ -306,4 +306,4 @@ namespace Commun {
 		_tableauAttentesAcks.clear();
 		_canClock.reset();
 	}
-}
+} // namespace Commun

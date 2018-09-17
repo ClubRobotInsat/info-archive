@@ -20,7 +20,7 @@
 #include <Units/Time.h>
 #include <array>
 #include <atomic>
-#include <communication/Trame.h>
+#include <communication/GlobalFrame.h>
 #include <deque>
 #include <memory>
 #include <mutex>
@@ -39,16 +39,16 @@ namespace Commun {
 		virtual ~CAN();
 
 		/// Envoie une trame de commande avec l'ID et les donnees fournis
-		void envoyerTrame(Trame t, bool rejeu = true);
+		void envoyerTrame(GlobalFrame t, bool rejeu = true);
 
 		///	Attends l'arrrivée d'une trame complète tant que abandonner vaut false.
 		/// S'interromps dès que abandonner vaut true.
-		Trame recevoirTrame(const std::atomic_bool& abandonner);
+		GlobalFrame recevoirTrame(const std::atomic_bool& abandonner);
 
 		/// Attend l'arrivée d'une trame complete et la retourne - BLOQUANT
 		/// Appelle recevoirTrame() avec un booléen qui vaut toujours true.
 		/// Existe toujours pour des raisons de compatibilité
-		Trame recevoirTrameBloquant();
+		GlobalFrame recevoirTrameBloquant();
 
 		/// Definit le temps a attendre (en ms) entre chaque envoi de trame
 		void setTemporisation(Duration duree);
@@ -63,16 +63,16 @@ namespace Commun {
 
 	private:
 		struct AttenteDeAck {
-			AttenteDeAck(Trame t, bool a, Duration start, bool timeout, bool sent)
+			AttenteDeAck(GlobalFrame t, bool a, Duration start, bool timeout, bool sent)
 			        : _message(std::move(t)), _ackRecu(a), _startDate(start), _timeout(timeout), _sent(sent) {}
-			Trame _message;
+			GlobalFrame _message;
 			bool _ackRecu;
 			Duration _startDate;
 			bool _timeout;
 			bool _sent;
 		};
 
-		void envoyerTrameSansAcquittement(uint8_t numPaquet, Trame const& t);
+		void envoyerTrameSansAcquittement(uint8_t numPaquet, GlobalFrame const& t);
 		// void envoyerAcquittement(Trame const &t);
 
 		// Marque dans la fenêtre le fait que le ack numéro nimPaquet a été reçu
@@ -82,9 +82,9 @@ namespace Commun {
 		// Décale la fenêtre de réception de 1 numéro
 		void decalerFenetre();
 		// Instancie une structure associée à un numéro de paquet
-		bool saveForAck(Trame m);
+		bool saveForAck(GlobalFrame m);
 
-		bool ajouterAttenteAcquittement(Trame t, bool rejeu);
+		bool ajouterAttenteAcquittement(GlobalFrame t, bool rejeu);
 		void gestionAcquittements();
 
 		// Temps au bout duquel la non réception du ack d'un message est chelou (en ms)
@@ -121,8 +121,8 @@ namespace Commun {
 		/// Etat du mode debug
 		bool _debugActive = false;
 
-		std::vector<Trame> _bufferEnvoi;
+		std::vector<GlobalFrame> _bufferEnvoi;
 	};
-}
+} // namespace Commun
 
 #endif

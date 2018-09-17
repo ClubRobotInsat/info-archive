@@ -1,0 +1,160 @@
+//
+// Created by terae on 17/09/18.
+//
+
+#include "ElecCommunicator.h"
+#include "Communication/NullCommunicator.h"
+
+namespace Commun {
+	std::vector<std::string> ElecCommunicator::makeArgs(const char* typeConnexion, const char* adresse, int port) {
+		std::vector<std::string> result = {"Simulateur", typeConnexion};
+		if(typeConnexion == "RS232"s) {
+			result.emplace_back(adresse);
+		} else if(typeConnexion == "TCPIP"s) {
+			result.emplace_back(adresse);
+			result.push_back(std::to_string(port));
+		}
+
+		return result;
+	}
+
+	ElecCommunicator::ElecCommunicator(std::shared_ptr<Commun::ModuleManager> module_manager, uint16_t default_port_TCPIP)
+	        : _module_manager(std::move(module_manager))
+	        , _connecte(false)
+	        , _modeConnexion(ModeConnexion::OTHERS)
+	        , _default_port_TCPIP(default_port_TCPIP) {}
+
+	ElecCommunicator::ElecCommunicator(Commun::ModuleManager& module_manager, uint16_t default_port_TCPIP)
+	        : ElecCommunicator(module_manager.shared_from_this(), default_port_TCPIP) {}
+
+	ElecCommunicator::~ElecCommunicator() {
+		disconnect();
+	}
+
+	CAN& ElecCommunicator::getCAN() {
+		return *_busCAN;
+	}
+
+	/// Debug du CAN pour les elecs
+	void ElecCommunicator::setDebugCAN(bool active) {
+		_busCAN->setDebug(active);
+	}
+
+	bool ElecCommunicator::isSimuConnected() {
+		return this->_simuConnected;
+	}
+
+	Socket& ElecCommunicator::getSocketSimu() {
+		return *_socketSimu;
+	}
+
+	/// Connexion a la main a partir des arguments passes au programme.
+	bool ElecCommunicator::connect(std::vector<std::string> const& args) {
+		logInfo("Initialisation de la communication élec/info.");
+
+		for(size_t i = 1; i < args.size() /*&& !_connecte*/; ++i) {
+			// - RS232 :
+			if(args[i] == "RS232") {
+				if((args.size() - 1) - i < 1) {
+					logError("Utilisation avec RS232 : \"", args[0], " RS232 /dev/ttyUSB0\"\n");
+					exit(EXIT_FAILURE);
+				} else {
+					_busCAN = std::make_unique<CAN>(std::make_unique<RS232>(args[i + 1]));
+					_busCAN->setTemporisation(10_ms); // Temporisation de 10 ms entre chaque trame pour le bus CAN
+					// électronique (pas de tempo pour le simu)
+					_connecte = true;
+				}
+
+				_modeConnexion = ModeConnexion::RS232;
+				break;
+			}
+			// - TCPIP :
+			else if(args[i] == "TCPIP") {
+				if((args.size() - 1) - i < 2) {
+					logError("Utilisation avec TCPIP : \"", args[0], " TCPIP 127.0.0.1 1234\"\n");
+					exit(EXIT_FAILURE);
+				} else {
+					_busCAN = std::make_unique<CAN>(std::make_unique<TCPIP>(args[i + 1], atoi(args[i + 2].c_str())));
+					_connecte = true;
+				}
+
+				break;
+			}
+			// - PIPES :
+			else if(args[i] == "PIPES") {
+				logDebug9("Initialisation de la connection au CAN local par pipes nommés");
+				_busCAN = std::make_unique<CAN>(std::make_unique<NamedPipe>("/tmp/read.pipe", "/tmp/write.pipe"));
+				_connecte = true;
+				_modeConnexion = ModeConnexion::PIPES;
+				_connecte = true;
+				break;
+			}
+			// - LOCAL :
+			else if(args[i] == "LOCAL") {
+				logDebug9("Initialisation de la connexion au CAN local");
+				_busCAN = std::make_unique<CAN>(std::make_unique<TCPIP>("127.0.0.1", _default_port_TCPIP));
+				_connecte = true;
+				_modeConnexion = ModeConnexion::LOCAL;
+			} else if(args[i] == "NULL") {
+				logDebug9("Initialisation de la connexion au CAN local");
+				_busCAN = std::make_unique<CAN>(std::make_unique<NullCommunicator>());
+				_connecte = true;
+			} else if(args[i] == "SIMU") {
+				logDebug9("Initialisation socket client côté robot");
+				_socketSimu = std::make_unique<Socket>(SockProtocol::TCP);
+				_socketSimu->connect("127.0.0.1", _default_port_TCPIP);
+				_simuConnected = true;
+			}
+		}
+
+		// Cas où l'on n'a rien trouvé indiquant comment se connecter :
+		if(!_connecte) {
+			logInfo("Utilisation : \n");
+			logInfo("- ", args[0], " RS232 [peripherique] (ex : \"", args[0], " RS232 /dev/ttyUSB0\")");
+			logInfo("- ", args[0], " TCPIP [adresse IP] [port] (ex : \"", args[0], " TCPIP 127.0.0.1 1234\")");
+			logInfo("- ", args[0], " LOCAL --color [color]");
+			logInfo("- ", args[0], " PIPES");
+			logInfo("Ajouter SIMU pour établir une connection avec le socket du simu.");
+			return false;
+		}
+
+		_reception = std::thread(&ElecCommunicator::communicate_with_elecs, this);
+		return true;
+	}
+
+	void ElecCommunicator::disconnect() {
+		if(_connecte) {
+			_running_execution.store(false);
+			_reception.join();
+		}
+	}
+
+	/// Communication avec les élecs
+	// TODO : améliorer le principe, actuellement on réponds dès qu'on a la réponse
+	void ElecCommunicator::communicate_with_elecs() {
+		setThreadName("Communicate");
+		std::unique_lock<std::mutex> lk(_mutex_communication);
+
+		// TODO : gérer le PING pour savoir quand les élecs sont Ok
+		if(!_modules_init_notified) {
+			_modules_initialized.wait(lk);
+		}
+
+		while(_running_execution) {
+			GlobalFrame frame = {}; // TODO _busCAN->recevoirTrameBloquant();
+			try {
+				_module_manager->update_all(frame);
+			} catch(std::runtime_error& e) {
+				logError("Échec de la mise à jour du module manager !!");
+				logError("Exception rencontrée : ", e.what());
+			}
+
+			try {
+				// FIXME _busCAN->envoyerTrame(_module_manager->make_state_frame(), true);
+			} catch(std::runtime_error& e) {
+				logError("Échec de l'envoi de l'état du robot par le module manager !!");
+				logError("Exception rencontrée : ", e.what());
+			}
+		}
+	}
+} // namespace Commun
