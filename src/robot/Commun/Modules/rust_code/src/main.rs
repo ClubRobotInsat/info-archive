@@ -26,7 +26,7 @@ fn main() {
                 speed: 3,
                 blocked: 4,
                 blocking_mode: 5,
-                color: 6
+                color: 6,
             }
         );
         let servo1 = Servo2019 {
@@ -84,7 +84,7 @@ fn main() {
                 wanted_angle_position: 1,
                 wanted_nb_turns: 2,
                 finished: 3,
-                new_command: 4
+                new_command: 4,
             }
         );
         let controlled_1 = ControlledMotor2019 {
@@ -104,12 +104,24 @@ fn main() {
         };
         assert_ne!(controlled_1, controlled_3);
 
-        let uncontrolled_empty = UncontrolledMotor2019 { id: 0, on_off: 0 };
+        let uncontrolled_empty = UncontrolledMotor2019 {
+            id: 0,
+            on_off: 0,
+            rotation: 0,
+        };
         assert_eq!(
             uncontrolled_empty,
-            UncontrolledMotor2019 { id: 0, on_off: 1 }
+            UncontrolledMotor2019 {
+                id: 0,
+                on_off: 1,
+                rotation: 0,
+            }
         );
-        let uncontrolled_1 = UncontrolledMotor2019 { id: 1, on_off: 0 };
+        let uncontrolled_1 = UncontrolledMotor2019 {
+            id: 1,
+            on_off: 0,
+            rotation: 0,
+        };
         assert_eq!(uncontrolled_1, uncontrolled_1);
 
         let brushless_empty = Brushless2019 { id: 0, on_off: 0 };
