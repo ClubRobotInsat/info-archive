@@ -258,6 +258,18 @@ uint8_t motor_write_frame(uint8_t* buf, uint8_t buf_size, const SharedMotors2019
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+SharedAvoidance2019 avoidance_read_frame(const uint8_t* message, uint8_t size) {
+	SharedAvoidance2019 s;
+	s.parsing_failed = 1;
+	return s;
+}
+
+uint8_t avoidance_write_frame(uint8_t* buf, uint8_t buf_size, const SharedAvoidance2019* obj) {
+	return 0;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 SharedIO2019 io_read_frame(const uint8_t* message, uint8_t size) {
 	SharedIO2019 s;
 

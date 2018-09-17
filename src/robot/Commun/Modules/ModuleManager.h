@@ -7,10 +7,10 @@
 
 #include "Module.hpp"
 
-#include "ModuleIO2019.h"
-#include "ModuleMotors2019.h"
-#include "ModuleMoving2019.h"
-#include "ModuleServos2019.h"
+#include "IO2019.h"
+#include "Motors2019.h"
+#include "Moving2019.h"
+#include "Servos2019.h"
 
 #include <memory>
 #include <tuple>
@@ -19,7 +19,7 @@
 // TODO: receive data + read data for each module
 
 namespace Commun {
-	class ModuleManager final {
+	class ModuleManager final : public std::enable_shared_from_this<ModuleManager> {
 	public:
 		ModuleManager() = default;
 

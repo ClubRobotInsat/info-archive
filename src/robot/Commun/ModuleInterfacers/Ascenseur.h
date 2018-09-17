@@ -8,8 +8,8 @@
 #ifndef __Club_Robot__Ascenseur__
 #define __Club_Robot__Ascenseur__
 
-#include "../../commun/Commun.h"
-#include "../Cartes/CarteAsservissement.h"
+#include "../../Cartes/CarteAsservissement.h"
+#include "Commun.h"
 
 class CarteAsservissement;
 
@@ -79,6 +79,6 @@ namespace Commun {
 		std::mutex _mutexEnMouvement;
 		Angle _offset;
 	};
-}
+} // namespace Commun
 
 #endif /* defined(__Club_Robot__Ascenseur__) */

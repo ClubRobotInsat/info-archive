@@ -11,7 +11,7 @@
 
 namespace Commun {
 
-	class ModuleServos2019 final : public Module<SharedServos2019> {
+	class Servos2019 final : public Module<SharedServos2019> {
 	public:
 		enum BlockingMode : uint8_t { HOLD_ON_BLOCKING = 1, UNBLOCKING = 0 };
 
@@ -34,7 +34,7 @@ namespace Commun {
 
 		uint8_t get_nbr_servos() const;
 
-		explicit ModuleServos2019(uint8_t id) : Module(id, servo_read_frame, servo_write_frame) {}
+		explicit Servos2019(uint8_t id) : Module(id, servo_read_frame, servo_write_frame) {}
 
 		inline uint8_t get_frame_size() const override;
 

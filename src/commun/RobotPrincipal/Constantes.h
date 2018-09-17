@@ -3,7 +3,12 @@
 #ifndef CONSTANTES_ROBOT_PRINCIPAL__H
 #define CONSTANTES_ROBOT_PRINCIPAL__H
 
+#include "../../robot/Commun/Modules/IO2019.h"
+#include "../../robot/Commun/Modules/Motors2019.h"
+#include "../../robot/Commun/Modules/Moving2019.h"
+#include "../../robot/Commun/Modules/Servos2019.h"
 
+/*
 #ifdef TARGET_SIMULATEUR
 
 #include "../../simulateur/communication/cartes/CarteAsservissement2009.h"
@@ -36,6 +41,7 @@
 #include "../../robot/Cartes/CarteServosNova2017.h"
 
 #endif
+*/
 
 #include "../../elec/code-elec-nucleo/src/IDs_2018.h"
 
@@ -58,7 +64,7 @@ namespace IDCartesPrincipal {
 
 	ENUM_CLASS_NS(IDCartesPrincipal, IDCarteServos, PORTE_CUBE, PORTE_SOUTE_G, PORTE_SOUTE_D, ABEILLE_G, ABEILLE_D)
 	ENUM_CLASS_NS(IDCartesPrincipal, IDCarteMoteurs, ASCENSEUR_GAUCHE, ASCENSEUR_DROIT, AVALEUR_GAUCHE, AVALEUR_DROIT, BRUSHLESS_GAUCHE, BRUSHLESS_DROIT)
-}
+} // namespace IDCartesPrincipal
 
 namespace ConstantesPrincipal {
 	using IDCartes = IDCartesPrincipal::IDCartes;
@@ -152,47 +158,47 @@ namespace ConstantesPrincipal {
 
 	/////////////////// CARTES ///////////////////
 
-	template <IDCartesPrincipal::IDCartes ID_CARTE>
+	/*template <IDCartesPrincipal::IDCartes ID_CARTE>
 	struct CarteInfo {};
 
 	template <IDCartesPrincipal::IDCarteServos ID_CARTE>
 	struct CarteServoInfo {};
 
-	/*template <>
+	template <>
 	struct CarteInfo<IDCartesPrincipal::CAN_USB> {
 	    using typeCarte = CarteCAN_USB;
 	    enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_CAN_USB };
-	};*/
+	};
 
 	template <>
 	struct CarteInfo<IDCartesPrincipal::DEPLACEMENT> {
-		using typeCarte = CarteDeplacement2009;
-		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_DEPLACEMENT };
+	    using typeCarte = CarteDeplacement2009;
+	    enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_DEPLACEMENT };
 	};
 
 	template <>
 	struct CarteInfo<IDCartesPrincipal::EVITEMENT> {
-		using typeCarte = CarteEvitement2018;
-		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_EVITEMENT };
+	    using typeCarte = CarteEvitement2018;
+	    enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_EVITEMENT };
 	};
 
 	template <>
 	struct CarteInfo<IDCartesPrincipal::IO> {
-		using typeCarte = CarteIO2018;
-		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_IO };
+	    using typeCarte = CarteIO2018;
+	    enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_IO };
 	};
 
 	template <>
 	struct CarteInfo<IDCartesPrincipal::SERVOS> {
-		using typeCarte = CarteServosNova2017;
-		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_SERVOS };
+	    using typeCarte = CarteServosNova2017;
+	    enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_SERVOS };
 	};
 
 	template <>
 	struct CarteInfo<IDCartesPrincipal::MOTEURS> {
-		using typeCarte = CarteMoteurs2018;
-		enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_MOTEURS };
-	};
+	    using typeCarte = CarteMoteurs2018;
+	    enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_MOTEURS };
+	};*/
 
 	//----- pas utilisé cette année -----//
 	/*template <>
@@ -200,7 +206,7 @@ namespace ConstantesPrincipal {
 	    using typeCarte = CarteAsservissement2009;
 	    enum : std::uint8_t { idCarte = IDCartesPrincipal::ID_CARTE_ASCENSEUR };
 	};*/
-}
+} // namespace ConstantesPrincipal
 
 struct ConstantesRobotPrincipal : public Commun::ConstantesRobot {
 	virtual Duration getTimeoutMoveDefault() const override;

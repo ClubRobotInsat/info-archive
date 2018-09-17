@@ -99,6 +99,12 @@ public:
 	explicit GlobalFrame(uint8_t nbDonnees, uint8_t const donnees[]);
 	explicit GlobalFrame(uint8_t donnee) : GlobalFrame({donnee}) {}
 
+	GlobalFrame(GlobalFrame const& t) = default;
+	GlobalFrame(GlobalFrame&& t) = default;
+
+	// destructeur
+	~GlobalFrame() = default;
+
 	// accesseurs
 	uint8_t getNbDonnees() const;
 	uint8_t getNumPaquet() const;

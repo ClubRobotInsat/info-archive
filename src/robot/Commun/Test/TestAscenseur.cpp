@@ -8,7 +8,7 @@
 #include <stdio.h>
 
 #include "../../Cartes/CarteAsservissement2009.h"
-#include "../Ascenseur.h"
+#include "../BlockingInterfaces/Ascenseur.h"
 #include "../Communication/RS232.h"
 #include <stdio.h>
 

@@ -14,61 +14,30 @@ if(${BITS} EQUAL 32)
 endif()
 
 add_subdirectory(../commun commun)
-
-include_directories(Commun/Environnement)
-set(STRAT_SOURCE
-        Commun/Environnement/environment.cpp
-        Commun/Environnement/environment.h
-        Commun/Environnement/node.cpp
-        Commun/Environnement/node.h
-        Commun/Environnement/shapes.h
-        Commun/Environnement/spline.cpp
-        Commun/Environnement/spline.h
-        Commun/Environnement/TGAWriter.cpp
-        Commun/Environnement/TGAWriter.h
-
-        Commun/Strategie.cpp)
-
-add_library(Strategie STATIC ${STRAT_SOURCE})
-target_link_libraries(Strategie)
-
-set(COMMUNICATION_SOURCE
-		Commun/Communication/CAN.cpp
-		Commun/Communication/RS232.cpp
-		Commun/Communication/Serie.cpp
-		Commun/Communication/NullCommunicator.cpp
-		Commun/Communication/TCPIP.cpp
-		Commun/Communication/NamedPipe.cpp
-		Commun/Modules/Module.hpp
-		Commun/Modules/ModuleManager.cpp
-        Commun/Modules/ModuleIO2019.cpp
-		Commun/Modules/ModuleMotors2019.cpp
-		Commun/Modules/ModuleMoving2019.cpp
-		Commun/Modules/ModuleServos2019.cpp
-		)
-add_library(SharedWithRust Commun/Modules/SharedWithRust.c)
+add_subdirectory(Commun)
 
 set(ROBOT_SOURCE
         Commun/Robot.cpp
-        Commun/Deplacement.cpp
-        Commun/Ascenseur.cpp
-		Commun/Moteur.cpp
-        Commun/Servo.cpp
-        Commun/Evitement.cpp)
+		Commun/ModuleInterfacers/Deplacement.cpp
+		Commun/ModuleInterfacers/Ascenseur.cpp
+		Commun/ModuleInterfacers/Moteur.cpp
+		Commun/ModuleInterfacers/Servo.cpp
+		Commun/ModuleInterfacers/Evitement.cpp)
 
 set(ROBOT_INTERFACE_ELEC
 		Commun/Robot.cpp
-		Commun/Deplacement.cpp
-		Commun/Ascenseur.cpp
-		Commun/Moteur.cpp
-		Commun/Servo.cpp
+		Commun/ModuleInterfacers/Deplacement.cpp
+		Commun/ModuleInterfacers/Ascenseur.cpp
+		Commun/ModuleInterfacers/Moteur.cpp
+		Commun/ModuleInterfacers/Servo.cpp
 		../elec/simulator/Interface.cpp
-		Commun/Evitement.cpp)
+		Commun/ModuleInterfacers/Evitement.cpp)
 
-add_library(Robot STATIC ${ROBOT_SOURCE} ${COMMUNICATION_SOURCE})
-add_library(Robot_Interfacer_Elec ${ROBOT_INTERFACE_ELEC} ${COMMUNICATION_SOURCE})
-target_link_libraries(Robot Outils_Robot Strategie SharedWithRust)
-target_link_libraries(Robot_Interfacer_Elec Outils_Robot Strategie SharedWithRust)
+add_library(Robot STATIC ${ROBOT_SOURCE})
+add_library(Robot_Interfacer_Elec ${ROBOT_INTERFACE_ELEC})
+target_link_libraries(Robot Outils_Robot Strategie Communication Modules)
+target_link_libraries(Robot_Interfacer_Elec Outils_Robot Strategie Communication Modules)
+
 
 add_executable(debug_TestCAN Commun/Test/TestCan.cpp Cartes/Carte.cpp Commun/Test/CarteTestCAN.cpp)
 target_link_libraries(debug_TestCAN Robot)

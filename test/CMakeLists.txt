@@ -1,26 +1,47 @@
-add_library(catch_main OBJECT "unit.cpp")
-set_target_properties(catch_main PROPERTIES
-        CXX_STANDARD 11
-        CXX_STANDARD_REQUIRED ON
-        COMPILE_DEFINITIONS "$<$<CXX_COMPILER_ID:MSVC>:_SCL_SECURE_NO_WARNINGS>"
-        COMPILE_DEFINITIONS "$<$<CXX_COMPILER_ID:MSVC>:_SCL_SECURE_NO_WARNINGS>"
-        )
-target_include_directories(catch_main PRIVATE "../third_parties/catch/single_include/catch2")
+add_executable(unit_testing_modules_elec unit-modules_elec.cpp)
+target_link_libraries(unit_testing_modules_elec ModulesElec Catch2::Catch2)
 
-file(GLOB files "unit-*.cpp")
+add_executable(unit_testing_modules_communication unit-modules_communication.cpp)
+target_link_libraries(unit_testing_modules_communication Modules Catch2::Catch2)
 
-set(UNITTEST_TARGET_NAME "unit_testing")
-add_executable(${UNITTEST_TARGET_NAME}
-        $<TARGET_OBJECTS:catch_main>
-        ${files})
+add_executable(unit_testing_robot_commun unit-robot_commun.cpp)
+# Je passe par cet artifice tant que la couche 'robot' n'est pas finalisée
+add_library(robot_str STATIC ../src/robot/Commun/Robot.cpp)
+target_link_libraries(robot_str Modules)
+target_link_libraries(unit_testing_robot_commun Modules robot_str Catch2::Catch2)
 
-target_include_directories(${UNITTEST_TARGET_NAME} PRIVATE "../third_parties/catch/single_include/catch2")
-target_link_libraries(${UNITTEST_TARGET_NAME} Outils_Robot robotPrincipal)
-
-add_test(NAME "${UNITTEST_TARGET_NAME}_default"
-        COMMAND ${UNITTEST_TARGET_NAME}
-        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
-
-add_test(NAME "${UNITTEST_TARGET_NAME}_all"
-        COMMAND ${UNITTEST_TARGET_NAME} "*"
-        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+# add_library(catch_main OBJECT "unit.cpp")
+# set_target_properties(catch_main PROPERTIES
+#         CXX_STANDARD 11
+#         CXX_STANDARD_REQUIRED ON
+#         COMPILE_DEFINITIONS "$<$<CXX_COMPILER_ID:MSVC>:_SCL_SECURE_NO_WARNINGS>"
+#         COMPILE_DEFINITIONS "$<$<CXX_COMPILER_ID:MSVC>:_SCL_SECURE_NO_WARNINGS>"
+#         )
+# target_include_directories(catch_main PRIVATE "../third_parties/catch/single_include/catch2")
+#
+#
+# add_executable(unit_testing_modules $<TARGET_OBJECTS:catch_main> unit-modules_elec.cpp)
+# target_include_directories(unit_testing_modules PRIVATE "../third_parties/catch/single_include/catch2")
+# target_link_libraries(unit_testing_modules Trame_Robot Modules)
+#
+# add_test(NAME "test_modules"
+#         COMMAND unit_testing_modules
+#         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+#
+# file(GLOB files "unit-*.cpp")
+#
+# set(UNITTEST_TARGET_NAME "unit_testing")
+# add_executable(${UNITTEST_TARGET_NAME}
+#         $<TARGET_OBJECTS:catch_main>
+#         ${files})
+#
+# target_include_directories(${UNITTEST_TARGET_NAME} PRIVATE "../third_parties/catch/single_include/catch2")
+# target_link_libraries(${UNITTEST_TARGET_NAME} Outils_Robot robotPrincipal)
+#
+# add_test(NAME "${UNITTEST_TARGET_NAME}_default"
+#         COMMAND ${UNITTEST_TARGET_NAME}
+#         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+#
+# add_test(NAME "${UNITTEST_TARGET_NAME}_all"
+#         COMMAND ${UNITTEST_TARGET_NAME} "*"
+#         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})

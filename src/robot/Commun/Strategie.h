@@ -9,9 +9,9 @@
 
 #include "../../commun/Commun.h"
 #include "../../commun/RobotPrincipal/Constantes.h"
-#include "Deplacement.h"
 #include "Environnement/environment.h"
-#include "Evitement.h"
+#include "ModuleInterfacers/Deplacement.h"
+#include "ModuleInterfacers/Evitement.h"
 #include "Robot.h"
 #include <algorithm>
 #include <memory>
@@ -110,6 +110,6 @@ namespace Commun {
 
 		virtual void exec() final;
 	};
-}
+} // namespace Commun
 
 #endif

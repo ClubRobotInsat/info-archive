@@ -59,6 +59,12 @@ typedef struct SharedMotors2019 {
 
 } SharedMotors2019;
 
+typedef struct SharedAvoidance2019 {
+	int angle_detection_adversary;
+	uint8_t adversary_detected;
+	uint8_t parsing_failed;
+} SharedAvoidance2019;
+
 typedef struct SharedIO2019 {
 	uint8_t tirette; // 1 correspond à 'tirette mise', 0 à 'tirette enlevée'
 	uint8_t parsing_failed;
@@ -81,6 +87,10 @@ extern uint8_t servo_write_frame(uint8_t* buf, uint8_t buf_size, const SharedSer
 // <[<id: u8> <on_off: u8>] ...>
 extern SharedMotors2019 motor_read_frame(const uint8_t* message, uint8_t size);
 extern uint8_t motor_write_frame(uint8_t* buf, uint8_t buf_size, const SharedMotors2019* obj);
+
+// TODO
+extern SharedAvoidance2019 avoidance_read_frame(const uint8_t* message, uint8_t size);
+extern uint8_t avoidance_write_frame(uint8_t* buf, uint8_t buf_size, const SharedAvoidance2019* obj);
 
 // Format d'une trame :
 // <tirette: uint8_t>

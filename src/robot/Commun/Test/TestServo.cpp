@@ -8,8 +8,8 @@
 #include <stdio.h>
 
 #include "../../Cartes/CarteServosNova2017.h"
+#include "../BlockingInterfaces/Servo.h"
 #include "../Communication/RS232.h"
-#include "../Servo.h"
 #include <stdio.h>
 
 using namespace Commun;
@@ -62,16 +62,16 @@ int main(int argc, char** argv) {
 		logFailed("Carte : KO");
 	}
 
-	ServoManager s(carte, nullptr);
+	/*ServoManager s(carte, nullptr);
 
 	Angle a1, a2;
 	double aa;
 	while(true) {
-		logInfo("Angle ?");
-		std::cin >> aa;
-		a1 = Angle::makeFromDeg(aa);
-		logInfo("Je vais à ", a1.toDeg(), " deg, ", a2.toDeg(), " deg");
-		// ID servo en 1er paramètre
-		logInfo(s.positionnerServoBloquant(1, a1));
-	}
+	    logInfo("Angle ?");
+	    std::cin >> aa;
+	    a1 = Angle::makeFromDeg(aa);
+	    logInfo("Je vais à ", a1.toDeg(), " deg, ", a2.toDeg(), " deg");
+	    // ID servo en 1er paramètre
+	    logInfo(s.positionnerServoBloquant(1, a1));
+	}*/
 }

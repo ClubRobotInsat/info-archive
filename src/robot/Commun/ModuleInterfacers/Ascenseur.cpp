@@ -6,7 +6,7 @@
 //
 
 #include "Ascenseur.h"
-#include "../Cartes/CarteAsservissement.h"
+#include "../../Cartes/CarteAsservissement.h"
 
 namespace Commun {
 	const Duration Ascenseur::TIMEOUT = 2_s;
@@ -92,4 +92,4 @@ namespace Commun {
 	void Ascenseur::setVitesse(AngularSpeed v) {
 		_carteAsservissement.reglerParametre(CarteAsservissement::Angulaire_VitesseMax, v.toMilliRad_s<float>());
 	}
-}
+} // namespace Commun

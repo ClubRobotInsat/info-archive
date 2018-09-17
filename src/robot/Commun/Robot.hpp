@@ -28,7 +28,7 @@ namespace Commun {
 	void RobotAnnee<_Strategie, _IDCartes, _CarteInfo, Contacteurs>::synchroniserCAN() {
 		this->getCarte<_IDCartes::CAN_USB>().reinitialiserNumSequence();
 
-		/*while(!this->getCarte<_IDCartes::CAN_USB>().isInitialiseNumSequence()) {
+		/*while(!this->getCarte<_IDCartes::CAN_USB>(a).isInitialiseNumSequence()) {
 		    sleep(50_ms);
 		    logWarn("La carte CAN-USB ne s'est pas synchronisée");
 		}*/
@@ -140,4 +140,4 @@ namespace Commun {
 
 		this->ajouterCarte(std::make_unique<typename _CarteInfo<ID>::typeCarte>(this->getCAN(), _CarteInfo<ID>::idCarte, params...));
 	}
-}
+} // namespace Commun

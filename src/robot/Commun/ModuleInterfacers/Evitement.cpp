@@ -4,9 +4,9 @@
 
 #include "Evitement.h"
 
-#include "Strategie.h"
+#include "../Strategie.h"
 
-#include "../../commun/RobotPrincipal/Constantes.h"
+#include "RobotPrincipal/Constantes.h"
 
 namespace Commun {
 
@@ -21,10 +21,10 @@ namespace Commun {
 
 	Coordonnees Evitement::getPositionAdversaire() {
 		logWarn("On n'a pas la position de l'adversaire!");
-		const repere::Repere& reference = _robot.getCarteDeplacement().getReference();
+		const repere::Repere& reference = _robot.get_module_move().get_reference();
 		return Coordonnees({0_m, 0_m}, 0_deg, reference);
 
-		/*Coordonnees start = _robot.lireCoordonnees();
+		/*Coordonnees start = _robot.read_coordinates();
 		// L'angle est récupéré selon le repère de la carte déplacement
 		Angle angleAdv = -_robot.getAngleAdversaireDetecte().toMinusPiPi();
 		if(abs(angleAdv) < 0.001_deg) // si la carte nous dit qu'il n'y a pas d'adv
@@ -63,12 +63,12 @@ namespace Commun {
 	}
 
 	bool Evitement::adversaireDetecte() {
-		return _robot.isAdversaireDetecte();
+		return _robot.is_adversairedtected();
 		// return _robot.getAngleAdversaireDetecte().toMinusPiPi() >= 0.001_deg;
 	}
 
 	bool Evitement::adversairePresent(SensAvance) {
-		return _robot.isAdversaireDetecte();
+		return _robot.is_adversairedtected();
 		/*Angle angleAdv = getPositionAngulaireAdversaire();
 		Angle demiConeDetection = Angle::makeFromMilliRad(_robot.getAngleDetectionAdv());
 		bool present =
@@ -84,4 +84,4 @@ namespace Commun {
 		Distance x = cos(angle) * distAdv + _turretPosition.x;
 		return atan2(y, x);
 	}
-}
+} // namespace Commun

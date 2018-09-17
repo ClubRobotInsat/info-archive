@@ -8,16 +8,17 @@
 #ifndef __Club_Robot__Deplacement__
 #define __Club_Robot__Deplacement__
 
-#include "../../commun/Commun.h"
-#include "../Cartes/CarteDeplacementCommun.h"
-#include "Environnement/environment.h"
+#include "Commun.h"
+//#include "../Cartes/CarteDeplacementCommun.h"
+#include "../Robot.h"
 #include "Evitement.h"
-#include "Robot.h"
+#include "environment.h"
 #include <list>
 #include <memory>
 #include <stack>
 #include <threadpool/ThreadPool.h>
 
+// TODO : À REFAIRE ENTIÈREMENT
 namespace Commun {
 
 	// Tous les déplacements proposés ici sont bloquants
@@ -101,7 +102,9 @@ namespace Commun {
 		ResultatAction allerA(Vector2m const& destination, SensAvance sens) {
 			return this->allerA(destination, sens, 25_s);
 		}
-		ResultatAction allerA(Vector2m const& destination, SensAvance sens, Duration timeout);
+		ResultatAction allerA(Vector2m const& destination, SensAvance sens, Duration timeout) {
+			return ResultatAction::RATE;
+		}
 
 		ResultatAction allerA(Vector2m const& destination) {
 			return this->allerA(destination, _robot.constantes().getTimeoutMoveDefault());
@@ -114,13 +117,19 @@ namespace Commun {
 			return this->avancer(distance, sens, _robot.constantes().getTimeoutMoveDefault());
 		}
 		/** Bloquant */
-		ResultatAction avancer(Distance distance, SensAvance sens, Duration timeout);
+		ResultatAction avancer(Distance distance, SensAvance sens, Duration timeout) {
+			return ResultatAction::RATE;
+		}
 		ResultatAction avancerInfini(SensAvance sens) {
 			return this->avancerInfini(sens, _robot.constantes().getTimeoutMoveDefault());
 		}
-		ResultatAction avancerInfini(SensAvance sens, Duration timeout);
+		ResultatAction avancerInfini(SensAvance sens, Duration timeout) {
+			return ResultatAction::RATE;
+		}
 		// ResultatAction avancerA(Vector2m position, SensAvance sens);
-		ResultatAction avancerDe(Distance distance, SensAvance sens, Duration timeout);
+		ResultatAction avancerDe(Distance distance, SensAvance sens, Duration timeout) {
+			return ResultatAction::RATE;
+		}
 		ResultatAction avancerDe(Distance distance, SensAvance sens) {
 			return this->avancerDe(distance, sens, 5_s);
 		}
@@ -128,18 +137,24 @@ namespace Commun {
 		ResultatAction pointerVers(Distance x, Distance y) {
 			return this->pointerVers(x, y, _robot.constantes().getTimeoutMoveDefault());
 		}
-		ResultatAction pointerVers(Distance x, Distance y, Duration timeout);
+		ResultatAction pointerVers(Distance x, Distance y, Duration timeout) {
+			return ResultatAction::RATE;
+		}
 		ResultatAction pointerVers(Distance x, Distance y, SensRotation sens) {
 			return this->pointerVers(x, y, sens, _robot.constantes().getTimeoutMoveDefault());
 		}
-		ResultatAction pointerVers(Distance x, Distance y, SensRotation sens, Duration timeout);
+		ResultatAction pointerVers(Distance x, Distance y, SensRotation sens, Duration timeout) {
+			return ResultatAction::RATE;
+		}
 		/**
 		 * Tourne selon le sens le plus rapide qui permet d'orienter le robot à l'angle absolu donné.
 		 */
 		ResultatAction tournerAbsolu(Angle angle) {
 			return this->tournerAbsolu(angle, _robot.constantes().getTimeoutMoveDefault());
 		}
-		ResultatAction tournerAbsolu(Angle angle, Duration timeout);
+		ResultatAction tournerAbsolu(Angle angle, Duration timeout) {
+			return ResultatAction::RATE;
+		}
 
 		/**
 		 * Tourne selon le sens spécifié qui permet d'orienter le robot à l'angle absolu donné.
@@ -147,25 +162,33 @@ namespace Commun {
 		ResultatAction tournerAbsoluOriente(Angle angle, SensRotation sens) {
 			return this->tournerAbsoluOriente(angle, sens, 2_s);
 		}
-		ResultatAction tournerAbsoluOriente(Angle angle, SensRotation sens, Duration timeout);
+		ResultatAction tournerAbsoluOriente(Angle angle, SensRotation sens, Duration timeout) {
+			return ResultatAction::RATE;
+		}
 
 		ResultatAction tournerRelatif(Angle angle) {
 			return this->tournerRelatif(angle, 2_s);
 		}
-		ResultatAction tournerRelatif(Angle angle, Duration timeout);
+		ResultatAction tournerRelatif(Angle angle, Duration timeout) {
+			return ResultatAction::RATE;
+		}
 		ResultatAction tournerInfini(SensRotation sens) {
 			return this->tournerInfini(sens, _robot.constantes().getTimeoutMoveDefault());
 		}
-		ResultatAction tournerInfini(SensRotation sens, Duration timeout);
+		ResultatAction tournerInfini(SensRotation sens, Duration timeout) {
+			return ResultatAction::RATE;
+		}
 
-		void arreter();
-		void arretUrgence();
+		void arreter() {}
+		void arretUrgence() {}
 
 		/**
 		 * Retourne l'angle absolu vers lequel doit s'orienter le robot pour être capable de se rendre en ligne droite
 		 * vers la cibe.
 		 */
-		Angle deltaCap(Vector2m const& cible);
+		Angle deltaCap(Vector2m const& cible) {
+			return 0_deg;
+		}
 
 		/**
 		 * Définit le repère sur lequel sont basés les allerA, tournerAbsolu etc.
@@ -173,16 +196,18 @@ namespace Commun {
 		 * En même temps, faut être logique et changer le repère quand le robot est en mouvement n'est pas des plus
 		 * pertinent ;)
 		 */
-		void setRepere(Vector2m const& origine, Angle angle);
+		void setRepere(Vector2m const& origine, Angle angle) {}
 
-		void setRepere(Coordonnees const& newCoords);
+		void setRepere(Coordonnees const& newCoords) {}
 
 		/**
 		 * Fonction relative à l'affichage de la trajectoire en débug
 		 */
 		void setDebugState(bool state);
 
-		SensRotation sensRotationOptimal(Orientation from, Orientation to);
+		SensRotation sensRotationOptimal(Orientation from, Orientation to) {
+			return SensRotation::Horaire;
+		}
 
 	private:
 		template <typename T>
@@ -221,10 +246,10 @@ namespace Commun {
 		using Trajectoire = std::list<ComposanteTrajectoire>;
 
 		void updateEvitement();
-		void updateVitesseLineaire();
-		void updateVitesseAngulaire();
-		void updatePrecisionLineaire();
-		void updatePrecisionAngulaire();
+		void updateVitesseLineaire() {}
+		void updateVitesseAngulaire() {}
+		void updatePrecisionLineaire() {}
+		void updatePrecisionAngulaire() {}
 
 		std::function<bool()> testDeplacementUnitaireTermine();
 		std::function<bool()> testDeplacementUnitairePrecisionAtteinte();
@@ -276,7 +301,7 @@ namespace Commun {
 
 		Robot& _robot;
 		Evitement& _evitement;
-		CarteDeplacement& _carteDeplacement;
+		Commun::Moving2019& _module;
 
 		std::mutex _mutexEtats;
 		std::stack<bool> _evitementState;
@@ -297,6 +322,6 @@ namespace Commun {
 		Vector2m _originPosition;
 		Angle _originAngle;
 	};
-}
+} // namespace Commun
 
 #endif /* defined(__Club_Robot__Deplacement__) */

@@ -8,7 +8,7 @@
 #include "../../commun/ConstantesCommunes.h"
 #include "../../commun/RobotPrincipal/Constantes.h"
 #include "../../commun/sockets/tcpSock.h"
-#include "../Cartes/CarteDeplacement2009.h"
+//#include "../Cartes/CarteDeplacement2009.h"
 
 #include <Json.h>
 
@@ -110,7 +110,7 @@ namespace Commun {
 	}
 
 	void Strategie::attendreTirette() {
-		_robot->attenteTirette();
+		_robot->wait_for_tirette();
 	}
 
 	void Strategie::threadLidar() {
@@ -123,7 +123,7 @@ namespace Commun {
 				int lastDynamicCount = 0;
 
 				while(true) {
-					auto posRobot = _robot->lireCoordonnees().getPos2D();
+					auto posRobot = _robot->read_coordinates().getPos2D();
 					std::unique_lock<std::mutex> lk(_robotsMutex);
 					_tousLesRobots.clear();
 					for(int i = firstDynamic; i != firstDynamic + lastDynamicCount; ++i) {
@@ -215,4 +215,4 @@ namespace Commun {
 		std::lock_guard<std::mutex> lk(_robotsMutex);
 		return _tousLesRobots;
 	}
-}
+} // namespace Commun

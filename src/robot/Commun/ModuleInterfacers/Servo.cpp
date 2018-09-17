@@ -9,15 +9,15 @@
 
 namespace Commun {
 
-	ServoManager::ServoManager(CarteServo& carteServo, std::function<Angle(uint8_t, uint8_t)> getPositionServo)
-	        : _carte(carteServo), _getPositionServo(getPositionServo) {}
+	ServoManager::ServoManager(Servos2019& module_servo, std::function<Angle(uint8_t, uint8_t)> getPositionServo)
+	        : _module(module_servo), _getPositionServo(std::move(getPositionServo)) {}
 
 	bool ServoManager::estALaPosition(uint8_t servo, Angle position) {
 		return lirePosition(servo) == position;
 	}
 
 	Angle ServoManager::lirePosition(uint8_t servo) {
-		return _carte.lirePosition(servo) - _offset[servo];
+		return _module.read_position(servo) - _offset[servo];
 	}
 
 	ResultatAction ServoManager::positionnerServoBloquant(uint8_t servo, Angle pos) {
@@ -27,10 +27,10 @@ namespace Commun {
 		// Ajout de l'offset à la position en cours
 		pos += _offset[servo];
 		Angle anciennePos = lirePosition(servo);
-		_carte.reglerPosition(servo, pos);
+		_module.set_position(servo, pos);
 
 		while(true) {
-			if(_carte.verifierDeplacementTermine(servo)) {
+			if(_module.is_moving_done(servo)) {
 				return ResultatAction::REUSSI;
 			}
 
@@ -39,9 +39,9 @@ namespace Commun {
 				return ResultatAction::TIMEOUT;
 			}
 
-			if(_carte.verifierServoBloque(servo)) {
+			if(_module.is_blocking(servo)) {
 				logWarn("Bloqué, je reviens à la position précédente !");
-				_carte.reglerPosition(servo, anciennePos);
+				_module.set_position(servo, anciennePos);
 				return ResultatAction::RATE;
 			}
 			sleep(50_ms);
@@ -49,14 +49,14 @@ namespace Commun {
 	}
 
 	void ServoManager::reglerVitesse(uint8_t servo, uint8_t vitesse) {
-		_carte.setServoVitesse(servo, vitesse);
+		_module.set_speed(servo, vitesse);
 	}
 
-	void ServoManager::setCouleur(uint8_t servo, CarteServo::Couleur couleur) {
-		_carte.setCouleur(servo, couleur);
+	void ServoManager::setCouleur(uint8_t servo, Servos2019::Color color) {
+		_module.set_color(servo, color);
 	}
 
-	void ServoManager::reglerModeBlocage(uint8_t servo, CarteServo::ModeBlocage mode) {
-		_carte.reglerModeBlocage(servo, mode);
+	void ServoManager::reglerModeBlocage(uint8_t servo, Servos2019::BlockingMode mode) {
+		_module.set_blocking_mode(servo, mode);
 	}
-}
+} // namespace Commun

@@ -11,7 +11,7 @@
 
 namespace Commun {
 
-	class ModuleMotors2019 final : public Module<SharedMotors2019> {
+	class Motors2019 final : public Module<SharedMotors2019> {
 	public:
 		enum RotatingDirection : uint8_t { SCHEDULE = 0, TRIGONOMETRIC = 1 };
 
@@ -19,7 +19,7 @@ namespace Commun {
 		static const int NB_MAX_UNCONTROLLED_MOTORS = MAX_UNCONTROLLED_MOTORS;
 		static const int NB_MAX_BRUSHLESS = MAX_BRUSHLESS;
 
-		explicit ModuleMotors2019(uint8_t id) : Module(id, motor_read_frame, motor_write_frame) {}
+		explicit Motors2019(uint8_t id) : Module(id, motor_read_frame, motor_write_frame) {}
 
 		inline uint8_t get_frame_size() const override;
 
@@ -34,6 +34,8 @@ namespace Commun {
 		void position_angle(uint8_t motor, Angle);
 
 		void position_turns(uint8_t motor, uint8_t nb_turns, RotatingDirection);
+
+		bool is_position_finished(uint8_t motor) const;
 
 		void activate_uncontrolled_motor(uint8_t motor, RotatingDirection);
 

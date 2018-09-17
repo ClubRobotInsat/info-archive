@@ -8,14 +8,14 @@
 #ifndef Club_Robot_Servo_h
 #define Club_Robot_Servo_h
 
-#include "../Cartes/CarteServoCommun.h"
-#include "Robot.h"
+#include "../Modules/Servos2019.h"
+#include "../Robot.h"
 #include <functional>
 
 namespace Commun {
 	class ServoManager {
 	public:
-		ServoManager(CarteServo& carteServo, std::function<Angle(uint8_t, uint8_t)> getPositionServo);
+		ServoManager(Servos2019& module_servo, std::function<Angle(uint8_t, uint8_t)> getPositionServo);
 		virtual ~ServoManager() = default;
 
 		/**
@@ -58,18 +58,18 @@ namespace Commun {
 		/**
 		 * Change la couleur des leds des servos
 		 */
-		void setCouleur(uint8_t servo, CarteServo::Couleur couleur);
+		void setCouleur(uint8_t servo, Servos2019::Color);
 
 		/**
 		 * Change le mode de blocage d'un servo
 		 */
-		void reglerModeBlocage(uint8_t servo, CarteServo::ModeBlocage mode);
+		void reglerModeBlocage(uint8_t servo, Servos2019::BlockingMode);
 
 	private:
 		/// VARIABLES ///
-		CarteServo& _carte;
+		Servos2019& _module;
 		std::function<Angle(uint8_t, uint8_t)> _getPositionServo;
-		Angle _offset[NB_MAX_SERVOS_NOVA];
+		Angle _offset[Servos2019::NB_MAX_SERVOS];
 	};
-}
+} // namespace Commun
 #endif

@@ -5,8 +5,8 @@
 #ifndef ROOT_EVITEMENT_H
 #define ROOT_EVITEMENT_H
 
-#include "Environnement/environment.h"
-#include "Robot.h"
+#include "../Robot.h"
+#include "environment.h"
 
 namespace Commun {
 	class Evitement final {
@@ -54,6 +54,6 @@ namespace Commun {
 		 * y : décalage vers le côté droit du robot. */
 		Vector2m _turretPosition;
 	};
-}
+} // namespace Commun
 
 #endif // ROOT_EVITEMENT_H

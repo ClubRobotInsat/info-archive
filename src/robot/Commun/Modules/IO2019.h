@@ -11,9 +11,9 @@
 
 namespace Commun {
 
-	class ModuleIO2019 : public Module<SharedIO2019> {
+	class IO2019 final : public Module<SharedIO2019> {
 	public:
-		explicit ModuleIO2019(uint8_t id);
+		explicit IO2019(uint8_t id);
 
 		bool read_tirette() const;
 
