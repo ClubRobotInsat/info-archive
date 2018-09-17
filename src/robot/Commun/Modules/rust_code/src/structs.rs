@@ -2,17 +2,23 @@ extern crate libc;
 use core::marker::Sized;
 use libc::uint8_t;
 
-// Ca permets de récupérer le type des structures pour un joli affichage dans les fonctions de parsing
+/// Représente la signature de la fonction C que l'on appelle pour transformer la frame en octets.
+type WriteFunction<T> = unsafe extern "C" fn(*mut uint8_t, uint8_t, *const T) -> uint8_t;
+
+/// Représente la signature de la fonction C que l'on appelle pour transformer des octets en frame.
+type ReadFunction<T> = unsafe extern "C" fn(*const uint8_t, uint8_t) -> T;
+
+/// Ca permets de récupérer le type des structures pour un joli affichage dans les fonctions de parsing
 pub trait TypeInfo {
     fn type_of(&self) -> &'static str;
 }
 
-// La définition de cette structure doit être identique à celle de C
-// L'intérêt de cette même définition permet d'avoir accès aux fonctions de parsing
-// définies uniquement en C
-// Afin de pouvoir communiquer entre Rust et C, il faut utiliser le crate
-// [libc](https://docs.rs/libc/0.2.43/libc/index.html) et utiliser la même représentation mémoire
-// qu'en C avec [repr(C)](https://doc.rust-lang.org/nomicon/other-reprs.html)
+/// La définition de cette structure doit être identique à celle de C
+/// L'intérêt de cette même définition permet d'avoir accès aux fonctions de parsing
+/// définies uniquement en C
+/// Afin de pouvoir communiquer entre Rust et C, il faut utiliser le crate
+/// [libc](https://docs.rs/libc/0.2.43/libc/index.html) et utiliser la même représentation mémoire
+/// qu'en C avec [repr(C)](https://doc.rust-lang.org/nomicon/other-reprs.html)
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct Servo2019 {
@@ -36,14 +42,14 @@ impl PartialEq for Servo2019 {
     fn eq(&self, other: &Servo2019) -> bool {
         self.id == other.id
             && (self.id == 0
-                || (self.position == other.position
-                    && self.wanted_position == other.wanted_position
+                || (self.position == other.position && self.wanted_position == other.wanted_position
                     && self.speed == other.speed
                     && self.blocked == other.blocked
                     && self.blocking_mode == other.blocking_mode
                     && self.color == other.color))
     }
 }
+
 impl Eq for SharedServos2019 {}
 
 impl TypeInfo for SharedServos2019 {
@@ -95,7 +101,8 @@ impl PartialEq for ControlledMotor2019 {
 }
 impl PartialEq for UncontrolledMotor2019 {
     fn eq(&self, other: &UncontrolledMotor2019) -> bool {
-        self.id == other.id && (self.id == 0 || (self.on_off == other.on_off && self.rotation == other.rotation))
+        self.id == other.id
+            && (self.id == 0 || (self.on_off == other.on_off && self.rotation == other.rotation))
     }
 }
 impl PartialEq for Brushless2019 {
@@ -136,11 +143,11 @@ extern "C" {
     pub static NBR_BRUSHLESS: libc::uint8_t;*/
 }
 
-// Fonctions de parsing génériques
-// Il faut `impl` chaque structure pour appeler ces fonctions lors du parsing
+/// Fonctions de parsing génériques
+/// Il faut `impl` chaque structure pour appeler ces fonctions lors du parsing
 pub fn generic_read_frame<T>(
     message: Vec<u8>,
-    c_read_function: unsafe extern "C" fn(*const uint8_t, uint8_t) -> T,
+    c_read_function: ReadFunction<T>,
 ) -> Result<T, ErrorParsing>
 where
     T: FrameParsingTrait,
@@ -158,10 +165,9 @@ where
         Err(ErrorParsing::BadPadding)
     }
 }
-
 fn generic_write_frame<T>(
     obj: &T,
-    c_write_function: unsafe extern "C" fn(*mut uint8_t, uint8_t, *const T) -> uint8_t,
+    c_write_function: WriteFunction<T>,
 ) -> Result<Vec<u8>, ErrorParsing>
 where
     T: TypeInfo,
@@ -183,17 +189,22 @@ where
     }
 }
 
+// TODO : Documentation
 pub enum ErrorParsing {
     BadPadding,
     BufferTooSmall,
 }
 
-// Tous les modules doivent posséder ces fonctions
+/// Regroupements de méthodes permettant de sérialiser et déserialiser des Frames à partir d'un
+/// flux d'octets.
 pub trait FrameParsingTrait {
+    /// Permet de transformer un buffer en message.
     fn read_frame(_msg: Vec<u8>) -> Result<Self, ErrorParsing>
     where
         Self: Sized;
+    /// Permet de transformer un message en octet.
     fn write_frame(&self) -> Result<Vec<u8>, ErrorParsing>;
+    /// Permet de vérifier la validité d'un message.
     fn read_is_ok(&self) -> bool;
 }
 
