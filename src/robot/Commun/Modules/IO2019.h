@@ -1,6 +1,8 @@
-//
-// Created by terae on 16/09/18.
-//
+/**
+ * Cette classe permets d'accéder aux états de contacteurs sur le robot
+ * Actuellement, seule la tirette est présente
+ * L'IO permets donc de savoir quand commence le match
+ */
 
 #ifndef ROOT_MODULEIO2019_H
 #define ROOT_MODULEIO2019_H

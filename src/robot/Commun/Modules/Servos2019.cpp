@@ -7,6 +7,8 @@
 
 namespace Commun {
 	void Servos2019::add_servo(uint8_t id, Angle start_position, BlockingMode mode) {
+		std::lock_guard<std::mutex> lk(_mutex_variables);
+
 		if(id >= NB_MAX_SERVOS) {
 			throw std::runtime_error("ID du servo trop grand ("s + std::to_string(id) + " > " + std::to_string(NB_MAX_SERVOS) + ") !");
 		} else if(id == 0) {
@@ -27,6 +29,8 @@ namespace Commun {
 	}
 
 	bool Servos2019::is_servo_ok(uint8_t id) const {
+		std::lock_guard<std::mutex> lk(_mutex_variables);
+
 		// 'id == 0' veut dire qu'il n'y a pas de servo-moteur dans la représentation C
 		return id > 0 && id < NB_MAX_SERVOS && static_cast<bool>(_servos[id]);
 	}

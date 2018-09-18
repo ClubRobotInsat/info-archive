@@ -10,5 +10,5 @@ set(MODULE_SOURCES
         Moving2019.cpp
         Servos2019.cpp)
 
-add_library(ModulesElec STATIC ${MODULE_SOURCES})
-target_link_libraries(ModulesElec Outils_Robot)
+add_library(Modules STATIC ${MODULE_SOURCES})
+target_link_libraries(Modules Outils_Robot)

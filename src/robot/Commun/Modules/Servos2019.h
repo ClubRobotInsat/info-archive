@@ -1,6 +1,15 @@
-//
-// Created by terae on 8/21/18.
-//
+/**
+ * Représentation d'un servo-moteur depuis l'année 2019
+ *
+ * Le manuel des servos moteurs se trouve [ici](https://www.robotshop.com/media/files/pdf/manual-drs-0101.pdf)
+ * Pour un soucis de simplicité dans le code C, l'ID 0 des servos n'est pas addressable,
+ * il est considéré comme non existant (pbs de tableaux statiques en C, tout ça...)
+ *
+ * L'interface fournie est non bloquante mais thread-safe :
+ * on peut demander au servo X d'aller à l'angle A, puis faire autre chose
+ * et l'élec s'occupe d'amener le servo à la bonne position pendant un temps indéterminé
+ * Ce principe s'applique aussi pour tous les autres setteurs
+ */
 
 #ifndef ROOT_SERVOS2019_H
 #define ROOT_SERVOS2019_H

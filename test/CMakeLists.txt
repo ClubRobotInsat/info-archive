@@ -1,8 +1,8 @@
-add_executable(unit_testing_modules_elec unit-modules_elec.cpp)
-target_link_libraries(unit_testing_modules_elec ModulesElec Catch2::Catch2)
+add_executable(unit_testing_modules unit-modules.cpp)
+target_link_libraries(unit_testing_modules Modules Catch2::Catch2)
 
-add_executable(unit_testing_modules_communication unit-modules_communication.cpp)
-target_link_libraries(unit_testing_modules_communication Modules Catch2::Catch2)
+add_executable(unit_testing_communication unit-communication.cpp)
+target_link_libraries(unit_testing_communication Communication Catch2::Catch2)
 
 add_executable(unit_testing_robot_commun unit-robot_commun.cpp)
 # Je passe par cet artifice tant que la couche 'robot' n'est pas finalisée

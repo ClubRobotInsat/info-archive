@@ -62,7 +62,7 @@ public:
 		OCTET_DEBUT_TRAME_4_ACK = 0xbb,
 	};
 
-	enum { NB_MODULES_MAX = 16, DONNEES_TRAME_MAX = 8 };
+	enum { DONNEES_TRAME_MAX = 8 };
 
 	// erreur si une trame n'est pas traitée
 	class ErreurTrameNonTraitee : public std::runtime_error {

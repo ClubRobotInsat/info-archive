@@ -12,10 +12,12 @@
  *  === dans les fichiers 'SharedWithRust.[c|h]' ===
  *   - créer une nouvelle structure en C partagée avec la partie électronique
  *   - écrire les fonctions de parsing struct / trame en C
- *  === dans une nouvelle classe 'Module{NOM_DU_MODULE}{ANNEE}.[cpp|h]' ===
+ *  === dans une nouvelle classe '{NOM_DU_MODULE}{ANNEE}.[cpp|h]' ===
  *   - faire hériter le nouveau module de la classe mère 'Module' en donnant les paramètres C
  *   - overrider les fonctions 'generate_shared' et 'message_processing' (utilisation de la struct)
  *   - définir la taille d'une trame en overridant 'get_frame_size' (/!\ fonction très importante)
+ *  === rajouter la ligne `#include "{NOM_DU_MODULE}{ANNEE}.h"` dans `ModuleManager.h` et dans le `CMakeLists.txt`
+ *  === idéalement, écrire des tests unitaires (`/test/unit-modules.cpp`) et de la doc =)
  *
  * Et c'est tout ! Pour plus de détails, tu peux te référer aux modules déjà codés.
  */
@@ -23,10 +25,11 @@
 #ifndef _MODULE_H
 #define _MODULE_H
 
-#include "../Communication/CAN.h"
-#include <Commun.h>
-#include <functional>
-#include <mutex>
+#include <Commun.h> // GlobalFrame
+
+#include <atomic>     // atomic
+#include <functional> // function
+#include <mutex>      // mutex, lock_guard
 
 namespace Commun {
 
@@ -68,7 +71,7 @@ namespace Commun {
 		mutable std::mutex _mutex_variables;
 
 	private:
-		/// ID du module dans le robot
+		/// ID du module dans le robot, allant de 0 à 15
 		uint8_t _id;
 	};
 

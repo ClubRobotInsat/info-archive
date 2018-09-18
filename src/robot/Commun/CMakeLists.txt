@@ -11,19 +11,8 @@ set(STRAT_SOURCE
 add_library(Strategie STATIC ${STRAT_SOURCE})
 # target_link_libraries(Strategie)
 
-set(COMMUNICATION_SOURCE
-        Communication/CAN.cpp
-        Communication/RS232.cpp
-        Communication/Serie.cpp
-        Communication/NullCommunicator.cpp
-        Communication/TCPIP.cpp
-        Communication/NamedPipe.cpp)
-add_library(Communication STATIC ${COMMUNICATION_SOURCE})
-
 add_subdirectory(Modules)
-
-add_library(Modules STATIC "ElecCommunicator.cpp")
-target_link_libraries(Modules ModulesElec Communication)
+add_subdirectory(Communication)
 
 
 # add_executable(debug_TestCAN Commun/Test/TestCan.cpp Cartes/Carte.cpp Commun/Test/CarteTestCAN.cpp)

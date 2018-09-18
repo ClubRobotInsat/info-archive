@@ -9,7 +9,7 @@
 
 #include "Modules/ModuleManager.h"
 
-#include "ElecCommunicator.h"
+#include "Communication/ElecCommunicator.h"
 
 /*#include "../../commun/communication/Trame.h"
 #include "../Cartes/Carte.h"

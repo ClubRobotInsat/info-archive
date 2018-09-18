@@ -355,8 +355,8 @@ TEST_CASE("ModuleManager") {
 		auto& module_servo = manager.add_module<Servos2019>(15);
 		module_servo.add_servo(2, 50_deg);
 
-		SECTION("GlobalFrame make_state_frame()") {
-			auto frame = manager.make_state_frame();
+		SECTION("GlobalFrame write_frame()") {
+			auto frame = manager.write_frame();
 			const uint8_t wanted_size = (uint8_t)6 + manager.get_module<Servos2019>().get_frame_size();
 			REQUIRE(frame.getNbDonnees() == wanted_size);
 			const uint8_t* array = frame.getDonnees();

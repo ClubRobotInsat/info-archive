@@ -10,7 +10,7 @@
 class Trame final : public GlobalFrame {
 public:
 	// indice max d'une carte
-	enum { NUM_CMD_MAX = 15, NB_CARTES_MAX = GlobalFrame::NB_MODULES_MAX, BITS_ID_TRAME = 7, BITS_CMD_TRAME = 4 };
+	enum { NUM_CMD_MAX = 15, NB_CARTES_MAX = 16, BITS_ID_TRAME = 7, BITS_CMD_TRAME = 4 };
 
 	// erreur l'indice de la carte est trop grand
 	class ErreurIdCarteTropGrand : public std::runtime_error {

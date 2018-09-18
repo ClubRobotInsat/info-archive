@@ -12,10 +12,10 @@ namespace Commun {
 		return _modules[id] != nullptr;
 	}
 
-	GlobalFrame ModuleManager::make_state_frame() const {
+	GlobalFrame ModuleManager::write_frame() const {
 		GlobalFrame f;
 		uint16_t list_modules = 0;
-		for(int i = 0; i < GlobalFrame::NB_MODULES_MAX; ++i) {
+		for(int i = 0; i < NB_MODULES_MAX; ++i) {
 			list_modules |= (bool)_modules[i];
 			list_modules <<= 1;
 		}
@@ -24,13 +24,13 @@ namespace Commun {
 		f.addByte(static_cast<uint8_t>((max8 - ((0xff00 & list_modules) >> 8)) ^ max8));
 		f.addByte(static_cast<uint8_t>((max8 - list_modules) ^ max8));
 
-		for(int i = 0; i < GlobalFrame::NB_MODULES_MAX; ++i) {
+		for(int i = 0; i < NB_MODULES_MAX; ++i) {
 			if(_modules[i]) {
 				f.addByte(_modules[i]->get_frame_size());
 			}
 		}
 
-		for(int i = 0; i < GlobalFrame::NB_MODULES_MAX; ++i) {
+		for(int i = 0; i < NB_MODULES_MAX; ++i) {
 			if(_modules[i]) {
 				f += _modules[i]->make_frame();
 			}
@@ -39,7 +39,7 @@ namespace Commun {
 		return f;
 	}
 
-	void ModuleManager::update_all(const GlobalFrame& frame) {
+	void ModuleManager::read_frame(const GlobalFrame& frame) {
 		// 2 octets pour spécifier quels modules sont présents
 		uint8_t wanted_frame_size = 2;
 		if(frame.getNbDonnees() < wanted_frame_size) {
@@ -60,7 +60,7 @@ namespace Commun {
 			throw std::runtime_error("Frame does not contain the modules' size.");
 		}
 
-		for(uint8_t id = 0; id < GlobalFrame::NB_MODULES_MAX; ++id) {
+		for(uint8_t id = 0; id < NB_MODULES_MAX; ++id) {
 			// pour chaque module annoncé dans la trame, on ajoute la taille de leur trame associée
 			if(list_modules[id]) {
 				if(_modules[id] == nullptr) {
@@ -83,7 +83,7 @@ namespace Commun {
 		}
 
 		// c'est bon, la trame a le bon format ! on peut mettre à jour chaque module
-		for(uint8_t id = 0; id < GlobalFrame::NB_MODULES_MAX; ++id) {
+		for(uint8_t id = 0; id < NB_MODULES_MAX; ++id) {
 			const uint8_t SIZE = _modules[id]->get_frame_size();
 			_modules[id]->update(GlobalFrame(SIZE, array + SIZE));
 			count += SIZE;
@@ -92,16 +92,16 @@ namespace Commun {
 
 	uint8_t ModuleManager::get_nb_modules() const {
 		uint8_t count = 0;
-		for(uint8_t id = 0; id < GlobalFrame::NB_MODULES_MAX; ++id) {
+		for(uint8_t id = 0; id < NB_MODULES_MAX; ++id) {
 			count += (bool)_modules[id];
 		}
 		return count;
 	}
 
 	BaseModule& ModuleManager::get_module_by_id(uint8_t id) {
-		if(id >= GlobalFrame::NB_MODULES_MAX) {
+		if(id >= NB_MODULES_MAX) {
 			throw std::runtime_error("Impossible to get module n°" + std::to_string(id) + " (> " +
-			                         std::to_string(GlobalFrame::NB_MODULES_MAX) + ").");
+			                         std::to_string(NB_MODULES_MAX) + ").");
 		} else if(_modules[id] == nullptr) {
 			throw std::runtime_error("The module n°" + std::to_string(id) + " doesn't exist.");
 		}

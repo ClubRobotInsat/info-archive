@@ -3,10 +3,11 @@
 //
 
 #include "ElecCommunicator.h"
-#include "Communication/NullCommunicator.h"
+#include "NullCommunicator.h"
 
 namespace Commun {
-	std::vector<std::string> ElecCommunicator::makeArgs(const char* typeConnexion, const char* adresse, int port) {
+	template <typename ParsingClass>
+	std::vector<std::string> ElecCommunicator<ParsingClass>::makeArgs(const char* typeConnexion, const char* adresse, int port) {
 		std::vector<std::string> result = {"Simulateur", typeConnexion};
 		if(typeConnexion == "RS232"s) {
 			result.emplace_back(adresse);
@@ -18,38 +19,46 @@ namespace Commun {
 		return result;
 	}
 
-	ElecCommunicator::ElecCommunicator(std::shared_ptr<Commun::ModuleManager> module_manager, uint16_t default_port_TCPIP)
-	        : _module_manager(std::move(module_manager))
+	template <typename ParsingClass>
+	ElecCommunicator<ParsingClass>::ElecCommunicator(std::shared_ptr<ParsingClass> parser, uint16_t default_port_TCPIP)
+	        : _parser(std::move(parser))
 	        , _connecte(false)
 	        , _modeConnexion(ModeConnexion::OTHERS)
 	        , _default_port_TCPIP(default_port_TCPIP) {}
 
-	ElecCommunicator::ElecCommunicator(Commun::ModuleManager& module_manager, uint16_t default_port_TCPIP)
-	        : ElecCommunicator(module_manager.shared_from_this(), default_port_TCPIP) {}
+	template <typename ParsingClass>
+	ElecCommunicator<ParsingClass>::ElecCommunicator(ParsingClass& parser, uint16_t default_port_TCPIP)
+	        : ElecCommunicator(parser.shared_from_this(), default_port_TCPIP) {}
 
-	ElecCommunicator::~ElecCommunicator() {
+	template <typename ParsingClass>
+	ElecCommunicator<ParsingClass>::~ElecCommunicator() {
 		disconnect();
 	}
 
-	CAN& ElecCommunicator::getCAN() {
+	template <typename ParsingClass>
+	CAN& ElecCommunicator<ParsingClass>::getCAN() {
 		return *_busCAN;
 	}
 
 	/// Debug du CAN pour les elecs
-	void ElecCommunicator::setDebugCAN(bool active) {
+	template <typename ParsingClass>
+	void ElecCommunicator<ParsingClass>::setDebugCAN(bool active) {
 		_busCAN->setDebug(active);
 	}
 
-	bool ElecCommunicator::isSimuConnected() {
-		return this->_simuConnected;
+	/*template <typename ParsingClass>
+	bool ElecCommunicator<ParsingClass>::isSimuConnected() {
+	    return this->_simuConnected;
 	}
 
-	Socket& ElecCommunicator::getSocketSimu() {
-		return *_socketSimu;
-	}
+	template <typename ParsingClass>
+	Socket& ElecCommunicator<ParsingClass>::getSocketSimu() {
+	    return *_socketSimu;
+	}*/
 
-	/// Connexion a la main a partir des arguments passes au programme.
-	bool ElecCommunicator::connect(std::vector<std::string> const& args) {
+	/// Connexion a la main à partir des arguments passés au programme.
+	template <typename ParsingClass>
+	bool ElecCommunicator<ParsingClass>::connect(std::vector<std::string> const& args) {
 		logInfo("Initialisation de la communication élec/info.");
 
 		for(size_t i = 1; i < args.size() /*&& !_connecte*/; ++i) {
@@ -101,9 +110,10 @@ namespace Commun {
 				_connecte = true;
 			} else if(args[i] == "SIMU") {
 				logDebug9("Initialisation socket client côté robot");
-				_socketSimu = std::make_unique<Socket>(SockProtocol::TCP);
+				// TODO : voir si on garde cette architecture
+				/*_socketSimu = std::make_unique<Socket>(SockProtocol::TCP);
 				_socketSimu->connect("127.0.0.1", _default_port_TCPIP);
-				_simuConnected = true;
+				_simuConnected = true;*/
 			}
 		}
 
@@ -122,7 +132,8 @@ namespace Commun {
 		return true;
 	}
 
-	void ElecCommunicator::disconnect() {
+	template <typename ParsingClass>
+	void ElecCommunicator<ParsingClass>::disconnect() {
 		if(_connecte) {
 			_running_execution.store(false);
 			_reception.join();
@@ -131,7 +142,9 @@ namespace Commun {
 
 	/// Communication avec les élecs
 	// TODO : améliorer le principe, actuellement on réponds dès qu'on a la réponse
-	void ElecCommunicator::communicate_with_elecs() {
+	template <typename ParsingClass>
+	template <typename>
+	void ElecCommunicator<ParsingClass>::communicate_with_elecs() {
 		setThreadName("Communicate");
 		std::unique_lock<std::mutex> lk(_mutex_communication);
 
@@ -143,14 +156,14 @@ namespace Commun {
 		while(_running_execution) {
 			GlobalFrame frame = {}; // TODO _busCAN->recevoirTrameBloquant();
 			try {
-				_module_manager->update_all(frame);
+				_parser->update_all(frame);
 			} catch(std::runtime_error& e) {
 				logError("Échec de la mise à jour du module manager !!");
 				logError("Exception rencontrée : ", e.what());
 			}
 
 			try {
-				// FIXME _busCAN->envoyerTrame(_module_manager->make_state_frame(), true);
+				// FIXME _busCAN->envoyerTrame(_parser->write_frame(), true);
 			} catch(std::runtime_error& e) {
 				logError("Échec de l'envoi de l'état du robot par le module manager !!");
 				logError("Exception rencontrée : ", e.what());
