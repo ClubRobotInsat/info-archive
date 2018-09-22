@@ -1,19 +1,10 @@
-include_directories(Environnement)
-set(STRAT_SOURCE
-        Environnement/environment.cpp
-        Environnement/node.cpp
-        Environnement/shapes.h
-        Environnement/spline.cpp
-        Environnement/TGAWriter.cpp
-
-        Strategie.cpp)
-
-add_library(Strategie STATIC ${STRAT_SOURCE})
-# target_link_libraries(Strategie)
-
 add_subdirectory(Modules)
 add_subdirectory(Communication)
 
+set(ROBOT_SOURCE
+        Robot.cpp)
+add_library(Robot STATIC ${ROBOT_SOURCE})
+target_link_libraries(Robot Modules Communication)
 
 # add_executable(debug_TestCAN Commun/Test/TestCan.cpp Cartes/Carte.cpp Commun/Test/CarteTestCAN.cpp)
 # target_link_libraries(debug_TestCAN Robot)

@@ -19,19 +19,25 @@ namespace Commun {
 	        : _module_manager(std::move(module_manager))
 	        , _constantesCommunes(std::move(constantesCommunes))
 	        , _constantes(std::move(constantes)) {
-		_communicator = std::make_unique<ElecCommunicator>(_module_manager, _constantes->getPortTCPIPDefault());
+		_communicator = std::make_unique<ElecCommunicator<ModuleManager>>(_module_manager, _constantes->getPortTCPIPDefault());
 		_communicator->connect(args);
+
+		// Après avoir créé tous les modules, on dit au communicateur qu'il peut exécuter son thread de communication
+		assign_modules();
+		_communicator->set_modules_initialized();
 	}
 
 	/// Finalise le robot
-	Robot::~Robot() {}
+	Robot::~Robot() {
+		deactivation();
+	}
 
-	Moving2019& Robot::get_module_move() const {
-		return _module_manager->get_module<Moving2019>();
+	/*Moving2019& Robot::get_module_move() const {
+	    return _module_manager->get_module<Moving2019>();
 	}
 
 	// TODO : déplacer ce code dans la partie 'stratégie'
-	/*void Robot::wait_for_tirette() const {
+	void Robot::wait_for_tirette() const {
 	    int state_tirette = 0;
 	    setting_up_tirette();
 

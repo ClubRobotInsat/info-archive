@@ -4,8 +4,8 @@
 #include "../../commun/Commun.h"
 #include <IConstantes.h>
 
-#include "MathToolbox/MathToolbox.h"
-#include "MathToolbox/Repere.h"
+//#include "MathToolbox/MathToolbox.h"
+//#include "MathToolbox/Repere.h"
 
 #include "Modules/ModuleManager.h"
 
@@ -15,16 +15,13 @@
 #include "../Cartes/Carte.h"
 #include "../Cartes/CarteDeplacementCommun.h"*/
 
-#include "IDebugDessin.h"
+/*#include "IDebugDessin.h"
 #include <atomic>
 #include <memory>
 #include <mutex>
-#include <unordered_map>
+#include <unordered_map>*/
 
 namespace Commun {
-
-	// class Strategie;
-
 
 	class Robot {
 	public:
@@ -48,11 +45,11 @@ namespace Commun {
 			return _module_manager->get_module<Module>();
 		}
 
-		Moving2019& get_module_move() const;
+		/*Moving2019& get_module_move() const;
 
 		repere::Coordonnees read_coordinates() const {
-			return get_module_move().get_coordonnees();
-		}
+		    return get_module_move().get_coordonnees();
+		}*/
 
 		// TODO : déplacer ce code dans la partie 'stratégie'
 		/// Attend la tirette au départ
@@ -81,22 +78,27 @@ namespace Commun {
 			return *_constantesCommunes;
 		}
 
-		ElecCommunicator& get_communicator() {
-			return *_communicator;
-		}
+		/*ElecCommunicator& get_communicator() {
+		    return *_communicator;
+		}*/
 
 	protected:
 		std::shared_ptr<ModuleManager> _module_manager;
 		std::unique_ptr<ConstantesCommunes> _constantesCommunes;
 		std::unique_ptr<ConstantesRobot> _constantes;
 
-		// virtual void initialize() = 0;
+		/// L'initialisation des modules du robot se fait ici
+		// Cette méthode n'est pas virtuelle pure
+		// car on peut initialiser le module manager avant la construction du robot
+		virtual void assign_modules() {}
 
-		// virtual void assign_modules() = 0;
+		/// Désactivation du robot
+		virtual void deactivation() {}
+
 		// Strategie* _strategie = nullptr;
 
 	private:
-		std::unique_ptr<ElecCommunicator> _communicator;
+		std::unique_ptr<ElecCommunicator<ModuleManager>> _communicator;
 
 		/*void setting_up_tirette() const;
 		bool is_tirette_pulled() const;*/

@@ -51,11 +51,11 @@ namespace Commun {
 		/// Retourne vrai si un module de type 'Module' existe
 		/// @nothrow
 		template <typename Module>
-		bool has_module();
+		bool has_module() const;
 
 		/// Retourne vrai si un module possède déjà l'ID 'id'
 		/// @nothrow
-		bool has_module(uint8_t id);
+		bool has_module(uint8_t id) const;
 
 		/// Retourne le nombre de modules instantiés
 		/// @nothrow
@@ -88,7 +88,7 @@ namespace Commun {
 	/////////////////////////////////////////
 
 	template <typename Module>
-	bool ModuleManager::has_module() {
+	bool ModuleManager::has_module() const {
 		for(uint8_t i = 0; i < NB_MODULES_MAX; ++i) {
 			if(_modules[i] != nullptr) {
 				if(typeid(Module) == typeid(*_modules[i])) {

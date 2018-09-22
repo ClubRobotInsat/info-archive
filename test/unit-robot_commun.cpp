@@ -6,6 +6,7 @@
 
 #include "../src/commun/RobotPrincipal/Constantes.h"
 #include "../src/robot/Commun/Robot.h"
+#include "../src/robot/Principal/librobot/Robot.h"
 
 TEST_CASE("Initialization of a common robot.") {
 	auto m = std::make_shared<Commun::ModuleManager>();
@@ -18,5 +19,9 @@ TEST_CASE("Initialization of a common robot.") {
 
 	CHECK(robot.get_module<Commun::Servos2019>().get_nbr_servos() == 2);
 
-	robot.get_communicator().disconnect();
+	// robot.get_communicator().disconnect();
+
+	SECTION("Robot Principal") {
+		RobotPrincipal r{{"ehCoucou", "PIPES"}};
+	}
 }

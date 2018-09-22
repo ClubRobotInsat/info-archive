@@ -5,53 +5,52 @@
 #define ROBOT_2015_H
 
 #include "../../Commun/Robot.h"
-#include "Strategie.h"
+#include <RobotPrincipal/Constantes.h>
+//#include "Strategie.h"
 
 // Identifiants des cartes
-#include "../../../commun/Commun.h"
-#include "../../../commun/RobotPrincipal/Constantes.h"
+//#include "../../../commun/Commun.h"
+//#include "../../../commun/RobotPrincipal/Constantes.h"
 
-#include "../../Commun/Deplacement.h"
-#include <atomic>
-#include <iostream>
-#include <mutex>
+//#include "../../Commun/Deplacement.h"
+//#include <atomic>
+//#include <iostream>
+//#include <mutex>
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class RobotPrincipal
-    : public Commun::RobotAnnee<StrategiePrincipal, IDCartesPrincipal::IDCartes, ConstantesPrincipal::CarteInfo, ConstantesPrincipal::Contacteur> {
+class RobotPrincipal : public Commun::Robot {
 public:
 	//////////////////
 	/// Constantes ///
 	//////////////////
-	static const AngularSpeed VITESSE_ASCENSEUR_DEFAUT;
-	static const AngularSpeed VITESSE_RECALAGE_ASCENSEUR;
+	// static const AngularSpeed VITESSE_ASCENSEUR_DEFAUT;
+	// static const AngularSpeed VITESSE_RECALAGE_ASCENSEUR;
 
-	static const Distance RAYON_ROBOT_RECALAGE;
-	static const Distance RAYON_ROBOT_RECALAGE_X;
+	// static const Distance RAYON_ROBOT_RECALAGE;
+	// static const Distance RAYON_ROBOT_RECALAGE_X;
 
-	static const float COEFF_FIT_MULT;
-	static const float COEFF_FIT_POW;
+	// static const float COEFF_FIT_MULT;
+	// static const float COEFF_FIT_POW;
 
 public:
 	///////////////////
 	// Constructeurs //
 	///////////////////
-	RobotPrincipal(std::vector<std::string> const& args,
-	               Speed vitesseDeplacement = ConstantesPrincipal::VITESSE_LINEAIRE_DEFAUT,
-	               AngularSpeed vitesseAngulaire = ConstantesPrincipal::VITESSE_ANGULAIRE_DEFAUT);
+	RobotPrincipal(std::shared_ptr<Commun::ModuleManager>, std::vector<std::string> const& args);
 
-	~RobotPrincipal() = default;
+	explicit RobotPrincipal(std::vector<std::string> const& args);
 
-	Vector2m getPositionTourelle() const override;
+	~RobotPrincipal() final = default;
+
+	// Vector2m getPositionTourelle() const override;
 
 	// L'appel est effectué par la classe Strategie lors de sa construction et de sa destruction
-	virtual void desactivation() override;
+	virtual void deactivation() override;
 
-	StrategiePrincipal& getStrategie();
+	// StrategiePrincipal& getStrategie();
 
 private:
-	virtual void initialisation() override;
-	virtual void assignerCartes() override;
+	virtual void assign_modules() override;
 };
 
 #endif

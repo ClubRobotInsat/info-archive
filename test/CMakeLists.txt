@@ -5,10 +5,7 @@ add_executable(unit_testing_communication unit-communication.cpp)
 target_link_libraries(unit_testing_communication Communication Catch2::Catch2)
 
 add_executable(unit_testing_robot_commun unit-robot_commun.cpp)
-# Je passe par cet artifice tant que la couche 'robot' n'est pas finalisée
-add_library(robot_str STATIC ../src/robot/Commun/Robot.cpp)
-target_link_libraries(robot_str Modules)
-target_link_libraries(unit_testing_robot_commun Modules robot_str Catch2::Catch2)
+target_link_libraries(unit_testing_robot_commun Robot robotPrincipal Catch2::Catch2)
 
 # add_library(catch_main OBJECT "unit.cpp")
 # set_target_properties(catch_main PROPERTIES

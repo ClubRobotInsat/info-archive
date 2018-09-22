@@ -140,6 +140,12 @@ namespace Commun {
 		}
 	}
 
+	template <typename ParsingClass>
+	void ElecCommunicator<ParsingClass>::set_modules_initialized() {
+		_modules_initialized.notify_all();
+		_modules_init_notified = true;
+	}
+
 	/// Communication avec les élecs
 	// TODO : améliorer le principe, actuellement on réponds dès qu'on a la réponse
 	template <typename ParsingClass>
@@ -156,7 +162,7 @@ namespace Commun {
 		while(_running_execution) {
 			GlobalFrame frame = {}; // TODO _busCAN->recevoirTrameBloquant();
 			try {
-				_parser->update_all(frame);
+				_parser->read_frame(frame);
 			} catch(std::runtime_error& e) {
 				logError("Échec de la mise à jour du module manager !!");
 				logError("Exception rencontrée : ", e.what());

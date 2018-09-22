@@ -59,6 +59,8 @@ namespace Commun {
 		/// Arrêt de la communication et déconnecion du médium
 		void disconnect();
 
+		void set_modules_initialized();
+
 	private:
 		std::shared_ptr<ParsingClass> _parser;
 

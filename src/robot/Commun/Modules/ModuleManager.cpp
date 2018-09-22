@@ -8,7 +8,7 @@
 
 namespace Commun {
 
-	bool ModuleManager::has_module(uint8_t id) {
+	bool ModuleManager::has_module(uint8_t id) const {
 		return _modules[id] != nullptr;
 	}
 
