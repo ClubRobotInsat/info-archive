@@ -8,7 +8,7 @@
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wint-in-bool-context"
-#include "communication/Trame.h"
+#include "communication/GlobalFrame.h"
 #pragma GCC diagnostic pop
 
 #include "Units.h"
@@ -31,14 +31,14 @@ inline void setThreadName(std::string const& name) {
 	setThreadName(name.c_str());
 }
 
-using std::uint8_t;
+using std::int16_t;
+using std::int32_t;
+using std::int64_t;
 using std::int8_t;
 using std::uint16_t;
-using std::int16_t;
 using std::uint32_t;
-using std::int32_t;
 using std::uint64_t;
-using std::int64_t;
+using std::uint8_t;
 
 // écriture allégée pour définir une sous-classe d'exception.
 #define EXCEPTION_CLASS(name)                                     \

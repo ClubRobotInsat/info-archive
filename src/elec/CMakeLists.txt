@@ -26,7 +26,7 @@ include_directories(code-elec-nucleo/src/herkulex)
 include_directories(simulator)
 
 
-add_library(IATestElecAndRobot ../robot/Principal/IA/IATestRobot.cpp)
+add_library(IATestElecAndRobot ../robot/Strategy/IA/IATestRobot.cpp)
 target_link_libraries(IATestElecAndRobot robotPrincipalInterfaceElec)
 target_compile_definitions(IATestElecAndRobot PRIVATE -DSIMULATED_MAIN)
 

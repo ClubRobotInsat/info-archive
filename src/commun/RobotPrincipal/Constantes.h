@@ -8,6 +8,8 @@
 #include "../../robot/Commun/Modules/Moving2019.h"
 #include "../../robot/Commun/Modules/Servos2019.h"
 
+#include "ConstantesCommunes.h"
+
 /*
 #ifdef TARGET_SIMULATEUR
 
@@ -41,40 +43,34 @@
 #include "../../robot/Cartes/CarteServosNova2017.h"
 
 #endif
-*/
+
 
 #include "../../elec/code-elec-nucleo/src/IDs_2018.h"
 
 #include "Commun.h"
-#include "ConstantesCommunes.h"
 #include <type_traits>
 
 namespace IDCartesPrincipal {
-	enum {
-		ID_CARTE_DEPLACEMENT = ID_ELEC_CARD_MOVEMENT,
-		ID_CARTE_EVITEMENT = ID_ELEC_CARD_AVOIDANCE,
-		ID_CARTE_IO = ID_ELEC_CARD_IO,
-		ID_CARTE_SERVOS = ID_ELEC_CARD_SERVOS,
-		ID_CARTE_MOTEURS = ID_ELEC_CARD_MOTORS,
+    enum {
+        ID_CARTE_DEPLACEMENT = ID_ELEC_CARD_MOVEMENT,
+        ID_CARTE_EVITEMENT = ID_ELEC_CARD_AVOIDANCE,
+        ID_CARTE_IO = ID_ELEC_CARD_IO,
+        ID_CARTE_SERVOS = ID_ELEC_CARD_SERVOS,
+        ID_CARTE_MOTEURS = ID_ELEC_CARD_MOTORS,
 
-		/*ID_CARTE_DEBUG_DESSIN = 8*/
-	};
+        //ID_CARTE_DEBUG_DESSIN = 8
+    };
 
-	ENUM_NS(IDCartesPrincipal, IDCartes, DEPLACEMENT, EVITEMENT, IO, SERVOS, MOTEURS)
+    ENUM_NS(IDCartesPrincipal, IDCartes, DEPLACEMENT, EVITEMENT, IO, SERVOS, MOTEURS)
 
-	ENUM_CLASS_NS(IDCartesPrincipal, IDCarteServos, PORTE_CUBE, PORTE_SOUTE_G, PORTE_SOUTE_D, ABEILLE_G, ABEILLE_D)
-	ENUM_CLASS_NS(IDCartesPrincipal, IDCarteMoteurs, ASCENSEUR_GAUCHE, ASCENSEUR_DROIT, AVALEUR_GAUCHE, AVALEUR_DROIT, BRUSHLESS_GAUCHE, BRUSHLESS_DROIT)
-} // namespace IDCartesPrincipal
+    ENUM_CLASS_NS(IDCartesPrincipal, IDCarteServos, PORTE_CUBE, PORTE_SOUTE_G, PORTE_SOUTE_D, ABEILLE_G, ABEILLE_D)
+    ENUM_CLASS_NS(IDCartesPrincipal, IDCarteMoteurs, ASCENSEUR_GAUCHE, ASCENSEUR_DROIT, AVALEUR_GAUCHE, AVALEUR_DROIT,
+BRUSHLESS_GAUCHE, BRUSHLESS_DROIT) } // namespace IDCartesPrincipal*/
 
 namespace ConstantesPrincipal {
-	using IDCartes = IDCartesPrincipal::IDCartes;
+	/*using IDCartes = IDCartesPrincipal::IDCartes;
 	using IDCartesServos = IDCartesPrincipal::IDCarteServos;
-	using IDCartesMoteurs = IDCartesPrincipal::IDCarteServos;
-
-	const repere::Repere REFERENCE_GREEN =
-	    repere::Repere({0_m, 0_m}, repere::Multiplicateur::SENS_POSITIF, repere::Multiplicateur::SENS_POSITIF);
-	const repere::Repere REFERENCE_ORANGE =
-	    repere::Repere({3_m, 0_m}, repere::Multiplicateur::SENS_NEGATIF, repere::Multiplicateur::SENS_POSITIF);
+	using IDCartesMoteurs = IDCartesPrincipal::IDCarteServos;*/
 
 	const Vector3m START_ROBOT_POSITION(25_cm, 1.50_m, 15_cm);
 	const Angle START_ROBOT_ANGLE(-90_deg);
@@ -85,10 +81,10 @@ namespace ConstantesPrincipal {
 	/////////////////// CONTACTEURS ///////////////////
 
 	// Numéros des contacteurs et les rôles associés
-	enum class Contacteur {
-		TIRETTE = ID_CONTACTOR_TIRETTE,
+	/*enum class Contacteur {
+	    TIRETTE = ID_CONTACTOR_TIRETTE,
 
-		NBR = 1
+	    NBR = 1
 	};
 
 	enum class PositionAscenseur { NBR = 0 };
@@ -96,13 +92,13 @@ namespace ConstantesPrincipal {
 	/////////////////// SERVOS ///////////////////
 
 	enum class Servo {
-		PORTE_CUBE = ID_SERVO_CUBE_DOOR,
-		PORTE_SOUTE_GAUCHE = ID_SERVO_HOLD_DOOR_LEFT,
-		PORTE_SOUTE_DROIT = ID_SERVO_HOLD_DOOR_RIGHT,
-		ABEILLE = ID_SERVO_BEE,
-		LOQUET = ID_SERVO_LOQUET,
+	    PORTE_CUBE = ID_SERVO_CUBE_DOOR,
+	    PORTE_SOUTE_GAUCHE = ID_SERVO_HOLD_DOOR_LEFT,
+	    PORTE_SOUTE_DROIT = ID_SERVO_HOLD_DOOR_RIGHT,
+	    ABEILLE = ID_SERVO_BEE,
+	    LOQUET = ID_SERVO_LOQUET,
 
-		NBR = 5
+	    NBR = 5
 	};
 
 	// Différentes positions des servos
@@ -125,15 +121,15 @@ namespace ConstantesPrincipal {
 	/////////////////// MOTEURS ///////////////////
 
 	enum class Moteurs {
-		ASCENSEUR_GAUCHE = ID_MOTOR_ELEVATOR_LEFT,
-		ASCENSEUR_DROIT = ID_MOTOR_ELEVATOR_RIGHT,
-		AVALEUR_GAUCHE = ID_MOTOR_SWALLOW_LEFT,
-		AVALEUR_DROIT = ID_MOTOR_SWALLOW_RIGHT,
-		BRUSHLESS_GAUCHE = ID_MOTOR_BRUSHLESS_LEFT,
-		BRUSHLESS_DROIT = ID_MOTOR_BRUSHLESS_RIGHT,
+	    ASCENSEUR_GAUCHE = ID_MOTOR_ELEVATOR_LEFT,
+	    ASCENSEUR_DROIT = ID_MOTOR_ELEVATOR_RIGHT,
+	    AVALEUR_GAUCHE = ID_MOTOR_SWALLOW_LEFT,
+	    AVALEUR_DROIT = ID_MOTOR_SWALLOW_RIGHT,
+	    BRUSHLESS_GAUCHE = ID_MOTOR_BRUSHLESS_LEFT,
+	    BRUSHLESS_DROIT = ID_MOTOR_BRUSHLESS_RIGHT,
 
-		NBR = 6
-	};
+	    NBR = 6
+	};*/
 
 	// Durée attendue lors de l'envoi d'un message aux cartes élecs dans les fonctions blonquantes autre que les
 	// servos.

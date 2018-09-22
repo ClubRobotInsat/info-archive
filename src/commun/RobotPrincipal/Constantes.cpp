@@ -7,13 +7,13 @@
 
 #include "Constantes.h"
 
-namespace ConstantesPrincipal {
-	Angle const positionPorteCube[enumToInt(PorteCube::NBR)] = {0_deg, 78_deg};
-	Angle const positionSouteGauche[enumToInt(SouteGauche::NBR)] = {-110_deg, 50_deg};
-	Angle const positionSouteDroit[enumToInt(SouteDroit::NBR)] = {55_deg, -110_deg};
-	Angle const positionAbeille[enumToInt(Abeille::NBR)] = {90_deg, 135_deg};
-	Angle const positionLoquet[enumToInt(Loquet::NBR)] = {0_deg, 0_deg}; // haut / bas
-}
+/*namespace ConstantesPrincipal {
+    Angle const positionPorteCube[enumToInt(PorteCube::NBR)] = {0_deg, 78_deg};
+    Angle const positionSouteGauche[enumToInt(SouteGauche::NBR)] = {-110_deg, 50_deg};
+    Angle const positionSouteDroit[enumToInt(SouteDroit::NBR)] = {55_deg, -110_deg};
+    Angle const positionAbeille[enumToInt(Abeille::NBR)] = {90_deg, 135_deg};
+    Angle const positionLoquet[enumToInt(Loquet::NBR)] = {0_deg, 0_deg}; // haut / bas
+}*/
 
 Duration const ConstantesPrincipal::TIMEOUT_DEPLACEMENT_DEFAUT = Constantes::TIMEOUT_MOVE_DEFAULT;
 Duration const ConstantesPrincipal::TIMEOUT_BLOCAGE_ADVERSAIRE_DEFAUT = Constantes::TIMEOUT_OPPONENT_BLOCKING_DEFAULT;
