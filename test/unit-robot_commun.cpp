@@ -4,9 +4,9 @@
 
 #include "unit.cpp"
 
-#include "../src/commun/RobotPrincipal/Constantes.h"
 #include "../src/robot/Commun/Robot.h"
-#include "../src/robot/Principal/librobot/Robot.h"
+#include "../src/robot/Primary.h"
+#include <Constants.h>
 
 TEST_CASE("Initialization of a common robot.") {
 	auto m = std::make_shared<Commun::ModuleManager>();
@@ -15,13 +15,13 @@ TEST_CASE("Initialization of a common robot.") {
 	servos.add_servo(5, 120_deg);
 	servos.add_servo(6, 50_deg, Commun::Servos2019::BlockingMode::HOLD_ON_BLOCKING);
 
-	Commun::Robot robot(m, std::make_unique<ConstantesCommunes>(), std::make_unique<ConstantesRobotPrincipal>(), {"ehCoucou", "PIPES"});
+	Commun::Robot robot(m, {"ehCoucou", "PIPES"});
 
 	CHECK(robot.get_module<Commun::Servos2019>().get_nbr_servos() == 2);
 
 	// robot.get_communicator().disconnect();
 
 	SECTION("Robot Principal") {
-		RobotPrincipal r{{"ehCoucou", "PIPES"}};
+		PrimaryRobot r{{"ehCoucou", "PIPES"}};
 	}
 }

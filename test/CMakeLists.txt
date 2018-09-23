@@ -5,7 +5,10 @@ add_executable(unit_testing_communication unit-communication.cpp)
 target_link_libraries(unit_testing_communication Communication Catch2::Catch2)
 
 add_executable(unit_testing_robot_commun unit-robot_commun.cpp)
-target_link_libraries(unit_testing_robot_commun Robot robotPrincipal Catch2::Catch2)
+target_link_libraries(unit_testing_robot_commun Robot primaryRobot Catch2::Catch2)
+
+add_executable(unit_ini unit-ini.cpp ../third_parties/iniparser/INI.h)
+target_link_libraries(unit_ini Catch2::Catch2)
 
 # add_library(catch_main OBJECT "unit.cpp")
 # set_target_properties(catch_main PROPERTIES

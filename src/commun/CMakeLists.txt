@@ -1,6 +1,6 @@
 set(OUTILS_SOURCE
         AsciiArt.hpp
-        ConstantesCommunes.cpp
+        Constants.cpp
         Json.h
         log/Log.cpp
         log/LogHTML.cpp
@@ -8,7 +8,6 @@ set(OUTILS_SOURCE
         log/LogTermVT100.cpp
         MathToolbox/MathToolbox.cpp
         MathToolbox/Repere.cpp
-        RobotPrincipal/Constantes.cpp
         sockets/Socket.cpp
         sockets/tcpSock.cpp
         communication/GlobalFrame.cpp
@@ -18,6 +17,8 @@ set(OUTILS_SOURCE
 add_library(Outils_${SIMU_OU_ROBOT} STATIC ${OUTILS_SOURCE})
 target_link_libraries(Outils_${SIMU_OU_ROBOT} pthread)
 add_dependencies(Outils_${SIMU_OU_ROBOT} InfoSubmodules)
+
+target_compile_definitions(Outils_${SIMU_OU_ROBOT} PRIVATE INI_FILE_PATH="${CMAKE_BINARY_DIR}/src/robot.ini")
 
 #file(COPY table_2017.json table_2018.json DESTINATION ${CMAKE_BINARY_DIR}/src)
 

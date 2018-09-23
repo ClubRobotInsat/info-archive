@@ -2,7 +2,7 @@
 
 #include "StrategiePrincipal.h"
 #include "../../Commun/Deplacement.h"
-#include "../Principal/librobot/Robot.h"
+#include "../Primary.h"
 #include "MecaManager.h"
 #include <cmath>
 

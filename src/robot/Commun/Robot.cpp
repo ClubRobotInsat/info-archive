@@ -6,20 +6,16 @@
 //
 
 #include "Robot.h"
-//#include "Strategie.h"
+#include <Constants.h>
 
 namespace Commun {
 
 
 	/// Initialise le robot a partir des arguments passes au programme.
-	Robot::Robot(std::shared_ptr<ModuleManager> module_manager,
-	             std::unique_ptr<ConstantesCommunes> constantesCommunes,
-	             std::unique_ptr<ConstantesRobot> constantes,
-	             std::vector<std::string> const& args)
-	        : _module_manager(std::move(module_manager))
-	        , _constantesCommunes(std::move(constantesCommunes))
-	        , _constantes(std::move(constantes)) {
-		_communicator = std::make_unique<ElecCommunicator<ModuleManager>>(_module_manager, _constantes->getPortTCPIPDefault());
+	Robot::Robot(std::shared_ptr<ModuleManager> module_manager, std::vector<std::string> const& args)
+	        : _module_manager(std::move(module_manager)) {
+		_communicator =
+		    std::make_unique<ElecCommunicator<ModuleManager>>(_module_manager, GLOBAL_CONSTANTS.get_default_TCPIP_port());
 		_communicator->connect(args);
 
 		// Après avoir créé tous les modules, on dit au communicateur qu'il peut exécuter son thread de communication
@@ -32,12 +28,8 @@ namespace Commun {
 		deactivation();
 	}
 
-	/*Moving2019& Robot::get_module_move() const {
-	    return _module_manager->get_module<Moving2019>();
-	}
-
 	// TODO : déplacer ce code dans la partie 'stratégie'
-	void Robot::wait_for_tirette() const {
+	/*void Robot::wait_for_tirette() const {
 	    int state_tirette = 0;
 	    setting_up_tirette();
 
