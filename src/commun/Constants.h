@@ -23,10 +23,9 @@ namespace Constants {
 	              Undef)
 
 	class Constants;
-	class AbstractRobot {};
-	class PrimaryRobot {
+	class Robot {
 		friend class Constants;
-		explicit PrimaryRobot(Ini& reader);
+		explicit Robot(Ini& reader, std::string name);
 
 		Vector3m _start_position;
 		Angle _start_angle;
@@ -84,10 +83,12 @@ namespace Constants {
 	};
 
 	class Constants {
+		std::map<std::string, std::unique_ptr<Robot>> _robots;
+
 	public:
 		explicit Constants(std::string ini_path);
 
-		std::unique_ptr<PrimaryRobot> primary;
+		const Robot& operator[](const std::string& name) const;
 
 		inline Duration get_match_duration() const {
 			return _match_duration;
