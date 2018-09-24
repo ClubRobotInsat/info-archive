@@ -3,7 +3,7 @@
 //
 
 #include "Moteur.h"
-#include "../../Principal/librobot/libRobot.h"
+#include "../../../Principal/librobot/libRobot.h"
 
 namespace {
 	StrategiePrincipal* _strategie;

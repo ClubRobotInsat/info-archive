@@ -8,7 +8,7 @@
 #ifndef __Club_Robot__Ascenseur__
 #define __Club_Robot__Ascenseur__
 
-#include "../../Cartes/CarteAsservissement.h"
+#include "../../../Cartes/CarteAsservissement.h"
 #include "Commun.h"
 
 class CarteAsservissement;

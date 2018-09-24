@@ -3,7 +3,7 @@
 #ifndef IA_test
 #define IA_test
 
-#include "../../Principal/librobot/libRobot.h"
+#include "../../../Principal/librobot/libRobot.h"
 #include "Commun.h"
 
 class IATest : public StrategiePrincipal {

@@ -5,7 +5,7 @@
 //  Created by Rémi on 01/06/2015.
 //
 
-#include "../../Principal/librobot/libRobot.h"
+#include "../../../Principal/librobot/libRobot.h"
 #include <Commun.h>
 
 class IATestLidar : public StrategiePrincipal {

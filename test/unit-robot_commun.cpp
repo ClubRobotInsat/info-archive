@@ -4,7 +4,7 @@
 
 #include "unit.cpp"
 
-#include "../src/robot/Commun/Robot.h"
+#include "../src/robot/Robot.h"
 #include <Constants.h>
 
 TEST_CASE("Initialization of a common robot.") {

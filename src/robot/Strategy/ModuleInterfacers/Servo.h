@@ -9,7 +9,7 @@
 #define Club_Robot_Servo_h
 
 #include "../../Commun/Modules/Servos2019.h"
-#include "../../Commun/Robot.h"
+#include "../../Robot.h"
 #include <functional>
 
 namespace Commun {

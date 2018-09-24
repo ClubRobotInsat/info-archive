@@ -4,7 +4,7 @@
 
 #ifndef ROOT_IATESTROBOT_H
 #define ROOT_IATESTROBOT_H
-#include "../../Principal/librobot/libRobot.h"
+#include "../../../Principal/librobot/libRobot.h"
 #include <Commun.h>
 
 class IATestRobot : public StrategiePrincipal {

@@ -1,0 +1,22 @@
+add_subdirectory(../../Modules)
+add_subdirectory(../../Communication)
+
+set(ROBOT_SOURCE
+        ../../Robot.cpp)
+add_library(Robot STATIC ${ROBOT_SOURCE})
+target_link_libraries(Robot ../../Modules ../../Communication)
+
+# add_executable(debug_TestCAN Commun/Test/TestCan.cpp Cartes/Carte.cpp Commun/Test/CarteTestCAN.cpp)
+# target_link_libraries(debug_TestCAN Robot)
+# add_executable(debug_TestServo Commun/Test/TestServo.cpp Cartes/Carte.cpp Cartes/CarteServosNova2017.cpp)
+# target_link_libraries(debug_TestServo Robot)
+# add_executable(debug_TestContacteur Commun/Test/TestContacteur.cpp Cartes/Carte.cpp Cartes/CarteIO2018.cpp)
+# target_link_libraries(debug_TestContacteur Robot)
+# add_executable(debug_TestAscenseur Commun/Test/TestAscenseur.cpp Cartes/Carte.cpp Cartes/CarteAsservissement2009.cpp)
+# target_link_libraries(debug_TestAscenseur Robot)
+# add_executable(debug_TesteurRS232 Commun/Test/Testeur_RS232.cpp)
+# target_link_libraries(debug_TesteurRS232 Robot)
+# add_executable(debug_TesteurCAN Commun/Test/Testeur_CAN.cpp)
+# target_link_libraries(debug_TesteurCAN Robot)
+# add_executable(debug_TestRS23 Commun/Test/TestAscenseur.cpp)
+# target_link_libraries(debug_TestRS23 robotPrincipal)
