@@ -5,7 +5,6 @@
 #include "unit.cpp"
 
 #include "../src/robot/Commun/Robot.h"
-#include "../src/robot/Primary.h"
 #include <Constants.h>
 
 TEST_CASE("Initialization of a common robot.") {
@@ -22,6 +21,6 @@ TEST_CASE("Initialization of a common robot.") {
 	// robot.get_communicator().disconnect();
 
 	SECTION("Robot Principal") {
-		PrimaryRobot r{{"ehCoucou", "PIPES"}};
+		Commun::Robot r{"primary", {"ehCoucou", "PIPES"}};
 	}
 }

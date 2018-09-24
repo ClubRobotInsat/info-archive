@@ -56,6 +56,8 @@ private:
 		_b.exchange(s.b);
 	}
 
+	void deactivation() override {}
+
 	std::atomic_uint8_t _a, _b;
 };
 

@@ -10,6 +10,3 @@ endif()
 
 add_subdirectory(../commun commun)
 add_subdirectory(Commun)
-
-add_library(primaryRobot STATIC Primary.cpp)
-target_link_libraries(primaryRobot Robot)

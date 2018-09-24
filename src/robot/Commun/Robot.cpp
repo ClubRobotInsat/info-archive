@@ -10,10 +10,18 @@
 
 namespace Commun {
 
-
-	/// Initialise le robot a partir des arguments passes au programme.
+	// Le robot n'est pas initialisé à partir de `src/robot.ini`
+	// L'utilisateur doit donc fournir un ModuleManager non vierge s'il veut un robot fonctionnel
 	Robot::Robot(std::shared_ptr<ModuleManager> module_manager, std::vector<std::string> const& args)
-	        : _module_manager(std::move(module_manager)) {
+	        : Robot(module_manager, "guest", args) {}
+
+	// Le robot est initialisé à partir de `src/robot.ini` dans la section `[robot.<name>]`
+	Robot::Robot(std::string name, std::vector<std::string> const& args)
+	        : Robot(std::make_shared<ModuleManager>(), name, args) {}
+
+	/// Initialise le robot à partir des arguments passes au programme.
+	Robot::Robot(std::shared_ptr<ModuleManager> module_manager, std::string name, std::vector<std::string> const& args)
+	        : _module_manager(std::move(module_manager)), _name(name) {
 		_communicator =
 		    std::make_unique<ElecCommunicator<ModuleManager>>(_module_manager, GLOBAL_CONSTANTS.get_default_TCPIP_port());
 		_communicator->connect(args);
@@ -27,6 +35,52 @@ namespace Commun {
 	Robot::~Robot() {
 		deactivation();
 	}
+
+	void Robot::deactivation() {
+		logInfo("desactivation du robot '" + _name + "'.");
+
+		_module_manager->deactivation();
+
+		/*this->getCarte<DEPLACEMENT>().activerEnvoiAuto(false);
+		this->getCarte<DEPLACEMENT>().arretUrgence();
+
+		this->getCarte<DEPLACEMENT>().activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::POSITION, false);
+		this->getCarte<DEPLACEMENT>().activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, false);
+		this->getCarte<DEPLACEMENT>().activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::DROITE, false);
+		this->getCarte<DEPLACEMENT>().activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::GAUCHE, false);*/
+
+		// this->getCarte<EVITEMENT>().desactiverEnvoiMesureAdvAuto();
+
+		// getStrategie().getMecaManager().couperMeca();
+	}
+
+	void Robot::assign_modules() {
+		// Un robot 'guest' est un robot dont l'initialisation se fait à partir d'un ModuleManager directement
+		// sans passer par les constantes introduites dans `src/robot.ini`
+		if(_name == "guest") {
+			return;
+		}
+
+		for(auto module : GLOBAL_CONSTANTS[_name].get_modules()) {
+			if(module.first == "moving") {
+				_module_manager->add_module<Commun::Moving2019>(module.second);
+			} else if(module.first == "servos") {
+				// TODO : voir comment récupérer les servos à ajouter (`robot.ini` ou fichier .JSON ?)
+				_module_manager->add_module<Commun::Servos2019>(module.second);
+			} else if(module.first == "motors") {
+				_module_manager->add_module<Commun::Motors2019>(module.second);
+			} else if(module.first == "io") {
+				_module_manager->add_module<Commun::IO2019>(module.second);
+			} else if(module.first == "avoidance") {
+				auto& avoidance = _module_manager->add_module<Commun::Avoidance2019>(module.second);
+				avoidance.set_position_turret(GLOBAL_CONSTANTS[_name].get_turret_position());
+			} else {
+				throw std::runtime_error("The module named '" + module.first + "' (ID: " + std::to_string(module.second) +
+				                         ") isn't known for the robot '" + _name + "'.");
+			}
+		}
+	}
+
 
 	// TODO : déplacer ce code dans la partie 'stratégie'
 	/*void Robot::wait_for_tirette() const {
