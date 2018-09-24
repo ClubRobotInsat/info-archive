@@ -34,6 +34,7 @@ namespace Commun {
 
 		lock_variables();
 		_controlled[id]->wanted_position = angle;
+		_controlled[id]->finished = false;
 		unlock_variables();
 	}
 
@@ -43,6 +44,7 @@ namespace Commun {
 		lock_variables();
 		_controlled[id]->wanted_nb_turns = nb_turns;
 		_controlled[id]->rotation = rotation;
+		_controlled[id]->finished = false;
 		unlock_variables();
 	}
 
@@ -177,6 +179,30 @@ namespace Commun {
 	void Motors2019::message_processing(const SharedMotors2019& s) {
 		if(s.parsing_failed == 0) {
 			// TODO
+		}
+	}
+
+	void Motors2019::deactivation() {
+		lock_variables();
+		for(uint8_t id = 0; id < NB_MAX_CONTROLLED_MOTORS; ++id) {
+			if(_controlled[id]) {
+				_controlled[id]->finished = true;
+				_controlled[id]->wanted_nb_turns = 0;
+				_controlled[id]->wanted_position = 0_deg;
+			}
+		}
+		unlock_variables();
+
+		for(uint8_t id = 0; id < NB_MAX_UNCONTROLLED_MOTORS; ++id) {
+			if(_uncontrolled[id]) {
+				deactivate_uncontrolled_motor(id);
+			}
+		}
+
+		for(uint8_t id = 0; id < NB_MAX_BRUSHLESS; ++id) {
+			if(_brushless[id]) {
+				deactivate_brushless(id);
+			}
 		}
 	}
 } // namespace Commun

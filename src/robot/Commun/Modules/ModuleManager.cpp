@@ -15,8 +15,8 @@ namespace Commun {
 	GlobalFrame ModuleManager::write_frame() const {
 		GlobalFrame f;
 		uint16_t list_modules = 0;
-		for(int i = 0; i < NB_MODULES_MAX; ++i) {
-			list_modules |= (bool)_modules[i];
+		for(uint8_t i = 0; i < NB_MODULES_MAX; ++i) {
+			list_modules |= has_module(i);
 			list_modules <<= 1;
 		}
 
@@ -24,14 +24,14 @@ namespace Commun {
 		f.addByte(static_cast<uint8_t>((max8 - ((0xff00 & list_modules) >> 8)) ^ max8));
 		f.addByte(static_cast<uint8_t>((max8 - list_modules) ^ max8));
 
-		for(int i = 0; i < NB_MODULES_MAX; ++i) {
-			if(_modules[i]) {
+		for(uint8_t i = 0; i < NB_MODULES_MAX; ++i) {
+			if(has_module(i)) {
 				f.addByte(_modules[i]->get_frame_size());
 			}
 		}
 
-		for(int i = 0; i < NB_MODULES_MAX; ++i) {
-			if(_modules[i]) {
+		for(uint8_t i = 0; i < NB_MODULES_MAX; ++i) {
+			if(has_module(i)) {
 				f += _modules[i]->make_frame();
 			}
 		}
@@ -63,7 +63,7 @@ namespace Commun {
 		for(uint8_t id = 0; id < NB_MODULES_MAX; ++id) {
 			// pour chaque module annoncé dans la trame, on ajoute la taille de leur trame associée
 			if(list_modules[id]) {
-				if(_modules[id] == nullptr) {
+				if(!has_module(id)) {
 					throw std::runtime_error("The module n°" + std::to_string(id) + " isn't initialized.");
 				}
 				uint8_t size = array[count++];
@@ -84,16 +84,18 @@ namespace Commun {
 
 		// c'est bon, la trame a le bon format ! on peut mettre à jour chaque module
 		for(uint8_t id = 0; id < NB_MODULES_MAX; ++id) {
-			const uint8_t SIZE = _modules[id]->get_frame_size();
-			_modules[id]->update(GlobalFrame(SIZE, array + SIZE));
-			count += SIZE;
+			if(has_module(id)) {
+				const uint8_t SIZE = _modules[id]->get_frame_size();
+				_modules[id]->update(GlobalFrame(SIZE, array + SIZE));
+				count += SIZE;
+			}
 		}
 	}
 
 	uint8_t ModuleManager::get_nb_modules() const {
 		uint8_t count = 0;
 		for(uint8_t id = 0; id < NB_MODULES_MAX; ++id) {
-			count += (bool)_modules[id];
+			count += has_module(id);
 		}
 		return count;
 	}
@@ -102,10 +104,18 @@ namespace Commun {
 		if(id >= NB_MODULES_MAX) {
 			throw std::runtime_error("Impossible to get module n°" + std::to_string(id) + " (> " +
 			                         std::to_string(NB_MODULES_MAX) + ").");
-		} else if(_modules[id] == nullptr) {
+		} else if(!has_module(id)) {
 			throw std::runtime_error("The module n°" + std::to_string(id) + " doesn't exist.");
 		}
 
 		return *_modules[id];
+	}
+
+	void ModuleManager::deactivation() {
+		for(uint8_t id = 0; id < NB_MODULES_MAX; ++id) {
+			if(has_module(id)) {
+				get_module_by_id(id).deactivation();
+			}
+		}
 	}
 } // namespace Commun

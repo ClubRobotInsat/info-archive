@@ -54,6 +54,8 @@ namespace Commun {
 		SharedMotors2019 generate_shared() const override;
 		void message_processing(const SharedMotors2019&) override;
 
+		void deactivation() override;
+
 		struct ControlledMotor {
 			ControlledMotor(uint8_t id, RotatingDirection rotation)
 			        : id(id), wanted_position(0_deg), wanted_nb_turns(0), finished(true), rotation(rotation) {}

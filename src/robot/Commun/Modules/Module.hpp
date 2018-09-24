@@ -54,6 +54,9 @@ namespace Commun {
 		/// Retourne la taille d'une trame
 		inline virtual uint8_t get_frame_size() const = 0;
 
+		/// Arrêt mécanique du module
+		virtual void deactivation() = 0;
+
 	protected:
 		/// Bloque l'accés aux variables membres
 		void lock_variables() {

@@ -79,6 +79,9 @@ namespace Commun {
 		/// @throw si la trame a un mauvais formatage
 		void read_frame(const GlobalFrame&);
 
+		/// Désactive tous les comportements mécaniques du robot (anciennement 'couperMeca')
+		void deactivation();
+
 	private:
 		std::unique_ptr<BaseModule> _modules[NB_MODULES_MAX];
 	};

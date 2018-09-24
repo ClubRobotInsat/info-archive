@@ -38,6 +38,8 @@ namespace Commun {
 		SharedAvoidance2019 generate_shared() const override;
 		void message_processing(const SharedAvoidance2019&) override;
 
+		void deactivation() override {}
+
 		std::atomic<Angle> _angle_detection_adversary;
 		Vector2m _position_turret;
 		std::atomic_bool _adversary_detected;

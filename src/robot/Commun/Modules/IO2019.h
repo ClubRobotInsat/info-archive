@@ -25,6 +25,8 @@ namespace Commun {
 		SharedIO2019 generate_shared() const override;
 		void message_processing(const SharedIO2019&) override;
 
+		void deactivation() override {}
+
 		std::atomic_bool _tirette;
 	};
 } // namespace Commun

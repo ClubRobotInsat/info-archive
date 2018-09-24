@@ -68,6 +68,8 @@ namespace Commun {
 		SharedServos2019 generate_shared() const override;
 		void message_processing(const SharedServos2019&) override;
 
+		void deactivation() override {}
+
 		struct Servo {
 			Servo(uint8_t id, Angle start_position, BlockingMode mode)
 			        : id(id)
