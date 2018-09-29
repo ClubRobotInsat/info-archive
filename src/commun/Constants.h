@@ -5,15 +5,15 @@
 #ifndef ROOT_CONSTANTES_H
 #define ROOT_CONSTANTES_H
 
-#include "../../third_parties/iniparser/INI.h"
 #include "Enum/Enum.h"
+#include <ini/src/IniFile.hpp>
 
 #include "Commun.h"
 #include "Json.h"
 #include "MathToolbox/Repere.h"
 
 namespace Constants {
-	using Ini = INI<std::string, std::string, int>;
+	using namespace ini;
 
 	ENUM_CLASS_NS(Constants,
 	              RobotColor,
@@ -25,7 +25,7 @@ namespace Constants {
 	class Constants;
 	class Robot {
 		friend class Constants;
-		explicit Robot(Ini& reader, std::string name);
+		explicit Robot(IniFile& reader, std::string name);
 
 		Vector3m _start_position;
 		Angle _start_angle;
@@ -86,7 +86,7 @@ namespace Constants {
 		std::map<std::string, std::unique_ptr<Robot>> _robots;
 
 	public:
-		explicit Constants(std::string ini_path);
+		explicit Constants(std::string ini_string);
 
 		const Robot& operator[](const std::string& name) const;
 
@@ -114,7 +114,7 @@ namespace Constants {
 		Vector3m _table_size;
 		Duration _match_duration;
 
-		Ini _reader;
+		IniFile _reader;
 	};
 } // namespace Constants
 

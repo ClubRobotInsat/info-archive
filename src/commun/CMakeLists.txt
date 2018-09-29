@@ -18,7 +18,6 @@ add_library(Outils_${SIMU_OU_ROBOT} STATIC ${OUTILS_SOURCE})
 target_link_libraries(Outils_${SIMU_OU_ROBOT} pthread)
 add_dependencies(Outils_${SIMU_OU_ROBOT} InfoSubmodules)
 
-target_compile_definitions(Outils_${SIMU_OU_ROBOT} PRIVATE INI_FILE_PATH="${CMAKE_BINARY_DIR}/src/robot.ini")
 
 #file(COPY table_2017.json table_2018.json DESTINATION ${CMAKE_BINARY_DIR}/src)
 
@@ -32,3 +31,5 @@ function(make_includable input_file output_file)
 endfunction(make_includable)
 
 make_includable(table_2018.json .table_2018.json.includable)
+make_includable(../robot.ini ../.robot.ini.includable)
+#target_compile_definitions(Outils_${SIMU_OU_ROBOT} PRIVATE INI_FILE_PATH="${CMAKE_BINARY_DIR}/src/robot.ini")
