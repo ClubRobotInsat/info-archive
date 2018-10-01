@@ -4,7 +4,7 @@
 
 #include "unit.cpp"
 
-#include "../src/robot/Commun/Communication/ElecCommunicator.h"
+#include "../src/robot/Communication/ElecCommunicator.h"
 #include <type_traits>
 
 TEST_CASE("Communication between info and elec") {

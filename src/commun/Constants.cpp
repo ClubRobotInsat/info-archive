@@ -35,7 +35,7 @@ namespace Constants {
 			}
 		}
 
-		_linear_speed = Speed::makeFromCm_s(read_field(reader, "robot", "linear_speed", 400));
+		_linear_speed = Speed::makeFromMm_s(read_field(reader, "robot", "linear_speed", 400));
 		_angular_speed = AngularSpeed::makeFromRad_s(read_field(reader, "robot", "angular_speed", 4));
 		_linear_precision = Distance::makeFromMm(read_field(reader, "robot", "linear_precision", 40));
 		_angular_precision = Angle::makeFromDeg(read_field(reader, "robot", "angular_precision", 4));

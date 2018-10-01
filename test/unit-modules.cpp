@@ -4,7 +4,7 @@
 
 #include "unit.cpp"
 
-#include "../src/robot/Commun/Modules/ModuleManager.h"
+#include "../src/robot/Modules/ModuleManager.h"
 
 using namespace Commun;
 
@@ -97,7 +97,7 @@ TEST_CASE("Basic module") {
 
 // Ce define très moche permets d'accéder aux fonctions et variables cachées des objets (TESTS uniquement)
 #define private public
-#include "../src/robot/Commun/Modules/Servos2019.h"
+#include "../src/robot/Modules/Servos2019.h"
 #undef private
 
 #include <log/Log.h>
@@ -318,7 +318,7 @@ TEST_CASE("Servos 2019 Module") {
 	}
 }
 
-#include "../src/robot/Commun/Communication/NamedPipe.h"
+#include "../src/robot/Communication/NamedPipe.h"
 
 TEST_CASE("ModuleManager") {
 

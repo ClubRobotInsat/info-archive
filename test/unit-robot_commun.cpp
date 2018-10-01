@@ -14,13 +14,13 @@ TEST_CASE("Initialization of a common robot.") {
 	servos.add_servo(5, 120_deg);
 	servos.add_servo(6, 50_deg, Commun::Servos2019::BlockingMode::HOLD_ON_BLOCKING);
 
-	Commun::Robot robot(m, {"ehCoucou", "PIPES"});
+	Commun::Robot robot(m, {"ehCoucou", "NULL"});
 
 	CHECK(robot.get_module<Commun::Servos2019>().get_nbr_servos() == 2);
 
 	// robot.get_communicator().disconnect();
 
 	SECTION("Robot Principal") {
-		Commun::Robot r{"primary", {"ehCoucou", "PIPES"}};
+		Commun::Robot r{"primary", {"ehCoucou", "NULL"}};
 	}
 }

@@ -4,11 +4,11 @@ target_link_libraries(unit_testing_modules Modules Catch2::Catch2)
 add_executable(unit_testing_communication unit-communication.cpp)
 target_link_libraries(unit_testing_communication Communication Catch2::Catch2)
 
+add_executable(unit_constantes unit-constantes.cpp)
+target_link_libraries(unit_constantes Outils_Robot Catch2::Catch2)
+
 add_executable(unit_testing_robot_commun unit-robot_commun.cpp)
 target_link_libraries(unit_testing_robot_commun Robot Catch2::Catch2)
-
-add_executable(unit_ini unit-ini.cpp)# ../third_parties/ini/include/inicpp.h)
-target_link_libraries(unit_ini Catch2::Catch2)
 
 # add_library(catch_main OBJECT "unit.cpp")
 # set_target_properties(catch_main PROPERTIES
