@@ -16,15 +16,15 @@ struct Color3f : public Vector3f {
 	Color3f(float r, float g, float b) : Vector3f(r, g, b) {}
 
 	/** Transforme une couleur représentée sur des floats (entre 0 et 1)
-	  * en couleur hexadecimale. */
+	 * en couleur hexadecimale. */
 	std::string toHexStr() {
-		unsigned char r = (unsigned char)(this->r * 255.99);
-		unsigned char g = (unsigned char)(this->g * 255.99);
-		unsigned char b = (unsigned char)(this->b * 255.99);
+		unsigned char r = static_cast<unsigned char>((this->r * 255.99));
+		unsigned char g = static_cast<unsigned char>((this->g * 255.99));
+		unsigned char b = static_cast<unsigned char>((this->b * 255.99));
 
 		std::ostringstream stream;
-		stream << "0x" << std::hex << std::setw(2) << std::setfill('0') << (int)r << std::setw(2) << std::setfill('0')
-		       << (int)g << std::setw(2) << std::setfill('0') << (int)b;
+		stream << "0x" << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(r) << std::setw(2)
+		       << std::setfill('0') << static_cast<int>(g) << std::setw(2) << std::setfill('0') << static_cast<int>(b);
 		return stream.str();
 	}
 };

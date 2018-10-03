@@ -21,7 +21,7 @@ namespace Commun {
 
 		explicit Motors2019(uint8_t id) : Module(id, motor_read_frame, motor_write_frame) {}
 
-		inline uint8_t get_frame_size() const override;
+		uint8_t get_frame_size() const override;
 
 		void add_controlled_motor(uint8_t id, RotatingDirection);
 		void add_uncontrolled_motor(uint8_t id);

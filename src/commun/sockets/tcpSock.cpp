@@ -27,9 +27,9 @@ TcpSock::TcpSock(const std::string& host, std::uint16_t port) {
 	sockaddr_in addr = {};
 	addr.sin_family = AF_INET;
 	addr.sin_port = htons(port);
-	addr.sin_addr = *(struct in_addr*)hostinfo->h_addr; // Adresse IP du serveur
+	addr.sin_addr = *reinterpret_cast<struct in_addr*>(hostinfo->h_addr); // Adresse IP du serveur
 
-	int rc = connect(_fd, (struct sockaddr*)&addr, sizeof(struct sockaddr_in));
+	int rc = connect(_fd, reinterpret_cast<struct sockaddr*>(&addr), sizeof(struct sockaddr_in));
 	if(rc < 0) {
 		::close(_fd);
 		throw ErreurSocket("Connection impossible");
@@ -37,9 +37,9 @@ TcpSock::TcpSock(const std::string& host, std::uint16_t port) {
 }
 
 void TcpSock::read(void* buffer, int cBytes) {
-	auto ptr = (uint8_t*)buffer;
+	auto ptr = static_cast<uint8_t*>(buffer);
 	while(cBytes > 0) {
-		int rc = recv(_fd, ptr, cBytes, 0);
+		ssize_t rc = recv(_fd, ptr, static_cast<size_t>(cBytes), 0);
 		if(rc <= 0)
 			throw ErreurSocket("Recv Failed");
 		cBytes -= rc;
@@ -76,14 +76,14 @@ bool TcpSock::hasNext() {
 }
 
 void TcpSock::write(const void* data, int cBytes) {
-	auto ptr = (const uint8_t*)data;
+	auto ptr = static_cast<const uint8_t*>(data);
 	while(cBytes > 0) {
 // Flag MSG_NOSIGNAL: les erreurs vont arriver dans rc au lieu de kill
 // le processus
 #ifdef __APPLE__
-		int rc = ::send(_fd, ptr, cBytes, SO_NOSIGPIPE);
+		ssize_t rc = ::send(_fd, ptr, cBytes, SO_NOSIGPIPE);
 #else
-		int rc = ::send(_fd, ptr, cBytes, MSG_NOSIGNAL);
+		ssize_t rc = ::send(_fd, ptr, cBytes, MSG_NOSIGNAL);
 #endif
 		if(rc <= 0)
 			throw ErreurSocket("Send Failed");
@@ -120,7 +120,7 @@ TcpServSock::TcpServSock(std::uint16_t port) {
 	int optval = 1;
 	setsockopt(_fd, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval));
 
-	int rc = ::bind(_fd, (struct sockaddr*)&addr, sizeof(struct sockaddr_in));
+	int rc = ::bind(_fd, reinterpret_cast<struct sockaddr*>(&addr), sizeof(struct sockaddr_in));
 	if(rc < 0) {
 		::close(_fd);
 		throw ErreurSocket("Bind Error (port déjà utilisé ?)");
@@ -136,7 +136,7 @@ TcpServSock::TcpServSock(std::uint16_t port) {
 unique_ptr<TcpSock> TcpServSock::accept() {
 	sockaddr_in who = {};
 	uint sWho;
-	int sock = ::accept(_fd, (struct sockaddr*)&who, &sWho);
+	int sock = ::accept(_fd, reinterpret_cast<struct sockaddr*>(&who), &sWho);
 
 	if(sock < 0)
 		throw ErreurSocket("Accept Error");

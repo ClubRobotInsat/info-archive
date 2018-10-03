@@ -16,7 +16,7 @@ namespace {
 	uint32_t decodeFourBytes(uint8_t const* val) {
 		return ((val[0] - 0x30) << 18) | ((val[1] - 0x30) << 12) | ((val[2] - 0x30) << 6) | ((val[3] - 0x30) << 0);
 	}
-}
+} // namespace
 
 HokuyoLidar::HokuyoLidar(std::string const& portSerie) {
 	try {

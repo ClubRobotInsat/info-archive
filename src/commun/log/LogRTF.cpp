@@ -33,7 +33,7 @@ struct RTFFormat {
 	RTFColor back_color;
 };
 
-static RTFFormat const rtf_formats[(int)LogType::ALL] = {
+static RTFFormat const rtf_formats[static_cast<int>(LogType::ALL)] = {
     {true, RTF_WHITE, RTF_RED},    // error
     {true, RTF_WHITE, RTF_ORANGE}, // warn
 
@@ -55,7 +55,7 @@ static RTFFormat const rtf_formats[(int)LogType::ALL] = {
 };
 
 void Log::doRTFFormatting(std::string& msg, LogType type) {
-	const RTFFormat& format = rtf_formats[(int)type];
+	const RTFFormat& format = rtf_formats[static_cast<int>(type)];
 
 	std::string str_beginning = format.bold ? "\\b" : "";
 	std::string str_end = format.bold ? "\\b0" : "";

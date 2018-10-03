@@ -22,9 +22,9 @@ namespace Commun {
 	template <typename ParsingClass>
 	ElecCommunicator<ParsingClass>::ElecCommunicator(std::shared_ptr<ParsingClass> parser, uint16_t default_port_TCPIP)
 	        : _parser(std::move(parser))
+	        , _default_port_TCPIP(default_port_TCPIP)
 	        , _connecte(false)
-	        , _modeConnexion(ModeConnexion::OTHERS)
-	        , _default_port_TCPIP(default_port_TCPIP) {}
+	        , _modeConnexion(ModeConnexion::OTHERS) {}
 
 	template <typename ParsingClass>
 	ElecCommunicator<ParsingClass>::ElecCommunicator(ParsingClass& parser, uint16_t default_port_TCPIP)

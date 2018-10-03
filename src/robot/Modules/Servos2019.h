@@ -45,7 +45,7 @@ namespace Commun {
 
 		explicit Servos2019(uint8_t id) : Module(id, servo_read_frame, servo_write_frame) {}
 
-		inline uint8_t get_frame_size() const override;
+		uint8_t get_frame_size() const override;
 
 		void set_position(uint8_t servo, Angle);
 

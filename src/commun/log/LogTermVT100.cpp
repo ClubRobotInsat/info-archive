@@ -35,7 +35,7 @@ struct TermFormat {
 	TermColor back_color;
 };
 
-static const TermFormat term_formats[(int)LogType::ALL] = {
+static const TermFormat term_formats[static_cast<int>(LogType::ALL)] = {
     {TERM_BRIGHT, TERM_WHITE, TERM_RED},    // error
     {TERM_BRIGHT, TERM_WHITE, TERM_YELLOW}, // warn
 
@@ -62,11 +62,11 @@ void Log::writeTermFormattedString(std::ostream& p_stream, const std::string& st
 }
 
 void Log::resetTerm(std::ostream& p_stream) {
-	p_stream << (char)0x1B << "[0;;m";
+	p_stream << static_cast<char>(0x1B) << "[0;;m";
 }
 
 void Log::doTermFormatting(std::string& msg, LogType type) {
-	const TermFormat& format = term_formats[(int)type];
+	const TermFormat& format = term_formats[static_cast<int>(type)];
 
 	char str_beginning[64] = "";
 	sprintf(str_beginning, "%c[%d;%d;%dm", 0x1B, int(format.attr), int(format.front_color) + 30, int(format.back_color) + 40);

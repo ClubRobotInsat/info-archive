@@ -52,7 +52,7 @@ namespace Commun {
 		virtual void update(const GlobalFrame&) = 0;
 
 		/// Retourne la taille d'une trame
-		inline virtual uint8_t get_frame_size() const = 0;
+		virtual uint8_t get_frame_size() const = 0;
 
 		/// Arrêt mécanique du module
 		virtual void deactivation() = 0;

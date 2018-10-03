@@ -19,7 +19,7 @@ namespace Commun {
 
 		bool read_tirette() const;
 
-		inline uint8_t get_frame_size() const override;
+		uint8_t get_frame_size() const override;
 
 	private:
 		SharedIO2019 generate_shared() const override;

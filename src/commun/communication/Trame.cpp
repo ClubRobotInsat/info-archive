@@ -76,7 +76,7 @@ std::string Trame::toStringLong() const {
 	std::ostringstream oss;
 	oss << "id=" << int(_id) << " cmd=" << Byte(_cmd) << " donnees={";
 	for(uint8_t numDonnee = 0; numDonnee < _donnees.size(); ++numDonnee)
-		oss << (int)_donnees[numDonnee] << ',';
+		oss << static_cast<int>(_donnees[numDonnee]) << ',';
 	oss << '}';
 	return oss.str();
 }

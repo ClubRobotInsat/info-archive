@@ -117,7 +117,8 @@ namespace Commun {
 				auto angle_to_uint16t = [i](Angle angle) -> uint16_t {
 					uint16_t pos = static_cast<uint16_t>((angle.toMinusPiPi().toDeg() + 166.7) * 1023 / 333.4);
 					if(pos < 21 || pos > 1002) {
-						logWarn("Angle demandé en-dehors de l'intervalle [-159.8°; 159.8°] pour le servo n°", (int)i);
+						logWarn("Angle demandé en-dehors de l'intervalle [-159.8°; 159.8°] pour le servo n°",
+						        static_cast<int>(i));
 					}
 					pos = static_cast<uint16_t>(pos < 21 ? 21 : (pos > 1023 ? 1023 : pos));
 					return pos;

@@ -37,7 +37,7 @@ namespace Commun {
 	}
 
 	void Robot::deactivation() {
-		logInfo("desactivation du robot '" + _name + "'.");
+		logInfo("Deactivation of the robot '" + _name + "'.");
 
 		_module_manager->deactivation();
 

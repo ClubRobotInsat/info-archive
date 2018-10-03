@@ -35,10 +35,10 @@ namespace Commun {
 
 		addr.sin_family = AF_INET;
 		addr.sin_port = htons(port);
-		addr.sin_addr = *((struct in_addr*)hostinfo->h_addr);
+		addr.sin_addr = *(reinterpret_cast<struct in_addr*>(hostinfo->h_addr));
 		memset(&(addr.sin_zero), 0, 8);
 
-		if(connect(_fd, (struct sockaddr*)&addr, sizeof(struct sockaddr_in)) < 0) {
+		if(connect(_fd, reinterpret_cast<struct sockaddr*>(&addr), sizeof(struct sockaddr_in)) < 0) {
 			logError("Impossible de se connecter au serveur ", adresse, ":", port);
 			throw(34);
 		}
@@ -61,7 +61,7 @@ namespace Commun {
 #else
 			int flags = MSG_NOSIGNAL;
 #endif
-			if(send(_fd, (const char*)octets, nombre, flags) < (ssize_t)nombre)
+			if(send(_fd, reinterpret_cast<const char*>(octets), nombre, flags) < static_cast<ssize_t>(nombre))
 				fermerSocket();
 		}
 	}
@@ -80,7 +80,7 @@ namespace Commun {
 					lus += recu;
 			}
 #else
-			if(recv(_fd, (char*)octets, nombre, MSG_WAITALL) < (ssize_t)nombre)
+			if(recv(_fd, reinterpret_cast<char*>(octets), nombre, MSG_WAITALL) < static_cast<ssize_t>(nombre))
 				fermerSocket();
 #endif
 		}

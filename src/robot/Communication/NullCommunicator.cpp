@@ -15,7 +15,7 @@ namespace Commun {
 
 	void NullCommunicator::ecrireOctets(uint8_t const*, std::size_t) {}
 
-	NullCommunicator::NullCommunicator(){};
+	NullCommunicator::NullCommunicator() = default;
 
 	NullCommunicator::~NullCommunicator() = default;
 } // namespace Commun

@@ -17,14 +17,14 @@ namespace Commun {
 	}
 
 	SharedIO2019 IO2019::generate_shared() const {
-		SharedIO2019 s = {(uint8_t)_tirette, 0};
+		SharedIO2019 s = {static_cast<uint8_t>(_tirette), 0};
 
 		return s;
 	}
 
 	void IO2019::message_processing(const SharedIO2019& s) {
 		if(s.parsing_failed == 0) {
-			_tirette.exchange((bool)s.tirette);
+			_tirette.exchange(static_cast<bool>(s.tirette));
 		}
 	}
 } // namespace Commun

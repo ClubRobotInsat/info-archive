@@ -89,7 +89,7 @@ public:
 	class ErreurNumeroBitTropGrand : public std::runtime_error {
 	public:
 		explicit ErreurNumeroBitTropGrand(uint8_t num)
-		        : std::runtime_error("Le numero du bit " + to_string((short)num) +
+		        : std::runtime_error("Le numero du bit " + to_string(static_cast<short>(num)) +
 		                             " est invalide : il doit être comprit entre 0 et 7 inclu ") {}
 	};
 
@@ -201,7 +201,7 @@ void GlobalFrame::addDonneesInternal(T&& value, Args&&... values) {
 template <typename... Args>
 void GlobalFrame::addDonneesInternal(Byte const& value, Args&&... values) {
 	if(this->getNbDonnees() + 1 > GlobalFrame::DONNEES_TRAME_MAX)
-		throw ErreurTropDeDonnees(this->getNbDonnees() + 1);
+		throw ErreurTropDeDonnees(static_cast<uint8_t>(this->getNbDonnees() + 1));
 
 	auto byte = value.value();
 	_donnees.insert(_donnees.end(), &byte, &byte + 1);

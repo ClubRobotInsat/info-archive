@@ -10,7 +10,7 @@ struct StringWrapper {
 	char const* string;
 };
 
-static StringWrapper css_classes[(int)LogType::ALL] = {
+static StringWrapper css_classes[static_cast<int>(LogType::ALL)] = {
     "error",
     "warn",
 
@@ -31,6 +31,6 @@ static StringWrapper css_classes[(int)LogType::ALL] = {
 };
 
 void Log::doHTMLFormatting(std::string& msg, LogType type) {
-	const char* css_class = css_classes[(int)type].string;
+	const char* css_class = css_classes[static_cast<int>(type)].string;
 	msg = std::string("<span class=\"") + std::string(css_class) + "\">" + msg + "</span>";
 }

@@ -14,30 +14,27 @@ namespace {
 	// score minimal pour qu'un condidat soit reporté à l'utilisateur
 	const int MIN_WIN = 10;
 	const int MAX_WIN = 12; // cap de score.
-}
+} // namespace
 
 using namespace std;
 
 void TrouveRobots::accumulate(const OccupGrid& grid) {
 // exécute pour tous les points sur le bord du carré
-#define CIRCLE(center, radius, body)                        \
-	{                                                       \
-		IVec2 pos;                                          \
-		if(radius > 0) {                                    \
-			for(int _p = 0; _p < (radius * 2); ++_p) {      \
-				pos = center + IVec2(-radius, _p - radius); \
-				{ body }                                    \
-				pos = center + IVec2(_p - radius, radius);  \
-				{ body }                                    \
-				pos = center + IVec2(radius, radius - _p);  \
-				{ body }                                    \
-				pos = center + IVec2(radius - _p, -radius); \
-				{ body }                                    \
-			}                                               \
-		} else {                                            \
-			pos = center;                                   \
-			body                                            \
-		}                                                   \
+#define CIRCLE(center, radius, body)                               \
+	{                                                              \
+		IVec2 pos;                                                 \
+		if(radius > 0) {                                           \
+			for(int _p = 0; _p < (radius * 2); ++_p) {             \
+				pos = center + IVec2(-radius, _p - radius);        \
+				{body} pos = center + IVec2(_p - radius, radius);  \
+				{body} pos = center + IVec2(radius, radius - _p);  \
+				{body} pos = center + IVec2(radius - _p, -radius); \
+				{ body }                                           \
+			}                                                      \
+		} else {                                                   \
+			pos = center;                                          \
+			body                                                   \
+		}                                                          \
 	}
 
 

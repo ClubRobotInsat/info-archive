@@ -15,7 +15,7 @@ std::ostream& operator<<(std::ostream& s, Byte const& b) {
 	/*std::ios oldState(nullptr);
 	oldState.copyfmt(s);
 	*/
-	s << "0x" << std::hex << (int)b.value();
+	s << "0x" << std::hex << static_cast<int>(b.value());
 
 	// s.copyfmt(oldState);
 

@@ -359,7 +359,7 @@ TEST_CASE("ModuleManager") {
 
 		SECTION("GlobalFrame write_frame()") {
 			auto frame = manager.write_frame();
-			const uint8_t wanted_size = (uint8_t)6 + manager.get_module<Servos2019>().get_frame_size();
+			const uint8_t wanted_size = static_cast<uint8_t>(6) + manager.get_module<Servos2019>().get_frame_size();
 			REQUIRE(frame.getNbDonnees() == wanted_size);
 			const uint8_t* array = frame.getDonnees();
 			// ID n°5 : ModuleTest  v

@@ -20,7 +20,7 @@ Socket::Socket(SockProtocol protocol) : _protocol(protocol) {
 #else
 	    _fd < 0
 #endif
-	    ) {
+	) {
 		throw std::runtime_error("Impossible de créer le socket !");
 	}
 }
@@ -61,12 +61,12 @@ bool Socket::connect(const char* server_name, uint16_t port) {
 
 
 	// On remplit la structure _addr
-	_addr.sin_family = AF_INET;                          // Adresse de type internet : on doit toujours mettre ca
-	_addr.sin_port = htons(port);                        // Port
-	_addr.sin_addr = *(struct in_addr*)hostinfo->h_addr; // Adresse IP du serveur
-	memset(&(_addr.sin_zero), 0, 8);                     // On met le reste (8 octets) a 0
+	_addr.sin_family = AF_INET;   // Adresse de type internet : on doit toujours mettre ca
+	_addr.sin_port = htons(port); // Port
+	_addr.sin_addr = *reinterpret_cast<struct in_addr*>(hostinfo->h_addr); // Adresse IP du serveur
+	memset(&(_addr.sin_zero), 0, 8);                                       // On met le reste (8 octets) a 0
 
-	if(::connect(_fd, (struct sockaddr*)&_addr, sizeof(struct sockaddr_in)) < 0)
+	if(::connect(_fd, reinterpret_cast<struct sockaddr*>(&_addr), sizeof(struct sockaddr_in)) < 0)
 		_state = SOCK_FREE;
 	else
 		_state = SOCK_CONNECTED;
@@ -140,11 +140,13 @@ bool Socket::sendMsg(const void* data, size_t nb_bytes) {
 
 	size_t remaining = nb_bytes;
 
-	if(send((const void*)header, 4) <= 0)
+	if(send(reinterpret_cast<void*>(header), 4) <= 0)
 		return false;
 
 	while(remaining != 0)
-		remaining = remaining - send((void*)(&((uint8_t*)data)[nb_bytes - remaining]), remaining);
+		remaining =
+		    remaining -
+		    send(static_cast<void*>(&(const_cast<uint8_t*>(static_cast<const uint8_t*>(data)))[nb_bytes - remaining]), remaining);
 
 	return true;
 }
@@ -161,11 +163,13 @@ bool Socket::sendMsg(Socket& client_socket, const void* data, size_t nb_bytes) {
 	ssize_t remaining = nb_bytes;
 
 	ssize_t n = 0;
-	if((n = this->send(client_socket, (const void*)header, 4)) <= 0)
+	if((n = this->send(client_socket, static_cast<const void*>(header), 4)) <= 0)
 		return false;
 
 	while(remaining != 0) {
-		n = this->send(client_socket, (void*)(&((uint8_t*)data)[nb_bytes - remaining]), remaining);
+		n = this->send(client_socket,
+		               static_cast<void*>(&(const_cast<uint8_t*>(static_cast<const uint8_t*>(data)))[nb_bytes - remaining]),
+		               static_cast<size_t>(remaining));
 		if(n <= 0)
 			return false;
 
@@ -184,21 +188,22 @@ ssize_t Socket::receiveMsg(void* buffer, size_t max_bytes) {
 	size_t remaining;
 	// lorsque la taille de buffer est trop petite pour contenir tout le paquet
 
-	ssize_t received = this->receive((void*)header, 4); // Lecture du header
+	ssize_t received = this->receive(static_cast<void*>(header), 4); // Lecture du header
 
 	// Cas ou l'on n'a pas recu assez d'octets pour avoir un header complet :
 	if(received < 4)
 		return -1;
 
-	nb_bytes = ((int)(header[0]) << 0 * 8) + ((int)(header[1]) << 1 * 8) + ((int)(header[2]) << 2 * 8) +
-	           ((int)(header[3]) << 3 * 8);
+	nb_bytes = (static_cast<size_t>(header[0]) << 0 * 8) + (static_cast<size_t>(header[1]) << 1 * 8) +
+	           (static_cast<size_t>(header[2]) << 2 * 8) + (static_cast<size_t>(header[3]) << 3 * 8);
 
 	// On calcule le nombre d'octets a lire
 	remaining = bytes_to_read = nb_bytes > max_bytes ? max_bytes : nb_bytes;
 
 	// On lit les octets qui doivent etre lus dans buffer
 	while(remaining != 0)
-		remaining = remaining - this->receive((void*)(&((uint8_t*)buffer)[bytes_to_read - remaining]), remaining);
+		remaining = remaining -
+		            this->receive(static_cast<void*>(&(static_cast<uint8_t*>(buffer))[bytes_to_read - remaining]), remaining);
 
 	// Si une partie du paquet ne doit pas etre lue dans buffer (max_bytes trop petit), on la lit dans
 	// discarded_bytes et on les detruit.
@@ -207,7 +212,7 @@ ssize_t Socket::receiveMsg(void* buffer, size_t max_bytes) {
 		bytes_to_read = remaining;
 		auto discarded_bytes = std::make_unique<uint8_t[]>(bytes_to_read);
 		while(remaining != 0)
-			remaining = remaining - this->receive((void*)(&(discarded_bytes[bytes_to_read - remaining])), remaining);
+			remaining = remaining - this->receive(reinterpret_cast<void*>(&(discarded_bytes[bytes_to_read - remaining])), remaining);
 	}
 
 	return nb_bytes > max_bytes ? max_bytes : nb_bytes;
@@ -222,21 +227,22 @@ ssize_t Socket::receiveMsg(Socket& client_socket, void* buffer, size_t max_bytes
 	size_t remaining;
 	// lorsque la taille de buffer est trop petite pour contenir tout le paquet
 
-	ssize_t received = receive(client_socket, (void*)header, 4); // Lecture du header
+	ssize_t received = receive(client_socket, static_cast<void*>(header), 4); // Lecture du header
 
 	// Cas ou l'on n'a pas recu assez d'octets pour avoir un header complet :
 	if(received < 4)
 		return -1;
 
-	nb_bytes = ((int)(header[0]) << 0 * 8) + ((int)(header[1]) << 1 * 8) + ((int)(header[2]) << 2 * 8) +
-	           ((int)(header[3]) << 3 * 8);
+	nb_bytes = (static_cast<size_t>(header[0]) << 0 * 8) + (static_cast<size_t>(header[1]) << 1 * 8) +
+	           (static_cast<size_t>(header[2]) << 2 * 8) + (static_cast<size_t>(header[3]) << 3 * 8);
 
 	// On calcule le nombre d'octets a lire
 	remaining = bytes_to_read = nb_bytes > max_bytes ? max_bytes : nb_bytes;
 
 	// On lit les octets qui doivent etre lus dans buffer
 	while(remaining != 0)
-		remaining = remaining - receive(client_socket, (void*)(&((uint8_t*)buffer)[bytes_to_read - remaining]), remaining);
+		remaining = remaining -
+		            receive(client_socket, static_cast<void*>(&(static_cast<uint8_t*>(buffer))[bytes_to_read - remaining]), remaining);
 
 	// Si une partie du paquet ne doit pas etre lue dans buffer (max_bytes trop petit), on la lit dans
 	// discarded_bytes et on les detruit.
@@ -245,7 +251,8 @@ ssize_t Socket::receiveMsg(Socket& client_socket, void* buffer, size_t max_bytes
 		bytes_to_read = remaining;
 		auto discarded_bytes = std::make_unique<uint8_t[]>(bytes_to_read);
 		while(remaining != 0)
-			remaining = remaining - this->receive(client_socket, (void*)(&(discarded_bytes[bytes_to_read - remaining])), remaining);
+			remaining = remaining -
+			            this->receive(client_socket, static_cast<void*>(&(discarded_bytes[bytes_to_read - remaining])), remaining);
 	}
 
 	return nb_bytes > max_bytes ? max_bytes : nb_bytes;
@@ -257,14 +264,14 @@ std::vector<uint8_t> Socket::receiveNewMsg() {
 	size_t nb_bytes = 0; // Nombre d'octets dans le paquet
 	size_t remaining;
 
-	ssize_t received = this->receive((void*)header, 4); // Lecture du header
+	ssize_t received = this->receive(static_cast<void*>(header), 4); // Lecture du header
 
 	// Cas ou l'on n'a pas recu assez d'octets pour avoir un header complet :
 	if(received < 4)
 		return {};
 
-	nb_bytes = ((int)(header[0]) << 0 * 8) + ((int)(header[1]) << 1 * 8) + ((int)(header[2]) << 2 * 8) +
-	           ((int)(header[3]) << 3 * 8);
+	nb_bytes = (static_cast<size_t>(header[0]) << 0 * 8) + (static_cast<size_t>(header[1]) << 1 * 8) +
+	           (static_cast<size_t>(header[2]) << 2 * 8) + (static_cast<size_t>(header[3]) << 3 * 8);
 
 	// On alloue de la memoire pour les donnees :
 	std::vector<uint8_t> data(nb_bytes);
@@ -272,7 +279,7 @@ std::vector<uint8_t> Socket::receiveNewMsg() {
 	// On lit les octets qui doivent etre lus :
 	remaining = nb_bytes;
 	while(remaining != 0)
-		remaining = remaining - this->receive((void*)(&data[nb_bytes - remaining]), remaining);
+		remaining = remaining - this->receive(static_cast<void*>(&data[nb_bytes - remaining]), remaining);
 
 	return data;
 }
@@ -284,14 +291,14 @@ std::vector<uint8_t> Socket::receiveNewMsg(Socket& client_socket) {
 	size_t nb_bytes = 0; // Nombre d'octets dans le paquet
 	size_t remaining;
 
-	ssize_t received = this->receive(client_socket, (void*)header, 4); // Lecture du header
+	ssize_t received = this->receive(client_socket, static_cast<void*>(header), 4); // Lecture du header
 
 	// Cas ou l'on n'a pas recu assez d'octets pour avoir un header complet :
 	if(received < 4)
 		return {};
 
-	nb_bytes = ((int)(header[0]) << 0 * 8) + ((int)(header[1]) << 1 * 8) + ((int)(header[2]) << 2 * 8) +
-	           ((int)(header[3]) << 3 * 8);
+	nb_bytes = (static_cast<size_t>(header[0]) << 0 * 8) + (static_cast<size_t>(header[1]) << 1 * 8) +
+	           (static_cast<size_t>(header[2]) << 2 * 8) + (static_cast<size_t>(header[3]) << 3 * 8);
 
 	// On alloue de la memoire pour les donnees :
 	std::vector<uint8_t> data(nb_bytes);
@@ -299,7 +306,7 @@ std::vector<uint8_t> Socket::receiveNewMsg(Socket& client_socket) {
 	// On lit les octets qui doivent etre lus :
 	remaining = nb_bytes;
 	while(remaining != 0)
-		remaining = remaining - this->receive(client_socket, (void*)(&data[nb_bytes - remaining]), remaining);
+		remaining = remaining - this->receive(client_socket, static_cast<void*>(&data[nb_bytes - remaining]), remaining);
 
 	return data;
 }
@@ -356,7 +363,7 @@ bool Socket::listen(uint16_t port, int max_queue) {
 	memset(&(_addr.sin_zero), 0, sizeof(_addr.sin_zero)); // On met le reste (8 octets) a 0
 
 	// On associe la socket a un port et a une adresse, definis dans server_addr :
-	if(bind(_fd, (struct sockaddr*)&_addr, sizeof(struct sockaddr_in)) < 0) {
+	if(bind(_fd, reinterpret_cast<struct sockaddr*>(&_addr), sizeof(struct sockaddr_in)) < 0) {
 		fprintf(stderr, "Erreur lors de l'association de la socket avec l'adresse\n");
 		_state = SOCK_FREE;
 	} else {
@@ -384,7 +391,7 @@ bool Socket::accept(Socket& sock_client) {
 #else
 	socklen_t sin_size = sizeof(struct sockaddr_in);
 #endif
-	sock_client._fd = ::accept(_fd, (struct sockaddr*)&(sock_client._addr), &sin_size);
+	sock_client._fd = ::accept(_fd, reinterpret_cast<struct sockaddr*>(&(sock_client._addr)), &sin_size);
 
 #ifdef WIN32
 	if(sock_client->_fd != INVALID_SOCKET)
@@ -430,6 +437,6 @@ namespace {
 
 	// Chargé automatiquement à la création du programme, détruit automatiquement à la fin du programme.
 	WinSockInitializer const winSockInitialize;
-}
+} // namespace
 
 #endif
