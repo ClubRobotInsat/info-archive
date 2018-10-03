@@ -2,7 +2,7 @@
 // Created by terae on 8/28/18.
 //
 
-#include "unit.cpp"
+#include "catch.hpp"
 
 #include "../src/robot/Modules/ModuleManager.h"
 

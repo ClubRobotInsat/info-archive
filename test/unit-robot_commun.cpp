@@ -2,7 +2,7 @@
 // Created by terae on 17/09/18.
 //
 
-#include "unit.cpp"
+#include "catch.hpp"
 
 #include "../src/robot/Robot.h"
 #include <Constants.h>

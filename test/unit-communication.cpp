@@ -2,7 +2,7 @@
 // Created by terae on 17/09/18.
 //
 
-#include "unit.cpp"
+#include "catch.hpp"
 
 #include "../src/robot/Communication/ElecCommunicator.h"
 #include <type_traits>

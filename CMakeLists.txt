@@ -80,11 +80,7 @@ add_definitions(-DGTKWIN_DISABLE)
 
 include_directories(src/commun third_parties /usr/local/include/)
 link_directories(/usr/local/lib/)
-add_subdirectory(third_parties)
-
-add_subdirectory(src/robot)
-add_subdirectory(src/simulateur)
-add_subdirectory(src/elec)
+add_subdirectory(src)
 
 # Target pour les tests unitaires
 enable_testing()

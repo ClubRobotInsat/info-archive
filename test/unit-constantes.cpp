@@ -2,7 +2,7 @@
 // Created by terae on 01/10/18.
 //
 
-#include "unit.cpp"
+#include "catch.hpp"
 
 #include <Constants.h>
 
