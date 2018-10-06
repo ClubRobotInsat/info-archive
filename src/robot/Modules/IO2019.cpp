@@ -4,7 +4,7 @@
 
 #include "IO2019.h"
 
-namespace Commun {
+namespace PhysicalRobot {
 	IO2019::IO2019(uint8_t id) : Module(id, io_read_frame, io_write_frame) {}
 
 	bool IO2019::read_tirette() const {
@@ -27,4 +27,4 @@ namespace Commun {
 			_tirette.exchange(static_cast<bool>(s.tirette));
 		}
 	}
-} // namespace Commun
+} // namespace PhysicalRobot

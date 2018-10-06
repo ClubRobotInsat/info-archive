@@ -1,6 +1,6 @@
 #include "Serie.h"
 
-namespace Commun {
+namespace Communication {
 	void Serie::ecrireOctet(uint8_t octet) {
 		this->ecrireOctets(&octet, 1);
 	}
@@ -10,4 +10,4 @@ namespace Commun {
 		this->lireOctets(&ret, 1);
 		return ret;
 	}
-} // namespace Commun
+} // namespace Communication

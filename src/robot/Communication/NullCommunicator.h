@@ -11,7 +11,7 @@
 #include "Serie.h"
 #include <thread>
 
-namespace Commun {
+namespace Communication {
 	class NullCommunicator : public Serie {
 	public:
 		NullCommunicator();
@@ -25,7 +25,7 @@ namespace Commun {
 			return true;
 		}
 	};
-} // namespace Commun
+} // namespace Communication
 
 
 #endif /* NullCommunicator_h */

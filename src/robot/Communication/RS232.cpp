@@ -11,7 +11,7 @@
 #endif
 
 
-namespace Commun {
+namespace Communication {
 
 	/// Ouvre le port série indiqué et le configure
 	RS232::RS232(std::string const& port) {
@@ -158,4 +158,4 @@ namespace Commun {
 
 #endif
 	}
-} // namespace Commun
+} // namespace Communication

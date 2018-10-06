@@ -3,7 +3,7 @@
 
 #include <Commun.h>
 
-namespace Commun {
+namespace Communication {
 
 	EXCEPTION_CLASS(ErreurEOF)
 
@@ -25,6 +25,6 @@ namespace Commun {
 		/// Attend plusieurs octets sur le port et retourne lorsque le nombre demandé a été reçu - BLOQUANT
 		virtual void lireOctets(uint8_t* octets, std::size_t nombre) = 0;
 	};
-} // namespace Commun
+} // namespace Communication
 
 #endif

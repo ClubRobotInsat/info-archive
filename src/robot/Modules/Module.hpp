@@ -31,7 +31,7 @@
 #include <functional> // function
 #include <mutex>      // mutex, lock_guard
 
-namespace Commun {
+namespace PhysicalRobot {
 
 	// Cette classe permets de stocker des 'Modules' non-templates
 	class BaseModule {
@@ -138,6 +138,6 @@ namespace Commun {
 
 		FunctorWrapper _wrapper;
 	};
-} // namespace Commun
+} // namespace PhysicalRobot
 
 #endif //_MODULE_H

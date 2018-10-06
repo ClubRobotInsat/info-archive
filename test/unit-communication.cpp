@@ -64,19 +64,19 @@ TEST_CASE("Communication between info and elec") {
 			}
 		};
 
-		CHECK(Commun::parses_frames<Ok>::value);
-		CHECK_FALSE(Commun::parses_frames<Nok1>::value);
-		CHECK_FALSE(Commun::parses_frames<Nok2>::value);
-		CHECK_FALSE(Commun::parses_frames<Nok3>::value);
-		CHECK_FALSE(Commun::parses_frames<Nok4>::value);
-		CHECK_FALSE(Commun::parses_frames<Nok5>::value);
-		CHECK_FALSE(Commun::parses_frames<Nok6>::value);
+		CHECK(Communication::parses_frames<Ok>::value);
+		CHECK_FALSE(Communication::parses_frames<Nok1>::value);
+		CHECK_FALSE(Communication::parses_frames<Nok2>::value);
+		CHECK_FALSE(Communication::parses_frames<Nok3>::value);
+		CHECK_FALSE(Communication::parses_frames<Nok4>::value);
+		CHECK_FALSE(Communication::parses_frames<Nok5>::value);
+		CHECK_FALSE(Communication::parses_frames<Nok6>::value);
 
-		CHECK(Commun::parses_frames<Commun::ModuleManager>::value);
+		CHECK(Communication::parses_frames<PhysicalRobot::ModuleManager>::value);
 
-		Commun::ElecCommunicator<Ok> c1(std::make_shared<Ok>(), 42);
+		Communication::ElecCommunicator<Ok> c1(std::make_shared<Ok>(), 42);
 		// ne compile pas : Nok1 ne correspond pas aux critères de parsing
 		// Commun::ElecCommunicator<Nok1> c3(std::make_shared<Nok1>(), 42);
-		Commun::ElecCommunicator<Commun::ModuleManager> c2(std::make_shared<Commun::ModuleManager>(), 42);
+		Communication::ElecCommunicator<PhysicalRobot::ModuleManager> c2(std::make_shared<PhysicalRobot::ModuleManager>(), 42);
 	}
 }

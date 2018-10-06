@@ -15,7 +15,7 @@
 
 #include "Serie.h"
 
-namespace Commun {
+namespace Communication {
 
 	/// Interface de communication série via socket TCP/IP
 	class TCPIP : public Serie {
@@ -49,6 +49,6 @@ namespace Commun {
 		// Ferme le socket
 		void fermerSocket();
 	};
-} // namespace Commun
+} // namespace Communication
 
 #endif

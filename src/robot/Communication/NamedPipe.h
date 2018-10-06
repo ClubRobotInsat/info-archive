@@ -11,7 +11,7 @@
 
 #include <fcntl.h>
 
-namespace Commun {
+namespace Communication {
 	class NamedPipe : public Serie {
 	public:
 		/// Crée et configure les descripteurs de communication
@@ -38,6 +38,6 @@ namespace Commun {
 
 		bool creerDescripteur(const std::string path);
 	};
-} // namespace Commun
+} // namespace Communication
 
 #endif // ROOT_NAMEDPIPE_H

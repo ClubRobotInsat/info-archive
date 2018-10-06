@@ -36,7 +36,7 @@
 
 #include <memory> // unique_ptr, make_unique
 
-namespace Commun {
+namespace PhysicalRobot {
 	class ModuleManager final {
 	public:
 		static const uint8_t NB_MODULES_MAX = 16;
@@ -134,6 +134,6 @@ namespace Commun {
 
 		throw std::runtime_error("The module doesn't exist.");
 	}
-} // namespace Commun
+} // namespace PhysicalRobot
 
 #endif // ROOT_MODULEMANAGER_H

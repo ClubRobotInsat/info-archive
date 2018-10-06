@@ -27,7 +27,7 @@
 #include <sockets/Socket.h>
 #include <thread>
 
-namespace Commun {
+namespace Communication {
 
 	enum class ModeConnexion { RS232, LOCAL, PIPES, OTHERS };
 
@@ -98,7 +98,7 @@ namespace Commun {
 		template <typename = typename std::enable_if_t<parses_frames<ParsingClass>::value>>
 		void communicate_with_elecs();
 	};
-} // namespace Commun
+} // namespace Communication
 
 #include "ElecCommunicator.hpp"
 

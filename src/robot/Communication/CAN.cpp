@@ -3,8 +3,7 @@
 #include <iostream>
 #include <log/Log.h>
 
-
-namespace Commun {
+namespace Communication {
 
 	const Duration CAN::TIMEOUT_MESSAGE = 40_ms;
 	const Duration CAN::PERIODE_CHECK_TIMEOUT = 120_ms;
@@ -306,4 +305,4 @@ namespace Commun {
 		_tableauAttentesAcks.clear();
 		_canClock.reset();
 	}
-} // namespace Commun
+} // namespace Communication

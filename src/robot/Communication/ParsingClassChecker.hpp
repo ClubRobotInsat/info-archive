@@ -16,7 +16,7 @@
  * }
  */
 
-namespace Commun {
+namespace Communication {
 	namespace detail {
 		// Si la structure est instantiée, une erreur est levée
 		template <typename, typename T>
@@ -72,4 +72,4 @@ namespace Commun {
 		static constexpr bool value =
 		    detail::read_frames<T, void(const GlobalFrame&)>::value && detail::write_frames<T, GlobalFrame(void)>::value;
 	};
-} // namespace Commun
+} // namespace Communication

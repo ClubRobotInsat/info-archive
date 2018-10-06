@@ -5,7 +5,7 @@
 #include "Servos2019.h"
 #include <log/Log.h>
 
-namespace Commun {
+namespace PhysicalRobot {
 	void Servos2019::add_servo(uint8_t id, Angle start_position, BlockingMode mode) {
 		std::lock_guard<std::mutex> lk(_mutex_variables);
 
@@ -79,7 +79,7 @@ namespace Commun {
 		unlock_variables();
 	}
 
-	void Servos2019::set_blocking_mode(uint8_t id, Commun::Servos2019::BlockingMode mode) {
+	void Servos2019::set_blocking_mode(uint8_t id, Servos2019::BlockingMode mode) {
 		if(!is_servo_ok(id)) {
 			throw std::runtime_error("Numéro du servo demandé invalide : "s + std::to_string(id));
 		}
@@ -161,4 +161,4 @@ namespace Commun {
 			}
 		}
 	}
-} // namespace Commun
+} // namespace PhysicalRobot

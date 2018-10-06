@@ -6,8 +6,6 @@
 
 #include "../src/robot/Modules/ModuleManager.h"
 
-using namespace Commun;
-
 struct SharedStructTest {
 	uint8_t a, b;
 };
@@ -29,7 +27,7 @@ uint8_t test_write_frame(uint8_t* buf, uint8_t buf_size, const SharedStructTest*
 	return 0;
 }
 
-class ModuleTest : public Module<SharedStructTest> {
+class ModuleTest : public PhysicalRobot::Module<SharedStructTest> {
 public:
 	explicit ModuleTest(uint8_t id) : Module(id, test_read_frame, test_write_frame), _a(1), _b(2) {}
 
@@ -103,9 +101,9 @@ TEST_CASE("Basic module") {
 #include <log/Log.h>
 TEST_CASE("Servos 2019 Module") {
 	SECTION("Non-frame functions' module") {
-		Servos2019 my_module(2);
-		my_module.add_servo(5, 110_deg, Servos2019::HOLD_ON_BLOCKING);
-		my_module.add_servo(2, -119_deg, Servos2019::UNBLOCKING);
+		PhysicalRobot::Servos2019 my_module(2);
+		my_module.add_servo(5, 110_deg, PhysicalRobot::Servos2019::HOLD_ON_BLOCKING);
+		my_module.add_servo(2, -119_deg, PhysicalRobot::Servos2019::UNBLOCKING);
 		my_module.add_servo(4, 80_deg);
 
 		/*SECTION("Test de la validité d'un servo") {
@@ -131,8 +129,8 @@ TEST_CASE("Servos 2019 Module") {
 		CHECK_THROWS_WITH(my_module.read_position(1), "Numéro du servo demandé invalide : 1");
 		CHECK(my_module.read_position(2) == -119_deg);
 
-		CHECK_THROWS_WITH(my_module.set_color(1, Servos2019::GREEN), "Numéro du servo demandé invalide : 1");
-		my_module.set_color(2, Servos2019::GREEN);
+		CHECK_THROWS_WITH(my_module.set_color(1, PhysicalRobot::Servos2019::GREEN), "Numéro du servo demandé invalide : 1");
+		my_module.set_color(2, PhysicalRobot::Servos2019::GREEN);
 
 		CHECK_THROWS_WITH(my_module.is_blocking(1), "Numéro du servo demandé invalide : 1");
 		CHECK_FALSE(my_module.is_blocking(2));
@@ -323,10 +321,10 @@ TEST_CASE("Servos 2019 Module") {
 TEST_CASE("ModuleManager") {
 
 	SECTION("basic functions") {
-		ModuleManager manager;
+		PhysicalRobot::ModuleManager manager;
 
-		REQUIRE_THROWS_WITH(manager.get_module<Servos2019>(), "The module doesn't exist.");
-		CHECK_FALSE(manager.has_module<Servos2019>());
+		REQUIRE_THROWS_WITH(manager.get_module<PhysicalRobot::Servos2019>(), "The module doesn't exist.");
+		CHECK_FALSE(manager.has_module<PhysicalRobot::Servos2019>());
 		CHECK_FALSE(manager.has_module(8));
 
 		REQUIRE_THROWS_WITH(manager.add_module<ModuleTest>(42), "Impossible to add module n°42 (> 16).");
@@ -337,7 +335,7 @@ TEST_CASE("ModuleManager") {
 		CHECK(manager.has_module(5));
 		REQUIRE_THROWS_WITH(manager.add_module<ModuleTest>(5), "Double assignment of the module n°5.");
 		REQUIRE_THROWS_WITH(manager.add_module<ModuleTest>(8), "Double assignment of the module type: 10ModuleTest");
-		manager.add_module<Servos2019>(6);
+		manager.add_module<PhysicalRobot::Servos2019>(6);
 		CHECK(manager.get_nb_modules() == 2);
 
 		REQUIRE_THROWS_WITH(manager.get_module_by_id(42), "Impossible to get module n°42 (> 16).");
@@ -348,18 +346,19 @@ TEST_CASE("ModuleManager") {
 		// CHECK_NOTHROW(manager.get_module<int>());
 		REQUIRE_NOTHROW(manager.get_module<ModuleTest>());
 		CHECK(manager.get_module<ModuleTest>().get_id() == 5);
-		CHECK(manager.get_module<Servos2019>().get_id() == 6);
+		CHECK(manager.get_module<PhysicalRobot::Servos2019>().get_id() == 6);
 	}
 
 	SECTION("Frame manipulation") {
-		ModuleManager manager;
+		PhysicalRobot::ModuleManager manager;
 		manager.add_module<ModuleTest>(5);
-		auto& module_servo = manager.add_module<Servos2019>(15);
+		auto& module_servo = manager.add_module<PhysicalRobot::Servos2019>(15);
 		module_servo.add_servo(2, 50_deg);
 
 		SECTION("GlobalFrame write_frame()") {
 			auto frame = manager.write_frame();
-			const uint8_t wanted_size = static_cast<uint8_t>(6) + manager.get_module<Servos2019>().get_frame_size();
+			const uint8_t wanted_size =
+			    static_cast<uint8_t>(6) + manager.get_module<PhysicalRobot::Servos2019>().get_frame_size();
 			REQUIRE(frame.getNbDonnees() == wanted_size);
 			const uint8_t* array = frame.getDonnees();
 			// ID n°5 : ModuleTest  v

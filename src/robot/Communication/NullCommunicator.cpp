@@ -4,7 +4,7 @@
 
 #include "NullCommunicator.h"
 
-namespace Commun {
+namespace Communication {
 	void NullCommunicator::lireOctets(uint8_t* octets, std::size_t nombre) {
 		while(nombre > 0) {
 			--nombre;
@@ -18,4 +18,4 @@ namespace Commun {
 	NullCommunicator::NullCommunicator() = default;
 
 	NullCommunicator::~NullCommunicator() = default;
-} // namespace Commun
+} // namespace Communication

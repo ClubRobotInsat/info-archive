@@ -5,7 +5,7 @@
 #include "ElecCommunicator.h"
 #include "NullCommunicator.h"
 
-namespace Commun {
+namespace Communication {
 	template <typename ParsingClass>
 	std::vector<std::string> ElecCommunicator<ParsingClass>::makeArgs(const char* typeConnexion, const char* adresse, int port) {
 		std::vector<std::string> result = {"Simulateur", typeConnexion};
@@ -176,4 +176,4 @@ namespace Commun {
 			}
 		}
 	}
-} // namespace Commun
+} // namespace Communication

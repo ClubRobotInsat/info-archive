@@ -9,7 +9,7 @@
 
 #include "Module.hpp"
 
-namespace Commun {
+namespace PhysicalRobot {
 
 	class Avoidance2019 final : public Module<SharedAvoidance2019> {
 	public:
@@ -44,7 +44,7 @@ namespace Commun {
 		Vector2m _position_turret;
 		std::atomic_bool _adversary_detected;
 	};
-} // namespace Commun
+} // namespace PhysicalRobot
 
 
 #endif // ROOT_AVOIDANCE2019_H

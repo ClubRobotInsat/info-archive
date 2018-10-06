@@ -8,7 +8,7 @@
 #include "Serie.h"
 #include <string>
 
-namespace Commun {
+namespace Communication {
 
 	/// Interface de communication série via port RS232
 	class RS232 : public Serie {
@@ -37,6 +37,6 @@ namespace Commun {
 		int _fd;
 #endif
 	};
-} // namespace Commun
+} // namespace Communication
 
 #endif

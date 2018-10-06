@@ -4,7 +4,7 @@
 
 #include "Motors2019.h"
 
-namespace Commun {
+namespace PhysicalRobot {
 	uint8_t Motors2019::get_nbr_controlled() const {
 		uint8_t count = 0;
 		for(uint8_t i = 0; i < NB_MAX_CONTROLLED_MOTORS; ++i) {
@@ -205,4 +205,4 @@ namespace Commun {
 			}
 		}
 	}
-} // namespace Commun
+} // namespace PhysicalRobot

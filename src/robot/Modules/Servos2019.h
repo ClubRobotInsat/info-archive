@@ -18,7 +18,7 @@
 
 #include "Module.hpp"
 
-namespace Commun {
+namespace PhysicalRobot {
 
 	class Servos2019 final : public Module<SharedServos2019> {
 	public:
@@ -93,7 +93,7 @@ namespace Commun {
 
 		std::unique_ptr<Servo> _servos[NB_MAX_SERVOS];
 	};
-} // namespace Commun
+} // namespace PhysicalRobot
 
 
 #endif // ROOT_SERVOS2019_H

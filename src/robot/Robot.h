@@ -7,7 +7,7 @@
 
 #include "Communication/ElecCommunicator.h"
 
-namespace Commun {
+namespace PhysicalRobot {
 
 	class Robot {
 		/// Initialise le robot a partir des arguments passes au programme.
@@ -52,12 +52,12 @@ namespace Commun {
 		virtual void deactivation();
 
 	private:
-		std::unique_ptr<ElecCommunicator<ModuleManager>> _communicator;
+		std::unique_ptr<Communication::ElecCommunicator<ModuleManager>> _communicator;
 		std::string _name;
 
 		/*void setting_up_tirette() const;
 		bool is_tirette_pulled() const;*/
 	};
-} // namespace Commun
+} // namespace PhysicalRobot
 
 #endif

@@ -3,7 +3,7 @@
 #include <cstring>
 #include <log/Log.h>
 
-namespace Commun {
+namespace Communication {
 
 	/// Ouvre la connexion
 	TCPIP::TCPIP(std::string const& adresse, uint16_t port) : _connecte(false) {
@@ -107,4 +107,4 @@ namespace Commun {
 
 		_connecte = false;
 	}
-} // namespace Commun
+} // namespace Communication

@@ -1,22 +1,23 @@
 #include "Robot.h"
 #include <Constants.h>
 
-namespace Commun {
+namespace PhysicalRobot {
 
 	// Le robot n'est pas initialisé à partir de `src/robot.ini`
 	// L'utilisateur doit donc fournir un ModuleManager non vierge s'il veut un robot fonctionnel
 	Robot::Robot(std::shared_ptr<ModuleManager> module_manager, std::vector<std::string> const& args)
-	        : Robot(module_manager, "guest", args) {}
+	        : Robot(std::move(module_manager), "guest", args) {}
 
 	// Le robot est initialisé à partir de `src/robot.ini` dans la section `[robot.<name>]`
 	Robot::Robot(std::string name, std::vector<std::string> const& args)
-	        : Robot(std::make_shared<ModuleManager>(), name, args) {}
+	        : Robot(std::make_shared<ModuleManager>(), std::move(name), args) {}
 
 	/// Initialise le robot à partir des arguments passes au programme.
 	Robot::Robot(std::shared_ptr<ModuleManager> module_manager, std::string name, std::vector<std::string> const& args)
-	        : _module_manager(std::move(module_manager)), _name(name) {
+	        : _module_manager(std::move(module_manager)), _name(std::move(name)) {
 		_communicator =
-		    std::make_unique<ElecCommunicator<ModuleManager>>(_module_manager, GLOBAL_CONSTANTS.get_default_TCPIP_port());
+		    std::make_unique<Communication::ElecCommunicator<ModuleManager>>(_module_manager,
+		                                                                     GLOBAL_CONSTANTS.get_default_TCPIP_port());
 		_communicator->connect(args);
 
 		// Après avoir créé tous les modules, on dit au communicateur qu'il peut exécuter son thread de communication
@@ -56,16 +57,16 @@ namespace Commun {
 
 		for(auto module : GLOBAL_CONSTANTS[_name].get_modules()) {
 			if(module.first == "moving") {
-				_module_manager->add_module<Commun::Moving2019>(module.second);
+				_module_manager->add_module<Moving2019>(module.second);
 			} else if(module.first == "servos") {
 				// TODO : voir comment récupérer les servos à ajouter (`robot.ini` ou fichier .JSON ?)
-				_module_manager->add_module<Commun::Servos2019>(module.second);
+				_module_manager->add_module<Servos2019>(module.second);
 			} else if(module.first == "motors") {
-				_module_manager->add_module<Commun::Motors2019>(module.second);
+				_module_manager->add_module<Motors2019>(module.second);
 			} else if(module.first == "io") {
-				_module_manager->add_module<Commun::IO2019>(module.second);
+				_module_manager->add_module<IO2019>(module.second);
 			} else if(module.first == "avoidance") {
-				auto& avoidance = _module_manager->add_module<Commun::Avoidance2019>(module.second);
+				auto& avoidance = _module_manager->add_module<Avoidance2019>(module.second);
 				avoidance.set_position_turret(GLOBAL_CONSTANTS[_name].get_turret_position());
 			} else {
 				throw std::runtime_error("The module named '" + module.first + "' (ID: " + std::to_string(module.second) +
@@ -116,4 +117,4 @@ namespace Commun {
 	    }
 	    return false;
 	}*/
-} // namespace Commun
+} // namespace PhysicalRobot

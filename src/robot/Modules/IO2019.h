@@ -11,7 +11,7 @@
 
 #include "Module.hpp"
 
-namespace Commun {
+namespace PhysicalRobot {
 
 	class IO2019 final : public Module<SharedIO2019> {
 	public:
@@ -29,7 +29,7 @@ namespace Commun {
 
 		std::atomic_bool _tirette;
 	};
-} // namespace Commun
+} // namespace PhysicalRobot
 
 
 #endif // ROOT_MODULEIO2019_H

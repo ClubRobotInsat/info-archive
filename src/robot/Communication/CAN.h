@@ -27,7 +27,7 @@
 #include <thread>
 #include <vector>
 
-namespace Commun {
+namespace Communication {
 
 	/// Interface d 'acces au bus CAN
 	class CAN {
@@ -123,6 +123,6 @@ namespace Commun {
 
 		std::vector<GlobalFrame> _bufferEnvoi;
 	};
-} // namespace Commun
+} // namespace Communication
 
 #endif

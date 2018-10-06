@@ -5,7 +5,7 @@
 #include "Avoidance2019.h"
 #include <log/Log.h>
 
-namespace Commun {
+namespace PhysicalRobot {
 	Avoidance2019::Avoidance2019(uint8_t id)
 	        : Module(id, avoidance_read_frame, avoidance_write_frame), _angle_detection_adversary(250_mrad) {}
 
@@ -54,4 +54,4 @@ namespace Commun {
 			_adversary_detected.exchange(static_cast<bool>(s.adversary_detected));
 		}
 	}
-} // namespace Commun
+} // namespace PhysicalRobot

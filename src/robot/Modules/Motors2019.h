@@ -9,7 +9,7 @@
 
 #include "Module.hpp"
 
-namespace Commun {
+namespace PhysicalRobot {
 
 	class Motors2019 final : public Module<SharedMotors2019> {
 	public:
@@ -86,6 +86,6 @@ namespace Commun {
 		std::unique_ptr<UncontrolledMotor> _uncontrolled[NB_MAX_UNCONTROLLED_MOTORS];
 		std::unique_ptr<Brushless> _brushless[NB_MAX_BRUSHLESS];
 	};
-} // namespace Commun
+} // namespace PhysicalRobot
 
 #endif // ROOT_MODULEMOTEURS2019_H

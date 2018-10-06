@@ -6,7 +6,7 @@
 #include <bitset>
 #include <log/Log.h>
 
-namespace Commun {
+namespace PhysicalRobot {
 
 	bool ModuleManager::has_module(uint8_t id) const {
 		return _modules[id] != nullptr;
@@ -118,4 +118,4 @@ namespace Commun {
 			}
 		}
 	}
-} // namespace Commun
+} // namespace PhysicalRobot
