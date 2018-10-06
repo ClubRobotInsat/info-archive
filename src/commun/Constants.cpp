@@ -75,6 +75,12 @@ namespace Constants {
 		    Distance::makeFromMm(read_field(_reader, "constants", "table_y", 2000)),
 		    0_m,
 		};
+		_scale_environment = Distance::makeFromMm(read_field(_reader, "constants", "scale_environment", 10));
+		_table_env_grid = {
+		    static_cast<uint16_t>(_table_size.x / _scale_environment),
+		    static_cast<uint16_t>(_table_size.y / _scale_environment),
+		};
+
 		_match_duration = Duration::makeFromS(read_field(_reader, "constants", "match_duration", 100));
 	}
 

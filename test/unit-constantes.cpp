@@ -10,8 +10,9 @@ TEST_CASE("Global constants") {
 	const std::string INI{"[constants]\n"
 	                      "TCPIP_port=4242\n"
 	                      "match_duration=100\n"
-	                      "table_x=3000\n"
-	                      "table_y=2000\n"
+	                      "table_x=1500\n"
+	                      "table_y=1000\n"
+	                      "scale_environment=5\n"
 
 	                      "[robot]\n"
 	                      "linear_speed=376\n"
@@ -42,7 +43,9 @@ TEST_CASE("Global constants") {
 	Constants::Constants cst(INI);
 	CHECK(cst.get_default_TCPIP_port() == 4242);
 	CHECK(cst.get_match_duration() == 100_s);
-	CHECK(cst.get_table_size() == Vector3m{3_m, 2_m, 0_m});
+	CHECK(cst.get_table_size() == Vector3m{1.5_m, 1_m, 0_m});
+	CHECK(cst.get_scale_environment() == 5_mm);
+	CHECK(cst.get_table_env_grid() == Vector2u16{300, 200});
 	REQUIRE_THROWS_WITH(cst["iron-man"], "Constants of the robot 'iron-man' does not exist.");
 
 	REQUIRE_NOTHROW(cst["bot"]);

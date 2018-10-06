@@ -17,8 +17,8 @@ namespace Constants {
 
 	ENUM_CLASS_NS(Constants,
 	              RobotColor,
-	              Orange,
-	              Green,
+	              Purple,
+	              Yellow,
 	              // Valeur d'initialisation, qui permet de déctecter si la lecture du capteur couleur a déconné.
 	              Undef)
 
@@ -100,6 +100,14 @@ namespace Constants {
 		inline Vector3m get_table_size() const {
 			return _table_size;
 		}
+		// Échelle pour créer la discrétisation de l'environnement
+		inline Distance get_scale_environment() const {
+			return _scale_environment;
+		}
+		// Nombre de points pour discrétiser la table dans l'environnement du robot (utilisé par l'A*)
+		inline Vector2u16 get_table_env_grid() const {
+			return _table_env_grid;
+		}
 
 		const repere::Repere REFERENCE_ASTAR =
 		    repere::Repere({0_m, 0_m}, repere::Multiplicateur::SENS_POSITIF, repere::Multiplicateur::SENS_POSITIF);
@@ -109,20 +117,41 @@ namespace Constants {
 #include ".table_2018.json.includable"
 		);
 
+		const repere::Repere& get_reference(RobotColor color) const {
+			switch(color) {
+				case RobotColor::Yellow:
+					return REFERENCE_YELLOW;
+				case RobotColor::Purple:
+					return REFERENCE_PURPLE;
+				default:
+					return REFERENCE_ASTAR;
+			}
+		}
+
 	private:
 		uint16_t _TCPIP_port_simu;
 		Vector3m _table_size;
+
+		Distance _scale_environment;
+		Vector2u16 _table_env_grid;
+
 		Duration _match_duration;
 
 		IniFile _reader;
+
+		const repere::Repere REFERENCE_YELLOW =
+		    repere::Repere({0_m, 0_m}, repere::Multiplicateur::SENS_POSITIF, repere::Multiplicateur::SENS_POSITIF);
+
+		const repere::Repere REFERENCE_PURPLE =
+		    repere::Repere({3_m, 0_m}, repere::Multiplicateur::SENS_NEGATIF, repere::Multiplicateur::SENS_POSITIF);
 	};
 } // namespace Constants
 
 inline Constants::RobotColor operator!(Constants::RobotColor const& c) {
-	if(c == Constants::RobotColor::Orange)
-		return Constants::RobotColor::Green;
-	else if(c == Constants::RobotColor::Green)
-		return Constants::RobotColor::Orange;
+	if(c == Constants::RobotColor::Purple)
+		return Constants::RobotColor::Yellow;
+	else if(c == Constants::RobotColor::Yellow)
+		return Constants::RobotColor::Purple;
 
 	return c;
 }
