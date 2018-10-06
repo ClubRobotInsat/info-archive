@@ -6,17 +6,9 @@
 #include <string>
 #include <vector>
 
-#include "ConstantesCommunes.h"
 #include "MathToolbox/spline.h"
+#include <Constants.h>
 using namespace std;
-
-void printV(vector<Vector2m>& pts);
-
-void printV(vector<Vector2m>& pts) {
-	for(Vector2m& pt : pts) {
-		cout << pt << endl;
-	}
-}
 
 const float gridSize = 0.01;
 int main() {
@@ -31,23 +23,22 @@ int main() {
 	Environment helloWorld({w, h}, Distance::makeFromM(gridSize), sy, (sqrt(sx * sx + sy * sy) / 2) * 1.2, Vector2m(0_m, 1_m));
 
 	const Distance WALLS_SIZE{3_cm};
-	const Vector2m WALLS_DIMENSIONS{3_m, 2_m};
 
 	const float danger = Environment::DANGER_INFINITY;
 
 	// Murs
 	helloWorld.addStaticShape(std::make_unique<Rect>(danger,
 	                                                 Vector2m(-WALLS_SIZE, -WALLS_SIZE),
-	                                                 Vector2m(WALLS_DIMENSIONS.x + 2 * WALLS_SIZE, WALLS_SIZE)));
+	                                                 Vector2m(GLOBAL_CONSTANTS.get_table_size().x + 2 * WALLS_SIZE, WALLS_SIZE)));
 	helloWorld.addStaticShape(std::make_unique<Rect>(danger,
 	                                                 Vector2m(-WALLS_SIZE, -WALLS_SIZE),
-	                                                 Vector2m(WALLS_SIZE, WALLS_DIMENSIONS.y + 2 * WALLS_SIZE)));
+	                                                 Vector2m(WALLS_SIZE, GLOBAL_CONSTANTS.get_table_size().y + 2 * WALLS_SIZE)));
 	helloWorld.addStaticShape(std::make_unique<Rect>(danger,
-	                                                 Vector2m(-WALLS_SIZE, WALLS_DIMENSIONS.y),
-	                                                 Vector2m(WALLS_DIMENSIONS.x + 2 * WALLS_SIZE, WALLS_SIZE)));
+	                                                 Vector2m(-WALLS_SIZE, GLOBAL_CONSTANTS.get_table_size().y),
+	                                                 Vector2m(GLOBAL_CONSTANTS.get_table_size().x + 2 * WALLS_SIZE, WALLS_SIZE)));
 	helloWorld.addStaticShape(std::make_unique<Rect>(danger,
-	                                                 Vector2m(WALLS_DIMENSIONS.x, -WALLS_SIZE),
-	                                                 Vector2m(WALLS_SIZE, WALLS_DIMENSIONS.y + 2 * WALLS_SIZE)));
+	                                                 Vector2m(GLOBAL_CONSTANTS.get_table_size().x, -WALLS_SIZE),
+	                                                 Vector2m(WALLS_SIZE, GLOBAL_CONSTANTS.get_table_size().y + 2 * WALLS_SIZE)));
 
 	// Bâtons devant la base
 	helloWorld.addStaticShape(std::make_unique<Rect>(danger, Vector2m(0_m, 36_cm), Vector2m(71_cm, 22_mm)));

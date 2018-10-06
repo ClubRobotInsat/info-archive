@@ -29,8 +29,8 @@ struct TrajectoryPart {
 	std::vector<Vector2m> originalPoints;
 	Vector2m middlePoint;
 	std::vector<Vector2m> bezierizedPoints;
-	TrajectoryPart(std::vector<Vector2m> const& originalpoints_, Vector2m middlepoint_)
-	        : originalPoints(originalpoints_), middlePoint(middlepoint_) {}
+	TrajectoryPart(std::vector<Vector2m> originalpoints_, const Vector2m& middlepoint_)
+	        : originalPoints(std::move(originalpoints_)), middlePoint(middlepoint_) {}
 };
 
 
@@ -389,13 +389,13 @@ private:
 	static float lerp(float a1, float a2, float v);
 	// Des surchages...
 	Distance lerp(Distance a1, Distance a2, float v) {
-		return Distance::makeFromM(lerp(a1.toM(), a2.toM(), v));
+		return Distance::makeFromM(lerp(static_cast<float>(a1.toM()), static_cast<float>(a2.toM()), v));
 	}
 	int toGridUnit(Distance value) const {
-		return toGridUnit(value.toM());
+		return toGridUnit(static_cast<float>(value.toM()));
 	}
 	float toGridUnit(Angle value) const {
-		return (float)value.toRad();
+		return static_cast<float>(value.toRad());
 	}
 
 private:

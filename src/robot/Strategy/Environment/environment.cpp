@@ -1,6 +1,6 @@
 ﻿#include "environment.h"
-#include "ConstantesCommunes.h"
 #include "TGAWriter.h"
+#include <Constants.h>
 
 #include <Json.h>
 #include <fstream>
@@ -141,7 +141,7 @@ vector<Vector2m> Environment::getTrajectory(Vector2m start, Vector2m end, Durati
 	_nodes[sx][sy].heuristicCost = getHeuristicCost(_nodes[sx][sy], _nodes[ex][ey]);
 	candidateNodes.insert(&_nodes[sx][sy]);
 
-	while(candidateNodes.size() != 0) {
+	while(!candidateNodes.empty()) {
 		// Traite le noeud en cours.
 		auto candidateIt = candidateNodes.begin();
 		Node* candidate = *(candidateIt);
@@ -202,7 +202,7 @@ float Environment::getHeuristicCost(Node& from, Node& to) {
 	auto sx = toWorldUnit(from.x - to.x);
 	auto sy = toWorldUnit(from.y - to.y);
 	auto val = sqrt(sx * sx + sy * sy);
-	return val.toM();
+	return static_cast<float>(val.toM());
 }
 
 bool Environment::isForbidden(Vector2m const& position) const {
@@ -263,7 +263,7 @@ void Environment::loadFromJSON(JSON json) {
 void Environment::addNeighbor(vector<Neighbor>& neighbors, int x, int y, Distance distance) {
 	if(x < 0 || y < 0 || x >= _size.x || y >= _size.y)
 		return;
-	neighbors.push_back(Neighbor(distance, _nodes[x][y]));
+	neighbors.emplace_back(distance, _nodes[x][y]);
 }
 
 vector<Neighbor> Environment::getNeighbors(Node& n) {
@@ -296,13 +296,13 @@ vector<Neighbor> Environment::getNeighbors(Node& n) {
 vector<Vector2m> Environment::getPathTo(Node& from, Node& to, unordered_map<Node*, Node*>& previousNodes) {
 	vector<Vector2m> pts;
 	if(to == from) {
-		pts.push_back(Vector2m(toWorldUnit(to.x), toWorldUnit(to.y)));
+		pts.emplace_back(toWorldUnit(to.x), toWorldUnit(to.y));
 		return pts;
 	}
 
 	Node* current = &to;
 	while(!(*current == from)) {
-		pts.push_back(Vector2m(toWorldUnit(current->x), toWorldUnit(current->y)));
+		pts.emplace_back(toWorldUnit(current->x), toWorldUnit(current->y));
 		current = previousNodes[current];
 	}
 	return pts;
@@ -389,7 +389,7 @@ vector<Vector2m> Environment::linearizeAngular(vector<Vector2m> const& trajector
 		} else {
 			// Si il y a déjà des points avant, on peut regarder l'écart angulaire
 			// avec le nouveau point pour voir si il est réellement indispensable.
-			int lastIndex = newTraj.size() - 1;
+			unsigned long lastIndex = newTraj.size() - 1;
 			Vector2m m1 = newTraj[lastIndex - 1];
 			Vector2m m2 = newTraj[lastIndex];
 			Vector2m current = trajectory[i];
@@ -434,21 +434,21 @@ vector<Vector2m> Environment::bezierize(vector<Vector2m> const& trajectory) {
 	//          - au point actuellement parcouru
 	//          - aux 2 points situés au milieu entre le point parcouru et son prédécesseur / successeur.
 	std::vector<TrajectoryPart> parts;
-	parts.push_back(TrajectoryPart(std::vector<Vector2m>({trajectory[0]}), trajectory[0]));
+	parts.emplace_back(std::vector<Vector2m>({trajectory[0]}), trajectory[0]);
 	for(int i = 1; i < trajectory.size() - 1; i++) {
 		Vector2m previous = trajectory[i - 1];
 		Vector2m next = trajectory[i + 1];
 		Vector2m current = trajectory[i];
-		parts.push_back(TrajectoryPart(vector<Vector2m>({(current + previous) / 2, current * 1, (current + next) / 2}), current));
+		parts.emplace_back(vector<Vector2m>({(current + previous) / 2, current * 1, (current + next) / 2}), current);
 	}
-	parts.push_back(TrajectoryPart(vector<Vector2m>({trajectory.back()}), trajectory.back()));
+	parts.emplace_back(vector<Vector2m>({trajectory.back()}), trajectory.back());
 
 	// Pour chaque partie :
 	// Si elle est composée de 3 points : on va effectuer un lissage avec une courbe de bézier.
 	// Si cette nouvelle trajectoire est valide => on la prend, sinon, on prend la trajectoire non lissée
 	// stockée dans la partie.
 	std::vector<Vector2m> newtraj;
-	float bezierStep = 1.0f / (float)_postProcessParameters.bezier.pointsCount;
+	float bezierStep = 1.0f / static_cast<float>(_postProcessParameters.bezier.pointsCount);
 	float bezierDanger = _postProcessParameters.bezier.dangerThreshold;
 	for(int i = 0; i < parts.size(); i++) {
 		if(parts[i].originalPoints.size() == 1)
@@ -456,7 +456,8 @@ vector<Vector2m> Environment::bezierize(vector<Vector2m> const& trajectory) {
 		else {
 			// On crée la courbe de bézier à partir des 3 points de notre partie.
 			for(float j = 0; j < 1; j += bezierStep) {
-				parts[i].bezierizedPoints.push_back(getCastaljau(parts[i].originalPoints, parts[i].originalPoints.size() - 1, 0, j));
+				parts[i].bezierizedPoints.push_back(
+				    getCastaljau(parts[i].originalPoints, static_cast<int>(parts[i].originalPoints.size() - 1), 0, j));
 			}
 
 			// On vérifie la validité de notre courbe.
@@ -471,7 +472,7 @@ vector<Vector2m> Environment::bezierize(vector<Vector2m> const& trajectory) {
 			// Filtrage angulaire.
 			bool canFilter = newtraj.size() > 1;
 			if(_postProcessParameters.bezier.angleFilterEnabled && canFilter) {
-				int lastIndex = newtraj.size() - 1;
+				unsigned long lastIndex = newtraj.size() - 1;
 				Vector2m m1 = newtraj[lastIndex - 1];
 				Vector2m m2 = newtraj[lastIndex];
 				Vector2m current = trajectory[i];
@@ -553,9 +554,9 @@ bool Environment::canMoveLine(Vector2m start, Vector2m end) {
 
 void Environment::drawStaticShapes(vector<vector<Node>>& target) {
 	for(vector<Node>& nodes : target)
-		for(auto it = nodes.begin(); it != nodes.end(); it++) {
-			it->staticValue = 0;
-			it->_debugValue = 0;
+		for(auto& node : nodes) {
+			node.staticValue = 0;
+			node._debugValue = 0;
 		}
 
 	resetNodes(target);
@@ -568,10 +569,10 @@ void Environment::drawStaticShapes(vector<vector<Node>>& target) {
 
 void Environment::resetNodes(vector<vector<Node>>& target) {
 	for(vector<Node>& nodes : target)
-		for(auto it = nodes.begin(); it != nodes.end(); it++) {
-			it->dynamicValue = 0;
-			it->heuristicCost = 0;
-			it->effectiveCost = 0;
+		for(auto& node : nodes) {
+			node.dynamicValue = 0;
+			node.heuristicCost = 0;
+			node.effectiveCost = 0;
 		}
 }
 
@@ -584,10 +585,11 @@ void Environment::drawDebugShape(Shape& shape, vector<vector<Node>>& target) {
 	if(shape.getType() == ShapeType::Shape_Circle) {
 		auto& circle = static_cast<Circle&>(shape);
 		Distance radius = circle.radius;
-		int sx = max(0, toGridUnit(circle.position.x.toM() - radius.toM()));
-		int sy = max(0, toGridUnit(circle.position.y.toM() - radius.toM()));
-		int ex = min((int)(target.size() - 1), toGridUnit(circle.position.x.toM() + radius.toM()));
-		int ey = min((int)(target[0].size() - 1), toGridUnit(circle.position.y.toM() + radius.toM()));
+		int sx = max(0, toGridUnit(static_cast<float>(circle.position.x.toM() - radius.toM())));
+		int sy = max(0, toGridUnit(static_cast<float>(circle.position.y.toM() - radius.toM())));
+		int ex = min(static_cast<int>(target.size() - 1), toGridUnit(static_cast<float>(circle.position.x.toM() + radius.toM())));
+		int ey = min(static_cast<int>(target[0].size() - 1),
+		             toGridUnit(static_cast<float>(circle.position.y.toM() + radius.toM())));
 		auto radiusSqr = radius * radius;
 		for(int x = sx; x < ex; x++) {
 			for(int y = sy; y < ey; y++) {
@@ -603,8 +605,8 @@ void Environment::drawDebugShape(Shape& shape, vector<vector<Node>>& target) {
 		Rect& rect = static_cast<Rect&>(shape);
 		int sx = max(0, toGridUnit(rect.position.x));
 		int sy = max(0, toGridUnit(rect.position.y));
-		int ex = min((int)target.size() - 1, toGridUnit(rect.position.x + rect.size.x));
-		int ey = min((int)target[0].size() - 1, toGridUnit(rect.position.y + rect.size.y));
+		int ex = min(static_cast<int>(target.size() - 1), toGridUnit(rect.position.x + rect.size.x));
+		int ey = min(static_cast<int>(target[0].size() - 1), toGridUnit(rect.position.y + rect.size.y));
 		for(int x = sx; x < ex; x++) {
 			for(int y = sy; y < ey; y++) {
 				target[x][y]._debugValue += rect.value;
@@ -622,10 +624,12 @@ void Environment::drawShape(Shape& shape, vector<vector<Node>>& target, bool dyn
 		Distance radius = circle.radius + _robotWidth;
 		Distance outterRadius = circle.radius + _radius;
 
-		int sx = max(0, toGridUnit(circle.position.x.toM() - outterRadius.toM()));
-		int sy = max(0, toGridUnit(circle.position.y.toM() - outterRadius.toM()));
-		int ex = min((int)(target.size() - 1), toGridUnit(circle.position.x.toM() + outterRadius.toM()));
-		int ey = min((int)(target[0].size() - 1), toGridUnit(circle.position.y.toM() + outterRadius.toM()));
+		int sx = max(0, toGridUnit(static_cast<float>(circle.position.x.toM() - outterRadius.toM())));
+		int sy = max(0, toGridUnit(static_cast<float>(circle.position.y.toM() - outterRadius.toM())));
+		int ex = min(static_cast<int>(target.size() - 1),
+		             toGridUnit(static_cast<float>(circle.position.x.toM() + outterRadius.toM())));
+		int ey = min(static_cast<int>(target[0].size() - 1),
+		             toGridUnit(static_cast<float>(circle.position.y.toM() + outterRadius.toM())));
 
 		auto outterRadiusSqr = outterRadius * outterRadius;
 		auto radiusSqr = radius * radius;
@@ -639,13 +643,15 @@ void Environment::drawShape(Shape& shape, vector<vector<Node>>& target, bool dyn
 					if(dstSqr <= radiusSqr)
 						target[x][y].dynamicValue += circle.value;
 					else if(dstSqr <= outterRadiusSqr) {
-						target[x][y].dynamicValue += lerp(circle.value, 0, (dst - radius) / (outterRadius - radius));
+						target[x][y].dynamicValue +=
+						    lerp(circle.value, 0, static_cast<float>((dst - radius) / (outterRadius - radius)));
 					}
 				} else {
 					if(dstSqr <= radiusSqr)
 						target[x][y].staticValue += circle.value;
 					else if(dstSqr <= outterRadiusSqr) {
-						target[x][y].staticValue += lerp(circle.value, 0, (dst - radius) / (outterRadius - radius));
+						target[x][y].staticValue +=
+						    lerp(circle.value, 0, static_cast<float>((dst - radius) / (outterRadius - radius)));
 					}
 				}
 			}
@@ -812,10 +818,10 @@ void Environment::drawRect(int rx, int ry, int w, int h, float angle, float dang
 		float pD4 = Cy - mD4 * Cx;
 
 		// coordonnées du plus petit rectangle selon le repère (ex, ey) qui comprend le rectangle à dessiner penché
-		float minX = max(min({Ax, Bx, Cx, Dx}), (float)0);
-		float maxX = min(max({Ax, Bx, Cx, Dx}), (float)this->_size.x - 1);
-		float minY = max(min({Ay, By, Cy, Dy}), (float)0);
-		float maxY = min(max({Ay, By, Cy, Dy}), (float)this->_size.y - 1);
+		float minX = max(min({Ax, Bx, Cx, Dx}), static_cast<float>(0));
+		float maxX = min(max({Ax, Bx, Cx, Dx}), static_cast<float>(this->_size.x - 1));
+		float minY = max(min({Ay, By, Cy, Dy}), static_cast<float>(0));
+		float maxY = min(max({Ay, By, Cy, Dy}), static_cast<float>(this->_size.y - 1));
 
 		// on dessine tous les points s'ils sont à l'intérieur des 4 droites définies par les points du sommet
 		for(float x = minX; x <= maxX; x += 0.4) {
@@ -855,16 +861,16 @@ void Environment::drawGradientRect(int rx, int ry, int w, int h, int gradientDir
 			float dangerValue;
 			switch(gradientDir) {
 				case GRADIENT_RECT_TOP:
-					dangerValue = lerp(minDanger, maxDanger, (float)(y - sy) / (float)max(1, ey - sy));
+					dangerValue = lerp(minDanger, maxDanger, static_cast<float>(y - sy) / static_cast<float>(max(1, ey - sy)));
 					break;
 				case GRADIENT_RECT_LEFT:
-					dangerValue = lerp(minDanger, maxDanger, (float)(x - sx) / (float)max(1, ex - sx));
+					dangerValue = lerp(minDanger, maxDanger, static_cast<float>(x - sx) / static_cast<float>(max(1, ex - sx)));
 					break;
 				case GRADIENT_RECT_BOT:
-					dangerValue = lerp(maxDanger, minDanger, (float)(y - sy) / (float)max(1, ey - sy));
+					dangerValue = lerp(maxDanger, minDanger, static_cast<float>(y - sy) / static_cast<float>(max(1, ey - sy)));
 					break;
 				case GRADIENT_RECT_RIGHT:
-					dangerValue = lerp(maxDanger, minDanger, (float)(x - sx) / (float)max(1, ex - sx));
+					dangerValue = lerp(maxDanger, minDanger, static_cast<float>(x - sx) / static_cast<float>(max(1, ex - sx)));
 					break;
 				default:
 					throw runtime_error("erreur");
@@ -913,7 +919,7 @@ void Environment::drawQuadrant(int cx, int cy, int radius, int quadrant, float m
 
 			// On fait le dégradé en faisant une interpolation linéaire en fonction de
 			// la distance du point calculé au centre du cercle.
-			float value = lerp(minValue, maxValue, dst / (float)radius);
+			float value = lerp(minValue, maxValue, dst / static_cast<float>(radius));
 
 			if(dynamic)
 				this->_nodes[x][y].dynamicValue = max(value, this->_nodes[x][y].dynamicValue);
@@ -953,7 +959,7 @@ void Environment::setGridSize(Vector2u16 size) {
 }
 
 int Environment::toGridUnit(float value) const {
-	return (int)(value / _scale.toM());
+	return static_cast<int>(value / _scale.toM());
 }
 
 Distance Environment::toWorldUnit(float value) {
@@ -992,19 +998,20 @@ void Environment::saveToTGA(const char* path, vector<Vector2m> const& traj) cons
 			r = g = b = a = 0;
 			float value = obst[x][y].staticValue + obst[x][y].dynamicValue;
 			if(value > 0) {
-				a = b = r = (char)255;
+				a = b = r = static_cast<char>(255);
 
 				// Affichage des dangers infinis en noir
 				if(value == DANGER_INFINITY) {
 					b = g = 0;
-					r = (char)200;
+					r = static_cast<char>(200);
 				} else {
 					// Formule un peu bizarre qui permet d'avoir un joli dégradé --> correction gamma
-					g = r = (char)(255 * pow((255 - max(0, min(255, (int)(value * (255.0f / DANGER_INFINITY))))) / 255.0, 1 / 2.2));
+					g = r = static_cast<char>(
+					    255 * pow((255 - max(0, min(255, static_cast<int>(value * (255.0f / DANGER_INFINITY))))) / 255.0, 1 / 2.2));
 				}
 
 			} else {
-				r = g = b = a = (char)255;
+				r = g = b = a = static_cast<char>(255);
 			}
 
 			// Affichage de la debug value
@@ -1015,12 +1022,15 @@ void Environment::saveToTGA(const char* path, vector<Vector2m> const& traj) cons
 			    }
 			}*/
 
-			writer.drawPoint((((int)a << 24) & ma) | (((int)r << 16) & mr) | (((int)g << 8) & mg) | (b & mb), x, writer.getHeight() - y);
+			writer.drawPoint(((static_cast<int>(a) << 24) & ma) | ((static_cast<int>(r) << 16) & mr) |
+			                     ((static_cast<int>(g) << 8) & mg) | (b & mb),
+			                 x,
+			                 writer.getHeight() - y);
 		};
 	}
 
 	// trajectoire.
-	float invGS = 1.0f / this->_scale.toM();
+	float invGS = 1.0f / static_cast<float>(this->_scale.toM());
 	for(int j = 1; j < traj.size(); j++) {
 		auto trajPoint = traj[j];
 		// auto ptUnit = traj[j] * invGS;
@@ -1034,18 +1044,24 @@ void Environment::saveToTGA(const char* path, vector<Vector2m> const& traj) cons
 			// ARRIVEE
 			for(int x = 0; x < 3; x++) {
 				for(int y = 0; y < 3; y++) {
-					writer.drawPoint(0xFFFFA000, (int)ptUnit.x.toM() + x, writer.getHeight() - (int)ptUnit.y.toM() - y);
+					writer.drawPoint(0xFFFFA000,
+					                 static_cast<int>(ptUnit.x.toM()) + x,
+					                 writer.getHeight() - static_cast<int>(ptUnit.y.toM()) - y);
 				}
 			}
 		} else if(j == traj.size() - 1) {
 			// DEPART
 			for(int x = 0; x < 4; x++) {
 				for(int y = 0; y < 4; y++) {
-					writer.drawPoint(0xFF00A0FF, (int)ptUnit.x.toM() + x, writer.getHeight() - (int)ptUnit.y.toM() + y);
+					writer.drawPoint(0xFF00A0FF,
+					                 static_cast<int>(ptUnit.x.toM()) + x,
+					                 writer.getHeight() - static_cast<int>(ptUnit.y.toM()) + y);
 				}
 			}
 		} else
-			writer.drawPoint(0xFF0000FF, (int)ptUnit.x.toM(), writer.getHeight() - (int)ptUnit.y.toM());
+			writer.drawPoint(0xFF0000FF,
+			                 static_cast<int>(ptUnit.x.toM()),
+			                 writer.getHeight() - static_cast<int>(ptUnit.y.toM()));
 	}
 
 
@@ -1094,7 +1110,7 @@ vector<Vector2m> Environment::performSegmentation(vector<Vector2m> const& trajec
 		if(squaredNorm > threshold) {
 			// On décompose le segment en parts égales.
 			Distance norm = sqrt(squaredNorm);
-			int steps = (int)(norm / _postProcessParameters.trajectorySegmentation.maxSpacing) + 2;
+			int steps = static_cast<int>(norm / _postProcessParameters.trajectorySegmentation.maxSpacing) + 2;
 			Vector2m stepDistance = (current - previous) / steps;
 			for(int j = 1; j <= steps; j++) {
 				newtraj.push_back(previous + stepDistance * j);
@@ -1113,7 +1129,6 @@ Distance Environment::getRobotRadius() {
 
 void Environment::clearDebugValues() {
 	for(vector<Node>& nodes : _nodes)
-		for(auto it = nodes.begin(); it != nodes.end(); it++) {
-			it->_debugValue = 0;
-		}
+		for(auto& node : nodes)
+			node._debugValue = 0;
 }

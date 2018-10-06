@@ -28,17 +28,17 @@ private:
 	std::vector<std::vector<double>> _upper; // bande supérieure
 	std::vector<std::vector<double>> _lower; // bande inférieure
 public:
-	band_matrix(){};
+	band_matrix() = default;
 	band_matrix(int dim, int n_u, int n_l);
 
 	void resize(int dim, int n_u, int n_l);
 	int dim() const;
 	int num_upper() const {
-		return (int)_upper.size() - 1;
+		return static_cast<int>(_upper.size() - 1);
 	}
 
 	int num_lower() const {
-		return (int)_lower.size() - 1;
+		return static_cast<int>(_lower.size() - 1);
 	}
 
 	/**
@@ -90,7 +90,7 @@ private:
 public:
 	/// Constructeur
 	spline()
-	        : _left(second_deriv), _right(second_deriv), _left_value(0.0), _right_value(0.0), _force_linear_extrapolation(false) {
+	        : _b0(0), _c0(0), _left(second_deriv), _right(second_deriv), _left_value(0.0), _right_value(0.0), _force_linear_extrapolation(false) {
 		;
 	}
 
@@ -158,7 +158,7 @@ struct CurvatureInfos {
 class parameter_spline {
 public:
 	/// Constructeur
-	parameter_spline() {}
+	parameter_spline() = default;
 
 	/**
 	 * Initialise les points de la spline
@@ -167,7 +167,7 @@ public:
 	 * @param cubic_spline extrapolation cubique ou linéaire
 	 */
 	void set_points(const std::vector<double>& x, const std::vector<double>& y, bool cubic_spline = true);
-	void set_points(const std::vector<Vector2m> pos, bool cubic_spline = true);
+	void set_points(const std::vector<Vector2m>& pos, bool cubic_spline = true);
 
 	/**
 	 * Calcul des informations propres à la courbure algébrique

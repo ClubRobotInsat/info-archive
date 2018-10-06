@@ -1,10 +1,3 @@
-//
-//  Robot.cpp
-//  Club Robot
-//
-//  Created by Rémi on 07/06/2015.
-//
-
 #include "Robot.h"
 #include <Constants.h>
 

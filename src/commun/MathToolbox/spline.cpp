@@ -14,19 +14,19 @@ void band_matrix::resize(int dim, int n_u, int n_l) {
 	assert(dim > 0);
 	assert(n_u >= 0);
 	assert(n_l >= 0);
-	_upper.resize((unsigned long)n_u + 1);
-	_lower.resize((unsigned long)n_l + 1);
+	_upper.resize(static_cast<unsigned long>(n_u + 1));
+	_lower.resize(static_cast<unsigned long>(n_l + 1));
 	for(size_t i = 0; i < _upper.size(); i++) {
-		_upper[i].resize((unsigned long)dim);
+		_upper[i].resize(static_cast<unsigned long>(dim));
 	}
 	for(size_t i = 0; i < _lower.size(); i++) {
-		_lower[i].resize((unsigned long)dim);
+		_lower[i].resize(static_cast<unsigned long>(dim));
 	}
 }
 
 int band_matrix::dim() const {
-	if(_upper.size() > 0) {
-		return (int)_upper[0].size();
+	if(!_upper.empty()) {
+		return static_cast<int>(_upper[0].size());
 	} else {
 		return 0;
 	}
@@ -105,8 +105,8 @@ void band_matrix::lu_decompose() {
 
 // Résolution de Ly = b
 std::vector<double> band_matrix::l_solve(const std::vector<double>& b) const {
-	assert(this->dim() == (int)b.size());
-	std::vector<double> x((unsigned long)this->dim());
+	assert(this->dim() == static_cast<int>(b.size()));
+	std::vector<double> x(static_cast<unsigned long>(this->dim()));
 	int j_start;
 	double sum;
 	for(int i = 0; i < this->dim(); i++) {
@@ -121,8 +121,8 @@ std::vector<double> band_matrix::l_solve(const std::vector<double>& b) const {
 
 // Résolution de Rx = y
 std::vector<double> band_matrix::r_solve(const std::vector<double>& b) const {
-	assert(this->dim() == (int)b.size());
-	std::vector<double> x((unsigned long)this->dim());
+	assert(this->dim() == static_cast<int>(b.size()));
+	std::vector<double> x(static_cast<unsigned long>(this->dim()));
 	int j_stop;
 	double sum;
 	for(int i = this->dim() - 1; i >= 0; i--) {
@@ -136,7 +136,7 @@ std::vector<double> band_matrix::r_solve(const std::vector<double>& b) const {
 }
 
 std::vector<double> band_matrix::lu_solve(const std::vector<double>& b, bool is_lu_decomposed) {
-	assert(this->dim() == (int)b.size());
+	assert(this->dim() == static_cast<int>(b.size()));
 	std::vector<double> x, y;
 	if(!is_lu_decomposed) {
 		this->lu_decompose();
@@ -150,7 +150,7 @@ std::vector<double> band_matrix::lu_solve(const std::vector<double>& b, bool is_
 /// Implémentation de spline
 /// -------------------------
 void spline::set_boundary(spline::deriv_type left, double left_value, spline::deriv_type right, double right_value, bool force_linear_extrapolation) {
-	assert(_x.size() == 0); // Cette méthode doit être appelée avant set_points
+	assert(_x.empty()); // Cette méthode doit être appelée avant set_points
 
 	_left = left;
 	_right = right;
@@ -164,7 +164,7 @@ void spline::set_points(const std::vector<double>& x, const std::vector<double>&
 	assert(x.size() > 2);
 	_x = x;
 	_y = y;
-	int n = (int)x.size();
+	int n = static_cast<int>(x.size());
 
 	for(int i = 0; i < n - 1; i++) {
 		// La suite (x) doit être croissante
@@ -175,7 +175,7 @@ void spline::set_points(const std::vector<double>& x, const std::vector<double>&
 	if(cubic_spline) { // On réalise une interpolation par splines cubiques
 		// On initialise la matrice du côté droit du système d'équation pour le paramètre b[] = f" / 2
 		band_matrix A(n, 1, 1);
-		std::vector<double> rhs((unsigned long)n);
+		std::vector<double> rhs(static_cast<unsigned long>(n));
 		for(int i = 1; i < n - 1; i++) {
 			A(i, i - 1) = 1.0 / 3.0 * (x[i] - x[i - 1]);
 			A(i, i) = 2.0 / 3.0 * (x[i + 1] - x[i - 1]);
@@ -219,16 +219,16 @@ void spline::set_points(const std::vector<double>& x, const std::vector<double>&
 		_b = A.lu_solve(rhs);
 
 		// On calcule les paramètres a[] et c[] en fonction de b[]
-		_a.resize((unsigned long)n);
-		_c.resize((unsigned long)n);
+		_a.resize(static_cast<unsigned long>(n));
+		_c.resize(static_cast<unsigned long>(n));
 		for(int i = 0; i < n - 1; i++) {
 			_a[i] = 1.0 / 3.0 * (_b[i + 1] - _b[i]) / (x[i + 1] - x[i]);
 			_c[i] = (y[i + 1] - y[i]) / (x[i + 1] - x[i]) - 1.0 / 3.0 * (2.0 * _b[i] + _b[i + 1]) * (x[i + 1] - x[i]);
 		}
 	} else { // On réalise une interpolation linéaire
-		_a.resize((unsigned long)n);
-		_b.resize((unsigned long)n);
-		_c.resize((unsigned long)n);
+		_a.resize(static_cast<unsigned long>(n));
+		_b.resize(static_cast<unsigned long>(n));
+		_c.resize(static_cast<unsigned long>(n));
 		for(int i = 0; i < n - 1; i++) {
 			_a[i] = 0.0;
 			_b[i] = 0.0;
@@ -315,7 +315,7 @@ void parameter_spline::set_points(const std::vector<double>& x, const std::vecto
 	_splineY.set_points(_paramT, y, cubic_spline);
 }
 
-void parameter_spline::set_points(const std::vector<Vector2m> pos, bool cubic_spline) {
+void parameter_spline::set_points(const std::vector<Vector2m>& pos, bool cubic_spline) {
 	std::vector<double> x(pos.size()), y(pos.size());
 
 	for(int i = 0; i < pos.size(); i++) {
@@ -342,7 +342,7 @@ std::vector<std::pair<double, double>> parameter_spline::get_curvature_infos_d()
 		// TODO : vérifier que l'approximation est cohérente sur le robot (vraie formule avec une intégrale)
 		double length = sqrt(pow(_splineY(_paramT[i + 1]) - _splineY(_paramT[i]), 2)) +
 		                pow(_splineX(_paramT[i + 1]) - _splineX(_paramT[i]), 2);
-		result.push_back(std::make_pair(curvature, length));
+		result.emplace_back(curvature, length);
 	}
 	return result;
 }
@@ -352,8 +352,7 @@ std::vector<std::pair<Length, Distance>> parameter_spline::get_curvature_infos()
 	std::vector<std::pair<Length, Distance>> result;
 
 	for(int i = 0; i < double_infos.size(); i++) {
-		result.push_back(std::make_pair(fromSplineCalculationCA(double_infos[i].first),
-		                                fromSplineCalculationD(double_infos[i].second)));
+		result.emplace_back(fromSplineCalculationCA(double_infos[i].first), fromSplineCalculationD(double_infos[i].second));
 	}
 	return result;
 }
@@ -403,7 +402,7 @@ std::vector<std::pair<double, double>> parameter_spline::get_points_d() const {
 	std::vector<std::pair<double, double>> result;
 	//  On récupère les points M = (x, y) associés à chacune des valeurs du paramètre de discrétisation T
 	for(int i = 0; i < _paramTT.size(); i++) {
-		result.push_back(std::make_pair(_splineX(_paramTT[i]), _splineY(_paramTT[i])));
+		result.emplace_back(_splineX(_paramTT[i]), _splineY(_paramTT[i]));
 	}
 	return result;
 }

@@ -8,6 +8,7 @@ set(OUTILS_SOURCE
         log/LogTermVT100.cpp
         MathToolbox/MathToolbox.cpp
         MathToolbox/Repere.cpp
+        MathToolbox/spline.cpp
         sockets/Socket.cpp
         sockets/tcpSock.cpp
         communication/GlobalFrame.cpp
