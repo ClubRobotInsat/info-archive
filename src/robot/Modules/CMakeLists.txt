@@ -7,7 +7,7 @@ set(MODULE_SOURCES
         Avoidance2019.cpp
         IO2019.cpp
         Motors2019.cpp
-        Moving2019.cpp
+        #Moving2019.cpp
         Servos2019.cpp)
 
 add_library(Modules STATIC ${MODULE_SOURCES})
