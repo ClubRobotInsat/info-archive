@@ -5,7 +5,7 @@
 #ifndef ROOT_MODULEMOTEURS2019_H
 #define ROOT_MODULEMOTEURS2019_H
 
-#include "SharedWithRust.h"
+#include "../../elec/librobot/c_src/SharedWithRust.h"
 
 #include "Module.hpp"
 

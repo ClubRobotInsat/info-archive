@@ -13,9 +13,9 @@
 [submodule "third_parties/catch"]
 	path = third_parties/catch
 	url = https://github.com/philsquared/Catch.git
-[submodule "src/elec/code-elec-nucleo"]
-	path = src/elec/code-elec-nucleo
-	url = https://github.com/ClubRobotInsat/code-elec-nucleo.git
 [submodule "third_parties/ini"]
 	path = third_parties/ini
 	url = https://github.com/NovA80/inifile-cpp
+[submodule "src/elec/librobot"]
+	path = src/elec/librobot
+	url = https://github.com/ClubRobotInsat/librobot

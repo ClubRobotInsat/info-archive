@@ -14,7 +14,7 @@
 #ifndef ROOT_SERVOS2019_H
 #define ROOT_SERVOS2019_H
 
-#include "SharedWithRust.h"
+#include "../../elec/librobot/c_src/SharedWithRust.h"
 
 #include "Module.hpp"
 

@@ -1,5 +1,5 @@
 set(MODULE_SOURCES
-        SharedWithRust.c
+        ../../elec/librobot/c_src/SharedWithRust.c
 
         Module.hpp
         ModuleManager.cpp
