@@ -182,14 +182,13 @@ TEST_CASE("Servos 2019 Module") {
 				// 3 servos sont déclarés, donc il faut une taille de (1 + 3 * 7 = 22) bits
 				REQUIRE(servo_read_frame(buf, SIZE).parsing_failed);
 
-				// l'ID 42 est interdit pour un servo
 				buf[0] = 2;
 				buf[1] = 42;
-				REQUIRE(servo_read_frame(buf, SIZE).parsing_failed);
+				REQUIRE_FALSE(servo_read_frame(buf, SIZE).parsing_failed);
 
-				// et l'ID 0 veut dire qu'il n'y a pas de servo, donc on économise de la place dans la trame
+				// l'ID 0 veut dire qu'il n'y a pas de servo, donc on économise de la place dans la trame
 				buf[1] = 0;
-				REQUIRE(servo_read_frame(buf, 1).parsing_failed);
+				REQUIRE(servo_read_frame(buf, SIZE).parsing_failed);
 			}
 
 			SECTION("good frame format") {
@@ -227,21 +226,21 @@ TEST_CASE("Servos 2019 Module") {
 				REQUIRE_FALSE((s = servo_read_frame(buf, SIZE)).parsing_failed);
 				CHECK(s.servos[2].id == 0);
 
-				CHECK(s.servos[1].id == 1);
-				CHECK(s.servos[1].position == 0b00111100'11000011);
-				CHECK(s.servos[1].wanted_position == 0b01111110'10000001);
-				CHECK(s.servos[1].speed == 0b00001111);
-				CHECK(s.servos[1].blocked);
-				CHECK(s.servos[1].blocking_mode == 0);
-				REQUIRE(s.servos[1].color == 0b011);
+				CHECK(s.servos[0].id == 1);
+				CHECK(s.servos[0].position == 0b00111100'11000011);
+				CHECK(s.servos[0].wanted_position == 0b01111110'10000001);
+				CHECK(s.servos[0].speed == 0b00001111);
+				CHECK(s.servos[0].blocked);
+				CHECK(s.servos[0].blocking_mode == 0);
+				REQUIRE(s.servos[0].color == 0b011);
 
-				CHECK(s.servos[3].id == 3);
-				CHECK(s.servos[3].position == 0b00000000'11111111);
-				CHECK(s.servos[3].wanted_position == 0b01010101'10101010);
-				CHECK(s.servos[3].speed == 0b11110000);
-				CHECK_FALSE(s.servos[3].blocked);
-				CHECK(s.servos[3].blocking_mode == 1);
-				CHECK(s.servos[3].color == 0b000);
+				CHECK(s.servos[1].id == 3);
+				CHECK(s.servos[1].position == 0b00000000'11111111);
+				CHECK(s.servos[1].wanted_position == 0b01010101'10101010);
+				CHECK(s.servos[1].speed == 0b11110000);
+				CHECK_FALSE(s.servos[1].blocked);
+				CHECK(s.servos[1].blocking_mode == 1);
+				CHECK(s.servos[1].color == 0b000);
 
 				buf[0] = 0;
 				REQUIRE_FALSE((s = servo_read_frame(buf, 1)).parsing_failed);

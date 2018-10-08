@@ -5,8 +5,6 @@
 #ifndef ROOT_MODULEMOTEURS2019_H
 #define ROOT_MODULEMOTEURS2019_H
 
-#include "../../elec/librobot/c_src/SharedWithRust.h"
-
 #include "Module.hpp"
 
 namespace PhysicalRobot {
@@ -46,10 +44,14 @@ namespace PhysicalRobot {
 		void deactivate_brushless(uint8_t motor);
 
 	private:
-		// Retourne 'true' si le moteur associé à 'id' a été déclaré précédemment
-		bool test_is_controlled_ok(uint8_t id) const;
-		bool test_is_uncontrolled_ok(uint8_t id) const;
-		bool test_is_brushless_ok(uint8_t id) const;
+		// Retourne l'index du moteur associé à `id`, lève une exception si le moteur n'a pas été déclaré
+		uint8_t test_is_controlled_ok(uint8_t id) const;
+		uint8_t test_is_uncontrolled_ok(uint8_t id) const;
+		uint8_t test_is_brushless_ok(uint8_t id) const;
+
+		uint8_t get_index_of_controlled(uint8_t id) const;
+		uint8_t get_index_of_uncontrolled(uint8_t id) const;
+		uint8_t get_index_of_brushless(uint8_t id) const;
 
 		SharedMotors2019 generate_shared() const override;
 		void message_processing(const SharedMotors2019&) override;

@@ -5,8 +5,6 @@
 #ifndef ROOT_AVOIDANCE2019_H
 #define ROOT_AVOIDANCE2019_H
 
-#include "../../elec/librobot/c_src/SharedWithRust.h"
-
 #include "Module.hpp"
 
 namespace PhysicalRobot {

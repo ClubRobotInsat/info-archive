@@ -7,8 +7,6 @@
 #ifndef ROOT_MODULEIO2019_H
 #define ROOT_MODULEIO2019_H
 
-#include "../../elec/librobot/c_src/SharedWithRust.h"
-
 #include "Module.hpp"
 
 namespace PhysicalRobot {

@@ -22,17 +22,26 @@ namespace PhysicalRobot {
 
 	uint8_t Servos2019::get_nbr_servos() const {
 		uint8_t count = 0;
-		for(uint8_t i = 0; i < NB_MAX_SERVOS; ++i) {
-			count += (_servos[i] != nullptr);
+		for(uint8_t index = 0; index < NB_MAX_SERVOS; ++index) {
+			count += (_servos[index] != nullptr);
 		}
 		return count;
 	}
 
-	bool Servos2019::is_servo_ok(uint8_t id) const {
+	uint8_t Servos2019::get_index_of(uint8_t id) const {
+		const uint8_t INDEX_BAD_ID = NB_MAX_SERVOS;
 		std::lock_guard<std::mutex> lk(_mutex_variables);
 
 		// 'id == 0' veut dire qu'il n'y a pas de servo-moteur dans la représentation C
-		return id > 0 && id < NB_MAX_SERVOS && static_cast<bool>(_servos[id]);
+		if(id == 0)
+			return INDEX_BAD_ID;
+
+		for(uint8_t index = 0; index < NB_MAX_SERVOS; ++index) {
+			if(_servos[index] && _servos[index]->id == id)
+				return index;
+		}
+
+		return INDEX_BAD_ID;
 	}
 
 	uint8_t Servos2019::get_frame_size() const {
@@ -40,79 +49,93 @@ namespace PhysicalRobot {
 	}
 
 	void Servos2019::set_position(uint8_t id, Angle angle) {
-		if(!is_servo_ok(id)) {
+		uint8_t index = get_index_of(id);
+
+		if(index >= NB_MAX_SERVOS) {
 			throw std::runtime_error("Numéro du servo demandé invalide : "s + std::to_string(id));
 		}
 
 		lock_variables();
-		_servos[id]->blocked = false;
-		_servos[id]->wanted_position = angle;
+		_servos[index]->blocked = false;
+		_servos[index]->wanted_position = angle;
 		unlock_variables();
 	}
 
 	void Servos2019::set_speed(uint8_t id, uint8_t speed) {
-		if(!is_servo_ok(id)) {
+		uint8_t index = get_index_of(id);
+
+		if(index >= NB_MAX_SERVOS) {
 			throw std::runtime_error("Numéro du servo demandé invalide : "s + std::to_string(id));
 		}
 
 		lock_variables();
-		_servos[id]->speed = speed;
+		_servos[index]->speed = speed;
 		unlock_variables();
 	}
 
 	Angle Servos2019::read_position(uint8_t id) const {
-		if(!is_servo_ok(id)) {
+		uint8_t index = get_index_of(id);
+
+		if(index >= NB_MAX_SERVOS) {
 			throw std::runtime_error("Numéro du servo demandé invalide : "s + std::to_string(id));
 		}
 
 		std::lock_guard<std::mutex> lk(_mutex_variables);
-		return _servos[id]->position;
+		return _servos[index]->position;
 	}
 
 	void Servos2019::set_color(uint8_t id, Color color) {
-		if(!is_servo_ok(id)) {
+		uint8_t index = get_index_of(id);
+
+		if(index >= NB_MAX_SERVOS) {
 			throw std::runtime_error("Numéro du servo demandé invalide : "s + std::to_string(id));
 		}
 
 		lock_variables();
-		_servos[id]->color = color;
+		_servos[index]->color = color;
 		unlock_variables();
 	}
 
 	void Servos2019::set_blocking_mode(uint8_t id, Servos2019::BlockingMode mode) {
-		if(!is_servo_ok(id)) {
+		uint8_t index = get_index_of(id);
+
+		if(index >= NB_MAX_SERVOS) {
 			throw std::runtime_error("Numéro du servo demandé invalide : "s + std::to_string(id));
 		}
 
 		lock_variables();
-		_servos[id]->blocking_mode = mode;
+		_servos[index]->blocking_mode = mode;
 		unlock_variables();
 	}
 
 	bool Servos2019::is_blocking(uint8_t id) const {
-		if(!is_servo_ok(id)) {
+		uint8_t index = get_index_of(id);
+
+		if(index >= NB_MAX_SERVOS) {
 			throw std::runtime_error("Numéro du servo demandé invalide : "s + std::to_string(id));
 		}
 
 		std::lock_guard<std::mutex> lk(_mutex_variables);
-		return _servos[id]->blocked;
+		return _servos[index]->blocked;
 	}
 
 	bool Servos2019::is_moving_done(uint8_t id) const {
-		if(!is_servo_ok(id)) {
+		uint8_t index = get_index_of(id);
+
+		if(index >= NB_MAX_SERVOS) {
 			throw std::runtime_error("Numéro du servo demandé invalide : "s + std::to_string(id));
 		}
 
 		std::lock_guard<std::mutex> lk(_mutex_variables);
 		// TODO : voir s'il faut mettre un seuil pour considérer le mouvement terminé, ou si les élecs nous le disent
-		return _servos[id]->position == _servos[id]->wanted_position;
+		return _servos[index]->position == _servos[id]->wanted_position;
 	}
 
 	SharedServos2019 Servos2019::generate_shared() const {
 		SharedServos2019 s = {};
 		for(uint8_t i = 0; i < NB_MAX_SERVOS; ++i) {
 			if(_servos[i]) {
-				s.servos[i].id = i;
+				s.servos[i].id = _servos[i]->id;
 
 				auto angle_to_uint16t = [i](Angle angle) -> uint16_t {
 					uint16_t pos = static_cast<uint16_t>((angle.toMinusPiPi().toDeg() + 166.7) * 1023 / 333.4);
@@ -144,6 +167,7 @@ namespace PhysicalRobot {
 		if(s.parsing_failed == 0) {
 			for(uint8_t i = 0; i < NB_MAX_SERVOS; ++i) {
 				if(_servos[i] && s.servos[i].id != 0) {
+					uint8_t index = get_index_of(s.servos[i].id);
 					auto uint16t_to_angle = [](uint16_t pos) -> Angle {
 						// TODO
 						Angle angle = 0_deg;
@@ -153,10 +177,10 @@ namespace PhysicalRobot {
 						return (val >= Color::NBR ? RED : static_cast<Color>(val));
 					};
 
-					_servos[i]->position = uint16t_to_angle(s.servos[i].position);
-					_servos[i]->blocked.exchange(s.servos[i].blocked);
-					_servos[i]->speed.exchange(s.servos[i].speed);
-					_servos[i]->color.exchange(uint8t_to_color(s.servos[i].color));
+					_servos[index]->position = uint16t_to_angle(s.servos[i].position);
+					_servos[index]->blocked.exchange(s.servos[i].blocked);
+					_servos[index]->speed.exchange(s.servos[i].speed);
+					_servos[index]->color.exchange(uint8t_to_color(s.servos[i].color));
 				}
 			}
 		}

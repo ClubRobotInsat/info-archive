@@ -25,6 +25,8 @@
 #ifndef _MODULE_H
 #define _MODULE_H
 
+#include "../../elec/librobot/c_src/SharedWithRust.h"
+
 #include <Commun.h> // GlobalFrame
 
 #include <atomic>     // atomic

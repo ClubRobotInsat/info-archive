@@ -14,8 +14,6 @@
 #ifndef ROOT_SERVOS2019_H
 #define ROOT_SERVOS2019_H
 
-#include "../../elec/librobot/c_src/SharedWithRust.h"
-
 #include "Module.hpp"
 
 namespace PhysicalRobot {
@@ -62,8 +60,8 @@ namespace PhysicalRobot {
 		bool is_moving_done(uint8_t servo) const;
 
 	private:
-		// Retourne 'true' si le servo associé à 'id' a été déclaré précédemment
-		bool is_servo_ok(uint8_t id) const;
+		// Retourne l'index associé au mapping du servo `id`. Si l'`id` est mauvais, retourne NB_MAX_SERVOS.
+		uint8_t get_index_of(uint8_t id) const;
 
 		SharedServos2019 generate_shared() const override;
 		void message_processing(const SharedServos2019&) override;
