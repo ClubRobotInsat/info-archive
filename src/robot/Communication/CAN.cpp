@@ -83,8 +83,8 @@ namespace Communication {
 		// auto muxedIdAndCmd = Trame::multiplexIdAndCmd(t.getId(), t.getCmd());
 		//_serie->ecrireOctet(muxedIdAndCmd.first);  // Poids faible de l'ID
 		//_serie->ecrireOctet(muxedIdAndCmd.second); // Poids fort de l'ID
-
-		_serie->ecrireOctet(t.getNbDonnees());                  // Taille des données
+        uint16_t nbDonnees = t.getNbDonnees(); // Taille des données
+        _serie->ecrireOctets(reinterpret_cast<uint8_t*>(&nbDonnees), 2);
 		_serie->ecrireOctets(t.getDonnees(), t.getNbDonnees()); // Données
 
 		sleep(_temporisation); // Temporisation pour ne pas saturer l'électronique
@@ -113,7 +113,7 @@ namespace Communication {
 		while(true) {
 			try {
 				return this->recevoirTrame(always_false);
-			} catch(GlobalFrame::ErreurTropDeDonnees t) {
+			} catch(GlobalFrame::ErreurTropDeDonnees &t) {
 				// logError("Exception attrapée : ", t.what());
 			}
 		}
@@ -123,10 +123,10 @@ namespace Communication {
 	/// Retourne FALSE si la trame est un ack !
 	GlobalFrame CAN::recevoirTrame(const std::atomic_bool& abandonner) {
 		static uint8_t donnees[GlobalFrame::DONNEES_TRAME_MAX];
-		while(not abandonner) {
+		while(!abandonner) {
 			// Debut de trame - BLOQUANT !!!
 			while(_serie->lireOctet() != GlobalFrame::OCTET_DEBUT_TRAME_1)
-				;
+				if (abandonner) break;
 
 			if(_serie->lireOctet() == GlobalFrame::OCTET_DEBUT_TRAME_2) {
 				if(_serie->lireOctet() == GlobalFrame::OCTET_DEBUT_TRAME_3) {
@@ -136,15 +136,16 @@ namespace Communication {
 
 						// Trame::MuxedIdAndCmd muxedIdAndCmd = {_serie->lireOctet(),  // Poids faible de l'ID
 						//                                      _serie->lireOctet()}; // Poids fort de l'ID
+						uint16_t taille; // Taille des donnees
+						_serie->lireOctets(reinterpret_cast<uint8_t*>(&taille), 2);
 
-						uint8_t taille = _serie->lireOctet(); // Taille des donnees
 						if(taille > GlobalFrame::DONNEES_TRAME_MAX) {
 							// logError("id trame :", int(Trame::demultiplexId(muxedIdAndCmd)), ":", int(Trame::demultiplexCmd(muxedIdAndCmd)));
 							throw GlobalFrame::ErreurTropDeDonnees(taille);
 						}
 						_serie->lireOctets(donnees, taille); // Donnees
 
-						GlobalFrame trameRecue /*(Trame::demultiplexId(muxedIdAndCmd), Trame::demultiplexCmd(muxedIdAndCmd))*/;
+						GlobalFrame trameRecue; /*(Trame::demultiplexId(muxedIdAndCmd), Trame::demultiplexCmd(muxedIdAndCmd))*/
 						trameRecue.setDonnees(taille, donnees);
 
 						if(_debugActive) {

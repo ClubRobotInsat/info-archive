@@ -62,7 +62,7 @@ public:
 		OCTET_DEBUT_TRAME_4_ACK = 0xbb,
 	};
 
-	enum { DONNEES_TRAME_MAX = 8 };
+	enum { DONNEES_TRAME_MAX = 0xFFFF };
 
 	// erreur si une trame n'est pas traitée
 	class ErreurTrameNonTraitee : public std::runtime_error {
@@ -74,14 +74,14 @@ public:
 	// erreur si le numero de la donnée est trop grand
 	class ErreurNumeroDonneeTropGrand : public std::runtime_error {
 	public:
-		explicit ErreurNumeroDonneeTropGrand(uint8_t num)
+		explicit ErreurNumeroDonneeTropGrand(uint16_t num)
 		        : std::runtime_error("Le nombre de données dans la trame est trop petit pour accéder au numero " + to_string(num)) {}
 	};
 
 	// erreur si la quantité de données est trop grande
 	class ErreurTropDeDonnees : public std::runtime_error {
 	public:
-		explicit ErreurTropDeDonnees(uint8_t num)
+		explicit ErreurTropDeDonnees(uint16_t num)
 		        : std::runtime_error("Trop de données dans la trame : " + to_string(num)) {}
 	};
 
@@ -96,7 +96,7 @@ public:
 	// Constructeurs
 	GlobalFrame() = default;
 	GlobalFrame(std::initializer_list<uint8_t> donnees);
-	explicit GlobalFrame(uint8_t nbDonnees, uint8_t const donnees[]);
+	explicit GlobalFrame(uint16_t nbDonnees, uint8_t const donnees[]);
 	explicit GlobalFrame(uint8_t donnee) : GlobalFrame({donnee}) {}
 
 	GlobalFrame(GlobalFrame const& t) = default;
@@ -106,14 +106,14 @@ public:
 	~GlobalFrame() = default;
 
 	// accesseurs
-	uint8_t getNbDonnees() const;
+	uint16_t getNbDonnees() const;
 	uint8_t getNumPaquet() const;
 
 	uint8_t const* getDonnees() const;
 
 	// Récupération de sizeof(T) octets à partir de l'octet numero
 	template <typename T = uint8_t>
-	T getDonnee(uint8_t numero) const;
+	T getDonnee(uint16_t numero) const;
 
 	// Récupération d'un bit de l'octet numero
 	bool getDonneeBool(uint8_t numero, uint8_t bit);
@@ -122,7 +122,7 @@ public:
 		this->addDonnees(value);
 	}
 	void addBytes(std::initializer_list<uint8_t> bytes);
-	void addBytes(uint8_t count, uint8_t const bytes[]);
+	void addBytes(uint16_t count, uint8_t const bytes[]);
 
 	template <typename... Args>
 	void addDonnees(Args&&... values) {
@@ -130,13 +130,13 @@ public:
 	}
 
 	// Affecte une valeur à un bit de l'octet numeroOctet
-	void set(uint8_t numeroOctet,
+	void set(uint16_t numeroOctet,
 	         uint8_t numeroBit,
 	         bool valeurBit); // lève ErreurNumeroDonneeTropGrand et ErreurNumeroBitTropGrand
 
 	void setNumPaquet(uint8_t num_paquet);
 
-	void setDonnees(uint8_t nbDonnees, uint8_t const donnees[]);
+	void setDonnees(uint16_t nbDonnees, uint8_t const donnees[]);
 	void setDonnee(uint8_t donnee) {
 		this->setDonnees(1, &donnee);
 	}
@@ -166,7 +166,7 @@ private:
 };
 
 template <typename T>
-T GlobalFrame::getDonnee(uint8_t numero) const {
+T GlobalFrame::getDonnee(uint16_t numero) const {
 	static_assert(sizeof(T) <= GlobalFrame::DONNEES_TRAME_MAX, "Le type demandé ne peut pas contenir dans une trame !");
 	if(numero + sizeof(T) > _donnees.size())
 		throw ErreurNumeroDonneeTropGrand(numero);
@@ -184,7 +184,7 @@ inline bool GlobalFrame::getDonneeBool(uint8_t numero, uint8_t bit) {
 	if(bit >= 8)
 		throw ErreurNumeroBitTropGrand(bit);
 
-	return _donnees[numero] && (1 << bit);
+	return (_donnees[numero] & (1 << bit)) != 0;
 }
 
 template <typename T, typename... Args>

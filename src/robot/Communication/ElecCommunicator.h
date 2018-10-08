@@ -1,5 +1,5 @@
 /**
- * Cette classe permets de communiquer avec les élecs
+ * Cette classe permet de communiquer avec les élecs
  * Elle est générale et peut communiquer sur n'importe quel médium
  * en ayant n'importe quel objet capable de lire et écrire des `GlobalFrame`s
  *

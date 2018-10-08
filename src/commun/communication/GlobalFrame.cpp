@@ -26,12 +26,12 @@ GlobalFrame::GlobalFrame(std::initializer_list<uint8_t> donnees) {
 	this->addBytes(donnees);
 }
 
-GlobalFrame::GlobalFrame(uint8_t nbDonnees, uint8_t const donnees[]) {
+GlobalFrame::GlobalFrame(uint16_t nbDonnees, uint8_t const donnees[]) {
 	this->addBytes(nbDonnees, donnees);
 }
 
-uint8_t GlobalFrame::getNbDonnees() const {
-	return static_cast<uint8_t>(_donnees.size());
+uint16_t GlobalFrame::getNbDonnees() const {
+	return static_cast<uint16_t>(_donnees.size());
 }
 
 uint8_t GlobalFrame::getNumPaquet() const {
@@ -53,19 +53,19 @@ void GlobalFrame::addBytes(std::initializer_list<uint8_t> donnees) {
 	_donnees.insert(_donnees.end(), donnees.begin(), donnees.end());
 }
 
-void GlobalFrame::addBytes(uint8_t nbDonnees, uint8_t const donnees[]) {
+void GlobalFrame::addBytes(uint16_t nbDonnees, uint8_t const donnees[]) {
 	if(nbDonnees + this->getNbDonnees() > GlobalFrame::DONNEES_TRAME_MAX)
 		throw ErreurTropDeDonnees(nbDonnees);
 
 	_donnees.insert(_donnees.end(), donnees, donnees + nbDonnees);
 }
 
-void GlobalFrame::setDonnees(uint8_t nbDonnees, uint8_t const donnees[]) {
+void GlobalFrame::setDonnees(uint16_t nbDonnees, uint8_t const donnees[]) {
 	_donnees.clear();
 	this->addBytes(nbDonnees, donnees);
 }
 
-void GlobalFrame::set(uint8_t numero, uint8_t bit, bool valeur) {
+void GlobalFrame::set(uint16_t numero, uint8_t bit, bool valeur) {
 	// lève ErreurNumeroDonneeTropGrand si numero trop grand
 	// lève ErreurNumeroBitTropGrand si bit trop grand
 	if(numero >= _donnees.size())
