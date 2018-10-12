@@ -114,29 +114,32 @@ TEST_CASE("Servos 2019 Module") {
 		    REQUIRE_FALSE(my_module.is_servo_ok(42));
 		}*/
 
-		CHECK_THROWS_WITH(my_module.add_servo(5, 50_deg), "Double assignation du servo 5 !");
-		CHECK_THROWS_WITH(my_module.add_servo(42, 50_deg), "ID du servo trop grand (42 > 8) !");
-		CHECK_THROWS_WITH(my_module.add_servo(0, 0_deg), "L'ID 0 des servos est réservé !");
+		REQUIRE_THROWS_WITH(my_module.add_servo(5, 50_deg), "Double assignation du servo 5 !");
+		REQUIRE_THROWS_WITH(my_module.add_servo(42, 50_deg), "ID du servo trop grand (42 > 8) !");
+		REQUIRE_THROWS_WITH(my_module.add_servo(0, 0_deg), "L'ID 0 des servos est réservé !");
 		CHECK(my_module.get_nbr_servos() == 3);
 		// CHECK(my_module.get_frame_size() == ?);
 
-		CHECK_THROWS_WITH(my_module.set_position(1, 50_deg), "Numéro du servo demandé invalide : 1");
+		REQUIRE_THROWS_WITH(my_module.set_position(1, 50_deg), "Numéro du servo demandé invalide : 1");
 		my_module.set_position(2, 50.4_deg);
+		// Servo 2 commandé en position
+		CHECK_FALSE(my_module.is_moving_done(2));
 
-		CHECK_THROWS_WITH(my_module.set_speed(1, 2), "Numéro du servo demandé invalide : 1");
+		REQUIRE_THROWS_WITH(my_module.set_speed(1, 2), "Numéro du servo demandé invalide : 1");
 		my_module.set_speed(2, 6);
 
-		CHECK_THROWS_WITH(my_module.read_position(1), "Numéro du servo demandé invalide : 1");
+		REQUIRE_THROWS_WITH(my_module.read_position(1), "Numéro du servo demandé invalide : 1");
 		CHECK(my_module.read_position(2) == -119_deg);
 
-		CHECK_THROWS_WITH(my_module.set_color(1, PhysicalRobot::Servos2019::GREEN), "Numéro du servo demandé invalide : 1");
+		REQUIRE_THROWS_WITH(my_module.set_color(1, PhysicalRobot::Servos2019::GREEN), "Numéro du servo demandé invalide : 1");
 		my_module.set_color(2, PhysicalRobot::Servos2019::GREEN);
 
-		CHECK_THROWS_WITH(my_module.is_blocking(1), "Numéro du servo demandé invalide : 1");
+		REQUIRE_THROWS_WITH(my_module.is_blocking(1), "Numéro du servo demandé invalide : 1");
 		CHECK_FALSE(my_module.is_blocking(2));
 
-		CHECK_THROWS_WITH(my_module.is_moving_done(1), "Numéro du servo demandé invalide : 1");
-		CHECK_FALSE(my_module.is_moving_done(2));
+		REQUIRE_THROWS_WITH(my_module.is_moving_done(1), "Numéro du servo demandé invalide : 1");
+		// Servo 2 commandé en vitesse
+		CHECK(my_module.is_moving_done(2));
 		CHECK(my_module.is_moving_done(4));
 
 		/*SECTION("Vérification de la structure générée") {
@@ -166,7 +169,7 @@ TEST_CASE("Servos 2019 Module") {
 	}
 
 	SECTION("Frame functions' module") {
-		const uint8_t SIZE = 15;
+		const uint8_t SIZE = 13;
 
 		SECTION("SharedStruct2019 servo_read_frame(const uint8_t *, uint8_t)") {
 			SECTION("bad frame format") {
@@ -179,7 +182,7 @@ TEST_CASE("Servos 2019 Module") {
 				// on annonce un buffeur vide
 				REQUIRE(servo_read_frame(buf, 0).parsing_failed);
 
-				// 3 servos sont déclarés, donc il faut une taille de (1 + 3 * 7 = 22) bits
+				// 3 servos sont déclarés, donc il faut une taille de (1 + 3 * 6 = 19) bits
 				REQUIRE(servo_read_frame(buf, SIZE).parsing_failed);
 
 				buf[0] = 2;
@@ -200,27 +203,23 @@ TEST_CASE("Servos 2019 Module") {
 				// position = 0b00111100 11000011
 				buf[2] = 0b00111100;
 				buf[3] = 0b11000011;
-				// wanted_position = 0b01111110 10000001
+				// command = 0b01111110 10000001
 				buf[4] = 0b01111110;
 				buf[5] = 0b10000001;
-				// speed = 0b00001111
-				buf[6] = 0b00001111;
 
-				// blocked = true, blocking_mode = 0, color = 0b011
-				buf[7] = 0b10011;
+				// command = POSITION, blocked = true, blocking_mode = 0, color = 0b011
+				buf[6] = 0b010011;
 
 				// id = 3
-				buf[8] = 3;
+				buf[7] = 3;
 				// position = 0b00000000 11111111
-				buf[9] = 0b00000000;
-				buf[10] = 0b11111111;
-				// wanted_position = 0b01010101 10101010
-				buf[11] = 0b01010101;
-				buf[12] = 0b10101010;
-				// speed = 0b11110000
-				buf[13] = 0b11110000;
-				// blocked = false, blocking_mode = 1, color = 0b000
-				buf[14] = 0b01000;
+				buf[8] = 0b00000000;
+				buf[9] = 0b11111111;
+				// command = 0b01010101 10101010
+				buf[10] = 0b01010101;
+				buf[11] = 0b10101010;
+				// command = SPEED, blocked = false, blocking_mode = 1, color = 0b000
+				buf[12] = 0b101000;
 
 				SharedServos2019 s;
 				REQUIRE_FALSE((s = servo_read_frame(buf, SIZE)).parsing_failed);
@@ -228,16 +227,16 @@ TEST_CASE("Servos 2019 Module") {
 
 				CHECK(s.servos[0].id == 1);
 				CHECK(s.servos[0].position == 0b00111100'11000011);
-				CHECK(s.servos[0].wanted_position == 0b01111110'10000001);
-				CHECK(s.servos[0].speed == 0b00001111);
+				CHECK(s.servos[0].command == 0b01111110'10000001);
+				CHECK(s.servos[0].command_type == 0);
 				CHECK(s.servos[0].blocked);
 				CHECK(s.servos[0].blocking_mode == 0);
 				REQUIRE(s.servos[0].color == 0b011);
 
 				CHECK(s.servos[1].id == 3);
 				CHECK(s.servos[1].position == 0b00000000'11111111);
-				CHECK(s.servos[1].wanted_position == 0b01010101'10101010);
-				CHECK(s.servos[1].speed == 0b11110000);
+				CHECK(s.servos[1].command == 0b01010101'10101010);
+				CHECK(s.servos[1].command_type == 1);
 				CHECK_FALSE(s.servos[1].blocked);
 				CHECK(s.servos[1].blocking_mode == 1);
 				CHECK(s.servos[1].color == 0b000);
@@ -289,8 +288,9 @@ TEST_CASE("Servos 2019 Module") {
 					for(int i = 0; i < 8; ++i) {
 						servos->servos[i].id = 0;
 					}
-					servos->servos[1] = {1, 0b00001111'11110000, 0b01010101'10101010, 0b00110011, true, 1, 0b100};
-					servos->servos[3] = {3, 0b00000000'00000000, 0b11111111'11111111, 0b00011101, false, 0, 0b010};
+					//                   id position             command        c_type blocked mode color
+					servos->servos[1] = {1, 0b00001111'11110000, 0b01010101'10101010, 0, true, 1, 0b100};
+					servos->servos[3] = {3, 0b00000000'00000000, 0b11111111'11111111, 1, false, 0, 0b010};
 
 					REQUIRE(servo_write_frame(buf, SIZE, servos) == SIZE);
 					CHECK(buf[0] == 2);
@@ -299,16 +299,14 @@ TEST_CASE("Servos 2019 Module") {
 					CHECK(buf[3] == 0b11110000);
 					CHECK(buf[4] == 0b01010101);
 					CHECK(buf[5] == 0b10101010);
-					CHECK(buf[6] == 0b00110011);
-					CHECK(buf[7] == 0b11100);
+					CHECK(buf[6] == 0b011100);
 
-					CHECK(buf[8] == 3);
+					CHECK(buf[7] == 3);
+					CHECK(buf[8] == 0b00000000);
 					CHECK(buf[9] == 0b00000000);
-					CHECK(buf[10] == 0b00000000);
+					CHECK(buf[10] == 0b11111111);
 					CHECK(buf[11] == 0b11111111);
-					CHECK(buf[12] == 0b11111111);
-					CHECK(buf[13] == 0b00011101);
-					CHECK(buf[14] == 0b00010);
+					CHECK(buf[12] == 0b100010);
 				}
 			}
 		}

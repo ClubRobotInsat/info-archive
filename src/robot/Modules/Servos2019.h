@@ -9,12 +9,15 @@
  * on peut demander au servo X d'aller à l'angle A, puis faire autre chose
  * et l'élec s'occupe d'amener le servo à la bonne position pendant un temps indéterminé
  * Ce principe s'applique aussi pour tous les autres setteurs
+ *
+ * Un servo-moteur peut être contrôlé soit en vitesse soit en angle
  */
 
 #ifndef ROOT_SERVOS2019_H
 #define ROOT_SERVOS2019_H
 
 #include "Module.hpp"
+#include <variant>
 
 namespace PhysicalRobot {
 
@@ -47,7 +50,7 @@ namespace PhysicalRobot {
 
 		void set_position(uint8_t servo, Angle);
 
-		void set_speed(uint8_t servo, uint8_t speed);
+		void set_speed(uint8_t servo, uint16_t speed);
 
 		Angle read_position(uint8_t servo) const;
 
@@ -69,21 +72,23 @@ namespace PhysicalRobot {
 		void deactivation() override {}
 
 		struct Servo {
+			enum CommandType { POSITION = 0, SPEED = 1 };
+
+			// Par défaut, un servo est commandé en vitesse (0 rad/s).
 			Servo(uint8_t id, Angle start_position, BlockingMode mode)
 			        : id(id)
 			        , position(start_position)
-			        , wanted_position(start_position)
-			        , speed(30)
-			        , // TODO : quelle valeur pour la vitesse ?
-			        blocked(false)
+			        , command(0)
+			        , command_type(CommandType::SPEED)
+			        , blocked(false)
 			        , blocking_mode(mode)
 			        , color(YELLOW) {}
 
 			const uint8_t id;
 
 			Angle position;
-			Angle wanted_position;
-			std::atomic_uint8_t speed;
+			std::variant<Angle, uint16_t> command;
+			std::atomic<CommandType> command_type;
 			std::atomic_bool blocked;
 			BlockingMode blocking_mode;
 			std::atomic<Color> color;
