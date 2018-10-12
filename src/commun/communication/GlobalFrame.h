@@ -184,7 +184,7 @@ inline bool GlobalFrame::getDonneeBool(uint8_t numero, uint8_t bit) {
 	if(bit >= 8)
 		throw ErreurNumeroBitTropGrand(bit);
 
-	return (_donnees[numero] & (1 << bit)) != 0;
+	return (_donnees[numero] & (0x1 << bit)) != 0;
 }
 
 template <typename T, typename... Args>

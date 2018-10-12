@@ -17,7 +17,7 @@ void TGAWriter::drawLine(int color, Vector2m start, Vector2m end) {
 	Vector2m pos = start;
 	while((end - pos).norm().toM() > 1) {
 		pos += direction * 0.5f;
-		drawPoint(color, (int)pos.x.toM(), (int)pos.y.toM());
+		drawPoint(color, static_cast<int>(pos.x.toM()), static_cast<int>(pos.y.toM()));
 	}
 }
 
