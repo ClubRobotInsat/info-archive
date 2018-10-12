@@ -1,6 +1,7 @@
 set(OUTILS_SOURCE
         AsciiArt.hpp
         Constants.cpp
+        EmbeddedFiles.cpp
         Json.h
         log/Log.cpp
         log/LogHTML.cpp
@@ -24,13 +25,16 @@ add_dependencies(Outils_${SIMU_OU_ROBOT} InfoSubmodules)
 
 # Cette fonction prends un fichier normal et le rends #include-able pour s'affranchir du fichier table_2018.json
 # Le pré-processeur copie automagiquement le fichier dans un std::string
-function(make_includable input_file output_file)
-    file(READ ${input_file} content)
+message("-- Creating storage file")
+file(WRITE "embedded" "")
+
+function(include_file path)
+    file(READ ${path} content)
     set(delim "for_c++_include")
     set(content "R\"${delim}(\n${content})${delim}\"")
-    file(WRITE ${output_file} "${content}")
-endfunction(make_includable)
+    file(APPEND "embedded" "{ \"${path}\", ${content} },\n")
+endfunction(include_file)
 
-make_includable(table_2018.json .table_2018.json.includable)
-make_includable(../robot.ini ../.robot.ini.includable)
+include_file(table_2018.json)
+include_file(../robot.ini)
 #target_compile_definitions(Outils_${SIMU_OU_ROBOT} PRIVATE INI_FILE_PATH="${CMAKE_BINARY_DIR}/src/robot.ini")

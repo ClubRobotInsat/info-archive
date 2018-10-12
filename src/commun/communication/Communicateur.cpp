@@ -69,7 +69,7 @@ void Communicateur::onEnvoye(Trame const& t, bool isAck) {
 		logError("erreur d'envoi de trame : le client n'est pas encore connecte");
 }
 
-bool Communicateur::lireOctets(uint8_t &id_cmd, uint8_t &idFort, uint8_t &nbDonnees, uint8_t *donnees, uint8_t &num_paquet) {
+bool Communicateur::lireOctets(uint8_t& id_cmd, uint8_t& idFort, uint8_t& nbDonnees, uint8_t* donnees, uint8_t& num_paquet) {
 	uint8_t numDonnee, octet;
 
 	// NB : un appel à that->lire() est susceptible de changer l'état de "connecté"
@@ -120,7 +120,7 @@ void Communicateur::threadReception() {
 		}
 
 		while(this->estConnecte()) {
-			if (!lireOctets(id_cmd, idFort, nbDonnees, donnees, num_paquet)) {
+			if(!lireOctets(id_cmd, idFort, nbDonnees, donnees, num_paquet)) {
 				continue;
 			}
 

@@ -46,7 +46,7 @@ public:
 	virtual void onEnvoye(Trame const& t, bool isAck = false);
 	// cette trame sera detruite apres traitement
 
-	bool lireOctets(uint8_t &id_cmd, uint8_t &idFort, uint8_t &nbDonnees, uint8_t *donnees, uint8_t &num_paquet);
+	bool lireOctets(uint8_t& id_cmd, uint8_t& idFort, uint8_t& nbDonnees, uint8_t* donnees, uint8_t& num_paquet);
 
 	// thread de reception des trames
 	void threadReception();

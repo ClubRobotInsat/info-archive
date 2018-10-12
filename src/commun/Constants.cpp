@@ -4,8 +4,10 @@
 
 #include "Constants.h"
 
+#include "EmbeddedFiles.h"
+
 Constants::Constants const GLOBAL_CONSTANTS(
-#include "../.robot.ini.includable"
+		EmbeddedFiles::readText("../robot.ini")
 );
 
 namespace Constants {

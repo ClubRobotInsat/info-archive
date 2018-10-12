@@ -4,6 +4,8 @@
 
 #include "AbstractStrategy.h"
 
+#include "EmbeddedFiles.h"
+
 namespace Strategy {
 	AbstractStrategy::AbstractStrategy(std::unique_ptr<PhysicalRobot::Robot> robot, Constants::RobotColor color)
 	        : _robot(std::move(robot)), _color(color) {
@@ -21,7 +23,9 @@ namespace Strategy {
 	}
 
 	void AbstractStrategy::create_environment() {
-		this->_env->loadFromJSON(GLOBAL_CONSTANTS.TABLE_2018);
+		this->_env->loadFromJSON(
+				nlohmann::json::parse(
+						EmbeddedFiles::readText("table.json")));
 	}
 
 	void AbstractStrategy::start(Duration match) {

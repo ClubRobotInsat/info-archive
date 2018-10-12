@@ -113,9 +113,6 @@ namespace Constants {
 		    repere::Repere({0_m, 0_m}, repere::Multiplicateur::SENS_POSITIF, repere::Multiplicateur::SENS_POSITIF);
 
 		// Convertir la table du fichier texte en un objet JSON à la pré-compilation
-		const JSON TABLE_2018 = nlohmann::json::parse(
-#include ".table_2018.json.includable"
-		);
 
 		const repere::Repere& get_reference(RobotColor color) const {
 			switch(color) {
