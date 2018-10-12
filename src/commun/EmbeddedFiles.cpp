@@ -6,16 +6,10 @@
 // computer (and not the embedded version)
 // #define READ_EXTERNAL_FILES
 
-std::map<std::string, std::string> EmbeddedFiles::_files{
-#ifndef READ_EXTERNAL_FILES
-#include "embedded"
-#endif
-};
-
 const std::string& EmbeddedFiles::readText(const std::string& path) {
-	auto it = _files.find(path);
+	auto it = files().find(path);
 
-	if(it != _files.end()) {
+	if(it != files().end()) {
 		return it->second;
 	} else {
 #ifdef READ_EXTERNAL_FILES
@@ -30,9 +24,18 @@ const std::string& EmbeddedFiles::readText(const std::string& path) {
 			file.read(&contents[0], contents.size());
 			file.close();
 
-			return _files[path] = contents;
+			return files()[path] = contents;
 		}
 #endif
-		return _files[path] = "";
+		return files()[path] = "";
 	}
+}
+
+std::map<std::string, std::string> &EmbeddedFiles::files() {
+	static std::map<std::string, std::string> _files{
+#ifndef READ_EXTERNAL_FILES
+#include "embedded"
+#endif
+	};
+	return _files;
 }
