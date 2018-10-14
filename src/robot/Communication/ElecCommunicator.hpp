@@ -150,7 +150,7 @@ namespace Communication {
 	template <typename ParsingClass>
 	template <typename>
 	void ElecCommunicator<ParsingClass>::communicate_with_elecs() {
-		setThreadName("Communicate");
+		// setThreadName("Communicate");
 		std::unique_lock<std::mutex> lk(_mutex_communication);
 
 		// TODO : gérer le PING pour savoir quand les élecs sont Ok
