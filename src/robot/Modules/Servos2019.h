@@ -38,7 +38,7 @@ namespace PhysicalRobot {
 			NBR
 		};
 
-		static const int NB_MAX_SERVOS = MAX_SERVOS;
+		static const uint8_t ID_MAX_SERVOS = std::numeric_limits<uint8_t>::max();
 
 		void add_servo(uint8_t id, Angle start_position, BlockingMode = UNBLOCKING);
 
@@ -94,7 +94,7 @@ namespace PhysicalRobot {
 			std::atomic<Color> color;
 		};
 
-		std::unique_ptr<Servo> _servos[NB_MAX_SERVOS];
+		std::unique_ptr<Servo> _servos[ID_MAX_SERVOS];
 	};
 } // namespace PhysicalRobot
 

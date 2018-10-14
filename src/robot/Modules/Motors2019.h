@@ -13,9 +13,9 @@ namespace PhysicalRobot {
 	public:
 		enum RotatingDirection : uint8_t { SCHEDULE = 0, TRIGONOMETRIC = 1 };
 
-		static const int NB_MAX_CONTROLLED_MOTORS = MAX_CONTROLLED_MOTORS;
-		static const int NB_MAX_UNCONTROLLED_MOTORS = MAX_UNCONTROLLED_MOTORS;
-		static const int NB_MAX_BRUSHLESS = MAX_BRUSHLESS;
+		static const uint8_t ID_MAX_CONTROLLED_MOTORS = std::numeric_limits<uint8_t>::max();
+		static const uint8_t ID_MAX_UNCONTROLLED_MOTORS = std::numeric_limits<uint8_t>::max();
+		static const uint8_t ID_MAX_BRUSHLESS = std::numeric_limits<uint8_t>::max();
 
 		explicit Motors2019(uint8_t id) : Module(id, motor_read_frame, motor_write_frame) {}
 
@@ -84,9 +84,9 @@ namespace PhysicalRobot {
 			std::atomic_bool on_off;
 		};
 
-		std::unique_ptr<ControlledMotor> _controlled[NB_MAX_CONTROLLED_MOTORS];
-		std::unique_ptr<UncontrolledMotor> _uncontrolled[NB_MAX_UNCONTROLLED_MOTORS];
-		std::unique_ptr<Brushless> _brushless[NB_MAX_BRUSHLESS];
+		std::unique_ptr<ControlledMotor> _controlled[ID_MAX_CONTROLLED_MOTORS];
+		std::unique_ptr<UncontrolledMotor> _uncontrolled[ID_MAX_UNCONTROLLED_MOTORS];
+		std::unique_ptr<Brushless> _brushless[ID_MAX_BRUSHLESS];
 	};
 } // namespace PhysicalRobot
 

@@ -9,8 +9,8 @@ namespace PhysicalRobot {
 	void Servos2019::add_servo(uint8_t id, Angle start_position, BlockingMode mode) {
 		std::lock_guard<std::mutex> lk(_mutex_variables);
 
-		if(id >= NB_MAX_SERVOS) {
-			throw std::runtime_error("ID du servo trop grand ("s + std::to_string(id) + " > " + std::to_string(NB_MAX_SERVOS) + ") !");
+		if(id >= ID_MAX_SERVOS) {
+			throw std::runtime_error("ID du servo trop grand ("s + std::to_string(id) + " > " + std::to_string(ID_MAX_SERVOS) + ") !");
 		} else if(id == 0) {
 			throw std::runtime_error("L'ID 0 des servos est réservé !");
 		} else if(_servos[id]) {
@@ -22,21 +22,21 @@ namespace PhysicalRobot {
 
 	uint8_t Servos2019::get_nbr_servos() const {
 		uint8_t count = 0;
-		for(uint8_t index = 0; index < NB_MAX_SERVOS; ++index) {
+		for(uint8_t index = 0; index < ID_MAX_SERVOS; ++index) {
 			count += (_servos[index] != nullptr);
 		}
 		return count;
 	}
 
 	uint8_t Servos2019::get_index_of(uint8_t id) const {
-		const uint8_t INDEX_BAD_ID = NB_MAX_SERVOS;
+		const uint8_t INDEX_BAD_ID = ID_MAX_SERVOS;
 		std::lock_guard<std::mutex> lk(_mutex_variables);
 
 		// 'id == 0' veut dire qu'il n'y a pas de servo-moteur dans la représentation C
 		if(id == 0)
 			return INDEX_BAD_ID;
 
-		for(uint8_t index = 0; index < NB_MAX_SERVOS; ++index) {
+		for(uint8_t index = 0; index < ID_MAX_SERVOS; ++index) {
 			if(_servos[index] && _servos[index]->id == id)
 				return index;
 		}
@@ -51,7 +51,7 @@ namespace PhysicalRobot {
 	void Servos2019::set_position(uint8_t id, Angle angle) {
 		uint8_t index = get_index_of(id);
 
-		if(index >= NB_MAX_SERVOS) {
+		if(index >= ID_MAX_SERVOS) {
 			throw std::runtime_error("Numéro du servo demandé invalide : "s + std::to_string(id));
 		}
 
@@ -65,7 +65,7 @@ namespace PhysicalRobot {
 	void Servos2019::set_speed(uint8_t id, uint16_t speed) {
 		uint8_t index = get_index_of(id);
 
-		if(index >= NB_MAX_SERVOS) {
+		if(index >= ID_MAX_SERVOS) {
 			throw std::runtime_error("Numéro du servo demandé invalide : "s + std::to_string(id));
 		}
 
@@ -78,7 +78,7 @@ namespace PhysicalRobot {
 	Angle Servos2019::read_position(uint8_t id) const {
 		uint8_t index = get_index_of(id);
 
-		if(index >= NB_MAX_SERVOS) {
+		if(index >= ID_MAX_SERVOS) {
 			throw std::runtime_error("Numéro du servo demandé invalide : "s + std::to_string(id));
 		}
 
@@ -89,7 +89,7 @@ namespace PhysicalRobot {
 	void Servos2019::set_color(uint8_t id, Color color) {
 		uint8_t index = get_index_of(id);
 
-		if(index >= NB_MAX_SERVOS) {
+		if(index >= ID_MAX_SERVOS) {
 			throw std::runtime_error("Numéro du servo demandé invalide : "s + std::to_string(id));
 		}
 
@@ -101,7 +101,7 @@ namespace PhysicalRobot {
 	void Servos2019::set_blocking_mode(uint8_t id, Servos2019::BlockingMode mode) {
 		uint8_t index = get_index_of(id);
 
-		if(index >= NB_MAX_SERVOS) {
+		if(index >= ID_MAX_SERVOS) {
 			throw std::runtime_error("Numéro du servo demandé invalide : "s + std::to_string(id));
 		}
 
@@ -113,7 +113,7 @@ namespace PhysicalRobot {
 	bool Servos2019::is_blocking(uint8_t id) const {
 		uint8_t index = get_index_of(id);
 
-		if(index >= NB_MAX_SERVOS) {
+		if(index >= ID_MAX_SERVOS) {
 			throw std::runtime_error("Numéro du servo demandé invalide : "s + std::to_string(id));
 		}
 
@@ -124,7 +124,7 @@ namespace PhysicalRobot {
 	bool Servos2019::is_moving_done(uint8_t id) const {
 		uint8_t index = get_index_of(id);
 
-		if(index >= NB_MAX_SERVOS) {
+		if(index >= ID_MAX_SERVOS) {
 			throw std::runtime_error("Numéro du servo demandé invalide : "s + std::to_string(id));
 		}
 
@@ -139,7 +139,7 @@ namespace PhysicalRobot {
 
 	SharedServos2019 Servos2019::generate_shared() const {
 		SharedServos2019 s = {};
-		for(uint8_t i = 0; i < NB_MAX_SERVOS; ++i) {
+		for(uint8_t i = 0; i < ID_MAX_SERVOS; ++i) {
 			if(_servos[i]) {
 				s.servos[i].id = _servos[i]->id;
 
@@ -175,7 +175,7 @@ namespace PhysicalRobot {
 
 	void Servos2019::message_processing(const SharedServos2019& s) {
 		if(s.parsing_failed == 0) {
-			for(uint8_t i = 0; i < NB_MAX_SERVOS; ++i) {
+			for(uint8_t i = 0; i < ID_MAX_SERVOS; ++i) {
 				if(_servos[i] && s.servos[i].id != 0) {
 					uint8_t index = get_index_of(s.servos[i].id);
 					auto uint16t_to_angle = [](uint16_t pos) -> Angle {
