@@ -96,7 +96,7 @@ namespace PhysicalRobot {
 		// Le gros du travail est à implémenter dans chaque module par l'override de 'message_processing'
 		void update(const GlobalFrame& f) final {
 			lock_variables();
-			message_processing(_wrapper.read_frame(f.getDonnees(), f.getNbDonnees()));
+			message_processing(_wrapper.read_frame(f.getDonnees(), static_cast<uint8_t>(f.getNbDonnees())));
 			unlock_variables();
 		}
 
