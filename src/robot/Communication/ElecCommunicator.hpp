@@ -93,7 +93,6 @@ namespace Communication {
 			else if(args[i] == "PIPES") {
 				logDebug9("Initialisation de la connection au CAN local par pipes nommés");
 				_busCAN = std::make_unique<CAN>(std::make_unique<NamedPipe>("/tmp/read.pipe", "/tmp/write.pipe"));
-				_connecte = true;
 				_modeConnexion = ModeConnexion::PIPES;
 				_connecte = true;
 				break;
@@ -105,7 +104,7 @@ namespace Communication {
 				_connecte = true;
 				_modeConnexion = ModeConnexion::LOCAL;
 			} else if(args[i] == "NULL") {
-				logDebug9("Initialisation de la connexion au CAN local");
+				logDebug9("Initialisation de la connexion au CAN local par le NullCommunicator");
 				_busCAN = std::make_unique<CAN>(std::make_unique<NullCommunicator>());
 				_connecte = true;
 			} else if(args[i] == "SIMU") {
@@ -160,8 +159,8 @@ namespace Communication {
 		}
 
 		while(_running_execution) {
-			GlobalFrame frame = {}; // TODO _busCAN->recevoirTrameBloquant();
 			try {
+				GlobalFrame frame = _busCAN->recevoirTrameBloquant();
 				_parser->read_frame(frame);
 			} catch(std::runtime_error& e) {
 				logError("Échec de la mise à jour du module manager !!");
@@ -169,7 +168,7 @@ namespace Communication {
 			}
 
 			try {
-				// FIXME _busCAN->envoyerTrame(_parser->write_frame(), true);
+				_busCAN->envoyerTrame(_parser->write_frame(), true);
 			} catch(std::runtime_error& e) {
 				logError("Échec de l'envoi de l'état du robot par le module manager !!");
 				logError("Exception rencontrée : ", e.what());
