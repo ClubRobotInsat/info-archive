@@ -77,6 +77,15 @@ TEST_CASE("Global Frame") {
 		CHECK_THROWS_AS(specialFrame.addBytes(1, array), GlobalFrame::ErreurTropDeDonnees);
 	}
 
+	SECTION("operator+=") {
+		GlobalFrame f{12, 23, 48};
+		frame += f;
+		CHECK(frame.getNbDonnees() == 7);
+		CHECK(frame.getDonnee(0) == 0xFF);
+		CHECK(frame.getDonnee(3) == 0xD);
+		CHECK(frame.getDonnee(6) == 48);
+	}
+
 	// TODO à tester :
 	// - méthode générique "addDonnees"
 }

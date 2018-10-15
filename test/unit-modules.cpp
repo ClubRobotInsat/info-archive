@@ -115,7 +115,7 @@ TEST_CASE("Servos 2019 Module") {
 		}*/
 
 		REQUIRE_THROWS_WITH(my_module.add_servo(5, 50_deg), "Double assignation du servo 5 !");
-		REQUIRE_THROWS_WITH(my_module.add_servo(42, 50_deg), "ID du servo trop grand (42 > 8) !");
+		REQUIRE_NOTHROW(my_module.add_servo(42, 50_deg));
 		REQUIRE_THROWS_WITH(my_module.add_servo(0, 0_deg), "L'ID 0 des servos est réservé !");
 		CHECK(my_module.get_nbr_servos() == 3);
 		// CHECK(my_module.get_frame_size() == ?);

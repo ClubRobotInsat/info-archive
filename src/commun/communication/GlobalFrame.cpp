@@ -38,6 +38,10 @@ uint8_t GlobalFrame::getNumPaquet() const {
 	return _num_paquet;
 }
 
+bool GlobalFrame::empty() const {
+	return _donnees.empty();
+}
+
 uint8_t const* GlobalFrame::getDonnees() const {
 	return &_donnees[0];
 }

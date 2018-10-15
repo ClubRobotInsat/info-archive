@@ -13,7 +13,7 @@ namespace PhysicalRobot {
 	}
 
 	uint8_t IO2019::get_frame_size() const {
-		return 1;
+		return get_size_io_frame();
 	}
 
 	SharedIO2019 IO2019::generate_shared() const {

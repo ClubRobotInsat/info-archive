@@ -163,7 +163,7 @@ namespace PhysicalRobot {
 	}
 
 	uint8_t Motors2019::get_frame_size() const {
-		return static_cast<uint8_t>(3 + get_nbr_controlled() * 4 + get_nbr_uncontrolled() * 2 + get_nbr_brushless() * 2);
+		return get_size_motor_frame(get_nbr_controlled(), get_nbr_uncontrolled(), get_nbr_brushless());
 	}
 
 	void Motors2019::add_controlled_motor(uint8_t id, RotatingDirection rotation) {

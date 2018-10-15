@@ -109,6 +109,8 @@ public:
 	uint16_t getNbDonnees() const;
 	uint8_t getNumPaquet() const;
 
+	bool empty() const;
+
 	uint8_t const* getDonnees() const;
 
 	// Récupération de sizeof(T) octets à partir de l'octet numero

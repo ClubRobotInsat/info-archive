@@ -45,7 +45,7 @@ namespace PhysicalRobot {
 	}
 
 	uint8_t Servos2019::get_frame_size() const {
-		return static_cast<uint8_t>(1 + get_nbr_servos() * 6);
+		return get_size_servo_frame(get_nbr_servos());
 	}
 
 	void Servos2019::set_position(uint8_t id, Angle angle) {

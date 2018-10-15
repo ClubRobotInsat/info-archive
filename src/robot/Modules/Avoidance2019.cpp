@@ -38,7 +38,7 @@ namespace PhysicalRobot {
 	}
 
 	uint8_t Avoidance2019::get_frame_size() const {
-		return 1;
+		return get_size_avoidance_frame();
 	}
 
 	SharedAvoidance2019 Avoidance2019::generate_shared() const {
