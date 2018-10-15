@@ -134,36 +134,41 @@ namespace Communication {
 					uint8_t typeTrame = _serie->lireOctet();
 
 					if(typeTrame == GlobalFrame::OCTET_DEBUT_TRAME_4_NORMAL) {
-						uint8_t size = _serie->lireOctet();
-						if(size == 0) {
-						}
+						// TODO : gérer le Ping (module spécifique ?)
+						const uint8_t size = _serie->lireOctet();
+						const uint8_t id = _serie->lireOctet();
+						_serie->lireOctets(donnees, size);
+						GlobalFrame f{size, id};
+						f += GlobalFrame{size, donnees};
+						return f;
 
 						// Trame::MuxedIdAndCmd muxedIdAndCmd = {_serie->lireOctet(),  // Poids faible de l'ID
 						//                                      _serie->lireOctet()}; // Poids fort de l'ID
-						uint16_t taille; // Taille des donnees
+						/*uint16_t taille; // Taille des donnees
 						_serie->lireOctets(reinterpret_cast<uint8_t*>(&taille), 2);
 
 						if(taille > GlobalFrame::DONNEES_TRAME_MAX) {
-							// logError("id trame :", int(Trame::demultiplexId(muxedIdAndCmd)), ":", int(Trame::demultiplexCmd(muxedIdAndCmd)));
-							throw GlobalFrame::ErreurTropDeDonnees(taille);
+						    // logError("id trame :", int(Trame::demultiplexId(muxedIdAndCmd)), ":",
+						int(Trame::demultiplexCmd(muxedIdAndCmd))); throw GlobalFrame::ErreurTropDeDonnees(taille);
 						}
 						_serie->lireOctets(donnees, taille); // Donnees
 
-						GlobalFrame trameRecue; /*(Trame::demultiplexId(muxedIdAndCmd), Trame::demultiplexCmd(muxedIdAndCmd))*/
-						trameRecue.setDonnees(taille, donnees);
+						GlobalFrame trameRecue; (Trame::demultiplexId(muxedIdAndCmd),
+						Trame::demultiplexCmd(muxedIdAndCmd)) trameRecue.setDonnees(taille, donnees);
 
 						if(_debugActive) {
-							// logDebug("RECV ", trameRecue, "\n\ttime : ", _canClock.getElapsedTime());
+						    // logDebug("RECV ", trameRecue, "\n\ttime : ", _canClock.getElapsedTime());
 						}
 
-						return trameRecue; // La trame est bien formée, on sort de la boucle bloquante
+						return trameRecue; // La trame est bien formée, on sort de la boucle bloquante*/
 					} else if(typeTrame == GlobalFrame::OCTET_DEBUT_TRAME_4_ACK) {
+						// TODO : supprimer les ACKs
 						uint8_t num_paquet = _serie->lireOctet(); // Numéro de paquet
 
 						// Trame::MuxedIdAndCmd muxedIdAndCmd = {_serie->lireOctet(),  // Poids faible de l'ID
 						//                                      _serie->lireOctet()}; // Poids fort de l'ID
 
-						uint8_t taille = _serie->lireOctet(); // Taille des donnees
+						// uint8_t taille = _serie->lireOctet(); // Taille des donnees
 						if(_debugActive) {
 							/*logDebug("ACK ",
 							         num_paquet,

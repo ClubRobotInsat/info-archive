@@ -41,7 +41,7 @@ namespace Communication {
 		/// Envoie une trame de commande avec l'ID et les donnees fournis
 		void envoyerTrame(GlobalFrame t, bool rejeu = true);
 
-		///	Attends l'arrrivée d'une trame complète tant que abandonner vaut false.
+		///	Attends l'arrivée d'une trame complète tant que abandonner vaut false.
 		/// S'interromps dès que abandonner vaut true.
 		GlobalFrame recevoirTrame(const std::atomic_bool& abandonner);
 

@@ -4,7 +4,6 @@
 
 #include "ElecCommunicator.h"
 #include "NullCommunicator.h"
-#include <optional>
 
 namespace Communication {
 	template <typename ParsingClass>
@@ -152,6 +151,7 @@ namespace Communication {
 	template <typename>
 	void ElecCommunicator<ParsingClass>::communicate_with_elecs() {
 		// setThreadName("Communicate");
+		// Une seule instance de communication peut être lancée à la fois
 		std::unique_lock<std::mutex> lk(_mutex_communication);
 
 		// TODO : gérer le PING pour savoir quand les élecs sont Ok
@@ -159,9 +159,25 @@ namespace Communication {
 			_modules_initialized.wait(lk);
 		}
 
+		// La réception et l'envoi de trames est asynchrone, d'où le partage de ce mutex
+		std::mutex mutex_medium;
+
+
+		/*auto output_function = [](std::mutex& mut, std::atomic_bool& running_execution) {
+		    while(running_execution) {
+		        std::lock_guard<std::mutex> lock(mut);
+		        // TODO: output ; gérer la retransmission directe + expiration d'un timer pour chaque module
+		    }
+		};
+
+		auto out = std::thread(output_function, mutex_medium, _running_execution);*/
+
 		while(_running_execution) {
+			std::lock_guard<std::mutex> lock(mutex_medium);
+
 			try {
-				GlobalFrame frame = _busCAN->recevoirTrameBloquant();
+				// FIXME: fonction bloquante donc le mutex est toujours lock
+				auto frame = _busCAN->recevoirTrameBloquant();
 				_parser->read_frame(frame);
 			} catch(std::runtime_error& e) {
 				logError("Échec de la mise à jour du module manager !!");

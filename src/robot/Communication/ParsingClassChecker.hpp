@@ -12,7 +12,7 @@
  * class ParsingClass {
  * public:
  *      void read_frame(const GlobalFrame&);
- *      GlobalFrame write_frame() const;
+ *      GlobalFrame write_frame(uint8_t id) const;
  * }
  */
 
@@ -69,7 +69,7 @@ namespace Communication {
 	// Finalement, cette interface teste que 'T' sache lire et écrire des `GlobalFrame`s
 	template <typename T>
 	struct parses_frames {
-		static constexpr bool value =
-		    detail::read_frames<T, void(const GlobalFrame&)>::value && detail::write_frames<T, GlobalFrame(void)>::value;
+		static constexpr bool value = detail::read_frames<T, void(const GlobalFrame&)>::value &&
+		                              detail::write_frames<T, GlobalFrame(uint8_t)>::value;
 	};
 } // namespace Communication

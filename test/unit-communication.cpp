@@ -6,12 +6,45 @@
 
 #include "../src/robot/Communication/ElecCommunicator.h"
 #include <type_traits>
+#include "communication/GlobalFrame.h"
+
+// La variable `_count` est incrémentée à chaque échange
+// pour `_count == N`, la trame correspondante est composée d'un octet par valeur entre 0 et N.
+class PingPong {
+    uint8_t _count = 0;
+
+public:
+    PingPong() = default;
+
+    void read_frame(const GlobalFrame& f) {
+        logDebug("Inside read_frame; _count = ", static_cast<int>(_count), "; size = ", f.getNbDonnees(), "; f = ", f);
+        if (uint16_t size = f.getNbDonnees(); size != _count) {
+            //throw std::runtime_error("Size of GlobalFrame does not correspond.");
+        }
+        auto array = f.getDonnees();
+        for (uint8_t i = 0; i < _count; ++i) {
+            /*if (array[i] != i) {
+                throw std::runtime_error("Frame construction is bad.");
+            }*/
+        }
+        _count++;
+    }
+
+    GlobalFrame write_frame(uint8_t) const {
+        logDebug("Inside write_frame with _count = ", _count);
+        GlobalFrame f;
+        for (uint8_t i = 0; i < _count; ++i) {
+            f.addByte(i);
+        }
+        return f;
+    }
+};
 
 TEST_CASE("Communication between info and elec") {
 	SECTION("Validity test of the 'parses_frames' helper struct.") {
 		struct Ok {
 			void read_frame(const GlobalFrame&) {}
-			GlobalFrame write_frame() const {
+			GlobalFrame write_frame(uint8_t) const {
 				return GlobalFrame{};
 			}
 		};
@@ -52,7 +85,7 @@ TEST_CASE("Communication between info and elec") {
 		struct Nok5 {
 			void read_frame(const GlobalFrame&) {}
 			// pas les bons arguments
-			GlobalFrame write_frame(int) const {
+			GlobalFrame write_frame(std::string) const {
 				return GlobalFrame{};
 			}
 		};
