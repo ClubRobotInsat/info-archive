@@ -7,7 +7,7 @@
 namespace PhysicalRobot {
 	uint8_t Motors2019::get_nbr_controlled() const {
 		uint8_t count = 0;
-		for(uint8_t i = 0; i < ID_MAX_CONTROLLED_MOTORS; ++i) {
+		for(uint8_t i = 0; i < MAX_CONTROLLED_MOTORS; ++i) {
 			count += (_controlled[i] != nullptr);
 		}
 		return count;
@@ -15,7 +15,7 @@ namespace PhysicalRobot {
 
 	uint8_t Motors2019::get_nbr_uncontrolled() const {
 		uint8_t count = 0;
-		for(uint8_t i = 0; i < ID_MAX_UNCONTROLLED_MOTORS; ++i) {
+		for(uint8_t i = 0; i < MAX_UNCONTROLLED_MOTORS; ++i) {
 			count += (_uncontrolled[i] != nullptr);
 		}
 		return count;
@@ -23,7 +23,7 @@ namespace PhysicalRobot {
 
 	uint8_t Motors2019::get_nbr_brushless() const {
 		uint8_t count = 0;
-		for(uint8_t i = 0; i < ID_MAX_BRUSHLESS; ++i) {
+		for(uint8_t i = 0; i < MAX_BRUSHLESS; ++i) {
 			count += (_brushless[i] != nullptr);
 		}
 		return count;
@@ -122,7 +122,7 @@ namespace PhysicalRobot {
 		if(id == 0)
 			return INDEX_BAD_ID;
 
-		for(uint8_t index = 0; index < ID_MAX_CONTROLLED_MOTORS; ++index) {
+		for(uint8_t index = 0; index < MAX_CONTROLLED_MOTORS; ++index) {
 			if(_controlled[index] && _controlled[index]->id == id)
 				return index;
 		}
@@ -138,7 +138,7 @@ namespace PhysicalRobot {
 		if(id == 0)
 			return INDEX_BAD_ID;
 
-		for(uint8_t index = 0; index < ID_MAX_UNCONTROLLED_MOTORS; ++index) {
+		for(uint8_t index = 0; index < MAX_UNCONTROLLED_MOTORS; ++index) {
 			if(_uncontrolled[index] && _uncontrolled[index]->id == id)
 				return index;
 		}
@@ -154,7 +154,7 @@ namespace PhysicalRobot {
 		if(id == 0)
 			return INDEX_BAD_ID;
 
-		for(uint8_t index = 0; index < ID_MAX_BRUSHLESS; ++index) {
+		for(uint8_t index = 0; index < MAX_BRUSHLESS; ++index) {
 			if(_brushless[index] && _brushless[index]->id == id)
 				return index;
 		}
@@ -175,7 +175,7 @@ namespace PhysicalRobot {
 			throw std::runtime_error("Double assignation du moteur asservi "s + std::to_string(id) + " !");
 		}
 
-		for(uint8_t index = 0; index < ID_MAX_CONTROLLED_MOTORS; ++index) {
+		for(uint8_t index = 0; index < MAX_CONTROLLED_MOTORS; ++index) {
 			if(_controlled[index] == nullptr) {
 				_controlled[index] = std::make_unique<ControlledMotor>(id, rotation);
 				break;
@@ -192,7 +192,7 @@ namespace PhysicalRobot {
 			throw std::runtime_error("Double assignation du moteur non-asservi "s + std::to_string(id) + " !");
 		}
 
-		for(uint8_t index = 0; index < ID_MAX_CONTROLLED_MOTORS; ++index) {
+		for(uint8_t index = 0; index < MAX_CONTROLLED_MOTORS; ++index) {
 			if(_uncontrolled[index] == nullptr) {
 				_uncontrolled[id] = std::make_unique<UncontrolledMotor>(id);
 				break;
@@ -209,7 +209,7 @@ namespace PhysicalRobot {
 			throw std::runtime_error("Double assignation du brushless "s + std::to_string(id) + " !");
 		}
 
-		for(uint8_t index = 0; index < ID_MAX_BRUSHLESS; ++index) {
+		for(uint8_t index = 0; index < MAX_BRUSHLESS; ++index) {
 			if(_brushless[index] == nullptr) {
 				_brushless[id] = std::make_unique<Brushless>(id);
 				break;
@@ -219,7 +219,7 @@ namespace PhysicalRobot {
 
 	SharedMotors2019 Motors2019::generate_shared() const {
 		SharedMotors2019 s = {};
-		for(uint8_t i = 0; i < ID_MAX_CONTROLLED_MOTORS; ++i) {
+		for(uint8_t i = 0; i < MAX_CONTROLLED_MOTORS; ++i) {
 			if(_controlled[i]) {
 				s.controlled_motors[i].id = i;
 
@@ -244,7 +244,7 @@ namespace PhysicalRobot {
 
 	void Motors2019::deactivation() {
 		lock_variables();
-		for(uint8_t index = 0; index < ID_MAX_CONTROLLED_MOTORS; ++index) {
+		for(uint8_t index = 0; index < MAX_CONTROLLED_MOTORS; ++index) {
 			if(_controlled[index]) {
 				_controlled[index]->finished = true;
 				_controlled[index]->wanted_nb_turns = 0;
@@ -253,13 +253,13 @@ namespace PhysicalRobot {
 		}
 		unlock_variables();
 
-		for(uint8_t index = 0; index < ID_MAX_UNCONTROLLED_MOTORS; ++index) {
+		for(uint8_t index = 0; index < MAX_UNCONTROLLED_MOTORS; ++index) {
 			if(_uncontrolled[index]) {
 				deactivate_uncontrolled_motor(_uncontrolled[index]->id);
 			}
 		}
 
-		for(uint8_t index = 0; index < ID_MAX_BRUSHLESS; ++index) {
+		for(uint8_t index = 0; index < MAX_BRUSHLESS; ++index) {
 			if(_brushless[index]) {
 				deactivate_brushless(_brushless[index]->id);
 			}

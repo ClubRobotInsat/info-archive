@@ -104,18 +104,19 @@ namespace PhysicalRobot {
 		// Pour chaque module, il ne faut qu'overrider la fonction qui génère la struct partagée avec Rust
 		// ainsi que la fonction C qui convertit cette struct en une trame binaire
 		GlobalFrame make_frame() const final {
-			GlobalFrame f;
-			uint8_t buf[get_frame_size()];
-
 			std::lock_guard<std::mutex> lk(_mutex_variables);
-			SharedStruct s = generate_shared();
-			uint8_t size = _wrapper.write_frame(buf, get_frame_size(), &s);
 
-			if(size != get_frame_size()) {
+			const uint8_t SIZE = get_frame_size();
+			uint8_t buf[SIZE];
+
+			SharedStruct s = generate_shared();
+			uint8_t size = _wrapper.write_frame(buf, SIZE, &s);
+
+			if(size != SIZE) {
 				throw std::runtime_error("Bad frame generation - no matching sizes.");
 			}
-			f.addBytes(get_frame_size(), buf);
-			return f;
+
+			return GlobalFrame{SIZE, buf};
 		}
 
 	protected:

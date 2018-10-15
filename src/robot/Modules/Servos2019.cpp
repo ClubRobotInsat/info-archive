@@ -22,7 +22,7 @@ namespace PhysicalRobot {
 
 	uint8_t Servos2019::get_nbr_servos() const {
 		uint8_t count = 0;
-		for(uint8_t index = 0; index < ID_MAX_SERVOS; ++index) {
+		for(uint8_t index = 0; index < MAX_SERVOS; ++index) {
 			count += (_servos[index] != nullptr);
 		}
 		return count;
@@ -36,7 +36,7 @@ namespace PhysicalRobot {
 		if(id == 0)
 			return INDEX_BAD_ID;
 
-		for(uint8_t index = 0; index < ID_MAX_SERVOS; ++index) {
+		for(uint8_t index = 0; index < MAX_SERVOS; ++index) {
 			if(_servos[index] && _servos[index]->id == id)
 				return index;
 		}
@@ -139,7 +139,7 @@ namespace PhysicalRobot {
 
 	SharedServos2019 Servos2019::generate_shared() const {
 		SharedServos2019 s = {};
-		for(uint8_t i = 0; i < ID_MAX_SERVOS; ++i) {
+		for(uint8_t i = 0; i < MAX_SERVOS; ++i) {
 			if(_servos[i]) {
 				s.servos[i].id = _servos[i]->id;
 
@@ -175,7 +175,7 @@ namespace PhysicalRobot {
 
 	void Servos2019::message_processing(const SharedServos2019& s) {
 		if(s.parsing_failed == 0) {
-			for(uint8_t i = 0; i < ID_MAX_SERVOS; ++i) {
+			for(uint8_t i = 0; i < MAX_SERVOS; ++i) {
 				if(_servos[i] && s.servos[i].id != 0) {
 					uint8_t index = get_index_of(s.servos[i].id);
 					auto uint16t_to_angle = [](uint16_t pos) -> Angle {
