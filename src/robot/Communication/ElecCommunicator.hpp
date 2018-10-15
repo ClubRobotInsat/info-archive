@@ -146,7 +146,7 @@ namespace Communication {
 	}
 
 	/// Communication avec les élecs
-	// TODO : améliorer le principe, actuellement on réponds dès qu'on a la réponse
+	// TODO : améliorer le principe, actuellement la gestion du mutex du médium est inexistante
 	template <typename ParsingClass>
 	template <typename>
 	void ElecCommunicator<ParsingClass>::communicate_with_elecs() {
@@ -162,34 +162,41 @@ namespace Communication {
 		// La réception et l'envoi de trames est asynchrone, d'où le partage de ce mutex
 		std::mutex mutex_medium;
 
+		auto input_function = [this](std::mutex& mut, std::atomic_bool& running_execution) {
+			while(running_execution) {
+				std::lock_guard<std::mutex> lock(mut);
 
-		/*auto output_function = [](std::mutex& mut, std::atomic_bool& running_execution) {
-		    while(running_execution) {
-		        std::lock_guard<std::mutex> lock(mut);
-		        // TODO: output ; gérer la retransmission directe + expiration d'un timer pour chaque module
-		    }
+				try {
+					// FIXME: fonction bloquante donc le mutex est toujours lock
+					auto frame = _busCAN->recevoirTrameBloquant();
+					_parser->read_frame(frame);
+				} catch(std::runtime_error& e) {
+					logError("Échec de la mise à jour du module manager !!");
+					logError("Exception rencontrée : ", e.what());
+				}
+			}
 		};
 
-		auto out = std::thread(output_function, mutex_medium, _running_execution);*/
-
-		while(_running_execution) {
-			std::lock_guard<std::mutex> lock(mutex_medium);
-
-			try {
-				// FIXME: fonction bloquante donc le mutex est toujours lock
-				auto frame = _busCAN->recevoirTrameBloquant();
-				_parser->read_frame(frame);
-			} catch(std::runtime_error& e) {
-				logError("Échec de la mise à jour du module manager !!");
-				logError("Exception rencontrée : ", e.what());
+		auto output_function = [this](std::mutex& mut, std::atomic_bool& running_execution) {
+			while(running_execution) {
+				std::lock_guard<std::mutex> lock(mut);
+				// TODO: output ; gérer la retransmission directe + expiration d'un timer pour chaque module
+				for(uint8_t i = 0; i < PhysicalRobot::ModuleManager::NB_MODULES_MAX; ++i) {
+					try {
+						_busCAN->envoyerTrame(_parser->write_frame(i), true);
+					} catch(std::runtime_error& e) {
+						// FIXME : exception levée pour chaque index non défini dans le ModuleManager
+						logError("Échec de l'envoi de l'état du robot par le module manager !!");
+						logError("Exception rencontrée : ", e.what());
+					}
+				}
 			}
+		};
 
-			try {
-				_busCAN->envoyerTrame(_parser->write_frame(), true);
-			} catch(std::runtime_error& e) {
-				logError("Échec de l'envoi de l'état du robot par le module manager !!");
-				logError("Exception rencontrée : ", e.what());
-			}
-		}
+		std::thread in = std::thread(input_function, std::ref(mutex_medium), std::ref(_running_execution));
+		std::thread out = std::thread(output_function, std::ref(mutex_medium), std::ref(_running_execution));
+
+		in.join();
+		out.join();
 	}
 } // namespace Communication
