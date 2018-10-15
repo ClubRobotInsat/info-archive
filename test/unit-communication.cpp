@@ -5,39 +5,39 @@
 #include "catch.hpp"
 
 #include "../src/robot/Communication/ElecCommunicator.h"
-#include <type_traits>
 #include "communication/GlobalFrame.h"
+#include <type_traits>
 
 // La variable `_count` est incrémentée à chaque échange
 // pour `_count == N`, la trame correspondante est composée d'un octet par valeur entre 0 et N.
 class PingPong {
-    uint8_t _count = 0;
+	uint8_t _count = 0;
 
 public:
-    PingPong() = default;
+	PingPong() = default;
 
-    void read_frame(const GlobalFrame& f) {
-        logDebug("Inside read_frame; _count = ", static_cast<int>(_count), "; size = ", f.getNbDonnees(), "; f = ", f);
-        if (uint16_t size = f.getNbDonnees(); size != _count) {
-            //throw std::runtime_error("Size of GlobalFrame does not correspond.");
-        }
-        auto array = f.getDonnees();
-        for (uint8_t i = 0; i < _count; ++i) {
-            /*if (array[i] != i) {
-                throw std::runtime_error("Frame construction is bad.");
-            }*/
-        }
-        _count++;
-    }
+	void read_frame(const GlobalFrame& f) {
+		logDebug("Inside read_frame; _count = ", static_cast<int>(_count), "; size = ", f.getNbDonnees(), "; f = ", f);
+		if(uint16_t size = f.getNbDonnees(); size != _count) {
+			// throw std::runtime_error("Size of GlobalFrame does not correspond.");
+		}
+		auto array = f.getDonnees();
+		for(uint8_t i = 0; i < _count; ++i) {
+			/*if (array[i] != i) {
+			    throw std::runtime_error("Frame construction is bad.");
+			}*/
+		}
+		_count++;
+	}
 
-    GlobalFrame write_frame(uint8_t) const {
-        logDebug("Inside write_frame with _count = ", _count);
-        GlobalFrame f;
-        for (uint8_t i = 0; i < _count; ++i) {
-            f.addByte(i);
-        }
-        return f;
-    }
+	GlobalFrame write_frame(uint8_t) const {
+		logDebug("Inside write_frame with _count = ", _count);
+		GlobalFrame f;
+		for(uint8_t i = 0; i < _count; ++i) {
+			f.addByte(i);
+		}
+		return f;
+	}
 };
 
 TEST_CASE("Communication between info and elec") {
@@ -112,4 +112,47 @@ TEST_CASE("Communication between info and elec") {
 		// Commun::ElecCommunicator<Nok1> c3(std::make_shared<Nok1>(), 42);
 		Communication::ElecCommunicator<PhysicalRobot::ModuleManager> c2(std::make_shared<PhysicalRobot::ModuleManager>(), 42);
 	}
+
+	/*SECTION("Connection") {
+
+	    auto test = []() {
+	        std::atomic_bool stop = false;
+
+	        auto listener = [&stop]() {
+	            auto can = std::make_unique<Communication::CAN>(
+	                    std::make_unique<Communication::NamedPipe>("/tmp/write.pipe", "/tmp/read.pipe"));
+	            PingPong parser;
+	            while (!stop) {
+	                try {
+	                    can->envoyerTrame(parser.write_frame(), true);
+	                } catch (std::runtime_error &e) {
+	                    logError("Échec de l'envoi de l'état du robot par le module manager !!");
+	                    logError("Exception rencontrée : ", e.what());
+	                }
+
+	                try {
+	                    GlobalFrame frame = {};
+	                    can->recevoirTrameBloquant();
+	                    parser.read_frame(frame);
+	                } catch (std::runtime_error &e) {
+	                    logError("Échec de la mise à jour du module manager !!");
+	                    logError("Exception rencontrée : ", e.what());
+	                }
+	            }
+	        };
+
+	        Communication::ElecCommunicator<PingPong> communicator(std::make_shared<PingPong>(), 1234);
+	        communicator.set_modules_initialized();
+	        communicator.connect({"prog", "PIPES"});
+
+	        auto thread = std::thread(listener);
+
+	        sleep(5_s);
+	        stop = true;
+	        communicator.disconnect();
+	        thread.join();
+	    };
+
+	    CHECK_NOTHROW(test());
+	}*/
 }
