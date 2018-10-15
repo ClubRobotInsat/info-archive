@@ -71,13 +71,16 @@ namespace PhysicalRobot {
 		template <typename Module>
 		Module& get_module();
 
-		/// Construit la trame globale du robot depuis chaque module instantié
+		GlobalFrame write_frame(uint8_t id) const;
+		void read_frame(const GlobalFrame&);
+
+		/*/// Construit la trame globale du robot depuis chaque module instantié
 		/// @maythrow si on module n'arrive pas à générer sa trame (très peu probable)
 		GlobalFrame write_frame() const;
 
 		/// Met à jour tous les modules depuis une trame qui contient l'état général du robot
 		/// @throw si la trame a un mauvais formatage
-		void read_frame(const GlobalFrame&);
+		void read_frame(const GlobalFrame&);*/
 
 		/// Désactive tous les comportements mécaniques du robot (anciennement 'couperMeca')
 		void deactivation();

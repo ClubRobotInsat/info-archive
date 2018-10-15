@@ -4,6 +4,7 @@
 
 #include "ElecCommunicator.h"
 #include "NullCommunicator.h"
+#include <optional>
 
 namespace Communication {
 	template <typename ParsingClass>

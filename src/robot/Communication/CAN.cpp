@@ -83,8 +83,8 @@ namespace Communication {
 		// auto muxedIdAndCmd = Trame::multiplexIdAndCmd(t.getId(), t.getCmd());
 		//_serie->ecrireOctet(muxedIdAndCmd.first);  // Poids faible de l'ID
 		//_serie->ecrireOctet(muxedIdAndCmd.second); // Poids fort de l'ID
-        uint16_t nbDonnees = t.getNbDonnees(); // Taille des données
-        _serie->ecrireOctets(reinterpret_cast<uint8_t*>(&nbDonnees), 2);
+		uint16_t nbDonnees = t.getNbDonnees(); // Taille des données
+		_serie->ecrireOctets(reinterpret_cast<uint8_t*>(&nbDonnees), 2);
 		_serie->ecrireOctets(t.getDonnees(), t.getNbDonnees()); // Données
 
 		sleep(_temporisation); // Temporisation pour ne pas saturer l'électronique
@@ -113,7 +113,7 @@ namespace Communication {
 		while(true) {
 			try {
 				return this->recevoirTrame(always_false);
-			} catch(GlobalFrame::ErreurTropDeDonnees &t) {
+			} catch(GlobalFrame::ErreurTropDeDonnees& t) {
 				// logError("Exception attrapée : ", t.what());
 			}
 		}
@@ -126,13 +126,17 @@ namespace Communication {
 		while(!abandonner) {
 			// Debut de trame - BLOQUANT !!!
 			while(_serie->lireOctet() != GlobalFrame::OCTET_DEBUT_TRAME_1)
-				if (abandonner) break;
+				if(abandonner)
+					break;
 
 			if(_serie->lireOctet() == GlobalFrame::OCTET_DEBUT_TRAME_2) {
 				if(_serie->lireOctet() == GlobalFrame::OCTET_DEBUT_TRAME_3) {
 					uint8_t typeTrame = _serie->lireOctet();
 
 					if(typeTrame == GlobalFrame::OCTET_DEBUT_TRAME_4_NORMAL) {
+						uint8_t size = _serie->lireOctet();
+						if(size == 0) {
+						}
 
 						// Trame::MuxedIdAndCmd muxedIdAndCmd = {_serie->lireOctet(),  // Poids faible de l'ID
 						//                                      _serie->lireOctet()}; // Poids fort de l'ID

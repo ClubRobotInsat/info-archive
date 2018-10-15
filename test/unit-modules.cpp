@@ -348,24 +348,36 @@ TEST_CASE("ModuleManager") {
 
 	SECTION("Frame manipulation") {
 		PhysicalRobot::ModuleManager manager;
-		manager.add_module<ModuleTest>(5);
+		auto& module_test = manager.add_module<ModuleTest>(5);
 		auto& module_servo = manager.add_module<PhysicalRobot::Servos2019>(15);
 		module_servo.add_servo(2, 50_deg);
 
 		SECTION("GlobalFrame write_frame()") {
-			auto frame = manager.write_frame();
-			const uint8_t wanted_size =
-			    static_cast<uint8_t>(6) + manager.get_module<PhysicalRobot::Servos2019>().get_frame_size();
-			REQUIRE(frame.getNbDonnees() == wanted_size);
-			const uint8_t* array = frame.getDonnees();
-			// ID n°5 : ModuleTest  v
-			CHECK(array[0] == 0b00001000);
-			// ID n°15 : ModuleServos v
-			CHECK(array[1] == 0b00000010);
+			CHECK_THROWS_WITH(manager.write_frame(2), "The module n°2 doesn't exist.");
+			CHECK_THROWS_WITH(manager.write_frame(16), "Impossible to get module n°16 (> 16).");
+
+			auto frame_test = manager.write_frame(5);
+			REQUIRE(frame_test.getNbDonnees() == 2 + module_test.get_frame_size());
+			const uint8_t* array_test = frame_test.getDonnees();
+			// Size
+			REQUIRE(array_test[0] == module_test.get_frame_size());
+			// ID
+			CHECK(array_test[1] == module_test.get_id());
+
+			auto frame_servos = manager.write_frame(15);
+			REQUIRE(frame_servos.getNbDonnees() == 2 + module_servo.get_frame_size());
+			const uint8_t* array_servos = frame_servos.getDonnees();
+			REQUIRE(array_servos[0] == module_servo.get_frame_size());
+			CHECK(array_servos[1] == module_servo.get_id());
 		}
 
-		SECTION("update_all") {
-			// TODO
+		SECTION("read_frame") {
+			REQUIRE_THROWS_WITH(manager.read_frame({}), "Frame does not contain the module's size and id.");
+			REQUIRE_THROWS_WITH(manager.read_frame({0, 13}), "The module n°13 isn't initialized.");
+			REQUIRE_THROWS_WITH(manager.read_frame({0, 5}), "The size of the module n°5 does not correspond to the theory (0 != 2).");
+			REQUIRE_THROWS_WITH(manager.read_frame({2, 5, 42, 43, 44}),
+			                    "Global frame's size does not correspond to its theoretical size.");
+			REQUIRE_NOTHROW(manager.read_frame({2, 5, 0, 0}));
 		}
 	}
 }
