@@ -83,6 +83,7 @@ namespace Constants {
 
 		_match_duration = Duration::makeFromS(read_field(_reader, "constants", "match_duration", 100));
 
+		_communication_delay = Duration::makeFromMs(read_field(_reader, "constants", "communication_delay", 3));
 		_frame_period = Duration::makeFromMs(read_field(_reader, "constants", "frame_period", 100));
 	}
 

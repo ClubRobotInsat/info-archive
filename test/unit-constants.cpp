@@ -13,6 +13,8 @@ TEST_CASE("Global constants") {
 	                      "table_x=1500\n"
 	                      "table_y=1000\n"
 	                      "scale_environment=5\n"
+	                      "communication_delay=15\n"
+	                      "frame_period=12\n"
 
 	                      "[robot]\n"
 	                      "linear_speed=376\n"
@@ -46,6 +48,8 @@ TEST_CASE("Global constants") {
 	CHECK(cst.get_table_size() == Vector3m{1.5_m, 1_m, 0_m});
 	CHECK(cst.get_scale_environment() == 5_mm);
 	CHECK(cst.get_table_env_grid() == Vector2u16{300, 200});
+	CHECK(cst.get_default_communication_delay() == 15_ms);
+	CHECK(cst.get_frame_period() == 12_ms);
 	REQUIRE_THROWS_WITH(cst["iron-man"], "Constants of the robot 'iron-man' does not exist.");
 
 	REQUIRE_NOTHROW(cst["bot"]);

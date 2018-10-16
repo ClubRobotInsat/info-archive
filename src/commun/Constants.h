@@ -125,6 +125,10 @@ namespace Constants {
 			}
 		}
 
+		inline const Duration& get_default_communication_delay() const {
+			return _communication_delay;
+		}
+
 		// Période maximale pour le renvoi de l'état d'un module
 		inline const Duration& get_frame_period() const {
 			return _frame_period;
@@ -139,6 +143,8 @@ namespace Constants {
 
 		Duration _match_duration;
 
+		// Durée de temporisation entre l'envoi de deux messages successifs sur le médium de communication
+		Duration _communication_delay;
 		Duration _frame_period;
 
 		IniFile _reader;
