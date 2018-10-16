@@ -192,6 +192,11 @@ TEST_CASE("Servos 2019 Module") {
 				// l'ID 0 veut dire qu'il n'y a pas de servo, donc on économise de la place dans la trame
 				buf[1] = 0;
 				REQUIRE(servo_read_frame(buf, SIZE).parsing_failed);
+
+				// Les servos instantiés doivent être adjacents en début du buffeur.
+				buf[0] = 1;
+				buf[1] = 0;
+				REQUIRE(servo_read_frame(buf, 7).parsing_failed);
 			}
 
 			SECTION("good frame format") {
@@ -255,8 +260,9 @@ TEST_CASE("Servos 2019 Module") {
 				for(int i = 0; i < 8; ++i) {
 					servos->servos[i].id = 0;
 				}
-				servos->servos[1].id = 1;
-				servos->servos[3].id = 3;
+				servos->servos[0].id = 1;
+				servos->servos[1].id = 3;
+				servos->nb_servos = 2;
 
 				// buf == NULL
 				REQUIRE(servo_write_frame(nullptr, SIZE, servos) == 0);
@@ -289,8 +295,9 @@ TEST_CASE("Servos 2019 Module") {
 						servos->servos[i].id = 0;
 					}
 					//                   id position             command        c_type blocked mode color
-					servos->servos[1] = {1, 0b00001111'11110000, 0b01010101'10101010, 0, true, 1, 0b100};
-					servos->servos[3] = {3, 0b00000000'00000000, 0b11111111'11111111, 1, false, 0, 0b010};
+					servos->servos[0] = {1, 0b00001111'11110000, 0b01010101'10101010, 0, true, 1, 0b100};
+					servos->servos[1] = {3, 0b00000000'00000000, 0b11111111'11111111, 1, false, 0, 0b010};
+					servos->nb_servos = 2;
 
 					REQUIRE(servo_write_frame(buf, SIZE, servos) == SIZE);
 					CHECK(buf[0] == 2);
