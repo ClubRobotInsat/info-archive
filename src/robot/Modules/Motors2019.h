@@ -29,9 +29,9 @@ namespace PhysicalRobot {
 		uint8_t get_nbr_uncontrolled() const;
 		uint8_t get_nbr_brushless() const;
 
-		void position_angle(uint8_t motor, Angle);
+		void set_position_angle(uint8_t motor, Angle);
 
-		void position_turns(uint8_t motor, uint8_t nb_turns, RotatingDirection);
+		void set_position_turns(uint8_t motor, uint8_t nb_turns, RotatingDirection);
 
 		bool is_position_finished(uint8_t motor) const;
 

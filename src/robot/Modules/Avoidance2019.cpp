@@ -17,6 +17,7 @@ namespace PhysicalRobot {
 	void Avoidance2019::set_angle_detection_adversary(Angle angle) {
 		if(abs(angle) <= 0.5_PI) {
 			this->_angle_detection_adversary = angle;
+			_state_changed.exchange(true);
 		} else {
 			logWarn("Angle de détection de l'adversaire trop grand ! ", angle);
 		}
@@ -25,6 +26,7 @@ namespace PhysicalRobot {
 	void Avoidance2019::set_position_turret(Vector2m position) {
 		lock_variables();
 		_position_turret = position;
+		_state_changed.exchange(true);
 		unlock_variables();
 	}
 

@@ -59,6 +59,7 @@ namespace PhysicalRobot {
 		_servos[index]->blocked = false;
 		_servos[index]->command = angle;
 		_servos[index]->command_type = Servo::CommandType::POSITION;
+		_state_changed.exchange(true);
 		unlock_variables();
 	}
 
@@ -72,6 +73,7 @@ namespace PhysicalRobot {
 		lock_variables();
 		_servos[index]->command = speed;
 		_servos[index]->command_type = Servo::CommandType::SPEED;
+		_state_changed.exchange(true);
 		unlock_variables();
 	}
 
@@ -95,6 +97,7 @@ namespace PhysicalRobot {
 
 		lock_variables();
 		_servos[index]->color = color;
+		_state_changed.exchange(true);
 		unlock_variables();
 	}
 
@@ -107,6 +110,7 @@ namespace PhysicalRobot {
 
 		lock_variables();
 		_servos[index]->blocking_mode = mode;
+		_state_changed.exchange(true);
 		unlock_variables();
 	}
 

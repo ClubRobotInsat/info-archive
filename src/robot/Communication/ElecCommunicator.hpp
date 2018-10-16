@@ -159,15 +159,9 @@ namespace Communication {
 			_modules_initialized.wait(lk);
 		}
 
-		// La réception et l'envoi de trames est asynchrone, d'où le partage de ce mutex
-		std::mutex mutex_medium;
-
-		auto input_function = [this](std::mutex& mut, std::atomic_bool& running_execution) {
+		auto input_function = [this](std::atomic_bool& running_execution) {
 			while(running_execution) {
-				std::lock_guard<std::mutex> lock(mut);
-
 				try {
-					// FIXME: fonction bloquante donc le mutex est toujours lock
 					auto frame = _busCAN->recevoirTrameBloquant();
 					_parser->read_frame(frame);
 				} catch(std::runtime_error& e) {
@@ -177,9 +171,8 @@ namespace Communication {
 			}
 		};
 
-		auto output_function = [this](std::mutex& mut, std::atomic_bool& running_execution) {
+		auto output_function = [this](std::atomic_bool& running_execution) {
 			while(running_execution) {
-				std::lock_guard<std::mutex> lock(mut);
 				// TODO: output ; gérer la retransmission directe + expiration d'un timer pour chaque module
 				for(uint8_t i = 0; i < PhysicalRobot::ModuleManager::NB_MODULES_MAX; ++i) {
 					try {
@@ -193,8 +186,8 @@ namespace Communication {
 			}
 		};
 
-		std::thread in = std::thread(input_function, std::ref(mutex_medium), std::ref(_running_execution));
-		std::thread out = std::thread(output_function, std::ref(mutex_medium), std::ref(_running_execution));
+		std::thread in = std::thread(input_function, std::ref(_running_execution));
+		std::thread out = std::thread(output_function, std::ref(_running_execution));
 
 		in.join();
 		out.join();

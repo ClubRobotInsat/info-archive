@@ -6,9 +6,7 @@
 
 #include "EmbeddedFiles.h"
 
-Constants::Constants const GLOBAL_CONSTANTS(
-		EmbeddedFiles::readText("../robot.ini")
-);
+Constants::Constants const GLOBAL_CONSTANTS(EmbeddedFiles::readText("../robot.ini"));
 
 namespace Constants {
 
@@ -84,6 +82,8 @@ namespace Constants {
 		};
 
 		_match_duration = Duration::makeFromS(read_field(_reader, "constants", "match_duration", 100));
+
+		_frame_period = Duration::makeFromMs(read_field(_reader, "constants", "frame_period", 100));
 	}
 
 	const Robot& Constants::operator[](const std::string& name) const {

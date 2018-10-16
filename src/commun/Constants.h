@@ -125,6 +125,11 @@ namespace Constants {
 			}
 		}
 
+		// Période maximale pour le renvoi de l'état d'un module
+		inline const Duration& get_frame_period() const {
+			return _frame_period;
+		}
+
 	private:
 		uint16_t _TCPIP_port_simu;
 		Vector3m _table_size;
@@ -133,6 +138,8 @@ namespace Constants {
 		Vector2u16 _table_env_grid;
 
 		Duration _match_duration;
+
+		Duration _frame_period;
 
 		IniFile _reader;
 

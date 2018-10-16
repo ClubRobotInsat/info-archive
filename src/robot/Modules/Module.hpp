@@ -28,6 +28,7 @@
 #include "../../elec/librobot/c_src/SharedWithRust.h"
 
 #include <Commun.h> // GlobalFrame
+#include <Constants.h>
 
 #include <atomic>     // atomic
 #include <functional> // function
@@ -38,13 +39,19 @@ namespace PhysicalRobot {
 	// Cette classe permets de stocker des 'Modules' non-templates
 	class BaseModule {
 	public:
-		explicit BaseModule(uint8_t id) : _id(id) {}
+		explicit BaseModule(uint8_t id) : _state_changed(false), _id(id) {}
 
 		virtual ~BaseModule() = default;
 
 		/// Retourne l'ID du module dans le robot
 		inline uint8_t get_id() {
 			return _id;
+		}
+
+		/// Retourne vrai si l'état du module nécessite d'être partagé avec les élecs
+		/// i.e. si une modification informatique a été apportée, ou si le timer a expiré
+		bool needs_to_be_shared() const {
+			return _state_changed || _timer.getElapsedTime() >= GLOBAL_CONSTANTS.get_frame_period();
 		}
 
 		/// Construit la trame du module (thread-safe)
@@ -74,6 +81,14 @@ namespace PhysicalRobot {
 		// Cette variable est 'mutable' pour permettre la fonction 'make_frame()' d'être constante malgré l'appel à un
 		// 'lock_guard'
 		mutable std::mutex _mutex_variables;
+
+		/// Ce booléen passe à vrai si une modification a été apportée entre deux envois de trame
+		/// Ça permets à l'`ElecCommunicator` d'envoyer en priorité le nouvel état du robot
+		std::atomic_bool _state_changed;
+
+		/// Le timer est réinitialisé à chaque construction de trame, c'est à dire à chaque envoi de l'état du module
+		/// Lors de son expiration, l'état est construit et partagé avec l'électronique
+		StopWatch _timer;
 
 	private:
 		/// ID du module dans le robot, allant de 0 à 15
@@ -116,6 +131,8 @@ namespace PhysicalRobot {
 				throw std::runtime_error("Bad frame generation - no matching sizes.");
 			}
 
+			//_state_changed.exchange(false);
+			//_timer.reset();
 			return GlobalFrame{SIZE, buf};
 		}
 

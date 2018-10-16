@@ -29,22 +29,24 @@ namespace PhysicalRobot {
 		return count;
 	}
 
-	void Motors2019::position_angle(uint8_t id, Angle angle) {
+	void Motors2019::set_position_angle(uint8_t id, Angle angle) {
 		uint8_t index = test_is_controlled_ok(id);
 
 		lock_variables();
 		_controlled[index]->wanted_position = angle;
 		_controlled[index]->finished = false;
+		_state_changed.exchange(true);
 		unlock_variables();
 	}
 
-	void Motors2019::position_turns(uint8_t id, uint8_t nb_turns, RotatingDirection rotation) {
+	void Motors2019::set_position_turns(uint8_t id, uint8_t nb_turns, RotatingDirection rotation) {
 		uint8_t index = test_is_controlled_ok(id);
 
 		lock_variables();
 		_controlled[index]->wanted_nb_turns = nb_turns;
 		_controlled[index]->rotation = rotation;
 		_controlled[index]->finished = false;
+		_state_changed.exchange(true);
 		unlock_variables();
 	}
 
@@ -60,6 +62,7 @@ namespace PhysicalRobot {
 		lock_variables();
 		_uncontrolled[index]->on_off = true;
 		_uncontrolled[index]->rotation = rotation;
+		_state_changed.exchange(true);
 		unlock_variables();
 	}
 
@@ -68,6 +71,7 @@ namespace PhysicalRobot {
 
 		lock_variables();
 		_uncontrolled[index]->on_off = false;
+		_state_changed.exchange(true);
 		unlock_variables();
 	}
 
@@ -76,6 +80,7 @@ namespace PhysicalRobot {
 
 		lock_variables();
 		_brushless[index]->on_off = true;
+		_state_changed.exchange(true);
 		unlock_variables();
 	}
 
@@ -84,6 +89,7 @@ namespace PhysicalRobot {
 
 		lock_variables();
 		_brushless[index]->on_off = false;
+		_state_changed.exchange(true);
 		unlock_variables();
 	}
 
@@ -264,5 +270,6 @@ namespace PhysicalRobot {
 				deactivate_brushless(_brushless[index]->id);
 			}
 		}
+		_state_changed.exchange(true);
 	}
 } // namespace PhysicalRobot
