@@ -162,6 +162,7 @@ namespace Communication {
 		auto input_function = [this](std::atomic_bool& running_execution) {
 			while(running_execution) {
 				try {
+					logDebug("input_function");
 					auto frame = _busCAN->recevoirTrameBloquant();
 					_parser->read_frame(frame);
 				} catch(std::runtime_error& e) {

@@ -1,6 +1,7 @@
 /// Le code suivant permets de tester qu'un donne à ElecCommunicator un objet qui peut lire et écrire des trames
 /// Voir la [réponse sur StackOverflow](https://stackoverflow.com/questions/87372/check-if-a-class-has-a-member-function-of-a-given-signature)
 
+#include <optional>
 #include <type_traits>
 
 #include <communication/GlobalFrame.h>
@@ -12,7 +13,8 @@
  * class ParsingClass {
  * public:
  *      void read_frame(const GlobalFrame&);
- *      GlobalFrame write_frame(uint8_t id) const;
+ *      // La classe peut retourner une trame si elle le veut, ou rien
+ *      std::optional<GlobalFrame> write_frame() const;
  * }
  */
 
@@ -70,6 +72,6 @@ namespace Communication {
 	template <typename T>
 	struct parses_frames {
 		static constexpr bool value = detail::read_frames<T, void(const GlobalFrame&)>::value &&
-		                              detail::write_frames<T, GlobalFrame(uint8_t)>::value;
+		                              detail::write_frames<T, std::optional<GlobalFrame>(void)>::value;
 	};
 } // namespace Communication

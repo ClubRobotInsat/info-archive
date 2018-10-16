@@ -34,7 +34,8 @@
 //#include "Moving2019.h"
 #include "Servos2019.h"
 
-#include <memory> // unique_ptr, make_unique
+#include <memory>   // unique_ptr, make_unique
+#include <optional> // optional
 
 namespace PhysicalRobot {
 	class ModuleManager final {
@@ -71,7 +72,13 @@ namespace PhysicalRobot {
 		template <typename Module>
 		Module& get_module();
 
-		GlobalFrame write_frame(uint8_t id) const;
+		/// Écrit une trame pour un module qui nécessite d'envoyer son état à l'électronique
+		/// Si aucun module ne doit partager son état dans l'immédiat, retourne std::nullopt
+		/// Cette fonction implémente l'API de `ParsingClassChecker`
+		// FIXME Vérifier que les modules de grands `id`s peuvent communiquer
+		// FIXME sinon utiliser un compteur pour répartir la parole de manière cyclique
+		std::optional<GlobalFrame> write_frame() const;
+		/// Lecture d'une trame ; implémente l'API de `ParsingClassChecker`
 		void read_frame(const GlobalFrame&);
 
 		/*/// Construit la trame globale du robot depuis chaque module instantié

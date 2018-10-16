@@ -1,5 +1,6 @@
 #include "Robot.h"
 #include <Constants.h>
+#include <log/Log.h>
 
 namespace PhysicalRobot {
 
@@ -15,9 +16,7 @@ namespace PhysicalRobot {
 	/// Initialise le robot à partir des arguments passes au programme.
 	Robot::Robot(std::shared_ptr<ModuleManager> module_manager, std::string name, std::vector<std::string> const& args)
 	        : _module_manager(std::move(module_manager)), _name(std::move(name)) {
-		_communicator =
-		    std::make_unique<Communication::ElecCommunicator<ModuleManager>>(_module_manager,
-		                                                                     GLOBAL_CONSTANTS.get_default_TCPIP_port());
+		_communicator = std::make_unique<Communication::Communicator<ModuleManager>>(_module_manager);
 		_communicator->connect(args);
 
 		// Après avoir créé tous les modules, on dit au communicateur qu'il peut exécuter son thread de communication
@@ -57,8 +56,9 @@ namespace PhysicalRobot {
 
 		for(auto module : GLOBAL_CONSTANTS[_name].get_modules()) {
 			/*if(module.first == "moving") {
-				_module_manager->add_module<Moving2019>(module.second);
-			} else */if(module.first == "servos") {
+			    _module_manager->add_module<Moving2019>(module.second);
+			} else */
+			if(module.first == "servos") {
 				// TODO : voir comment récupérer les servos à ajouter (`robot.ini` ou fichier .JSON ?)
 				_module_manager->add_module<Servos2019>(module.second);
 			} else if(module.first == "motors") {

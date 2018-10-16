@@ -42,6 +42,14 @@ public:
 	inline uint8_t get_b_value() const {
 		return _b;
 	}
+	void set_a_value(int a) {
+		_a = a;
+		_state_changed.exchange(true);
+	}
+	void set_b_value(int b) {
+		_b = b;
+		_state_changed.exchange(true);
+	}
 
 private:
 	SharedStructTest generate_shared() const override {
@@ -106,19 +114,11 @@ TEST_CASE("Servos 2019 Module") {
 		my_module.add_servo(2, -119_deg, PhysicalRobot::Servos2019::UNBLOCKING);
 		my_module.add_servo(4, 80_deg);
 
-		/*SECTION("Test de la validité d'un servo") {
-		    REQUIRE_FALSE(my_module.is_servo_ok(0));
-		    REQUIRE(my_module.is_servo_ok(4));
-		    REQUIRE_FALSE(my_module.is_servo_ok(6));
-		    REQUIRE_FALSE(my_module.is_servo_ok(Servos2019::NB_MAX_SERVOS));
-		    REQUIRE_FALSE(my_module.is_servo_ok(42));
-		}*/
-
 		REQUIRE_THROWS_WITH(my_module.add_servo(5, 50_deg), "Double assignation du servo 5 !");
 		REQUIRE_NOTHROW(my_module.add_servo(42, 50_deg));
 		REQUIRE_THROWS_WITH(my_module.add_servo(0, 0_deg), "L'ID 0 des servos est réservé !");
-		CHECK(my_module.get_nbr_servos() == 3);
-		// CHECK(my_module.get_frame_size() == ?);
+		CHECK(my_module.get_nbr_servos() == 4);
+		CHECK(my_module.get_frame_size() == 25);
 
 		REQUIRE_THROWS_WITH(my_module.set_position(1, 50_deg), "Numéro du servo demandé invalide : 1");
 		my_module.set_position(2, 50.4_deg);
@@ -354,31 +354,49 @@ TEST_CASE("ModuleManager") {
 	}
 
 	SECTION("Frame manipulation") {
-		PhysicalRobot::ModuleManager manager;
-		auto& module_test = manager.add_module<ModuleTest>(5);
-		auto& module_servo = manager.add_module<PhysicalRobot::Servos2019>(15);
-		module_servo.add_servo(2, 50_deg);
-
 		SECTION("GlobalFrame write_frame()") {
-			CHECK_THROWS_WITH(manager.write_frame(2), "The module n°2 doesn't exist.");
-			CHECK_THROWS_WITH(manager.write_frame(16), "Impossible to get module n°16 (> 16).");
+			PhysicalRobot::ModuleManager manager;
+			SECTION("Test") {
+				auto& module_test = manager.add_module<ModuleTest>(5);
 
-			auto frame_test = manager.write_frame(5);
-			REQUIRE(frame_test.getNbDonnees() == 2 + module_test.get_frame_size());
-			const uint8_t* array_test = frame_test.getDonnees();
-			// Size
-			REQUIRE(array_test[0] == module_test.get_frame_size());
-			// ID
-			CHECK(array_test[1] == module_test.get_id());
+				// Le module manager n'a aucune modification à apporter côté élec, et le timer n'a pas encore expiré
+				REQUIRE(manager.write_frame() == std::nullopt);
+				module_test.set_a_value(2);
+				REQUIRE(manager.write_frame() != std::nullopt);
 
-			auto frame_servos = manager.write_frame(15);
-			REQUIRE(frame_servos.getNbDonnees() == 2 + module_servo.get_frame_size());
-			const uint8_t* array_servos = frame_servos.getDonnees();
-			REQUIRE(array_servos[0] == module_servo.get_frame_size());
-			CHECK(array_servos[1] == module_servo.get_id());
+				module_test.set_b_value(3);
+				auto frame_test = manager.write_frame().value();
+				REQUIRE(frame_test.getNbDonnees() == 1 + module_test.get_frame_size());
+				const uint8_t* array_test = frame_test.getDonnees();
+				// ID
+				CHECK(array_test[0] == module_test.get_id());
+				// a
+				CHECK(array_test[1] == 2);
+				// b
+				CHECK(array_test[2] == 3);
+			}
+
+			SECTION("Servos") {
+				auto& module_servo = manager.add_module<PhysicalRobot::Servos2019>(15);
+				module_servo.add_servo(2, 50_deg);
+				module_servo.set_position(2, 90_deg);
+
+				auto frame_servos = manager.write_frame().value();
+				REQUIRE(frame_servos.getNbDonnees() == 1 + module_servo.get_frame_size());
+				const uint8_t* array_servos = frame_servos.getDonnees();
+				// ID
+				REQUIRE(array_servos[0] == module_servo.get_id());
+				CHECK(array_servos[1] == module_servo.get_nbr_servos());
+				CHECK(array_servos[2] == module_servo.make_frame().getDonnee(1));
+			}
 		}
 
 		SECTION("read_frame") {
+			PhysicalRobot::ModuleManager manager;
+			auto& module_test = manager.add_module<ModuleTest>(5);
+			auto& module_servo = manager.add_module<PhysicalRobot::Servos2019>(15);
+			module_servo.add_servo(2, 50_deg);
+
 			REQUIRE_THROWS_WITH(manager.read_frame({}), "Frame does not contain the module's size and id.");
 			REQUIRE_THROWS_WITH(manager.read_frame({0, 13}), "The module n°13 isn't initialized.");
 			REQUIRE_THROWS_WITH(manager.read_frame({0, 5}), "The size of the module n°5 does not correspond to the theory (0 != 2).");

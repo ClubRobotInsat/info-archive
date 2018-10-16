@@ -12,19 +12,17 @@ namespace PhysicalRobot {
 		return _modules[id] != nullptr;
 	}
 
-	GlobalFrame ModuleManager::write_frame(uint8_t id) const {
-		if(id >= NB_MODULES_MAX) {
-			throw std::runtime_error("Impossible to get module n°" + std::to_string(id) + " (> " +
-			                         std::to_string(NB_MODULES_MAX) + ").");
-		} else if(!has_module(id)) {
-			throw std::runtime_error("The module n°" + std::to_string(id) + " doesn't exist.");
+	std::optional<GlobalFrame> ModuleManager::write_frame() const {
+		for(uint8_t id = 0; id < NB_MODULES_MAX; ++id) {
+			if(has_module(id)) {
+				if(_modules[id]->needs_to_be_shared()) {
+					GlobalFrame f{id};
+					f += _modules[id]->make_frame();
+					return f;
+				}
+			}
 		}
-
-		GlobalFrame f{};
-		f.addByte(_modules[id]->get_frame_size());
-		f.addByte(id);
-		f += _modules[id]->make_frame();
-		return f;
+		return {};
 	}
 
 	void ModuleManager::read_frame(const GlobalFrame& frame) {

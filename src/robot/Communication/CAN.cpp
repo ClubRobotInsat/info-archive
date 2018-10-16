@@ -78,7 +78,7 @@ namespace Communication {
 		_serie->ecrireOctet(GlobalFrame::OCTET_DEBUT_TRAME_3);
 		_serie->ecrireOctet(GlobalFrame::OCTET_DEBUT_TRAME_4_NORMAL);
 
-		_serie->ecrireOctet(numPaquet);
+		//_serie->ecrireOctet(numPaquet);
 
 		// auto muxedIdAndCmd = Trame::multiplexIdAndCmd(t.getId(), t.getCmd());
 		//_serie->ecrireOctet(muxedIdAndCmd.first);  // Poids faible de l'ID

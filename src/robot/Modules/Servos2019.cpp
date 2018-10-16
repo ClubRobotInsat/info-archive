@@ -22,7 +22,7 @@ namespace PhysicalRobot {
 
 	uint8_t Servos2019::get_nbr_servos() const {
 		uint8_t count = 0;
-		for(uint8_t index = 0; index < MAX_SERVOS; ++index) {
+		for(uint8_t index = 0; index < ID_MAX_SERVOS; ++index) {
 			count += (_servos[index] != nullptr);
 		}
 		return count;
@@ -36,7 +36,7 @@ namespace PhysicalRobot {
 		if(id == 0)
 			return INDEX_BAD_ID;
 
-		for(uint8_t index = 0; index < MAX_SERVOS; ++index) {
+		for(uint8_t index = 0; index < ID_MAX_SERVOS; ++index) {
 			if(_servos[index] && _servos[index]->id == id)
 				return index;
 		}

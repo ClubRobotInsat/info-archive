@@ -44,7 +44,7 @@ TEST_CASE("Communication between info and elec") {
 	SECTION("Validity test of the 'parses_frames' helper struct.") {
 		struct Ok {
 			void read_frame(const GlobalFrame&) {}
-			GlobalFrame write_frame(uint8_t) const {
+			std::optional<GlobalFrame> write_frame() const {
 				return GlobalFrame{};
 			}
 		};
@@ -55,21 +55,21 @@ TEST_CASE("Communication between info and elec") {
 			int read_frame(const GlobalFrame&) {
 				return 1;
 			}
-			GlobalFrame write_frame() const {
+			std::optional<GlobalFrame> write_frame() const {
 				return GlobalFrame{};
 			}
 		};
 		struct Nok2 {
 			// pas les bons arguments
 			void read_frame(int) {}
-			GlobalFrame write_frame() const {
+			std::optional<GlobalFrame> write_frame() const {
 				return GlobalFrame{};
 			}
 		};
 		struct Nok3 {
 			// pas le bon nom de fonction
 			void other_function_name(const GlobalFrame&) {}
-			GlobalFrame write_frame() const {
+			std::optional<GlobalFrame> write_frame() const {
 				return GlobalFrame{};
 			}
 		};
@@ -85,14 +85,14 @@ TEST_CASE("Communication between info and elec") {
 		struct Nok5 {
 			void read_frame(const GlobalFrame&) {}
 			// pas les bons arguments
-			GlobalFrame write_frame(std::string) const {
+			std::optional<GlobalFrame> write_frame(std::string) const {
 				return GlobalFrame{};
 			}
 		};
 		struct Nok6 {
 			void read_frame(const GlobalFrame&) {}
 			// pas le bon nom
-			GlobalFrame other_function_name() const {
+			std::optional<GlobalFrame> other_function_name() const {
 				return GlobalFrame{};
 			}
 		};

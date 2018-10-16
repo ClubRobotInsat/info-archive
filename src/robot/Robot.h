@@ -5,7 +5,7 @@
 
 #include "Modules/ModuleManager.h"
 
-#include "Communication/ElecCommunicator.h"
+#include "Communication/Communicator.h"
 
 namespace PhysicalRobot {
 
@@ -52,7 +52,7 @@ namespace PhysicalRobot {
 		virtual void deactivation();
 
 	private:
-		std::unique_ptr<Communication::ElecCommunicator<ModuleManager>> _communicator;
+		std::unique_ptr<Communication::Communicator<ModuleManager>> _communicator;
 		std::string _name;
 
 		/*void setting_up_tirette() const;

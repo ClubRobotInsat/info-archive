@@ -53,15 +53,6 @@ inline constexpr Byte makeFromString(std::string value) {
 /// mais aussi avec une architecture où tout l'état du robot est envoyé en permanence
 class GlobalFrame {
 public:
-	/// Valeurs constantes de certains octets des trames
-	enum {
-		OCTET_DEBUT_TRAME_1 = 0xac,
-		OCTET_DEBUT_TRAME_2 = 0xdc,
-		OCTET_DEBUT_TRAME_3 = 0xab,
-		OCTET_DEBUT_TRAME_4_NORMAL = 0xba,
-		OCTET_DEBUT_TRAME_4_ACK = 0xbb,
-	};
-
 	enum { DONNEES_TRAME_MAX = 0xFFFF };
 
 	// erreur si une trame n'est pas traitée

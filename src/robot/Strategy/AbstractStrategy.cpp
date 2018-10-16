@@ -2,6 +2,8 @@
 // Created by terae on 06/10/18.
 //
 
+#include <log/Log.h>
+
 #include "AbstractStrategy.h"
 
 #include "EmbeddedFiles.h"
@@ -23,9 +25,7 @@ namespace Strategy {
 	}
 
 	void AbstractStrategy::create_environment() {
-		this->_env->loadFromJSON(
-				nlohmann::json::parse(
-						EmbeddedFiles::readText("table.json")));
+		this->_env->loadFromJSON(nlohmann::json::parse(EmbeddedFiles::readText("table.json")));
 	}
 
 	void AbstractStrategy::start(Duration match) {
