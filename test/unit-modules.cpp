@@ -393,16 +393,16 @@ TEST_CASE("ModuleManager") {
 
 		SECTION("read_frame") {
 			PhysicalRobot::ModuleManager manager;
-			auto& module_test = manager.add_module<ModuleTest>(5);
+			manager.add_module<ModuleTest>(5);
 			auto& module_servo = manager.add_module<PhysicalRobot::Servos2019>(15);
 			module_servo.add_servo(2, 50_deg);
 
-			REQUIRE_THROWS_WITH(manager.read_frame({}), "Frame does not contain the module's size and id.");
-			REQUIRE_THROWS_WITH(manager.read_frame({0, 13}), "The module n°13 isn't initialized.");
-			REQUIRE_THROWS_WITH(manager.read_frame({0, 5}), "The size of the module n°5 does not correspond to the theory (0 != 2).");
-			REQUIRE_THROWS_WITH(manager.read_frame({2, 5, 42, 43, 44}),
-			                    "Global frame's size does not correspond to its theoretical size.");
-			REQUIRE_NOTHROW(manager.read_frame({2, 5, 0, 0}));
+			REQUIRE_THROWS_WITH(manager.read_frame({}), "Frame does not contain the module's id.");
+			REQUIRE_THROWS_WITH(manager.read_frame({13}), "The module n°13 isn't initialized.");
+			REQUIRE_THROWS_WITH(manager.read_frame({5}), "The size of the module n°5 does not correspond to the theory (0 != 2).");
+			REQUIRE_THROWS_WITH(manager.read_frame({5, 0x1, 0x2, 0x3}),
+			                    "The size of the module n°5 does not correspond to the theory (3 != 2).");
+			REQUIRE_NOTHROW(manager.read_frame({5, 0, 0}));
 		}
 	}
 }

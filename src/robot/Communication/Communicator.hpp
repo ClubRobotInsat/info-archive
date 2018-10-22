@@ -126,12 +126,14 @@ namespace Communication {
 		_serial->ecrireOctet(BYTE_BEGIN_FRAME_4_NORMAL);
 
 		uint16_t msg_size = f.getNbDonnees();
-		_serial->ecrireOctets(reinterpret_cast<uint8_t*>(&msg_size), 2);
+		_serial->ecrireOctet(static_cast<uint8_t>(msg_size));
+		//_serial->ecrireOctets(reinterpret_cast<uint8_t*>(&msg_size), 2);
 
 		_serial->ecrireOctets(f.getDonnees(), msg_size);
 
 		// Temporisation pour ne pas saturer l'électronique
 		sleep(_delay);
+		sleep(10_s);
 	}
 
 	template <typename ParsingClass>
@@ -147,8 +149,9 @@ namespace Communication {
 			if(_serial->lireOctet() == BYTE_BEGIN_FRAME_2) {
 				if(_serial->lireOctet() == BYTE_BEGIN_FRAME_3) {
 					if(uint8_t frame_type = _serial->lireOctet(); frame_type == BYTE_BEGIN_FRAME_4_NORMAL) {
-						uint16_t msg_size;
-						_serial->lireOctets(reinterpret_cast<uint8_t*>(&msg_size), 2);
+						/*uint16_t msg_size;
+						_serial->lireOctets(reinterpret_cast<uint8_t*>(&msg_size), 2);*/
+						uint8_t msg_size = _serial->lireOctet();
 
 						_serial->lireOctets(buf, msg_size);
 						GlobalFrame received_frame{msg_size, buf};
@@ -192,9 +195,6 @@ namespace Communication {
 			while(running_execution) {
 				try {
 					auto frame = this->recv_frame_blocking(running_execution);
-					if(_debug_active) {
-						logDebug0("Communicator.communication.RECV ", frame, "\ntime: ", _chrono.getElapsedTime(), "\n");
-					}
 					_parser->read_frame(frame);
 				} catch(std::runtime_error& e) {
 					logError("Failed to update the state of the module manager!!");
@@ -208,14 +208,11 @@ namespace Communication {
 				std::optional<GlobalFrame> frame = _parser->write_frame();
 				if(frame == std::nullopt) {
 					if(_debug_active) {
-						logDebug0("Communicator.communication.SEND [NOTHING]\ntime: ", _chrono.getElapsedTime(), "\n");
+						logDebug0("None(GlobalFrame) to send; wait.\ntime: ", _chrono.getElapsedTime(), "\n");
 					}
 					// La classe de parsing peut ne rien avoir à envoyer, donc temporisation sur l'électronique
 					sleep(GLOBAL_CONSTANTS.get_default_communication_delay());
 				} else {
-					if(_debug_active) {
-						logDebug0("Communicator.communication.SEND ", frame.value(), "\ntime: ", _chrono.getElapsedTime(), "\n");
-					}
 					// Trame à envoyer
 					this->send_frame(frame.value());
 				}

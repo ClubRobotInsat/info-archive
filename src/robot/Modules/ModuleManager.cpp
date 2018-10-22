@@ -18,6 +18,7 @@ namespace PhysicalRobot {
 				if(_modules[id]->needs_to_be_shared()) {
 					GlobalFrame f{id};
 					f += _modules[id]->make_frame();
+					_modules[id]->reset_state();
 					return f;
 				}
 			}
@@ -26,17 +27,15 @@ namespace PhysicalRobot {
 	}
 
 	void ModuleManager::read_frame(const GlobalFrame& frame) {
-		/// Construction d'une trame : <size : u8> <id : u8> <msg : u8*>
+		/// Construction d'une trame : <id : u8> <msg : u8*>
 		// la taille correspond à celle occupée par le message du module seulement (sans les 2 octets de taille et d'id)
-		uint8_t wanted_frame_size = 2;
-		if(frame.getNbDonnees() < wanted_frame_size) {
-			throw std::runtime_error("Frame does not contain the module's size and id.");
+		if(frame.getNbDonnees() < 1) {
+			throw std::runtime_error("Frame does not contain the module's id.");
 		}
 		auto array = frame.getDonnees();
 
-		const uint8_t size = array[0];
-		wanted_frame_size += size;
-		const uint8_t id = array[1];
+		auto size = static_cast<uint8_t>(frame.getNbDonnees() - 1);
+		const uint8_t id = array[0];
 
 		// Vérification que le module existe
 		if(!has_module(id)) {
@@ -48,13 +47,8 @@ namespace PhysicalRobot {
 			                         std::to_string(size) + " != " + std::to_string(_modules[id]->get_frame_size()) + ").");
 		}
 
-		// Vérification que la trame contienne assez de place pour toutes les données
-		if(frame.getNbDonnees() != wanted_frame_size) {
-			throw std::runtime_error("Global frame's size does not correspond to its theoretical size.");
-		}
-
 		// Tout est Ok, mise à jour du module
-		_modules[id]->update(GlobalFrame(size, array + wanted_frame_size - size)); // array + 2
+		_modules[id]->update(GlobalFrame(size, array + 1));
 	}
 
 	/*GlobalFrame ModuleManager::write_frame() const {

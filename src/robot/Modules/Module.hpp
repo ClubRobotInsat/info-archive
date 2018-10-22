@@ -54,6 +54,12 @@ namespace PhysicalRobot {
 			return _state_changed || _timer.getElapsedTime() >= GLOBAL_CONSTANTS.get_frame_period();
 		}
 
+		/// On a prit en compte la nouvelle trame pour l'envoyer aux élecs
+		void reset_state() {
+			_state_changed.exchange(false);
+			_timer.reset();
+		}
+
 		/// Construit la trame du module (thread-safe)
 		virtual GlobalFrame make_frame() const = 0;
 

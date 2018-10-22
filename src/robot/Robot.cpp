@@ -18,6 +18,7 @@ namespace PhysicalRobot {
 	        : _module_manager(std::move(module_manager)), _name(std::move(name)) {
 		_communicator = std::make_unique<Communication::Communicator<ModuleManager>>(_module_manager);
 		_communicator->connect(args);
+		_communicator->set_debug(true);
 
 		// Après avoir créé tous les modules, on dit au communicateur qu'il peut exécuter son thread de communication
 		assign_modules();
