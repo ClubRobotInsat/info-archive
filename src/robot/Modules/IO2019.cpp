@@ -24,7 +24,7 @@ namespace PhysicalRobot {
 
 	void IO2019::message_processing(const SharedIO2019& s) {
 		if(s.parsing_failed == 0) {
-			_tirette.exchange(static_cast<bool>(s.tirette));
+			_tirette = static_cast<bool>(s.tirette);
 		}
 	}
 } // namespace PhysicalRobot

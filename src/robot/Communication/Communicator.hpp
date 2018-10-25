@@ -133,7 +133,6 @@ namespace Communication {
 
 		// Temporisation pour ne pas saturer l'électronique
 		sleep(_delay);
-		sleep(10_s);
 	}
 
 	template <typename ParsingClass>
@@ -207,9 +206,9 @@ namespace Communication {
 			while(running_execution) {
 				std::optional<GlobalFrame> frame = _parser->write_frame();
 				if(frame == std::nullopt) {
-					if(_debug_active) {
-						logDebug0("None(GlobalFrame) to send; wait.\ntime: ", _chrono.getElapsedTime(), "\n");
-					}
+					/*if(_debug_active) {
+					    logDebug0("None(GlobalFrame) to send; wait.\ntime: ", _chrono.getElapsedTime(), "\n");
+					}*/
 					// La classe de parsing peut ne rien avoir à envoyer, donc temporisation sur l'électronique
 					sleep(GLOBAL_CONSTANTS.get_default_communication_delay());
 				} else {

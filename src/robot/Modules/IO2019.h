@@ -25,7 +25,7 @@ namespace PhysicalRobot {
 
 		void deactivation() override {}
 
-		std::atomic_bool _tirette;
+		bool _tirette;
 	};
 } // namespace PhysicalRobot
 
