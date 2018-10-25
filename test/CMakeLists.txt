@@ -1,6 +1,9 @@
 add_executable(TEST_SERVOS servos.cpp)
 target_link_libraries(TEST_SERVOS Robot)
 
+add_executable(TP_LEDs leds.cpp)
+target_link_libraries(TP_LEDs Robot)
+
 # On ne peut pas utiliser la librairie "Catch2::Catch2" pour générer un unique fichier de test
 add_library(catch_main OBJECT "unit.cpp")
 target_include_directories(catch_main PRIVATE "../third_parties/catch/single_include/catch2")
