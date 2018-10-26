@@ -21,6 +21,6 @@ TEST_CASE("Initialization of a common robot.") {
 	// robot.get_communicator().disconnect();
 
 	SECTION("Robot Principal") {
-		PhysicalRobot::Robot r{"primary", {"ehCoucou", "NULL"}};
+		// PhysicalRobot::Robot r{"primary", {"ehCoucou", "NULL"}};
 	}
 }
