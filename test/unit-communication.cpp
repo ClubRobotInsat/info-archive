@@ -4,7 +4,8 @@
 
 #include "catch.hpp"
 
-#include "../src/robot/Communication/ElecCommunicator.h"
+#include "../src/robot/Communication/Communicator.h"
+#include "../src/robot/Modules/ModuleManager.h"
 #include "communication/GlobalFrame.h"
 #include <type_traits>
 
@@ -107,10 +108,12 @@ TEST_CASE("Communication between info and elec") {
 
 		CHECK(Communication::parses_frames<PhysicalRobot::ModuleManager>::value);
 
-		Communication::ElecCommunicator<Ok> c1(std::make_shared<Ok>(), 42);
+		Communication::Communicator<Ok> c1(std::make_shared<Ok>());
+		Communication::Communicator<PhysicalRobot::ModuleManager> c2(std::make_shared<PhysicalRobot::ModuleManager>());
+
+		Communication::Communicator<Nok1> c3(std::make_shared<Nok1>());
 		// ne compile pas : Nok1 ne correspond pas aux critères de parsing
-		// Commun::ElecCommunicator<Nok1> c3(std::make_shared<Nok1>(), 42);
-		Communication::ElecCommunicator<PhysicalRobot::ModuleManager> c2(std::make_shared<PhysicalRobot::ModuleManager>(), 42);
+		// c3.connect({});
 	}
 
 	/*SECTION("Connection") {

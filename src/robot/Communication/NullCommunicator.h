@@ -8,18 +8,18 @@
 #ifndef NullCommunicator_h
 #define NullCommunicator_h
 
-#include "Serie.h"
+#include "Serial.h"
 #include <thread>
 
 namespace Communication {
-	class NullCommunicator : public Serie {
+	class NullCommunicator : public Serial {
 	public:
-		NullCommunicator();
-		~NullCommunicator();
+		NullCommunicator() = default;
+		~NullCommunicator() override = default;
 
-		virtual void ecrireOctets(uint8_t const*, std::size_t) override;
+		void write_bytes(const uint8_t* bytes, std::size_t bytes_number) override;
 
-		virtual void lireOctets(uint8_t* octets, std::size_t nombre) override;
+		void read_bytes(uint8_t* bytes, std::size_t bytes_number) override;
 
 		bool estConnecte() {
 			return true;

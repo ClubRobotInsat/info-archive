@@ -13,27 +13,27 @@
 
 #include "Commun.h"
 
-#include "Serie.h"
+#include "Serial.h"
 
 namespace Communication {
 
 	/// Interface de communication série via socket TCP/IP
-	class TCPIP : public Serie {
+	class TCPIP : public Serial {
 	public:
 		/// Ouvre la connexion
-		TCPIP(std::string const& adresse, uint16_t port);
+		TCPIP(std::string const& address, uint16_t port);
 
 		/// Ferme la connexion
-		~TCPIP();
+		~TCPIP() override;
 
 		/// Ecrit plusieurs octets sur la liaison
-		virtual void ecrireOctets(uint8_t const* octets, std::size_t nombre) override;
+		void write_bytes(const uint8_t* bytes, std::size_t bytes_number) override;
 
 		/// Attend plusieurs octets sur la liaison et retourne lorsque le nombre demandé a été reçu - BLOQUANT
-		virtual void lireOctets(uint8_t* octets, std::size_t nombre) override;
+		void read_bytes(uint8_t* bytes, std::size_t bytes_number) override;
 
 		/// Indique si la liaison TCP/IP est connectée ou pas
-		bool estConnecte();
+		bool is_connected();
 
 	private:
 /// Descripteur du socket TCP/IP
@@ -44,10 +44,10 @@ namespace Communication {
 #endif
 
 		/// Indique si la liaison TCP/IP est connectée ou pas
-		bool _connecte;
+		bool _connected;
 
 		// Ferme le socket
-		void fermerSocket();
+		void close_socket();
 	};
 } // namespace Communication
 

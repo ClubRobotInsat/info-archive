@@ -7,26 +7,23 @@
 
 #include "Commun.h"
 
-#include "Serie.h"
+#include "Serial.h"
 
 #include <fcntl.h>
 
 namespace Communication {
-	class NamedPipe : public Serie {
+	class NamedPipe : public Serial {
 	public:
 		/// Crée et configure les descripteurs de communication
-		NamedPipe(const std::string& pathRead, const std::string& pathWrite);
+		NamedPipe(const std::string& path_read, const std::string& path_write);
 		~NamedPipe() override;
 
-		void ecrireOctets(uint8_t const*, std::size_t) override;
+		void write_bytes(const uint8_t* bytes, std::size_t bytes_number) override;
 
-		void lireOctets(uint8_t* octets, std::size_t nombre) override;
+		void read_bytes(uint8_t* bytes, std::size_t bytes_number) override;
 
 		// erreur si la connection n'est pas ouverte
-		class ErreurOuverturePipe : public std::runtime_error {
-		public:
-			explicit ErreurOuverturePipe(std::string msg) : std::runtime_error(msg) {}
-		};
+		EXCEPTION_CLASS(ErrorPipeOpening);
 
 	private:
 		/// Descripteur de communication (FIFO)
@@ -36,7 +33,7 @@ namespace Communication {
 		std::string _path_read;
 		std::string _path_write;
 
-		bool creerDescripteur(const std::string path);
+		bool create_descriptor(const std::string& path);
 	};
 } // namespace Communication
 

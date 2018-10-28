@@ -41,11 +41,11 @@ using std::uint64_t;
 using std::uint8_t;
 
 // écriture allégée pour définir une sous-classe d'exception.
-#define EXCEPTION_CLASS(name)                                     \
-	class name : public std::runtime_error {                      \
-	public:                                                       \
-		name() : std::runtime_error("") {}                        \
-		name(std::string s) : std::runtime_error(std::move(s)) {} \
+#define EXCEPTION_CLASS(name)                                              \
+	class name : public std::runtime_error {                               \
+	public:                                                                \
+		name() : std::runtime_error("") {}                                 \
+		explicit name(std::string s) : std::runtime_error(std::move(s)) {} \
 	};
 
 #define logRouge(...) logError(__VA_ARGS__)

@@ -15,7 +15,7 @@
 #include "NamedPipe.h"
 #include "NullCommunicator.h"
 #include "RS232.h"
-#include "Serie.h"
+#include "Serial.h"
 #include "TCPIP.h"
 
 #include <Units/Time.h>                // Duration
@@ -82,7 +82,7 @@ namespace Communication {
 		std::thread _reception;
 
 		/// Port de communication serie utilise pour la communication avec le bus CAN
-		std::unique_ptr<Serie> _serial;
+		std::unique_ptr<Serial> _serial;
 		/// Instance d'une classe qui lit et écrit des trames de communication pour y appliquer les messages
 		std::shared_ptr<ParsingClass> _parser;
 

@@ -6,7 +6,7 @@
 namespace Communication {
 
 	/// Ouvre la connexion
-	TCPIP::TCPIP(std::string const& adresse, uint16_t port) : _connecte(false) {
+	TCPIP::TCPIP(std::string const& address, uint16_t port) : _connected(false) {
 #ifdef WIN32
 		WSAData data;
 		WSAStartup(MAKEWORD(2, 2), &data);
@@ -27,9 +27,9 @@ namespace Communication {
 		sockaddr_in addr;
 		hostent* hostinfo;
 
-		hostinfo = gethostbyname(adresse.c_str());
+		hostinfo = gethostbyname(address.c_str());
 		if(hostinfo == nullptr) {
-			logError("Impossible de trouver l'adresse du serveur '", adresse, "'\n");
+			logError("Impossible de trouver l'adresse du serveur '", address, "'\n");
 			exit(EXIT_FAILURE);
 		}
 
@@ -39,21 +39,21 @@ namespace Communication {
 		memset(&(addr.sin_zero), 0, 8);
 
 		if(connect(_fd, reinterpret_cast<struct sockaddr*>(&addr), sizeof(struct sockaddr_in)) < 0) {
-			logError("Impossible de se connecter au serveur ", adresse, ":", port);
+			logError("Impossible de se connecter au serveur ", address, ":", port);
 			throw(34);
 		}
 
-		_connecte = true;
+		_connected = true;
 	}
 
 	/// Ferme la connexion
 	TCPIP::~TCPIP() {
-		fermerSocket();
+		close_socket();
 	}
 
 	/// Ecrit plusieurs octets sur le port
-	void TCPIP::ecrireOctets(unsigned char const* octets, std::size_t nombre) {
-		if(_connecte) {
+	void TCPIP::write_bytes(unsigned char const* octets, std::size_t nombre) {
+		if(_connected) {
 #ifdef WIN32
 			int flags = 0;
 #elif __APPLE__
@@ -62,13 +62,13 @@ namespace Communication {
 			int flags = MSG_NOSIGNAL;
 #endif
 			if(send(_fd, reinterpret_cast<const char*>(octets), nombre, flags) < static_cast<ssize_t>(nombre))
-				fermerSocket();
+				close_socket();
 		}
 	}
 
 	/// Attend plusieurs octets sur le port et retourne lorsque le nombre demandé a été reçu - BLOQUANT
-	void TCPIP::lireOctets(uint8_t* octets, std::size_t nombre) {
-		if(_connecte) {
+	void TCPIP::read_bytes(uint8_t* bytes, std::size_t bytes_number) {
+		if(_connected) {
 #ifdef WIN32 // MSG_WAITALL pas avant Win Server 2003 (donc pas sous XP par exemple) : on fait sans
 			unsigned char recu;
 			unsigned char lus = 0;
@@ -80,20 +80,20 @@ namespace Communication {
 					lus += recu;
 			}
 #else
-			if(recv(_fd, reinterpret_cast<char*>(octets), nombre, MSG_WAITALL) < static_cast<ssize_t>(nombre))
-				fermerSocket();
+			if(recv(_fd, reinterpret_cast<char*>(bytes), bytes_number, MSG_WAITALL) < static_cast<ssize_t>(bytes_number))
+				close_socket();
 #endif
 		}
 	}
 
 	/// Indique si la liaison TCP/IP est connectée ou pas
-	bool TCPIP::estConnecte() {
-		return _connecte;
+	bool TCPIP::is_connected() {
+		return _connected;
 	}
 
 	// Ferme le socket
-	void TCPIP::fermerSocket() {
-		if(_connecte) {
+	void TCPIP::close_socket() {
+		if(_connected) {
 			logInfo("Fermeture du socket\n");
 
 			shutdown(_fd, 2);
@@ -105,6 +105,6 @@ namespace Communication {
 #endif
 		}
 
-		_connecte = false;
+		_connected = false;
 	}
 } // namespace Communication

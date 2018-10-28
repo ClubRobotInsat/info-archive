@@ -14,7 +14,7 @@
 namespace Communication {
 
 	/// Ouvre le port série indiqué et le configure
-	RS232::RS232(std::string const& port) {
+	RS232::RS232(const std::string& port) {
 #ifdef WIN32
 
 		_fd = CreateFile(port.c_str(), GENERIC_READ | GENERIC_WRITE, 0, nullptr, OPEN_EXISTING, FILE_FLAG_OVERLAPPED, nullptr); // RW, lecture non-bloquante
@@ -111,7 +111,7 @@ namespace Communication {
 	}
 
 	/// Ecrit plusieurs octets sur le port
-	void RS232::ecrireOctets(uint8_t const* octets, std::size_t nombre) {
+	void RS232::write_bytes(const uint8_t* bytes, std::size_t bytes_number) {
 #ifdef WIN32
 
 		DWORD dummy;
@@ -122,7 +122,7 @@ namespace Communication {
 
 #else
 
-		ssize_t val = write(_fd, octets, nombre);
+		ssize_t val = write(_fd, bytes, bytes_number);
 		if(val == -1) {
 			logError("Erreur dans write : ");
 			perror("Erreur retournée");
@@ -132,7 +132,7 @@ namespace Communication {
 	}
 
 	/// Attend plusieurs octets sur le port et retourne lorsque le nombre demandé a été reçu - BLOQUANT
-	void RS232::lireOctets(uint8_t* octets, std::size_t nombre) {
+	void RS232::read_bytes(uint8_t* bytes, std::size_t bytes_number) {
 #ifdef WIN32
 
 		DWORD dummy;
@@ -143,9 +143,9 @@ namespace Communication {
 
 #else
 
-		std::size_t lus = 0;
-		while(lus < nombre) {
-			ssize_t val = read(_fd, octets + lus, nombre - lus);
+		std::size_t nb_read = 0;
+		while(nb_read < bytes_number) {
+			ssize_t val = read(_fd, bytes + nb_read, bytes_number - nb_read);
 			if(val == -1) {
 				logError("Erreur dans read : ");
 				perror("Erreur retournée");
@@ -153,7 +153,7 @@ namespace Communication {
 			}
 			if(val == 0)
 				throw ErreurEOF();
-			lus += val;
+			nb_read += val;
 		}
 
 #endif

@@ -1,6 +1,6 @@
 set(COMMUNICATION_SOURCE
         RS232.cpp
-        Serie.cpp
+        Serial.cpp
         NullCommunicator.cpp
         TCPIP.cpp
         NamedPipe.cpp

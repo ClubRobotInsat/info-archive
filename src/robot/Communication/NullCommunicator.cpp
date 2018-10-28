@@ -5,17 +5,13 @@
 #include "NullCommunicator.h"
 
 namespace Communication {
-	void NullCommunicator::lireOctets(uint8_t* octets, std::size_t nombre) {
-		while(nombre > 0) {
-			--nombre;
-			octets[nombre] = 0;
+	void NullCommunicator::read_bytes(uint8_t* bytes, std::size_t bytes_number) {
+		while(bytes_number > 0) {
+			--bytes_number;
+			bytes[bytes_number] = 0;
 		}
 		std::this_thread::sleep_for(std::chrono::milliseconds(1));
 	}
 
-	void NullCommunicator::ecrireOctets(uint8_t const*, std::size_t) {}
-
-	NullCommunicator::NullCommunicator() = default;
-
-	NullCommunicator::~NullCommunicator() = default;
+	void NullCommunicator::write_bytes(uint8_t const*, std::size_t) {}
 } // namespace Communication

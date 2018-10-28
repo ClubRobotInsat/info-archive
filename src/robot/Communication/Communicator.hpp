@@ -120,16 +120,16 @@ namespace Communication {
 		}
 		std::lock_guard<std::mutex> lk(_mutex_write);
 
-		_serial->ecrireOctet(BYTE_BEGIN_FRAME_1); // Debut de trame
-		_serial->ecrireOctet(BYTE_BEGIN_FRAME_2);
-		_serial->ecrireOctet(BYTE_BEGIN_FRAME_3);
-		_serial->ecrireOctet(BYTE_BEGIN_FRAME_4_NORMAL);
+		_serial->write_byte(BYTE_BEGIN_FRAME_1); // Debut de trame
+		_serial->write_byte(BYTE_BEGIN_FRAME_2);
+		_serial->write_byte(BYTE_BEGIN_FRAME_3);
+		_serial->write_byte(BYTE_BEGIN_FRAME_4_NORMAL);
 
 		uint16_t msg_size = f.getNbDonnees();
-		_serial->ecrireOctet(static_cast<uint8_t>(msg_size));
-		//_serial->ecrireOctets(reinterpret_cast<uint8_t*>(&msg_size), 2);
+		_serial->write_byte(static_cast<uint8_t>(msg_size));
+		//_serial->write_bytes(reinterpret_cast<uint8_t*>(&msg_size), 2);
 
-		_serial->ecrireOctets(f.getDonnees(), msg_size);
+		_serial->write_bytes(f.getDonnees(), msg_size);
 
 		// Temporisation pour ne pas saturer l'électronique
 		sleep(_delay);
@@ -140,19 +140,19 @@ namespace Communication {
 		static uint8_t buf[GlobalFrame::DONNEES_TRAME_MAX];
 		while(running_execution) {
 			// Début de la trame
-			while(_serial->lireOctet() != BYTE_BEGIN_FRAME_1) {
+			while(_serial->read_byte() != BYTE_BEGIN_FRAME_1) {
 				if(!running_execution)
 					break;
 			}
 
-			if(_serial->lireOctet() == BYTE_BEGIN_FRAME_2) {
-				if(_serial->lireOctet() == BYTE_BEGIN_FRAME_3) {
-					if(uint8_t frame_type = _serial->lireOctet(); frame_type == BYTE_BEGIN_FRAME_4_NORMAL) {
+			if(_serial->read_byte() == BYTE_BEGIN_FRAME_2) {
+				if(_serial->read_byte() == BYTE_BEGIN_FRAME_3) {
+					if(uint8_t frame_type = _serial->read_byte(); frame_type == BYTE_BEGIN_FRAME_4_NORMAL) {
 						/*uint16_t msg_size;
 						_serial->lireOctets(reinterpret_cast<uint8_t*>(&msg_size), 2);*/
-						uint8_t msg_size = _serial->lireOctet();
+						uint8_t msg_size = _serial->read_byte();
 
-						_serial->lireOctets(buf, msg_size);
+						_serial->read_bytes(buf, msg_size);
 						GlobalFrame received_frame{msg_size, buf};
 						if(_debug_active) {
 							logDebug("Communicator.RECV ", received_frame, "\ntime: ", _chrono.getElapsedTime(), "\n");
