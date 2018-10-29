@@ -76,7 +76,7 @@ namespace PhysicalRobot {
 
 			// Par défaut, un servo est commandé en vitesse (0 rad/s).
 			Servo(uint8_t id, Angle start_position, BlockingMode mode)
-			        : id(id)
+			        : id(static_cast<uint8_t>(id > 0 ? id : throw std::runtime_error("ID equals to 0.")))
 			        , position(start_position)
 			        , command(0)
 			        , command_type(CommandType::SPEED)

@@ -10,7 +10,7 @@ Constants::Constants const GLOBAL_CONSTANTS(EmbeddedFiles::readText("../robot.in
 
 namespace Constants {
 
-	int read_field(IniFile& file, std::string section, std::string field, int default_value) {
+	int read_field(IniFile& file, const std::string& section, const std::string& field, int default_value) {
 		auto it = file[section];
 		if(it.member(field)) {
 			return it[field].asInt();

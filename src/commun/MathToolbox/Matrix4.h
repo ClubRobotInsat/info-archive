@@ -34,7 +34,7 @@ public:
 
 	// Constructeur à partir d'un tableau
 	template <class T_scalar>
-	Matrix4(T_scalar* values, bool transpose = false);
+	explicit Matrix4(const T_scalar* values, bool transpose = false);
 
 	// Constructeur à partir de la sous-matrice 3x3 supérieure gauche et du vecteur de translation
 	template <class T_scalar>
@@ -42,7 +42,7 @@ public:
 
 	// Constructeur de copie
 	template <class T_scalar>
-	Matrix4(const Matrix4<T_scalar>& ref);
+	explicit Matrix4(const Matrix4<T_scalar>& ref);
 
 	// Destructeur
 	~Matrix4() = default;

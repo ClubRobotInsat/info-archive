@@ -16,16 +16,16 @@
  */
 
 namespace repere {
-	struct Coordonnees;
+	struct Coordinates;
 
 	/**
-	 * @enum Multiplicateur
+	 * @enum Multiplier
 	 * Permet de connaître la direction des vecteurs unitaires Ex, Ey
 	 *
 	 * Ex positif : de l'armoire vers la porte
 	 * Ey positif : de l'armoire vers le poste méca
 	 */
-	enum Multiplicateur { SENS_POSITIF = 1, SENS_NEGATIF = -1 };
+	enum Multiplier { SENS_POSITIVE = 1, SENS_NEGATIVE = -1 };
 
 	/**
 	 * @class Repere
@@ -51,12 +51,12 @@ namespace repere {
 	 *      (0,2)|--------------------------------|(3,2)
 	 *           |                                |
 	 *           |                                |       |
-	 *           |                                |       | multY = Multiplicateur::SENS_NEGATIF
+	 *           |                                |       | multY = Multiplier::SENS_NEGATIVE
 	 *           |                                |       v
 	 *           |                                |
 	 *      (0,0)|________________________________|(3,0)
 	 *
-	 *                  ==> multX = Multiplicateur::SENS_POSITIF
+	 *                  ==> multX = Multiplier::SENS_POSITIVE
 	 *
 	 * @fn get_coordonnees Conversion des coordonnées d'un repère vers un autre
 	 *
@@ -65,8 +65,8 @@ namespace repere {
 	 * @example
 	 * # Initialisation #
 	 * Définition du repère global (instanciation dans ../ConstantesCommunes.h)
-	 * const repere::Repere REPERE_ABSOLU = repere::Repere({0_m, 0_m}, repere::Multiplicateur::SENS_POSITIF,
-	 * repere::Multiplicateur::SENS_POSITIF);
+	 * const repere::Repere REPERE_ABSOLU = repere::Repere({0_m, 0_m}, repere::Multiplier::SENS_POSITIVE,
+	 * repere::Multiplier::SENS_POSITIVE);
 	 *
 	 *           |--------------------------------|
 	 *           |                                |
@@ -79,7 +79,7 @@ namespace repere {
 	 *
 	 * Définition d'un repère quelconque de travail
 	 * const repere::Repere REPERE_CENTRE_AXES_INVERSES = repere::Repere({1.5_m, 1_m},
-	 * repere::Multiplicateur::SENS_NEGATIF, repere::SENS_NEGATIF);
+	 * repere::Multiplier::SENS_NEGATIVE, repere::SENS_NEGATIVE);
 	 *
 	 *           |--------------------------------|
 	 *           |                                |
@@ -98,7 +98,7 @@ namespace repere {
 	 */
 	class Repere {
 	public:
-		Repere(Vector2m origine = {0_m, 0_m}, Multiplicateur multX = SENS_POSITIF, Multiplicateur multY = SENS_POSITIF)
+		Repere(Vector2m origine = {0_m, 0_m}, Multiplier multX = SENS_POSITIVE, Multiplier multY = SENS_POSITIVE)
 		        : _origine(origine), _multX(multX), _multY(multY) {}
 
 		Repere(const Repere& other) : _origine(other._origine), _multX(other._multX), _multY(other._multY) {}
@@ -123,11 +123,11 @@ namespace repere {
 
 	private:
 		Vector2m _origine;
-		Multiplicateur _multX, _multY;
+		Multiplier _multX, _multY;
 	};
 
 	// Repère absolu pour toutes les tables : (0, 0) en bas à gauche (contre le mur proche du tableau au club)
-	const Repere ABSOLUTE_REFERENCE = repere::Repere({0_m, 0_m}, ::repere::SENS_POSITIF, ::repere::SENS_POSITIF);
+	const Repere ABSOLUTE_REFERENCE = repere::Repere({0_m, 0_m}, ::repere::SENS_POSITIVE, ::repere::SENS_POSITIVE);
 
 	struct Orientation {
 		Orientation(Angle angle = 0_deg, const Repere& repere_parent = ABSOLUTE_REFERENCE);
@@ -189,13 +189,13 @@ namespace repere {
 	 * si multX == multY, Angle(+45_deg) correspond à une rotation de 45_deg dans le sens Trigo
 	 * si multX != multY, Angle(+45_deg) correspond à une rotation de 45_deg dans le sens Horaire
 	 */
-	struct Coordonnees {
-		Coordonnees(Vector3m position = Vector3m(0_m, 0_m, 0_m), Angle angle = 0_rad, const Repere& repere_parent = ABSOLUTE_REFERENCE);
+	struct Coordinates {
+		Coordinates(Vector3m position = Vector3m(0_m, 0_m, 0_m), Angle angle = 0_rad, const Repere& repere_parent = ABSOLUTE_REFERENCE);
 
 		/// Surcharge pour donner des coordonnées 2D
-		Coordonnees(Vector2m position, Angle angle = 0_rad, const Repere& repere_parent = ABSOLUTE_REFERENCE);
+		explicit Coordinates(Vector2m position, Angle angle = 0_rad, const Repere& repere_parent = ABSOLUTE_REFERENCE);
 
-		Coordonnees(const Coordonnees& coords);
+		explicit Coordinates(const Coordinates& coords);
 
 		/// Getters
 		Distance getX(const Repere& repere = ABSOLUTE_REFERENCE) const {
@@ -230,7 +230,7 @@ namespace repere {
 			return repere.getAngle(_angle, _repere_parent);
 		}
 
-		Coordonnees& operator=(const Coordonnees& coords);
+		Coordinates& operator=(const Coordinates& coords);
 
 	private:
 		Vector3m _pos;
@@ -240,15 +240,15 @@ namespace repere {
 		friend class Repere;
 	};
 
-	inline std::ostream& operator<<(std::ostream& os, const Coordonnees& coords) {
-		os << "[x=" << coords.getX() << ", y=" << coords.getY() << ", theta=" << coords.getAngle() << " deg]";
+	inline std::ostream& operator<<(std::ostream& os, const Coordinates& coords) {
+		os << "[x=" << coords.getX() << ", y=" << coords.getY() << ", θ=" << coords.getAngle() << " deg]";
 		return os;
 	}
 
-	inline bool operator==(const Coordonnees& c1, const Coordonnees& c2) {
+	inline bool operator==(const Coordinates& c1, const Coordinates& c2) {
 		return c1.getPos3D() == c2.getPos3D() && c1.getAngle() == c2.getAngle();
 	}
-}
+} // namespace repere
 
 
 #endif // ROOT_REPERE_H

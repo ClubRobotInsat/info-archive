@@ -58,7 +58,7 @@ namespace Communication {
 		}
 
 		tcflush(_fd, TCIOFLUSH);
-		termios params;
+		termios params{};
 		memset(&params, 0, sizeof(termios));
 
 #ifdef __APPLE__

@@ -2,8 +2,8 @@
 // Created by terae on 23/09/18.
 //
 
-#ifndef ROOT_CONSTANTES_H
-#define ROOT_CONSTANTES_H
+#ifndef ROOT_CONSTANTS_H
+#define ROOT_CONSTANTS_H
 
 #include "Enum/Enum.h"
 #include <ini/src/IniFile.hpp>
@@ -110,7 +110,7 @@ namespace Constants {
 		}
 
 		const repere::Repere REFERENCE_ASTAR =
-		    repere::Repere({0_m, 0_m}, repere::Multiplicateur::SENS_POSITIF, repere::Multiplicateur::SENS_POSITIF);
+		    repere::Repere({0_m, 0_m}, repere::Multiplier::SENS_POSITIVE, repere::Multiplier::SENS_POSITIVE);
 
 		// Convertir la table du fichier texte en un objet JSON à la pré-compilation
 
@@ -150,22 +150,26 @@ namespace Constants {
 		IniFile _reader;
 
 		const repere::Repere REFERENCE_YELLOW =
-		    repere::Repere({0_m, 0_m}, repere::Multiplicateur::SENS_POSITIF, repere::Multiplicateur::SENS_POSITIF);
+		    repere::Repere({0_m, 0_m}, repere::Multiplier::SENS_POSITIVE, repere::Multiplier::SENS_POSITIVE);
 
 		const repere::Repere REFERENCE_PURPLE =
-		    repere::Repere({3_m, 0_m}, repere::Multiplicateur::SENS_NEGATIF, repere::Multiplicateur::SENS_POSITIF);
+		    repere::Repere({3_m, 0_m}, repere::Multiplier::SENS_NEGATIVE, repere::Multiplier::SENS_POSITIVE);
 	};
 } // namespace Constants
 
 inline Constants::RobotColor operator!(Constants::RobotColor const& c) {
-	if(c == Constants::RobotColor::Purple)
-		return Constants::RobotColor::Yellow;
-	else if(c == Constants::RobotColor::Yellow)
-		return Constants::RobotColor::Purple;
+	using Constants::RobotColor;
 
-	return c;
+	switch(c) {
+		case RobotColor::Purple:
+			return RobotColor::Yellow;
+		case RobotColor::Yellow:
+			return RobotColor::Purple;
+		case RobotColor::Undef:
+			return RobotColor::Undef;
+	}
 }
 
 extern Constants::Constants const GLOBAL_CONSTANTS;
 
-#endif // ROOT_CONSTANTES_H
+#endif // ROOT_CONSTANTS_H

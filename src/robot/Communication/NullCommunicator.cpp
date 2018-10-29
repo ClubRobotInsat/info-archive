@@ -13,5 +13,5 @@ namespace Communication {
 		std::this_thread::sleep_for(std::chrono::milliseconds(1));
 	}
 
-	void NullCommunicator::write_bytes(uint8_t const*, std::size_t) {}
+	void NullCommunicator::write_bytes(const uint8_t*, std::size_t) {}
 } // namespace Communication

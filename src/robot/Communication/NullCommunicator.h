@@ -21,7 +21,7 @@ namespace Communication {
 
 		void read_bytes(uint8_t* bytes, std::size_t bytes_number) override;
 
-		bool estConnecte() {
+		bool is_connected() {
 			return true;
 		}
 	};

@@ -37,12 +37,12 @@ public:
 	Vector4(const T& x, const T& y, const T& z, const T& w); // à partir des coordonnées
 
 	template <class T_scalar>
-	Vector4(const T_scalar& s); // à partir d'un seul scalaire
+	explicit Vector4(const T_scalar& s); // à partir d'un seul scalaire
 
 	Vector4(const Vector4<T>& ref); // de copie 1
 
 	template <class T_2>
-	Vector4(const Vector4<T_2>& ref); // de copie 2
+	explicit Vector4(const Vector4<T_2>& ref); // de copie 2
 
 	// Destructeur
 	~Vector4() = default;

@@ -54,7 +54,7 @@ std::string to_string(T const& t) {
 }
 
 template <>
-inline std::string to_string<uint8_t>(uint8_t const& value) {
+inline std::string to_string<uint8_t>(const uint8_t& value) {
 	return to_string<int>(static_cast<uint8_t>(value));
 }
 
@@ -64,7 +64,7 @@ namespace Utils {
 	// Fonctions utilisées par getNumbersArray()
 	// Lisent un nombre à partir d'une chaîne de caractères le représentant
 	template <typename T>
-	inline std::enable_if_t<std::is_scalar<T>::value, T> strToNumber(std::string const& str) {
+	inline std::enable_if_t<std::is_scalar<T>::value, T> strToNumber(const std::string& str) {
 		T ret;
 
 		std::istringstream s(str);
@@ -74,7 +74,7 @@ namespace Utils {
 	}
 
 	template <typename T>
-	inline void strToNumber(std::string const& str, T& pNumber) {
+	inline void strToNumber(const std::string& str, T& pNumber) {
 		pNumber = Utils::strToNumber<T>(str);
 	}
 
@@ -85,7 +85,7 @@ namespace Utils {
 		// Chaîne correspondant au nombre actuellement parcouru
 		char strCurrentNumber[32] = "";
 
-		int nbNum = 0;
+		unsigned int nbNum = 0;
 
 		for(unsigned i = 0, j = 0, k = 0; str[i] != '\0'; i++) {
 			// Si le caractère parcouru est le dernier de str :
@@ -132,6 +132,6 @@ namespace Utils {
 
 		return nbNum;
 	}
-}
+} // namespace Utils
 
 #endif // UTILS_H

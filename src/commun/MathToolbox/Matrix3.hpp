@@ -36,7 +36,7 @@ Matrix3<T>::Matrix3(const Vector3<T_scalar>& v1, const Vector3<T_scalar>& v2, co
 // Constructeur à partir d'un tableau
 template <class T>
 template <class T_scalar>
-Matrix3<T>::Matrix3(T_scalar* values, bool transpose) {
+Matrix3<T>::Matrix3(const T_scalar* values, bool transpose) {
 	for(int i = 0; i < 9; i++)
 		this->values[i] = values[i];
 

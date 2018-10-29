@@ -10,7 +10,7 @@ using namespace std;
 const float Environment::DANGER_INFINITY = 2;
 
 const repere::Repere REFERENCE_ENVIRONMENT =
-    repere::Repere({0_m, 0_m}, repere::Multiplicateur::SENS_POSITIF, repere::Multiplicateur::SENS_POSITIF);
+    repere::Repere({0_m, 0_m}, repere::Multiplier::SENS_POSITIVE, repere::Multiplier::SENS_POSITIVE);
 
 Neighbor::Neighbor(Distance distance, Node& n_) : dist(distance), n(n_) {}
 
@@ -248,12 +248,12 @@ void Environment::loadFromJSON(JSON json) {
 				                                              dimensions.y.toMm() * sin(angle.toRad()) / 2),
 				                         Distance::makeFromMm(position.y.toMm() + dimensions.x.toMm() * sin(angle.toRad()) / 2 -
 				                                              dimensions.y.toMm() * cos(angle.toRad()) / 2)};
-				repere::Coordonnees coords(offset_position, angle);
+				repere::Coordinates coords(offset_position, angle);
 				this->addStaticShape(std::make_unique<Rect>(
 				    danger, coords.getPos2D(REFERENCE_ENVIRONMENT), dimensions, coords.getAngle(REFERENCE_ENVIRONMENT)));
 			} else if(type == "cylinder" || type == "sphere") {
 				Length radius(Length::makeFromM(object["radius"].get<double>()));
-				repere::Coordonnees coords(position);
+				repere::Coordinates coords(position);
 				this->addStaticShape(std::make_unique<Circle>(danger, radius, coords.getPos2D(REFERENCE_ENVIRONMENT)));
 			}
 		}

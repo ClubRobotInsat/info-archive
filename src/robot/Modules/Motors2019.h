@@ -60,7 +60,11 @@ namespace PhysicalRobot {
 
 		struct ControlledMotor {
 			ControlledMotor(uint8_t id, RotatingDirection rotation)
-			        : id(id), wanted_position(0_deg), wanted_nb_turns(0), finished(true), rotation(rotation) {}
+			        : id(static_cast<uint8_t>(id > 0 ? id : throw std::runtime_error("ID equals to 0.")))
+			        , wanted_position(0_deg)
+			        , wanted_nb_turns(0)
+			        , finished(true)
+			        , rotation(rotation) {}
 
 			const uint8_t id;
 			std::atomic<Angle> wanted_position;
@@ -70,7 +74,10 @@ namespace PhysicalRobot {
 		};
 
 		struct UncontrolledMotor {
-			UncontrolledMotor(uint8_t id) : id(id), on_off(false) {}
+			explicit UncontrolledMotor(uint8_t id)
+			        : id(static_cast<uint8_t>(id > 0 ? id : throw std::runtime_error("ID equals to 0.")))
+			        , on_off(false)
+			        , rotation(TRIGONOMETRIC) {}
 
 			const uint8_t id;
 			std::atomic_bool on_off;
@@ -78,7 +85,8 @@ namespace PhysicalRobot {
 		};
 
 		struct Brushless {
-			Brushless(uint8_t id) : id(id), on_off(false) {}
+			explicit Brushless(uint8_t id)
+			        : id(static_cast<uint8_t>(id > 0 ? id : throw std::runtime_error("ID equals to 0."))), on_off(false) {}
 
 			const uint8_t id;
 			std::atomic_bool on_off;

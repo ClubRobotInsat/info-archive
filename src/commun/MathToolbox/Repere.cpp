@@ -8,7 +8,7 @@ using namespace repere;
 
 Orientation::Orientation(Angle angle, const Repere& repere_parent) : _angle(angle), _repere(repere_parent) {}
 
-Orientation::Orientation(const Orientation& other) : _angle(other._angle), _repere(other._repere) {}
+Orientation::Orientation(const Orientation& other) = default;
 
 Position::Position(Vector3m pos, const Repere& repere_parent) : _pos(pos), _repere(repere_parent) {}
 
@@ -16,17 +16,17 @@ Position::Position(Vector2m pos, const Repere& repere_parent) : _pos(toVec3(pos)
 
 Position::Position(Distance x, Distance y, const Repere& repere_parent) : _pos(x, y, 0_m), _repere(repere_parent) {}
 
-Position::Position(const Position& other) : _pos(other._pos), _repere(other._repere) {}
+Position::Position(const Position& other) = default;
 
-Coordonnees::Coordonnees(Vector3m position, Angle angle, const Repere& repere_parent)
+Coordinates::Coordinates(Vector3m position, Angle angle, const Repere& repere_parent)
         : _pos(position), _angle(angle), _repere_parent(repere_parent) {}
 
-Coordonnees::Coordonnees(Vector2m position, Angle angle, const Repere& repere_parent)
-        : Coordonnees(Vector3m(position.x, position.y, 0_m), angle, repere_parent) {}
+Coordinates::Coordinates(Vector2m position, Angle angle, const Repere& repere_parent)
+        : Coordinates(Vector3m(position.x, position.y, 0_m), angle, repere_parent) {}
 
-Coordonnees::Coordonnees(const Coordonnees& coords) : Coordonnees(coords._pos, coords._angle, coords._repere_parent) {}
+Coordinates::Coordinates(const Coordinates& coords) : Coordinates(coords._pos, coords._angle, coords._repere_parent) {}
 
-Coordonnees& Coordonnees::operator=(const Coordonnees& coords) {
+Coordinates& Coordinates::operator=(const Coordinates& coords) {
 	if(_repere_parent == coords._repere_parent) {
 		_pos = coords._pos;
 		_angle = coords._angle;

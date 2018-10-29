@@ -31,7 +31,7 @@ public:
 	Transform(const Matrix3<T_scalar> rotation, const Vector3<T_scalar2> position);
 
 	template <class T_scalar>
-	Transform(const Matrix4<T_scalar>& mat);
+	explicit Transform(const Matrix4<T_scalar>& mat);
 
 	template <class T_scalar>
 	Transform(const Transform<T_scalar>& ref);

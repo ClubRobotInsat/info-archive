@@ -24,7 +24,7 @@ namespace Communication {
 			exit(EXIT_FAILURE);
 		}
 
-		sockaddr_in addr;
+		sockaddr_in addr{};
 		hostent* hostinfo;
 
 		hostinfo = gethostbyname(address.c_str());

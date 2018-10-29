@@ -29,7 +29,6 @@ add_custom_target(InfoSubmodules
 		)
 
 if(DEBUG)
-
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -O0")
 else()
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")

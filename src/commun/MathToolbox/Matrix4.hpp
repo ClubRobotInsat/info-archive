@@ -54,7 +54,7 @@ Matrix4<T>::Matrix4(const Vector4<T_scalar>& v1,
 // Constructeur à partir d'un tableau
 template <class T>
 template <class T_scalar>
-Matrix4<T>::Matrix4(T_scalar* values, bool transpose) {
+Matrix4<T>::Matrix4(const T_scalar* values, bool transpose) {
 	for(int i = 0; i < 16; i++)
 		this->values[i] = values[i];
 

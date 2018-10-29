@@ -26,11 +26,11 @@ public:
 
 	// Constructeur à partir d'un tableau
 	template <class T_scalar>
-	Matrix3(T_scalar* values, bool transpose = false);
+	explicit Matrix3(const T_scalar* values, bool transpose = false);
 
 	// Constructeur de copie
 	template <class T_scalar>
-	Matrix3(const Matrix3<T_scalar>& ref);
+	explicit Matrix3(const Matrix3<T_scalar>& ref);
 
 	// Destructeur
 	~Matrix3() = default;
