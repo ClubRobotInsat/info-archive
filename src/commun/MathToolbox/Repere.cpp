@@ -60,7 +60,7 @@ Angle Repere::getAngle(Angle initAngle, const Repere& repere) const {
 		if(my0 == my1) {
 			new_angle = initAngle;
 		} else {
-			new_angle = initAngle;
+			new_angle = - initAngle;
 		}
 	} else {
 		if(my0 == my1) {
