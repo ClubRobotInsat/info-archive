@@ -175,6 +175,7 @@ TEST_CASE("Servos 2019 Module") {
 			SECTION("bad frame format") {
 				uint8_t buf[SIZE];
 				buf[0] = 3;
+				buf[7] = 5;
 
 				// buf == NULL
 				REQUIRE(servo_read_frame(nullptr, SIZE).parsing_failed);
@@ -197,6 +198,22 @@ TEST_CASE("Servos 2019 Module") {
 				buf[0] = 1;
 				buf[1] = 0;
 				REQUIRE(servo_read_frame(buf, 7).parsing_failed);
+			}
+
+			SECTION("too many servos") {
+				uint8_t buf[55];
+				buf[0] = 9;
+				// IDs des 9 servos
+				buf[1] = 1;
+				buf[7] = 2;
+				buf[13] = 3;
+				buf[19] = 4;
+				buf[25] = 5;
+				buf[31] = 6;
+				buf[37] = 7;
+				buf[43] = 8;
+				buf[49] = 9;
+				REQUIRE(servo_read_frame(buf, 55).parsing_failed);
 			}
 
 			SECTION("good frame format") {
