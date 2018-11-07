@@ -46,26 +46,7 @@ add_executable(Simulator
         graphique/irrlicht/Object.cpp
         graphique/irrlicht/Scene.cpp
 
-        communication/cartes/CarteAsservissement2009.cpp
-        communication/cartes/CarteCAN_USB.cpp
-        communication/cartes/CarteDeplacement2009.cpp
-        communication/cartes/CarteEvitement2018.cpp
-        communication/cartes/CarteIO2018.cpp
-        communication/cartes/CarteMoteurs2018.cpp
-        communication/cartes/deplacement/Asservissement.cpp
-        communication/cartes/deplacement/PID.cpp
-
-        communication/cartes/Carte.cpp
-        communication/Robot2018.cpp
-        communication/modules/ModuleContactor.cpp
-        communication/modules/ModuleMotors.cpp
-        communication/modules/ModuleMove.cpp
-        communication/modules/ModuleServos.cpp
-
-        ../commun/communication/Communicateur.cpp
-        ../commun/communication/CommunicateurSerie.cpp
-        ../commun/communication/CommunicateurTCPIP.cpp
-        ../commun/communication/CommunicateurPipe.cpp
+        communication/SimuCom.cpp
 
         ${root_SOURCE_DIR}/third_parties/json.hpp)
 

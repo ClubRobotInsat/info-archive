@@ -13,6 +13,7 @@
 #include "IConstantes.h"
 #include "Json.h"
 #include "MathToolbox/Repere.h"
+#include "EmbeddedFiles.h"
 
 namespace Constantes {
 	ENUM_CLASS_NS(Constantes,
@@ -53,12 +54,10 @@ namespace Constantes {
 	extern Vector2u16 const TAILLE_GRILLE;
 
 	const repere::Repere REFERENCE_ASTAR =
-	    repere::Repere({0_m, 0_m}, repere::Multiplicateur::SENS_POSITIF, repere::Multiplicateur::SENS_POSITIF);
+	    repere::Repere({0_m, 0_m}, repere::Multiplier::SENS_POSITIVE, repere::Multiplier::SENS_POSITIVE);
 
 	// Convertir la table du fichier texte en un objet JSON à la pré-compilation
-	const JSON TABLE_2018 = nlohmann::json::parse(
-#include ".table_2018.json.includable"
-	    );
+	const JSON TABLE_2018 = EmbeddedFiles::readText("table_2018.json");
 }
 
 inline Constantes::RobotColor operator!(Constantes::RobotColor const& c) {

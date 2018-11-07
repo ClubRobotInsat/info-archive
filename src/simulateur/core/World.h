@@ -16,7 +16,6 @@
 #include "../physique/IPhysicalContext.h"
 #include "Object3D.h"
 
-class Robot2018;
 class Object3D;
 
 class World {
