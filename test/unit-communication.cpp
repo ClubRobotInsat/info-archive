@@ -41,7 +41,7 @@ public:
 	}
 };
 
-TEST_CASE("Communication between info and elec") {
+TEST_CASE("Communication between info and elec in serial connections") {
 	SECTION("Validity test of the 'parses_frames' helper struct.") {
 		struct Ok {
 			void read_frame(const GlobalFrame&) {}
@@ -159,3 +159,5 @@ TEST_CASE("Communication between info and elec") {
 	    CHECK_NOTHROW(test());
 	}*/
 }
+
+TEST_CASE("Ethernet") {}
