@@ -5,6 +5,10 @@
 #ifndef ROOT_UDP_H
 #define ROOT_UDP_H
 
+// Utilisation de `asio` sans `Boost.asio`
+#define ASIO_STANDALONE
+#include <asio.hpp>
+
 #include "Serial.h"
 
 namespace Communication {
@@ -27,6 +31,8 @@ namespace Communication {
 		bool is_connected();
 
 	private:
+		std::unique_ptr<asio::ip::udp::socket> _socket;
+
 		/// Descripteur du datagramme UDP
 		int _fd;
 

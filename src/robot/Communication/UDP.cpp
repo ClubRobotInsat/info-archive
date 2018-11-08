@@ -19,10 +19,18 @@ void fail_with(const std::string& msg) {
 }
 
 namespace Communication {
-	sockaddr_in addr{};
-	hostent* host_info;
-
 	UDP::UDP(const std::string& address, uint16_t port) {
+		using asio::ip::udp;
+
+		asio::io_service io_service;
+
+		_socket = std::make_unique<asio::ip::udp::socket>(io_service, udp::endpoint(udp::v4(), port));
+		_socket->open(udp::v4());
+
+
+		sockaddr_in addr{};
+		hostent* host_info;
+
 		// Construction du socket associé à la communication
 		_fd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP); // Domaine Internet, datagrammes UDP
 		if(_fd < 0) {
