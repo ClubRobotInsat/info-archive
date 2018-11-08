@@ -59,7 +59,7 @@ namespace ConstantesSimu2017 {
 
 // Repère de la simulation
 const repere::Repere REFERENCE_SIMULATOR =
-    repere::Repere({0_m, 0_m}, repere::Multiplicateur::SENS_POSITIF, repere::Multiplicateur::SENS_POSITIF);
+    repere::Repere({0_m, 0_m}, repere::Multiplier::SENS_POSITIVE, repere::Multiplier::SENS_POSITIVE);
 
 // Tags d'objets
 const std::string TAG_ROBOT = "robot";

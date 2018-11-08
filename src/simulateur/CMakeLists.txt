@@ -4,13 +4,6 @@ if (RASPI)
 endif(RASPI)
 
 
-SET(SIMU_OU_ROBOT Simu)
-
-add_subdirectory(../commun commun)
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
-cmake_minimum_required(VERSION 3.2)
-
 link_libraries(pthread)
 #add_subdirectory(graphique/server)
 #include_directories(SYSTEM ${root_SOURCE_DIR}/third_parties/websocketpp)
@@ -46,28 +39,9 @@ add_executable(Simulator
         graphique/irrlicht/Object.cpp
         graphique/irrlicht/Scene.cpp
 
-        communication/cartes/CarteAsservissement2009.cpp
-        communication/cartes/CarteCAN_USB.cpp
-        communication/cartes/CarteDeplacement2009.cpp
-        communication/cartes/CarteEvitement2018.cpp
-        communication/cartes/CarteIO2018.cpp
-        communication/cartes/CarteMoteurs2018.cpp
-        communication/cartes/deplacement/Asservissement.cpp
-        communication/cartes/deplacement/PID.cpp
+        communication/SimuCom.cpp
 
-        communication/cartes/Carte.cpp
-        communication/Robot2018.cpp
-        communication/modules/ModuleContactor.cpp
-        communication/modules/ModuleMotors.cpp
-        communication/modules/ModuleMove.cpp
-        communication/modules/ModuleServos.cpp
-
-        ../commun/communication/Communicateur.cpp
-        ../commun/communication/CommunicateurSerie.cpp
-        ../commun/communication/CommunicateurTCPIP.cpp
-        ../commun/communication/CommunicateurPipe.cpp
-
-        ${root_SOURCE_DIR}/third_parties/json.hpp)
+        ${root_SOURCE_DIR}/third_parties/include/json.hpp)
 
 #target_link_libraries(Simulator Box2D Outils_Simu Server ${IRRLICHT_LIBRARIES})
 target_link_libraries(Simulator Box2D Outils_Simu ${IRRLICHT_LIBRARIES})

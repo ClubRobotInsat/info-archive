@@ -4,7 +4,6 @@
 #include <cstdlib>
 #include <functional>
 
-#include "../communication/Robot2018.h"
 #include "../graphique/irrlicht/Scene.h"
 //#include "../graphique/server/WebGraphicalContext.h"
 #include "../physique/box2d/Box2DPhysicalContext.h"
@@ -59,11 +58,6 @@ void Simulateur::update(Duration time) {
 
 	// Mise à jour du monde
 	_theWorld.update(time);
-
-	// Mise à jour de la communication avec l'IA
-	if(_robot != nullptr) {
-		_robot->update(time);
-	}
 }
 
 void Simulateur::setJSONFile(const std::string& file) {
@@ -93,10 +87,8 @@ void Simulateur::disableSimulation() {
 }
 
 void Simulateur::addRobot(Constantes::RobotColor color) {
-	_robot = std::make_unique<Robot2018>("LOCAL", color);
 	Object3D& robotObj = (_json_file == "" ? _theWorld.createRobotFromJSON(TABLE_2018, color) :
 	                                         _theWorld.createRobotFromFile(_json_file, color));
-	_robot->setPhysicalObject(&robotObj.getPhysics());
 }
 
 void Simulateur::resetWorld() {
@@ -111,9 +103,6 @@ void Simulateur::resetWorld() {
 // Est-ce que cette méthode est vraiment nécessaire ?
 // Le simu s'arrête à l'appel du destructeur dans tous les cas -- Louis
 void Simulateur::endWorld() {
-	if(_robot != nullptr)
-		_robot = nullptr;
-
 	_theWorld.removeAllObject();
 }
 
@@ -122,5 +111,5 @@ void Simulateur::sendTextMessage(const std::string& message) {
 }
 
 Constantes::RobotColor Simulateur::getRobotColor() {
-	return _robot == nullptr ? RobotColor::Undef : _robot->getColor();
+	return RobotColor::Undef;
 }

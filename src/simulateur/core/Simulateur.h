@@ -12,8 +12,6 @@
 #include "ConstantesCommunes.h"
 #include "World.h"
 
-class Robot2018;
-
 // permet de positionner plus facilement les objets
 struct CubeData {
 public:
@@ -140,9 +138,6 @@ private:
 
 	/// Le monde dans lequel on stocke tous les objets
 	World _theWorld;
-
-	/// Robot simulé de l'année actuelle
-	std::unique_ptr<Robot2018> _robot;
 
 	/// On demande à réinitialiser la simulation?
 	std::atomic_bool _resetWorld;

@@ -3,10 +3,10 @@
 #ifndef CONSTANTES_ROBOT_PRINCIPAL__H
 #define CONSTANTES_ROBOT_PRINCIPAL__H
 
-#include "../../robot/Commun/Modules/IO2019.h"
-#include "../../robot/Commun/Modules/Motors2019.h"
-#include "../../robot/Commun/Modules/Moving2019.h"
-#include "../../robot/Commun/Modules/Servos2019.h"
+#include "../../robot/Modules/IO.h"
+#include "../../robot/Modules/Motors.h"
+#include "../../robot/Modules/Avoidance.h"
+#include "../../robot/Modules/Servos.h"
 
 #include "ConstantesCommunes.h"
 

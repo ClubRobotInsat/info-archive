@@ -8,8 +8,6 @@ if(${BITS} EQUAL 32)
 	set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -m32")
 endif()
 
-add_subdirectory(../commun commun)
-
 add_subdirectory(Modules)
 add_subdirectory(Communication)
 
