@@ -103,15 +103,15 @@ TEST_CASE("Basic module") {
 
 // Ce define très moche permets d'accéder aux fonctions et variables cachées des objets (TESTS uniquement)
 #define private public
-#include "../src/robot/Modules/Servos2019.h"
+#include "../src/robot/Modules/Servos.h"
 #undef private
 
 #include <log/Log.h>
 TEST_CASE("Servos 2019 Module") {
 	SECTION("Non-frame functions' module") {
-		PhysicalRobot::Servos2019 my_module(2);
-		my_module.add_servo(5, 110_deg, PhysicalRobot::Servos2019::HOLD_ON_BLOCKING);
-		my_module.add_servo(2, -119_deg, PhysicalRobot::Servos2019::UNBLOCKING);
+		PhysicalRobot::Servos my_module(2);
+		my_module.add_servo(5, 110_deg, PhysicalRobot::Servos::HOLD_ON_BLOCKING);
+		my_module.add_servo(2, -119_deg, PhysicalRobot::Servos::UNBLOCKING);
 		my_module.add_servo(4, 80_deg);
 
 		REQUIRE_THROWS_WITH(my_module.add_servo(5, 50_deg), "Double assignation du servo 5 !");
@@ -131,8 +131,8 @@ TEST_CASE("Servos 2019 Module") {
 		REQUIRE_THROWS_WITH(my_module.read_position(1), "Numéro du servo demandé invalide : 1");
 		CHECK(my_module.read_position(2) == -119_deg);
 
-		REQUIRE_THROWS_WITH(my_module.set_color(1, PhysicalRobot::Servos2019::GREEN), "Numéro du servo demandé invalide : 1");
-		my_module.set_color(2, PhysicalRobot::Servos2019::GREEN);
+		REQUIRE_THROWS_WITH(my_module.set_color(1, PhysicalRobot::Servos::GREEN), "Numéro du servo demandé invalide : 1");
+		my_module.set_color(2, PhysicalRobot::Servos::GREEN);
 
 		REQUIRE_THROWS_WITH(my_module.is_blocking(1), "Numéro du servo demandé invalide : 1");
 		CHECK_FALSE(my_module.is_blocking(2));
@@ -153,8 +153,8 @@ TEST_CASE("Servos 2019 Module") {
 		    CHECK(servo_2.wanted_position == 666); // 55.4_deg
 		    CHECK(servo_2.speed == 6);
 		    CHECK_FALSE(servo_2.blocked);
-		    CHECK(servo_2.blocking_mode == Servos2019::UNBLOCKING);
-		    CHECK(servo_2.color == Servos2019::GREEN);
+		    CHECK(servo_2.blocking_mode == Servos::UNBLOCKING);
+		    CHECK(servo_2.color == Servos::GREEN);
 
 		    // Ce servo n'a reçu aucune modification depuis sa construction
 		    SharedServos2019::Servo2019 servo_5 = s.servos[5];
@@ -163,8 +163,8 @@ TEST_CASE("Servos 2019 Module") {
 		    CHECK(servo_5.wanted_position == 849);
 		    CHECK(servo_5.speed == 30);
 		    CHECK_FALSE(servo_5.blocked);
-		    CHECK(servo_5.blocking_mode == Servos2019::HOLD_ON_BLOCKING);
-		    CHECK(servo_5.color == Servos2019::YELLOW);
+		    CHECK(servo_5.blocking_mode == Servos::HOLD_ON_BLOCKING);
+		    CHECK(servo_5.color == Servos::YELLOW);
 		}*/
 	}
 
@@ -344,8 +344,8 @@ TEST_CASE("ModuleManager") {
 	SECTION("basic functions") {
 		PhysicalRobot::ModuleManager manager;
 
-		REQUIRE_THROWS_WITH(manager.get_module<PhysicalRobot::Servos2019>(), "The module doesn't exist.");
-		CHECK_FALSE(manager.has_module<PhysicalRobot::Servos2019>());
+		REQUIRE_THROWS_WITH(manager.get_module<PhysicalRobot::Servos>(), "The module doesn't exist.");
+		CHECK_FALSE(manager.has_module<PhysicalRobot::Servos>());
 		CHECK_FALSE(manager.has_module(8));
 
 		REQUIRE_THROWS_WITH(manager.add_module<ModuleTest>(42), "Impossible to add module n°42 (> 16).");
@@ -356,7 +356,7 @@ TEST_CASE("ModuleManager") {
 		CHECK(manager.has_module(5));
 		REQUIRE_THROWS_WITH(manager.add_module<ModuleTest>(5), "Double assignment of the module n°5.");
 		REQUIRE_THROWS_WITH(manager.add_module<ModuleTest>(8), "Double assignment of the module type: 10ModuleTest");
-		manager.add_module<PhysicalRobot::Servos2019>(6);
+		manager.add_module<PhysicalRobot::Servos>(6);
 		CHECK(manager.get_nb_modules() == 2);
 
 		REQUIRE_THROWS_WITH(manager.get_module_by_id(42), "Impossible to get module n°42 (> 16).");
@@ -367,7 +367,7 @@ TEST_CASE("ModuleManager") {
 		// CHECK_NOTHROW(manager.get_module<int>());
 		REQUIRE_NOTHROW(manager.get_module<ModuleTest>());
 		CHECK(manager.get_module<ModuleTest>().get_id() == 5);
-		CHECK(manager.get_module<PhysicalRobot::Servos2019>().get_id() == 6);
+		CHECK(manager.get_module<PhysicalRobot::Servos>().get_id() == 6);
 	}
 
 	SECTION("Frame manipulation") {
@@ -394,7 +394,7 @@ TEST_CASE("ModuleManager") {
 			}
 
 			SECTION("Servos") {
-				auto& module_servo = manager.add_module<PhysicalRobot::Servos2019>(15);
+				auto& module_servo = manager.add_module<PhysicalRobot::Servos>(15);
 				module_servo.add_servo(2, 50_deg);
 				module_servo.set_position(2, 90_deg);
 
@@ -411,7 +411,7 @@ TEST_CASE("ModuleManager") {
 		SECTION("read_frame") {
 			PhysicalRobot::ModuleManager manager;
 			manager.add_module<ModuleTest>(5);
-			auto& module_servo = manager.add_module<PhysicalRobot::Servos2019>(15);
+			auto& module_servo = manager.add_module<PhysicalRobot::Servos>(15);
 			module_servo.add_servo(2, 50_deg);
 
 			REQUIRE_THROWS_WITH(manager.read_frame({}), "Frame does not contain the module's id.");

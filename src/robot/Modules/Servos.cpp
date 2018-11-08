@@ -2,11 +2,11 @@
 // Created by terae on 8/21/18.
 //
 
-#include "Servos2019.h"
+#include "Servos.h"
 #include <log/Log.h>
 
 namespace PhysicalRobot {
-	void Servos2019::add_servo(uint8_t id, Angle start_position, BlockingMode mode) {
+	void Servos::add_servo(uint8_t id, Angle start_position, BlockingMode mode) {
 		std::lock_guard<std::mutex> lk(_mutex_variables);
 
 		if(id >= ID_MAX_SERVOS) {
@@ -20,7 +20,7 @@ namespace PhysicalRobot {
 		_servos[id] = std::make_unique<Servo>(id, start_position, mode);
 	}
 
-	uint8_t Servos2019::get_nbr_servos() const {
+	uint8_t Servos::get_nbr_servos() const {
 		uint8_t count = 0;
 		for(uint8_t index = 0; index < ID_MAX_SERVOS; ++index) {
 			count += (_servos[index] != nullptr);
@@ -28,7 +28,7 @@ namespace PhysicalRobot {
 		return count;
 	}
 
-	uint8_t Servos2019::get_index_of(uint8_t id) const {
+	uint8_t Servos::get_index_of(uint8_t id) const {
 		const uint8_t INDEX_BAD_ID = ID_MAX_SERVOS;
 		std::lock_guard<std::mutex> lk(_mutex_variables);
 
@@ -44,11 +44,11 @@ namespace PhysicalRobot {
 		return INDEX_BAD_ID;
 	}
 
-	uint8_t Servos2019::get_frame_size() const {
+	uint8_t Servos::get_frame_size() const {
 		return get_size_servo_frame(get_nbr_servos());
 	}
 
-	void Servos2019::set_position(uint8_t id, Angle angle) {
+	void Servos::set_position(uint8_t id, Angle angle) {
 		uint8_t index = get_index_of(id);
 
 		if(index >= ID_MAX_SERVOS) {
@@ -63,7 +63,7 @@ namespace PhysicalRobot {
 		unlock_variables();
 	}
 
-	void Servos2019::set_speed(uint8_t id, uint16_t speed) {
+	void Servos::set_speed(uint8_t id, uint16_t speed) {
 		uint8_t index = get_index_of(id);
 
 		if(index >= ID_MAX_SERVOS) {
@@ -77,7 +77,7 @@ namespace PhysicalRobot {
 		unlock_variables();
 	}
 
-	Angle Servos2019::read_position(uint8_t id) const {
+	Angle Servos::read_position(uint8_t id) const {
 		uint8_t index = get_index_of(id);
 
 		if(index >= ID_MAX_SERVOS) {
@@ -88,7 +88,7 @@ namespace PhysicalRobot {
 		return _servos[index]->position;
 	}
 
-	void Servos2019::set_color(uint8_t id, Color color) {
+	void Servos::set_color(uint8_t id, Color color) {
 		uint8_t index = get_index_of(id);
 
 		if(index >= ID_MAX_SERVOS) {
@@ -101,7 +101,7 @@ namespace PhysicalRobot {
 		unlock_variables();
 	}
 
-	void Servos2019::set_blocking_mode(uint8_t id, Servos2019::BlockingMode mode) {
+	void Servos::set_blocking_mode(uint8_t id, Servos::BlockingMode mode) {
 		uint8_t index = get_index_of(id);
 
 		if(index >= ID_MAX_SERVOS) {
@@ -114,7 +114,7 @@ namespace PhysicalRobot {
 		unlock_variables();
 	}
 
-	bool Servos2019::is_blocking(uint8_t id) const {
+	bool Servos::is_blocking(uint8_t id) const {
 		uint8_t index = get_index_of(id);
 
 		if(index >= ID_MAX_SERVOS) {
@@ -125,7 +125,7 @@ namespace PhysicalRobot {
 		return _servos[index]->blocked;
 	}
 
-	bool Servos2019::is_moving_done(uint8_t id) const {
+	bool Servos::is_moving_done(uint8_t id) const {
 		uint8_t index = get_index_of(id);
 
 		if(index >= ID_MAX_SERVOS) {
@@ -141,7 +141,7 @@ namespace PhysicalRobot {
 		return _servos[index]->position == std::get<Angle>(_servos[id]->command);
 	}
 
-	SharedServos2019 Servos2019::generate_shared() const {
+	SharedServos2019 Servos::generate_shared() const {
 		SharedServos2019 s = {};
 		s.nb_servos = get_nbr_servos();
 		uint8_t count = 0;
@@ -177,7 +177,7 @@ namespace PhysicalRobot {
 		return s;
 	}
 
-	void Servos2019::message_processing(const SharedServos2019& s) {
+	void Servos::message_processing(const SharedServos2019& s) {
 		if(s.parsing_failed == 0) {
 			if(s.nb_servos != get_nbr_servos()) {
 				throw std::runtime_error("Amount of servos does not correspond.");

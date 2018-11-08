@@ -75,9 +75,13 @@ endfunction()
 
 # Il y a du code pour les ombres, apparamment. Ca a pas l'air de marcher.
 # debug/CGTK semble désactivé depuis un moment également.
-add_definitions(-DGTKWIN_DISABLE)
+#add_definitions(-DGTKWIN_DISABLE)
 
-include_directories(src/commun third_parties /usr/local/include/)
+include_directories(src/commun /usr/local/include/)
+# TODO : je n'arrive pas à faire le `include_directories` depuis le CMakeLists.txt de `third_parties/` -- Terae
+include_directories(third_parties/include third_parties/asio/asio/include)
+add_subdirectory(third_parties)
+
 link_directories(/usr/local/lib/)
 add_subdirectory(src)
 

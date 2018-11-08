@@ -28,11 +28,11 @@
 
 #include "Module.hpp"
 
-#include "Avoidance2019.h"
-#include "IO2019.h"
-#include "Motors2019.h"
-//#include "Moving2019.h"
-#include "Servos2019.h"
+#include "Avoidance.h"
+#include "IO.h"
+#include "Motors.h"
+//#include "Moving.h"
+#include "Servos.h"
 
 #include <memory>   // unique_ptr, make_unique
 #include <optional> // optional

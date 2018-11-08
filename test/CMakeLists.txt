@@ -28,10 +28,11 @@ endforeach()
 
 # Linkage de chaque exécutable par rapport à ses librairies nécessaires
 # Par défaut, 'Robot' regroupe tout
-target_link_libraries(unit_testing_constants Outils_Robot)
 target_link_libraries(unit_testing_communication Communication)
+target_link_libraries(unit_testing_constants Outils_Robot)
 target_link_libraries(unit_testing_frames Outils_Robot)
 target_link_libraries(unit_testing_modules Modules)
+target_link_libraries(unit_testing_repere Outils_Robot)
 #target_link_libraries(unit_testing_robot_commun Robot)
 
 set(UNITTEST_TARGET_NAME "unit_testing_all")

@@ -2,10 +2,10 @@
 // Created by terae on 9/10/18.
 //
 
-#include "Motors2019.h"
+#include "Motors.h"
 
 namespace PhysicalRobot {
-	uint8_t Motors2019::get_nbr_controlled() const {
+	uint8_t Motors::get_nbr_controlled() const {
 		uint8_t count = 0;
 		for(uint8_t i = 0; i < MAX_CONTROLLED_MOTORS; ++i) {
 			count += (_controlled[i] != nullptr);
@@ -13,7 +13,7 @@ namespace PhysicalRobot {
 		return count;
 	}
 
-	uint8_t Motors2019::get_nbr_uncontrolled() const {
+	uint8_t Motors::get_nbr_uncontrolled() const {
 		uint8_t count = 0;
 		for(uint8_t i = 0; i < MAX_UNCONTROLLED_MOTORS; ++i) {
 			count += (_uncontrolled[i] != nullptr);
@@ -21,7 +21,7 @@ namespace PhysicalRobot {
 		return count;
 	}
 
-	uint8_t Motors2019::get_nbr_brushless() const {
+	uint8_t Motors::get_nbr_brushless() const {
 		uint8_t count = 0;
 		for(uint8_t i = 0; i < MAX_BRUSHLESS; ++i) {
 			count += (_brushless[i] != nullptr);
@@ -29,7 +29,7 @@ namespace PhysicalRobot {
 		return count;
 	}
 
-	void Motors2019::set_position_angle(uint8_t id, Angle angle) {
+	void Motors::set_position_angle(uint8_t id, Angle angle) {
 		uint8_t index = test_is_controlled_ok(id);
 
 		lock_variables();
@@ -39,7 +39,7 @@ namespace PhysicalRobot {
 		unlock_variables();
 	}
 
-	void Motors2019::set_position_turns(uint8_t id, uint8_t nb_turns, RotatingDirection rotation) {
+	void Motors::set_position_turns(uint8_t id, uint8_t nb_turns, RotatingDirection rotation) {
 		uint8_t index = test_is_controlled_ok(id);
 
 		lock_variables();
@@ -50,13 +50,13 @@ namespace PhysicalRobot {
 		unlock_variables();
 	}
 
-	bool Motors2019::is_position_finished(uint8_t id) const {
+	bool Motors::is_position_finished(uint8_t id) const {
 		uint8_t index = test_is_controlled_ok(id);
 		std::lock_guard<std::mutex> lk(_mutex_variables);
 		return _controlled[index]->finished;
 	}
 
-	void Motors2019::activate_uncontrolled_motor(uint8_t id, RotatingDirection rotation) {
+	void Motors::activate_uncontrolled_motor(uint8_t id, RotatingDirection rotation) {
 		uint8_t index = test_is_uncontrolled_ok(id);
 
 		lock_variables();
@@ -66,7 +66,7 @@ namespace PhysicalRobot {
 		unlock_variables();
 	}
 
-	void Motors2019::deactivate_uncontrolled_motor(uint8_t id) {
+	void Motors::deactivate_uncontrolled_motor(uint8_t id) {
 		uint8_t index = test_is_uncontrolled_ok(id);
 
 		lock_variables();
@@ -75,7 +75,7 @@ namespace PhysicalRobot {
 		unlock_variables();
 	}
 
-	void Motors2019::activate_brushless(uint8_t id) {
+	void Motors::activate_brushless(uint8_t id) {
 		uint8_t index = test_is_brushless_ok(id);
 
 		lock_variables();
@@ -84,7 +84,7 @@ namespace PhysicalRobot {
 		unlock_variables();
 	}
 
-	void Motors2019::deactivate_brushless(uint8_t id) {
+	void Motors::deactivate_brushless(uint8_t id) {
 		uint8_t index = test_is_brushless_ok(id);
 
 		lock_variables();
@@ -93,7 +93,7 @@ namespace PhysicalRobot {
 		unlock_variables();
 	}
 
-	uint8_t Motors2019::test_is_controlled_ok(uint8_t id) const {
+	uint8_t Motors::test_is_controlled_ok(uint8_t id) const {
 		uint8_t index = get_index_of_controlled(id);
 		if(index >= ID_MAX_CONTROLLED_MOTORS) {
 			throw std::runtime_error("Numéro du moteur asservi demandé invalide : "s + std::to_string(id));
@@ -102,7 +102,7 @@ namespace PhysicalRobot {
 		return index;
 	}
 
-	uint8_t Motors2019::test_is_uncontrolled_ok(uint8_t id) const {
+	uint8_t Motors::test_is_uncontrolled_ok(uint8_t id) const {
 		uint8_t index = get_index_of_uncontrolled(id);
 		if(index >= ID_MAX_UNCONTROLLED_MOTORS) {
 			throw std::runtime_error("Numéro du moteur non-asservi demandé invalide : "s + std::to_string(id));
@@ -111,7 +111,7 @@ namespace PhysicalRobot {
 		return index;
 	}
 
-	uint8_t Motors2019::test_is_brushless_ok(uint8_t id) const {
+	uint8_t Motors::test_is_brushless_ok(uint8_t id) const {
 		uint8_t index = get_index_of_brushless(id);
 		if(index >= ID_MAX_BRUSHLESS) {
 			throw std::runtime_error("Numéro du brushless demandé invalide : "s + std::to_string(id));
@@ -120,7 +120,7 @@ namespace PhysicalRobot {
 		return index;
 	}
 
-	uint8_t Motors2019::get_index_of_controlled(uint8_t id) const {
+	uint8_t Motors::get_index_of_controlled(uint8_t id) const {
 		const uint8_t INDEX_BAD_ID = ID_MAX_CONTROLLED_MOTORS;
 		std::lock_guard<std::mutex> lk(_mutex_variables);
 
@@ -136,7 +136,7 @@ namespace PhysicalRobot {
 		return INDEX_BAD_ID;
 	}
 
-	uint8_t Motors2019::get_index_of_uncontrolled(uint8_t id) const {
+	uint8_t Motors::get_index_of_uncontrolled(uint8_t id) const {
 		const uint8_t INDEX_BAD_ID = ID_MAX_UNCONTROLLED_MOTORS;
 		std::lock_guard<std::mutex> lk(_mutex_variables);
 
@@ -152,7 +152,7 @@ namespace PhysicalRobot {
 		return INDEX_BAD_ID;
 	}
 
-	uint8_t Motors2019::get_index_of_brushless(uint8_t id) const {
+	uint8_t Motors::get_index_of_brushless(uint8_t id) const {
 		const uint8_t INDEX_BAD_ID = ID_MAX_BRUSHLESS;
 		std::lock_guard<std::mutex> lk(_mutex_variables);
 
@@ -168,11 +168,11 @@ namespace PhysicalRobot {
 		return INDEX_BAD_ID;
 	}
 
-	uint8_t Motors2019::get_frame_size() const {
+	uint8_t Motors::get_frame_size() const {
 		return get_size_motor_frame(get_nbr_controlled(), get_nbr_uncontrolled(), get_nbr_brushless());
 	}
 
-	void Motors2019::add_controlled_motor(uint8_t id, RotatingDirection rotation) {
+	void Motors::add_controlled_motor(uint8_t id, RotatingDirection rotation) {
 		if(get_nbr_controlled() >= ID_MAX_CONTROLLED_MOTORS) {
 			throw std::runtime_error("Trop de moteurs asservis ont été défini !");
 		} else if(id == 0) {
@@ -189,7 +189,7 @@ namespace PhysicalRobot {
 		}
 	}
 
-	void Motors2019::add_uncontrolled_motor(uint8_t id) {
+	void Motors::add_uncontrolled_motor(uint8_t id) {
 		if(get_nbr_uncontrolled() >= ID_MAX_UNCONTROLLED_MOTORS) {
 			throw std::runtime_error("Trop de moteurs non-asservis ont été défini !");
 		} else if(id == 0) {
@@ -206,7 +206,7 @@ namespace PhysicalRobot {
 		}
 	}
 
-	void Motors2019::add_brushless(uint8_t id) {
+	void Motors::add_brushless(uint8_t id) {
 		if(get_nbr_brushless() >= ID_MAX_BRUSHLESS) {
 			throw std::runtime_error("Trop de brushless ont été défini !");
 		} else if(id == 0) {
@@ -223,7 +223,7 @@ namespace PhysicalRobot {
 		}
 	}
 
-	SharedMotors2019 Motors2019::generate_shared() const {
+	SharedMotors2019 Motors::generate_shared() const {
 		SharedMotors2019 s = {};
 		for(uint8_t i = 0; i < MAX_CONTROLLED_MOTORS; ++i) {
 			if(_controlled[i]) {
@@ -242,13 +242,13 @@ namespace PhysicalRobot {
 		return s;
 	}
 
-	void Motors2019::message_processing(const SharedMotors2019& s) {
+	void Motors::message_processing(const SharedMotors2019& s) {
 		if(s.parsing_failed == 0) {
 			// TODO
 		}
 	}
 
-	void Motors2019::deactivation() {
+	void Motors::deactivation() {
 		lock_variables();
 		for(uint8_t index = 0; index < MAX_CONTROLLED_MOTORS; ++index) {
 			if(_controlled[index]) {
