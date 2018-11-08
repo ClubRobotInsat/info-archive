@@ -17,6 +17,7 @@
 #include "RS232.h"
 #include "Serial.h"
 #include "TCPIP.h"
+#include "UDP.h"
 
 #include <Units/Time.h>                // Duration
 #include <communication/GlobalFrame.h> // GlobalFrame

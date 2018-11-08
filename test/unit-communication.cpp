@@ -7,7 +7,10 @@
 #include "../src/robot/Communication/Communicator.h"
 #include "../src/robot/Modules/ModuleManager.h"
 #include "communication/GlobalFrame.h"
+#include <arpa/inet.h>
 #include <type_traits>
+
+#include <future>
 
 // La variable `_count` est incrémentée à chaque échange
 // pour `_count == N`, la trame correspondante est composée d'un octet par valeur entre 0 et N.
@@ -41,7 +44,7 @@ public:
 	}
 };
 
-TEST_CASE("Communication between info and elec in serial connections") {
+TEST_CASE("Communication between info and elec") {
 	SECTION("Validity test of the 'parses_frames' helper struct.") {
 		struct Ok {
 			void read_frame(const GlobalFrame&) {}
@@ -160,4 +163,45 @@ TEST_CASE("Communication between info and elec in serial connections") {
 	}*/
 }
 
-TEST_CASE("Ethernet") {}
+TEST_CASE("UDP connection") {
+	SECTION("Simple usage - Serial communication") {
+		// Création du puits
+		const uint8_t BUFLEN = 1;
+		struct sockaddr_in si_me, si_other;
+		int s, i, blen, slen = sizeof(si_other);
+		char buf[BUFLEN];
+
+		s = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+		if(s == -1) {
+			FAIL("socket");
+		}
+
+		memset((char*)&si_me, 0, sizeof(si_me));
+		si_me.sin_family = AF_INET;
+		si_me.sin_port = htons(1234);
+		si_me.sin_addr.s_addr = inet_addr("127.0.0.1");
+
+		if(bind(s, (struct sockaddr*)&si_me, sizeof(si_me)) == -1) {
+			FAIL("bind");
+		}
+
+		// Instantiation de l'objet à tester & envoi d'un octet
+		Communication::UDP udp("localhost", 4567);
+		REQUIRE(udp.is_connected());
+
+		// Envoi d'un octet dans 10ms
+		std::thread sender([&udp]() {
+			sleep(1000_ms);
+			std::cout << "Send 0x42" << std::endl;
+			udp.write_byte(0x42);
+		});
+
+		// réception du puits et test de validité
+		if(recvfrom(s, buf, BUFLEN, 0, (sockaddr*)&si_other, (socklen_t*)&slen) < 0) {
+			FAIL("recvfrom()");
+		}
+		REQUIRE(buf[0] == 0x42);
+
+		sender.join();
+	}
+}
