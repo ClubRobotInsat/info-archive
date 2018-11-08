@@ -10,9 +10,9 @@ int main() {
 	const uint8_t ID_SERVO = 254;
 	auto m = std::make_shared<ModuleManager>();
 
-	auto& servos = m->add_module<Servos2019>(5);
+	auto& servos = m->add_module<Servos>(5);
 	servos.add_servo(ID_SERVO, 0_deg);
-	servos.set_color(ID_SERVO, Servos2019::CYAN);
+	servos.set_color(ID_SERVO, Servos::CYAN);
 
 	Robot robot(m, {"prog_servos", "RS232", "/dev/ttyACM0"});
 	for(int count = 0; count < 10; count++) {

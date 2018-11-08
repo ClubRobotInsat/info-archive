@@ -2,16 +2,16 @@
 // Created by terae on 17/09/18.
 //
 
-#ifndef ROOT_AVOIDANCE2019_H
-#define ROOT_AVOIDANCE2019_H
+#ifndef ROOT_AVOIDANCE_H
+#define ROOT_AVOIDANCE_H
 
 #include "Module.hpp"
 
 namespace PhysicalRobot {
 
-	class Avoidance2019 final : public Module<SharedAvoidance2019> {
+	class Avoidance final : public Module<SharedAvoidance2019> {
 	public:
-		explicit Avoidance2019(uint8_t id);
+		explicit Avoidance(uint8_t id);
 
 		Angle get_angle_detection_adversary() const;
 
@@ -45,4 +45,4 @@ namespace PhysicalRobot {
 } // namespace PhysicalRobot
 
 
-#endif // ROOT_AVOIDANCE2019_H
+#endif // ROOT_AVOIDANCE_H

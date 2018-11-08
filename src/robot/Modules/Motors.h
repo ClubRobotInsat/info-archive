@@ -2,14 +2,14 @@
 // Created by terae on 9/10/18.
 //
 
-#ifndef ROOT_MODULEMOTEURS2019_H
-#define ROOT_MODULEMOTEURS2019_H
+#ifndef ROOT_MODULEMOTEURS_H
+#define ROOT_MODULEMOTEURS_H
 
 #include "Module.hpp"
 
 namespace PhysicalRobot {
 
-	class Motors2019 final : public Module<SharedMotors2019> {
+	class Motors final : public Module<SharedMotors2019> {
 	public:
 		enum RotatingDirection : uint8_t { SCHEDULE = 0, TRIGONOMETRIC = 1 };
 
@@ -17,7 +17,7 @@ namespace PhysicalRobot {
 		static const uint8_t ID_MAX_UNCONTROLLED_MOTORS = std::numeric_limits<uint8_t>::max();
 		static const uint8_t ID_MAX_BRUSHLESS = std::numeric_limits<uint8_t>::max();
 
-		explicit Motors2019(uint8_t id) : Module(id, motor_read_frame, motor_write_frame) {}
+		explicit Motors(uint8_t id) : Module(id, motor_read_frame, motor_write_frame) {}
 
 		uint8_t get_frame_size() const override;
 
@@ -98,4 +98,4 @@ namespace PhysicalRobot {
 	};
 } // namespace PhysicalRobot
 
-#endif // ROOT_MODULEMOTEURS2019_H
+#endif // ROOT_MODULEMOTEURS_H

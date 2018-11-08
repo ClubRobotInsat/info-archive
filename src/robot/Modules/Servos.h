@@ -13,15 +13,15 @@
  * Un servo-moteur peut être contrôlé soit en vitesse soit en angle
  */
 
-#ifndef ROOT_SERVOS2019_H
-#define ROOT_SERVOS2019_H
+#ifndef ROOT_SERVOS_H
+#define ROOT_SERVOS_H
 
 #include "Module.hpp"
 #include <variant>
 
 namespace PhysicalRobot {
 
-	class Servos2019 final : public Module<SharedServos2019> {
+	class Servos final : public Module<SharedServos2019> {
 	public:
 		enum BlockingMode : uint8_t { HOLD_ON_BLOCKING = 1, UNBLOCKING = 0 };
 
@@ -44,7 +44,7 @@ namespace PhysicalRobot {
 
 		uint8_t get_nbr_servos() const;
 
-		explicit Servos2019(uint8_t id) : Module(id, servo_read_frame, servo_write_frame) {}
+		explicit Servos(uint8_t id) : Module(id, servo_read_frame, servo_write_frame) {}
 
 		uint8_t get_frame_size() const override;
 
@@ -99,4 +99,4 @@ namespace PhysicalRobot {
 } // namespace PhysicalRobot
 
 
-#endif // ROOT_SERVOS2019_H
+#endif // ROOT_SERVOS_H

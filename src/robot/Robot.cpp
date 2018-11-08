@@ -57,17 +57,17 @@ namespace PhysicalRobot {
 
 		for(auto module : GLOBAL_CONSTANTS[_name].get_modules()) {
 			/*if(module.first == "moving") {
-			    _module_manager->add_module<Moving2019>(module.second);
+			    _module_manager->add_module<Moving>(module.second);
 			} else */
 			if(module.first == "servos") {
 				// TODO : voir comment récupérer les servos à ajouter (`robot.ini` ou fichier .JSON ?)
-				_module_manager->add_module<Servos2019>(module.second);
+				_module_manager->add_module<Servos>(module.second);
 			} else if(module.first == "motors") {
-				_module_manager->add_module<Motors2019>(module.second);
+				_module_manager->add_module<Motors>(module.second);
 			} else if(module.first == "io") {
-				_module_manager->add_module<IO2019>(module.second);
+				_module_manager->add_module<IO>(module.second);
 			} else if(module.first == "avoidance") {
-				auto& avoidance = _module_manager->add_module<Avoidance2019>(module.second);
+				auto& avoidance = _module_manager->add_module<Avoidance>(module.second);
 				avoidance.set_position_turret(GLOBAL_CONSTANTS[_name].get_turret_position());
 			} else {
 				throw std::runtime_error("The module named '" + module.first + "' (ID: " + std::to_string(module.second) +
@@ -103,7 +103,7 @@ namespace PhysicalRobot {
 	void Robot::setting_up_tirette() const {
 	    logInfo("Attente que l'on mette la tirette");
 
-	    while (not this->_module_manager->get_module<IO2019>().read_tirette()) {
+	    while (not this->_module_manager->get_module<IO>().read_tirette()) {
 	        sleep(100_ms);
 	    }
 
@@ -112,7 +112,7 @@ namespace PhysicalRobot {
 
 	// Utilitaire : vérification de tirette tirée
 	bool Robot::is_tirette_pulled() const {
-	    if (not this->_module_manager->get_module<IO2019>().read_tirette()) {
+	    if (not this->_module_manager->get_module<IO>().read_tirette()) {
 	        logDebug6("Tirette detectée comme tirée");
 	        return true;
 	    }

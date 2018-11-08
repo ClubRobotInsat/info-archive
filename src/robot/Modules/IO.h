@@ -4,16 +4,16 @@
  * L'IO permets donc de savoir quand commence le match
  */
 
-#ifndef ROOT_MODULEIO2019_H
-#define ROOT_MODULEIO2019_H
+#ifndef ROOT_MODULEIO_H
+#define ROOT_MODULEIO_H
 
 #include "Module.hpp"
 
 namespace PhysicalRobot {
 
-	class IO2019 final : public Module<SharedIO2019> {
+	class IO final : public Module<SharedIO2019> {
 	public:
-		explicit IO2019(uint8_t id);
+		explicit IO(uint8_t id);
 
 		bool read_tirette() const;
 
@@ -30,4 +30,4 @@ namespace PhysicalRobot {
 } // namespace PhysicalRobot
 
 
-#endif // ROOT_MODULEIO2019_H
+#endif // ROOT_MODULEIO_H
