@@ -66,6 +66,8 @@ void World::loadWorldFromFile(std::string filename) {
 
 Object3D& World::createRobotFromJSON(const JSON& json, Constantes::RobotColor color) {
 	// Permet de récupérer les spécificités du robot principal
+    std::cout << json.type_name() << std::endl;
+    auto robots = json["robot"];
 	auto it =
 	    std::find_if(json["robot"].begin(), json["robot"].end(), [](const JSON& j) { return j["name"] == "principal"; });
 	if(it == json["robot"].end()) {

@@ -57,7 +57,8 @@ namespace Constantes {
 	    repere::Repere({0_m, 0_m}, repere::Multiplier::SENS_POSITIVE, repere::Multiplier::SENS_POSITIVE);
 
 	// Convertir la table du fichier texte en un objet JSON à la pré-compilation
-	const JSON TABLE_2018 = EmbeddedFiles::readText("table_2018.json");
+	const JSON TABLE_2018 = nlohmann::json::parse(
+			EmbeddedFiles::readText("table_2018.json"));
 }
 
 inline Constantes::RobotColor operator!(Constantes::RobotColor const& c) {

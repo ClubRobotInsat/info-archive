@@ -16,10 +16,13 @@ set(OUTILS_SOURCE
         communication/Trame.cpp
         ../../third_parties/Units/Units.cpp)
 
-add_library(Outils_${SIMU_OU_ROBOT} STATIC ${OUTILS_SOURCE})
-target_link_libraries(Outils_${SIMU_OU_ROBOT} pthread)
-add_dependencies(Outils_${SIMU_OU_ROBOT} InfoSubmodules)
+add_library(Outils_Robot STATIC ${OUTILS_SOURCE})
+target_link_libraries(Outils_Robot pthread)
+add_dependencies(Outils_Robot InfoSubmodules)
 
+add_library(Outils_Simu STATIC ${OUTILS_SOURCE})
+target_link_libraries(Outils_Simu pthread)
+add_dependencies(Outils_Simu InfoSubmodules)
 
 #file(COPY table_2017.json table_2018.json DESTINATION ${CMAKE_BINARY_DIR}/src)
 

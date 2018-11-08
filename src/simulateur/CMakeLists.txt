@@ -4,13 +4,6 @@ if (RASPI)
 endif(RASPI)
 
 
-SET(SIMU_OU_ROBOT Simu)
-
-add_subdirectory(../commun commun)
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
-cmake_minimum_required(VERSION 3.2)
-
 link_libraries(pthread)
 #add_subdirectory(graphique/server)
 #include_directories(SYSTEM ${root_SOURCE_DIR}/third_parties/websocketpp)
