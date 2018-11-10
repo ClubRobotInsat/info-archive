@@ -7,42 +7,6 @@
 #include "../src/robot/Communication/Communicator.h"
 #include "../src/robot/Modules/ModuleManager.h"
 #include "communication/GlobalFrame.h"
-#include <arpa/inet.h>
-#include <type_traits>
-
-#include <future>
-
-// La variable `_count` est incrémentée à chaque échange
-// pour `_count == N`, la trame correspondante est composée d'un octet par valeur entre 0 et N.
-class PingPong {
-	uint8_t _count = 0;
-
-public:
-	PingPong() = default;
-
-	void read_frame(const GlobalFrame& f) {
-		logDebug("Inside read_frame; _count = ", static_cast<int>(_count), "; size = ", f.getNbDonnees(), "; f = ", f);
-		if(uint16_t size = f.getNbDonnees(); size != _count) {
-			// throw std::runtime_error("Size of GlobalFrame does not correspond.");
-		}
-		auto array = f.getDonnees();
-		for(uint8_t i = 0; i < _count; ++i) {
-			/*if (array[i] != i) {
-			    throw std::runtime_error("Frame construction is bad.");
-			}*/
-		}
-		_count++;
-	}
-
-	GlobalFrame write_frame(uint8_t) const {
-		logDebug("Inside write_frame with _count = ", _count);
-		GlobalFrame f;
-		for(uint8_t i = 0; i < _count; ++i) {
-			f.addByte(i);
-		}
-		return f;
-	}
-};
 
 TEST_CASE("Communication between info and elec") {
 	SECTION("Validity test of the 'parses_frames' helper struct.") {
@@ -118,90 +82,49 @@ TEST_CASE("Communication between info and elec") {
 		// ne compile pas : Nok1 ne correspond pas aux critères de parsing
 		// c3.connect({});
 	}
-
-	/*SECTION("Connection") {
-
-	    auto test = []() {
-	        std::atomic_bool stop = false;
-
-	        auto listener = [&stop]() {
-	            auto can = std::make_unique<Communication::CAN>(
-	                    std::make_unique<Communication::NamedPipe>("/tmp/write.pipe", "/tmp/read.pipe"));
-	            PingPong parser;
-	            while (!stop) {
-	                try {
-	                    can->envoyerTrame(parser.write_frame(), true);
-	                } catch (std::runtime_error &e) {
-	                    logError("Échec de l'envoi de l'état du robot par le module manager !!");
-	                    logError("Exception rencontrée : ", e.what());
-	                }
-
-	                try {
-	                    GlobalFrame frame = {};
-	                    can->recevoirTrameBloquant();
-	                    parser.read_frame(frame);
-	                } catch (std::runtime_error &e) {
-	                    logError("Échec de la mise à jour du module manager !!");
-	                    logError("Exception rencontrée : ", e.what());
-	                }
-	            }
-	        };
-
-	        Communication::ElecCommunicator<PingPong> communicator(std::make_shared<PingPong>(), 1234);
-	        communicator.set_modules_initialized();
-	        communicator.connect({"prog", "PIPES"});
-
-	        auto thread = std::thread(listener);
-
-	        sleep(5_s);
-	        stop = true;
-	        communicator.disconnect();
-	        thread.join();
-	    };
-
-	    CHECK_NOTHROW(test());
-	}*/
 }
 
 TEST_CASE("UDP connection") {
-	SECTION("Simple usage - Serial communication") {
-		// Création du puits
-		const uint8_t BUFLEN = 1;
-		struct sockaddr_in si_me, si_other;
-		int s, i, blen, slen = sizeof(si_other);
-		char buf[BUFLEN];
+	SECTION("Bad initialization") {
+		// Pas de privilège suffisant pour binder le port 10 en réception
+		REQUIRE_THROWS_WITH(Communication::UDP("127.0.0.1", 10, 80), "Failed to bind the receiving socket with 127.0.0.1:10.");
 
-		s = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
-		if(s == -1) {
-			FAIL("socket");
+		REQUIRE_NOTHROW(Communication::UDP("localhost", 1234, 80));
+
+		// Multiple use of the port 1234
+		Communication::UDP udp("localhost", 1234, 80);
+		REQUIRE_THROWS_WITH(Communication::UDP("localhost", 1234, 80), "Failed to bind the receiving socket with 127.0.0.1:1234.");
+	}
+
+	SECTION("Simple communication") {
+		// Initialisation d'une communication one-to-one
+		const std::string IP_ADDRESS = "127.0.0.1";
+		const uint16_t SENDER_PORT = 1234;
+		const uint16_t RECVER_PORT = 40000;
+
+		Communication::UDP sender(IP_ADDRESS, SENDER_PORT, RECVER_PORT);
+		Communication::UDP recver(IP_ADDRESS, RECVER_PORT, SENDER_PORT);
+
+		const uint8_t BUF_SIZE = 10;
+		uint8_t buf_write[BUF_SIZE];
+		for(uint8_t i = 0; i < BUF_SIZE; ++i) {
+			buf_write[i] = i;
 		}
 
-		memset((char*)&si_me, 0, sizeof(si_me));
-		si_me.sin_family = AF_INET;
-		si_me.sin_port = htons(1234);
-		si_me.sin_addr.s_addr = inet_addr("127.0.0.1");
-
-		if(bind(s, (struct sockaddr*)&si_me, sizeof(si_me)) == -1) {
-			FAIL("bind");
-		}
-
-		// Instantiation de l'objet à tester & envoi d'un octet
-		Communication::UDP udp("localhost", 4567);
-		REQUIRE(udp.is_connected());
-
-		// Envoi d'un octet dans 10ms
-		std::thread sender([&udp]() {
-			sleep(1000_ms);
-			std::cout << "Send 0x42" << std::endl;
-			udp.write_byte(0x42);
+		// Simulation de l'envoi de données
+		std::thread t_send([&sender, buf_write]() {
+			sender.write_byte(0x42);
+			sender.write_bytes(buf_write, BUF_SIZE);
 		});
 
-		// réception du puits et test de validité
-		if(recvfrom(s, buf, BUFLEN, 0, (sockaddr*)&si_other, (socklen_t*)&slen) < 0) {
-			FAIL("recvfrom()");
-		}
-		REQUIRE(buf[0] == 0x42);
+		// Un seul octet transmis
+		REQUIRE(recver.read_byte() == 0x42);
 
-		sender.join();
+		// Un tableau d'octets transmis
+		uint8_t buf_read[BUF_SIZE];
+		recver.read_bytes(buf_read, BUF_SIZE);
+		REQUIRE(std::equal(std::begin(buf_write), std::end(buf_write), std::begin(buf_read)));
+
+		t_send.join();
 	}
 }

@@ -4,77 +4,72 @@
 
 #include "UDP.h"
 
-#include <arpa/inet.h> // inet_addr
-#include <cstring>
-#include <netdb.h>      // hostent
-#include <netinet/in.h> // sockaddr_in
-#include <sys/socket.h> // socket
-#include <unistd.h>
-
 #include <log/Log.h>
 
-void fail_with(const std::string& msg) {
-	logError(msg);
-	exit(EXIT_FAILURE);
-}
-
 namespace Communication {
-	UDP::UDP(const std::string& address, uint16_t port) {
+	UDP::UDP(std::string address, uint16_t local_port, uint16_t remote_port) {
+		if(address == "localhost") {
+			address = "127.0.0.1";
+		}
+
 		using asio::ip::udp;
+		asio::error_code err;
 
-		asio::io_service io_service;
+		// Sender socket creation
+		{
+			asio::io_service io_service;
+			_send_socket = std::make_unique<udp::socket>(io_service);
+			_send_socket->open(udp::v4(), err);
 
-		_socket = std::make_unique<asio::ip::udp::socket>(io_service, udp::endpoint(udp::v4(), port));
-		_socket->open(udp::v4());
+			if(err) {
+				throw ErrorUDPCommunication("Failed to open the sending socket.");
+			}
 
-
-		sockaddr_in addr{};
-		hostent* host_info;
-
-		// Construction du socket associé à la communication
-		_fd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP); // Domaine Internet, datagrammes UDP
-		if(_fd < 0) {
-			fail_with("Could not create socket.");
+			_send_remote_endpoint = udp::endpoint(asio::ip::make_address(address), remote_port);
 		}
 
-		// Assignation des valeurs locales
-		addr.sin_family = AF_INET;
-		addr.sin_port = htons(port);
-		addr.sin_addr.s_addr = INADDR_ANY; // inet_addr("127.0.0.1");
-		memset(&(addr.sin_zero), 0, 8);
+		// Client socket creation
+		{
+			asio::io_service io_service;
+			_recv_socket = std::make_unique<udp::socket>(io_service);
+			_recv_socket->open(udp::v4(), err);
 
-		// Binding de la connection
-		if(bind(_fd, reinterpret_cast<struct sockaddr*>(&addr), sizeof(struct sockaddr_in)) < 0) {
-			fail_with("Binding error to " + address + ":" + std::to_string(port));
+			if(err) {
+				throw ErrorUDPCommunication("Failed to open the receiving socket.");
+			}
+
+			_recv_socket->bind(udp::endpoint(asio::ip::make_address(address), local_port), err);
+
+			if(err) {
+				throw ErrorUDPCommunication("Failed to bind the receiving socket with " + address + ":" +
+				                            std::to_string(local_port) + ".");
+			}
 		}
 
-		// Obtention de l'adresse IP distante
-		host_info = gethostbyname(address.c_str());
-		if(host_info == nullptr) {
-			fail_with("Impossible to get the address of '" + address + "'.");
-		}
-
-		// Assignation de l'addresse distante
-		addr.sin_addr = *(reinterpret_cast<struct in_addr*>(host_info->h_addr));
-
-		if(connect(_fd, reinterpret_cast<struct sockaddr*>(&addr), sizeof(struct sockaddr_in)) < 0) {
-			fail_with("Connection error to " + address + ":" + std::to_string(port));
-		}
 		_connected = true;
 	}
 
 	void UDP::write_bytes(const uint8_t* bytes, std::size_t bytes_number) {
 		if(_connected) {
-			if(send(_fd, reinterpret_cast<const char*>(bytes), bytes_number, 0) < static_cast<ssize_t>(bytes_number)) {
+			asio::error_code err;
+			ssize_t sent = _send_socket->send_to(asio::buffer(bytes, bytes_number), _send_remote_endpoint, 0, err);
+
+			if(err || sent < static_cast<ssize_t>(bytes_number)) {
+				logError("Error while sending data. Closure of the communication.");
 				close_socket();
 			}
 		}
 	}
 
 	void UDP::read_bytes(uint8_t* bytes, std::size_t bytes_number) {
-		// recvfrom : on peut récupérer le port de l'envoyeur pour lui répondre ensuite (utilisation du même socket envoi & réception)
-		if(recv(_fd, reinterpret_cast<char*>(bytes), bytes_number, 0) < static_cast<ssize_t>(bytes_number)) {
-			close_socket();
+		if(_connected) {
+			asio::error_code err;
+			ssize_t recv = _recv_socket->receive_from(asio::buffer(bytes, bytes_number), _recv_remote_endpoint, 0, err);
+
+			if(err || recv < bytes_number) {
+				logError("Error while receiving data. Closure of the communication.");
+				close_socket();
+			}
 		}
 	}
 
@@ -88,8 +83,9 @@ namespace Communication {
 
 	void UDP::close_socket() {
 		if(is_connected()) {
-			close(_fd);
-			// logInfo("Socket closure.");
+			_send_socket->close();
+			_recv_socket->close();
+
 			_connected = false;
 		}
 	}

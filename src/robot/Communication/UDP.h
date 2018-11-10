@@ -7,7 +7,11 @@
 
 // Utilisation de `asio` sans `Boost.asio`
 #define ASIO_STANDALONE
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wold-style-cast"
 #include <asio.hpp>
+#pragma GCC diagnostic pop
 
 #include "Serial.h"
 
@@ -16,7 +20,7 @@ namespace Communication {
 	class UDP : public Serial {
 	public:
 		/// Ouvre la connexion
-		UDP(const std::string& address, uint16_t port);
+		UDP(std::string address, uint16_t local_port, uint16_t remote_port);
 
 		/// Ferme la connexion
 		~UDP() override;
@@ -30,11 +34,15 @@ namespace Communication {
 		/// Indique si la liaison UDP est connectée ou pas
 		bool is_connected();
 
-	private:
-		std::unique_ptr<asio::ip::udp::socket> _socket;
+		// Exception si la mise en place de la communication UDP a un problème
+		EXCEPTION_CLASS(ErrorUDPCommunication);
 
-		/// Descripteur du datagramme UDP
-		int _fd;
+	private:
+		std::unique_ptr<asio::ip::udp::socket> _send_socket;
+		asio::ip::udp::endpoint _send_remote_endpoint;
+
+		std::unique_ptr<asio::ip::udp::socket> _recv_socket;
+		asio::ip::udp::endpoint _recv_remote_endpoint;
 
 		/// Indique si la liaison TCP/IP est connectée ou pas
 		bool _connected;
