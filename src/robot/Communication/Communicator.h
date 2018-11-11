@@ -26,6 +26,7 @@
 #include <condition_variable> // condition_variable
 #include <memory>             // unique_ptr
 #include <mutex>              // mutex, lock_guard
+#include <variant>            // variant
 
 namespace Communication {
 
@@ -61,7 +62,11 @@ namespace Communication {
 		void send_frame(const GlobalFrame& f);
 
 		/// Attends l'arrivée dune trame complète tant que la communication est maintenue
+		/// Cette fonction n'est utilisée que pour une communication série, pas pour de l'ethernet
 		GlobalFrame recv_frame_blocking(const std::atomic_bool& running_execution);
+
+		/// Pour chaque communication UDP, attends l'arrivée d'une trame puis mets à jour le module correspondant à l'id
+		void ethernet_recv(const std::atomic_bool& running_execution, uint8_t id);
 
 		/// Valeurs constantes de certains octets des trames
 		enum {
@@ -82,8 +87,30 @@ namespace Communication {
 		/// Processus de réception des trames
 		std::thread _reception;
 
-		/// Port de communication serie utilise pour la communication avec le bus CAN
-		std::unique_ptr<Serial> _serial;
+		/// Protocole de communication avec l'électronique
+		enum CommunicationProtocol {
+			// Communications séries en one-to-one, avec un header `0xAC DC AB BA` devant les trames
+			SERIAL_LOCAL,
+			SERIAL_NULL,
+			SERIAL_PIPES,
+			SERIAL_RS232,
+			SERIAL_TCPIP,
+			SERIAL_UDP,
+
+			// Communication sur un réseau IP en UDP, la couche 3 s'occupe de l'addressage des cartes
+			ETHERNET,
+		} _protocol;
+
+		/// Médium de communication avec l'électronique ; le `variant` dépend du protocol en vigueur
+		/// Si on est en ETHERNET, cette variable représente le mapping entre les IDs des modules et la connexion UDP
+		std::variant<std::unique_ptr<Serial>, std::map<uint8_t, std::unique_ptr<UDP>>> _serial;
+
+		/// Helper pour récupérer une connexion série
+		Serial& get_serial() const;
+
+		/// Helper pour récupérer la connexion UDP du réseau ethernet associée à l'id
+		UDP& get_udp(uint8_t id) const;
+
 		/// Instance d'une classe qui lit et écrit des trames de communication pour y appliquer les messages
 		std::shared_ptr<ParsingClass> _parser;
 

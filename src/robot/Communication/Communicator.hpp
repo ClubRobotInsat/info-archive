@@ -32,14 +32,14 @@ namespace Communication {
 				if((args.size() - 1) - i < 1) {
 					logError("Utilisation avec RS232 : \"", args[0], " RS232 /dev/ttyUSB0\"\n");
 					exit(EXIT_FAILURE);
-				} else {
-					_serial = std::make_unique<RS232>(args[i + 1]);
-					this->set_delay(10_ms); // Temporisation de 10 ms entre chaque trame pour le bus CAN
-					// électronique (pas de tempo pour le simu)
-					_connected = true;
 				}
 
-				//_modeConnexion = ModeConnexion::RS232;
+				_serial = std::make_unique<RS232>(args[i + 1]);
+				this->set_delay(10_ms); // Temporisation de 10 ms entre chaque trame pour le bus CAN
+				// électronique (pas de tempo pour le simu)
+				_connected = true;
+				_protocol = CommunicationProtocol::SERIAL_RS232;
+
 				break;
 			}
 
@@ -48,32 +48,73 @@ namespace Communication {
 				if((args.size() - 1) - i < 2) {
 					logError("Utilisation avec TCPIP : \"", args[0], " TCPIP 127.0.0.1 1234\"\n");
 					exit(EXIT_FAILURE);
-				} else {
-					_serial = std::make_unique<TCPIP>(args[i + 1], std::stoi(args[i + 2]));
-					_connected = true;
 				}
+				_serial = std::make_unique<TCPIP>(args[i + 1], std::stoi(args[i + 2]));
+				_connected = true;
+				_protocol = CommunicationProtocol::SERIAL_TCPIP;
 
 				break;
 			}
+
+			// - UDP :
+			else if(args[i] == "UDP") {
+				if((args.size() - 1) - i < 3) {
+					logError("Utilisation avec UDP : \"", args[0], " UDP [@IP] [port local] [port distant]\"\n");
+					exit(EXIT_FAILURE);
+				}
+				_serial = std::make_unique<UDP>(args[i + 1], std::stoi(args[i + 2]), std::stoi(args[i + 3]));
+				_connected = true;
+				_protocol = CommunicationProtocol::SERIAL_UDP;
+
+				break;
+			}
+
 			// - PIPES :
 			else if(args[i] == "PIPES") {
 				logDebug9("Initialisation de la connection au CAN local par pipes nommés");
 				_serial = std::make_unique<NamedPipe>("/tmp/read.pipe", "/tmp/write.pipe");
-				//_modeConnexion = ModeConnexion::PIPES;
 				_connected = true;
+				_protocol = CommunicationProtocol::SERIAL_PIPES;
+
 				break;
 			}
+
+			// - ETHERNET :
+			// TODO : voir comment ajouter les connexions UDP ; garder ce vector<string> ou utiliser une struct d'init ?
+			else if(args[i] == "ETHERNET") {
+				if((args.size() - 1) - i < 4) {
+					// FIXME : on doit fournir une unique connexion UDP actuellement
+					logError("Utilisation **temporaire** avec ETHERNET : \"", args[0], " ETHERNET [ID] [@IP] [port local] [port distant]\"\n");
+					exit(EXIT_FAILURE);
+				}
+				_serial = std::map<uint8_t, std::unique_ptr<UDP>>();
+				std::get<std::map<uint8_t, std::unique_ptr<UDP>>>(_serial)[std::stoi(args[i + 1])] =
+				    std::make_unique<UDP>(args[i + 2], std::stoi(args[i + 3]), std::stoi(args[i + 4]));
+
+				_connected = true;
+				_protocol = CommunicationProtocol::ETHERNET;
+
+				break;
+			}
+
 			// - LOCAL :
 			else if(args[i] == "LOCAL") {
 				logDebug9("Initialisation de la connexion au CAN local");
 				_serial = std::make_unique<TCPIP>("127.0.0.1", GLOBAL_CONSTANTS.get_default_TCPIP_port());
-				//_modeConnexion = ModeConnexion::LOCAL;
 				_connected = true;
-			} else if(args[i] == "NULL") {
+				_protocol = CommunicationProtocol::SERIAL_LOCAL;
+			}
+
+			// - NULL :
+			else if(args[i] == "NULL") {
 				logDebug9("Initialisation de la connexion au CAN local par le NullCommunicator");
 				_serial = std::make_unique<NullCommunicator>();
 				_connected = true;
-			} else if(args[i] == "SIMU") {
+				_protocol = CommunicationProtocol::SERIAL_NULL;
+			}
+
+			// - option SIMU pour les connexions LOCAL ou NULL
+			else if(args[i] == "SIMU") {
 				logDebug9("Initialisation socket client côté robot");
 				// TODO : voir si on garde cette architecture
 				/*_socketSimu = std::make_unique<Socket>(SockProtocol::TCP);
@@ -85,10 +126,15 @@ namespace Communication {
 		// Cas où l'on n'a rien trouvé indiquant comment se connecter :
 		if(!_connected) {
 			logInfo("Utilisation : \n");
+			logInfo("=== Connexion série one-to-one ===");
+			logInfo("- ", args[0], " LOCAL --color [color]");
+			logInfo("- ", args[0], " NULL");
+			logInfo("- ", args[0], " PIPES");
 			logInfo("- ", args[0], " RS232 [peripherique] (ex : \"", args[0], " RS232 /dev/ttyUSB0\")");
 			logInfo("- ", args[0], " TCPIP [adresse IP] [port] (ex : \"", args[0], " TCPIP 127.0.0.1 1234\")");
-			logInfo("- ", args[0], " LOCAL --color [color]");
-			logInfo("- ", args[0], " PIPES");
+			logInfo("- ", args[0], " UDP [adresse IP] [port local] [port distant] (ex : \"", args[0], " UDP 127.0.0.1 1234 40000");
+			logInfo("=== Connexion ethernet sur le LAN ===");
+			logInfo("- ", args[0], " ETHERNET");
 			logInfo("Ajouter SIMU pour établir une connection avec le socket du simu.");
 			return false;
 		}
@@ -120,39 +166,55 @@ namespace Communication {
 		}
 		std::lock_guard<std::mutex> lk(_mutex_write);
 
-		_serial->write_byte(BYTE_BEGIN_FRAME_1); // Debut de trame
-		_serial->write_byte(BYTE_BEGIN_FRAME_2);
-		_serial->write_byte(BYTE_BEGIN_FRAME_3);
-		_serial->write_byte(BYTE_BEGIN_FRAME_4_NORMAL);
+		/// * Si on communique en ethernet, le linkage du module se fait par la connexion UDP
+		/// donc on envoie une trame composée de {size, data . . .}
+		/// * Sinon, on envoie une trame composée de {0xAC.DC.AB.BA, ID, size, data . . .}
+		if(_protocol == ETHERNET) {
+			// Suppression de l'octet 0 qui correspond à l'ID
+			uint8_t msg_size = static_cast<uint8_t>(f.getNbDonnees() - 1);
+			GlobalFrame to_send{msg_size};
+			to_send += GlobalFrame{msg_size, f.getDonnees() + 1};
+			get_udp(f.getDonnee(0)).write_bytes(f.getDonnees(), msg_size);
+		} else {
+			get_serial().write_byte(BYTE_BEGIN_FRAME_1); // Debut de trame
+			get_serial().write_byte(BYTE_BEGIN_FRAME_2);
+			get_serial().write_byte(BYTE_BEGIN_FRAME_3);
+			get_serial().write_byte(BYTE_BEGIN_FRAME_4_NORMAL);
 
-		uint16_t msg_size = f.getNbDonnees();
-		_serial->write_byte(static_cast<uint8_t>(msg_size));
-		//_serial->write_bytes(reinterpret_cast<uint8_t*>(&msg_size), 2);
+			uint16_t msg_size = f.getNbDonnees();
+			get_serial().write_byte(static_cast<uint8_t>(msg_size));
+			//_serial->write_bytes(reinterpret_cast<uint8_t*>(&msg_size), 2);
 
-		_serial->write_bytes(f.getDonnees(), msg_size);
+			get_serial().write_bytes(f.getDonnees(), msg_size);
 
-		// Temporisation pour ne pas saturer l'électronique
-		sleep(_delay);
+			// Temporisation pour ne pas saturer l'électronique
+			sleep(_delay);
+		}
 	}
 
 	template <typename ParsingClass>
 	GlobalFrame Communicator<ParsingClass>::recv_frame_blocking(const std::atomic_bool& running_execution) {
+		if(_protocol == ETHERNET) {
+			throw std::runtime_error("Ethernet communication set up, not serial-only communication.");
+		}
+
 		static uint8_t buf[GlobalFrame::DONNEES_TRAME_MAX];
+
 		while(running_execution) {
 			// Début de la trame
-			while(_serial->read_byte() != BYTE_BEGIN_FRAME_1) {
+			while(get_serial().read_byte() != BYTE_BEGIN_FRAME_1) {
 				if(!running_execution)
 					break;
 			}
 
-			if(_serial->read_byte() == BYTE_BEGIN_FRAME_2) {
-				if(_serial->read_byte() == BYTE_BEGIN_FRAME_3) {
-					if(uint8_t frame_type = _serial->read_byte(); frame_type == BYTE_BEGIN_FRAME_4_NORMAL) {
+			if(get_serial().read_byte() == BYTE_BEGIN_FRAME_2) {
+				if(get_serial().read_byte() == BYTE_BEGIN_FRAME_3) {
+					if(uint8_t frame_type = get_serial().read_byte(); frame_type == BYTE_BEGIN_FRAME_4_NORMAL) {
 						/*uint16_t msg_size;
 						_serial->lireOctets(reinterpret_cast<uint8_t*>(&msg_size), 2);*/
-						uint8_t msg_size = _serial->read_byte();
+						uint8_t msg_size = get_serial().read_byte();
 
-						_serial->read_bytes(buf, msg_size);
+						get_serial().read_bytes(buf, msg_size);
 						GlobalFrame received_frame{msg_size, buf};
 						if(_debug_active) {
 							logDebug("Communicator.RECV ", received_frame, "\ntime: ", _chrono.getElapsedTime(), "\n");
@@ -166,6 +228,33 @@ namespace Communication {
 			}
 		}
 		throw std::runtime_error("Abort of the reception of frames.");
+	}
+
+	template <typename ParsingClass>
+	void Communicator<ParsingClass>::ethernet_recv(const std::atomic_bool& running_execution, uint8_t id) {
+		if(_protocol != ETHERNET) {
+			throw std::runtime_error("Serial communication set up, not ethernet communication.");
+		}
+
+		static uint8_t buf[GlobalFrame::DONNEES_TRAME_MAX];
+
+		auto& udp = get_udp(id);
+
+		while(running_execution) {
+			try {
+				// 1er octet : taille du message
+				uint8_t msg_size = udp.read_byte();
+				// Lecture du reste de la trame
+				get_serial().read_bytes(buf, msg_size);
+				GlobalFrame received_frame{msg_size, buf};
+				logDebug("Communicator.ethernet.RECV ", received_frame, "\ntime: ", _chrono.getElapsedTime(), "\n");
+
+				_parser->read_frame(received_frame);
+			} catch(std::runtime_error& e) {
+				logError("Failed to recv an ethernet message to update the module ", id);
+				logError("Exception caught: ", e.what());
+			}
+		}
 	}
 
 	template <typename ParsingClass>
@@ -190,18 +279,6 @@ namespace Communication {
 			_modules_initialized.wait(lk);
 		}
 
-		auto input_function = [this](std::atomic_bool& running_execution) {
-			while(running_execution) {
-				try {
-					auto frame = this->recv_frame_blocking(running_execution);
-					_parser->read_frame(frame);
-				} catch(std::runtime_error& e) {
-					logError("Failed to update the state of the module manager!!");
-					logError("Exception caught: ", e.what());
-				}
-			}
-		};
-
 		auto output_function = [this](std::atomic_bool& running_execution) {
 			while(running_execution) {
 				std::optional<GlobalFrame> frame = _parser->write_frame();
@@ -218,10 +295,52 @@ namespace Communication {
 			}
 		};
 
-		std::thread in = std::thread(input_function, std::ref(_connected));
 		std::thread out = std::thread(output_function, std::ref(_connected));
 
-		in.join();
+		if(_protocol == ETHERNET) {
+			const std::size_t nbr_serials = std::get<std::map<uint8_t, std::unique_ptr<UDP>>>(_serial).size();
+			std::thread in[nbr_serials];
+			std::size_t i = 0;
+			for(auto& v : std::get<std::map<uint8_t, std::unique_ptr<UDP>>>(_serial)) {
+				in[i++] = std::thread(&Communicator<ParsingClass>::ethernet_recv, this, std::ref(_running_execution), v.first);
+			}
+
+			for(i = 0; i < nbr_serials; ++i) {
+				in[i].join();
+			}
+		} else {
+			auto input_function = [this](std::atomic_bool& running_execution) {
+				while(running_execution) {
+					try {
+						auto frame = this->recv_frame_blocking(running_execution);
+						_parser->read_frame(frame);
+					} catch(std::runtime_error& e) {
+						logError("Failed to update the state of the module manager!!");
+						logError("Exception caught: ", e.what());
+					}
+				}
+			};
+
+			std::thread in = std::thread(input_function, std::ref(_connected));
+
+			in.join();
+		}
 		out.join();
+	}
+
+	template <typename ParsingClass>
+	Serial& Communicator<ParsingClass>::get_serial() const {
+		if(_protocol == ETHERNET) {
+			throw std::invalid_argument("The communicator is set up to an ethernet communication.");
+		}
+		return *std::get<std::unique_ptr<Serial>>(_serial);
+	}
+
+	template <typename ParsingClass>
+	UDP& Communicator<ParsingClass>::get_udp(uint8_t id) const {
+		if(_protocol != ETHERNET) {
+			throw std::invalid_argument("The communicator isn't set up to an ethernet communication.");
+		}
+		return *std::get<std::map<uint8_t, std::unique_ptr<UDP>>>(_serial).find(id)->second;
 	}
 } // namespace Communication
