@@ -11,7 +11,7 @@ int main() {
 	auto m = std::make_shared<ModuleManager>();
 
 	auto& servos = m->add_module<Servos>(5);
-	servos.add_servo(ID_SERVO, 0_deg);
+	servos.add_servo(ID_SERVO);
 	servos.set_color(ID_SERVO, Servos::CYAN);
 
 	Robot robot(m, {"prog_servos", "RS232", "/dev/ttyACM0"});

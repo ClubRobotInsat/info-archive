@@ -47,7 +47,7 @@ namespace Communication {
 		}
 	}
 
-	void NamedPipe::read_bytes(uint8_t* bytes, std::size_t bytes_number) {
+	size_t NamedPipe::read_bytes(uint8_t* bytes, std::size_t bytes_number) {
 		std::size_t nb_read = 0;
 		while(nb_read < bytes_number) {
 			ssize_t val = read(_fd_read, bytes + nb_read, bytes_number - nb_read);
@@ -60,6 +60,7 @@ namespace Communication {
 				throw ErreurEOF();
 			nb_read += val;
 		}
+		return bytes_number;
 	}
 
 	bool NamedPipe::create_descriptor(const std::string& path) {

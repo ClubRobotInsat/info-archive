@@ -6,7 +6,7 @@
 #include <log/Log.h>
 
 namespace PhysicalRobot {
-	void Servos::add_servo(uint8_t id, Angle start_position, BlockingMode mode) {
+	void Servos::add_servo(uint8_t id, BlockingMode mode) {
 		std::lock_guard<std::mutex> lk(_mutex_variables);
 
 		if(id >= ID_MAX_SERVOS) {
@@ -17,7 +17,7 @@ namespace PhysicalRobot {
 			throw std::runtime_error("Double assignation du servo "s + std::to_string(id) + " !");
 		}
 
-		_servos[id] = std::make_unique<Servo>(id, start_position, mode);
+		_servos[id] = std::make_unique<Servo>(id, mode);
 	}
 
 	uint8_t Servos::get_nbr_servos() const {
@@ -37,7 +37,7 @@ namespace PhysicalRobot {
 			return INDEX_BAD_ID;
 
 		for(uint8_t index = 0; index < ID_MAX_SERVOS; ++index) {
-			if(_servos[index] && _servos[index]->id == id)
+			if(_servos[index] != nullptr && _servos[index]->id == id)
 				return index;
 		}
 
@@ -146,7 +146,7 @@ namespace PhysicalRobot {
 		s.nb_servos = get_nbr_servos();
 		uint8_t count = 0;
 		for(uint8_t index = 0; index < ID_MAX_SERVOS; ++index) {
-			if(_servos[index]) {
+			if(_servos[index] != nullptr) {
 				s.servos[count].id = _servos[index]->id;
 
 				auto angle_to_uint16t = [count, &s](Angle angle) -> uint16_t {
@@ -183,7 +183,7 @@ namespace PhysicalRobot {
 				throw std::runtime_error("Amount of servos does not correspond.");
 			}
 			for(uint8_t index = 0; index < ID_MAX_SERVOS; ++index) {
-				if(_servos[index] && s.servos[index].id != 0) {
+				if(_servos[index] != nullptr && s.servos[index].id != 0) {
 					auto uint16t_to_angle = [](uint16_t pos) -> Angle {
 						// TODO
 						Angle angle = 0_deg;
@@ -201,5 +201,19 @@ namespace PhysicalRobot {
 				}
 			}
 		}
+	}
+
+	void Servos::deactivation() {
+		lock_variables();
+
+		for(uint8_t index = 0; index < ID_MAX_SERVOS; ++index) {
+			if(_servos[index] != nullptr) {
+				_servos[index]->command = 0;
+				_servos[index]->command_type = Servo::CommandType::SPEED;
+			}
+		}
+
+		_state_changed.exchange(true);
+		unlock_variables();
 	}
 } // namespace PhysicalRobot

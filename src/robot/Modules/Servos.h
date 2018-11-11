@@ -40,7 +40,7 @@ namespace PhysicalRobot {
 
 		static const uint8_t ID_MAX_SERVOS = std::numeric_limits<uint8_t>::max();
 
-		void add_servo(uint8_t id, Angle start_position, BlockingMode = UNBLOCKING);
+		void add_servo(uint8_t id, BlockingMode = UNBLOCKING);
 
 		uint8_t get_nbr_servos() const;
 
@@ -69,15 +69,15 @@ namespace PhysicalRobot {
 		SharedServos2019 generate_shared() const override;
 		void message_processing(const SharedServos2019&) override;
 
-		void deactivation() override {}
+		void deactivation() override;
 
 		struct Servo {
 			enum CommandType { POSITION = 0, SPEED = 1 };
 
 			// Par défaut, un servo est commandé en vitesse (0 rad/s).
-			Servo(uint8_t id, Angle start_position, BlockingMode mode)
+			Servo(uint8_t id, BlockingMode mode)
 			        : id(static_cast<uint8_t>(id > 0 ? id : throw std::runtime_error("ID equals to 0.")))
-			        , position(start_position)
+			        , position(0_deg)
 			        , command(0)
 			        , command_type(CommandType::SPEED)
 			        , blocked(false)

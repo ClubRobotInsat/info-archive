@@ -20,7 +20,7 @@ namespace Communication {
 
 		void write_bytes(const uint8_t* bytes, std::size_t bytes_number) override;
 
-		void read_bytes(uint8_t* bytes, std::size_t bytes_number) override;
+		size_t read_bytes(uint8_t* bytes, std::size_t bytes_number) override;
 
 		// erreur si la connection n'est pas ouverte
 		EXCEPTION_CLASS(ErrorPipeOpening);
