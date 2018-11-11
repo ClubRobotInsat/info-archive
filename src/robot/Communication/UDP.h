@@ -29,7 +29,7 @@ namespace Communication {
 		void write_bytes(const uint8_t* bytes, std::size_t bytes_number) override;
 
 		/// Attend plusieurs octets sur la liaison et retourne lorsque le nombre demandé a été reçu - BLOQUANT
-		void read_bytes(uint8_t* bytes, std::size_t bytes_number) override;
+		size_t read_bytes(uint8_t* bytes, std::size_t bytes_number) override;
 
 		/// Indique si la liaison UDP est connectée ou pas
 		bool is_connected();

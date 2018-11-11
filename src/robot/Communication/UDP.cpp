@@ -61,18 +61,18 @@ namespace Communication {
 		}
 	}
 
-	void UDP::read_bytes(uint8_t* bytes, std::size_t bytes_number) {
-		// TODO - Internal buffer; necessity to read only 2 bytes but to get a 100 bytes long datagram
-		// TODO - then next read: return the buffer data
+	size_t UDP::read_bytes(uint8_t* bytes, std::size_t bytes_number) {
 		if(_connected) {
 			asio::error_code err;
-			ssize_t recv = _recv_socket->receive_from(asio::buffer(bytes, bytes_number), _recv_remote_endpoint, 0, err);
+			size_t recv = _recv_socket->receive_from(asio::buffer(bytes, bytes_number), _recv_remote_endpoint, 0, err);
 
-			if(err || recv < bytes_number) {
+			if(err) {
 				logError("Error while receiving data. Closure of the communication.");
 				close_socket();
 			}
+			return recv;
 		}
+		return 0;
 	}
 
 	UDP::~UDP() {

@@ -23,7 +23,10 @@ namespace Communication {
 		virtual uint8_t read_byte() final;
 
 		/// Attend plusieurs octets sur le port et retourne lorsque le nombre demandé a été reçu - BLOQUANT
-		virtual void read_bytes(uint8_t* octets, std::size_t nombre) = 0;
+		/// @returns le nombre d'octets lus, c'est à dire :
+		/// * `bytes_number` dans les connexions à flux d'octets
+		/// * la taille du message dans les connexions par transfert de datagrammes (ex : UDP)
+		virtual size_t read_bytes(uint8_t* octets, std::size_t bytes_number) = 0;
 	};
 } // namespace Communication
 

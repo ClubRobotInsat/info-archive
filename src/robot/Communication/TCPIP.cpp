@@ -67,7 +67,7 @@ namespace Communication {
 	}
 
 	/// Attend plusieurs octets sur le port et retourne lorsque le nombre demandé a été reçu - BLOQUANT
-	void TCPIP::read_bytes(uint8_t* bytes, std::size_t bytes_number) {
+	size_t TCPIP::read_bytes(uint8_t* bytes, std::size_t bytes_number) {
 		if(_connected) {
 #ifdef WIN32 // MSG_WAITALL pas avant Win Server 2003 (donc pas sous XP par exemple) : on fait sans
 			unsigned char recu;
@@ -83,7 +83,9 @@ namespace Communication {
 			if(recv(_fd, reinterpret_cast<char*>(bytes), bytes_number, MSG_WAITALL) < static_cast<ssize_t>(bytes_number))
 				close_socket();
 #endif
+			return bytes_number;
 		}
+		return 0;
 	}
 
 	/// Indique si la liaison TCP/IP est connectée ou pas
