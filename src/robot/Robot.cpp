@@ -34,6 +34,7 @@ namespace PhysicalRobot {
 		logInfo("Deactivation of the robot '" + _name + "'.");
 
 		_module_manager->deactivation();
+		_communicator->disconnect();
 
 		/*this->getCarte<DEPLACEMENT>().activerEnvoiAuto(false);
 		this->getCarte<DEPLACEMENT>().arretUrgence();

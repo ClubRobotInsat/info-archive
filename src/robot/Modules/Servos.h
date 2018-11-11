@@ -69,7 +69,7 @@ namespace PhysicalRobot {
 		SharedServos2019 generate_shared() const override;
 		void message_processing(const SharedServos2019&) override;
 
-		void deactivation() override {}
+		void deactivation() override;
 
 		struct Servo {
 			enum CommandType { POSITION = 0, SPEED = 1 };
