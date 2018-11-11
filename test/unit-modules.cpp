@@ -129,7 +129,6 @@ TEST_CASE("Servos 2019 Module") {
 		my_module.set_speed(2, 6);
 
 		REQUIRE_THROWS_WITH(my_module.read_position(1), "Numéro du servo demandé invalide : 1");
-		CHECK(my_module.read_position(2) == -119_deg);
 
 		REQUIRE_THROWS_WITH(my_module.set_color(1, PhysicalRobot::Servos::GREEN), "Numéro du servo demandé invalide : 1");
 		my_module.set_color(2, PhysicalRobot::Servos::GREEN);

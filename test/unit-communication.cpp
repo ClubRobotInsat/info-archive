@@ -128,3 +128,10 @@ TEST_CASE("UDP connection") {
 		t_send.join();
 	}
 }
+
+TEST_CASE("Ethernet communication") {
+	using namespace PhysicalRobot;
+	using namespace Communication;
+
+	// TODO
+}

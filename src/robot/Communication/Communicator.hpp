@@ -3,17 +3,14 @@
 //
 
 #include "Communicator.h"
+#include "Protocol.h"
 #include <Constants.h>
 #include <log/Log.h>
 
 namespace Communication {
 	template <typename ParsingClass>
 	Communicator<ParsingClass>::Communicator(std::shared_ptr<ParsingClass> parser)
-	        : _parser(std::move(parser))
-	        , _connected(false)
-	        , _modules_init_notified(false)
-	        , _delay(GLOBAL_CONSTANTS.get_default_communication_delay())
-	        , _debug_active(false) {
+	        : _parser(std::move(parser)), _connected(false), _modules_init_notified(false), _debug_active(false) {
 		_chrono.reset();
 	}
 
@@ -24,6 +21,8 @@ namespace Communication {
 
 	template <typename ParsingClass>
 	bool Communicator<ParsingClass>::connect(const std::vector<std::string>& args) {
+		using std::stoi;
+
 		logInfo("Initialisation de la communication élec/info.");
 
 		for(size_t i = 1; i < args.size() && !_connected; ++i) {
@@ -34,12 +33,7 @@ namespace Communication {
 					exit(EXIT_FAILURE);
 				}
 
-				_serial = std::make_unique<RS232>(args[i + 1]);
-				this->set_delay(10_ms); // Temporisation de 10 ms entre chaque trame pour le bus CAN
-				// électronique (pas de tempo pour le simu)
-				_connected = true;
-				_protocol = CommunicationProtocol::SERIAL_RS232;
-
+				_protocol = std::make_unique<protocol_rs232>(args[i + 1]);
 				break;
 			}
 
@@ -49,10 +43,8 @@ namespace Communication {
 					logError("Utilisation avec TCPIP : \"", args[0], " TCPIP 127.0.0.1 1234\"\n");
 					exit(EXIT_FAILURE);
 				}
-				_serial = std::make_unique<TCPIP>(args[i + 1], std::stoi(args[i + 2]));
-				_connected = true;
-				_protocol = CommunicationProtocol::SERIAL_TCPIP;
 
+				_protocol = std::make_unique<protocol_tcpip>(args[i + 1], stoi(args[i + 2]));
 				break;
 			}
 
@@ -62,55 +54,43 @@ namespace Communication {
 					logError("Utilisation avec UDP : \"", args[0], " UDP [@IP] [port local] [port distant]\"\n");
 					exit(EXIT_FAILURE);
 				}
-				_serial = std::make_unique<UDP>(args[i + 1], std::stoi(args[i + 2]), std::stoi(args[i + 3]));
-				_connected = true;
-				_protocol = CommunicationProtocol::SERIAL_UDP;
 
+				_protocol = std::make_unique<protocol_udp>(args[i + 1], stoi(args[i + 2]), stoi(args[i + 3]));
 				break;
 			}
 
 			// - PIPES :
 			else if(args[i] == "PIPES") {
 				logDebug9("Initialisation de la connection au CAN local par pipes nommés");
-				_serial = std::make_unique<NamedPipe>("/tmp/read.pipe", "/tmp/write.pipe");
-				_connected = true;
-				_protocol = CommunicationProtocol::SERIAL_PIPES;
 
+				_protocol = std::make_unique<protocol_pipes>("/tmp/read.pipe", "/tmp/write.pipe");
 				break;
 			}
 
 			// - ETHERNET :
-			// TODO : voir comment ajouter les connexions UDP ; garder ce vector<string> ou utiliser une struct d'init ?
+			// TODO : voir comment ajouter les connexions UDP depuis le vector ; utiliser directement les constantes ?
 			else if(args[i] == "ETHERNET") {
 				if((args.size() - 1) - i < 4) {
 					// FIXME : on doit fournir une unique connexion UDP actuellement
 					logError("Utilisation **temporaire** avec ETHERNET : \"", args[0], " ETHERNET [ID] [@IP] [port local] [port distant]\"\n");
 					exit(EXIT_FAILURE);
 				}
-				_serial = std::map<uint8_t, std::unique_ptr<UDP>>();
-				std::get<std::map<uint8_t, std::unique_ptr<UDP>>>(_serial)[std::stoi(args[i + 1])] =
-				    std::make_unique<UDP>(args[i + 2], std::stoi(args[i + 3]), std::stoi(args[i + 4]));
 
-				_connected = true;
-				_protocol = CommunicationProtocol::ETHERNET;
-
+				_protocol = std::make_unique<protocol_ethernet>(
+				    protocol_ethernet::UDPConnection{stoi(args[i + 1]), args[i + 2], stoi(args[i + 3]), stoi(args[i + 4])});
 				break;
 			}
 
 			// - LOCAL :
 			else if(args[i] == "LOCAL") {
 				logDebug9("Initialisation de la connexion au CAN local");
-				_serial = std::make_unique<TCPIP>("127.0.0.1", GLOBAL_CONSTANTS.get_default_TCPIP_port());
-				_connected = true;
-				_protocol = CommunicationProtocol::SERIAL_LOCAL;
+				_protocol = std::make_unique<protocol_local>();
 			}
 
 			// - NULL :
 			else if(args[i] == "NULL") {
 				logDebug9("Initialisation de la connexion au CAN local par le NullCommunicator");
-				_serial = std::make_unique<NullCommunicator>();
-				_connected = true;
-				_protocol = CommunicationProtocol::SERIAL_NULL;
+				_protocol = std::make_unique<protocol_null>();
 			}
 
 			// - option SIMU pour les connexions LOCAL ou NULL
@@ -139,7 +119,7 @@ namespace Communication {
 			return false;
 		}
 
-		_reception = std::thread(&Communicator<ParsingClass>::communicate_with_elecs, this);
+		_communication = std::thread(&Communicator<ParsingClass>::communicate_with_elecs, this);
 		return true;
 	}
 
@@ -148,7 +128,7 @@ namespace Communication {
 	void Communicator<ParsingClass>::disconnect() {
 		if(_connected) {
 			_running_execution.store(false);
-			_reception.join();
+			_communication.join();
 		}
 	}
 
@@ -160,124 +140,11 @@ namespace Communication {
 	}
 
 	template <typename ParsingClass>
-	void Communicator<ParsingClass>::send_frame(const GlobalFrame& f) {
-		if(_debug_active) {
-			logDebug("Communicator.SEND ", f, "\ntime: ", _chrono.getElapsedTime(), "\n");
-		}
-		std::lock_guard<std::mutex> lk(_mutex_write);
-
-		/// * Si on communique en ethernet, le linkage du module se fait par la connexion UDP
-		/// donc on envoie une trame composée de {size, data . . .}
-		/// * Sinon, on envoie une trame composée de {0xAC.DC.AB.BA, ID, size, data . . .}
-		if(_protocol == ETHERNET) {
-			// Suppression de l'octet 0 qui correspond à l'ID ; envoi de tout le reste
-			uint8_t msg_size = static_cast<uint8_t>(f.getNbDonnees() - 1);
-			get_udp(f.getDonnee(0)).write_bytes(f.getDonnees() + 1, msg_size);
-		} else {
-			// Dans le cas d'une liaison série par UDP, on ne peut pas écrire octet par octet (envoi d'un seul message)
-			uint16_t msg_size = f.getNbDonnees();
-			GlobalFrame msg{BYTE_BEGIN_FRAME_1, BYTE_BEGIN_FRAME_2, BYTE_BEGIN_FRAME_3, BYTE_BEGIN_FRAME_4_NORMAL, static_cast<uint8_t>(msg_size)};
-			msg += f;
-			get_serial().write_bytes(msg.getDonnees(), msg.getNbDonnees());
-
-			/*
-			TODO : supprimer ce bloc ; ça ne marche que pour des liaisons séries en flux d'octets, pas en mode datagrams
-			get_serial().write_byte(BYTE_BEGIN_FRAME_1); // Debut de trame
-			get_serial().write_byte(BYTE_BEGIN_FRAME_2);
-			get_serial().write_byte(BYTE_BEGIN_FRAME_3);
-			get_serial().write_byte(BYTE_BEGIN_FRAME_4_NORMAL);
-
-			uint16_t msg_size = f.getNbDonnees();
-			get_serial().write_byte(static_cast<uint8_t>(msg_size));
-			//_serial->write_bytes(reinterpret_cast<uint8_t*>(&msg_size), 2);
-
-			get_serial().write_bytes(f.getDonnees(), msg_size);*/
-
-			// Temporisation pour ne pas saturer l'électronique
-			sleep(_delay);
-		}
-	}
-
-	template <typename ParsingClass>
-	GlobalFrame Communicator<ParsingClass>::recv_frame_blocking(const std::atomic_bool& running_execution) {
-		if(_protocol == ETHERNET) {
-			throw std::runtime_error("Ethernet communication set up, not serial-only communication.");
-		}
-
-		static uint8_t buf[GlobalFrame::DONNEES_TRAME_MAX];
-
-		while(running_execution) {
-			if(_protocol == CommunicationProtocol::SERIAL_UDP) {
-				size_t msg_size = get_serial().read_bytes(buf, GlobalFrame::DONNEES_TRAME_MAX);
-				// Les 5 premiers octets correspondent à `0xAC DC AB BA` <size>
-				if(msg_size < 5) {
-					continue;
-				}
-				return GlobalFrame{static_cast<uint8_t>(msg_size - 5), buf + 5};
-			} else {
-				// Début de la trame
-				while(get_serial().read_byte() != BYTE_BEGIN_FRAME_1) {
-					if(!running_execution)
-						break;
-				}
-
-				if(get_serial().read_byte() == BYTE_BEGIN_FRAME_2) {
-					if(get_serial().read_byte() == BYTE_BEGIN_FRAME_3) {
-						if(uint8_t frame_type = get_serial().read_byte(); frame_type == BYTE_BEGIN_FRAME_4_NORMAL) {
-							/*uint16_t msg_size;
-							_serial->lireOctets(reinterpret_cast<uint8_t*>(&msg_size), 2);*/
-							uint8_t msg_size = get_serial().read_byte();
-
-							get_serial().read_bytes(buf, msg_size);
-							GlobalFrame received_frame{msg_size, buf};
-							if(_debug_active) {
-								logDebug("Communicator.RECV ", received_frame, "\ntime: ", _chrono.getElapsedTime(), "\n");
-							}
-							return received_frame;
-						} else if(frame_type == BYTE_BEGIN_FRAME_4_PING) {
-							// TODO
-							throw std::runtime_error("Ping not implemented yet.");
-						}
-					}
-				}
-			}
-		}
-		throw std::runtime_error("Abort of the reception of frames.");
-	}
-
-	template <typename ParsingClass>
-	void Communicator<ParsingClass>::ethernet_recv(const std::atomic_bool& running_execution, uint8_t id) {
-		if(_protocol != ETHERNET) {
-			throw std::runtime_error("Serial communication set up, not ethernet communication.");
-		}
-
-		static uint8_t buf[GlobalFrame::DONNEES_TRAME_MAX];
-
-		auto& udp = get_udp(id);
-
-		while(running_execution) {
-			try {
-				// Lecture du message
-				uint8_t msg_size = static_cast<uint8_t>(udp.read_bytes(buf, GlobalFrame::DONNEES_TRAME_MAX));
-				GlobalFrame received_frame{msg_size, buf};
-				logDebug("Communicator.ethernet.RECV ", received_frame, "\ntime: ", _chrono.getElapsedTime(), "\n");
-
-				_parser->read_frame(received_frame);
-			} catch(std::runtime_error& e) {
-				logError("Failed to recv an ethernet message to update the module ", id);
-				logError("Exception caught: ", e.what());
-			}
-		}
-	}
-
-	template <typename ParsingClass>
-	void Communicator<ParsingClass>::set_delay(Duration delay) {
-		_delay = delay;
-	}
-
-	template <typename ParsingClass>
 	void Communicator<ParsingClass>::set_debug(bool active) {
 		_debug_active = active;
+		if(_protocol != nullptr) {
+			_protocol->debug_active = active;
+		}
 	}
 
 	/// Communication avec les élecs
@@ -303,57 +170,19 @@ namespace Communication {
 					sleep(GLOBAL_CONSTANTS.get_default_communication_delay());
 				} else {
 					// Trame à envoyer
-					this->send_frame(frame.value());
+					_protocol->send_frame(frame.value());
 				}
 			}
 		};
 
+		auto input_function = [this](std::atomic_bool& running_execution) {
+			_protocol->recv_frame(running_execution, [this](const GlobalFrame& f) { _parser->read_frame(f); });
+		};
+
 		std::thread out = std::thread(output_function, std::ref(_connected));
+		std::thread in = std::thread(input_function, std::ref(_connected));
 
-		if(_protocol == ETHERNET) {
-			const std::size_t nbr_serials = std::get<std::map<uint8_t, std::unique_ptr<UDP>>>(_serial).size();
-			std::thread in[nbr_serials];
-			std::size_t i = 0;
-			for(auto& v : std::get<std::map<uint8_t, std::unique_ptr<UDP>>>(_serial)) {
-				in[i++] = std::thread(&Communicator<ParsingClass>::ethernet_recv, this, std::ref(_running_execution), v.first);
-			}
-
-			for(i = 0; i < nbr_serials; ++i) {
-				in[i].join();
-			}
-		} else {
-			auto input_function = [this](std::atomic_bool& running_execution) {
-				while(running_execution) {
-					try {
-						auto frame = this->recv_frame_blocking(running_execution);
-						_parser->read_frame(frame);
-					} catch(std::runtime_error& e) {
-						logError("Failed to update the state of the module manager!!");
-						logError("Exception caught: ", e.what());
-					}
-				}
-			};
-
-			std::thread in = std::thread(input_function, std::ref(_connected));
-
-			in.join();
-		}
+		in.join();
 		out.join();
-	}
-
-	template <typename ParsingClass>
-	Serial& Communicator<ParsingClass>::get_serial() const {
-		if(_protocol == ETHERNET) {
-			throw std::invalid_argument("The communicator is set up to an ethernet communication.");
-		}
-		return *std::get<std::unique_ptr<Serial>>(_serial);
-	}
-
-	template <typename ParsingClass>
-	UDP& Communicator<ParsingClass>::get_udp(uint8_t id) const {
-		if(_protocol != ETHERNET) {
-			throw std::invalid_argument("The communicator isn't set up to an ethernet communication.");
-		}
-		return *std::get<std::map<uint8_t, std::unique_ptr<UDP>>>(_serial).find(id)->second;
 	}
 } // namespace Communication
