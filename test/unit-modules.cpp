@@ -110,13 +110,13 @@ TEST_CASE("Basic module") {
 TEST_CASE("Servos 2019 Module") {
 	SECTION("Non-frame functions' module") {
 		PhysicalRobot::Servos my_module(2);
-		my_module.add_servo(5, 110_deg, PhysicalRobot::Servos::HOLD_ON_BLOCKING);
-		my_module.add_servo(2, -119_deg, PhysicalRobot::Servos::UNBLOCKING);
-		my_module.add_servo(4, 80_deg);
+		my_module.add_servo(5, PhysicalRobot::Servos::HOLD_ON_BLOCKING);
+		my_module.add_servo(2, PhysicalRobot::Servos::UNBLOCKING);
+		my_module.add_servo(4);
 
-		REQUIRE_THROWS_WITH(my_module.add_servo(5, 50_deg), "Double assignation du servo 5 !");
-		REQUIRE_NOTHROW(my_module.add_servo(42, 50_deg));
-		REQUIRE_THROWS_WITH(my_module.add_servo(0, 0_deg), "L'ID 0 des servos est réservé !");
+		REQUIRE_THROWS_WITH(my_module.add_servo(5), "Double assignation du servo 5 !");
+		REQUIRE_NOTHROW(my_module.add_servo(42));
+		REQUIRE_THROWS_WITH(my_module.add_servo(0), "L'ID 0 des servos est réservé !");
 		CHECK(my_module.get_nbr_servos() == 4);
 		CHECK(my_module.get_frame_size() == 25);
 
@@ -395,7 +395,7 @@ TEST_CASE("ModuleManager") {
 
 			SECTION("Servos") {
 				auto& module_servo = manager.add_module<PhysicalRobot::Servos>(15);
-				module_servo.add_servo(2, 50_deg);
+				module_servo.add_servo(2);
 				module_servo.set_position(2, 90_deg);
 
 				auto frame_servos = manager.write_frame().value();
@@ -412,7 +412,7 @@ TEST_CASE("ModuleManager") {
 			PhysicalRobot::ModuleManager manager;
 			manager.add_module<ModuleTest>(5);
 			auto& module_servo = manager.add_module<PhysicalRobot::Servos>(15);
-			module_servo.add_servo(2, 50_deg);
+			module_servo.add_servo(2);
 
 			REQUIRE_THROWS_WITH(manager.read_frame({}), "Frame does not contain the module's id.");
 			REQUIRE_THROWS_WITH(manager.read_frame({13}), "The module n°13 isn't initialized.");

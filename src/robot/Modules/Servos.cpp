@@ -6,7 +6,7 @@
 #include <log/Log.h>
 
 namespace PhysicalRobot {
-	void Servos::add_servo(uint8_t id, Angle start_position, BlockingMode mode) {
+	void Servos::add_servo(uint8_t id, BlockingMode mode) {
 		std::lock_guard<std::mutex> lk(_mutex_variables);
 
 		if(id >= ID_MAX_SERVOS) {
@@ -17,7 +17,7 @@ namespace PhysicalRobot {
 			throw std::runtime_error("Double assignation du servo "s + std::to_string(id) + " !");
 		}
 
-		_servos[id] = std::make_unique<Servo>(id, start_position, mode);
+		_servos[id] = std::make_unique<Servo>(id, mode);
 	}
 
 	uint8_t Servos::get_nbr_servos() const {
