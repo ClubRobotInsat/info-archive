@@ -170,12 +170,18 @@ namespace Communication {
 		/// donc on envoie une trame composée de {size, data . . .}
 		/// * Sinon, on envoie une trame composée de {0xAC.DC.AB.BA, ID, size, data . . .}
 		if(_protocol == ETHERNET) {
-			// Suppression de l'octet 0 qui correspond à l'ID
+			// Suppression de l'octet 0 qui correspond à l'ID ; envoi de tout le reste
 			uint8_t msg_size = static_cast<uint8_t>(f.getNbDonnees() - 1);
-			GlobalFrame to_send{msg_size};
-			to_send += GlobalFrame{msg_size, f.getDonnees() + 1};
-			get_udp(f.getDonnee(0)).write_bytes(f.getDonnees(), msg_size);
+			get_udp(f.getDonnee(0)).write_bytes(f.getDonnees() + 1, msg_size);
 		} else {
+			// Dans le cas d'une liaison série par UDP, on ne peut pas écrire octet par octet (envoi d'un seul message)
+			uint16_t msg_size = f.getNbDonnees();
+			GlobalFrame msg{BYTE_BEGIN_FRAME_1, BYTE_BEGIN_FRAME_2, BYTE_BEGIN_FRAME_3, BYTE_BEGIN_FRAME_4_NORMAL, static_cast<uint8_t>(msg_size)};
+			msg += f;
+			get_serial().write_bytes(msg.getDonnees(), msg.getNbDonnees());
+
+			/*
+			TODO : supprimer ce bloc ; ça ne marche que pour des liaisons séries en flux d'octets, pas en mode datagrams
 			get_serial().write_byte(BYTE_BEGIN_FRAME_1); // Debut de trame
 			get_serial().write_byte(BYTE_BEGIN_FRAME_2);
 			get_serial().write_byte(BYTE_BEGIN_FRAME_3);
@@ -185,7 +191,7 @@ namespace Communication {
 			get_serial().write_byte(static_cast<uint8_t>(msg_size));
 			//_serial->write_bytes(reinterpret_cast<uint8_t*>(&msg_size), 2);
 
-			get_serial().write_bytes(f.getDonnees(), msg_size);
+			get_serial().write_bytes(f.getDonnees(), msg_size);*/
 
 			// Temporisation pour ne pas saturer l'électronique
 			sleep(_delay);
@@ -201,28 +207,37 @@ namespace Communication {
 		static uint8_t buf[GlobalFrame::DONNEES_TRAME_MAX];
 
 		while(running_execution) {
-			// Début de la trame
-			while(get_serial().read_byte() != BYTE_BEGIN_FRAME_1) {
-				if(!running_execution)
-					break;
-			}
+			if(_protocol == CommunicationProtocol::SERIAL_UDP) {
+				size_t msg_size = get_serial().read_bytes(buf, GlobalFrame::DONNEES_TRAME_MAX);
+				// Les 5 premiers octets correspondent à `0xAC DC AB BA` <size>
+				if(msg_size < 5) {
+					continue;
+				}
+				return GlobalFrame{static_cast<uint8_t>(msg_size - 5), buf + 5};
+			} else {
+				// Début de la trame
+				while(get_serial().read_byte() != BYTE_BEGIN_FRAME_1) {
+					if(!running_execution)
+						break;
+				}
 
-			if(get_serial().read_byte() == BYTE_BEGIN_FRAME_2) {
-				if(get_serial().read_byte() == BYTE_BEGIN_FRAME_3) {
-					if(uint8_t frame_type = get_serial().read_byte(); frame_type == BYTE_BEGIN_FRAME_4_NORMAL) {
-						/*uint16_t msg_size;
-						_serial->lireOctets(reinterpret_cast<uint8_t*>(&msg_size), 2);*/
-						uint8_t msg_size = get_serial().read_byte();
+				if(get_serial().read_byte() == BYTE_BEGIN_FRAME_2) {
+					if(get_serial().read_byte() == BYTE_BEGIN_FRAME_3) {
+						if(uint8_t frame_type = get_serial().read_byte(); frame_type == BYTE_BEGIN_FRAME_4_NORMAL) {
+							/*uint16_t msg_size;
+							_serial->lireOctets(reinterpret_cast<uint8_t*>(&msg_size), 2);*/
+							uint8_t msg_size = get_serial().read_byte();
 
-						get_serial().read_bytes(buf, msg_size);
-						GlobalFrame received_frame{msg_size, buf};
-						if(_debug_active) {
-							logDebug("Communicator.RECV ", received_frame, "\ntime: ", _chrono.getElapsedTime(), "\n");
+							get_serial().read_bytes(buf, msg_size);
+							GlobalFrame received_frame{msg_size, buf};
+							if(_debug_active) {
+								logDebug("Communicator.RECV ", received_frame, "\ntime: ", _chrono.getElapsedTime(), "\n");
+							}
+							return received_frame;
+						} else if(frame_type == BYTE_BEGIN_FRAME_4_PING) {
+							// TODO
+							throw std::runtime_error("Ping not implemented yet.");
 						}
-						return received_frame;
-					} else if(frame_type == BYTE_BEGIN_FRAME_4_PING) {
-						// TODO
-						throw std::runtime_error("Ping not implemented yet.");
 					}
 				}
 			}
@@ -242,10 +257,8 @@ namespace Communication {
 
 		while(running_execution) {
 			try {
-				// 1er octet : taille du message
-				uint8_t msg_size = udp.read_byte();
-				// Lecture du reste de la trame
-				get_serial().read_bytes(buf, msg_size);
+				// Lecture du message
+				uint8_t msg_size = static_cast<uint8_t>(udp.read_bytes(buf, GlobalFrame::DONNEES_TRAME_MAX));
 				GlobalFrame received_frame{msg_size, buf};
 				logDebug("Communicator.ethernet.RECV ", received_frame, "\ntime: ", _chrono.getElapsedTime(), "\n");
 
