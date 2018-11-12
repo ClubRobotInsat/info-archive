@@ -8,7 +8,7 @@
 #include "../src/robot/Modules/ModuleManager.h"
 #include "communication/GlobalFrame.h"
 
-TEST_CASE("Communication between info and elec") {
+TEST_CASE("ParsingClassChecker") {
 	SECTION("Validity test of the 'parses_frames' helper struct.") {
 		struct Ok {
 			void read_frame(const GlobalFrame&) {}
@@ -84,54 +84,123 @@ TEST_CASE("Communication between info and elec") {
 	}
 }
 
-TEST_CASE("UDP connection") {
-	SECTION("Bad initialization") {
-		// Pas de privilège suffisant pour binder le port 10 en réception
-		REQUIRE_THROWS_WITH(Communication::UDP("127.0.0.1", 10, 80), "Failed to bind the receiving socket with 127.0.0.1:10.");
+template <Communication::SerialProtocolType T>
+void symetric_serial_test(Communication::SerialProtocol<T>& rx,
+                          Communication::SerialProtocol<T>& tx,
+                          const GlobalFrame& frame,
+                          std::function<void(Duration)> stop_execution_after,
+                          std::atomic_bool& running_execution) {
+	REQUIRE(rx.protocol == T);
+	REQUIRE(tx.protocol == T);
+	std::thread t_send([&]() {
+		REQUIRE_NOTHROW(tx.send_frame(frame));
+		sleep(100_ms);
+		tx.send_frame({});
+	});
 
-		REQUIRE_NOTHROW(Communication::UDP("localhost", 1234, 80));
+	std::thread t(stop_execution_after, 90_ms);
+	StopWatch sw;
+	REQUIRE_THROWS_AS(rx.recv_frame(running_execution, [frame](const GlobalFrame& f) { REQUIRE(frame == f); }),
+	                  typename Communication::SerialProtocol<T>::ReceptionAborted);
+	CHECK(sw.getElapsedTime() >= 100_ms);
+	t_send.join();
+	t.join();
+}
 
-		// Multiple use of the port 1234
-		Communication::UDP udp("localhost", 1234, 80);
-		REQUIRE_THROWS_WITH(Communication::UDP("localhost", 1234, 80), "Failed to bind the receiving socket with 127.0.0.1:1234.");
-	}
+TEST_CASE("Serial Protocols") {
+	std::atomic_bool running_execution = true;
+	auto stop_execution_after = [&running_execution](Duration delay) {
+		sleep(delay);
+		running_execution.exchange(false);
+	};
 
-	SECTION("Simple communication") {
-		// Initialisation d'une communication one-to-one
-		const std::string IP_ADDRESS = "127.0.0.1";
-		const uint16_t SENDER_PORT = 1234;
-		const uint16_t RECVER_PORT = 40000;
+	const GlobalFrame frame{0x5, 0xA4};
 
-		Communication::UDP sender(IP_ADDRESS, SENDER_PORT, RECVER_PORT);
-		Communication::UDP recver(IP_ADDRESS, RECVER_PORT, SENDER_PORT);
+	SECTION("Local") {
+		asio::io_service io_service;
+		// listen for new connection
+		asio::ip::tcp::acceptor acceptor(io_service, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), 4321));
+		asio::ip::tcp::socket srv_socket(io_service);
 
-		const uint8_t BUF_SIZE = 10;
-		uint8_t buf_write[BUF_SIZE];
-		for(uint8_t i = 0; i < BUF_SIZE; ++i) {
-			buf_write[i] = i;
-		}
-
-		// Simulation de l'envoi de données
-		std::thread t_send([&sender, buf_write]() {
-			sender.write_byte(0x42);
-			sender.write_bytes(buf_write, BUF_SIZE);
+		std::thread srv([&]() {
+			acceptor.accept(srv_socket);
+			asio::streambuf buf;
+			// FIXME : l'appel à `asio::read_some` ne compile pas
+			// asio::read_until(socket, buf, std::to_string(0xED));
+			// REQUIRE(asio::buffer_cast<const char*>(buf.data()) == std::to_string(0x2468ED));
 		});
 
-		// Un seul octet transmis
-		REQUIRE(recver.read_byte() == 0x42);
+		Communication::protocol_local p;
+		CHECK(p.protocol == Communication::SerialProtocolType::SERIAL_LOCAL);
+		p.send_frame({0x24, 0x68, 0xED});
 
-		// Un tableau d'octets transmis
-		uint8_t buf_read[BUF_SIZE];
-		recver.read_bytes(buf_read, BUF_SIZE);
-		REQUIRE(std::equal(std::begin(buf_write), std::end(buf_write), std::begin(buf_read)));
+		srv.join();
+	}
 
-		t_send.join();
+	SECTION("NullCommunicator") {
+		running_execution.exchange(true);
+
+		Communication::protocol_null p;
+		REQUIRE(p.protocol == Communication::SerialProtocolType::SERIAL_NULL);
+
+		REQUIRE_NOTHROW(p.send_frame(frame));
+		std::thread t(stop_execution_after, 20_ms);
+		StopWatch sw;
+		REQUIRE_THROWS_AS(p.recv_frame(running_execution, [](const GlobalFrame&) {}), Communication::protocol_null::ReceptionAborted);
+		CHECK(sw.getElapsedTime() >= 20_ms);
+		t.join();
+	}
+
+	SECTION("PIPES") {
+		running_execution.exchange(true);
+
+		Communication::protocol_pipes rx("/tmp/write.pipe", "/tmp/read.pipe");
+		Communication::protocol_pipes tx("/tmp/read.pipe", "/tmp/write.pipe");
+
+		symetric_serial_test(rx, tx, frame, stop_execution_after, running_execution);
+	}
+
+	SECTION("RS232") {
+		running_execution.exchange(true);
+		// TODO
+	}
+
+	SECTION("TCPIP") {
+		running_execution.exchange(true);
+		// TODO
+	}
+
+	SECTION("UDP") {
+		SECTION("Bad initialization") {
+			// Pas de privilège suffisant pour binder le port 10 en réception
+			REQUIRE_THROWS_WITH(Communication::protocol_udp("127.0.0.1", 10, 80),
+			                    "Failed to bind the receiving socket with 127.0.0.1:10.");
+
+			REQUIRE_NOTHROW(Communication::protocol_udp("localhost", 1234, 80));
+
+			// Multiple use of the port 1234
+			Communication::protocol_udp udp("localhost", 1234, 80);
+			REQUIRE_THROWS_WITH(Communication::protocol_udp("localhost", 1234, 80),
+			                    "Failed to bind the receiving socket with 127.0.0.1:1234.");
+		}
+
+		SECTION("Simple communication") {
+			// Initialisation d'une communication one-to-one
+			const std::string IP_ADDRESS = "127.0.0.1";
+			const uint16_t SENDER_PORT = 1234;
+			const uint16_t RECVER_PORT = 40000;
+
+			Communication::protocol_udp sender(IP_ADDRESS, SENDER_PORT, RECVER_PORT);
+			Communication::protocol_udp recver(IP_ADDRESS, RECVER_PORT, SENDER_PORT);
+
+			running_execution.exchange(true);
+			symetric_serial_test(sender, recver, frame, stop_execution_after, running_execution);
+		}
 	}
 }
 
-TEST_CASE("Ethernet communication") {
-	using namespace PhysicalRobot;
-	using namespace Communication;
-
-	// TODO
+TEST_CASE("Multi Serial Protocols") {
+	SECTION("Ethernet") {
+		// TODO
+	}
 }

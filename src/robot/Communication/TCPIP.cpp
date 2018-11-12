@@ -96,7 +96,7 @@ namespace Communication {
 	// Ferme le socket
 	void TCPIP::close_socket() {
 		if(_connected) {
-			logInfo("Fermeture du socket\n");
+			// logInfo("Fermeture du socket\n");
 
 			shutdown(_fd, 2);
 #ifdef WIN32
