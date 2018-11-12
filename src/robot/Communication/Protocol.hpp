@@ -79,7 +79,7 @@ namespace Communication {
 				handler(f);
 			}
 		}
-		throw std::runtime_error("Abort of the frames reception.");
+		throw ReceptionAborted();
 	}
 
 	template <MultiSerialProtocolType M, SerialProtocolType P>

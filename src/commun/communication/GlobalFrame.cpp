@@ -93,6 +93,10 @@ std::ostream& operator<<(std::ostream& o, GlobalFrame const& t) {
 	return o << "]]";
 }
 
+bool operator==(const GlobalFrame& f1, const GlobalFrame& f2) {
+	return f1._donnees == f2._donnees;
+}
+
 GlobalFrame GlobalFrame::operator+(const GlobalFrame& f) const {
 	GlobalFrame result{*this};
 	result += f;
