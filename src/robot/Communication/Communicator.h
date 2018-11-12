@@ -68,7 +68,7 @@ namespace Communication {
 		/// Protocole de communication ; contient la logique d'abstraction du médium pour la lecture et l'écriture
 		std::unique_ptr<Protocol> _protocol;
 
-		std::atomic_bool _connected, _running_execution;
+		std::atomic_bool _connected;
 		std::condition_variable _modules_initialized;
 		std::atomic_bool _modules_init_notified;
 

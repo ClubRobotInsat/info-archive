@@ -137,6 +137,8 @@ public:
 	// afficher la trame sur le flux de sortie
 	friend std::ostream& operator<<(std::ostream&, const GlobalFrame&);
 
+	friend bool operator==(const GlobalFrame&, const GlobalFrame&);
+
 	// Opérateurs de concaténation des trames
 	// Les informations annexes des '_donnees' sont copiées depuis la variable de gauche
 	GlobalFrame operator+(const GlobalFrame& f) const;

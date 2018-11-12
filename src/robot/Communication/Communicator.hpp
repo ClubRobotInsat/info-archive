@@ -127,7 +127,7 @@ namespace Communication {
 	template <typename ParsingClass>
 	void Communicator<ParsingClass>::disconnect() {
 		if(_connected) {
-			_running_execution.store(false);
+			_connected.store(false);
 			_communication.join();
 		}
 	}

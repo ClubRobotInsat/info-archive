@@ -77,6 +77,8 @@ namespace Communication {
 	public:
 		~AbstractSerialProtocol() override;
 
+		EXCEPTION_CLASS(ReceptionAborted);
+
 		const SerialProtocolType protocol;
 
 		void set_delay(Duration delay);
@@ -85,6 +87,7 @@ namespace Communication {
 
 		void send_frame(const GlobalFrame& f) final;
 
+		/// @throws `ReceptionAbort` at the end of the communication
 		void recv_frame(const std::atomic_bool& running_execution, const std::function<void(const GlobalFrame&)>& handler) final;
 	};
 
