@@ -200,7 +200,49 @@ TEST_CASE("Serial Protocols") {
 }
 
 TEST_CASE("Multi Serial Protocols") {
+	std::atomic_bool running_execution = true;
+	auto stop_execution_after = [&running_execution](Duration delay) {
+		sleep(delay);
+		running_execution.exchange(false);
+	};
+
 	SECTION("Ethernet") {
-		// TODO
+		Communication::protocol_ethernet client({{5, "127.0.0.1", 5555, 40005}, {3, "127.0.0.1", 3333, 40003}});
+		Communication::protocol_ethernet server({{5, "127.0.0.1", 40005, 5555}, {3, "127.0.0.1", 40003, 3333}});
+
+		REQUIRE_THROWS_WITH(client.send_frame({2}), "Impossible to send a frame to the module n°2: the serial connexion doesn't exist.");
+
+		const GlobalFrame frame_3{3, 0xDE, 0xAD, 0xBE, 0xEF};
+		const GlobalFrame frame_5{5, 0x21, 0x43, 0x65, 0x87, 0x90};
+
+		std::thread t_send([&]() {
+			// Envoi sur la liaison UDP 3
+			REQUIRE_NOTHROW(client.send_frame(frame_3));
+			// Envoi sur la liaison UDP 5
+			REQUIRE_NOTHROW(client.send_frame(frame_5));
+
+			// Le serveur doit s'arrêter après 90ms ; il est en attente bloquante sur tous ses threads de réception
+			// et l'envoi d'un message sur le seul thread `id 3` permets de la down
+			sleep(100_ms);
+			client.send_frame({3});
+		});
+
+		std::thread t(stop_execution_after, 90_ms);
+		StopWatch sw;
+		REQUIRE_THROWS_AS(server.recv_frame(running_execution,
+		                                    [frame_3, frame_5](const GlobalFrame& f) {
+			                                    if(f.getDonnee(0) == 3) {
+				                                    REQUIRE(f == frame_3);
+			                                    } else if(f.getDonnee(0) == 5) {
+				                                    REQUIRE(f == frame_5);
+			                                    } else {
+				                                    FAIL("Unknown module id.");
+			                                    }
+		                                    }),
+		                  Communication::protocol_udp::ReceptionAborted);
+		CHECK(sw.getElapsedTime() >= 100_ms);
+
+		t_send.join();
+		t.join();
 	}
 }
