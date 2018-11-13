@@ -87,8 +87,15 @@ void Simulateur::disableSimulation() {
 }
 
 void Simulateur::addRobot(Constantes::RobotColor color) {
-	Object3D& robotObj = (_json_file == "" ? _theWorld.createRobotFromJSON(TABLE_2018, color) :
+	Object3D& robotObj = (_json_file.empty() ? _theWorld.createRobotFromJSON(TABLE_2018, color) :
 	                                         _theWorld.createRobotFromFile(_json_file, color));
+
+	_robot = std::make_unique<Simu::SimuRobot>("primary", robotObj);
+
+	// On inverse le sens de lecture par rapport à la stratégie
+	std::shared_ptr<Communication::Protocol> protocol =
+			std::make_shared<Communication::protocol_pipes>("/tmp/write.pipe", "/tmp/read.pipe");
+	_robot->connect(protocol);
 }
 
 void Simulateur::resetWorld() {

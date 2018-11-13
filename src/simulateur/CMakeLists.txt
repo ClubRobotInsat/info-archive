@@ -33,15 +33,20 @@ add_executable(Simulator
         graphique/IGraphicalContext.h
         graphique/IGraphicalInstance.h
         graphique/IGraphicalUserListener.h
-        #graphique/server/WebGraphicalContext.cpp
-        #graphique/server/WebObjectHandler.cpp
         graphique/irrlicht/SimulationToIrrlicht.h
         graphique/irrlicht/Object.cpp
         graphique/irrlicht/Scene.cpp
+        #graphique/server/WebGraphicalContext.cpp
+        #graphique/server/WebObjectHandler.cpp
 
-        communication/SimuCom.cpp
+        ../elec/librobot/c_src/SharedWithRust.c
+        # TODO Enlever ModuleManager quand il sera dans librairies incluses
+        ../robot/Modules/ModuleManager.cpp
+        core/SimuRobot.cpp
+        communication/SimuCommunicator.cpp
+        communication/SimuServos.cpp
 
         ${root_SOURCE_DIR}/third_parties/include/json.hpp)
 
 #target_link_libraries(Simulator Box2D Outils_Simu Server ${IRRLICHT_LIBRARIES})
-target_link_libraries(Simulator Box2D Outils_Simu ${IRRLICHT_LIBRARIES})
+target_link_libraries(Simulator Box2D Communication Outils_Simu ${IRRLICHT_LIBRARIES})

@@ -11,6 +11,7 @@
 
 #include "ConstantesCommunes.h"
 #include "World.h"
+#include "SimuRobot.h"
 
 // permet de positionner plus facilement les objets
 struct CubeData {
@@ -138,6 +139,8 @@ private:
 
 	/// Le monde dans lequel on stocke tous les objets
 	World _theWorld;
+
+	std::unique_ptr<Simu::SimuRobot> _robot;
 
 	/// On demande à réinitialiser la simulation?
 	std::atomic_bool _resetWorld;
