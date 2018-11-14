@@ -414,7 +414,8 @@ TEST_CASE("ModuleManager") {
 			module_servo.add_servo(2);
 
 			REQUIRE_THROWS_WITH(manager.read_frame({}), "Frame does not contain the module's id.");
-			REQUIRE_THROWS_WITH(manager.read_frame({13}), "The module n°13 isn't initialized.");
+			// la trame est drop vu que le module 13 n'est pas initialisé
+			REQUIRE_NOTHROW(manager.read_frame({13}), "The module n°13 isn't initialized.");
 			REQUIRE_THROWS_WITH(manager.read_frame({5}), "The size of the module n°5 does not correspond to the theory (0 != 2).");
 			REQUIRE_THROWS_WITH(manager.read_frame({5, 0x1, 0x2, 0x3}),
 			                    "The size of the module n°5 does not correspond to the theory (3 != 2).");
