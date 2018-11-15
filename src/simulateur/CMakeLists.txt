@@ -51,5 +51,6 @@ add_executable(Simulator
 
         ${root_SOURCE_DIR}/third_parties/include/json.hpp)
 
-#target_link_libraries(Simulator Box2D Outils_Simu Server ${IRRLICHT_LIBRARIES})
-target_link_libraries(Simulator Box2D Communication Outils_Simu ${IRRLICHT_LIBRARIES})
+add_subdirectory(gui/gtk)
+
+target_link_libraries(Simulator Box2D Communication Outils_Simu ${IRRLICHT_LIBRARIES} GtkSimu)
