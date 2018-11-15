@@ -10,7 +10,7 @@
 namespace Communication {
 	template <typename ParsingClass>
 	Communicator<ParsingClass>::Communicator(std::shared_ptr<ParsingClass> parser)
-	        : _parser(std::move(parser)), _connected(false), _modules_init_notified(false), _debug_active(false) {
+	        : _parser(std::move(parser)), _connected(false), _debug_active(false) {
 		_chrono.reset();
 	}
 
@@ -34,6 +34,7 @@ namespace Communication {
 				}
 
 				_protocol = std::make_unique<protocol_rs232>(args[i + 1]);
+				_connected.exchange(true);
 				break;
 			}
 
@@ -45,6 +46,7 @@ namespace Communication {
 				}
 
 				_protocol = std::make_unique<protocol_tcpip>(args[i + 1], stoi(args[i + 2]));
+				_connected.exchange(true);
 				break;
 			}
 
@@ -56,6 +58,7 @@ namespace Communication {
 				}
 
 				_protocol = std::make_unique<protocol_udp>(args[i + 1], stoi(args[i + 2]), stoi(args[i + 3]));
+				_connected.exchange(true);
 				break;
 			}
 
@@ -64,6 +67,7 @@ namespace Communication {
 				logDebug9("Initialisation de la connection au CAN local par pipes nommés");
 
 				_protocol = std::make_unique<protocol_pipes>("/tmp/read.pipe", "/tmp/write.pipe");
+				_connected.exchange(true);
 				break;
 			}
 
@@ -78,6 +82,7 @@ namespace Communication {
 
 				_protocol = std::make_unique<protocol_ethernet>(
 				    protocol_ethernet::UDPConnection{stoi(args[i + 1]), args[i + 2], stoi(args[i + 3]), stoi(args[i + 4])});
+				_connected.exchange(true);
 				break;
 			}
 
@@ -85,12 +90,14 @@ namespace Communication {
 			else if(args[i] == "LOCAL") {
 				logDebug9("Initialisation de la connexion au CAN local");
 				_protocol = std::make_unique<protocol_local>();
+				_connected.exchange(true);
 			}
 
 			// - NULL :
 			else if(args[i] == "NULL") {
 				logDebug9("Initialisation de la connexion au CAN local par le NullCommunicator");
 				_protocol = std::make_unique<protocol_null>();
+				_connected.exchange(true);
 			}
 
 			// - option SIMU pour les connexions LOCAL ou NULL
@@ -127,16 +134,9 @@ namespace Communication {
 	template <typename ParsingClass>
 	void Communicator<ParsingClass>::disconnect() {
 		if(_connected) {
-			_running_execution.store(false);
+			_connected.store(false);
 			_communication.join();
 		}
-	}
-
-	/// Notification par le constructeur du robot physique que la communication peut démarrer
-	template <typename ParsingClass>
-	void Communicator<ParsingClass>::set_modules_initialized() {
-		_modules_initialized.notify_all();
-		_modules_init_notified = true;
 	}
 
 	template <typename ParsingClass>
@@ -153,11 +153,6 @@ namespace Communication {
 	void Communicator<ParsingClass>::communicate_with_elecs() {
 		// Une seule instance de communication peut être lancée à la fois
 		std::unique_lock<std::mutex> lk(_mutex_communication);
-
-		// On attends que la phase d'initialisation du robot soit finie
-		if(!_modules_init_notified) {
-			_modules_initialized.wait(lk);
-		}
 
 		auto output_function = [this](std::atomic_bool& running_execution) {
 			while(running_execution) {

@@ -37,9 +37,10 @@ namespace PhysicalRobot {
 		auto size = static_cast<uint8_t>(frame.getNbDonnees() - 1);
 		const uint8_t id = array[0];
 
-		// Vérification que le module existe
+		// Vérification que le module existe, sinon on drop la trame
 		if(!has_module(id)) {
-			throw std::runtime_error("The module n°" + std::to_string(id) + " isn't initialized.");
+			// logWarn("The module n°" + std::to_string(id) + " isn't initialized: frame dropped.");
+			return;
 		}
 		// Vérification que la taille théorique du module corresponde avec la taille annoncée dans la trame
 		if(size != _modules[id]->get_frame_size()) {
