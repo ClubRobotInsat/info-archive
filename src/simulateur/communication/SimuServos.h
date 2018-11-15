@@ -5,7 +5,7 @@
 
 class SimuServos : public PhysicalRobot::Module<SharedServos2019> {
 public:
-    SimuServos(uint8_t type);
+    SimuServos(uint8_t id);
 
     uint8_t get_frame_size() const override;
     uint8_t get_nbr_servos() const;

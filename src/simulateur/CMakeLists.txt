@@ -16,6 +16,7 @@ FIND_PACKAGE(Irrlicht)
 include_directories(${IRRLICHT_INCLUDE_DIRS})
 message(STATUS "Irrlicht trouvé ici : ${IRRLICHT_INCLUDE_DIRS}")
 
+# TODO CMakeLists intermédiaires dans chaque répertoire
 add_executable(Simulator
         main.cpp
 
@@ -43,8 +44,10 @@ add_executable(Simulator
         # TODO Enlever ModuleManager quand il sera dans librairies incluses
         ../robot/Modules/ModuleManager.cpp
         core/SimuRobot.cpp
+
         communication/SimuCommunicator.cpp
         communication/SimuServos.cpp
+        communication/SimuLed.cpp
 
         ${root_SOURCE_DIR}/third_parties/include/json.hpp)
 
