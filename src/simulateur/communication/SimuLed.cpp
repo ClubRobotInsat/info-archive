@@ -33,4 +33,5 @@ void SimuLed::message_processing(const SharedLED2019 &shared_struct) {
         logDebug("LED state changed to ", new_on_off);
         _on_off = new_on_off;
     }
+    _state_changed.exchange(true);
 }

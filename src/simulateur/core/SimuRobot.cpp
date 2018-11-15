@@ -1,5 +1,6 @@
 #include "SimuRobot.h"
 
+#include "../communication/SimuLed.h"
 #include "../communication/SimuServos.h"
 
 namespace Simu {
@@ -27,7 +28,7 @@ void SimuRobot::update() {
 void SimuRobot::assignModules() {
     auto modules = GLOBAL_CONSTANTS[_name].get_modules();
 
-    _moduleMgr->add_module<SimuServos>(modules["servos"]);
+    _moduleMgr->add_module<SimuLed>(1);
 }
 
 }

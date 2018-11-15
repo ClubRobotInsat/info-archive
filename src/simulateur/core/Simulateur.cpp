@@ -94,7 +94,7 @@ void Simulateur::addRobot(Constantes::RobotColor color) {
 
 	// On inverse le sens de lecture par rapport à la stratégie
 	std::shared_ptr<Communication::Protocol> protocol =
-			std::make_shared<Communication::protocol_pipes>("/tmp/write.pipe", "/tmp/read.pipe");
+			std::make_shared<Communication::protocol_udp>("localhost", 5555, 1234);
 	_robot->connect(protocol);
 }
 
