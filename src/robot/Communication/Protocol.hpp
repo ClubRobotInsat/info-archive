@@ -59,12 +59,16 @@ namespace Communication {
 	}
 
 	template <SerialProtocolType P>
+	GlobalFrame AbstractSerialProtocol<P>::generate_header(const GlobalFrame& body) const {
+		uint16_t msg_size = body.getNbDonnees();
+		return {BYTE_BEGIN_FRAME_1, BYTE_BEGIN_FRAME_2, BYTE_BEGIN_FRAME_3, BYTE_BEGIN_FRAME_4_NORMAL, static_cast<uint8_t>(msg_size)};
+	}
+
+	template <SerialProtocolType P>
 	void AbstractSerialProtocol<P>::send_frame(const GlobalFrame& f) {
 		std::lock_guard<std::mutex> lk(_mutex_write);
 
-		uint16_t msg_size = f.getNbDonnees();
-		GlobalFrame msg{BYTE_BEGIN_FRAME_1, BYTE_BEGIN_FRAME_2, BYTE_BEGIN_FRAME_3, BYTE_BEGIN_FRAME_4_NORMAL, static_cast<uint8_t>(msg_size)};
-		msg += f;
+		GlobalFrame msg = generate_header(f) + f;
 		_serial->write_bytes(msg.getDonnees(), msg.getNbDonnees());
 
 		sleep(_delay);
@@ -95,22 +99,65 @@ namespace Communication {
 		uint8_t id = f.getDonnee(0);
 		if(auto it = _serials.find(id); it != _serials.cend()) {
 			it->second->send_frame(GlobalFrame{msg_size, f.getDonnees() + 1});
+		} else {
+			throw std::runtime_error("Impossible to send a frame to the module n°" + std::to_string(id) +
+			                         ": the serial connexion doesn't exist.");
 		}
 	}
 
 	template <MultiSerialProtocolType M, SerialProtocolType P>
 	void AbstractMultiSerialProtocol<M, P>::recv_frame(const std::atomic_bool& running_execution,
 	                                                   const std::function<void(const GlobalFrame&)>& handler) {
-		const std::size_t nbr_serials = _serials.size();
-		std::thread in[nbr_serials];
-		std::size_t i = 0;
+		std::map<uint8_t, std::thread> threads_in;
+		std::map<uint8_t, std::exception_ptr> thread_exceptions;
 
 		for(auto& v : _serials) {
-			in[i++] = std::thread([&]() { v.second->recv_frame(running_execution, handler); });
+			const uint8_t id = v.first;
+
+			thread_exceptions[id] = nullptr;
+			std::exception_ptr& ex_ptr = thread_exceptions.find(id)->second;
+
+			threads_in[id] = std::thread([&, id]() {
+				try {
+					// À la réception d'un message, on rajoute l'ID correspond devant la trame avant de la traiter
+					v.second->recv_frame(running_execution, [&handler, id](const GlobalFrame& f) {
+						GlobalFrame header{id};
+						handler(header + f);
+					});
+				} catch(typename AbstractSerialProtocol<P>::ReceptionAborted) {
+					ex_ptr = std::current_exception();
+				}
+			});
+			// `detach` sur tous les threads : lorsque la connextion s'arrête (`running_execution <- false`),
+			// on ne peut envoyer qu'un message supplémentaire sur toutes les connexions pour sortir d'un seul
+			// `recv_blocking` ; à partir du moment où 1 seul thread quitte on `pthread_cancel` tous les autres
+			threads_in[id].detach();
 		}
 
-		for(i = 0; i < nbr_serials; ++i) {
-			in[i].join();
+		// Écoute en boucle de la fin d'au moins un thread. Lorsqu'une première exception est levée, on la propage
+		std::exception_ptr ptr = nullptr;
+		while(ptr == nullptr) {
+			for(auto& v : thread_exceptions) {
+				if(v.second != nullptr) {
+					ptr = v.second;
+					break;
+				}
+			}
+		}
+
+		for(auto& t : threads_in) {
+			if(t.second.joinable()) {
+				// Quand au moins une connexion série est down, on supprime toutes les autres communications
+				// de manière très sale ; ça permets de n'envoyer qu'un seul message pour finaliser la fin de la com
+				pthread_cancel(t.second.native_handle());
+			}
+		}
+
+		// propagation de l'exception au niveau supérieur pour signaler la fin de la réception
+		try {
+			std::rethrow_exception(ptr);
+		} catch(const typename SerialProtocol<P>::ReceptionAborted& aborted) {
+			throw aborted;
 		}
 	}
 } // namespace Communication

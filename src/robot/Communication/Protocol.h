@@ -74,6 +74,9 @@ namespace Communication {
 
 		virtual GlobalFrame recv_frame_blocking(const std::atomic_bool& running_execution);
 
+		// Header de la communication série : `0xAC DC AB BA` par exemple
+		virtual GlobalFrame generate_header(const GlobalFrame& body) const;
+
 	public:
 		~AbstractSerialProtocol() override;
 
@@ -135,16 +138,16 @@ namespace Communication {
 
 	template <>
 	class SerialProtocol<SERIAL_UDP> : public AbstractSerialProtocol<SERIAL_UDP> {
+		GlobalFrame generate_header(const GlobalFrame&) const final {
+			return {};
+		}
+
 		GlobalFrame recv_frame_blocking(const std::atomic_bool& running_execution) override {
 			while(running_execution) {
 				static uint8_t buf[GlobalFrame::DONNEES_TRAME_MAX];
 
 				size_t msg_size = _serial->read_bytes(buf, GlobalFrame::DONNEES_TRAME_MAX);
-				// Les 5 premiers octets correspondent à `0xAC DC AB BA` <size>
-				if(msg_size < 5) {
-					continue;
-				}
-				return GlobalFrame{static_cast<uint8_t>(msg_size - 5), buf + 5};
+				return GlobalFrame{static_cast<uint8_t>(msg_size), buf};
 			}
 			return GlobalFrame{};
 		}

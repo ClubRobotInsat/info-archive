@@ -47,9 +47,6 @@ namespace Communication {
 		/// Arrêt de la communication et déconnexion du médium
 		void disconnect();
 
-		/// Notification par le constructeur du robot physique que la communication peut démarrer
-		void set_modules_initialized();
-
 		/// Active ou désactive l'affichage de débug des trames envoyées et reçues
 		void set_debug(bool active);
 
@@ -69,8 +66,6 @@ namespace Communication {
 		std::unique_ptr<Protocol> _protocol;
 
 		std::atomic_bool _connected;
-		std::condition_variable _modules_initialized;
-		std::atomic_bool _modules_init_notified;
 
 		/// Mode débug actif ou non
 		bool _debug_active;
