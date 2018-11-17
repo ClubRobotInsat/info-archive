@@ -3,6 +3,7 @@
 //
 
 #include "Protocol.h"
+#include <future>
 
 namespace Communication {
 	template <SerialProtocolType P>
@@ -10,7 +11,7 @@ namespace Communication {
 
 	template <SerialProtocolType P>
 	AbstractSerialProtocol<P>::AbstractSerialProtocol(std::shared_ptr<Serial> serial)
-	        : _serial(std::move(serial)), _delay(GLOBAL_CONSTANTS.get_default_communication_delay()), protocol(P) {}
+	        : Protocol(), _serial(std::move(serial)), _delay(GLOBAL_CONSTANTS.get_default_communication_delay()), protocol(P) {}
 
 
 	template <SerialProtocolType P>
@@ -77,12 +78,33 @@ namespace Communication {
 	template <SerialProtocolType P>
 	void AbstractSerialProtocol<P>::recv_frame(const std::atomic_bool& running_execution,
 	                                           const std::function<void(const GlobalFrame&)>& handler) {
+		auto create_recv_thread = [&running_execution, this]() -> std::future<GlobalFrame> {
+			return std::async(std::launch::async, &AbstractSerialProtocol<P>::recv_frame_blocking, this, std::cref(running_execution));
+		};
+
+		auto frame = create_recv_thread();
+
 		while(running_execution) {
-			GlobalFrame f = recv_frame_blocking(running_execution);
-			if(!f.empty()) {
-				handler(f);
+			std::future_status status = frame.wait_for(_refresh_rate.toSystemDelay());
+			switch(status) {
+				case std::future_status::ready: {
+					std::lock_guard<std::mutex> lk(_mutex);
+
+					/** Ethernet `recv_frame` works without this block
+					GlobalFrame f = frame.get();
+					if (!f.empty()) {
+					    handler(f);
+					}
+					frame = create_recv_thread();*/
+				}
+					[[fallthrough]];
+				default: { continue; }
 			}
 		}
+
+		std::cout
+		    << "[AbstractSerialProtocol.recv_frame] exiting and throwing a ReceptionAborted exception for the protocol "
+		    << P << "." << std::endl;
 		throw ReceptionAborted();
 	}
 
@@ -108,56 +130,120 @@ namespace Communication {
 	template <MultiSerialProtocolType M, SerialProtocolType P>
 	void AbstractMultiSerialProtocol<M, P>::recv_frame(const std::atomic_bool& running_execution,
 	                                                   const std::function<void(const GlobalFrame&)>& handler) {
+		/*std::map<uint8_t, std::future<void>> threads_in;
+
+		auto create_async_thread = [&](uint8_t id, std::shared_ptr<AbstractSerialProtocol<P>> ptr) {
+		    threads_in[id] = std::async(std::launch::async, [&, id]() {
+		        // À la réception d'un message, on rajoute l'ID correspond devant la trame avant de la traiter
+		        ptr->recv_frame(true, [&handler, id](const GlobalFrame &f) {
+		            GlobalFrame header{id};
+		            handler(header + f);
+		        });
+		    });
+		};
+
+		auto create_async_threads = [&]() {
+		    for (auto &v : _serials) {
+		        create_async_thread(v.first, v.second);
+		    }
+		};
+
+		create_async_threads();
+		while(running_execution) {
+		    std::map<uint8_t, std::future_status> status;
+		    for(auto &v : _serials) {
+		        const uint8_t id = v.first;
+
+		        status[id] = threads_in[id].wait_for(refresh_rate.toSystemDelay());
+		    };
+		    for(auto &v : _serials) {
+		        const uint8_t id = v.first;
+
+		        switch(status[id]) {
+		            case std::future_status::ready: {
+		                std::lock_guard<std::mutex> lk(mutex);
+		                threads_in[id].get();
+
+		                create_async_thread(id, v.second);
+		            }
+		            [[fallthrough]];
+		            default: { continue; }
+		        }
+		    };
+		}
+
+		throw ReceptionAborted();*/
+		std::cout << std::endl;
+		/// async usage; don't work because we can't wait for multiple async for now (C++ 14 limitation)
+		/// check for `when_any`
+		/*auto create_recv_thread = [&running_execution, &handler](uint8_t id, std::shared_ptr<protocol_udp> ptr) ->
+		std::future<void> { return std::async(std::launch::async, [&handler, &ptr, &running_execution, id]() { try { ptr->recv_frame(running_execution,
+		[&handler, id](const GlobalFrame& f) { GlobalFrame header{id}; handler(header + f);
+		            });
+		        } catch(const ReceptionAborted&) {}
+		    });
+		};
+
+		std::map<uint8_t, std::future<void>> threads_in;
+		for(auto& v : _serials) {
+		    const uint8_t id = v.first;
+
+		    threads_in[id] = create_recv_thread(id, v.second);
+		};
+
+		while(running_execution) {
+		    for (auto &v : _serials) {
+		        const uint8_t id = v.first;
+
+		        std::future_status status = threads_in[id].wait_for(_refresh_rate.toSystemDelay());
+		        switch (status) {
+		            case std::future_status::ready: {
+		                std::lock_guard<std::mutex> lk(_mutex);
+		                threads_in[id].get();
+		                threads_in[id] = create_recv_thread(id, v.second);
+		                break;
+		            }
+		            default: {
+		                break;
+		            }
+		        }
+		    }
+		}*/
+
+
 		std::map<uint8_t, std::thread> threads_in;
-		std::map<uint8_t, std::exception_ptr> thread_exceptions;
 
 		for(auto& v : _serials) {
 			const uint8_t id = v.first;
+			auto udp = v.second;
 
-			thread_exceptions[id] = nullptr;
-			std::exception_ptr& ex_ptr = thread_exceptions.find(id)->second;
-
-			threads_in[id] = std::thread([&, id]() {
+			threads_in[id] = std::thread([&running_execution, &handler, udp, id] {
 				try {
-					// À la réception d'un message, on rajoute l'ID correspond devant la trame avant de la traiter
-					v.second->recv_frame(running_execution, [&handler, id](const GlobalFrame& f) {
+					std::cout << "before receiving from id " << (int)id << std::endl;
+					udp->recv_frame(running_execution, [&handler, id](const GlobalFrame& f) {
+						std::cout << "recved frame from id " << (int)id << std::endl;
 						GlobalFrame header{id};
 						handler(header + f);
 					});
-				} catch(typename AbstractSerialProtocol<P>::ReceptionAborted) {
-					ex_ptr = std::current_exception();
+				} catch(const ReceptionAborted&) {
+					std::cout << "ReceptionAborted caught for the thread " << (int)id << std::endl;
 				}
+
+				std::cout << "OK !! Abort of the thread " << (int)id << std::endl;
 			});
-			// `detach` sur tous les threads : lorsque la connextion s'arrête (`running_execution <- false`),
-			// on ne peut envoyer qu'un message supplémentaire sur toutes les connexions pour sortir d'un seul
-			// `recv_blocking` ; à partir du moment où 1 seul thread quitte on `pthread_cancel` tous les autres
-			threads_in[id].detach();
 		}
 
-		// Écoute en boucle de la fin d'au moins un thread. Lorsqu'une première exception est levée, on la propage
-		std::exception_ptr ptr = nullptr;
-		while(ptr == nullptr) {
-			for(auto& v : thread_exceptions) {
-				if(v.second != nullptr) {
-					ptr = v.second;
-					break;
-				}
-			}
-		}
-
+		// don't work, the program goes on infinite loop except with a breakpoint line 238
+		/// ¯\_(ツ)_/¯
 		for(auto& t : threads_in) {
 			if(t.second.joinable()) {
-				// Quand au moins une connexion série est down, on supprime toutes les autres communications
-				// de manière très sale ; ça permets de n'envoyer qu'un seul message pour finaliser la fin de la com
-				pthread_cancel(t.second.native_handle());
+				std::cout << "join of the thread " << (int)t.first << std::endl;
+				t.second.join();
+			} else {
+				std::cout << "can't join the thread " << (int)t.first << std::endl;
 			}
 		}
 
-		// propagation de l'exception au niveau supérieur pour signaler la fin de la réception
-		try {
-			std::rethrow_exception(ptr);
-		} catch(const typename SerialProtocol<P>::ReceptionAborted& aborted) {
-			throw aborted;
-		}
+		throw ReceptionAborted();
 	}
 } // namespace Communication

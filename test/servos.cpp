@@ -14,7 +14,11 @@ int main() {
 	servos.add_servo(ID_SERVO);
 	servos.set_color(ID_SERVO, Servos::CYAN);
 
-	Robot robot(m, {"prog_servos", "RS232", "/dev/ttyACM0"});
+	// Communication::protocol_udp udp("192.168.0.222", 54000, 51);
+
+	Robot robot(m, {"prog_servos", "UDP", "192.168.0.222", "50000", "51"});
+	servos.set_speed(ID_SERVO, 500);
+	sleep(5_s);
 	for(int count = 0; count < 10; count++) {
 		const Angle command = count * 15_deg;
 		std::cout << "set_position_servo_254(" << command << ")." << std::endl;

@@ -38,10 +38,11 @@ namespace Communication {
 				throw ErrorUDPCommunication("Failed to open the receiving socket.");
 			}
 
-			_recv_socket->bind(udp::endpoint(asio::ip::make_address(address), local_port), err);
+			const std::string local_address = "127.0.0.1";
+			_recv_socket->bind(udp::endpoint(asio::ip::make_address(local_address), local_port), err);
 
 			if(err) {
-				throw ErrorUDPCommunication("Failed to bind the receiving socket with " + address + ":" +
+				throw ErrorUDPCommunication("Failed to bind the receiving socket with " + local_address + ":" +
 				                            std::to_string(local_port) + ".");
 			}
 		}

@@ -81,7 +81,10 @@ namespace Communication {
 				}
 
 				_protocol = std::make_unique<protocol_ethernet>(
-				    protocol_ethernet::UDPConnection{stoi(args[i + 1]), args[i + 2], stoi(args[i + 3]), stoi(args[i + 4])});
+				    protocol_ethernet::UDPConnection{static_cast<uint8_t>(stoi(args[i + 1])),
+				                                     args[i + 2],
+				                                     static_cast<uint16_t>(stoi(args[i + 3])),
+				                                     static_cast<uint16_t>(stoi(args[i + 4]))});
 				_connected.exchange(true);
 				break;
 			}

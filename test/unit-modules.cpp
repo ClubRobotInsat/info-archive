@@ -394,8 +394,8 @@ TEST_CASE("ModuleManager") {
 
 			SECTION("Servos") {
 				auto& module_servo = manager.add_module<PhysicalRobot::Servos>(15);
-				module_servo.add_servo(2);
-				module_servo.set_position(2, 90_deg);
+				module_servo.add_servo(254);
+				module_servo.set_speed(254, 500);
 
 				auto frame_servos = manager.write_frame().value();
 				REQUIRE(frame_servos.getNbDonnees() == 1 + module_servo.get_frame_size());

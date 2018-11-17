@@ -37,6 +37,14 @@ namespace Communication {
 	};
 
 	class Protocol {
+	protected:
+		// Time to sleep before verifying if a new Frame arrive
+		const Duration _refresh_rate;
+
+		std::mutex _mutex;
+
+		Protocol() : _refresh_rate(20_ms) {}
+
 	public:
 		virtual ~Protocol() = default;
 
@@ -44,6 +52,8 @@ namespace Communication {
 
 		virtual void recv_frame(const std::atomic_bool& running_execution,
 		                        const std::function<void(const GlobalFrame&)>& handler) = 0;
+
+		EXCEPTION_CLASS(ReceptionAborted);
 
 		/// Mode débug actif ou non
 		bool debug_active;
@@ -79,8 +89,6 @@ namespace Communication {
 
 	public:
 		~AbstractSerialProtocol() override;
-
-		EXCEPTION_CLASS(ReceptionAborted);
 
 		const SerialProtocolType protocol;
 
