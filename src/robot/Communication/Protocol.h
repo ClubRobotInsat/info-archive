@@ -31,10 +31,38 @@ namespace Communication {
 		SERIAL_UDP,
 	};
 
+	std::ostream& operator<<(std::ostream& os, const SerialProtocolType t) {
+		switch(t) {
+			case SERIAL_LOCAL:
+				return os << "SERIAL_LOCAL";
+			case SERIAL_NULL:
+				return os << "SERIAL_NULL";
+			case SERIAL_PIPES:
+				return os << "SERIAL_PIPES";
+			case SERIAL_RS232:
+				return os << "SERIAL_RS232";
+			case SERIAL_TCPIP:
+				return os << "SERIAL_TCPIP";
+			case SERIAL_UDP:
+				return os << "SERIAL_UDP";
+			default:
+				return os;
+		}
+	}
+
 	enum MultiSerialProtocolType {
 		// Communication sur un réseau IP en UDP, la couche 3 s'occupe de l'addressage des cartes
 		ETHERNET,
 	};
+
+	std::ostream& operator<<(std::ostream& os, const MultiSerialProtocolType t) {
+		switch(t) {
+			case ETHERNET:
+				return os << "ETHERNET";
+			default:
+				return os;
+		}
+	}
 
 	class Protocol {
 	protected:
@@ -43,7 +71,7 @@ namespace Communication {
 
 		std::mutex _mutex;
 
-		Protocol() : _refresh_rate(20_ms) {}
+		Protocol() : _refresh_rate(20_ms), debug_active(false) {}
 
 	public:
 		virtual ~Protocol() = default;

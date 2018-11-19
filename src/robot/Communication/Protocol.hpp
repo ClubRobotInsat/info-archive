@@ -72,12 +72,32 @@ namespace Communication {
 		GlobalFrame msg = generate_header(f) + f;
 		_serial->write_bytes(msg.getDonnees(), msg.getNbDonnees());
 
+		if(debug_active) {
+			logInfo("\t", P, "::send_frame(): sent ", msg);
+		}
+
 		sleep(_delay);
 	}
 
 	template <SerialProtocolType P>
 	void AbstractSerialProtocol<P>::recv_frame(const std::atomic_bool& running_execution,
 	                                           const std::function<void(const GlobalFrame&)>& handler) {
+		if(debug_active) {
+			logInfo("\t", P, "::recv_frame(): begins.");
+		}
+
+		std::thread killer([&running_execution, this]() {
+			while(running_execution) {
+				sleep(_refresh_rate);
+			}
+
+			if(debug_active) {
+				logInfo("\t\t", P, "::recv_frame(): ends -> killer sent an empty frame.");
+			}
+
+			send_frame({});
+		});
+
 		auto create_recv_thread = [&running_execution, this]() -> std::future<GlobalFrame> {
 			return std::async(std::launch::async, &AbstractSerialProtocol<P>::recv_frame_blocking, this, std::cref(running_execution));
 		};
@@ -86,25 +106,28 @@ namespace Communication {
 
 		while(running_execution) {
 			std::future_status status = frame.wait_for(_refresh_rate.toSystemDelay());
-			switch(status) {
-				case std::future_status::ready: {
-					std::lock_guard<std::mutex> lk(_mutex);
+			if(status == std::future_status::ready) {
+				std::lock_guard<std::mutex> lk(_mutex);
 
-					/** Ethernet `recv_frame` works without this block
-					GlobalFrame f = frame.get();
-					if (!f.empty()) {
-					    handler(f);
-					}
-					frame = create_recv_thread();*/
+				GlobalFrame f = frame.get();
+
+				if(debug_active) {
+					logInfo("\t\t", P, "::recv_frame(): received ", f);
 				}
-					[[fallthrough]];
-				default: { continue; }
+
+				if(!f.empty()) {
+					handler(f);
+				}
+				frame = create_recv_thread();
 			}
 		}
 
-		std::cout
-		    << "[AbstractSerialProtocol.recv_frame] exiting and throwing a ReceptionAborted exception for the protocol "
-		    << P << "." << std::endl;
+		if(debug_active) {
+			logWarn("\t", P, "::recv_frame(): ends -> throwing a ReceptionAborted exception.");
+		}
+
+		killer.join();
+
 		throw ReceptionAborted();
 	}
 
@@ -130,117 +153,36 @@ namespace Communication {
 	template <MultiSerialProtocolType M, SerialProtocolType P>
 	void AbstractMultiSerialProtocol<M, P>::recv_frame(const std::atomic_bool& running_execution,
 	                                                   const std::function<void(const GlobalFrame&)>& handler) {
-		/*std::map<uint8_t, std::future<void>> threads_in;
-
-		auto create_async_thread = [&](uint8_t id, std::shared_ptr<AbstractSerialProtocol<P>> ptr) {
-		    threads_in[id] = std::async(std::launch::async, [&, id]() {
-		        // À la réception d'un message, on rajoute l'ID correspond devant la trame avant de la traiter
-		        ptr->recv_frame(true, [&handler, id](const GlobalFrame &f) {
-		            GlobalFrame header{id};
-		            handler(header + f);
-		        });
-		    });
-		};
-
-		auto create_async_threads = [&]() {
-		    for (auto &v : _serials) {
-		        create_async_thread(v.first, v.second);
-		    }
-		};
-
-		create_async_threads();
-		while(running_execution) {
-		    std::map<uint8_t, std::future_status> status;
-		    for(auto &v : _serials) {
-		        const uint8_t id = v.first;
-
-		        status[id] = threads_in[id].wait_for(refresh_rate.toSystemDelay());
-		    };
-		    for(auto &v : _serials) {
-		        const uint8_t id = v.first;
-
-		        switch(status[id]) {
-		            case std::future_status::ready: {
-		                std::lock_guard<std::mutex> lk(mutex);
-		                threads_in[id].get();
-
-		                create_async_thread(id, v.second);
-		            }
-		            [[fallthrough]];
-		            default: { continue; }
-		        }
-		    };
-		}
-
-		throw ReceptionAborted();*/
-		std::cout << std::endl;
-		/// async usage; don't work because we can't wait for multiple async for now (C++ 14 limitation)
-		/// check for `when_any`
-		/*auto create_recv_thread = [&running_execution, &handler](uint8_t id, std::shared_ptr<protocol_udp> ptr) ->
-		std::future<void> { return std::async(std::launch::async, [&handler, &ptr, &running_execution, id]() { try { ptr->recv_frame(running_execution,
-		[&handler, id](const GlobalFrame& f) { GlobalFrame header{id}; handler(header + f);
-		            });
-		        } catch(const ReceptionAborted&) {}
-		    });
-		};
-
-		std::map<uint8_t, std::future<void>> threads_in;
-		for(auto& v : _serials) {
-		    const uint8_t id = v.first;
-
-		    threads_in[id] = create_recv_thread(id, v.second);
-		};
-
-		while(running_execution) {
-		    for (auto &v : _serials) {
-		        const uint8_t id = v.first;
-
-		        std::future_status status = threads_in[id].wait_for(_refresh_rate.toSystemDelay());
-		        switch (status) {
-		            case std::future_status::ready: {
-		                std::lock_guard<std::mutex> lk(_mutex);
-		                threads_in[id].get();
-		                threads_in[id] = create_recv_thread(id, v.second);
-		                break;
-		            }
-		            default: {
-		                break;
-		            }
-		        }
-		    }
-		}*/
-
-
 		std::map<uint8_t, std::thread> threads_in;
 
 		for(auto& v : _serials) {
 			const uint8_t id = v.first;
 			auto udp = v.second;
 
-			threads_in[id] = std::thread([&running_execution, &handler, udp, id] {
+			threads_in[id] = std::thread([&running_execution, &handler, udp, id, this]() {
 				try {
-					std::cout << "before receiving from id " << (int)id << std::endl;
-					udp->recv_frame(running_execution, [&handler, id](const GlobalFrame& f) {
-						std::cout << "recved frame from id " << (int)id << std::endl;
+					udp->recv_frame(running_execution, [&handler, id, this](const GlobalFrame& f) {
 						GlobalFrame header{id};
 						handler(header + f);
+
+						if(debug_active) {
+							logInfo("\t\t", M, "::recv_frame(): received frame ", header + f);
+						}
 					});
 				} catch(const ReceptionAborted&) {
-					std::cout << "ReceptionAborted caught for the thread " << (int)id << std::endl;
+					if(debug_active) {
+						logInfo("\t", M, "::recv_frame: ends -> ReceptionAborted caught from ", P, "::thread n°", static_cast<int>(id));
+					}
 				}
-
-				std::cout << "OK !! Abort of the thread " << (int)id << std::endl;
 			});
 		}
 
-		// don't work, the program goes on infinite loop except with a breakpoint line 238
-		/// ¯\_(ツ)_/¯
 		for(auto& t : threads_in) {
 			if(t.second.joinable()) {
-				std::cout << "join of the thread " << (int)t.first << std::endl;
+				if(debug_active) {
+					logInfo("\t", M, "::recv_frame(): ends -> join the thread n°", static_cast<int>(t.first), ".");
+				}
 				t.second.join();
-			} else {
-				std::cout << "can't join the thread " << (int)t.first << std::endl;
 			}
 		}
 
