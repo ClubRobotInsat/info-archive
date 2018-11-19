@@ -18,27 +18,30 @@ namespace Communication {
 	GlobalFrame AbstractSerialProtocol<P>::recv_frame_blocking(const std::atomic_bool& running_execution) {
 		static uint8_t buf[GlobalFrame::DONNEES_TRAME_MAX];
 
-		// Attente du début de la trame
-		while(_serial->read_byte() != BYTE_BEGIN_FRAME_1 && running_execution) {
-		}
+		// Permets de se remettre en attente si on a reçu `BYTE_BEGIN_FRAME_1` mais que la suite ne correspond pas
+		while(running_execution) {
+			// Attente du début de la trame
+			while(_serial->read_byte() != BYTE_BEGIN_FRAME_1 && running_execution) {
+			}
 
-		if(_serial->read_byte() == BYTE_BEGIN_FRAME_2) {
-			if(_serial->read_byte() == BYTE_BEGIN_FRAME_3) {
-				if(uint8_t frame_type = _serial->read_byte(); frame_type == BYTE_BEGIN_FRAME_4_NORMAL) {
-					/*uint16_t msg_size;
-					_serial->lireOctets(reinterpret_cast<uint8_t*>(&msg_size), 2);*/
-					uint8_t msg_size = _serial->read_byte();
+			if(_serial->read_byte() == BYTE_BEGIN_FRAME_2) {
+				if(_serial->read_byte() == BYTE_BEGIN_FRAME_3) {
+					if(uint8_t frame_type = _serial->read_byte(); frame_type == BYTE_BEGIN_FRAME_4_NORMAL) {
+						/*uint16_t msg_size;
+						_serial->lireOctets(reinterpret_cast<uint8_t*>(&msg_size), 2);*/
+						uint8_t msg_size = _serial->read_byte();
 
-					_serial->read_bytes(buf, msg_size);
-					GlobalFrame received_frame{msg_size, buf};
-					/*if (_debug_active) {
-					    logDebug("Communicator.RECV ", received_frame, "\ntime: ", _chrono.getElapsedTime(),
-					             "\n");
-					}*/
-					return received_frame;
-				} else if(frame_type == BYTE_BEGIN_FRAME_4_PING) {
-					// TODO
-					throw std::runtime_error("Ping not implemented yet.");
+						_serial->read_bytes(buf, msg_size);
+						GlobalFrame received_frame{msg_size, buf};
+						/*if (_debug_active) {
+						    logDebug("Communicator.RECV ", received_frame, "\ntime: ", _chrono.getElapsedTime(),
+						             "\n");
+						}*/
+						return received_frame;
+					} else if(frame_type == BYTE_BEGIN_FRAME_4_PING) {
+						// TODO
+						throw std::runtime_error("Ping not implemented yet.");
+					}
 				}
 			}
 		}
