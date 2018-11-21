@@ -10,21 +10,42 @@ int main() {
 	const uint8_t ID_SERVO = 254;
 	auto m = std::make_shared<ModuleManager>();
 
-	auto& servos = m->add_module<Servos>(5);
+	auto& servos = m->add_module<Servos>(4);
 	servos.add_servo(ID_SERVO);
 	servos.set_color(ID_SERVO, Servos::CYAN);
 
 	// Communication::protocol_udp udp("192.168.0.222", 54000, 51);
 
-	Robot robot(m, {"prog_servos", "UDP", "192.168.0.222", "50000", "51"});
-	servos.set_speed(ID_SERVO, 500);
-	sleep(5_s);
+	Robot robot(m, {"prog_servos", "UDP", "192.168.0.222", "5000", "51"});
+
+	servos.set_speed(ID_SERVO, 1000);
+	/*sleep(5_s);
+
 	for(int count = 0; count < 10; count++) {
-		const Angle command = count * 15_deg;
-		std::cout << "set_position_servo_254(" << command << ")." << std::endl;
-		servos.set_position(ID_SERVO, command);
-		sleep(1_s);
+	    const Angle command = -150_deg + count * 30_deg;
+	    std::cout << "set_position_servo_254(" << command << ")." << std::endl;
+	    servos.set_position(ID_SERVO, command);
+	    sleep(1_s);
 	}
+	servos.set_position(ID_SERVO, 0_deg);
+	sleep(1_s);
+
+	servos.set_speed(ID_SERVO, 30);
+	sleep(5_s);
+
+	// Envoi de plein d'ordres différents
+	for(int count = 0; count < 500; ++count) {
+	    servos.set_position(ID_SERVO, -90_deg);
+	    servos.set_speed(ID_SERVO, 5000);
+	    servos.set_blocking_mode(ID_SERVO, Servos::BlockingMode::UNBLOCKING);
+	    servos.set_position(ID_SERVO, 90_deg);
+	    servos.set_position(ID_SERVO, 0_deg);
+	    servos.set_speed(ID_SERVO, 2000);
+	}
+	*/
+	sleep(20_s);
+	logInfo("End of the sequence test.");
+	robot.deactivation();
 
 	return EXIT_SUCCESS;
 }

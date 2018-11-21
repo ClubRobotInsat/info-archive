@@ -131,7 +131,9 @@ namespace Communication {
 
 		killer.join();
 
-		throw ReceptionAborted();
+		std::stringstream ss;
+		ss << "end of the " << P << " communication";
+		throw ReceptionAborted(ss.str());
 	}
 
 	template <MultiSerialProtocolType M, SerialProtocolType P>
@@ -189,6 +191,8 @@ namespace Communication {
 			}
 		}
 
-		throw ReceptionAborted();
+		std::stringstream ss;
+		ss << "end of the " << M << " communication";
+		throw ReceptionAborted(ss.str());
 	}
 } // namespace Communication
