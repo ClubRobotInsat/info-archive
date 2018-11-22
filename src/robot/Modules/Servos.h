@@ -62,6 +62,8 @@ namespace PhysicalRobot {
 
 		bool is_moving_done(uint8_t servo) const;
 
+		static uint16_t angle_to_uint16t(Angle);
+
 		static Angle uint16t_to_angle(uint16_t pos);
 
 	private:

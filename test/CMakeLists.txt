@@ -1,12 +1,6 @@
 add_executable(TEST_SERVOS servos.cpp)
 target_link_libraries(TEST_SERVOS Robot)
 
-add_executable(TP_LED_SIMPLE led.cpp)
-target_link_libraries(TP_LED_SIMPLE Robot)
-
-add_executable(TP_LED_MORSE led_app.cpp)
-target_link_libraries(TP_LED_MORSE Robot)
-
 # On ne peut pas utiliser la librairie "Catch2::Catch2" pour générer un unique fichier de test
 add_library(catch_main OBJECT "unit.cpp")
 target_include_directories(catch_main PRIVATE "../third_parties/catch/single_include/catch2")
@@ -17,7 +11,6 @@ file(GLOB files "unit-*.cpp")
 # Suppression de certains fichiers ; voir https://stackoverflow.com/questions/15550777/how-do-i-exclude-a-single-file-from-a-cmake-fileglob-pattern#15551302
 list(REMOVE_ITEM files "${CMAKE_SOURCE_DIR}/test/unit-strategy_generator.cpp")
 list(REMOVE_ITEM files "${CMAKE_SOURCE_DIR}/test/unit-robot_commun.cpp")
-list(REMOVE_ITEM files "${CMAKE_SOURCE_DIR}/test/unit-communication.cpp")
 
 foreach(file ${files})
     get_filename_component(file_basename ${file} NAME_WE)
@@ -37,7 +30,7 @@ endforeach()
 # Par défaut, 'Robot' regroupe tout
 target_link_libraries(unit_testing_frames Outils_Robot)
 target_link_libraries(unit_testing_modules Modules)
-#target_link_libraries(unit_testing_communication Communication)
+target_link_libraries(unit_testing_communication Communication)
 target_link_libraries(unit_testing_constants Outils_Robot)
 target_link_libraries(unit_testing_repere Outils_Robot)
 #target_link_libraries(unit_testing_robot_commun Robot)
@@ -47,7 +40,7 @@ target_link_libraries(unit_testing_angle Modules)
 set(UNITTEST_TARGET_NAME "unit_testing_all")
 add_executable(${UNITTEST_TARGET_NAME}
         $<TARGET_OBJECTS:catch_main>
-        ${files} IMorse.h Clignoteur.cpp Clignoteur.h unit-angle.cpp)
+        ${files})
 
 target_include_directories(${UNITTEST_TARGET_NAME} PRIVATE "../third_parties/catch/single_include/catch2")
 target_link_libraries(${UNITTEST_TARGET_NAME} Robot)
