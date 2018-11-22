@@ -62,6 +62,8 @@ namespace PhysicalRobot {
 
 		bool is_moving_done(uint8_t servo) const;
 
+		static Angle uint16t_to_angle(uint16_t pos);
+
 	private:
 		// Retourne l'index associé au mapping du servo `id`. Si l'`id` est mauvais, retourne NB_MAX_SERVOS.
 		uint8_t get_index_of(uint8_t id) const;
