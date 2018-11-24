@@ -31,7 +31,7 @@ namespace Communication {
 		SERIAL_UDP,
 	};
 
-	std::ostream& operator<<(std::ostream& os, const SerialProtocolType t) {
+	constexpr std::ostream& operator<<(std::ostream& os, const SerialProtocolType t) {
 		switch(t) {
 			case SERIAL_LOCAL:
 				return os << "SERIAL_LOCAL";
@@ -55,7 +55,7 @@ namespace Communication {
 		ETHERNET,
 	};
 
-	std::ostream& operator<<(std::ostream& os, const MultiSerialProtocolType t) {
+	constexpr std::ostream& operator<<(std::ostream& os, const MultiSerialProtocolType t) {
 		switch(t) {
 			case ETHERNET:
 				return os << "ETHERNET";

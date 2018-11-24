@@ -16,6 +16,8 @@ namespace PhysicalRobot {
 		Robot(std::shared_ptr<ModuleManager> module_manager, std::string name, std::vector<std::string> const& args);
 
 	public:
+		const std::string name;
+
 		/*******************************/
 		/********* CONSTANTES **********/
 		/*******************************/
@@ -36,9 +38,19 @@ namespace PhysicalRobot {
 			return _module_manager->get_module<Module>();
 		}
 
+		void set_debug(bool debug) {
+			_debug_active = debug;
+			if(_communicator != nullptr) {
+				_communicator->set_debug(debug);
+			}
+		}
+
 		// TODO : déplacer ce code dans la partie 'stratégie'
 		/// Attend la tirette au départ
 		// void wait_for_tirette() const;
+
+		/// Désactivation du robot
+		virtual void deactivation();
 
 	protected:
 		std::shared_ptr<ModuleManager> _module_manager;
@@ -48,12 +60,10 @@ namespace PhysicalRobot {
 		// car on peut initialiser le module manager avant la construction du robot
 		virtual void assign_modules();
 
-		/// Désactivation du robot
-		virtual void deactivation();
-
 	private:
 		std::unique_ptr<Communication::Communicator<ModuleManager>> _communicator;
-		std::string _name;
+
+		bool _debug_active;
 
 		/*void setting_up_tirette() const;
 		bool is_tirette_pulled() const;*/
