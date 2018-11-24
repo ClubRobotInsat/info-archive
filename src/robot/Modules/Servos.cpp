@@ -141,6 +141,19 @@ namespace PhysicalRobot {
 		return _servos[index]->position == std::get<Angle>(_servos[id]->command);
 	}
 
+	uint16_t Servos::angle_to_uint16t(Angle angle) {
+		uint16_t pos = static_cast<uint16_t>((angle.toMinusPiPi().toDeg() + 166.65) * 1023 / 333.35);
+		if(pos < 21 || pos > 1002) {
+			logWarn("L'angle ", angle, " est en-dehors de l'intervalle [-159.8°; 159.8°].");
+		}
+		pos = static_cast<uint16_t>(pos < 21 ? 21 : (pos > 1023 ? 1023 : pos));
+		return pos;
+	};
+
+	Angle Servos::uint16t_to_angle(uint16_t pos) {
+		return Angle::makeFromDeg((333.3 * pos) / 1023 - 166.650);
+	};
+
 	SharedServos2019 Servos::generate_shared() const {
 		SharedServos2019 s = {};
 		s.nb_servos = get_nbr_servos();
@@ -148,16 +161,6 @@ namespace PhysicalRobot {
 		for(uint8_t index = 0; index < ID_MAX_SERVOS; ++index) {
 			if(_servos[index] != nullptr) {
 				s.servos[count].id = _servos[index]->id;
-
-				auto angle_to_uint16t = [count, &s](Angle angle) -> uint16_t {
-					uint16_t pos = static_cast<uint16_t>((angle.toMinusPiPi().toDeg() + 166.7) * 1023 / 333.4);
-					if(pos < 21 || pos > 1002) {
-						logWarn("Angle demandé en-dehors de l'intervalle [-159.8°; 159.8°] pour le servo n°",
-						        static_cast<int>(s.servos[count].id));
-					}
-					pos = static_cast<uint16_t>(pos < 21 ? 21 : (pos > 1023 ? 1023 : pos));
-					return pos;
-				};
 
 				s.servos[count].position = angle_to_uint16t(_servos[index]->position);
 				if(_servos[index]->command_type == Servo::CommandType::POSITION) {
@@ -184,11 +187,7 @@ namespace PhysicalRobot {
 			}
 			for(uint8_t index = 0; index < ID_MAX_SERVOS; ++index) {
 				if(_servos[index] != nullptr && s.servos[index].id != 0) {
-					auto uint16t_to_angle = [](uint16_t pos) -> Angle {
-						// TODO
-						Angle angle = 0_deg;
-						return angle;
-					};
+
 					auto uint8t_to_color = [](uint8_t val) -> Color {
 						return (val >= Color::NBR ? RED : static_cast<Color>(val));
 					};
@@ -202,6 +201,7 @@ namespace PhysicalRobot {
 			}
 		}
 	}
+
 
 	void Servos::deactivation() {
 		lock_variables();
