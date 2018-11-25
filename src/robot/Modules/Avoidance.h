@@ -9,7 +9,7 @@
 
 namespace PhysicalRobot {
 
-	class Avoidance final : public Module<SharedAvoidance2019> {
+	class Avoidance final : public Module {
 	public:
 		explicit Avoidance(uint8_t id);
 
@@ -30,11 +30,9 @@ namespace PhysicalRobot {
 
 		bool is_adversary_detected() const;
 
-		inline uint8_t get_frame_size() const override;
-
 	private:
-		SharedAvoidance2019 generate_shared() const override;
-		void message_processing(const SharedAvoidance2019&) override;
+		JSON generate_json() const override;
+		void message_processing(const JSON&) override;
 
 		void deactivation() override {}
 

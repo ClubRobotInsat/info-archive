@@ -19,9 +19,10 @@
 #include "Module.hpp"
 #include <variant>
 
+
 namespace PhysicalRobot {
 
-	class Servos final : public Module<SharedServos2019> {
+	class Servos final : public Module {
 	public:
 		enum BlockingMode : uint8_t { HOLD_ON_BLOCKING = 1, UNBLOCKING = 0 };
 
@@ -44,9 +45,7 @@ namespace PhysicalRobot {
 
 		uint8_t get_nbr_servos() const;
 
-		explicit Servos(uint8_t id) : Module(id, servo_read_frame, servo_write_frame) {}
-
-		uint8_t get_frame_size() const override;
+		explicit Servos(uint8_t id) : Module(id) {}
 
 		void set_position(uint8_t servo, Angle);
 
@@ -70,8 +69,8 @@ namespace PhysicalRobot {
 		// Retourne l'index associé au mapping du servo `id`. Si l'`id` est mauvais, retourne NB_MAX_SERVOS.
 		uint8_t get_index_of(uint8_t id) const;
 
-		SharedServos2019 generate_shared() const override;
-		void message_processing(const SharedServos2019&) override;
+		JSON generate_json() const override;
+		void message_processing(const JSON&) override;
 
 		void deactivation() override;
 

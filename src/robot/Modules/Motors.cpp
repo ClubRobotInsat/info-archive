@@ -4,6 +4,10 @@
 
 #include "Motors.h"
 
+#define MAX_CONTROLLED_MOTORS 8
+#define MAX_UNCONTROLLED_MOTORS 8
+#define MAX_BRUSHLESS 8
+
 namespace PhysicalRobot {
 	uint8_t Motors::get_nbr_controlled() const {
 		uint8_t count = 0;
@@ -168,10 +172,6 @@ namespace PhysicalRobot {
 		return INDEX_BAD_ID;
 	}
 
-	uint8_t Motors::get_frame_size() const {
-		return get_size_motor_frame(get_nbr_controlled(), get_nbr_uncontrolled(), get_nbr_brushless());
-	}
-
 	void Motors::add_controlled_motor(uint8_t id, RotatingDirection rotation) {
 		if(get_nbr_controlled() >= ID_MAX_CONTROLLED_MOTORS) {
 			throw std::runtime_error("Trop de moteurs asservis ont été défini !");
@@ -223,29 +223,26 @@ namespace PhysicalRobot {
 		}
 	}
 
-	SharedMotors2019 Motors::generate_shared() const {
-		SharedMotors2019 s = {};
+	JSON Motors::generate_json() const {
+		JSON j;
 		for(uint8_t i = 0; i < MAX_CONTROLLED_MOTORS; ++i) {
 			if(_controlled[i]) {
-				s.controlled_motors[i].id = i;
+				JSON motor;
+				motor["id"] = i;
 
 				// TODO
 
-			} else {
-				s.controlled_motors[i].id = 0;
+				j.push_back(motor);
 			}
 		}
 
 		// TODO : uncontrolled & brushless
 
-		s.parsing_failed = 0;
-		return s;
+		return j;
 	}
 
-	void Motors::message_processing(const SharedMotors2019& s) {
-		if(s.parsing_failed == 0) {
-			// TODO
-		}
+	void Motors::message_processing(const JSON& j) {
+		// TODO
 	}
 
 	void Motors::deactivation() {

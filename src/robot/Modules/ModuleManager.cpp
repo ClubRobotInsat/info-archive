@@ -42,11 +42,6 @@ namespace PhysicalRobot {
 			// logWarn("The module n°" + std::to_string(id) + " isn't initialized: frame dropped.");
 			return;
 		}
-		// Vérification que la taille théorique du module corresponde avec la taille annoncée dans la trame
-		if(size != _modules[id]->get_frame_size()) {
-			throw std::runtime_error("The size of the module n°" + std::to_string(id) + " does not correspond to the theory (" +
-			                         std::to_string(size) + " != " + std::to_string(_modules[id]->get_frame_size()) + ").");
-		}
 
 		// Tout est Ok, mise à jour du module
 		_modules[id]->update(GlobalFrame(size, array + 1));
@@ -141,7 +136,7 @@ namespace PhysicalRobot {
 		return count;
 	}
 
-	BaseModule& ModuleManager::get_module_by_id(uint8_t id) {
+	Module& ModuleManager::get_module_by_id(uint8_t id) {
 		if(id >= NB_MODULES_MAX) {
 			throw std::runtime_error("Impossible to get module n°" + std::to_string(id) + " (> " +
 			                         std::to_string(NB_MODULES_MAX) + ").");

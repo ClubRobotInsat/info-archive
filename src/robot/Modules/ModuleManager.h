@@ -65,7 +65,7 @@ namespace PhysicalRobot {
 		/// Retourne le module selon l'id
 		/// Il faut appliquer `dynamic_cast<T&>(module);` pour convertir 'module' vers le type souhaité
 		/// @throw si l'id est trop grand ou si le module associé n'existe pas
-		BaseModule& get_module_by_id(uint8_t id);
+		Module& get_module_by_id(uint8_t id);
 
 		/// Retourne le module selon le type
 		/// @throw si aucun module ayant le bon type n'existe
@@ -93,7 +93,7 @@ namespace PhysicalRobot {
 		void deactivation();
 
 	private:
-		std::unique_ptr<BaseModule> _modules[NB_MODULES_MAX];
+		std::unique_ptr<Module> _modules[NB_MODULES_MAX];
 	};
 
 	/////////////////////////////////////////
@@ -132,7 +132,7 @@ namespace PhysicalRobot {
 
 	template <typename Module>
 	Module& ModuleManager::get_module() {
-		static_assert(std::is_base_of<BaseModule, Module>::value, "The specified module must inherit Module as public.");
+		static_assert(std::is_base_of<Module, Module>::value, "The specified module must inherit Module as public.");
 		for(uint8_t id = 0; id < NB_MODULES_MAX; ++id) {
 			if(_modules[id] != nullptr) {
 				try {

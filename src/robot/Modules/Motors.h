@@ -9,7 +9,7 @@
 
 namespace PhysicalRobot {
 
-	class Motors final : public Module<SharedMotors2019> {
+	class Motors final : public Module {
 	public:
 		enum RotatingDirection : uint8_t { SCHEDULE = 0, TRIGONOMETRIC = 1 };
 
@@ -17,9 +17,7 @@ namespace PhysicalRobot {
 		static const uint8_t ID_MAX_UNCONTROLLED_MOTORS = std::numeric_limits<uint8_t>::max();
 		static const uint8_t ID_MAX_BRUSHLESS = std::numeric_limits<uint8_t>::max();
 
-		explicit Motors(uint8_t id) : Module(id, motor_read_frame, motor_write_frame) {}
-
-		uint8_t get_frame_size() const override;
+		explicit Motors(uint8_t id) : Module(id) {}
 
 		void add_controlled_motor(uint8_t id, RotatingDirection);
 		void add_uncontrolled_motor(uint8_t id);
@@ -53,8 +51,8 @@ namespace PhysicalRobot {
 		uint8_t get_index_of_uncontrolled(uint8_t id) const;
 		uint8_t get_index_of_brushless(uint8_t id) const;
 
-		SharedMotors2019 generate_shared() const override;
-		void message_processing(const SharedMotors2019&) override;
+		JSON generate_json() const override;
+		void message_processing(const JSON&) override;
 
 		void deactivation() override;
 
