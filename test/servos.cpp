@@ -3,6 +3,7 @@
 //
 
 #include "../src/robot/Robot.h"
+#include "json.hpp"
 
 using namespace PhysicalRobot;
 
@@ -16,9 +17,72 @@ int main() {
 
 	// Communication::protocol_udp udp("192.168.0.222", 54000, 51);
 
-	Robot robot(m, {"prog_servos", "UDP", "192.168.0.222", "5000", "51"});
-
+	Robot robot(m, {"prog_servos", "UDP", "192.168.0.222", "50000", "51"});
 	servos.set_speed(ID_SERVO, 1000);
+	std::cout << "set_speed(1000)" << std::endl;
+
+	/**for(int i = 0; i < 1024; ++i) {
+	    JSON json;
+	    json["id"] = 0xFE;
+	    json["known_position"] = 0;
+	    json["control"] = "Speed";
+	    json["data"] = i;
+	    //json["servo"]["command_type"] = 1;
+	    json["blocked"] = false;
+	    json["mode"] = "HoldOnblock";
+	    json["color"] = "Blue";
+
+	    //std::cout << std::setw(4) << json << std::endl << std::endl;
+	    //auto v = JSON::to_msgpack(json);
+
+	    std::stringstream ss;
+	    ss << json;
+	    std::string str = ss.str();
+	    //std::cout << "\n\n" << str << std::endl;
+
+	    std::vector<uint8_t> v(str.begin(), str.end());
+	    GlobalFrame f(v.size(), &v[0]);
+
+	    //std::cout << std::endl;
+
+	    Communication::protocol_udp udp("192.168.0.222", 5000, 51);
+
+	    udp.send_frame(f);
+	    //sleep(0_ms);
+	}
+
+	sleep(5_s);
+
+	for(int i = 1023; i >= 0; --i) {
+	    JSON json;
+	    json["id"] = 0xFE;
+	    json["known_position"] = 0;
+	    json["control"] = "Speed";
+	    json["data"] = i;
+	    //json["servo"]["command_type"] = 1;
+	    json["blocked"] = false;
+	    json["mode"] = "HoldOnblock";
+	    json["color"] = "Blue";
+
+	    //std::cout << std::setw(4) << json << std::endl << std::endl;
+	    //auto v = JSON::to_msgpack(json);
+
+	    std::stringstream ss;
+	    ss << json;
+	    std::string str = ss.str();
+	    //std::cout << "\n\n" << str << std::endl;
+
+	    std::vector<uint8_t> v(str.begin(), str.end());
+	    GlobalFrame f(v.size(), &v[0]);
+
+	    //std::cout << std::endl;
+
+	    Communication::protocol_udp udp("192.168.0.222", 5000, 51);
+
+	    udp.send_frame(f);
+	    //sleep(0_ms);
+	}*/
+
 	/*sleep(5_s);
 
 	for(int count = 0; count < 10; count++) {
@@ -43,9 +107,9 @@ int main() {
 	    servos.set_speed(ID_SERVO, 2000);
 	}
 	*/
-	sleep(20_s);
+	sleep(5_s);
 	logInfo("End of the sequence test.");
-	robot.deactivation();
+	// robot.deactivation();
 
 	return EXIT_SUCCESS;
 }

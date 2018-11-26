@@ -160,10 +160,13 @@ namespace PhysicalRobot {
 				servo["known_position"] = angle_to_uint16t(_servos[index]->position);
 
 				if(_servos[index]->command_type == Servo::CommandType::POSITION) {
-					servo["control"]["Position"] = angle_to_uint16t(std::get<Angle>(_servos[index]->command));
+					servo["data"] = angle_to_uint16t(std::get<Angle>(_servos[index]->command));
+					servo["control"] = "Position";
 				} else {
-					servo["control"]["Position"] = std::get<uint16_t>(_servos[index]->command);
+					servo["data"] = std::get<uint16_t>(_servos[index]->command);
+					servo["control"] = "Speed";
 				}
+
 				servo["blocked"] = _servos[index]->blocked.load();
 				servo["mode"] = _servos[index]->blocking_mode;
 				servo["color"] = _servos[index]->color.load();
