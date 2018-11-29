@@ -2,8 +2,8 @@
 
 #include "GtkSimuApplication.h"
 
-GtkSimuContext::GtkSimuContext()
-        : _application(std::make_unique<GtkSimuApplication>()) {
+GtkSimuContext::GtkSimuContext(int argc, char **argv, std::string id)
+        : _application(std::make_unique<GtkSimuApplication>(argc, argv, id)) {
 
 
 }

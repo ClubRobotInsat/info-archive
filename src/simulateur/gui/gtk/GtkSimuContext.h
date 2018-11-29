@@ -3,14 +3,13 @@
 
 #include <memory>
 
-#include "GtkInclude.h"
 #include "../IGuiContext.h"
 
 class GtkSimuApplication;
 
 class GtkSimuContext : public IGuiContext {
 public:
-    GtkSimuContext();
+    GtkSimuContext(int argc, char **argv, std::string id);
 
     void displayMessage(const std::string &message) override;
 
