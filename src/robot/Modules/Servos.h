@@ -38,33 +38,41 @@ namespace PhysicalRobot {
 			NBR
 		};
 
-		static const uint8_t ID_MAX_SERVOS = std::numeric_limits<uint8_t>::max();
+		using servo_t = uint8_t;
 
-		void add_servo(uint8_t id, BlockingMode = UNBLOCKING);
+		static const servo_t ID_MAX_SERVOS = std::numeric_limits<uint8_t>::max();
+
+		void add_servo(servo_t, BlockingMode = UNBLOCKING);
 
 		uint8_t get_nbr_servos() const;
 
-		explicit Servos(uint8_t id) : Module(id, servo_read_frame, servo_write_frame) {}
+		explicit Servos(servo_t id) : Module(id, servo_read_frame, servo_write_frame) {}
 
 		uint8_t get_frame_size() const override;
 
-		void set_position(uint8_t servo, Angle);
+		void set_position(servo_t, Angle);
 
-		void set_speed(uint8_t servo, uint16_t speed);
+		void set_speed(servo_t, uint16_t speed);
 
-		Angle read_position(uint8_t servo) const;
+		Angle read_position(servo_t) const;
 
-		void set_color(uint8_t servo, Color);
+		void set_color(servo_t, Color);
 
-		void set_blocking_mode(uint8_t servo, BlockingMode);
+		void set_blocking_mode(servo_t, BlockingMode);
 
-		bool is_blocking(uint8_t servo) const;
+		BlockingMode get_blocking_mode(servo_t);
 
-		bool is_moving_done(uint8_t servo) const;
+		bool is_blocking(servo_t) const;
+
+		bool is_moving_done(servo_t) const;
+
+		static uint16_t angle_to_uint16t(Angle);
+
+		static Angle uint16t_to_angle(uint16_t pos);
 
 	private:
 		// Retourne l'index associé au mapping du servo `id`. Si l'`id` est mauvais, retourne NB_MAX_SERVOS.
-		uint8_t get_index_of(uint8_t id) const;
+		uint8_t get_index_of(servo_t) const;
 
 		SharedServos2019 generate_shared() const override;
 		void message_processing(const SharedServos2019&) override;
@@ -75,8 +83,8 @@ namespace PhysicalRobot {
 			enum CommandType { POSITION = 0, SPEED = 1 };
 
 			// Par défaut, un servo est commandé en vitesse (0 rad/s).
-			Servo(uint8_t id, BlockingMode mode)
-			        : id(static_cast<uint8_t>(id > 0 ? id : throw std::runtime_error("ID equals to 0.")))
+			Servo(servo_t id, BlockingMode mode)
+			        : id(static_cast<servo_t>(id > 0 ? id : throw std::runtime_error("ID equals to 0.")))
 			        , position(0_deg)
 			        , command(0)
 			        , command_type(CommandType::SPEED)
@@ -84,7 +92,7 @@ namespace PhysicalRobot {
 			        , blocking_mode(mode)
 			        , color(YELLOW) {}
 
-			const uint8_t id;
+			const servo_t id;
 
 			Angle position;
 			std::variant<Angle, uint16_t> command;

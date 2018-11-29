@@ -3,6 +3,7 @@
 //
 
 #include "Protocol.h"
+#include <future>
 
 namespace Communication {
 	template <SerialProtocolType P>
@@ -10,34 +11,37 @@ namespace Communication {
 
 	template <SerialProtocolType P>
 	AbstractSerialProtocol<P>::AbstractSerialProtocol(std::shared_ptr<Serial> serial)
-	        : _serial(std::move(serial)), _delay(GLOBAL_CONSTANTS.get_default_communication_delay()), protocol(P) {}
+	        : Protocol(), _serial(std::move(serial)), _delay(GLOBAL_CONSTANTS.get_default_communication_delay()), protocol(P) {}
 
 
 	template <SerialProtocolType P>
 	GlobalFrame AbstractSerialProtocol<P>::recv_frame_blocking(const std::atomic_bool& running_execution) {
 		static uint8_t buf[GlobalFrame::DONNEES_TRAME_MAX];
 
-		// Attente du début de la trame
-		while(_serial->read_byte() != BYTE_BEGIN_FRAME_1 && running_execution) {
-		}
+		// Permets de se remettre en attente si on a reçu `BYTE_BEGIN_FRAME_1` mais que la suite ne correspond pas
+		while(running_execution) {
+			// Attente du début de la trame
+			while(_serial->read_byte() != BYTE_BEGIN_FRAME_1 && running_execution) {
+			}
 
-		if(_serial->read_byte() == BYTE_BEGIN_FRAME_2) {
-			if(_serial->read_byte() == BYTE_BEGIN_FRAME_3) {
-				if(uint8_t frame_type = _serial->read_byte(); frame_type == BYTE_BEGIN_FRAME_4_NORMAL) {
-					/*uint16_t msg_size;
-					_serial->lireOctets(reinterpret_cast<uint8_t*>(&msg_size), 2);*/
-					uint8_t msg_size = _serial->read_byte();
+			if(_serial->read_byte() == BYTE_BEGIN_FRAME_2) {
+				if(_serial->read_byte() == BYTE_BEGIN_FRAME_3) {
+					if(uint8_t frame_type = _serial->read_byte(); frame_type == BYTE_BEGIN_FRAME_4_NORMAL) {
+						/*uint16_t msg_size;
+						_serial->lireOctets(reinterpret_cast<uint8_t*>(&msg_size), 2);*/
+						uint8_t msg_size = _serial->read_byte();
 
-					_serial->read_bytes(buf, msg_size);
-					GlobalFrame received_frame{msg_size, buf};
-					/*if (_debug_active) {
-					    logDebug("Communicator.RECV ", received_frame, "\ntime: ", _chrono.getElapsedTime(),
-					             "\n");
-					}*/
-					return received_frame;
-				} else if(frame_type == BYTE_BEGIN_FRAME_4_PING) {
-					// TODO
-					throw std::runtime_error("Ping not implemented yet.");
+						_serial->read_bytes(buf, msg_size);
+						GlobalFrame received_frame{msg_size, buf};
+						/*if (_debug_active) {
+						    logDebug("Communicator.RECV ", received_frame, "\ntime: ", _chrono.getElapsedTime(),
+						             "\n");
+						}*/
+						return received_frame;
+					} else if(frame_type == BYTE_BEGIN_FRAME_4_PING) {
+						// TODO
+						throw std::runtime_error("Ping not implemented yet.");
+					}
 				}
 			}
 		}
@@ -71,19 +75,65 @@ namespace Communication {
 		GlobalFrame msg = generate_header(f) + f;
 		_serial->write_bytes(msg.getDonnees(), msg.getNbDonnees());
 
+		if(debug_active) {
+			logInfo("\t", P, "::send_frame(): sent ", msg);
+		}
+
 		sleep(_delay);
 	}
 
 	template <SerialProtocolType P>
 	void AbstractSerialProtocol<P>::recv_frame(const std::atomic_bool& running_execution,
 	                                           const std::function<void(const GlobalFrame&)>& handler) {
+		if(debug_active) {
+			logInfo("\t", P, "::recv_frame(): begins.");
+		}
+
+		std::thread killer([&running_execution, this]() {
+			while(running_execution) {
+				sleep(_refresh_rate);
+			}
+
+			if(debug_active) {
+				logInfo("\t\t", P, "::recv_frame(): ends -> killer sent an empty frame.");
+			}
+
+			send_frame({});
+		});
+
+		auto create_recv_thread = [&running_execution, this]() -> std::future<GlobalFrame> {
+			return std::async(std::launch::async, &AbstractSerialProtocol<P>::recv_frame_blocking, this, std::cref(running_execution));
+		};
+
+		auto frame = create_recv_thread();
+
 		while(running_execution) {
-			GlobalFrame f = recv_frame_blocking(running_execution);
-			if(!f.empty()) {
-				handler(f);
+			std::future_status status = frame.wait_for(_refresh_rate.toSystemDelay());
+			if(status == std::future_status::ready) {
+				std::lock_guard<std::mutex> lk(_mutex);
+
+				GlobalFrame f = frame.get();
+
+				if(debug_active) {
+					logInfo("\t\t", P, "::recv_frame(): received ", f);
+				}
+
+				if(!f.empty()) {
+					handler(f);
+				}
+				frame = create_recv_thread();
 			}
 		}
-		throw ReceptionAborted();
+
+		if(debug_active) {
+			logWarn("\t", P, "::recv_frame(): ends -> throwing a ReceptionAborted exception.");
+		}
+
+		killer.join();
+
+		std::stringstream ss;
+		ss << "end of the " << P << " communication";
+		throw ReceptionAborted(ss.str());
 	}
 
 	template <MultiSerialProtocolType M, SerialProtocolType P>
@@ -109,55 +159,40 @@ namespace Communication {
 	void AbstractMultiSerialProtocol<M, P>::recv_frame(const std::atomic_bool& running_execution,
 	                                                   const std::function<void(const GlobalFrame&)>& handler) {
 		std::map<uint8_t, std::thread> threads_in;
-		std::map<uint8_t, std::exception_ptr> thread_exceptions;
 
 		for(auto& v : _serials) {
 			const uint8_t id = v.first;
+			auto udp = v.second;
 
-			thread_exceptions[id] = nullptr;
-			std::exception_ptr& ex_ptr = thread_exceptions.find(id)->second;
-
-			threads_in[id] = std::thread([&, id]() {
+			threads_in[id] = std::thread([&running_execution, &handler, udp, id, this]() {
 				try {
-					// À la réception d'un message, on rajoute l'ID correspond devant la trame avant de la traiter
-					v.second->recv_frame(running_execution, [&handler, id](const GlobalFrame& f) {
+					udp->recv_frame(running_execution, [&handler, id, this](const GlobalFrame& f) {
 						GlobalFrame header{id};
 						handler(header + f);
+
+						if(debug_active) {
+							logInfo("\t\t", M, "::recv_frame(): received frame ", header + f);
+						}
 					});
-				} catch(typename AbstractSerialProtocol<P>::ReceptionAborted) {
-					ex_ptr = std::current_exception();
+				} catch(const ReceptionAborted&) {
+					if(debug_active) {
+						logInfo("\t", M, "::recv_frame: ends -> ReceptionAborted caught from ", P, "::thread n°", static_cast<int>(id));
+					}
 				}
 			});
-			// `detach` sur tous les threads : lorsque la connextion s'arrête (`running_execution <- false`),
-			// on ne peut envoyer qu'un message supplémentaire sur toutes les connexions pour sortir d'un seul
-			// `recv_blocking` ; à partir du moment où 1 seul thread quitte on `pthread_cancel` tous les autres
-			threads_in[id].detach();
-		}
-
-		// Écoute en boucle de la fin d'au moins un thread. Lorsqu'une première exception est levée, on la propage
-		std::exception_ptr ptr = nullptr;
-		while(ptr == nullptr) {
-			for(auto& v : thread_exceptions) {
-				if(v.second != nullptr) {
-					ptr = v.second;
-					break;
-				}
-			}
 		}
 
 		for(auto& t : threads_in) {
 			if(t.second.joinable()) {
-				// Quand au moins une connexion série est down, on supprime toutes les autres communications
-				// de manière très sale ; ça permets de n'envoyer qu'un seul message pour finaliser la fin de la com
-				pthread_cancel(t.second.native_handle());
+				if(debug_active) {
+					logInfo("\t", M, "::recv_frame(): ends -> join the thread n°", static_cast<int>(t.first), ".");
+				}
+				t.second.join();
 			}
 		}
 
-		// propagation de l'exception au niveau supérieur pour signaler la fin de la réception
-		try {
-			std::rethrow_exception(ptr);
-		} catch(const typename SerialProtocol<P>::ReceptionAborted& aborted) {
-			throw aborted;
-		}
+		std::stringstream ss;
+		ss << "end of the " << M << " communication";
+		throw ReceptionAborted(ss.str());
 	}
 } // namespace Communication

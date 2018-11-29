@@ -210,6 +210,9 @@ TEST_CASE("Multi Serial Protocols") {
 		Communication::protocol_ethernet client({{5, "127.0.0.1", 5555, 40005}, {3, "127.0.0.1", 3333, 40003}});
 		Communication::protocol_ethernet server({{5, "127.0.0.1", 40005, 5555}, {3, "127.0.0.1", 40003, 3333}});
 
+		// client.debug_active = true;
+		// server.debug_active = true;
+
 		REQUIRE_THROWS_WITH(client.send_frame({2}), "Impossible to send a frame to the module n°2: the serial connexion doesn't exist.");
 
 		const GlobalFrame frame_3{3, 0xDE, 0xAD, 0xBE, 0xEF};
@@ -218,13 +221,12 @@ TEST_CASE("Multi Serial Protocols") {
 		std::thread t_send([&]() {
 			// Envoi sur la liaison UDP 3
 			REQUIRE_NOTHROW(client.send_frame(frame_3));
+			REQUIRE_NOTHROW(client.send_frame(frame_3));
 			// Envoi sur la liaison UDP 5
 			REQUIRE_NOTHROW(client.send_frame(frame_5));
-
-			// Le serveur doit s'arrêter après 90ms ; il est en attente bloquante sur tous ses threads de réception
-			// et l'envoi d'un message sur le seul thread `id 3` permets de la down
 			sleep(100_ms);
 			client.send_frame({3});
+			client.send_frame({5});
 		});
 
 		std::thread t(stop_execution_after, 90_ms);

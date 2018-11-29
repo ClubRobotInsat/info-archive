@@ -23,7 +23,9 @@ namespace Communication {
 	bool Communicator<ParsingClass>::connect(const std::vector<std::string>& args) {
 		using std::stoi;
 
-		logInfo("Initialisation de la communication élec/info.");
+		if(_debug_active) {
+			logInfo("Initialisation de la communication élec/info.");
+		}
 
 		for(size_t i = 1; i < args.size() && !_connected; ++i) {
 			// - RS232 :
@@ -64,8 +66,9 @@ namespace Communication {
 
 			// - PIPES :
 			else if(args[i] == "PIPES") {
-				logDebug9("Initialisation de la connection au CAN local par pipes nommés");
-
+				if(_debug_active) {
+					logDebug9("Initialisation de la connection au CAN local par pipes nommés");
+				}
 				_protocol = std::make_unique<protocol_pipes>("/tmp/read.pipe", "/tmp/write.pipe");
 				_connected.exchange(true);
 				break;
@@ -81,28 +84,37 @@ namespace Communication {
 				}
 
 				_protocol = std::make_unique<protocol_ethernet>(
-				    protocol_ethernet::UDPConnection{stoi(args[i + 1]), args[i + 2], stoi(args[i + 3]), stoi(args[i + 4])});
+				    protocol_ethernet::UDPConnection{static_cast<uint8_t>(stoi(args[i + 1])),
+				                                     args[i + 2],
+				                                     static_cast<uint16_t>(stoi(args[i + 3])),
+				                                     static_cast<uint16_t>(stoi(args[i + 4]))});
 				_connected.exchange(true);
 				break;
 			}
 
 			// - LOCAL :
 			else if(args[i] == "LOCAL") {
-				logDebug9("Initialisation de la connexion au CAN local");
+				if(_debug_active) {
+					logDebug9("Initialisation de la connexion au CAN local");
+				}
 				_protocol = std::make_unique<protocol_local>();
 				_connected.exchange(true);
 			}
 
 			// - NULL :
 			else if(args[i] == "NULL") {
-				logDebug9("Initialisation de la connexion au CAN local par le NullCommunicator");
+				if(_debug_active) {
+					logDebug9("Initialisation de la connexion au CAN local par le NullCommunicator");
+				}
 				_protocol = std::make_unique<protocol_null>();
 				_connected.exchange(true);
 			}
 
 			// - option SIMU pour les connexions LOCAL ou NULL
 			else if(args[i] == "SIMU") {
-				logDebug9("Initialisation socket client côté robot");
+				if(_debug_active) {
+					logDebug9("Initialisation socket client côté robot");
+				}
 				// TODO : voir si on garde cette architecture
 				/*_socketSimu = std::make_unique<Socket>(SockProtocol::TCP);
 				_socketSimu->connect("127.0.0.1", _default_port_TCPIP);
@@ -171,7 +183,13 @@ namespace Communication {
 		};
 
 		auto input_function = [this](std::atomic_bool& running_execution) {
-			_protocol->recv_frame(running_execution, [this](const GlobalFrame& f) { _parser->read_frame(f); });
+			try {
+				_protocol->recv_frame(running_execution, [this](const GlobalFrame& f) { _parser->read_frame(f); });
+			} catch(const Protocol::ReceptionAborted&) {
+				if(_debug_active) {
+					logInfo("communicate_with_elecs::input_function() exited.");
+				}
+			}
 		};
 
 		std::thread out = std::thread(output_function, std::ref(_connected));

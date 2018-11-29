@@ -31,12 +31,48 @@ namespace Communication {
 		SERIAL_UDP,
 	};
 
+	constexpr std::ostream& operator<<(std::ostream& os, const SerialProtocolType t) {
+		switch(t) {
+			case SERIAL_LOCAL:
+				return os << "SERIAL_LOCAL";
+			case SERIAL_NULL:
+				return os << "SERIAL_NULL";
+			case SERIAL_PIPES:
+				return os << "SERIAL_PIPES";
+			case SERIAL_RS232:
+				return os << "SERIAL_RS232";
+			case SERIAL_TCPIP:
+				return os << "SERIAL_TCPIP";
+			case SERIAL_UDP:
+				return os << "SERIAL_UDP";
+			default:
+				return os;
+		}
+	}
+
 	enum MultiSerialProtocolType {
 		// Communication sur un réseau IP en UDP, la couche 3 s'occupe de l'addressage des cartes
 		ETHERNET,
 	};
 
+	constexpr std::ostream& operator<<(std::ostream& os, const MultiSerialProtocolType t) {
+		switch(t) {
+			case ETHERNET:
+				return os << "ETHERNET";
+			default:
+				return os;
+		}
+	}
+
 	class Protocol {
+	protected:
+		// Time to sleep before verifying if a new Frame arrive
+		const Duration _refresh_rate;
+
+		std::mutex _mutex;
+
+		Protocol() : _refresh_rate(20_ms), debug_active(false) {}
+
 	public:
 		virtual ~Protocol() = default;
 
@@ -44,6 +80,8 @@ namespace Communication {
 
 		virtual void recv_frame(const std::atomic_bool& running_execution,
 		                        const std::function<void(const GlobalFrame&)>& handler) = 0;
+
+		EXCEPTION_CLASS(ReceptionAborted);
 
 		/// Mode débug actif ou non
 		bool debug_active;
@@ -80,8 +118,6 @@ namespace Communication {
 	public:
 		~AbstractSerialProtocol() override;
 
-		EXCEPTION_CLASS(ReceptionAborted);
-
 		const SerialProtocolType protocol;
 
 		void set_delay(Duration delay);
@@ -91,7 +127,8 @@ namespace Communication {
 		void send_frame(const GlobalFrame& f) final;
 
 		/// @throws `ReceptionAbort` at the end of the communication
-		void recv_frame(const std::atomic_bool& running_execution, const std::function<void(const GlobalFrame&)>& handler) final;
+		[[noreturn]] void recv_frame(const std::atomic_bool& running_execution,
+		                             const std::function<void(const GlobalFrame&)>& handler) final;
 	};
 
 	template <SerialProtocolType P>
@@ -177,7 +214,8 @@ namespace Communication {
 
 		void send_frame(const GlobalFrame& f) final;
 
-		void recv_frame(const std::atomic_bool& running_execution, const std::function<void(const GlobalFrame&)>& handler) final;
+		[[noreturn]] void recv_frame(const std::atomic_bool& running_execution,
+		                             const std::function<void(const GlobalFrame&)>& handler) final;
 	};
 
 	template <MultiSerialProtocolType M, SerialProtocolType P>

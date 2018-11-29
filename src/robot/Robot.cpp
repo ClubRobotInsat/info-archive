@@ -15,11 +15,10 @@ namespace PhysicalRobot {
 
 	/// Initialise le robot à partir des arguments passes au programme.
 	Robot::Robot(std::shared_ptr<ModuleManager> module_manager, std::string name, std::vector<std::string> const& args)
-	        : _module_manager(std::move(module_manager)), _name(std::move(name)) {
+	        : name(std::move(name)), _module_manager(std::move(module_manager)), _debug_active(false) {
 		assign_modules();
 
 		_communicator = std::make_unique<Communication::Communicator<ModuleManager>>(_module_manager);
-		_communicator->set_debug(true);
 		_communicator->connect(args);
 	}
 
@@ -29,7 +28,9 @@ namespace PhysicalRobot {
 	}
 
 	void Robot::deactivation() {
-		logInfo("Deactivation of the robot '" + _name + "'.");
+		if(_debug_active) {
+			logInfo("Deactivation of the robot '" + name + "'.");
+		}
 
 		_module_manager->deactivation();
 		_communicator->disconnect();
@@ -50,11 +51,11 @@ namespace PhysicalRobot {
 	void Robot::assign_modules() {
 		// Un robot 'guest' est un robot dont l'initialisation se fait à partir d'un ModuleManager directement
 		// sans passer par les constantes introduites dans `src/robot.ini`
-		if(_name == "guest") {
+		if(name == "guest") {
 			return;
 		}
 
-		for(auto module : GLOBAL_CONSTANTS[_name].get_modules()) {
+		for(auto module : GLOBAL_CONSTANTS[name].get_modules()) {
 			/*if(module.first == "moving") {
 			    _module_manager->add_module<Moving>(module.second);
 			} else */
@@ -67,10 +68,10 @@ namespace PhysicalRobot {
 				_module_manager->add_module<IO>(module.second);
 			} else if(module.first == "avoidance") {
 				auto& avoidance = _module_manager->add_module<Avoidance>(module.second);
-				avoidance.set_position_turret(GLOBAL_CONSTANTS[_name].get_turret_position());
+				avoidance.set_position_turret(GLOBAL_CONSTANTS[name].get_turret_position());
 			} else {
 				throw std::runtime_error("The module named '" + module.first + "' (ID: " + std::to_string(module.second) +
-				                         ") isn't known for the robot '" + _name + "'.");
+				                         ") isn't known for the robot '" + name + "'.");
 			}
 		}
 	}

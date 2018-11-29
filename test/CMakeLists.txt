@@ -10,7 +10,6 @@ target_include_directories(catch_main PRIVATE "../third_parties/catch/single_inc
 file(GLOB files "unit-*.cpp")
 # Suppression de certains fichiers ; voir https://stackoverflow.com/questions/15550777/how-do-i-exclude-a-single-file-from-a-cmake-fileglob-pattern#15551302
 list(REMOVE_ITEM files "${CMAKE_SOURCE_DIR}/test/unit-strategy_generator.cpp")
-list(REMOVE_ITEM files "${CMAKE_SOURCE_DIR}/test/unit-robot_commun.cpp")
 
 foreach(file ${files})
     get_filename_component(file_basename ${file} NAME_WE)
@@ -33,7 +32,8 @@ target_link_libraries(unit_testing_modules Modules)
 target_link_libraries(unit_testing_communication Communication)
 target_link_libraries(unit_testing_constants Outils_Robot)
 target_link_libraries(unit_testing_repere Outils_Robot)
-#target_link_libraries(unit_testing_robot_commun Robot)
+target_link_libraries(unit_testing_robot Robot)
+target_link_libraries(unit_testing_angle Modules)
 
 set(UNITTEST_TARGET_NAME "unit_testing_all")
 add_executable(${UNITTEST_TARGET_NAME}

@@ -291,6 +291,8 @@ TEST_CASE("Servos 2019 Module") {
 
 				// servos == NULL
 				REQUIRE(servo_write_frame(buf, SIZE, nullptr) == 0);
+
+				delete servos;
 			}
 
 			SECTION("good arguments") {
@@ -302,6 +304,8 @@ TEST_CASE("Servos 2019 Module") {
 					}
 					REQUIRE(servo_write_frame(buf, 1, servos) == 1);
 					CHECK(buf[0] == 0);
+
+					delete servos;
 				}
 
 				SECTION("2 servos declared") {
@@ -330,6 +334,8 @@ TEST_CASE("Servos 2019 Module") {
 					CHECK(buf[10] == 0b11111111);
 					CHECK(buf[11] == 0b11111111);
 					CHECK(buf[12] == 0b100010);
+
+					delete servos;
 				}
 			}
 		}
@@ -394,8 +400,8 @@ TEST_CASE("ModuleManager") {
 
 			SECTION("Servos") {
 				auto& module_servo = manager.add_module<PhysicalRobot::Servos>(15);
-				module_servo.add_servo(2);
-				module_servo.set_position(2, 90_deg);
+				module_servo.add_servo(254);
+				module_servo.set_speed(254, 500);
 
 				auto frame_servos = manager.write_frame().value();
 				REQUIRE(frame_servos.getNbDonnees() == 1 + module_servo.get_frame_size());
