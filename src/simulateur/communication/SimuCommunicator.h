@@ -9,27 +9,27 @@
 
 class SimuCommunicator {
 public:
-    SimuCommunicator(const std::shared_ptr<PhysicalRobot::ModuleManager> &moduleMgr);
+	SimuCommunicator(const std::shared_ptr<PhysicalRobot::ModuleManager>& moduleMgr);
 
-    ~SimuCommunicator();
+	~SimuCommunicator();
 
-    /** Change le protocole actuel de la communication, et
-     * reboot la communication. */
-    void connect(const std::shared_ptr<Communication::Protocol> &protocol);
+	/** Change le protocole actuel de la communication, et
+	 * reboot la communication. */
+	void connect(const std::shared_ptr<Communication::Protocol>& protocol);
 
-    void disconnect();
+	void disconnect();
 
 private:
-    std::shared_ptr<Communication::Protocol> _protocol;
+	std::shared_ptr<Communication::Protocol> _protocol;
 
-    /// Le module manager qui contient les différents modules
-    std::shared_ptr<PhysicalRobot::ModuleManager> _moduleMgr;
+	/// Le module manager qui contient les différents modules
+	std::shared_ptr<PhysicalRobot::ModuleManager> _moduleMgr;
 
-    std::atomic_bool _connected;
-    std::thread _communicationThread;
+	std::atomic_bool _connected;
+	std::thread _communicationThread;
 
 
-    void communicationThread();
+	void communicationThread();
 };
 
-#endif //ROOT_SIMUCOMMUNICATOR_H
+#endif // ROOT_SIMUCOMMUNICATOR_H

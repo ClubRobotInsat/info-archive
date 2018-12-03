@@ -5,16 +5,16 @@
 
 class SimuServos : public PhysicalRobot::Module<SharedServos2019> {
 public:
-    SimuServos(uint8_t id);
+	SimuServos(uint8_t id);
 
-    uint8_t get_frame_size() const override;
-    uint8_t get_nbr_servos() const;
+	uint8_t get_frame_size() const override;
+	uint8_t get_nbr_servos() const;
 
-    void deactivation() override;
+	void deactivation() override;
+
 protected:
-    SharedServos2019 generate_shared() const override;
-    void message_processing(const SharedServos2019&) override;
-
+	SharedServos2019 generate_shared() const override;
+	void message_processing(const SharedServos2019&) override;
 };
 
-#endif //ROOT_SIMUSERVOS_H
+#endif // ROOT_SIMUSERVOS_H
