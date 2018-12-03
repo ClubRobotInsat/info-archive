@@ -6,6 +6,7 @@
 
 #include "../graphique/irrlicht/Scene.h"
 //#include "../graphique/server/WebGraphicalContext.h"
+#include "../gui/gtk/GtkSimuContext.h"
 #include "../physique/box2d/Box2DPhysicalContext.h"
 #include "SimulateurConstantes.h"
 
@@ -32,6 +33,7 @@ Simulateur* Simulateur::_instance = nullptr;
 Simulateur::Simulateur()
         : _graphicalCtx(std::make_unique<Scene>())
         , _physicalCtx(std::make_unique<Box2DPhysicalContext>(b2Vec2(0, 0)))
+        , _guiCtx(std::make_unique<GtkSimuContext>(0, nullptr, "simu.gtk.app"))
         , _theWorld(_physicalCtx.get(), _graphicalCtx.get())
         , _resetWorld(false)
         , _enablePhysics(true) {
@@ -73,7 +75,7 @@ void Simulateur::initWorld() {
 	if(_json_file != "") {
 		_theWorld.loadWorldFromFile(_json_file);
 	} else {
-		_theWorld.loadWorldFromJSON(TABLE_2018);
+		_theWorld.loadWorldFromJSON(TABLE_2018());
 	}
 	// Pour obtenir le JSON à partir du code de création de la table
 	//_theWorld.createTable();
@@ -87,14 +89,13 @@ void Simulateur::disableSimulation() {
 }
 
 void Simulateur::addRobot(Constantes::RobotColor color) {
-	Object3D& robotObj = (_json_file.empty() ? _theWorld.createRobotFromJSON(TABLE_2018, color) :
-	                                         _theWorld.createRobotFromFile(_json_file, color));
+	Object3D& robotObj = (_json_file.empty() ? _theWorld.createRobotFromJSON(TABLE_2018(), color) :
+	                                           _theWorld.createRobotFromFile(_json_file, color));
 
 	_robot = std::make_unique<Simu::SimuRobot>("primary", robotObj);
 
 	// On inverse le sens de lecture par rapport à la stratégie
-	std::shared_ptr<Communication::Protocol> protocol =
-			std::make_shared<Communication::protocol_udp>("localhost", 5555, 1234);
+	std::shared_ptr<Communication::Protocol> protocol = std::make_shared<Communication::protocol_udp>("localhost", 5555, 1234);
 	_robot->connect(protocol);
 }
 

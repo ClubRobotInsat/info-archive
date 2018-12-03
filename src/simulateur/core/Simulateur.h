@@ -9,9 +9,10 @@
 
 #include <atomic>
 
+#include "../gui/IGuiContext.h"
 #include "ConstantesCommunes.h"
-#include "World.h"
 #include "SimuRobot.h"
+#include "World.h"
 
 // permet de positionner plus facilement les objets
 struct CubeData {
@@ -136,6 +137,7 @@ private:
 
 	std::unique_ptr<IGraphicalContext> _graphicalCtx;
 	std::unique_ptr<IPhysicalContext> _physicalCtx;
+	std::unique_ptr<IGuiContext> _guiCtx;
 
 	/// Le monde dans lequel on stocke tous les objets
 	World _theWorld;

@@ -21,7 +21,7 @@ namespace mass {
 	const Mass LIGHT = 100_g;
 	const Mass MEDIUM = 1_kg;
 	const Mass HEAVY = 10000_kg;
-}
+} // namespace mass
 
 
 /*****************************
@@ -55,7 +55,7 @@ namespace ConstantesSimu2017 {
 	const Color3f COLOR_CYLINDER_BLUE = BLUE;
 	const Color3f COLOR_CYLINDER_YELLOW = YELLOW;
 	const Color3f COLOR_CYLINDER_MULTICOLOR = GREY;
-}
+} // namespace ConstantesSimu2017
 
 // Repère de la simulation
 const repere::Repere REFERENCE_SIMULATOR =

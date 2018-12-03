@@ -9,4 +9,4 @@
 #include <gtkmm.h>
 #pragma GCC diagnostic pop
 
-#endif //ROOT_GTKINCLUDE_H
+#endif // ROOT_GTKINCLUDE_H
