@@ -154,7 +154,7 @@ CircleDefinition PhysicalObject::getBodyCircleDef() const {
 	result._radius = 0.0f;
 
 	if(mainShape != nullptr && mainShape->GetType() == b2Shape::Type::e_circle) {
-		b2CircleShape* circleShape = (b2CircleShape*)mainShape;
+		auto circleShape = dynamic_cast<b2CircleShape*>(mainShape);
 		result._pos = circleShape->m_p;
 		result._radius = circleShape->m_radius;
 	}
@@ -172,29 +172,29 @@ std::list<b2Vec2> PhysicalObject::getBodyPoints() const {
 	if(shape != nullptr) {
 		// La shape est un polygone ?
 		if(shape->GetType() == b2Shape::e_polygon) {
-			b2PolygonShape* polygonShape = (b2PolygonShape*)shape;
+			auto polygonShape = dynamic_cast<b2PolygonShape*>(shape);
 
 			for(int i = 0; i < polygonShape->m_count; i++) {
 				b2Vec2 vertex = polygonShape->GetVertex(i);
-				result.push_back(
-				    b2Vec2(toBox2D(absolutePositionPoint(Vector2m(fromBox2D(vertex.x), fromBox2D(vertex.y))).x),
-				           toBox2D(absolutePositionPoint(Vector2m(fromBox2D(vertex.x), fromBox2D(vertex.y))).y)));
+				result.emplace_back(
+				    toBox2D(absolutePositionPoint(Vector2m(fromBox2D(vertex.x), fromBox2D(vertex.y))).x),
+				           toBox2D(absolutePositionPoint(Vector2m(fromBox2D(vertex.x), fromBox2D(vertex.y))).y));
 			}
 		}
 		// La shape est un cercle ?
 		else if(shape->GetType() == b2Shape::e_circle) {
-			b2CircleShape* circleShape = (b2CircleShape*)shape;
+			auto circleShape = dynamic_cast<b2CircleShape*>(shape);
 
 			float angleStep = b2_pi / 4;
 			// permet de connaitre la position d'un point tous les PI/4 (en fonction de la pos initiale, des cos et sin)
 			for(int i = 0; i < 8; i++) {
-				result.push_back(b2Vec2(
-				    (float)toBox2D(absolutePositionPoint(fromBox2D({(circleShape->m_radius * (float)cos(angleStep * i)),
-				                                                    (circleShape->m_radius * (float)sin(angleStep * i))}))
+				result.emplace_back(
+				    (float)toBox2D(absolutePositionPoint(fromBox2D({(circleShape->m_radius * cos(angleStep * i)),
+				                                                    (circleShape->m_radius * sin(angleStep * i))}))
 				                       .x),
-				    (float)toBox2D(absolutePositionPoint(fromBox2D({(circleShape->m_radius * (float)cos(angleStep * i)),
-				                                                    (circleShape->m_radius * (float)sin(angleStep * i))}))
-				                       .y)));
+				    (float)toBox2D(absolutePositionPoint(fromBox2D({(circleShape->m_radius * cos(angleStep * i)),
+				                                                    (circleShape->m_radius * sin(angleStep * i))}))
+				                       .y));
 			}
 		} else
 			std::cout

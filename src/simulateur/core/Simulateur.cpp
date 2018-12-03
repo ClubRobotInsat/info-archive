@@ -118,6 +118,6 @@ void Simulateur::sendTextMessage(const std::string& message) {
 	_graphicalCtx->displayMessage(message);
 }
 
-Constantes::RobotColor Simulateur::getRobotColor() {
+Constantes::RobotColor Simulateur::getRobotColor() const {
 	return RobotColor::Undef;
 }

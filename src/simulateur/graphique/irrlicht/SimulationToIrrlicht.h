@@ -17,11 +17,11 @@ public:
 	// une unite de irrlicht correspond a un decimetre
 
 	static float ToIrrlicht(const Length& l) {
-		return (float)l.toDm();
+		return static_cast<float>(l.toDm());
 	};
 
 	static float AngleToIrrlicht(const Angle& angle) {
-		return (irr::f32)angle.toDeg();
+		return static_cast<irr::f32>(angle.toDeg());
 	}
 
 	static irr::core::vector3df VectorIrr(const Vector3m& vect) {

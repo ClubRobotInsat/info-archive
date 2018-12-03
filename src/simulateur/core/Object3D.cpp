@@ -43,7 +43,7 @@ void Object3D::addTag(const std::string& tag) {
 	_tags.insert(tag);
 }
 
-bool Object3D::hasTag(const std::string& tag) {
+bool Object3D::hasTag(const std::string& tag) const {
 	return _tags.find(tag) != _tags.end();
 }
 

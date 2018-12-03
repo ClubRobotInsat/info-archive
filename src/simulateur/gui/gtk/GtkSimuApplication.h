@@ -6,7 +6,7 @@
 #include <mutex>
 #include <thread>
 
-#include <gtkmm.h>
+#include "GtkInclude.h"
 
 class GtkSimuApplication : public Gtk::Application {
 public:

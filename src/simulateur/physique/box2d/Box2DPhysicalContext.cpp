@@ -44,7 +44,7 @@ IPhysicalInstance* Box2DPhysicalContext::createCuboid(const Vector3m& position, 
 }
 
 IPhysicalInstance*
-    Box2DPhysicalContext::createCylinder(const Vector3m& position, Mass mass, BodyType type, Length radius, Length height) {
+    Box2DPhysicalContext::createCylinder(const Vector3m& position, Mass mass, BodyType type, Length radius, Length /* height */) {
 	PhysicalObjectDefinition cylinderDefinition;
 	cylinderDefinition.setShapeCircle(radius);
 	cylinderDefinition.setMass(mass);

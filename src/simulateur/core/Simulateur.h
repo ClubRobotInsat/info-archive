@@ -121,7 +121,7 @@ public:
 	/**
 	 * Obtient la couleur du robot
 	 */
-	Constantes::RobotColor getRobotColor();
+	Constantes::RobotColor getRobotColor() const;
 
 	/**
 	 * Désactive la simulation physique de tous les objets et du robot sur la table

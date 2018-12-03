@@ -75,7 +75,7 @@ public:
 	}
 
 	void addTag(const std::string& tag);
-	bool hasTag(const std::string& tag);
+	bool hasTag(const std::string& tag) const;
 
 	void setMetadata(const JSON& metadata);
 	const JSON& getMetadata() const;
