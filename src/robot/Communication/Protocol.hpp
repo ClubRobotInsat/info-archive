@@ -11,7 +11,7 @@ namespace Communication {
 
 	template <SerialProtocolType P>
 	AbstractSerialProtocol<P>::AbstractSerialProtocol(std::shared_ptr<Serial> serial)
-	        : Protocol(), _serial(std::move(serial)), _delay(GLOBAL_CONSTANTS.get_default_communication_delay()), protocol(P) {}
+	        : Protocol(), _serial(std::move(serial)), _delay(GLOBAL_CONSTANTS().get_default_communication_delay()), protocol(P) {}
 
 
 	template <SerialProtocolType P>

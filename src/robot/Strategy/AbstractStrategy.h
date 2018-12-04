@@ -26,14 +26,14 @@ namespace Strategy {
 
 	class AbstractStrategy {
 	public:
-		void start(Duration match = GLOBAL_CONSTANTS.get_match_duration());
+		void start(Duration match = GLOBAL_CONSTANTS().get_match_duration());
 
 		Constants::RobotColor get_color() const {
 			return _color;
 		}
 
 		const repere::Repere& get_reference() const {
-			return GLOBAL_CONSTANTS.get_reference(_color);
+			return GLOBAL_CONSTANTS().get_reference(_color);
 		}
 
 		Duration get_left_time() const;

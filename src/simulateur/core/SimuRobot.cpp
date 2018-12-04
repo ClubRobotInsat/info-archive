@@ -22,7 +22,7 @@ namespace Simu {
 	void SimuRobot::update() {}
 
 	void SimuRobot::assignModules() {
-		auto modules = GLOBAL_CONSTANTS[_name].get_modules();
+		auto modules = GLOBAL_CONSTANTS()[_name].get_modules();
 
 		_moduleMgr->add_module<SimuLed>(1);
 	}

@@ -170,6 +170,6 @@ inline Constants::RobotColor operator!(Constants::RobotColor const& c) {
 	}
 }
 
-extern Constants::Constants const GLOBAL_CONSTANTS;
+const Constants::Constants& GLOBAL_CONSTANTS();
 
 #endif // ROOT_CONSTANTS_H

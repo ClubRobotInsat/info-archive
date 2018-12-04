@@ -6,7 +6,10 @@
 
 #include "EmbeddedFiles.h"
 
-Constants::Constants const GLOBAL_CONSTANTS(EmbeddedFiles::readText("../robot.ini"));
+const Constants::Constants& GLOBAL_CONSTANTS() {
+	const static Constants::Constants CONSTANTS(EmbeddedFiles::readText("../robot.ini"));
+	return CONSTANTS;
+}
 
 namespace Constants {
 

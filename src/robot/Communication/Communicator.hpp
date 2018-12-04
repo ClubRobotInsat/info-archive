@@ -174,7 +174,7 @@ namespace Communication {
 					    logDebug0("None(GlobalFrame) to send; wait.\ntime: ", _chrono.getElapsedTime(), "\n");
 					}*/
 					// La classe de parsing peut ne rien avoir à envoyer, donc temporisation sur l'électronique
-					sleep(GLOBAL_CONSTANTS.get_default_communication_delay());
+					sleep(GLOBAL_CONSTANTS().get_default_communication_delay());
 				} else {
 					// Trame à envoyer
 					_protocol->send_frame(frame.value());
