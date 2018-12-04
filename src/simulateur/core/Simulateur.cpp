@@ -78,7 +78,7 @@ void Simulateur::initWorld() {
 	if(_json_file != "") {
 		_theWorld.loadWorldFromFile(_json_file);
 	} else {
-		_theWorld.loadWorldFromJSON(TABLE_2018());
+		_theWorld.loadWorldFromJSON(GLOBAL_CONSTANTS().TABLE_2018());
 	}
 	// Pour obtenir le JSON à partir du code de création de la table
 	//_theWorld.createTable();
@@ -92,7 +92,7 @@ void Simulateur::disableSimulation() {
 }
 
 void Simulateur::addRobot(Constantes::RobotColor color) {
-	Object3D& robotObj = (_json_file.empty() ? _theWorld.createRobotFromJSON(TABLE_2018(), color) :
+	Object3D& robotObj = (_json_file.empty() ? _theWorld.createRobotFromJSON(GLOBAL_CONSTANTS().TABLE_2018(), color) :
 	                                           _theWorld.createRobotFromFile(_json_file, color));
 
 	_robot = std::make_unique<Simu::SimuRobot>("primary", robotObj);

@@ -10,7 +10,6 @@
 #include <atomic>
 
 #include "../gui/IGuiContext.h"
-#include "ConstantesCommunes.h"
 #include "SimuRobot.h"
 #include "World.h"
 

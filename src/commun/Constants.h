@@ -9,6 +9,7 @@
 #include <ini/src/IniFile.hpp>
 
 #include "Commun.h"
+#include "EmbeddedFiles.h"
 #include "Json.h"
 #include "MathToolbox/Repere.h"
 
@@ -132,6 +133,11 @@ namespace Constants {
 		// Période maximale pour le renvoi de l'état d'un module
 		inline const Duration& get_frame_period() const {
 			return _frame_period;
+		}
+
+		const JSON& TABLE_2018() const {
+			static JSON TABLE_2018 = nlohmann::json::parse(EmbeddedFiles::readText("table_2018.json"));
+			return TABLE_2018;
 		}
 
 	private:
