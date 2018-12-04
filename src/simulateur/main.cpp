@@ -156,6 +156,7 @@ int main(int argc, char** argv) {
 
 	if(parseArgument(argc, argv, _simu)) {
 		logDebug5("Starting simulator");
+		_simu.start();
 
 		auto last = TimePoint::now();
 

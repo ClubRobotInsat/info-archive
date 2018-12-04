@@ -71,6 +71,9 @@ public:
 	 */
 	~Simulateur();
 
+	/** Démarre le simulateur */
+	void start();
+
 	/**
 	 * Obtient un pointeur sur le monde du simu
 	 */

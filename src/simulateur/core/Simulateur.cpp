@@ -33,7 +33,6 @@ Simulateur* Simulateur::_instance = nullptr;
 Simulateur::Simulateur()
         : _graphicalCtx(std::make_unique<Scene>())
         , _physicalCtx(std::make_unique<Box2DPhysicalContext>(b2Vec2(0, 0)))
-        , _guiCtx(std::make_unique<GtkSimuContext>(0, nullptr, "simu.gtk.app"))
         , _theWorld(_physicalCtx.get(), _graphicalCtx.get())
         , _resetWorld(false)
         , _enablePhysics(true) {
@@ -49,6 +48,10 @@ Simulateur::Simulateur()
 Simulateur::~Simulateur() {
 	endWorld();
 	_instance = nullptr;
+}
+
+void Simulateur::start() {
+	_guiCtx = std::make_unique<GtkSimuContext>(0, nullptr, "simu.gtk.app");
 }
 
 void Simulateur::update(Duration time) {
