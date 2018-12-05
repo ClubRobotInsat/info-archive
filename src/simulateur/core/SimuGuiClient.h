@@ -9,17 +9,16 @@ class Simulateur;
  * avec la GUI. */
 class SimuGuiClient : public IGuiClient {
 public:
-    explicit SimuGuiClient(Simulateur &simulator);
-    ~SimuGuiClient() override;
+	explicit SimuGuiClient(Simulateur& simulator);
+	~SimuGuiClient() override;
 
-    void connect(const ConnectionData &connectionData) override;
+	void connect(const ConnectionData& connectionData) override;
 
-    void createIAProcess(const IAProcessData &iaProcessData, const ConnectionData &connectionData) override;
+	void createIAProcess(const IAProcessData& iaProcessData, const ConnectionData& connectionData) override;
 
 private:
-    Simulateur &_simu;
-
+	Simulateur& _simu;
 };
 
 
-#endif //ROOT_SIMUGUICLIENT_H
+#endif // ROOT_SIMUGUICLIENT_H

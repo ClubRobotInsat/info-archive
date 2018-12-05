@@ -6,15 +6,15 @@
 #include <mutex>
 #include <thread>
 
-#include "../IGuiContext.h"
 #include "../IGuiClient.h"
+#include "../IGuiContext.h"
 
 class GtkSimuApplication;
 
 /** This class manages a Simulator GUI context based on Gtk. */
 class GtkSimuContext : public IGuiContext {
 public:
-	GtkSimuContext(int argc, char** argv, std::string id, IGuiClient &client);
+	GtkSimuContext(int argc, char** argv, std::string id, IGuiClient& client);
 
 	~GtkSimuContext() override;
 

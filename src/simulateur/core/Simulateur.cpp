@@ -4,8 +4,8 @@
 #include <cstdlib>
 #include <functional>
 
-#include "SimulateurConstantes.h"
 #include "../graphique/irrlicht/Scene.h"
+#include "SimulateurConstantes.h"
 //#include "../graphique/server/WebGraphicalContext.h"
 #include "../gui/gtk/GtkSimuContext.h"
 #include "../physique/box2d/Box2DPhysicalContext.h"
@@ -98,7 +98,6 @@ void Simulateur::addRobot(Constantes::RobotColor color) {
 	                                           _theWorld.createRobotFromFile(_json_file, color));
 
 	_robot = std::make_unique<Simu::SimuRobot>("primary", robotObj);
-
 }
 
 void Simulateur::resetWorld() {

@@ -13,15 +13,15 @@
 
 class GtkSimuApplication : public Gtk::Application {
 public:
-	GtkSimuApplication(int argc, char** argv, std::string id, GtkSimuContext &context, IGuiClient &guiClient);
+	GtkSimuApplication(int argc, char** argv, std::string id, GtkSimuContext& context, IGuiClient& guiClient);
 
 	~GtkSimuApplication() override;
 
 	void queueAction(const std::function<void()>& action);
 
 private:
-	GtkSimuContext &_context;
-    IGuiClient &_guiClient;
+	GtkSimuContext& _context;
+	IGuiClient& _guiClient;
 
 	std::unique_ptr<Gtk::Window> _mainWindow;
 
@@ -37,7 +37,7 @@ private:
 	/// C callback to execute all pending actions
 	friend gboolean emptyGtkQueue(void* data);
 
-    void onConnect();
+	void onConnect();
 };
 
 

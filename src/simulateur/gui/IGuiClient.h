@@ -5,22 +5,22 @@
 #include <vector>
 
 struct IAProcessData {
-    std::string executablePath;
-    std::vector<std::string> parameters;
+	std::string executablePath;
+	std::vector<std::string> parameters;
 };
 
 struct ConnectionData {
-    std::string method;
-    std::vector<std::string> parameters;
+	std::string method;
+	std::vector<std::string> parameters;
 };
 
 class IGuiClient {
 public:
-    virtual ~IGuiClient() = default;
+	virtual ~IGuiClient() = default;
 
-    virtual void connect(const ConnectionData &connectionData) = 0;
+	virtual void connect(const ConnectionData& connectionData) = 0;
 
-    virtual void createIAProcess(const IAProcessData &iaProcessData, const ConnectionData &connectionData) = 0;
+	virtual void createIAProcess(const IAProcessData& iaProcessData, const ConnectionData& connectionData) = 0;
 };
 
-#endif //ROOT_IGUICLIENT_H
+#endif // ROOT_IGUICLIENT_H

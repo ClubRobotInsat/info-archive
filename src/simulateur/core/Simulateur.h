@@ -10,9 +10,9 @@
 #include <atomic>
 
 #include "../gui/IGuiContext.h"
+#include "SimuGuiClient.h"
 #include "SimuRobot.h"
 #include "World.h"
-#include "SimuGuiClient.h"
 
 // permet de positionner plus facilement les objets
 struct CubeData {

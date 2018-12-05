@@ -5,11 +5,10 @@
 
 class PanelRobotState : public Gtk::Frame {
 public:
-    PanelRobotState();
+	PanelRobotState();
 
 private:
-
 };
 
 
-#endif //ROOT_PANELROBOTSTATE_H
+#endif // ROOT_PANELROBOTSTATE_H
