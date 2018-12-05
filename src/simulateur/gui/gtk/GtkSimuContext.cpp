@@ -2,8 +2,11 @@
 
 #include "GtkSimuApplication.h"
 
-GtkSimuContext::GtkSimuContext(int argc, char** argv, std::string id) {
-	auto gtkApp = [this, argc, argv, id]() { _application = std::make_unique<GtkSimuApplication>(argc, argv, id); };
+GtkSimuContext::GtkSimuContext(int argc, char** argv, std::string id, IGuiClient& guiClient) {
+
+	auto gtkApp = [this, argc, argv, id, &guiClient]() {
+		_application = std::make_unique<GtkSimuApplication>(argc, argv, id, *this, guiClient);
+	};
 
 	_gtkThread = std::thread(gtkApp);
 	_gtkThread.detach();
@@ -22,8 +25,6 @@ void GtkSimuContext::update() {
 }
 
 void GtkSimuContext::displayMessage(const std::string& message) {}
-
-void GtkSimuContext::setExitHandler(const std::function<void()>& handler) {}
 
 void GtkSimuContext::queueAction(const std::function<void()>& action) {
 	std::lock_guard<std::mutex> guard(_actionsQueueMutex);

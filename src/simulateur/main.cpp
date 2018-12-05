@@ -177,5 +177,4 @@ int main(int argc, char** argv) {
 	return EXIT_SUCCESS;
 }
 
-// TODO [BIG PROJECT] Lecture de la table en Json
 // TODO [BIG (?) PROJECT] Gestion de l'IA au sein du simu

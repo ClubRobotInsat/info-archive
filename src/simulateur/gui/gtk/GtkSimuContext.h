@@ -7,21 +7,20 @@
 #include <thread>
 
 #include "../IGuiContext.h"
+#include "../IGuiClient.h"
 
 class GtkSimuApplication;
 
 /** This class manages a Simulator GUI context based on Gtk. */
 class GtkSimuContext : public IGuiContext {
 public:
-	GtkSimuContext(int argc, char** argv, std::string id);
+	GtkSimuContext(int argc, char** argv, std::string id, IGuiClient &client);
 
 	~GtkSimuContext() override;
 
 	void update() override;
 
 	void displayMessage(const std::string& message) override;
-
-	void setExitHandler(const std::function<void()>& handler) override;
 
 	/// Add an action to be executed on the simulator thread.
 	/// Used in the gtk thread to sync with the simulator thread.

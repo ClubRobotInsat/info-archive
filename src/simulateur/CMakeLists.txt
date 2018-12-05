@@ -21,6 +21,7 @@ add_executable(Simulator
         main.cpp
 
         core/Simulateur.cpp
+        core/SimuGuiClient.cpp
         core/World.cpp
         core/WorldIO.cpp
         core/Object3D.cpp

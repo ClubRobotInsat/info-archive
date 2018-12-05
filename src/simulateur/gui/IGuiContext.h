@@ -10,8 +10,6 @@ public:
     virtual void update() = 0;
 
     virtual void displayMessage(const std::string &message) = 0;
-
-    virtual void setExitHandler(const std::function<void()> & handler) = 0;
 };
 
 

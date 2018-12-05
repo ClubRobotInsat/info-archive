@@ -12,6 +12,7 @@
 #include "../gui/IGuiContext.h"
 #include "SimuRobot.h"
 #include "World.h"
+#include "SimuGuiClient.h"
 
 // permet de positionner plus facilement les objets
 struct CubeData {
@@ -140,6 +141,9 @@ private:
 	std::unique_ptr<IGraphicalContext> _graphicalCtx;
 	std::unique_ptr<IPhysicalContext> _physicalCtx;
 	std::unique_ptr<IGuiContext> _guiCtx;
+
+	friend class SimuGuiClient;
+	SimuGuiClient _guiClient;
 
 	/// Le monde dans lequel on stocke tous les objets
 	World _theWorld;

@@ -4,12 +4,11 @@
 #include <cstdlib>
 #include <functional>
 
+#include "SimulateurConstantes.h"
 #include "../graphique/irrlicht/Scene.h"
 //#include "../graphique/server/WebGraphicalContext.h"
 #include "../gui/gtk/GtkSimuContext.h"
 #include "../physique/box2d/Box2DPhysicalContext.h"
-#include "SimulateurConstantes.h"
-
 
 // Gestion de l'arrêt du simulateur.
 // TODO L'arrêt du simulateur doit être géré par le simulateur (retrait de la variable "simuAlive" dans le main)
@@ -33,6 +32,7 @@ Simulateur* Simulateur::_instance = nullptr;
 Simulateur::Simulateur()
         : _graphicalCtx(std::make_unique<Scene>())
         , _physicalCtx(std::make_unique<Box2DPhysicalContext>(b2Vec2(0, 0)))
+        , _guiClient(*this)
         , _theWorld(_physicalCtx.get(), _graphicalCtx.get())
         , _resetWorld(false)
         , _enablePhysics(true) {
@@ -51,7 +51,7 @@ Simulateur::~Simulateur() {
 }
 
 void Simulateur::start() {
-	_guiCtx = std::make_unique<GtkSimuContext>(0, nullptr, "simu.gtk.app");
+	_guiCtx = std::make_unique<GtkSimuContext>(0, nullptr, "simu.gtk.app", _guiClient);
 }
 
 void Simulateur::update(Duration time) {
@@ -63,6 +63,8 @@ void Simulateur::update(Duration time) {
 
 	// Mise à jour du monde
 	_theWorld.update(time);
+
+	_guiCtx->update();
 }
 
 void Simulateur::setJSONFile(const std::string& file) {
@@ -97,9 +99,6 @@ void Simulateur::addRobot(Constantes::RobotColor color) {
 
 	_robot = std::make_unique<Simu::SimuRobot>("primary", robotObj);
 
-	// On inverse le sens de lecture par rapport à la stratégie
-	std::shared_ptr<Communication::Protocol> protocol = std::make_shared<Communication::protocol_udp>("localhost", 5555, 1234);
-	_robot->connect(protocol);
 }
 
 void Simulateur::resetWorld() {

@@ -1,6 +1,8 @@
 add_library(GtkSimu
         GtkSimuContext.cpp
-        GtkSimuApplication.cpp)
+        GtkSimuApplication.cpp
+        PanelConnect.cpp
+        PanelRobotState.cpp)
 
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(GTKMM REQUIRED gtkmm-3.0)
