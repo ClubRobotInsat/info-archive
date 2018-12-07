@@ -38,12 +38,12 @@ namespace PhysicalRobot {
 		return _adversary_detected;
 	}
 
-	JSON Avoidance::generate_json() const {
+	std::vector<JSON> Avoidance::generate_list_jsons() const {
 		JSON j;
 		j["angle_detection"] = static_cast<int>(_angle_detection_adversary.load().toMilliRad());
 		j["detected"] = false;
 
-		return j;
+		return {j};
 	}
 
 	void Avoidance::message_processing(const JSON& j) {

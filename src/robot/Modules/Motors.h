@@ -51,7 +51,7 @@ namespace PhysicalRobot {
 		uint8_t get_index_of_uncontrolled(uint8_t id) const;
 		uint8_t get_index_of_brushless(uint8_t id) const;
 
-		JSON generate_json() const override;
+		std::vector<JSON> generate_list_jsons() const override;
 		void message_processing(const JSON&) override;
 
 		void deactivation() override;

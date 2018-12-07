@@ -12,10 +12,10 @@ namespace PhysicalRobot {
 		return _tirette;
 	}
 
-	JSON IO::generate_json() const {
+	std::vector<JSON> IO::generate_list_jsons() const {
 		JSON j;
 		j["tirette"] = 0;
-		return j;
+		return {j};
 	}
 
 	void IO::message_processing(const JSON& j) {

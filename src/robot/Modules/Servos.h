@@ -69,7 +69,7 @@ namespace PhysicalRobot {
 		// Retourne l'index associé au mapping du servo `id`. Si l'`id` est mauvais, retourne NB_MAX_SERVOS.
 		uint8_t get_index_of(uint8_t id) const;
 
-		JSON generate_json() const override;
+		std::vector<JSON> generate_list_jsons() const override;
 		void message_processing(const JSON&) override;
 
 		void deactivation() override;

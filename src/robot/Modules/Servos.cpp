@@ -150,8 +150,8 @@ namespace PhysicalRobot {
 		return Angle::makeFromDeg((333.3 * pos) / 1023 - 166.650);
 	};
 
-	JSON Servos::generate_json() const {
-		JSON result;
+	std::vector<JSON> Servos::generate_list_jsons() const {
+		std::vector<JSON> result;
 
 		for(uint8_t index = 0; index < ID_MAX_SERVOS; ++index) {
 			if(_servos[index] != nullptr) {
@@ -177,23 +177,17 @@ namespace PhysicalRobot {
 		return result;
 	}
 
-	void Servos::message_processing(const JSON& j) {
-		if(j.size() != get_nbr_servos()) {
-			throw std::runtime_error("Amount of servos does not correspond.");
-		}
-
+	void Servos::message_processing(const JSON& servo) {
 		auto uint8t_to_color = [](uint8_t val) -> Color { return (val >= Color::NBR ? RED : static_cast<Color>(val)); };
 
-		for(auto servo : j) {
-			uint8_t index = get_index_of(servo["id"]);
+		uint8_t index = get_index_of(servo["id"]);
 
-			if(_servos[index] != nullptr) {
-				// Les données de commande (position ou vitesse) ne sont pas prises en compte ici
-				// Seule l'informatique a le droit d'écriture dessus
-				_servos[index]->position = uint16t_to_angle(servo["known_position"]);
-				_servos[index]->blocked.exchange(servo["blocked"]);
-				_servos[index]->color.exchange(uint8t_to_color(servo["color"]));
-			}
+		if(_servos[index] != nullptr) {
+			// Les données de commande (position ou vitesse) ne sont pas prises en compte ici
+			// Seule l'informatique a le droit d'écriture dessus
+			_servos[index]->position = uint16t_to_angle(servo["known_position"]);
+			_servos[index]->blocked.exchange(servo["blocked"]);
+			_servos[index]->color.exchange(uint8t_to_color(servo["color"]));
 		}
 	}
 

@@ -223,8 +223,8 @@ namespace PhysicalRobot {
 		}
 	}
 
-	JSON Motors::generate_json() const {
-		JSON j;
+	std::vector<JSON> Motors::generate_list_jsons() const {
+		std::vector<JSON> v;
 		for(uint8_t i = 0; i < MAX_CONTROLLED_MOTORS; ++i) {
 			if(_controlled[i]) {
 				JSON motor;
@@ -232,13 +232,13 @@ namespace PhysicalRobot {
 
 				// TODO
 
-				j.push_back(motor);
+				v.push_back(motor);
 			}
 		}
 
 		// TODO : uncontrolled & brushless
 
-		return j;
+		return v;
 	}
 
 	void Motors::message_processing(const JSON& j) {

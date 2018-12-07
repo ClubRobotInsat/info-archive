@@ -12,14 +12,18 @@ namespace PhysicalRobot {
 		return _modules[id] != nullptr;
 	}
 
-	std::optional<GlobalFrame> ModuleManager::write_frame() const {
+	std::optional<std::vector<GlobalFrame>> ModuleManager::write_frame() const {
 		for(uint8_t id = 0; id < NB_MODULES_MAX; ++id) {
 			if(has_module(id)) {
 				if(_modules[id]->needs_to_be_shared()) {
-					GlobalFrame f{id};
-					f += _modules[id]->make_frame();
-					_modules[id]->reset_state();
-					return f;
+					std::vector<GlobalFrame> v;
+					auto frames = _modules[id]->make_frames();
+					for(const auto& frame : frames) {
+						GlobalFrame f{id};
+						f += frame;
+						v.push_back(std::move(f));
+					}
+					return v;
 				}
 			}
 		}

@@ -31,7 +31,7 @@ namespace PhysicalRobot {
 		bool is_adversary_detected() const;
 
 	private:
-		JSON generate_json() const override;
+		std::vector<JSON> generate_list_jsons() const override;
 		void message_processing(const JSON&) override;
 
 		void deactivation() override {}

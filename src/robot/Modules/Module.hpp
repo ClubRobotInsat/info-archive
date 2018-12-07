@@ -66,15 +66,20 @@ namespace PhysicalRobot {
 
 		/// Construit la trame du module (thread-safe)
 		// Pour chaque module, il ne faut qu'overrider la fonction qui génère la struct JSON partagée avec Rust
-		GlobalFrame make_frame() const {
+		std::vector<GlobalFrame> make_frames() const {
 			std::lock_guard<std::mutex> lk(_mutex_variables);
 
-			JSON j = generate_json();
+			std::vector<JSON> v = generate_list_jsons();
 
-			std::stringstream ss;
-			ss << j;
-			std::string str = ss.str();
-			return GlobalFrame{std::vector<uint8_t>(str.cbegin(), str.cend())};
+			std::vector<GlobalFrame> result;
+			for(const JSON& j : v) {
+				std::stringstream ss;
+				ss << j;
+				std::string str = ss.str();
+				result.emplace_back(std::vector<uint8_t>(str.cbegin(), str.cend()));
+			}
+
+			return result;
 		}
 
 		/// Arrêt mécanique du module
@@ -83,7 +88,7 @@ namespace PhysicalRobot {
 	protected:
 		/// Conversion entre le module C++ et une structure JSON Rust-friendly
 		/// Cette fonction est appelée par 'make_frame' et ne doit pas toucher au mutex
-		virtual JSON generate_json() const = 0;
+		virtual std::vector<JSON> generate_list_jsons() const = 0;
 
 		/// Mise à jour du module à partir d'une structure JSON Rust-friendly entrante
 		/// Cette fonction est appelée par 'update' et ne doit pas toucher au mutex
