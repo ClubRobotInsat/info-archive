@@ -59,7 +59,7 @@ namespace PhysicalRobot {
 		unlock_variables();
 	}
 
-	void Servos::set_speed(uint8_t id, uint16_t speed) {
+	void Servos::set_speed(uint8_t id, uint16_t speed, Rotation rotation) {
 		uint8_t index = get_index_of(id);
 
 		if(index >= ID_MAX_SERVOS) {
@@ -67,7 +67,7 @@ namespace PhysicalRobot {
 		}
 
 		lock_variables();
-		_servos[index]->command = speed;
+		_servos[index]->command = Servo::CommandSpeed(speed, rotation);
 		_servos[index]->command_type = Servo::CommandType::SPEED;
 		_state_changed.exchange(true);
 		unlock_variables();
@@ -161,9 +161,13 @@ namespace PhysicalRobot {
 
 				if(_servos[index]->command_type == Servo::CommandType::POSITION) {
 					servo["data"] = angle_to_uint16t(std::get<Angle>(_servos[index]->command));
+					// FIXME: Ce champ est utile seulement tant que le code élec n'est pas fix et qu'il en a besoin
+					servo["rotation"] = "CounterClockwise";
 					servo["control"] = "Position";
 				} else {
-					servo["data"] = std::get<uint16_t>(_servos[index]->command);
+					Servo::CommandSpeed command = std::get<Servo::CommandSpeed>(_servos[index]->command);
+					servo["data"] = command.first;
+					servo["rotation"] = (command.second == Clockwise ? "Clockwise" : "CounterClockwise");
 					servo["control"] = "Speed";
 				}
 
@@ -197,7 +201,7 @@ namespace PhysicalRobot {
 
 		for(uint8_t index = 0; index < ID_MAX_SERVOS; ++index) {
 			if(_servos[index] != nullptr) {
-				_servos[index]->command = 0;
+				_servos[index]->command = Servo::CommandSpeed(0, CounterClockwise);
 				_servos[index]->command_type = Servo::CommandType::SPEED;
 			}
 		}
