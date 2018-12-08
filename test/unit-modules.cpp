@@ -27,12 +27,12 @@ public:
 	}
 
 private:
-	JSON generate_json() const override {
+	std::vector<JSON> generate_list_jsons() const override {
 		JSON j;
 		j["a"] = _a.load();
 		j["b"] = _b.load();
 
-		return j;
+		return {j};
 	}
 
 	void message_processing(const JSON& j) override {
@@ -68,7 +68,9 @@ TEST_CASE("Basic module") {
 
 		SECTION("GlobalFrame make_frame() const") {
 			ModuleTest my_module(42);
-			auto frame = my_module.make_frame();
+			auto frames = my_module.make_frames();
+			REQUIRE(frames.size() == 1);
+			GlobalFrame frame = frames[0];
 			REQUIRE(frame.getNbDonnees() == 13);
 			std::string msg(frame.getDonnees(), frame.getDonnees() + frame.getNbDonnees());
 			CHECK(msg == "{\"a\":1,\"b\":2}");
@@ -101,7 +103,7 @@ TEST_CASE("Servos' Module") {
 		CHECK_FALSE(my_module.is_moving_done(2));
 
 		REQUIRE_THROWS_WITH(my_module.set_speed(1, 2), "Numéro du servo demandé invalide : 1");
-		my_module.set_speed(2, 6);
+		my_module.set_speed(2, 6, PhysicalRobot::Servos::Rotation::CounterClockwise);
 
 		REQUIRE_THROWS_WITH(my_module.read_position(1), "Numéro du servo demandé invalide : 1");
 
@@ -163,8 +165,10 @@ TEST_CASE("ModuleManager") {
 				REQUIRE(manager.write_frame() != std::nullopt);
 
 				module_test.set_b_value(3);
-				auto frame_test = manager.write_frame().value();
+				auto frames_test = manager.write_frame().value();
+				REQUIRE(frames_test.size() == 1);
 
+				GlobalFrame frame_test = frames_test[0];
 				// ID
 				REQUIRE(frame_test.getDonnees()[0] == module_test.get_id());
 
@@ -177,14 +181,18 @@ TEST_CASE("ModuleManager") {
 				module_servos.add_servo(254);
 				module_servos.set_speed(254, 500);
 
-				auto frame_servos = manager.write_frame().value();
+				auto frames_servos = manager.write_frame().value();
+				REQUIRE(frames_servos.size() == 1);
+
+				GlobalFrame frame_servos = frames_servos[0];
 
 				// ID
 				REQUIRE(frame_servos.getDonnees()[0] == module_servos.get_id());
 
 				std::string msg(frame_servos.getDonnees() + 1, frame_servos.getDonnees() + frame_servos.getNbDonnees());
-				CHECK(msg == "[{\"blocked\":false,\"color\":3,\"control\":{\"Position\":500},\"id\":254,\"known_"
-				             "position\":511,\"mode\":0}]");
+
+				CHECK(msg == "{\"blocked\":false,\"color\":3,\"control\":\"Speed\",\"data\":500,\"id\":254,\"known_"
+				             "position\":511,\"mode\":0,\"rotation\":\"CounterClockwise\"}");
 			}
 		}
 

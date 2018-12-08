@@ -12,8 +12,8 @@ TEST_CASE("ParsingClassChecker") {
 	SECTION("Validity test of the 'parses_frames' helper struct.") {
 		struct Ok {
 			void read_frame(const GlobalFrame&) {}
-			std::optional<GlobalFrame> write_frame() const {
-				return GlobalFrame{};
+			std::optional<std::vector<GlobalFrame>> write_frame() const {
+				return std::vector<GlobalFrame>{GlobalFrame{}};
 			}
 		};
 
@@ -23,22 +23,22 @@ TEST_CASE("ParsingClassChecker") {
 			int read_frame(const GlobalFrame&) {
 				return 1;
 			}
-			std::optional<GlobalFrame> write_frame() const {
-				return GlobalFrame{};
+			std::optional<std::vector<GlobalFrame>> write_frame() const {
+				return std::vector<GlobalFrame>{GlobalFrame{}};
 			}
 		};
 		struct Nok2 {
 			// pas les bons arguments
 			void read_frame(int) {}
-			std::optional<GlobalFrame> write_frame() const {
-				return GlobalFrame{};
+			std::optional<std::vector<GlobalFrame>> write_frame() const {
+				return std::vector<GlobalFrame>{GlobalFrame{}};
 			}
 		};
 		struct Nok3 {
 			// pas le bon nom de fonction
 			void other_function_name(const GlobalFrame&) {}
-			std::optional<GlobalFrame> write_frame() const {
-				return GlobalFrame{};
+			std::optional<std::vector<GlobalFrame>> write_frame() const {
+				return std::vector<GlobalFrame>{GlobalFrame{}};
 			}
 		};
 
@@ -53,15 +53,15 @@ TEST_CASE("ParsingClassChecker") {
 		struct Nok5 {
 			void read_frame(const GlobalFrame&) {}
 			// pas les bons arguments
-			std::optional<GlobalFrame> write_frame(std::string) const {
-				return GlobalFrame{};
+			std::optional<std::vector<GlobalFrame>> write_frame(std::string) const {
+				return std::vector<GlobalFrame>{GlobalFrame{}};
 			}
 		};
 		struct Nok6 {
 			void read_frame(const GlobalFrame&) {}
 			// pas le bon nom
-			std::optional<GlobalFrame> other_function_name() const {
-				return GlobalFrame{};
+			std::optional<std::vector<GlobalFrame>> other_function_name() const {
+				return std::vector<GlobalFrame>{GlobalFrame{}};
 			}
 		};
 
