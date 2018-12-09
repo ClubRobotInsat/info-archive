@@ -12,6 +12,7 @@
  *  === dans une nouvelle classe '{NOM_DU_MODULE}{ANNEE}.[cpp|h]' ===
  *   - faire hériter le nouveau module de la classe mère 'Module'
  *   - overrider les fonctions 'generate_json' et 'message_processing' pour parser le format JSON
+ *   - overrider la fonction 'deactivation'
  *  === rajouter la ligne `#include "{NOM_DU_MODULE}{ANNEE}.h"` dans `ModuleManager.h` et dans le `CMakeLists.txt`
  *  === idéalement, écrire des tests unitaires (`/test/unit-modules.cpp`) et de la doc =)
  *
