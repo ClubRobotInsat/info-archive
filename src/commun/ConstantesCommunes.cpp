@@ -27,6 +27,12 @@ int const Constantes::NOMBRE_BLOCAGE_PHYSIQUE_MAX = 5;
 Vector2m const Constantes::TABLE_SIZE = {3_m, 2_m};
 Vector2u16 const Constantes::TAILLE_GRILLE = {300, 200};
 
+JSON& Constantes::TABLE_2018() {
+	static JSON TABLE_2018 = nlohmann::json::parse(
+			EmbeddedFiles::readText("table_2018.json"));
+	return TABLE_2018;
+}
+
 int ConstantesCommunes::getNombreBlocageLogicielMax() const {
 	return Constantes::NOMBRE_BLOCAGE_LOGICIEL_MAX;
 }

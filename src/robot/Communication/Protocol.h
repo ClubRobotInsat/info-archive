@@ -138,7 +138,7 @@ namespace Communication {
 	class SerialProtocol<SERIAL_LOCAL> final : public AbstractSerialProtocol<SERIAL_LOCAL> {
 	public:
 		SerialProtocol()
-		        : AbstractSerialProtocol(std::make_shared<TCPIP>("127.0.0.1", GLOBAL_CONSTANTS.get_default_TCPIP_port())) {}
+		        : AbstractSerialProtocol(std::make_shared<TCPIP>("127.0.0.1", GLOBAL_CONSTANTS().get_default_TCPIP_port())) {}
 	};
 
 	template <>

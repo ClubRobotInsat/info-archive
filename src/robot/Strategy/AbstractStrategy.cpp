@@ -13,10 +13,10 @@ namespace Strategy {
 	        : _robot(std::move(robot)), _color(color) {
 		setThreadName("Main");
 
-		Distance sx = GLOBAL_CONSTANTS["primary"].get_size().x;
-		Distance sy = GLOBAL_CONSTANTS["primary"].get_size().y;
-		_env = std::make_unique<Environment>(GLOBAL_CONSTANTS.get_table_env_grid(),
-		                                     GLOBAL_CONSTANTS.get_scale_environment(),
+		Distance sx = GLOBAL_CONSTANTS()["primary"].get_size().x;
+		Distance sy = GLOBAL_CONSTANTS()["primary"].get_size().y;
+		_env = std::make_unique<Environment>(GLOBAL_CONSTANTS().get_table_env_grid(),
+		                                     GLOBAL_CONSTANTS().get_scale_environment(),
 		                                     std::min(sx, sy) * 1.15,
 		                                     (sqrt(sx * sx + sy * sy) / 2) * 1.35,
 		                                     Vector2m{0_m, 0_m});

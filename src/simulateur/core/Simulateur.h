@@ -9,7 +9,8 @@
 
 #include <atomic>
 
-#include "ConstantesCommunes.h"
+#include "../gui/IGuiContext.h"
+#include "SimuRobot.h"
 #include "World.h"
 
 // permet de positionner plus facilement les objets
@@ -69,6 +70,9 @@ public:
 	 */
 	~Simulateur();
 
+	/** Démarre le simulateur */
+	void start();
+
 	/**
 	 * Obtient un pointeur sur le monde du simu
 	 */
@@ -119,7 +123,7 @@ public:
 	/**
 	 * Obtient la couleur du robot
 	 */
-	Constantes::RobotColor getRobotColor();
+	Constantes::RobotColor getRobotColor() const;
 
 	/**
 	 * Désactive la simulation physique de tous les objets et du robot sur la table
@@ -135,9 +139,12 @@ private:
 
 	std::unique_ptr<IGraphicalContext> _graphicalCtx;
 	std::unique_ptr<IPhysicalContext> _physicalCtx;
+	std::unique_ptr<IGuiContext> _guiCtx;
 
 	/// Le monde dans lequel on stocke tous les objets
 	World _theWorld;
+
+	std::unique_ptr<Simu::SimuRobot> _robot;
 
 	/// On demande à réinitialiser la simulation?
 	std::atomic_bool _resetWorld;

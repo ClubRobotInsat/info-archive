@@ -32,7 +32,8 @@ else
 fi
 
 Green='\e[1;32m'
-End='\e[0m' 
+Yellow='\e[1;33m'
+End='\e[0m'
 
 echo -e "${Green}Compiling with -j ${cores}${End}"
 
@@ -43,6 +44,15 @@ mkdir -p build_arm & cd build_arm
 
 echo -e "${Green} Generating CMakeFile${End}"
 cmake .. -DRASPI="1" -DCMAKE_TOOLCHAIN_FILE="../Cross-Compilation.cmake"
+
+echo -e "${Green} BuildAll${End}"
+make all -j 4
+if [ $? -ne "0" ]
+	then echo -e "${Red}Failed to BuildAll${End}"
+fi
+
+echo -e "${Yellow}TODO: upgrade this script to compile only some targets for strategy.${END}"
+exit 1
 
 if [ $compile_principal -eq 1 ]
 	then echo -e "${Green} Building IAPrincipal${End}"

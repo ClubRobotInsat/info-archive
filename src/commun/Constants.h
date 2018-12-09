@@ -9,6 +9,7 @@
 #include <ini/src/IniFile.hpp>
 
 #include "Commun.h"
+#include "EmbeddedFiles.h"
 #include "Json.h"
 #include "MathToolbox/Repere.h"
 
@@ -134,6 +135,11 @@ namespace Constants {
 			return _frame_period;
 		}
 
+		const JSON& TABLE_2018() const {
+			static JSON TABLE_2018 = nlohmann::json::parse(EmbeddedFiles::readText("table_2018.json"));
+			return TABLE_2018;
+		}
+
 	private:
 		uint16_t _TCPIP_port_simu;
 		Vector3m _table_size;
@@ -170,6 +176,6 @@ inline Constants::RobotColor operator!(Constants::RobotColor const& c) {
 	}
 }
 
-extern Constants::Constants const GLOBAL_CONSTANTS;
+const Constants::Constants& GLOBAL_CONSTANTS();
 
 #endif // ROOT_CONSTANTS_H

@@ -35,7 +35,7 @@ void Scene::update() {
 	if(_device->run()) {
 		// Mise à jour du ratio de la fenetre (si l'utilisateur la redimensionne)
 		auto screenSize = _driver->getScreenSize();
-		_scenemanager->getActiveCamera()->setAspectRatio((float)screenSize.Width / screenSize.Height);
+		_scenemanager->getActiveCamera()->setAspectRatio(static_cast<float>(screenSize.Width) / screenSize.Height);
 
 		// Dessin de la scene
 		_driver->beginScene(true, true, irr::video::SColor(255, 200, 200, 200));

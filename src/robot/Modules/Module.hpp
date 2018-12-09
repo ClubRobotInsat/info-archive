@@ -46,7 +46,7 @@ namespace PhysicalRobot {
 		/// Retourne vrai si l'état du module nécessite d'être partagé avec les élecs
 		/// i.e. si une modification informatique a été apportée, ou si le timer a expiré
 		bool needs_to_be_shared() const {
-			return _state_changed; // || _timer.getElapsedTime() >= GLOBAL_CONSTANTS.get_frame_period();
+			return _state_changed; // || _timer.getElapsedTime() >= GLOBAL_CONSTANTS().get_frame_period();
 		}
 
 		/// On a prit en compte la nouvelle trame pour l'envoyer aux élecs

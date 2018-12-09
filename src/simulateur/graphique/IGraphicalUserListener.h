@@ -9,6 +9,8 @@
  * actions de l'utilisateur aux autres modules du simulateur. */
 class IGraphicalUserListener {
 public:
+	virtual ~IGraphicalUserListener() = default;
+
 	virtual void onExit() = 0;
 };
 
