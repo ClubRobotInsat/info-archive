@@ -23,6 +23,7 @@ namespace PhysicalRobot {
 						f += frame;
 						v.push_back(std::move(f));
 					}
+					_modules[id]->reset_state();
 					return v;
 				}
 			}

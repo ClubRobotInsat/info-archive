@@ -21,32 +21,16 @@
 
 
 namespace PhysicalRobot {
+	ENUM_CLASS_NS(PhysicalRobot, BlockingMode, Unblocking, HoldOnBlock);
+	ENUM_CLASS_NS(PhysicalRobot, Color, Black, Red, Green, Yellow, Blue, Magenta, Cyan, White);
+	ENUM_CLASS_NS(PhysicalRobot, Rotation, Clockwise, CounterClockwise);
+	ENUM_CLASS_NS(PhysicalRobot, CommandType, Position, Speed);
 
 	class Servos final : public Module {
 	public:
-		enum BlockingMode : uint8_t { HOLD_ON_BLOCKING = 1, UNBLOCKING = 0 };
-
-		enum Color : uint8_t {
-			BLACK = 0x00,
-			RED = 0x01,
-			GREEN = 0x02,
-			YELLOW = 0x03,
-			BLUE = 0x04,
-			MAGENTA = 0x05,
-			CYAN = 0x06,
-			WHITE = 0x07,
-
-			NBR
-		};
-
-		enum Rotation {
-			Clockwise,
-			CounterClockwise,
-		};
-
 		static const uint8_t ID_MAX_SERVOS = std::numeric_limits<uint8_t>::max();
 
-		void add_servo(uint8_t id, BlockingMode = UNBLOCKING);
+		void add_servo(uint8_t id, BlockingMode = BlockingMode::Unblocking);
 
 		uint8_t get_nbr_servos() const;
 
@@ -54,7 +38,7 @@ namespace PhysicalRobot {
 
 		void set_position(uint8_t servo, Angle);
 
-		void set_speed(uint8_t servo, uint16_t speed, Rotation = CounterClockwise);
+		void set_speed(uint8_t servo, uint16_t speed, Rotation = Rotation::CounterClockwise);
 
 		Angle read_position(uint8_t servo) const;
 
@@ -83,17 +67,15 @@ namespace PhysicalRobot {
 			using CommandPosition = Angle;
 			using CommandSpeed = std::pair<uint16_t, Rotation>;
 
-			enum CommandType { POSITION = 0, SPEED = 1 };
-
 			// Par défaut, un servo est commandé en vitesse (0 rad/s).
 			Servo(uint8_t id, BlockingMode mode)
 			        : id(static_cast<uint8_t>(id > 0 ? id : throw std::runtime_error("ID equals to 0.")))
 			        , position(0_deg)
-			        , command(CommandSpeed(0, CounterClockwise))
-			        , command_type(CommandType::SPEED)
+			        , command(CommandSpeed(0, Rotation::CounterClockwise))
+			        , command_type(CommandType::Speed)
 			        , blocked(false)
 			        , blocking_mode(mode)
-			        , color(YELLOW) {}
+			        , color(Color::Yellow) {}
 
 			const uint8_t id;
 
