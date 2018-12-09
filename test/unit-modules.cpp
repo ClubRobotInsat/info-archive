@@ -160,12 +160,12 @@ TEST_CASE("ModuleManager") {
 				auto& module_test = manager.add_module<ModuleTest>(5);
 
 				// Le module manager n'a aucune modification à apporter côté élec, et le timer n'a pas encore expiré
-				REQUIRE(manager.write_frame() == std::nullopt);
+				REQUIRE(manager.write_frame().empty());
 				module_test.set_a_value(2);
-				REQUIRE(manager.write_frame() != std::nullopt);
+				REQUIRE_FALSE(manager.write_frame().empty());
 
 				module_test.set_b_value(3);
-				auto frames_test = manager.write_frame().value();
+				auto frames_test = manager.write_frame();
 				REQUIRE(frames_test.size() == 1);
 
 				GlobalFrame frame_test = frames_test[0];
@@ -181,7 +181,7 @@ TEST_CASE("ModuleManager") {
 				module_servos.add_servo(254);
 				module_servos.set_speed(254, 500);
 
-				auto frames_servos = manager.write_frame().value();
+				auto frames_servos = manager.write_frame();
 				REQUIRE(frames_servos.size() == 1);
 
 				GlobalFrame frame_servos = frames_servos[0];

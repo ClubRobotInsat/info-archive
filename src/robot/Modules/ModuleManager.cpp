@@ -12,7 +12,7 @@ namespace PhysicalRobot {
 		return _modules[id] != nullptr;
 	}
 
-	std::optional<std::vector<GlobalFrame>> ModuleManager::write_frame() const {
+	std::vector<GlobalFrame> ModuleManager::write_frame() const {
 		for(uint8_t id = 0; id < NB_MODULES_MAX; ++id) {
 			if(has_module(id)) {
 				if(_modules[id]->needs_to_be_shared()) {

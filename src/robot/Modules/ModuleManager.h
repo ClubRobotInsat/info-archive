@@ -34,8 +34,7 @@
 //#include "Moving.h"
 #include "Servos.h"
 
-#include <memory>   // unique_ptr, make_unique
-#include <optional> // optional
+#include <memory> // unique_ptr, make_unique
 
 namespace PhysicalRobot {
 	class ModuleManager final {
@@ -77,7 +76,7 @@ namespace PhysicalRobot {
 		/// Cette fonction implémente l'API de `ParsingClassChecker`
 		// FIXME Vérifier que les modules de grands `id`s peuvent communiquer
 		// FIXME sinon utiliser un compteur pour répartir la parole de manière cyclique
-		std::optional<std::vector<GlobalFrame>> write_frame() const;
+		std::vector<GlobalFrame> write_frame() const;
 		/// Lecture d'une trame ; implémente l'API de `ParsingClassChecker`
 		void read_frame(const GlobalFrame&);
 

@@ -168,8 +168,8 @@ namespace Communication {
 
 		auto output_function = [this](std::atomic_bool& running_execution) {
 			while(running_execution) {
-				std::optional<std::vector<GlobalFrame>> frames = _parser->write_frame();
-				if(frames == std::nullopt) {
+				std::vector<GlobalFrame> frames = _parser->write_frame();
+				if(frames.empty()) {
 					/*if(_debug_active) {
 					    logDebug0("None(GlobalFrame) to send; wait.\ntime: ", _chrono.getElapsedTime(), "\n");
 					}*/
@@ -177,7 +177,7 @@ namespace Communication {
 					sleep(GLOBAL_CONSTANTS.get_default_communication_delay());
 				} else {
 					// Trames à envoyer
-					for(const GlobalFrame& f : frames.value()) {
+					for(const GlobalFrame& f : frames) {
 						_protocol->send_frame(f);
 					}
 				}
