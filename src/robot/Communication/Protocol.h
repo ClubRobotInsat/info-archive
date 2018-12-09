@@ -127,7 +127,8 @@ namespace Communication {
 		void send_frame(const GlobalFrame& f) final;
 
 		/// @throws `ReceptionAbort` at the end of the communication
-		void recv_frame(const std::atomic_bool& running_execution, const std::function<void(const GlobalFrame&)>& handler) final;
+		[[noreturn]] void recv_frame(const std::atomic_bool& running_execution,
+		                             const std::function<void(const GlobalFrame&)>& handler) final;
 	};
 
 	template <SerialProtocolType P>
@@ -213,7 +214,8 @@ namespace Communication {
 
 		void send_frame(const GlobalFrame& f) final;
 
-		void recv_frame(const std::atomic_bool& running_execution, const std::function<void(const GlobalFrame&)>& handler) final;
+		[[noreturn]] void recv_frame(const std::atomic_bool& running_execution,
+		                             const std::function<void(const GlobalFrame&)>& handler) final;
 	};
 
 	template <MultiSerialProtocolType M, SerialProtocolType P>

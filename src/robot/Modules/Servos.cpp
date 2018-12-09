@@ -6,7 +6,7 @@
 #include <log/Log.h>
 
 namespace PhysicalRobot {
-	void Servos::add_servo(uint8_t id, BlockingMode mode) {
+	void Servos::add_servo(servo_t id, BlockingMode mode) {
 		std::lock_guard<std::mutex> lk(_mutex_variables);
 
 		if(id >= ID_MAX_SERVOS) {
@@ -22,21 +22,21 @@ namespace PhysicalRobot {
 
 	uint8_t Servos::get_nbr_servos() const {
 		uint8_t count = 0;
-		for(uint8_t index = 0; index < ID_MAX_SERVOS; ++index) {
+		for(servo_t index = 0; index < ID_MAX_SERVOS; ++index) {
 			count += (_servos[index] != nullptr);
 		}
 		return count;
 	}
 
-	uint8_t Servos::get_index_of(uint8_t id) const {
-		const uint8_t INDEX_BAD_ID = ID_MAX_SERVOS;
+	uint8_t Servos::get_index_of(servo_t id) const {
+		const servo_t INDEX_BAD_ID = ID_MAX_SERVOS;
 		std::lock_guard<std::mutex> lk(_mutex_variables);
 
 		// 'id == 0' veut dire qu'il n'y a pas de servo-moteur dans la représentation C
 		if(id == 0)
 			return INDEX_BAD_ID;
 
-		for(uint8_t index = 0; index < ID_MAX_SERVOS; ++index) {
+		for(servo_t index = 0; index < ID_MAX_SERVOS; ++index) {
 			if(_servos[index] != nullptr && _servos[index]->id == id)
 				return index;
 		}
@@ -44,7 +44,7 @@ namespace PhysicalRobot {
 		return INDEX_BAD_ID;
 	}
 
-	void Servos::set_position(uint8_t id, Angle angle) {
+	void Servos::set_position(servo_t id, Angle angle) {
 		uint8_t index = get_index_of(id);
 
 		if(index >= ID_MAX_SERVOS) {
@@ -59,7 +59,7 @@ namespace PhysicalRobot {
 		unlock_variables();
 	}
 
-	void Servos::set_speed(uint8_t id, uint16_t speed, Rotation rotation) {
+	void Servos::set_speed(servo_t id, uint16_t speed, Rotation rotation) {
 		uint8_t index = get_index_of(id);
 
 		if(index >= ID_MAX_SERVOS) {
@@ -73,7 +73,7 @@ namespace PhysicalRobot {
 		unlock_variables();
 	}
 
-	Angle Servos::read_position(uint8_t id) const {
+	Angle Servos::read_position(servo_t id) const {
 		uint8_t index = get_index_of(id);
 
 		if(index >= ID_MAX_SERVOS) {
@@ -84,7 +84,7 @@ namespace PhysicalRobot {
 		return _servos[index]->position;
 	}
 
-	void Servos::set_color(uint8_t id, Color color) {
+	void Servos::set_color(servo_t id, Color color) {
 		uint8_t index = get_index_of(id);
 
 		if(index >= ID_MAX_SERVOS) {
@@ -97,7 +97,7 @@ namespace PhysicalRobot {
 		unlock_variables();
 	}
 
-	void Servos::set_blocking_mode(uint8_t id, BlockingMode mode) {
+	void Servos::set_blocking_mode(servo_t id, BlockingMode mode) {
 		uint8_t index = get_index_of(id);
 
 		if(index >= ID_MAX_SERVOS) {
@@ -110,7 +110,18 @@ namespace PhysicalRobot {
 		unlock_variables();
 	}
 
-	bool Servos::is_blocking(uint8_t id) const {
+	BlockingMode Servos::get_blocking_mode(PhysicalRobot::Servos::servo_t id) {
+		uint8_t index = get_index_of(id);
+
+		if(index >= ID_MAX_SERVOS) {
+			throw std::runtime_error("Numéro du servo demandé invalide : "s + std::to_string(id));
+		}
+
+		std::lock_guard<std::mutex> lk(_mutex_variables);
+		return _servos[index]->blocking_mode;
+	}
+
+	bool Servos::is_blocking(servo_t id) const {
 		uint8_t index = get_index_of(id);
 
 		if(index >= ID_MAX_SERVOS) {
@@ -121,7 +132,7 @@ namespace PhysicalRobot {
 		return _servos[index]->blocked;
 	}
 
-	bool Servos::is_moving_done(uint8_t id) const {
+	bool Servos::is_moving_done(servo_t id) const {
 		uint8_t index = get_index_of(id);
 
 		if(index >= ID_MAX_SERVOS) {
@@ -153,7 +164,7 @@ namespace PhysicalRobot {
 	std::vector<JSON> Servos::generate_list_jsons() const {
 		std::vector<JSON> result;
 
-		for(uint8_t index = 0; index < ID_MAX_SERVOS; ++index) {
+		for(servo_t index = 0; index < ID_MAX_SERVOS; ++index) {
 			if(_servos[index] != nullptr) {
 				JSON servo;
 				servo["id"] = _servos[index]->id;
@@ -182,7 +193,7 @@ namespace PhysicalRobot {
 	}
 
 	void Servos::message_processing(const JSON& servo) {
-		uint8_t index = get_index_of(servo["id"]);
+		servo_t index = get_index_of(servo["id"]);
 
 		if(_servos[index] != nullptr) {
 			// Les données de commande (position ou vitesse) ne sont pas prises en compte ici
@@ -204,7 +215,7 @@ namespace PhysicalRobot {
 	void Servos::deactivation() {
 		lock_variables();
 
-		for(uint8_t index = 0; index < ID_MAX_SERVOS; ++index) {
+		for(servo_t index = 0; index < ID_MAX_SERVOS; ++index) {
 			if(_servos[index] != nullptr) {
 				_servos[index]->command = Servo::CommandSpeed(0, Rotation::CounterClockwise);
 				_servos[index]->command_type = CommandType::Speed;

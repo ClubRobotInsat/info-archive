@@ -88,8 +88,8 @@ TEST_CASE("Basic module") {
 TEST_CASE("Servos' Module") {
 	SECTION("Non-frame functions' module") {
 		PhysicalRobot::Servos my_module(2);
-		my_module.add_servo(5, PhysicalRobot::Servos::HOLD_ON_BLOCKING);
-		my_module.add_servo(2, PhysicalRobot::Servos::UNBLOCKING);
+		my_module.add_servo(5, PhysicalRobot::BlockingMode::HoldOnBlock);
+		my_module.add_servo(2, PhysicalRobot::BlockingMode::Unblocking);
 		my_module.add_servo(4);
 
 		REQUIRE_THROWS_WITH(my_module.add_servo(5), "Double assignation du servo 5 !");
@@ -103,12 +103,12 @@ TEST_CASE("Servos' Module") {
 		CHECK_FALSE(my_module.is_moving_done(2));
 
 		REQUIRE_THROWS_WITH(my_module.set_speed(1, 2), "Numéro du servo demandé invalide : 1");
-		my_module.set_speed(2, 6, PhysicalRobot::Servos::Rotation::CounterClockwise);
+		my_module.set_speed(2, 6, PhysicalRobot::Rotation::CounterClockwise);
 
 		REQUIRE_THROWS_WITH(my_module.read_position(1), "Numéro du servo demandé invalide : 1");
 
-		REQUIRE_THROWS_WITH(my_module.set_color(1, PhysicalRobot::Servos::GREEN), "Numéro du servo demandé invalide : 1");
-		my_module.set_color(2, PhysicalRobot::Servos::GREEN);
+		REQUIRE_THROWS_WITH(my_module.set_color(1, PhysicalRobot::Color::Green), "Numéro du servo demandé invalide : 1");
+		my_module.set_color(2, PhysicalRobot::Color::Green);
 
 		REQUIRE_THROWS_WITH(my_module.is_blocking(1), "Numéro du servo demandé invalide : 1");
 		CHECK_FALSE(my_module.is_blocking(2));
@@ -191,8 +191,8 @@ TEST_CASE("ModuleManager") {
 
 				std::string msg(frame_servos.getDonnees() + 1, frame_servos.getDonnees() + frame_servos.getNbDonnees());
 
-				CHECK(msg == "{\"blocked\":false,\"color\":3,\"control\":\"Speed\",\"data\":500,\"id\":254,\"known_"
-				             "position\":511,\"mode\":0,\"rotation\":\"CounterClockwise\"}");
+				CHECK(msg == "{\"blocked\":false,\"color\":\"Yellow\",\"control\":\"Speed\",\"data\":500,\"id\":254,"
+				             "\"known_position\":511,\"mode\":\"Unblocking\",\"rotation\":\"CounterClockwise\"}");
 			}
 		}
 
