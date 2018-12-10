@@ -44,10 +44,6 @@ namespace PhysicalRobot {
 		return INDEX_BAD_ID;
 	}
 
-	uint8_t Servos::get_frame_size() const {
-		return get_size_servo_frame(get_nbr_servos());
-	}
-
 	void Servos::set_position(servo_t id, Angle angle) {
 		uint8_t index = get_index_of(id);
 
@@ -58,12 +54,12 @@ namespace PhysicalRobot {
 		lock_variables();
 		_servos[index]->blocked = false;
 		_servos[index]->command = angle;
-		_servos[index]->command_type = Servo::CommandType::POSITION;
+		_servos[index]->command_type = CommandType::Position;
 		_state_changed.exchange(true);
 		unlock_variables();
 	}
 
-	void Servos::set_speed(servo_t id, uint16_t speed) {
+	void Servos::set_speed(servo_t id, uint16_t speed, Rotation rotation) {
 		uint8_t index = get_index_of(id);
 
 		if(index >= ID_MAX_SERVOS) {
@@ -71,8 +67,8 @@ namespace PhysicalRobot {
 		}
 
 		lock_variables();
-		_servos[index]->command = speed;
-		_servos[index]->command_type = Servo::CommandType::SPEED;
+		_servos[index]->command = Servo::CommandSpeed(speed, rotation);
+		_servos[index]->command_type = CommandType::Speed;
 		_state_changed.exchange(true);
 		unlock_variables();
 	}
@@ -101,7 +97,7 @@ namespace PhysicalRobot {
 		unlock_variables();
 	}
 
-	void Servos::set_blocking_mode(servo_t id, Servos::BlockingMode mode) {
+	void Servos::set_blocking_mode(servo_t id, BlockingMode mode) {
 		uint8_t index = get_index_of(id);
 
 		if(index >= ID_MAX_SERVOS) {
@@ -114,7 +110,7 @@ namespace PhysicalRobot {
 		unlock_variables();
 	}
 
-	Servos::BlockingMode Servos::get_blocking_mode(PhysicalRobot::Servos::servo_t id) {
+	BlockingMode Servos::get_blocking_mode(PhysicalRobot::Servos::servo_t id) {
 		uint8_t index = get_index_of(id);
 
 		if(index >= ID_MAX_SERVOS) {
@@ -144,7 +140,7 @@ namespace PhysicalRobot {
 		}
 
 		std::lock_guard<std::mutex> lk(_mutex_variables);
-		if(_servos[index]->command_type == Servo::CommandType::SPEED) {
+		if(_servos[index]->command_type == CommandType::Speed) {
 			return true;
 		}
 
@@ -165,49 +161,51 @@ namespace PhysicalRobot {
 		return Angle::makeFromDeg((333.3 * pos) / 1023 - 166.650);
 	};
 
-	SharedServos2019 Servos::generate_shared() const {
-		SharedServos2019 s = {};
-		s.nb_servos = get_nbr_servos();
-		uint8_t count = 0;
+	std::vector<JSON> Servos::generate_list_jsons() const {
+		std::vector<JSON> result;
+
 		for(servo_t index = 0; index < ID_MAX_SERVOS; ++index) {
 			if(_servos[index] != nullptr) {
-				s.servos[count].id = _servos[index]->id;
+				JSON servo;
+				servo["id"] = _servos[index]->id;
+				servo["known_position"] = angle_to_uint16t(_servos[index]->position);
+				servo["control"] = toString(_servos[index]->command_type);
 
-				s.servos[count].position = angle_to_uint16t(_servos[index]->position);
-				if(_servos[index]->command_type == Servo::CommandType::POSITION) {
-					s.servos[count].command = angle_to_uint16t(std::get<Angle>(_servos[index]->command));
+				if(_servos[index]->command_type == CommandType::Position) {
+					servo["data"] = angle_to_uint16t(std::get<Angle>(_servos[index]->command));
+					// FIXME: Ce champ est utile seulement tant que le code élec n'est pas fix et qu'il en a besoin
+					servo["rotation"] = "CounterClockwise";
 				} else {
-					s.servos[count].command = std::get<uint16_t>(_servos[index]->command);
+					Servo::CommandSpeed command = std::get<Servo::CommandSpeed>(_servos[index]->command);
+					servo["data"] = command.first;
+					servo["rotation"] = toString(command.second);
 				}
-				s.servos[count].command = _servos[index]->command_type;
-				s.servos[count].blocked = _servos[index]->blocked;
-				s.servos[count].color = _servos[index]->color;
-				s.servos[count].blocking_mode = _servos[index]->blocking_mode;
-				count++;
+
+				servo["blocked"] = _servos[index]->blocked.load();
+				servo["mode"] = toString(_servos[index]->blocking_mode);
+				servo["color"] = toString(_servos[index]->color.load());
+
+				result.push_back(servo);
 			}
 		}
 
-		s.parsing_failed = 0;
-		return s;
+		return result;
 	}
 
-	void Servos::message_processing(const SharedServos2019& s) {
-		if(s.parsing_failed == 0) {
-			if(s.nb_servos != get_nbr_servos()) {
-				throw std::runtime_error("Amount of servos does not correspond.");
-			}
-			for(servo_t index = 0; index < ID_MAX_SERVOS; ++index) {
-				if(_servos[index] != nullptr && s.servos[index].id != 0) {
+	void Servos::message_processing(const JSON& servo) {
+		servo_t index = get_index_of(servo["id"]);
 
-					auto uint8t_to_color = [](uint8_t val) -> Color {
-						return (val >= Color::NBR ? RED : static_cast<Color>(val));
-					};
+		if(_servos[index] != nullptr) {
+			// Les données de commande (position ou vitesse) ne sont pas prises en compte ici
+			// Seule l'informatique a le droit d'écriture dessus
+			_servos[index]->position = uint16t_to_angle(servo["known_position"]);
+			_servos[index]->blocked.exchange(servo["blocked"]);
 
-					// Les données de commande (position ou vitesse) ne sont pas prises en compte ici
-					// Seule l'informatique a le droit d'écriture dessus
-					_servos[index]->position = uint16t_to_angle(s.servos[index].position);
-					_servos[index]->blocked.exchange(s.servos[index].blocked);
-					_servos[index]->color.exchange(uint8t_to_color(s.servos[index].color));
+			_servos[index]->color.exchange(Color::Red);
+			for(auto ee : getEnumValues<Color>()) {
+				if(toString(ee) == servo["color"]) {
+					_servos[index]->color.exchange(ee);
+					break;
 				}
 			}
 		}
@@ -219,8 +217,8 @@ namespace PhysicalRobot {
 
 		for(servo_t index = 0; index < ID_MAX_SERVOS; ++index) {
 			if(_servos[index] != nullptr) {
-				_servos[index]->command = 0;
-				_servos[index]->command_type = Servo::CommandType::SPEED;
+				_servos[index]->command = Servo::CommandSpeed(0, Rotation::CounterClockwise);
+				_servos[index]->command_type = CommandType::Speed;
 			}
 		}
 

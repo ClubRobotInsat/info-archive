@@ -1,6 +1,4 @@
 set(MODULE_SOURCES
-        ../../elec/librobot/c_src/SharedWithRust.c
-
         Module.hpp
         ModuleManager.cpp
 

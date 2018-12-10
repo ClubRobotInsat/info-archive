@@ -36,12 +36,14 @@ void SimuCommunicator::communicationThread() {
 		_moduleMgr->read_frame(f);
 
 		// récupère le nouvel état du module et l'envoie.
-		auto newFrame = _moduleMgr->write_frame();
+		std::vector<GlobalFrame> written_frames = _moduleMgr->write_frame();
 
-		if(newFrame.has_value()) {
-			_protocol->send_frame(*newFrame);
-		} else {
+		if(written_frames.empty()) {
 			throw std::runtime_error("No response frame sent by the simubot module");
+		} else {
+			for (const GlobalFrame &frame : written_frames) {
+				_protocol->send_frame(frame);
+			}
 		}
 	});
 }

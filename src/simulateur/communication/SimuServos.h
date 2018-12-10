@@ -3,18 +3,17 @@
 
 #include "../../robot/Modules/Module.hpp"
 
-class SimuServos : public PhysicalRobot::Module<SharedServos2019> {
+class SimuServos : public PhysicalRobot::Module {
 public:
-	SimuServos(uint8_t id);
+	explicit SimuServos(uint8_t id);
 
-	uint8_t get_frame_size() const override;
 	uint8_t get_nbr_servos() const;
 
 	void deactivation() override;
 
 protected:
-	SharedServos2019 generate_shared() const override;
-	void message_processing(const SharedServos2019&) override;
+	std::vector<JSON> generate_list_jsons() const override;
+	void message_processing(const JSON&) override;
 };
 
 #endif // ROOT_SIMUSERVOS_H

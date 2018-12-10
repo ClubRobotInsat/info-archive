@@ -11,17 +11,15 @@
 
 namespace PhysicalRobot {
 
-	class IO final : public Module<SharedIO2019> {
+	class IO final : public Module {
 	public:
 		explicit IO(uint8_t id);
 
 		bool read_tirette() const;
 
-		uint8_t get_frame_size() const override;
-
 	private:
-		SharedIO2019 generate_shared() const override;
-		void message_processing(const SharedIO2019&) override;
+		std::vector<JSON> generate_list_jsons() const override;
+		void message_processing(const JSON&) override;
 
 		void deactivation() override {}
 

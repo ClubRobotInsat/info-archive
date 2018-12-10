@@ -34,8 +34,7 @@
 //#include "Moving.h"
 #include "Servos.h"
 
-#include <memory>   // unique_ptr, make_unique
-#include <optional> // optional
+#include <memory> // unique_ptr, make_unique
 
 namespace PhysicalRobot {
 	class ModuleManager final {
@@ -65,7 +64,7 @@ namespace PhysicalRobot {
 		/// Retourne le module selon l'id
 		/// Il faut appliquer `dynamic_cast<T&>(module);` pour convertir 'module' vers le type souhaité
 		/// @throw si l'id est trop grand ou si le module associé n'existe pas
-		BaseModule& get_module_by_id(uint8_t id);
+		Module& get_module_by_id(uint8_t id);
 
 		/// Retourne le module selon le type
 		/// @throw si aucun module ayant le bon type n'existe
@@ -77,7 +76,7 @@ namespace PhysicalRobot {
 		/// Cette fonction implémente l'API de `ParsingClassChecker`
 		// FIXME Vérifier que les modules de grands `id`s peuvent communiquer
 		// FIXME sinon utiliser un compteur pour répartir la parole de manière cyclique
-		std::optional<GlobalFrame> write_frame() const;
+		std::vector<GlobalFrame> write_frame() const;
 		/// Lecture d'une trame ; implémente l'API de `ParsingClassChecker`
 		void read_frame(const GlobalFrame&);
 
@@ -93,7 +92,7 @@ namespace PhysicalRobot {
 		void deactivation();
 
 	private:
-		std::unique_ptr<BaseModule> _modules[NB_MODULES_MAX];
+		std::unique_ptr<Module> _modules[NB_MODULES_MAX];
 	};
 
 	/////////////////////////////////////////
@@ -132,7 +131,7 @@ namespace PhysicalRobot {
 
 	template <typename Module>
 	Module& ModuleManager::get_module() {
-		static_assert(std::is_base_of<BaseModule, Module>::value, "The specified module must inherit Module as public.");
+		static_assert(std::is_base_of<Module, Module>::value, "The specified module must inherit Module as public.");
 		for(uint8_t id = 0; id < NB_MODULES_MAX; ++id) {
 			if(_modules[id] != nullptr) {
 				try {

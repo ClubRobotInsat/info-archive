@@ -168,16 +168,18 @@ namespace Communication {
 
 		auto output_function = [this](std::atomic_bool& running_execution) {
 			while(running_execution) {
-				std::optional<GlobalFrame> frame = _parser->write_frame();
-				if(frame == std::nullopt) {
+				std::vector<GlobalFrame> frames = _parser->write_frame();
+				if(frames.empty()) {
 					/*if(_debug_active) {
 					    logDebug0("None(GlobalFrame) to send; wait.\ntime: ", _chrono.getElapsedTime(), "\n");
 					}*/
 					// La classe de parsing peut ne rien avoir à envoyer, donc temporisation sur l'électronique
 					sleep(GLOBAL_CONSTANTS().get_default_communication_delay());
 				} else {
-					// Trame à envoyer
-					_protocol->send_frame(frame.value());
+					// Trames à envoyer
+					for(const GlobalFrame& f : frames) {
+						_protocol->send_frame(f);
+					}
 				}
 			}
 		};

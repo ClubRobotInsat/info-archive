@@ -3,11 +3,9 @@
 
 #include "../../robot/Modules/Module.hpp"
 
-class SimuLed : public PhysicalRobot::Module<SharedLED2019> {
+class SimuLed : public PhysicalRobot::Module {
 public:
-	SimuLed(uint8_t id);
-
-	uint8_t get_frame_size() const override;
+	explicit SimuLed(uint8_t id);
 
 	void deactivation() override;
 
@@ -15,8 +13,8 @@ protected:
 	bool _on_off;
 
 
-	SharedLED2019 generate_shared() const override;
-	void message_processing(const SharedLED2019&) override;
+	std::vector<JSON> generate_list_jsons() const override;
+	void message_processing(const JSON&) override;
 };
 
 
