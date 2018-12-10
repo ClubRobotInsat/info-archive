@@ -20,39 +20,26 @@
 #include <variant>
 
 namespace PhysicalRobot {
+	ENUM_CLASS_NS(PhysicalRobot, BlockingMode, Unblocking, HoldOnBlock);
+	ENUM_CLASS_NS(PhysicalRobot, Color, Black, Red, Green, Yellow, Blue, Magenta, Cyan, White);
+	ENUM_CLASS_NS(PhysicalRobot, Rotation, Clockwise, CounterClockwise);
+	ENUM_CLASS_NS(PhysicalRobot, CommandType, Position, Speed);
 
-	class Servos final : public Module<SharedServos2019> {
+	class Servos final : public Module {
 	public:
-		enum BlockingMode : uint8_t { HOLD_ON_BLOCKING = 1, UNBLOCKING = 0 };
-
-		enum Color : uint8_t {
-			BLACK = 0x00,
-			RED = 0x01,
-			GREEN = 0x02,
-			YELLOW = 0x03,
-			BLUE = 0x04,
-			MAGENTA = 0x05,
-			CYAN = 0x06,
-			WHITE = 0x07,
-
-			NBR
-		};
-
 		using servo_t = uint8_t;
 
 		static const servo_t ID_MAX_SERVOS = std::numeric_limits<uint8_t>::max();
 
-		void add_servo(servo_t, BlockingMode = UNBLOCKING);
+		void add_servo(servo_t id, BlockingMode = BlockingMode::Unblocking);
 
 		uint8_t get_nbr_servos() const;
 
-		explicit Servos(servo_t id) : Module(id, servo_read_frame, servo_write_frame) {}
-
-		uint8_t get_frame_size() const override;
+		explicit Servos(servo_t id) : Module(id) {}
 
 		void set_position(servo_t, Angle);
 
-		void set_speed(servo_t, uint16_t speed);
+		void set_speed(servo_t servo, uint16_t speed, Rotation = Rotation::CounterClockwise);
 
 		Angle read_position(servo_t) const;
 
@@ -74,28 +61,29 @@ namespace PhysicalRobot {
 		// Retourne l'index associé au mapping du servo `id`. Si l'`id` est mauvais, retourne NB_MAX_SERVOS.
 		uint8_t get_index_of(servo_t) const;
 
-		SharedServos2019 generate_shared() const override;
-		void message_processing(const SharedServos2019&) override;
+		std::vector<JSON> generate_list_jsons() const override;
+		void message_processing(const JSON&) override;
 
 		void deactivation() override;
 
 		struct Servo {
-			enum CommandType { POSITION = 0, SPEED = 1 };
+			using CommandPosition = Angle;
+			using CommandSpeed = std::pair<uint16_t, Rotation>;
 
 			// Par défaut, un servo est commandé en vitesse (0 rad/s).
 			Servo(servo_t id, BlockingMode mode)
 			        : id(static_cast<servo_t>(id > 0 ? id : throw std::runtime_error("ID equals to 0.")))
 			        , position(0_deg)
-			        , command(0)
-			        , command_type(CommandType::SPEED)
+			        , command(CommandSpeed(0, Rotation::CounterClockwise))
+			        , command_type(CommandType::Speed)
 			        , blocked(false)
 			        , blocking_mode(mode)
-			        , color(YELLOW) {}
+			        , color(Color::Yellow) {}
 
 			const servo_t id;
 
 			Angle position;
-			std::variant<Angle, uint16_t> command;
+			std::variant<CommandPosition, CommandSpeed> command;
 			std::atomic<CommandType> command_type;
 			std::atomic_bool blocked;
 			BlockingMode blocking_mode;

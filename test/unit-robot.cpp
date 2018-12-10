@@ -13,7 +13,7 @@ TEST_CASE("Initialization of a common robot.") {
 
 		auto& servos = m->add_module<PhysicalRobot::Servos>(2);
 		servos.add_servo(5);
-		servos.add_servo(6, PhysicalRobot::Servos::BlockingMode::HOLD_ON_BLOCKING);
+		servos.add_servo(6, PhysicalRobot::BlockingMode::HoldOnBlock);
 		servos.set_position(6, 50_deg);
 
 		m->add_module<PhysicalRobot::IO>(5);

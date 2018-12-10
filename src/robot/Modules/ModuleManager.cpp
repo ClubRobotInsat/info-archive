@@ -12,14 +12,19 @@ namespace PhysicalRobot {
 		return _modules[id] != nullptr;
 	}
 
-	std::optional<GlobalFrame> ModuleManager::write_frame() const {
+	std::vector<GlobalFrame> ModuleManager::write_frame() const {
 		for(uint8_t id = 0; id < NB_MODULES_MAX; ++id) {
 			if(has_module(id)) {
 				if(_modules[id]->needs_to_be_shared()) {
-					GlobalFrame f{id};
-					f += _modules[id]->make_frame();
+					std::vector<GlobalFrame> v;
+					auto frames = _modules[id]->make_frames();
+					for(const auto& frame : frames) {
+						GlobalFrame f{id};
+						f += frame;
+						v.push_back(std::move(f));
+					}
 					_modules[id]->reset_state();
-					return f;
+					return v;
 				}
 			}
 		}
@@ -41,11 +46,6 @@ namespace PhysicalRobot {
 		if(!has_module(id)) {
 			// logWarn("The module n°" + std::to_string(id) + " isn't initialized: frame dropped.");
 			return;
-		}
-		// Vérification que la taille théorique du module corresponde avec la taille annoncée dans la trame
-		if(size != _modules[id]->get_frame_size()) {
-			throw std::runtime_error("The size of the module n°" + std::to_string(id) + " does not correspond to the theory (" +
-			                         std::to_string(size) + " != " + std::to_string(_modules[id]->get_frame_size()) + ").");
 		}
 
 		// Tout est Ok, mise à jour du module
@@ -141,7 +141,7 @@ namespace PhysicalRobot {
 		return count;
 	}
 
-	BaseModule& ModuleManager::get_module_by_id(uint8_t id) {
+	Module& ModuleManager::get_module_by_id(uint8_t id) {
 		if(id >= NB_MODULES_MAX) {
 			throw std::runtime_error("Impossible to get module n°" + std::to_string(id) + " (> " +
 			                         std::to_string(NB_MODULES_MAX) + ").");

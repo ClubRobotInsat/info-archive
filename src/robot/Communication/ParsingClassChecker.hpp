@@ -72,6 +72,6 @@ namespace Communication {
 	template <typename T>
 	struct parses_frames {
 		static constexpr bool value = detail::read_frames<T, void(const GlobalFrame&)>::value &&
-		                              detail::write_frames<T, std::optional<GlobalFrame>(void)>::value;
+		                              detail::write_frames<T, std::vector<GlobalFrame>(void)>::value;
 	};
 } // namespace Communication

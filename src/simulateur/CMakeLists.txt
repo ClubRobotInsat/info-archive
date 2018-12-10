@@ -40,7 +40,6 @@ add_executable(Simulator
         #graphique/server/WebGraphicalContext.cpp
         #graphique/server/WebObjectHandler.cpp
 
-        ../elec/librobot/c_src/SharedWithRust.c
         # TODO Enlever ModuleManager quand il sera dans librairies incluses
         ../robot/Modules/ModuleManager.cpp
         core/SimuRobot.cpp
