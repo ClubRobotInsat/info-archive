@@ -6,23 +6,30 @@
 PanelConnect::PanelConnect() {
 	_connectButton.set_label("Connect");
 
-	_connectionType.append("TCPIP");
-	_connectionType.append("localhost");
+	_connectionType.append("UDP");
 	_connectionType.set_active(0);
+	_connectionType.set_size_request(-1, 30);
 
 	_connectionTypeLbl.set_text("Connection type");
+	_connectionTypeLbl.set_size_request(100, 30);
 
-	_box1.add(_connectionTypeLbl);
-	_box1.add(_connectionType);
+	_box1.set_size_request(-1, 30);
+	_box1.set_border_width(10);
+	
+	_box1.pack_start(_connectionTypeLbl);
+	_box1.pack_start(_connectionType);
 
 	_connectionArgsLbl.set_text("Connection arguments");
+	_connectionArgsLbl.set_size_request(100, -1);
 
-	_box2.add(_connectionArgsLbl);
-	_box2.add(_connectionArguments);
+	_box2.set_border_width(10);
 
-	_globalBox.add(_box1);
-	_globalBox.add(_box2);
-	_globalBox.add(_connectButton);
+	_box2.pack_start(_connectionArgsLbl);
+	_box2.pack_start(_connectionArguments);
+
+	_globalBox.pack_start(_box1);
+	_globalBox.pack_start(_box2);
+	_globalBox.pack_start(_connectButton);
 
 	add(_globalBox);
 	set_border_width(10);

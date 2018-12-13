@@ -22,6 +22,8 @@ public:
 
 	void displayMessage(const std::string& message) override;
 
+	void displayErrorMessage(const std::string &message) override;
+
 	/// Add an action to be executed on the simulator thread.
 	/// Used in the gtk thread to sync with the simulator thread.
 	void queueAction(const std::function<void()>& action);

@@ -38,11 +38,21 @@ GtkSimuApplication::GtkSimuApplication(int argc, char** argv, std::string id, Gt
 
 	g_timeout_add(20, emptyGtkQueue, this);
 
-	run(*_mainWindow);
 }
 
 GtkSimuApplication::~GtkSimuApplication() {
 	_mainWindow->close();
+}
+
+int GtkSimuApplication::callRun() {
+	return run(*_mainWindow);
+}
+
+void GtkSimuApplication::showErrorDialog(const std::string &message) {
+	Gtk::MessageDialog errorDialog(*_mainWindow, "Error", false, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK);
+	errorDialog.set_secondary_text(message.c_str());
+
+	errorDialog.run();
 }
 
 void GtkSimuApplication::queueAction(const std::function<void()>& action) {

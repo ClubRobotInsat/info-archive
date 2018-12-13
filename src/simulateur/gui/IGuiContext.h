@@ -10,6 +10,8 @@ public:
 	virtual void update() = 0;
 
 	virtual void displayMessage(const std::string& message) = 0;
+
+	virtual void displayErrorMessage(const std::string &errorMsg) = 0;
 };
 
 

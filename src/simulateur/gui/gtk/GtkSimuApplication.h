@@ -17,6 +17,12 @@ public:
 
 	~GtkSimuApplication() override;
 
+	/** Calls "run" method with the main window */
+	int callRun();
+
+	void showErrorDialog(const std::string &message);
+
+	/** Queues an action to be executed on the gtk thread. */
 	void queueAction(const std::function<void()>& action);
 
 private:
