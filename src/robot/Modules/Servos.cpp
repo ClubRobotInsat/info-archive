@@ -162,20 +162,20 @@ namespace PhysicalRobot {
 		return Angle::makeFromDeg((333.3 * pos) / 1023 - 166.650);
 	};
 
-    AngularSpeed Servos::uint16_t_to_angular_speed(uint16_t speed) {
-        if(speed > 1023) {
-            speed = 1023;
-        }
-        return MAX_SPEED * static_cast<double>(speed) / 1023;
-    };
+	AngularSpeed Servos::uint16_t_to_angular_speed(uint16_t speed) {
+		if(speed > 1023) {
+			speed = 1023;
+		}
+		return MAX_SPEED * static_cast<double>(speed) / 1023;
+	};
 
-    uint16_t Servos::angular_speed_to_uint16_t(AngularSpeed as) {
-        if(as > MAX_SPEED) {
-            as = MAX_SPEED;
-        }
+	uint16_t Servos::angular_speed_to_uint16_t(AngularSpeed as) {
+		if(as > MAX_SPEED) {
+			as = MAX_SPEED;
+		}
 
-        return static_cast<uint16_t>(1023 * as / MAX_SPEED);
-    };
+		return static_cast<uint16_t>(1023 * as / MAX_SPEED);
+	};
 
 	std::vector<JSON> Servos::generate_list_jsons() const {
 		std::vector<JSON> result;
