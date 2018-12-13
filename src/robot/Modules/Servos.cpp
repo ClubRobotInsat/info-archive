@@ -153,6 +153,7 @@ namespace PhysicalRobot {
 		if(pos < 21 || pos > 1002) {
 			logWarn("L'angle ", angle, " est en-dehors de l'intervalle [-159.8°; 159.8°].");
 		}
+
 		pos = static_cast<uint16_t>(pos < 21 ? 21 : (pos > 1023 ? 1023 : pos));
 		return pos;
 	};
@@ -160,6 +161,21 @@ namespace PhysicalRobot {
 	Angle Servos::uint16t_to_angle(uint16_t pos) {
 		return Angle::makeFromDeg((333.3 * pos) / 1023 - 166.650);
 	};
+
+    AngularSpeed Servos::uint16_t_to_angular_speed(uint16_t speed) {
+        if(speed > 1023) {
+            speed = 1023;
+        }
+        return MAX_SPEED * static_cast<double>(speed) / 1023;
+    };
+
+    uint16_t Servos::angular_speed_to_uint16_t(AngularSpeed as) {
+        if(as > MAX_SPEED) {
+            as = MAX_SPEED;
+        }
+
+        return static_cast<uint16_t>(1023 * as / MAX_SPEED);
+    };
 
 	std::vector<JSON> Servos::generate_list_jsons() const {
 		std::vector<JSON> result;

@@ -57,6 +57,10 @@ namespace PhysicalRobot {
 
 		static Angle uint16t_to_angle(uint16_t pos);
 
+		static AngularSpeed uint16_t_to_angular_speed(uint16_t pos);
+
+		static uint16_t angular_speed_to_uint16_t(AngularSpeed as);
+
 	private:
 		// Retourne l'index associé au mapping du servo `id`. Si l'`id` est mauvais, retourne NB_MAX_SERVOS.
 		uint8_t get_index_of(servo_t) const;
@@ -65,6 +69,8 @@ namespace PhysicalRobot {
 		void message_processing(const JSON&) override;
 
 		void deactivation() override;
+
+		static constexpr AngularSpeed MAX_SPEED = 360_deg_s;
 
 		struct Servo {
 			using CommandPosition = Angle;
