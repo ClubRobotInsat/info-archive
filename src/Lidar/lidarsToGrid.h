@@ -20,7 +20,7 @@ public:
 
 	// Les obstacles en vue de ce lidar passent des cellules en 'occupé'
 	// Donner la pose du lidar dans l'espace de la grille, en mètres.
-	void accumulate(TrameLidar t, Vec2 pos, Angle orient);
+	void accumulate(FrameLidar t, Vec2 pos, Angle orient);
 
 	// Accès individuel aux cellules
 	// Peut pas retourner bool&, car vector<bool> compresse avec des masques pour avoir une cellule par bit.
@@ -35,7 +35,7 @@ public:
 		return {_resX, _resY};
 	}
 	Vec2 size() const {
-		return {_width, _height};
+		return {static_cast<const float>(_width), static_cast<const float>(_height)};
 	}
 
 private:

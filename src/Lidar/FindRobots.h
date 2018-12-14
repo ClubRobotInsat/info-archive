@@ -8,14 +8,14 @@
 
 // Filtre en ligne suivant les robots potentiels dans la suite de grilles
 // d'occupations
-class TrouveRobots {
+class FindRobots {
 public:
-	TrouveRobots() {}
+	FindRobots() {}
 
 	void accumulate(const OccupGrid&);
 
 	// Dans le même référentiel que celui de OccupGrid.
-	std::vector<Vec2> getResults() const;
+	std::vector<Vec2> get_results() const;
 
 private:
 	std::vector<Vec2> _candidats;

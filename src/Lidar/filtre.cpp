@@ -19,7 +19,7 @@ namespace {
 	const Distance MAX = 7_m;
 } // namespace
 
-const TrameLidar& Filtre::getTrame(const TrameLidar& input) {
+const FrameLidar& Filtre::getTrame(const FrameLidar& input) {
 	if(!_state.points.size()) { // premier relevé
 		// assume que ces valeurs restent constantes
 		_state.begin = input.begin;

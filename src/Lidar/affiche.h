@@ -29,7 +29,7 @@ public:
 	// la table.
 
 	// Mollo sur l'alpha, qu'on puisse encore voir la table au travers.
-	void trameLidar(const TrameLidar& mesure, Vec2 orig, Angle orient, Vec4 couleur);
+	void trameLidar(const FrameLidar& mesure, Vec2 orig, Angle orient, Vec4 couleur);
 
 	void grille(const OccupGrid& occ, Vec3 color);
 

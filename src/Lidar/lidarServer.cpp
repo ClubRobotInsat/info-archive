@@ -30,14 +30,14 @@ void LidarThread::run() {
 		if(clkReco.getElapsedTime() > 2_s) {
 			if(!_sick) {
 				try {
-					_sick = Lidar::openLidar(Lidar::Sick);
+					_sick = Lidar::open_lidar(Lidar::Sick);
 				} catch(...) {
 				}
 			}
 			if(!_hokuyo) {
 				try {
 					logDebug("Ouverture Hokuyo...");
-					_hokuyo = Lidar::openLidar(Lidar::Hokuyo);
+					_hokuyo = Lidar::open_lidar(Lidar::Hokuyo);
 					logDebug("réussie !");
 				} catch(...) {
 				}
@@ -51,8 +51,8 @@ void LidarThread::run() {
 		grid.reset();
 		if(_sick) {
 			try {
-				auto t = _sick->getTrame();
-				auto ft = fSick.getTrame(t);
+				auto t = _sick->get_frame();
+				auto ft = fSick.get_frame(t);
 				grid.accumulate(ft, {0.0, 1.0}, 0_deg);
 				if(_aff)
 					_aff->trameLidar(ft, {0, 1}, 0_deg, {0, 0.5, 0, 0.7f});
@@ -82,7 +82,7 @@ void LidarThread::run() {
 		_lTr.lock();
 		_tr.accumulate(grid);
 		if(_aff)
-			_aff->candidats(_tr.getResults(), {1, 0.5f, 0});
+			_aff->candidats(_tr.get_results(), {1, 0.5f, 0});
 		_lTr.unlock();
 
 		if(_aff)
@@ -96,7 +96,7 @@ vector<bool> LidarThread::status() const {
 
 vector<Vec2> LidarThread::releves() {
 	_lTr.lock();
-	auto r = _tr.getResults();
+	auto r = _tr.get_results();
 	_lTr.unlock();
 	return r;
 }

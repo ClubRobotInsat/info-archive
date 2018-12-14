@@ -111,7 +111,7 @@ void Affiche::end() {
 }
 
 
-void Affiche::trameLidar(const TrameLidar& mesure, Vec2 orig, Angle orient, Vec4 couleur) {
+void Affiche::trameLidar(const FrameLidar& mesure, Vec2 orig, Angle orient, Vec4 couleur) {
 	float ox = ORIG.x + orig.x * ECHELLE;
 	float oy = ORIG.y - orig.y * ECHELLE;
 

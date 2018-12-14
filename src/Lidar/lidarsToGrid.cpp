@@ -9,28 +9,30 @@ OccupGrid::OccupGrid(double width, double height, int resX, int resY)
         : _width(width), _height(height), _resX(resX), _resY(resY), _mat(resX * resY) {}
 
 void OccupGrid::reset() {
-	for(auto& c : _mat)
+	for(auto& c : _mat) {
 		c = 0;
+	}
 }
 
 #ifndef RATISSE_LIGNES
 
-void OccupGrid::accumulate(TrameLidar t, Vec2 pos, Angle orient) {
+void OccupGrid::accumulate(FrameLidar t, Vec2 pos, Angle orient) {
 	Angle angle;
-	IVec2 pt;
+
 	int i = 0;
 	for(auto& dist : t.points) {
 		angle = i * t.angularResolution + t.begin + orient;
 
-		float x = pos.x + dist.toM() * cos(angle);
-		float y = pos.y + dist.toM() * sin(angle);
+		double x = pos.x + dist.toM() * cos(angle);
+		double y = pos.y + dist.toM() * sin(angle);
 
 		// write true if point is inside grid.
-		int px = std::round((x * _resX) / _width);
-		int py = std::round((y * _resY) / _height);
+		int px = static_cast<int>(std::round((x * _resX) / _width));
+		int py = static_cast<int>(std::round((y * _resY) / _height));
 
-		if(px >= 0 && px < _resX && py >= 0 && py < _resY)
+		if(px >= 0 && px < _resX && py >= 0 && py < _resY) {
 			(*this)(px, py) = 1;
+		}
 
 		++i;
 	}
@@ -38,7 +40,7 @@ void OccupGrid::accumulate(TrameLidar t, Vec2 pos, Angle orient) {
 
 #else
 
-void OccupGrid::accumulate(TrameLidar t, Vec2 pos, Angle orient) {
+void OccupGrid::accumulate(FrameLidar t, Vec2 pos, Angle orient) {
 	Angle angle = orient + t.begin;
 
 	Vec2 tmp;

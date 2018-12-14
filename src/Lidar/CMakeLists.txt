@@ -10,14 +10,14 @@ set(AFF_LIDAR_SOURCE
         affLidar.cpp
         filtre.cpp)
 add_executable(affLidar ${AFF_LIDAR_SOURCE})
-target_link_libraries(affLidar Lidar glfw_Robot)
+target_link_libraries(affLidar Lidar glfw)
 
 set(AFF_GRILLE_SOURCE
         affGrille.cpp
         affiche.cpp
         filtre.cpp
         lidarsToGrid.cpp
-        trouverobots.cpp)
+        FindRobots.cpp)
 add_executable(affGrille ${AFF_GRILLE_SOURCE})
 target_link_libraries(affGrille Lidar Graphique)
 
@@ -28,7 +28,7 @@ set(LIDAR_SERVER
         lidarServer.cpp
         lidarServerFront.cpp
         lidarsToGrid.cpp
-        trouverobots.cpp)
+        FindRobots.cpp)
 add_executable(lidarServer ${LIDAR_SERVER})
 target_link_libraries(lidarServer Lidar Graphique)
 

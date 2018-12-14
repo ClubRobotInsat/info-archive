@@ -5,9 +5,9 @@
 //  Created by Rémi on 10/03/2015.
 //
 
+#include "../../third_parties/GLFW/include/GL/glfw.h"
 #include "filtre.h"
-#include <Clock.h>
-#include <GLFW/include/GL/glfw.h>
+#include <Units/TimePoint.h>
 #include <log/Log.h>
 
 std::unique_ptr<Lidar> source1, source2;
@@ -88,7 +88,7 @@ rgb hsv2rgb(hsv in) {
 }
 
 
-void displayTrame(const TrameLidar& mesure, float ox, float oy) {
+void displayTrame(const FrameLidar& mesure, float ox, float oy) {
 
 	Angle prevAngle = mesure.begin + 180_deg;
 	float prevAmpl = mesure.points[0].toM() * 500;
@@ -97,9 +97,7 @@ void displayTrame(const TrameLidar& mesure, float ox, float oy) {
 	for(size_t i = 1; i < mesure.points.size(); ++i) {
 		Angle angle = i * mesure.angularResolution + mesure.begin + 180_deg;
 		float amplitude = mesure.points[i].toM() * 500;
-		&&
-
-		    hsv couleur;
+		hsv couleur;
 		couleur.h = mesure.points[i] / 4_m * 240;
 		couleur.s = 1;
 		couleur.v = 1;
@@ -123,7 +121,7 @@ void display() {
 
 
 	// if(savedFrames < savedCount)
-	//	mesure.saveToFile("/tmp" + std::to_string(savedFrames++));
+	//	mesure.save_to_file("/tmp" + std::to_string(savedFrames++));
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -137,12 +135,12 @@ void display() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	if(source1) {
-		auto mesure = source1->getTrame();
+		auto mesure = source1->get_frame();
 		// displayTrame(mesure, 300, 300);
 		displayTrame(filtre1->getTrame(mesure), 375, 500);
 	}
 	if(source2) {
-		auto mesure = source2->getTrame();
+		auto mesure = source2->get_frame();
 		// displayTrame(mesure, 300, 600);
 		displayTrame(filtre2->getTrame(mesure), 375, 300);
 	}
@@ -176,10 +174,10 @@ int main(int argc, char** argv) {
 
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 
-	source1 = Lidar::openLidar(Lidar::Sick);
+	source1 = Lidar::open_lidar(Lidar::Sick);
 	filtre1 = std::make_unique<Filtre>();
 
-	source2 = Lidar::openLidar(Lidar::Hokuyo);
+	source2 = Lidar::open_lidar(Lidar::Hokuyo);
 	filtre2 = std::make_unique<Filtre>();
 
 	TimePoint t0 = TimePoint::now(), fpsT = TimePoint::now();

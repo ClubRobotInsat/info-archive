@@ -4,10 +4,10 @@
 /* Club Robot INSA Toulouse                                      Félix Poisot */
 /******************************************************************************/
 #include "Driver/lidar.h"
+#include "FindRobots.h"
 #include "affiche.h"
 #include "filtre.h"
 #include "lidarsToGrid.h"
-#include "trouverobots.h"
 #include <mutex>
 #include <thread>
 /******************************************************************************/
@@ -39,7 +39,7 @@ public:
 private:
 	std::unique_ptr<Lidar> _sick;
 	std::unique_ptr<Lidar> _hokuyo;
-	TrouveRobots _tr;
+	FindRobots _tr;
 	std::mutex _lTr;
 	std::unique_ptr<std::thread> _thread;
 	bool _hasGL;
