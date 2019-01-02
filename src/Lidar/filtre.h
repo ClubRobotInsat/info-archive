@@ -9,7 +9,7 @@
 // Filtre en ligne pour les relevés du Lidar
 class Filtre {
 public:
-	const FrameLidar& getTrame(const FrameLidar& input);
+	const FrameLidar& get_frame(const FrameLidar& input);
 
 private:
 	FrameLidar _state;

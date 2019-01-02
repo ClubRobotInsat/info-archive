@@ -47,7 +47,7 @@ void FindRobots::accumulate(const OccupGrid& grid) {
 
 
 	IVec2 tp = grid.resolution();
-	Vec2 ech = grid.size();
+	Vector2m ech = grid.size();
 	// un point sur la grille ne peut sauver/devenir qu'un candidat.
 	std::vector<char> scanned(static_cast<size_t>(tp.x * tp.y));
 
@@ -58,8 +58,8 @@ void FindRobots::accumulate(const OccupGrid& grid) {
 	for(int i = 0; i < tc; ++i) {
 		int cWin = 0;
 
-		IVec2 pCand = {static_cast<int>(round((_candidats[i].x / ech.x) * tp.x)),
-		               static_cast<int>(round((_candidats[i].y / ech.y) * tp.y))};
+		IVec2 pCand = {static_cast<int>(round((_candidats[i].getX() / ech.x) * tp.x)),
+		               static_cast<int>(round((_candidats[i].getY() / ech.y) * tp.y))};
 		SPIRAL(pCand, MIN_SIZE, {
 			int ind = (pos.y * tp.x) + pos.x;
 			if(pos.x >= 0 && pos.x < tp.x && pos.y >= 0 && pos.y < tp.y) {
@@ -69,10 +69,12 @@ void FindRobots::accumulate(const OccupGrid& grid) {
 						++cWin;
 						_nbWin[i] = min(MAX_WIN, _nbWin[i] + 1);
 
-						// pos devient la moyenne des points sauveurs
-						_candidats[i] *= 1 - (1 / static_cast<double>(cWin));
-						_candidats[i] += (1 / static_cast<double>(cWin)) * Vec2((pos.x / static_cast<double>(tp.x)) * ech.x,
-						                                                        (pos.y / static_cast<double>(tp.y)) * ech.y);
+						// pos devient la moyenne des points sauveurs*
+						Vector2m tmp_pos = _candidats[i].getPos2D();
+						tmp_pos *= 1 - (1 / static_cast<double>(cWin));
+						tmp_pos += (1 / static_cast<double>(cWin)) * Vector2m((pos.x / static_cast<double>(tp.x)) * ech.x,
+						                                                      (pos.y / static_cast<double>(tp.y)) * ech.y);
+						_candidats[i].setPos2D(tmp_pos);
 
 						// printf("win d'un vieux point\n");
 					}
@@ -95,12 +97,13 @@ void FindRobots::accumulate(const OccupGrid& grid) {
 		}
 	}
 
-	for(int y = 0; y < tp.y; ++y)
+	for(int y = 0; y < tp.y; ++y) {
 		for(int x = 0; x < tp.x; ++x) {
 			int ind = (y * tp.x) + x;
 			if(!scanned[ind] && grid(x, y)) { // nouveau point, là où il n'y avait pas de candidat
 				// printf("nouveau point\n");
-				_candidats.push_back(Vec2((x / (double)tp.x) * ech.x, (y / (double)tp.y) * ech.y));
+				_candidats.push_back(repere::Position(
+				    Vector2m{ech.x * x / (static_cast<double>(tp.x)), ech.y * y / static_cast<double>(tp.y)}));
 				_nbWin.push_back(1);
 
 				// limite la densité des nouveaux candidats
@@ -112,14 +115,15 @@ void FindRobots::accumulate(const OccupGrid& grid) {
 				});
 			}
 		}
+	}
 }
 
-
-std::vector<Vec2> FindRobots::get_results() const {
-	std::vector<Vec2> res;
+std::vector<repere::Position> FindRobots::get_results() const {
+	std::vector<repere::Position> res;
 	for(int i = 0; i < _candidats.size(); ++i) {
-		if(_nbWin[i] > MIN_WIN)
+		if(_nbWin[i] > MIN_WIN) {
 			res.push_back(_candidats[i]);
+		}
 	}
 
 	return res;

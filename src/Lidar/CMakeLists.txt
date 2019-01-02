@@ -14,24 +14,23 @@ target_link_libraries(affLidar Lidar glfw)
 
 set(AFF_GRILLE_SOURCE
         affGrille.cpp
-        affiche.cpp
+        Display.cpp
         filtre.cpp
         lidarsToGrid.cpp
         FindRobots.cpp)
 add_executable(affGrille ${AFF_GRILLE_SOURCE})
-target_link_libraries(affGrille Lidar Graphique)
-
+target_link_libraries(affGrille Lidar glfw)
 
 set(LIDAR_SERVER
-        affiche.cpp
+        Display.cpp
         filtre.cpp
         lidarServer.cpp
         lidarServerFront.cpp
         lidarsToGrid.cpp
         FindRobots.cpp)
 add_executable(lidarServer ${LIDAR_SERVER})
-target_link_libraries(lidarServer Lidar Graphique)
+target_link_libraries(lidarServer Lidar glfw)
 
-add_custom_command(TARGET lidarServer PRE_BUILD
-COMMAND ${CMAKE_COMMAND} -E
-copy ${CMAKE_SOURCE_DIR}/robot/Lidar/table.tga $<TARGET_FILE_DIR:lidarServer>)
+#add_custom_command(TARGET lidarServer PRE_BUILD
+#COMMAND ${CMAKE_COMMAND} -E
+#copy ${CMAKE_SOURCE_DIR}/robot/Lidar/table.tga $<TARGET_FILE_DIR:lidarServer>)

@@ -3,9 +3,9 @@
 /* info/robot/Lidar/lidarServerFront.cpp                           2015-05-17 */
 /* Club Robot INSA Toulouse                                      Félix Poisot */
 /******************************************************************************/
+#include "Display.h"
 #include "Driver/lidar.h"
 #include "FindRobots.h"
-#include "affiche.h"
 #include "filtre.h"
 #include "lidarsToGrid.h"
 #include <mutex>
@@ -30,11 +30,11 @@ public:
 	// {Sick, Hokuyo}
 	std::vector<bool> status() const;
 
-	std::vector<Vec2> releves();
+	std::vector<repere::Position> records();
 	// Pré-concaténés pour la performance de TCP.
-	std::string relevesAsText();
+	std::string recordsAsText();
 	// pour l'ajustement en début de match.
-	std::string relevesChrMap();
+	std::string recordsChrMap();
 
 private:
 	std::unique_ptr<Lidar> _sick;
@@ -43,5 +43,5 @@ private:
 	std::mutex _lTr;
 	std::unique_ptr<std::thread> _thread;
 	bool _hasGL;
-	std::unique_ptr<Affiche> _aff; // optionnel.
+	std::unique_ptr<Display> _aff; // optionnel.
 };

@@ -3,7 +3,9 @@
 /* robot/Lidar/affiche.h                                          2015-05-25 */
 /* Club Robot INSA Toulouse                                     Félix Poisot */
 /*****************************************************************************/
-#include "../../simulateur/_simulateur/Texture.h"
+//#include "../../simulateur/_simulateur/Texture.h"
+#include "Constants.h"
+#include "MathToolbox/Repere.h"
 #include "lidarsToGrid.h"
 #include <Clock.h>
 /*****************************************************************************/
@@ -13,10 +15,10 @@ using Vec4 = Vector4f;
 
 // Sortie graphique représentant la table et les données à plusieurs étapes du
 // traitement, pour faciliter la mise au point.
-class Affiche {
+class Display {
 public:
-	Affiche(Vec2 tailleTable);
-	~Affiche();
+	Display(Vector2m table_size = toVec2(GLOBAL_CONSTANTS().get_table_size()));
+	~Display();
 
 	bool isClosed(); // passe à vrai quand on clique sur la croix.
 
@@ -29,15 +31,15 @@ public:
 	// la table.
 
 	// Mollo sur l'alpha, qu'on puisse encore voir la table au travers.
-	void trameLidar(const FrameLidar& mesure, Vec2 orig, Angle orient, Vec4 couleur);
+	void frame_lidar(const FrameLidar& mesure, const repere::Coordinates& lidar_coords, Vec4 color);
 
-	void grille(const OccupGrid& occ, Vec3 color);
+	void grid(const OccupGrid& occ, Vec3 color);
 
-	void candidats(std::vector<Vec2> pts, Vec3 couleur);
+	void candidates(const std::vector<repere::Position>& pts, Vec3 color);
 
 private:
-	Texture _textureTable; // GL name
-	Vec2 _size;
+	// Texture _textureTable; // GL name
+	Vector2m _table_size;
 	TimePoint _t0;
 	TimePoint _fpsT; // dernière actualisation des FPS dans la barre de titre
 	int _frames;     // depuis _fpsT

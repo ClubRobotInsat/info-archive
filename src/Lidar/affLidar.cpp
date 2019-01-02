@@ -88,7 +88,7 @@ rgb hsv2rgb(hsv in) {
 }
 
 
-void displayTrame(const FrameLidar& mesure, float ox, float oy) {
+void display_frame(const FrameLidar& mesure, float ox, float oy) {
 
 	Angle prevAngle = mesure.begin + 180_deg;
 	float prevAmpl = mesure.points[0].toM() * 500;
@@ -136,13 +136,13 @@ void display() {
 
 	if(source1) {
 		auto mesure = source1->get_frame();
-		// displayTrame(mesure, 300, 300);
-		displayTrame(filtre1->getTrame(mesure), 375, 500);
+		// display_frame(mesure, 300, 300);
+		display_frame(filtre1->get_frame(mesure), 375, 500);
 	}
 	if(source2) {
 		auto mesure = source2->get_frame();
-		// displayTrame(mesure, 300, 600);
-		displayTrame(filtre2->getTrame(mesure), 375, 300);
+		// display_frame(mesure, 300, 600);
+		display_frame(filtre2->get_frame(mesure), 375, 300);
 	}
 }
 

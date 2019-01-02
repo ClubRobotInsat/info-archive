@@ -5,17 +5,14 @@
 //  Created by Rémi on 10/03/2015.
 //
 
+#include "Display.h"
 #include "FindRobots.h"
-#include "affiche.h"
 #include "filtre.h"
 #include <log/Log.h>
 
 using Vec2 = Vector2f;
 using Vec3 = Vector3f;
 using Vec4 = Vector4f;
-
-const double MAP_W = 3; // mètres
-const double MAP_H = 2; //
 
 const int RESX = 100;
 const int RESY = 66;
@@ -25,7 +22,7 @@ std::unique_ptr<Lidar> source1, source2;
 std::unique_ptr<Filtre> filtre1, filtre2;
 std::unique_ptr<OccupGrid> map;
 FindRobots robots;
-std::unique_ptr<Affiche> affiche;
+std::unique_ptr<Display> affiche;
 
 int savedFrames = 0;
 int savedCount = 10;
@@ -38,30 +35,30 @@ void refresh() {
 	map->reset();
 
 	if(source1) {
-		Vec2 pos = {0, 1};
+		repere::Coordinates coords({0_m, 1_m}, 0_deg);
 		auto mesure = source1->get_frame();
 		auto mf = filtre1->get_frame(mesure);
-		affiche->trameLidar(mf, pos, 0_deg, {0, 0.5, 0, 0.7f});
-		map->accumulate(mf, pos, 0_deg);
+		affiche->frame_lidar(mf, coords, {0, 0.5, 0, 0.7f});
+		map->accumulate(mf, coords);
 	}
 	if(source2) {
-		Vec2 pos = {3, 2};
+		repere::Coordinates coords({3_m, 2_m}, 180_deg);
 		auto mesure = source2->get_frame();
 		auto mf = filtre2->get_frame(mesure);
-		affiche->trameLidar(mf, pos, 180_deg, {0, 0.5, 0.5, 0.7f});
-		map->accumulate(mf, pos, 180_deg);
+		affiche->frame_lidar(mf, coords, {0, 0.5, 0.5, 0.7f});
+		map->accumulate(mf, coords);
 	};
 
-	affiche->grille(*map, {0, 0, 0});
+	affiche->grid(*map, {0, 0, 0});
 
 	robots.accumulate(*map);
-	affiche->candidats(robots.get_results(), {1, 0.5f, 0});
+	affiche->candidates(robots.get_results(), {1, 0.5f, 0});
 }
 
 int main(int argc, char** argv) {
 	Log::open(argc, argv, false);
 
-	affiche = std::make_unique<Affiche>(Vec2(MAP_W, MAP_H));
+	affiche = std::make_unique<Display>(toVec2(GLOBAL_CONSTANTS().get_table_size()));
 
 	try {
 		source1 = Lidar::open_lidar(Lidar::Sick);
@@ -77,7 +74,7 @@ int main(int argc, char** argv) {
 		logWarn("Impossible d'ouvrir lidar Hokuyo");
 	}
 
-	map = std::make_unique<OccupGrid>(MAP_W, MAP_H, RESX, RESY);
+	map = std::make_unique<OccupGrid>(toVec2(GLOBAL_CONSTANTS().get_table_size()), RESX, RESY);
 
 	while(!affiche->isClosed()) {
 		affiche->begin();
