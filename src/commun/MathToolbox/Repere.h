@@ -133,7 +133,7 @@ namespace repere {
 		Orientation(Angle angle = 0_deg, const Repere& repere_parent = ABSOLUTE_REFERENCE);
 		Orientation(const Orientation& other);
 
-		Angle getAngle(const Repere& repere = ABSOLUTE_REFERENCE) {
+		Angle getAngle(const Repere& repere = ABSOLUTE_REFERENCE) const {
 			return repere.getAngle(_angle, _repere);
 		}
 
@@ -152,11 +152,13 @@ namespace repere {
 		Position(Distance x, Distance y, const Repere& repere_parent = ABSOLUTE_REFERENCE);
 		Position(const Position& other);
 
-		Distance getX(const Repere& repere) {
+		Position& operator=(const Position& position);
+
+		Distance getX(const Repere& repere = ABSOLUTE_REFERENCE) const {
 			return repere.getPosition(_pos, _repere).x;
 		}
 
-		Distance getY(const Repere& repere) {
+		Distance getY(const Repere& repere = ABSOLUTE_REFERENCE) const {
 			return repere.getPosition(_pos, _repere).y;
 		}
 
@@ -168,7 +170,7 @@ namespace repere {
 			_pos = _repere.getPosition(pos, repere);
 		}
 
-		Vector2m getPos2D(const Repere& repere) {
+		Vector2m getPos2D(const Repere& repere = ABSOLUTE_REFERENCE) const {
 			return toVec2(repere.getPosition(_pos, _repere));
 		}
 
@@ -191,6 +193,8 @@ namespace repere {
 	 */
 	struct Coordinates {
 		Coordinates(Vector3m position = Vector3m(0_m, 0_m, 0_m), Angle angle = 0_rad, const Repere& repere_parent = ABSOLUTE_REFERENCE);
+
+		Coordinates(const Position& position, const Orientation& orientation, const Repere& repere_parent = ABSOLUTE_REFERENCE);
 
 		/// Surcharge pour donner des coordonnées 2D
 		explicit Coordinates(Vector2m position, Angle angle = 0_rad, const Repere& repere_parent = ABSOLUTE_REFERENCE);

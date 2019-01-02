@@ -18,8 +18,20 @@ Position::Position(Distance x, Distance y, const Repere& repere_parent) : _pos(x
 
 Position::Position(const Position& other) = default;
 
+Position& Position::operator=(const Position& position) {
+	if(_repere == position._repere) {
+		_pos = position._pos;
+	} else {
+		_pos = _repere.getPosition(position._pos, position._repere);
+	}
+	return *this;
+}
+
 Coordinates::Coordinates(Vector3m position, Angle angle, const Repere& repere_parent)
         : _pos(position), _angle(angle), _repere_parent(repere_parent) {}
+
+Coordinates::Coordinates(const Position& position, const Orientation& orientation, const Repere& repere_parent)
+        : Coordinates(position.getPos2D(repere_parent), orientation.getAngle(repere_parent), repere_parent) {}
 
 Coordinates::Coordinates(Vector2m position, Angle angle, const Repere& repere_parent)
         : Coordinates(Vector3m(position.x, position.y, 0_m), angle, repere_parent) {}
@@ -60,7 +72,7 @@ Angle Repere::getAngle(Angle initAngle, const Repere& repere) const {
 		if(my0 == my1) {
 			new_angle = initAngle;
 		} else {
-			new_angle = - initAngle;
+			new_angle = -initAngle;
 		}
 	} else {
 		if(my0 == my1) {
