@@ -7,6 +7,9 @@
 
 #include "Communication/Communicator.h"
 
+#include "../Lidar/FindRobots.h"
+#include "../Lidar/filtre.h"
+
 namespace PhysicalRobot {
 
 	class Robot {
@@ -38,6 +41,13 @@ namespace PhysicalRobot {
 			return _module_manager->get_module<Module>();
 		}
 
+		std::optional<FrameLidar> get_lidar_frame() const {
+			if(_lidar != nullptr) {
+				return Filtre().get_frame(_lidar->get_frame());
+			}
+			return std::nullopt;
+		}
+
 		void set_debug(bool debug) {
 			_debug_active = debug;
 			if(_communicator != nullptr) {
@@ -54,6 +64,7 @@ namespace PhysicalRobot {
 
 	protected:
 		std::shared_ptr<ModuleManager> _module_manager;
+		std::unique_ptr<Lidar> _lidar;
 
 		/// L'initialisation des modules du robot se fait ici
 		// Cette méthode n'est pas virtuelle pure

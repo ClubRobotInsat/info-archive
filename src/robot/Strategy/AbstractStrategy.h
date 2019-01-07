@@ -45,6 +45,8 @@ namespace Strategy {
 			return *_env;
 		}
 
+		std::vector<repere::Position> get_adversary_positions() const;
+
 	protected:
 		AbstractStrategy(std::unique_ptr<PhysicalRobot::Robot>, Constants::RobotColor);
 
@@ -68,6 +70,10 @@ namespace Strategy {
 
 		Duration _total_duration_match = 0_s;
 		StopWatch _chrono_match;
+
+		std::thread _find_robots;
+		mutable std::mutex _mutex_adversary;
+		std::vector<repere::Position> _adversary_positions;
 
 		// Appel de la fonction virtuelle 'execute' ; ça permets d'arrêter le thread de la stratégie à la fin du match
 		void exec();

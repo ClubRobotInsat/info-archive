@@ -22,6 +22,30 @@ namespace Strategy {
 		                                     Vector2m{0_m, 0_m});
 
 		this->create_environment();
+
+		auto adversary_finder = [this]() {
+			std::unique_ptr<OccupGrid> lidar_map =
+			    std::make_unique<OccupGrid>(toVec2(GLOBAL_CONSTANTS().get_table_size()), 100, 66);
+
+			while(get_left_time() > 0_s) {
+				repere::Coordinates coords; // = this->_robot->get_module<PhysicalRobot::Moving>()::get_coordinates();
+				lidar_map->reset();
+
+				auto frame = _robot->get_lidar_frame();
+				if(frame != std::nullopt) {
+					lidar_map->accumulate(frame.value(), coords);
+					FindRobots robots;
+					robots.accumulate(*lidar_map);
+					_mutex_adversary.lock();
+					_adversary_positions = robots.get_results();
+				} else {
+					_mutex_adversary.lock();
+					_adversary_positions.clear();
+				}
+				_mutex_adversary.unlock();
+			}
+		};
+		_find_robots = std::thread(adversary_finder);
 	}
 
 	void AbstractStrategy::create_environment() {
@@ -49,6 +73,8 @@ namespace Strategy {
 		_execution.detach();
 		pthread_cancel(handle);
 		pthread_join(handle, nullptr);
+
+		_find_robots.join();
 	}
 
 	Duration AbstractStrategy::get_left_time() const {
@@ -63,6 +89,11 @@ namespace Strategy {
 
 	void AbstractStrategy::reset_timer() {
 		_chrono_match.reset();
+	}
+
+	std::vector<repere::Position> AbstractStrategy::get_adversary_positions() const {
+		std::lock_guard<std::mutex> lk(_mutex_adversary);
+		return _adversary_positions;
 	}
 
 	void AbstractStrategy::exec() {

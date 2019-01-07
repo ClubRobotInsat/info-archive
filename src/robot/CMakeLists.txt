@@ -14,6 +14,6 @@ add_subdirectory(Communication)
 set(ROBOT_SOURCE
 		Robot.cpp)
 add_library(Robot STATIC ${ROBOT_SOURCE})
-target_link_libraries(Robot Modules Communication)
+target_link_libraries(Robot Modules Communication Lidar)
 
 add_subdirectory(Strategy)

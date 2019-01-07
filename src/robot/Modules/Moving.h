@@ -36,7 +36,7 @@ namespace PhysicalRobot {
 		void set_linear_speed(Speed);
 		void set_angular_speed(AngularSpeed);
 
-		Coordonnees get_coordonnees() const;
+		Coordinates get_coordinates() const;
 
 		const Repere& get_reference() const {
 			return REFERENCE;
