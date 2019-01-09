@@ -31,7 +31,7 @@
 #include "Avoidance.h"
 #include "IO.h"
 #include "Motors.h"
-//#include "Moving.h"
+#include "Moving.h"
 #include "Servos.h"
 
 #include <memory> // unique_ptr, make_unique
