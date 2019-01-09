@@ -10,28 +10,26 @@
 
 #include <atomic>
 
-enum class SensAvance : uint8_t { Arriere = 0, Avant = 1 };
+enum class SensAdvance : uint8_t { Backward = 0, Forward = 1 };
 
-enum class SensRotation : uint8_t { Horaire = 0, Trigo = 1 };
+enum class SensRotation : uint8_t { Clockwise = 0, Trigo = 1 };
 
-inline std::ostream& operator<<(std::ostream& os, const SensAvance& sens) {
-	os << (sens == SensAvance::Avant ? "avant" : "arrière");
+inline std::ostream& operator<<(std::ostream& os, const SensAdvance& sens) {
+	os << (sens == SensAdvance::Forward ? "forward" : "backward");
 	return os;
 }
 
 inline std::ostream& operator<<(std::ostream& os, const SensRotation& sens) {
-	os << (sens == SensRotation::Trigo ? "trigo" : "horaire");
+	os << (sens == SensRotation::Trigo ? "trigo" : "clockwise");
 	return os;
 }
-
-using namespace repere;
 
 namespace PhysicalRobot {
 	ENUM_CLASS_NS(PhysicalRobot, MovingCommand, GoForward, GoBackward, TurnRelative, TurnAbsolute, DoNothing, EmergencyStop, Stop);
 
-	class Moving final : public Module {
+	class Navigation final : public Module {
 	public:
-		explicit Moving(uint8_t id) : Module(id) {}
+		explicit Navigation(uint8_t id) : Module(id) {}
 
 		void forward(Distance distance);
 
@@ -39,10 +37,10 @@ namespace PhysicalRobot {
 
 		void stop();
 
-		Coordinates get_coordinates() const;
+		repere::Coordinates get_coordinates() const;
 
-		const Repere& get_reference() const {
-			return REFERENCE;
+		const repere::Repere& get_reference() const {
+			return this->REFERENCE;
 		}
 
 	protected:
@@ -53,10 +51,10 @@ namespace PhysicalRobot {
 		void deactivation() override;
 
 	private:
-		static constexpr const Repere& REFERENCE = ABSOLUTE_REFERENCE;
+		static constexpr const repere::Repere& REFERENCE = repere::ABSOLUTE_REFERENCE;
 
 		/// x, y, angle
-		Coordinates _coords;
+		repere::Coordinates _coords;
 
 		std::atomic_bool _blocked;
 		std::atomic_bool _asserv_on_off;
