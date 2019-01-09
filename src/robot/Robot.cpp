@@ -57,7 +57,7 @@ namespace PhysicalRobot {
 
 		for(auto module : GLOBAL_CONSTANTS()[name].get_modules()) {
 			/*if(module.first == "moving") {
-			    _module_manager->add_module<Moving>(module.second);
+			    _module_manager->add_module<Navigation>(module.second);
 			} else */
 			if(module.first == "servos") {
 				// TODO : voir comment récupérer les servos à ajouter (`robot.ini` ou fichier .JSON ?)

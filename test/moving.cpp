@@ -8,7 +8,7 @@ int main() {
 	auto m = std::make_shared<ModuleManager>();
 
 	// TODO check ID
-	auto& moving = m->add_module<Moving>(2);
+	auto& moving = m->add_module<Navigation>(2);
 
 	// TODO check address
 	Robot robot(m, {"prog_moving", "UDP", "192.168.0.222", "50000", "51"});
