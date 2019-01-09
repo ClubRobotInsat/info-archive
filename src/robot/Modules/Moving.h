@@ -8,6 +8,8 @@
 #include "MathToolbox/Repere.h"
 #include "Module.hpp"
 
+#include <atomic>
+
 enum class SensAvance : uint8_t { Arriere = 0, Avant = 1 };
 
 enum class SensRotation : uint8_t { Horaire = 0, Trigo = 1 };
@@ -25,16 +27,17 @@ inline std::ostream& operator<<(std::ostream& os, const SensRotation& sens) {
 using namespace repere;
 
 namespace PhysicalRobot {
+	ENUM_CLASS_NS(PhysicalRobot, MovingCommand, GoForward, GoBackward, TurnRelative, TurnAbsolute, DoNothing, EmergencyStop, Stop);
 
-	class Moving final : public Module<SharedMoving2019> {
+	class Moving final : public Module {
 	public:
-		explicit Moving2019(uint8_t id);
+		explicit Moving(uint8_t id) : Module(id) {}
 
-		Speed get_linear_speed() const;
-		AngularSpeed get_angular_speed() const;
+		void forward(Distance distance);
 
-		void set_linear_speed(Speed);
-		void set_angular_speed(AngularSpeed);
+		void backward(Distance distance);
+
+		void stop();
 
 		Coordinates get_coordinates() const;
 
@@ -42,21 +45,39 @@ namespace PhysicalRobot {
 			return REFERENCE;
 		}
 
-		// TODO
-		uint8_t get_frame_size() const override;
+	protected:
+		std::vector<JSON> generate_list_jsons() const override;
 
-	private:
-		SharedMoving2019 generate_shared() const override;
-		void message_processing(const SharedMoving2019&) override;
+		void message_processing(const JSON&) override;
 
 		void deactivation() override;
 
+	private:
 		static constexpr const Repere& REFERENCE = ABSOLUTE_REFERENCE;
-		Coordonnees _coords;
 
-		mutable std::mutex _mutex_speed;
-		Speed _linear_speed;
-		AngularSpeed _angular_speed;
+		/// x, y, angle
+		Coordinates _coords;
+
+		std::atomic_bool _blocked;
+		std::atomic_bool _asserv_on_off;
+		std::atomic_bool _leds;
+		std::atomic_bool _reset;
+
+		MovingCommand _command;
+		uint16_t _args_cmd[2];
+		uint16_t _counter;
+		std::atomic_bool _moving_done;
+
+
+		void set_command(MovingCommand command);
+
+		uint16_t distance_to_u16(Distance distance) const;
+
+		Distance u16_to_distance(uint16_t) const;
+
+		uint16_t angle_to_u16(Angle angle) const;
+
+		Angle u16_to_angle(uint16_t) const;
 	};
 } // namespace PhysicalRobot
 
