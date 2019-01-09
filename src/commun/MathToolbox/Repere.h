@@ -195,7 +195,7 @@ namespace repere {
 		/// Surcharge pour donner des coordonnées 2D
 		explicit Coordinates(Vector2m position, Angle angle = 0_rad, const Repere& repere_parent = ABSOLUTE_REFERENCE);
 
-		explicit Coordinates(const Coordinates& coords);
+		Coordinates(const Coordinates& coords);
 
 		/// Getters
 		Distance getX(const Repere& repere = ABSOLUTE_REFERENCE) const {
