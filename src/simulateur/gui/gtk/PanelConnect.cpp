@@ -4,50 +4,30 @@
 #include <vector>
 
 PanelConnect::PanelConnect() {
-	_connectButton.set_label("Connect");
-
-	_connectionType.append("UDP");
-	_connectionType.set_active(0);
-	_connectionType.set_size_request(-1, 30);
-
-	_connectionTypeLbl.set_text("Connection type");
-	_connectionTypeLbl.set_size_request(100, 30);
-
-	_box1.set_size_request(-1, 30);
-	_box1.set_border_width(10);
-	
-	_box1.pack_start(_connectionTypeLbl);
-	_box1.pack_start(_connectionType);
-
-	_connectionArgsLbl.set_text("Connection arguments");
-	_connectionArgsLbl.set_size_request(100, -1);
-
-	_box2.set_border_width(10);
-
-	_box2.pack_start(_connectionArgsLbl);
-	_box2.pack_start(_connectionArguments);
-
-	_globalBox.pack_start(_box1);
-	_globalBox.pack_start(_box2);
-	_globalBox.pack_start(_connectButton);
-
-	add(_globalBox);
-	set_border_width(10);
+	_builder = Gtk::Builder::create_from_string(
+#include "glade/connection-panel.glade.include"
+	        );
+	_builder->get_widget("connection-type", _connectionType);
+	_builder->get_widget("connection-arguments", _connectionArguments);
+	_builder->get_widget("connect-button", _connectButton);
+	Widget *widget;
+	_builder->get_widget("root", widget);
+	add(*widget);
 }
 
 Gtk::Button& PanelConnect::getConnectButton() {
-	return _connectButton;
+	return *_connectButton;
 }
 
 std::string PanelConnect::getConnectionType() {
-	return _connectionType.get_active_text();
+	return _connectionType->get_active_text();
 }
 
 // TODO faire de cette fonction une fonction utilitaire
 std::vector<std::string> PanelConnect::getConnectionArguments() {
 	std::vector<std::string> args;
 
-	std::string parsed = _connectionArguments.get_text();
+	std::string parsed = _connectionArguments->get_text();
 	std::ostringstream outputStream;
 	int state = 0;
 

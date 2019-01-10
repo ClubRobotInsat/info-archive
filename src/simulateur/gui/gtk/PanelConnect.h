@@ -14,15 +14,11 @@ public:
 	std::vector<std::string> getConnectionArguments();
 
 private:
-	Gtk::Label _connectionTypeLbl;
-	Gtk::Label _connectionArgsLbl;
-	Gtk::ComboBoxText _connectionType;
-	Gtk::Entry _connectionArguments;
-	Gtk::Button _connectButton;
+	Glib::RefPtr<Gtk::Builder> _builder;
 
-	Gtk::Box _box1;
-	Gtk::Box _box2;
-	Gtk::VBox _globalBox;
+	Gtk::ComboBoxText *_connectionType;
+	Gtk::Entry *_connectionArguments;
+	Gtk::Button *_connectButton;
 };
 
 
