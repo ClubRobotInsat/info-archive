@@ -59,7 +59,7 @@ namespace PhysicalRobot {
 		unlock_variables();
 	}
 
-	void Servos::set_speed(servo_t id, uint16_t speed, Rotation rotation) {
+	void Servos::set_speed(servo_t id, AngularSpeed speed, Rotation rotation) {
 		uint8_t index = get_index_of(id);
 
 		if(index >= ID_MAX_SERVOS) {
@@ -171,6 +171,7 @@ namespace PhysicalRobot {
 
 	uint16_t Servos::angular_speed_to_uint16_t(AngularSpeed as) {
 		if(as > MAX_SPEED) {
+
 			as = MAX_SPEED;
 		}
 
@@ -193,7 +194,7 @@ namespace PhysicalRobot {
 					servo["rotation"] = "CounterClockwise";
 				} else {
 					Servo::CommandSpeed command = std::get<Servo::CommandSpeed>(_servos[index]->command);
-					servo["data"] = command.first;
+					servo["data"] = angular_speed_to_uint16_t(command.first);
 					servo["rotation"] = toString(command.second);
 				}
 
@@ -233,7 +234,7 @@ namespace PhysicalRobot {
 
 		for(servo_t index = 0; index < ID_MAX_SERVOS; ++index) {
 			if(_servos[index] != nullptr) {
-				_servos[index]->command = Servo::CommandSpeed(0, Rotation::CounterClockwise);
+				_servos[index]->command = Servo::CommandSpeed(0_deg_s, Rotation::CounterClockwise);
 				_servos[index]->command_type = CommandType::Speed;
 			}
 		}

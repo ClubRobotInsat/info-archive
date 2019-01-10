@@ -39,7 +39,7 @@ namespace PhysicalRobot {
 
 		void set_position(servo_t, Angle);
 
-		void set_speed(servo_t servo, uint16_t speed, Rotation = Rotation::CounterClockwise);
+		void set_speed(servo_t servo, AngularSpeed speed, Rotation = Rotation::CounterClockwise);
 
 		Angle read_position(servo_t) const;
 
@@ -74,13 +74,13 @@ namespace PhysicalRobot {
 
 		struct Servo {
 			using CommandPosition = Angle;
-			using CommandSpeed = std::pair<uint16_t, Rotation>;
+			using CommandSpeed = std::pair<AngularSpeed , Rotation>;
 
 			// Par défaut, un servo est commandé en vitesse (0 rad/s).
 			Servo(servo_t id, BlockingMode mode)
 			        : id(static_cast<servo_t>(id > 0 ? id : throw std::runtime_error("ID equals to 0.")))
 			        , position(0_deg)
-			        , command(CommandSpeed(0, Rotation::CounterClockwise))
+			        , command(CommandSpeed(0_deg_s, Rotation::CounterClockwise))
 			        , command_type(CommandType::Speed)
 			        , blocked(false)
 			        , blocking_mode(mode)
