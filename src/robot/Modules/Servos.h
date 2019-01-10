@@ -39,7 +39,7 @@ namespace PhysicalRobot {
 
 		void set_position(servo_t, Angle);
 
-		void set_speed(servo_t servo, uint16_t speed, Rotation = Rotation::CounterClockwise);
+		void set_speed(servo_t servo, AngularSpeed speed, Rotation = Rotation::CounterClockwise);
 
 		Angle read_position(servo_t) const;
 
@@ -57,6 +57,10 @@ namespace PhysicalRobot {
 
 		static Angle uint16t_to_angle(uint16_t pos);
 
+		static AngularSpeed uint16_t_to_angular_speed(uint16_t pos);
+
+		static uint16_t angular_speed_to_uint16_t(AngularSpeed as);
+
 	private:
 		// Retourne l'index associé au mapping du servo `id`. Si l'`id` est mauvais, retourne NB_MAX_SERVOS.
 		uint8_t get_index_of(servo_t) const;
@@ -66,15 +70,17 @@ namespace PhysicalRobot {
 
 		void deactivation() override;
 
+		static constexpr AngularSpeed MAX_SPEED = 360_deg_s;
+
 		struct Servo {
 			using CommandPosition = Angle;
-			using CommandSpeed = std::pair<uint16_t, Rotation>;
+			using CommandSpeed = std::pair<AngularSpeed , Rotation>;
 
 			// Par défaut, un servo est commandé en vitesse (0 rad/s).
 			Servo(servo_t id, BlockingMode mode)
 			        : id(static_cast<servo_t>(id > 0 ? id : throw std::runtime_error("ID equals to 0.")))
 			        , position(0_deg)
-			        , command(CommandSpeed(0, Rotation::CounterClockwise))
+			        , command(CommandSpeed(0_deg_s, Rotation::CounterClockwise))
 			        , command_type(CommandType::Speed)
 			        , blocked(false)
 			        , blocking_mode(mode)
