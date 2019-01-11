@@ -13,7 +13,7 @@
 #include "IConstantes.h"
 #include "Json.h"
 #include "MathToolbox/Repere.h"
-#include "EmbeddedFiles.h"
+#include "resources/EmbeddedFiles.h"
 
 namespace Constantes {
 	ENUM_CLASS_NS(Constantes,

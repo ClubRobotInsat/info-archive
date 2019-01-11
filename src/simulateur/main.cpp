@@ -6,9 +6,7 @@
 #include <getopt.h>
 #include <signal.h>
 
-//#include "communication/Robot2017.h"
 #include "Commun.h"
-#include "ConstantesCommunes.h"
 #include "core/Simulateur.h"
 #include "core/SimulateurConstantes.h"
 #include "core/World.h"

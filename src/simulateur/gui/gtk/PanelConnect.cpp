@@ -3,10 +3,10 @@
 #include <sstream>
 #include <vector>
 
+#include "resources/EmbeddedFiles.h"
+
 PanelConnect::PanelConnect() {
-	_builder = Gtk::Builder::create_from_string(
-#include "glade/connection-panel.glade.include"
-	        );
+	_builder = Gtk::Builder::create_from_string(EmbeddedFiles::readText("glade/connection-panel.glade"));
 	_builder->get_widget("connection-type", _connectionType);
 	_builder->get_widget("connection-arguments", _connectionArguments);
 	_builder->get_widget("connect-button", _connectButton);

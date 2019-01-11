@@ -6,7 +6,7 @@
 
 #include "AbstractStrategy.h"
 
-#include "EmbeddedFiles.h"
+#include "resources/EmbeddedFiles.h"
 
 namespace Strategy {
 	AbstractStrategy::AbstractStrategy(std::unique_ptr<PhysicalRobot::Robot> robot, Constants::RobotColor color)

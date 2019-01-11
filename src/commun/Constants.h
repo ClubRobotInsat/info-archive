@@ -9,7 +9,7 @@
 #include <ini/src/IniFile.hpp>
 
 #include "Commun.h"
-#include "EmbeddedFiles.h"
+#include "resources/EmbeddedFiles.h"
 #include "Json.h"
 #include "MathToolbox/Repere.h"
 

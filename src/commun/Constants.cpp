@@ -4,7 +4,7 @@
 
 #include "Constants.h"
 
-#include "EmbeddedFiles.h"
+#include "resources/EmbeddedFiles.h"
 
 const Constants::Constants& GLOBAL_CONSTANTS() {
 	const static Constants::Constants CONSTANTS(EmbeddedFiles::readText("../robot.ini"));
