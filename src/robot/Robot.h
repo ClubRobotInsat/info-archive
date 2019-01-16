@@ -41,9 +41,9 @@ namespace PhysicalRobot {
 			return _module_manager->get_module<Module>();
 		}
 
-		std::optional<FrameLidar> get_lidar_frame() const {
+		std::optional<Lidar::FrameLidar> get_lidar_frame() const {
 			if(_lidar != nullptr) {
-				return Filtre().get_frame(_lidar->get_frame());
+				return Lidar::Filtre().get_frame(_lidar->get_frame());
 			}
 			return std::nullopt;
 		}
@@ -64,7 +64,7 @@ namespace PhysicalRobot {
 
 	protected:
 		std::shared_ptr<ModuleManager> _module_manager;
-		std::unique_ptr<Lidar> _lidar;
+		std::unique_ptr<Lidar::Lidar> _lidar;
 
 		/// L'initialisation des modules du robot se fait ici
 		// Cette méthode n'est pas virtuelle pure

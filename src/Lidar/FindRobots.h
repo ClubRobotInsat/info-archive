@@ -7,18 +7,20 @@
 #include "lidarsToGrid.h"
 /*****************************************************************************/
 
-// Filtre en ligne suivant les robots potentiels dans la suite de grilles
-// d'occupations
-class FindRobots {
-public:
-	FindRobots() {}
+namespace Lidar {
+	// Filtre en ligne suivant les robots potentiels dans la suite de grilles
+	// d'occupations
+	class FindRobots {
+	public:
+		FindRobots() {}
 
-	void accumulate(const OccupGrid&);
+		void accumulate(const OccupGrid&);
 
-	// Dans le même référentiel que celui de OccupGrid.
-	std::vector<repere::Position> get_results() const;
+		// Dans le même référentiel que celui de OccupGrid.
+		std::vector<repere::Position> get_results() const;
 
-private:
-	std::vector<repere::Position> _candidats;
-	std::vector<int> _nbWin;
-};
+	private:
+		std::vector<repere::Position> _candidats;
+		std::vector<int> _nbWin;
+	};
+} // namespace Lidar

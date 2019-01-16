@@ -10,8 +10,8 @@
 #include <Units/TimePoint.h>
 #include <log/Log.h>
 
-std::unique_ptr<Lidar> source1, source2;
-std::unique_ptr<Filtre> filtre1, filtre2;
+std::unique_ptr<Lidar::Lidar> source1, source2;
+std::unique_ptr<Lidar::Filtre> filtre1, filtre2;
 bool running = true;
 
 int savedFrames = 0;
@@ -88,14 +88,14 @@ rgb hsv2rgb(hsv in) {
 }
 
 
-void display_frame(const FrameLidar& mesure, float ox, float oy) {
+void display_frame(const Lidar::FrameLidar& mesure, float ox, float oy) {
 
 	Angle prevAngle = mesure.begin + 180_deg;
 	float prevAmpl = mesure.points[0].toM() * 500;
 
 	glBegin(GL_TRIANGLES);
 	for(size_t i = 1; i < mesure.points.size(); ++i) {
-		Angle angle = i * mesure.angularResolution + mesure.begin + 180_deg;
+		Angle angle = i * mesure.angular_resolution + mesure.begin + 180_deg;
 		float amplitude = mesure.points[i].toM() * 500;
 		hsv couleur;
 		couleur.h = mesure.points[i] / 4_m * 240;
@@ -174,11 +174,11 @@ int main(int argc, char** argv) {
 
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 
-	source1 = Lidar::open_lidar(Lidar::Sick);
-	filtre1 = std::make_unique<Filtre>();
+	source1 = Lidar::Lidar::open_lidar(Lidar::Type::Sick);
+	filtre1 = std::make_unique<Lidar::Filtre>();
 
-	source2 = Lidar::open_lidar(Lidar::Hokuyo);
-	filtre2 = std::make_unique<Filtre>();
+	source2 = Lidar::Lidar::open_lidar(Lidar::Type::Hokuyo);
+	filtre2 = std::make_unique<Lidar::Filtre>();
 
 	TimePoint t0 = TimePoint::now(), fpsT = TimePoint::now();
 	int frames = 0;

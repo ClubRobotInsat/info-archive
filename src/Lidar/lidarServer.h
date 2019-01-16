@@ -12,36 +12,42 @@
 #include <thread>
 /******************************************************************************/
 
-// Regroupe les Lidars, avec un thread pour les lires / reconnecter
-// sortie graphique en option.
-class LidarThread {
-public:
-	LidarThread(bool useGL);
-	~LidarThread() {
-		_thread->join();
-	}
+namespace Lidar {
+	// Regroupe les Lidars, avec un thread pour les lires / reconnecter
+	// sortie graphique en option.
+	class LidarThread {
+	public:
+		explicit LidarThread(bool useGL);
 
-	void start() {
-		_thread = std::make_unique<std::thread>([this]() { run(); });
-	}
-	void run();
+		~LidarThread() {
+			_thread->join();
+		}
 
-	// Dis si les lidars sont branchés et fonctionnels
-	// {Sick, Hokuyo}
-	std::vector<bool> status() const;
+		void start() {
+			_thread = std::make_unique<std::thread>([this]() { run(); });
+		}
 
-	std::vector<repere::Position> records();
-	// Pré-concaténés pour la performance de TCP.
-	std::string recordsAsText();
-	// pour l'ajustement en début de match.
-	std::string recordsChrMap();
+		void run();
 
-private:
-	std::unique_ptr<Lidar> _sick;
-	std::unique_ptr<Lidar> _hokuyo;
-	FindRobots _tr;
-	std::mutex _lTr;
-	std::unique_ptr<std::thread> _thread;
-	bool _hasGL;
-	std::unique_ptr<Display> _aff; // optionnel.
-};
+		// Dis si les lidars sont branchés et fonctionnels
+		// {Sick, Hokuyo}
+		std::vector<bool> status() const;
+
+		std::vector<repere::Position> records();
+
+		// Pré-concaténés pour la performance de TCP.
+		std::string recordsAsText();
+
+		// pour l'ajustement en début de match.
+		std::string recordsChrMap();
+
+	private:
+		std::unique_ptr<Lidar> _sick;
+		std::unique_ptr<Lidar> _hokuyo;
+		FindRobots _tr;
+		std::mutex _lTr;
+		std::unique_ptr<std::thread> _thread;
+		bool _hasGL;
+		std::unique_ptr<Display> _aff; // optionnel.
+	};
+} // namespace Lidar

@@ -17,7 +17,7 @@ using Vec4 = Vector4f;
 // traitement, pour faciliter la mise au point.
 class Display {
 public:
-	Display(Vector2m table_size = toVec2(GLOBAL_CONSTANTS().get_table_size()));
+	explicit Display(Vector2m table_size = toVec2(GLOBAL_CONSTANTS().get_table_size()));
 	~Display();
 
 	bool isClosed(); // passe à vrai quand on clique sur la croix.
@@ -31,9 +31,9 @@ public:
 	// la table.
 
 	// Mollo sur l'alpha, qu'on puisse encore voir la table au travers.
-	void frame_lidar(const FrameLidar& mesure, const repere::Coordinates& lidar_coords, Vec4 color);
+	void frame_lidar(const Lidar::FrameLidar& mesure, const repere::Coordinates& lidar_coords, Vec4 color);
 
-	void grid(const OccupGrid& occ, Vec3 color);
+	void grid(const Lidar::OccupGrid& occ, Vec3 color);
 
 	void candidates(const std::vector<repere::Position>& pts, Vec3 color);
 
