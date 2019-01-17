@@ -17,10 +17,10 @@ using Vec4 = Vector4f;
 const int RESX = 100;
 const int RESY = 66;
 
-std::unique_ptr<Lidar::Lidar> source1, source2;
-std::unique_ptr<Lidar::Filtre> filtre1, filtre2;
-std::unique_ptr<Lidar::OccupGrid> map;
-Lidar::FindRobots robots;
+std::unique_ptr<Lidar> source1, source2;
+std::unique_ptr<Filtre> filtre1, filtre2;
+std::unique_ptr<OccupGrid> map;
+FindRobots robots;
 std::unique_ptr<Display> affiche;
 
 int savedFrames = 0;
@@ -60,21 +60,21 @@ int main(int argc, char** argv) {
 	affiche = std::make_unique<Display>(toVec2(GLOBAL_CONSTANTS().get_table_size()));
 
 	try {
-		source1 = Lidar::Lidar::open_lidar(Lidar::Type::Sick);
-		filtre1 = std::make_unique<Lidar::Filtre>();
+		source1 = Lidar::open_lidar(Lidar::Sick);
+		filtre1 = std::make_unique<Filtre>();
 	} catch(std::runtime_error& e) {
 		logWarn(e.what());
 		logWarn("Impossible d'ouvrir lidar Sick");
 	}
 
 	try {
-		source2 = Lidar::Lidar::open_lidar(Lidar::Type::Hokuyo);
-		filtre2 = std::make_unique<Lidar::Filtre>();
+		source2 = Lidar::open_lidar(Lidar::Hokuyo);
+		filtre2 = std::make_unique<Filtre>();
 	} catch(std::runtime_error& e) {
 		logWarn("Impossible d'ouvrir lidar Hokuyo");
 	}
 
-	map = std::make_unique<Lidar::OccupGrid>(toVec2(GLOBAL_CONSTANTS().get_table_size()), RESX, RESY);
+	map = std::make_unique<OccupGrid>(toVec2(GLOBAL_CONSTANTS().get_table_size()), RESX, RESY);
 
 	while(!affiche->isClosed()) {
 		affiche->begin();

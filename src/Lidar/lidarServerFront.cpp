@@ -14,7 +14,7 @@
 using namespace std;
 
 
-unique_ptr<Lidar::LidarThread> gLidars;
+unique_ptr<LidarThread> gLidars;
 struct Server;
 
 class Client {
@@ -228,7 +228,7 @@ int main(int argc, char** argv) {
 
 		Server serv(port);
 
-		gLidars = make_unique<Lidar::LidarThread>(useGL);
+		gLidars = make_unique<LidarThread>(useGL);
 		gLidars->start();
 
 		int rc = serv.mainloop();

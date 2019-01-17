@@ -22,7 +22,7 @@ namespace PhysicalRobot {
 		_communicator->connect(args);
 
 		try {
-			_lidar = Lidar::Lidar::open_lidar(Lidar::Type::Any);
+			_lidar = Lidar::open_lidar(Lidar::Any);
 		} catch(std::runtime_error&) {
 			logWarn("Impossible to open the lidar.");
 			_lidar = nullptr;

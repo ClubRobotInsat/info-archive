@@ -65,7 +65,7 @@ void Display::begin() {
 	// mesure / affichage des FPS
 	auto t = TimePoint::now();
 	if((t - _fpsT) > 1.0_s) {
-		int fps = static_cast<int>(static_cast<double>(_frames) / static_cast<double>((t - _fpsT).toS()));
+		int fps = (int)((double)_frames / (double)((t - _fpsT).toS()));
 		char buffer[256] = "";
 		sprintf(buffer, "Affichage Lidar - FPS : %d", fps);
 		glfwSetWindowTitle(buffer);
@@ -108,17 +108,17 @@ void Display::end() {
 }
 
 
-void Display::frame_lidar(const Lidar::FrameLidar& mesure, const repere::Coordinates& lidar_coords, Vec4 couleur) {
-	double ox = ORIG.x + lidar_coords.getX().toM() * ECHELLE;
-	double oy = ORIG.y - lidar_coords.getY().toM() * ECHELLE;
+void Display::frame_lidar(const FrameLidar& mesure, const repere::Coordinates& lidar_coords, Vec4 couleur) {
+	float ox = ORIG.x + lidar_coords.getX().toM() * ECHELLE;
+	float oy = ORIG.y - lidar_coords.getY().toM() * ECHELLE;
 
 	Angle prevAngle = mesure.begin + lidar_coords.getAngle();
-	double prevAmpl = mesure.points[0].toM() * ECHELLE;
+	float prevAmpl = mesure.points[0].toM() * ECHELLE;
 
 	glBegin(GL_TRIANGLES);
 	for(size_t i = 1; i < mesure.points.size(); ++i) {
-		Angle angle = i * mesure.angular_resolution + mesure.begin + lidar_coords.getAngle();
-		double amplitude = mesure.points[i].toM() * ECHELLE;
+		Angle angle = i * mesure.angularResolution + mesure.begin + lidar_coords.getAngle();
+		float amplitude = mesure.points[i].toM() * ECHELLE;
 
 		glColor4f(couleur.r, couleur.g, couleur.b, couleur.a);
 		glVertex2d(ox, oy);
@@ -133,7 +133,7 @@ void Display::frame_lidar(const Lidar::FrameLidar& mesure, const repere::Coordin
 	glEnd();
 }
 
-void Display::grid(const Lidar::OccupGrid& occ, Vec3 color) {
+void Display::grid(const OccupGrid& occ, Vec3 color) {
 	float s = 3 / (float)ECHELLE; // demi-taille du point
 
 	glBegin(GL_QUADS);
@@ -147,8 +147,8 @@ void Display::grid(const Lidar::OccupGrid& occ, Vec3 color) {
 			if(!occ(x, y))
 				continue;
 
-			double mx = (x / static_cast<float>(r.x)) * _table_size.x.toM();
-			double my = (y / static_cast<float>(r.y)) * _table_size.y.toM();
+			float mx = (x / (float)r.x) * _table_size.x.toM();
+			float my = (y / (float)r.y) * _table_size.y.toM();
 
 			glColor3f(color.r, color.g, color.b);
 			glVertex2d(ox + (mx - s) * ECHELLE, oy - (my - s) * ECHELLE);
@@ -164,14 +164,14 @@ void Display::grid(const Lidar::OccupGrid& occ, Vec3 color) {
 }
 
 void Display::candidates(const std::vector<repere::Position>& pts, Vec3 color) {
-	float s = 5 / static_cast<float>(ECHELLE); // demi-taille du point
+	float s = 5 / (float)ECHELLE; // demi-taille du point
 
 	float ox = ORIG.x;
 	float oy = ORIG.y;
 
 	glBegin(GL_QUADS);
 
-	for(auto& v : pts) {
+	for(auto v : pts) {
 		auto x = v.getX().toM();
 		auto y = v.getY().toM();
 

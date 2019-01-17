@@ -24,17 +24,18 @@ namespace Strategy {
 		this->create_environment();
 
 		auto adversary_finder = [this]() {
-			Lidar::OccupGrid lidar_map(toVec2(GLOBAL_CONSTANTS().get_table_size()), 100, 66);
+			std::unique_ptr<OccupGrid> lidar_map =
+			    std::make_unique<OccupGrid>(toVec2(GLOBAL_CONSTANTS().get_table_size()), 100, 66);
 
 			while(get_left_time() > 0_s) {
 				repere::Coordinates coords; // = this->_robot->get_module<PhysicalRobot::Moving>()::get_coordinates();
-				lidar_map.reset();
+				lidar_map->reset();
 
 				auto frame = _robot->get_lidar_frame();
 				if(frame != std::nullopt) {
-					lidar_map.accumulate(frame.value(), coords);
-					Lidar::FindRobots robots;
-					robots.accumulate(lidar_map);
+					lidar_map->accumulate(frame.value(), coords);
+					FindRobots robots;
+					robots.accumulate(*lidar_map);
 					_mutex_adversary.lock();
 					_adversary_positions = robots.get_results();
 				} else {
