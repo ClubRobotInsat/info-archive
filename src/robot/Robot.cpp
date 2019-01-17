@@ -20,6 +20,13 @@ namespace PhysicalRobot {
 
 		_communicator = std::make_unique<Communication::Communicator<ModuleManager>>(_module_manager);
 		_communicator->connect(args);
+
+		try {
+			_lidar = Lidar::open_lidar(Lidar::Any);
+		} catch(std::runtime_error&) {
+			logWarn("Impossible to open the lidar.");
+			_lidar = nullptr;
+		}
 	}
 
 	/// Finalise le robot

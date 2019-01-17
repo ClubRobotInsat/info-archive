@@ -12,17 +12,17 @@
 
 struct libusb_device_handle;
 
-struct TrameLidar {
+struct FrameLidar {
 	// donnés dans le sens trigo
 	std::vector<Distance> points;
 	Time timestamp;
 	Angle angularResolution;
 	Angle begin, end;
 
-	void saveToFile(std::string const& file);
+	void save_to_file(std::string const& file);
 
-	TrameLidar() = default;
-	TrameLidar(std::string const& filename);
+	FrameLidar() = default;
+	FrameLidar(std::string const& filename);
 };
 
 class Lidar {
@@ -32,8 +32,8 @@ public:
 	enum LidarType { Hokuyo, Sick, Any };
 
 	// Tente d'ouvrir un des lidars supportés.
-	static std::unique_ptr<Lidar> openLidar(LidarType lidar = LidarType::Any);
+	static std::unique_ptr<Lidar> open_lidar(LidarType lidar = LidarType::Any);
 
-	virtual Time getTimeOrigin() = 0;
-	virtual TrameLidar getTrame() = 0;
+	virtual Time get_time_origin() = 0;
+	virtual FrameLidar get_frame() = 0;
 };

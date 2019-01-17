@@ -29,7 +29,7 @@ namespace PhysicalRobot {
 		unlock_variables();
 	}
 
-	Coordonnees Moving2019::get_coordonnees() const {
+	Coordinates Moving2019::get_coordinates() const {
 		std::lock_guard<std::mutex> lk(_mutex_variables);
 		return _coords;
 	}

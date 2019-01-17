@@ -28,7 +28,7 @@ ip_ssh=`arp -a | grep "enp3s0\|enp4s0\|eth0\|enx00e02f7000b5" | cut -d ' ' -f 2 
 # Verification de l'adresse IP
 validateIP $ip_ssh
 if [[ $? -ne 0 ]]
-then 
+then
 	echo -e "$RED Problème de connexion au raspi, vérifier le câble ethernet. $RST"
 	exit 1
 fi
