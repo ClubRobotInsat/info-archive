@@ -44,7 +44,7 @@ echo -e "${Green}Compiling with -j ${cores}${End}"
 dir=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 cd ${dir}
 
-mkdir -p build_arm & cd build_arm
+mkdir -p build_arm && cd build_arm
 
 echo -e "${Green} Generating CMakeFile${End}"
 cmake .. -DRASPI="1" -DCMAKE_TOOLCHAIN_FILE="../Cross-Compilation.cmake"
@@ -84,9 +84,9 @@ fi
 
 if [ $compile_lidar -eq 1 ]
 	then echo -e "${Green} Building affLidar${End}"
-	make affLidar -j ${cores}
+	make printRobots -j ${cores}
 	if [ $? -e "0" ]
-		then echo -e "${Red}Failed to build affLidar${End}"
+		then echo -e "${Red}Failed to build printRobots${End}"
 	fi
 fi
 
