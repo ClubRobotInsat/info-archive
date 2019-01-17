@@ -37,7 +37,6 @@ GtkSimuApplication::GtkSimuApplication(int argc, char** argv, std::string id, Gt
 	_mainWindow->show_all_children();
 
 	g_timeout_add(20, emptyGtkQueue, this);
-
 }
 
 GtkSimuApplication::~GtkSimuApplication() {
@@ -48,7 +47,18 @@ int GtkSimuApplication::callRun() {
 	return run(*_mainWindow);
 }
 
-void GtkSimuApplication::showErrorDialog(const std::string &message) {
+void GtkSimuApplication::stop() {
+	_mainWindow->close();
+	std::unique_lock<std::mutex> lck;
+	_stoppedCV.notify_all();
+}
+
+void GtkSimuApplication::waitStopped() {
+	std::unique_lock<std::mutex> lck(_stoppedMutex);
+	_stoppedCV.wait(lck);
+}
+
+void GtkSimuApplication::showErrorDialog(const std::string& message) {
 	Gtk::MessageDialog errorDialog(*_mainWindow, "Error", false, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK);
 	errorDialog.set_secondary_text(message.c_str());
 

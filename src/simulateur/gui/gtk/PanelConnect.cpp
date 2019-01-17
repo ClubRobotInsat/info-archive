@@ -6,11 +6,12 @@
 #include "resources/EmbeddedFiles.h"
 
 PanelConnect::PanelConnect() {
+	// On recupere le widget depuis un fichier embarqué dans l'executable
 	_builder = Gtk::Builder::create_from_string(EmbeddedFiles::readText("glade/connection-panel.glade"));
 	_builder->get_widget("connection-type", _connectionType);
 	_builder->get_widget("connection-arguments", _connectionArguments);
 	_builder->get_widget("connect-button", _connectButton);
-	Widget *widget;
+	Widget* widget;
 	_builder->get_widget("root", widget);
 	add(*widget);
 }

@@ -1,5 +1,5 @@
-#include <iostream>
 #include "GtkSimuContext.h"
+#include <iostream>
 
 #include "GtkSimuApplication.h"
 
@@ -22,8 +22,7 @@ void GtkSimuContext::update() {
 	for(auto& action : _actionsQueue) {
 		try {
 			action();
-		}
-		catch (std::exception &e) {
+		} catch(std::exception& e) {
 			displayErrorMessage(e.what());
 		}
 	}
@@ -33,10 +32,14 @@ void GtkSimuContext::update() {
 
 void GtkSimuContext::displayMessage(const std::string& message) {}
 
-void GtkSimuContext::displayErrorMessage(const std::string &message) {
-	_application->queueAction([this, message]() {
-		_application->showErrorDialog(message);
-	});
+void GtkSimuContext::displayErrorMessage(const std::string& message) {
+	_application->queueAction([this, message]() { _application->showErrorDialog(message); });
+}
+
+void GtkSimuContext::close() {
+	_application->queueAction([this]() { _application->stop(); });
+
+	_application->waitStopped();
 }
 
 void GtkSimuContext::queueAction(const std::function<void()>& action) {

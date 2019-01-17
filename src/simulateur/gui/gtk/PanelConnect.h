@@ -16,9 +16,9 @@ public:
 private:
 	Glib::RefPtr<Gtk::Builder> _builder;
 
-	Gtk::ComboBoxText *_connectionType;
-	Gtk::Entry *_connectionArguments;
-	Gtk::Button *_connectButton;
+	Gtk::ComboBoxText* _connectionType;
+	Gtk::Entry* _connectionArguments;
+	Gtk::Button* _connectButton;
 };
 
 

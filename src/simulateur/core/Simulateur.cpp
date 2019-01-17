@@ -47,6 +47,7 @@ Simulateur::Simulateur()
 
 Simulateur::~Simulateur() {
 	endWorld();
+	_guiCtx->close();
 	_instance = nullptr;
 }
 

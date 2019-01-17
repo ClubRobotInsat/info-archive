@@ -3,6 +3,11 @@
 
 #include <functional>
 
+/** Classe permettant au simulateur de controller une
+ * interface utilisateur pour afficher diverses informations.
+ * L'interface utilisateur peut eventuellement envoyer les
+ * commandes de l'utilisateur au simulateur par le biais
+ * de la classe IGuiClient. */
 class IGuiContext {
 public:
 	virtual ~IGuiContext() = default;
@@ -11,7 +16,9 @@ public:
 
 	virtual void displayMessage(const std::string& message) = 0;
 
-	virtual void displayErrorMessage(const std::string &errorMsg) = 0;
+	virtual void displayErrorMessage(const std::string& errorMsg) = 0;
+
+	virtual void close() = 0;
 };
 
 

@@ -1,6 +1,7 @@
 #ifndef ROOT_GTKSIMUAPPLICATION_H
 #define ROOT_GTKSIMUAPPLICATION_H
 
+#include <condition_variable>
 #include <functional>
 #include <list>
 #include <mutex>
@@ -11,6 +12,8 @@
 #include "PanelConnect.h"
 #include "PanelRobotState.h"
 
+/** This class holds the gtk application, creates the main window
+ * and executes every actions on the UI. */
 class GtkSimuApplication : public Gtk::Application {
 public:
 	GtkSimuApplication(int argc, char** argv, std::string id, GtkSimuContext& context, IGuiClient& guiClient);
@@ -20,7 +23,12 @@ public:
 	/** Calls "run" method with the main window */
 	int callRun();
 
-	void showErrorDialog(const std::string &message);
+	void stop();
+
+	/** Waits until the gtk app is completely stopped. */
+	void waitStopped();
+
+	void showErrorDialog(const std::string& message);
 
 	/** Queues an action to be executed on the gtk thread. */
 	void queueAction(const std::function<void()>& action);
@@ -38,6 +46,9 @@ private:
 	/// Actions that should be executed on the gtk thread.
 	std::list<std::function<void()>> _gtkQueue;
 	std::mutex _gtkQueueMutex;
+	/// Condition variable used for method waitStopped()
+	std::condition_variable _stoppedCV;
+	std::mutex _stoppedMutex;
 
 
 	/// C callback to execute all pending actions

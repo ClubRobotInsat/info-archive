@@ -5,7 +5,7 @@
 #ifndef ROOT_IWINDOWLISTENER_H
 #define ROOT_IWINDOWLISTENER_H
 
-/** Cette interface permet à un module de GUI de transmettre les
+/** Cette interface permet à un module graphique de transmettre les
  * actions de l'utilisateur aux autres modules du simulateur. */
 class IGraphicalUserListener {
 public:
