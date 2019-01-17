@@ -17,7 +17,6 @@ using Vec4 = Vector4f;
 const int RESX = 100;
 const int RESY = 66;
 
-
 std::unique_ptr<Lidar::Lidar> source1, source2;
 std::unique_ptr<Lidar::Filtre> filtre1, filtre2;
 std::unique_ptr<Lidar::OccupGrid> map;
@@ -64,6 +63,7 @@ int main(int argc, char** argv) {
 		source1 = Lidar::Lidar::open_lidar(Lidar::Type::Sick);
 		filtre1 = std::make_unique<Lidar::Filtre>();
 	} catch(std::runtime_error& e) {
+		logWarn(e.what());
 		logWarn("Impossible d'ouvrir lidar Sick");
 	}
 

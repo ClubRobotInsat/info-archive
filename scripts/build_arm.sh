@@ -4,6 +4,7 @@
 compile_principal=0
 compile_wii=0
 compile_test=0
+compile_lidar=0
 cores=$(nproc)
 
 if [ $# -ne "0" ]
@@ -19,16 +20,19 @@ if [ $# -ne "0" ]
 			then compile_wii=1
 		elif [ "$arg" = "test" ]
 			then compile_test=1
+		elif [ "$arg" = "lidar" ]
+			then compile_lidar=1
 		else
-			echo "Usage : $0 [all|principal|wii|test]"
+			echo "Usage : $0 [all|principal|wii|test|lidar]"
 			exit
 		fi
 	done
 else
-	echo "Usage : $0 [all|principal|wii|test]"
+	echo "Usage : $0 [all|principal|wii|test|lidar]"
 	compile_principal=1
 	compile_wii=1
 	compile_test=1
+	compile_lidar=1
 fi
 
 Green='\e[1;32m'
@@ -75,6 +79,14 @@ if [ $compile_test -eq 1 ]
 	make IATestRobot -j ${cores}
 	if [ $? -ne "0" ]
 		then echo -e "${Red}Failed to build IAPrincipal${End}"
+	fi
+fi
+
+if [ $compile_lidar -eq 1 ]
+	then echo -e "${Green} Building affLidar${End}"
+	make affLidar -j ${cores}
+	if [ $? -e "0" ]
+		then echo -e "${Red}Failed to build affLidar${End}"
 	fi
 fi
 
