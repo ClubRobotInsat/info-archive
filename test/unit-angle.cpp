@@ -4,8 +4,10 @@
 
 #include "catch.hpp"
 
-#include "../src/robot/Modules/Servos.h"
 #include <Commun.h>
+
+#define TEST_SERVOS
+#include "../src/robot/Modules/Servos.h"
 
 using namespace PhysicalRobot;
 
