@@ -1,10 +1,10 @@
 #ifndef _COMMUN_H_
 #define _COMMUN_H_
 
+#include "ActionResult.h"
 #include "Clock.h"
 #include "Enum/Enum.h"
 #include "MathToolbox/MathToolbox.h"
-#include "ResultatAction.h"
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wint-in-bool-context"

@@ -8,7 +8,7 @@
 
 #include "../../../Principal/librobot/libRobot.h"
 #include "PetriCommon.h"
-#include <ResultatAction.h>
+#include <ActionResult.h>
 
 // @PetriLab@ Moteurs
 ResultatAction monterAscenseursDe(int nbr_tours);

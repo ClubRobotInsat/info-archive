@@ -7,7 +7,7 @@
 #pragma once
 
 #include "PetriCommon.h"
-#include <ResultatAction.h>
+#include <ActionResult.h>
 
 // @PetriLab@ Servos
 
