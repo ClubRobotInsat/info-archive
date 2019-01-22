@@ -1,4 +1,5 @@
 add_subdirectory(Environment)
+add_subdirectory(ModuleInterfacers)
 
 set(STRAT_SOURCE
         AbstractStrategy.cpp)
