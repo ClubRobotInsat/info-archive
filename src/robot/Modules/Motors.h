@@ -31,6 +31,8 @@ namespace PhysicalRobot {
 
 		void set_position_turns(uint8_t motor, uint8_t nb_turns, RotatingDirection);
 
+		void stop_controlled_motor(uint8_t motor);
+
 		bool is_position_finished(uint8_t motor) const;
 
 		void activate_uncontrolled_motor(uint8_t motor, RotatingDirection);

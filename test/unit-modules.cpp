@@ -188,7 +188,7 @@ TEST_CASE("ModuleManager") {
 
 				std::string msg(frame_servos.getDonnees() + 1, frame_servos.getDonnees() + frame_servos.getNbDonnees());
 
-				CHECK(msg == "{\"blocked\":false,\"color\":\"Yellow\",\"control\":\"Speed\",\"data\":500,\"id\":254,"
+				CHECK(msg == "{\"blocked\":false,\"color\":\"Yellow\",\"control\":\"Speed\",\"data\":81,\"id\":254,"
 				             "\"known_position\":511,\"mode\":\"Unblocking\",\"rotation\":\"CounterClockwise\"}");
 			}
 		}
