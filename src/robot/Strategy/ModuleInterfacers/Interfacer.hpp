@@ -5,7 +5,7 @@
 #ifndef ROOT_INTERFACER_H
 #define ROOT_INTERFACER_H
 
-#include "../../Modules/Servos.h"
+#include "../../Robot.h"
 #include <ActionResult.h>
 
 namespace Strategy {

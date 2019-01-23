@@ -13,8 +13,8 @@ namespace Strategy {
 			std::fill(_offset, std::end(_offset), 0_deg);
 		}
 
-		ServosManager::ServosManager(PhysicalRobot::Robot& robot, std::function<Angle(servo_t, uint8_t)> get_servo_position)
-		        : ServosManager(robot.get_module<PhysicalRobot::Servos>(), get_servo_position) {}
+		ServosManager::ServosManager(std::shared_ptr<PhysicalRobot::Robot> robot, std::function<Angle(servo_t, uint8_t)> get_servo_position)
+		        : ServosManager(robot->get_module<PhysicalRobot::Servos>(), get_servo_position) {}
 
 		ActionResult ServosManager::set_position(servo_t servo, Angle pos) {
 			auto TIMEOUT_SERVO = 1000_ms; // 500_ms;

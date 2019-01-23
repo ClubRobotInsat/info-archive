@@ -6,17 +6,11 @@
 #define ROOT_INTERFACER_SERVOS_H
 
 #include "../../Modules/Servos.h"
-#include "../../Robot.h"
 #include "Interfacer.hpp"
 #include "ServosManager.h"
 
-namespace PhysicalRobot {
-	class Servos;
-}
-
 namespace Strategy {
 	namespace Interfacer {
-		class AbstractInterfacer;
 
 		class ServosManager final : public AbstractInterfacer {
 		public:
@@ -28,7 +22,7 @@ namespace Strategy {
 			 * Toutes les fonctions publiques sont bloquantes.
 			 */
 			ServosManager(PhysicalRobot::Servos& module_servos, std::function<Angle(servo_t, uint8_t)> get_servo_position);
-			ServosManager(PhysicalRobot::Robot& robot, std::function<Angle(servo_t, uint8_t)> get_servo_position);
+			explicit ServosManager(std::shared_ptr<PhysicalRobot::Robot> robot, std::function<Angle(servo_t, uint8_t)> get_servo_position);
 
 			/**
 			 * Positionne le servomoteur à la position demandée en gérant les blocages
