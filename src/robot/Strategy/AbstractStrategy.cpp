@@ -9,8 +9,7 @@
 #include "EmbeddedFiles.h"
 
 namespace Strategy {
-	AbstractStrategy::AbstractStrategy(std::unique_ptr<PhysicalRobot::Robot> robot, Constants::RobotColor color)
-	        : _robot(std::move(robot)), _color(color) {
+	AbstractStrategy::AbstractStrategy(Constants::RobotColor color) : _color(color), _nb_points(0) {
 		setThreadName("Main");
 
 		Distance sx = GLOBAL_CONSTANTS()["primary"].get_size().x;
@@ -22,34 +21,10 @@ namespace Strategy {
 		                                     Vector2m{0_m, 0_m});
 
 		this->create_environment();
-
-		auto adversary_finder = [this]() {
-			std::unique_ptr<OccupGrid> lidar_map =
-			    std::make_unique<OccupGrid>(toVec2(GLOBAL_CONSTANTS().get_table_size()), 100, 66);
-
-			while(get_left_time() > 0_s) {
-				repere::Coordinates coords; // = this->_robot->get_module<PhysicalRobot::Moving>()::get_coordinates();
-				lidar_map->reset();
-
-				auto frame = _robot->get_lidar_frame();
-				if(frame != std::nullopt) {
-					lidar_map->accumulate(frame.value(), coords);
-					FindRobots robots;
-					robots.accumulate(*lidar_map);
-					_mutex_adversary.lock();
-					_adversary_positions = robots.get_results();
-				} else {
-					_mutex_adversary.lock();
-					_adversary_positions.clear();
-				}
-				_mutex_adversary.unlock();
-			}
-		};
-		_find_robots = std::thread(adversary_finder);
 	}
 
 	void AbstractStrategy::create_environment() {
-		this->_env->loadFromJSON(nlohmann::json::parse(EmbeddedFiles::readText("table.json")));
+		this->_env->loadFromJSON(GLOBAL_CONSTANTS().TABLE_2018());
 	}
 
 	void AbstractStrategy::start(Duration match) {
@@ -61,8 +36,11 @@ namespace Strategy {
 
 		_execution = std::thread(std::bind(&AbstractStrategy::exec, this));
 
-		while(get_left_time() > 0_s)
-			sleep(100_ms);
+		while(get_left_time() > 0_s) {
+			sleep(1_s);
+		}
+
+		stop();
 
 		logDebug("FIN DU MATCH !");
 		logDebug("Funny action");
@@ -74,11 +52,16 @@ namespace Strategy {
 		pthread_cancel(handle);
 		pthread_join(handle, nullptr);
 
-		_find_robots.join();
+		stop();
+	}
+
+	void AbstractStrategy::stop() {
+		for(auto interfacer : _interfacers) {
+			interfacer->get_robot().deactivation();
+		}
 	}
 
 	Duration AbstractStrategy::get_left_time() const {
-		sleep(1000_ms);
 		// logDebug6("Il reste :", (_dureeTotaleMatch - _chronoMatch.getElapsedTime()).toS());
 		return _total_duration_match - get_time();
 	}
@@ -91,9 +74,23 @@ namespace Strategy {
 		_chrono_match.reset();
 	}
 
-	std::vector<repere::Position> AbstractStrategy::get_adversary_positions() const {
-		std::lock_guard<std::mutex> lk(_mutex_adversary);
-		return _adversary_positions;
+	std::shared_ptr<Interfacer::GlobalManager> AbstractStrategy::add_robot(std::unique_ptr<PhysicalRobot::Robot> robot) {
+		auto manager = std::make_shared<Interfacer::GlobalManager>(std::move(robot));
+		_interfacers.push_back(manager);
+		return manager;
+	}
+
+	std::shared_ptr<Interfacer::GlobalManager> AbstractStrategy::add_robot(std::shared_ptr<Interfacer::GlobalManager> manager) {
+		_interfacers.push_back(manager);
+		return manager;
+	}
+
+	int AbstractStrategy::get_points() const {
+		return _nb_points;
+	}
+
+	int AbstractStrategy::add_points(int n) {
+		return _nb_points += n;
 	}
 
 	void AbstractStrategy::exec() {

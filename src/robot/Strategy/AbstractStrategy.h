@@ -14,9 +14,9 @@
 #ifndef ROOT_STRATEGY_H
 #define ROOT_STRATEGY_H
 
-#include "../Robot.h"
 #include "Commun.h"
 #include "Environment/environment.h"
+#include "ModuleInterfacers/GlobalManager.h"
 #include <Constants.h>
 
 #include <memory>
@@ -27,6 +27,9 @@ namespace Strategy {
 	class AbstractStrategy {
 	public:
 		void start(Duration match = GLOBAL_CONSTANTS().get_match_duration());
+
+		// Arrête tous les actionneurs
+		virtual void stop();
 
 		Constants::RobotColor get_color() const {
 			return _color;
@@ -45,10 +48,15 @@ namespace Strategy {
 			return *_env;
 		}
 
-		std::vector<repere::Position> get_adversary_positions() const;
+		std::shared_ptr<Interfacer::GlobalManager> add_robot(std::unique_ptr<PhysicalRobot::Robot>);
+		std::shared_ptr<Interfacer::GlobalManager> add_robot(std::shared_ptr<Interfacer::GlobalManager>);
+
+		int get_points() const;
+
+		int add_points(int n);
 
 	protected:
-		AbstractStrategy(std::unique_ptr<PhysicalRobot::Robot>, Constants::RobotColor);
+		AbstractStrategy(Constants::RobotColor);
 
 		virtual ~AbstractStrategy() = default;
 
@@ -60,7 +68,7 @@ namespace Strategy {
 		/// Thread dans lequel s'exécute la stratégie
 		std::thread _execution;
 
-		std::unique_ptr<PhysicalRobot::Robot> _robot;
+		std::vector<std::shared_ptr<Interfacer::GlobalManager>> _interfacers;
 		std::unique_ptr<Environment> _env;
 
 	private:
@@ -71,9 +79,7 @@ namespace Strategy {
 		Duration _total_duration_match = 0_s;
 		StopWatch _chrono_match;
 
-		std::thread _find_robots;
-		mutable std::mutex _mutex_adversary;
-		std::vector<repere::Position> _adversary_positions;
+		std::atomic_int _nb_points;
 
 		// Appel de la fonction virtuelle 'execute' ; ça permets d'arrêter le thread de la stratégie à la fin du match
 		void exec();
