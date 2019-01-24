@@ -22,6 +22,22 @@ namespace PhysicalRobot {
 		unlock_variables();
 	}
 
+	void Navigation::turnAbsolute(Angle angle) {
+		lock_variables();
+		set_command(MovingCommand::TurnAbsolute);
+		_args_cmd[0] = angle_to_u16(angle);
+		_state_changed.exchange(true);
+		unlock_variables();
+	}
+
+	void Navigation::turnRelative(Angle angle) {
+		lock_variables();
+		set_command(MovingCommand::TurnRelative);
+		_args_cmd[0] = angle_to_u16(angle);
+		_state_changed.exchange(true);
+		unlock_variables();
+	}
+
 	void Navigation::stop() {
 		lock_variables();
 		set_command(MovingCommand::Stop);
@@ -65,7 +81,11 @@ namespace PhysicalRobot {
 	}
 
 	void Navigation::deactivation() {
+		lock_variables();
+		set_command(MovingCommand::EmergencyStop);
+		_state_changed.exchange(true);
 		// TODO : arrêt d'urgence + arrêter l'asservissement
+		unlock_variables();
 	}
 
 	void Navigation::set_command(MovingCommand command) {

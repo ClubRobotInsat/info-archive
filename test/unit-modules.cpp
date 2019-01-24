@@ -206,6 +206,34 @@ TEST_CASE("ModuleManager") {
 				CHECK(msg == "{\"blocked\":false,\"color\":\"Yellow\",\"control\":\"Speed\",\"data\":81,\"id\":254,"
 				             "\"known_position\":511,\"mode\":\"Unblocking\",\"rotation\":\"CounterClockwise\"}");
 			}
+
+			SECTION("Navigation") {
+			    auto& module_nav = manager.add_module<PhysicalRobot::Navigation>(15);
+
+			    SECTION("No commands") {
+			        auto frames_nav = manager.write_frame();
+			        REQUIRE(frames_nav.empty());
+			    }
+
+			    SECTION("Simple commands") {
+			        module_nav.forward(5_m);
+			        auto frames_nav = manager.write_frame();
+			        REQUIRE(frames_nav.size() == 1);
+
+                    GlobalFrame frame_nav = frames_nav[0];
+                    REQUIRE(frame_nav.getDonnees()[0] == module_nav.get_id());
+
+                    JSON json = nlohmann::json::parse(
+                            frame_nav.getDonnees() + 1,
+                            frame_nav.getDonnees() + frame_nav.getNbDonnees());
+                    CHECK(std::string("GoForward") == json["command"]);
+
+
+			        // check that manager.write_frame() flushes frame buffer
+			        frames_nav = manager.write_frame();
+			        CHECK(frames_nav.empty());
+			    }
+			}
 		}
 
 		SECTION("read_frame") {

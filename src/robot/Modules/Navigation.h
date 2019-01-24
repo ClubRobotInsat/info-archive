@@ -35,6 +35,10 @@ namespace PhysicalRobot {
 
 		void backward(Distance distance);
 
+		void turnRelative(Angle angle);
+
+		void turnAbsolute(Angle angle);
+
 		void stop();
 
 		repere::Coordinates get_coordinates() const;
