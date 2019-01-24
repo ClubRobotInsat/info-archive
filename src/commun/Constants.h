@@ -23,6 +23,18 @@ namespace Constants {
 	              // Valeur d'initialisation, qui permet de déctecter si la lecture du capteur couleur a déconné.
 	              Undef)
 
+	inline Constants::RobotColor string_to_color(std::string str) {
+		std::transform(str.cbegin(), str.cend(), str.begin(), ::tolower);
+		for(auto color : getEnumValues<Constants::RobotColor>()) {
+			std::string str_color(toString(color));
+			std::transform(str_color.cbegin(), str_color.cend(), str_color.begin(), ::tolower);
+			if(str == str_color) {
+				return color;
+			}
+		}
+		return Constants::RobotColor::Undef;
+	}
+
 	class Constants;
 	class Robot {
 		friend class Constants;
@@ -176,7 +188,7 @@ inline Constants::RobotColor operator!(Constants::RobotColor const& c) {
 			return RobotColor::Yellow;
 		case RobotColor::Yellow:
 			return RobotColor::Purple;
-		case RobotColor::Undef:
+		default:
 			return RobotColor::Undef;
 	}
 }

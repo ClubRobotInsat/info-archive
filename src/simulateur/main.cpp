@@ -8,7 +8,6 @@
 
 //#include "communication/Robot2017.h"
 #include "Commun.h"
-#include "ConstantesCommunes.h"
 #include "core/Simulateur.h"
 #include "core/SimulateurConstantes.h"
 #include "core/World.h"
@@ -16,8 +15,11 @@
 
 using namespace std;
 
-void printHelp() {
-	std::cout << "Usage : --robot [on|off] --world [on|off] --color [green|orange] --load <path.json> [--no-physics]" << std::endl;
+void printHelp(std::ostream& os = std::cout) {
+	std::string colors = "["s + toString(Constants::RobotColor::Purple) + "|" + toString(Constants::RobotColor::Yellow) + "]";
+	std::transform(colors.cbegin(), colors.cend(), colors.begin(), ::tolower);
+
+	os << "Usage : --robot [on|off] --world [on|off] --color " << colors << " --load <path.json> [--no-physics]" << std::endl;
 }
 
 /** Cette fonction parse les arguments envoyés au simu et
@@ -33,7 +35,7 @@ bool parseArgument(int argc, char** argv, Simulateur& simulateur) {
 	bool robot = true;
 	bool world = true;
 	std::string json_file;
-	Constantes::RobotColor color = Constantes::RobotColor::Undef;
+	Constants::RobotColor color = Constants::RobotColor::Undef;
 
 	int arg;
 	static struct option long_options[] = {{"robot", required_argument, 0, 'r'},
@@ -54,11 +56,7 @@ bool parseArgument(int argc, char** argv, Simulateur& simulateur) {
 				}
 				break;
 			case 'c':
-				if(std::string(optarg) == "orange") {
-					color = Constantes::RobotColor::Orange;
-				} else if(std::string(optarg) == "green") {
-					color = Constantes::RobotColor::Green;
-				}
+				color = Constants::string_to_color(std::string(optarg));
 				break;
 			case 'w':
 				if(std::string(optarg) == "off") {
@@ -78,8 +76,7 @@ bool parseArgument(int argc, char** argv, Simulateur& simulateur) {
 		}
 	}
 
-	// TODO virer les vieux namespaces tous pourris comme Constantes (remplacer par des trucs logiques)
-	if(color == Constantes::RobotColor::Undef) {
+	if(color == Constants::RobotColor::Undef) {
 		logDebug5("Pas de couleur spécifiée.");
 		printHelp();
 		return false;
@@ -96,7 +93,7 @@ bool parseArgument(int argc, char** argv, Simulateur& simulateur) {
 	// Robot
 	if(robot) {
 		simulateur.addRobot(color);
-		logDebug5(std::string("Couleur du robot : ") + std::string(color == Constantes::RobotColor::Orange ? "orange" : "vert"));
+		logDebug5(std::string("Couleur du robot : ") + toString(color));
 	} else {
 		logDebug4("Aucun robot ajouté.");
 	}
@@ -120,7 +117,7 @@ bool parseArgument(int argc, char** argv, Simulateur& simulateur) {
 namespace {
 	std::atomic_bool _simuAlive = {true};
 	Simulateur _simu;
-}
+} // namespace
 
 void stopSimu() {
 	_simuAlive = false;
@@ -141,8 +138,7 @@ void parseConsole() {
 			_simu.setResetWorldFlag(true);
 			// commande inconnue, afficher l'aide
 		} else {
-			std::cout << "help : q (quit), r (reset)"
-			          << std::endl; // TO DO Afficher l'aide de façon synchrone avec un buffer
+			std::cout << "help : q (quit), r (reset)" << std::endl; // TO DO Afficher l'aide de façon synchrone avec un buffer
 		}
 	}
 }

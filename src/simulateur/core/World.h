@@ -10,7 +10,7 @@
 
 #include <Box2D/Dynamics/b2World.h>
 
-#include <ConstantesCommunes.h>
+#include <Constants.h>
 
 #include "../graphique/IGraphicalContext.h"
 #include "../physique/IPhysicalContext.h"
@@ -59,9 +59,9 @@ public:
 	 * être un objet JSON décrivant l'état du monde. */
 	void loadWorldFromFile(std::string filename);
 
-	Object3D& createRobotFromJSON(const JSON& json, Constantes::RobotColor color);
+	Object3D& createRobotFromJSON(const JSON& json, Constants::RobotColor color);
 
-	Object3D& createRobotFromFile(std::string filename, Constantes::RobotColor color);
+	Object3D& createRobotFromFile(std::string filename, Constants::RobotColor color);
 
 	/**
 	 * Ecrit le contenu du monde dans un json et le renvoit.

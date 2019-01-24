@@ -118,12 +118,12 @@ public:
 	 * On ajoute notre robot sur la table
 	 * @param color couleur du robot, détermine sa position initiale et sa couleur d'affichage
 	 */
-	void addRobot(Constantes::RobotColor color);
+	void addRobot(Constants::RobotColor color);
 
 	/**
 	 * Obtient la couleur du robot
 	 */
-	Constantes::RobotColor getRobotColor() const;
+	Constants::RobotColor getRobotColor() const;
 
 	/**
 	 * Désactive la simulation physique de tous les objets et du robot sur la table
