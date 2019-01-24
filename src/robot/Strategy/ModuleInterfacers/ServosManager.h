@@ -14,24 +14,29 @@ namespace Strategy {
 
 		class ServosManager final : public AbstractInterfacer {
 		public:
-			using servo_t = PhysicalRobot::Servos::servo_t;
-
 			using interfaced_type = PhysicalRobot::Servos;
+
+			using servo_t = interfaced_type::servo_t;
 
 			/**
 			 * Toutes les fonctions publiques sont bloquantes.
 			 */
-			ServosManager(PhysicalRobot::Servos& module_servos, std::function<Angle(servo_t, uint8_t)> get_servo_position);
-			explicit ServosManager(std::shared_ptr<PhysicalRobot::Robot> robot, std::function<Angle(servo_t, uint8_t)> get_servo_position);
+			explicit ServosManager(interfaced_type& module_servos /*, std::function<Angle(servo_t, uint8_t)> get_servo_position*/);
+			explicit ServosManager(std::shared_ptr<PhysicalRobot::Robot> robot /*, std::function<Angle(servo_t, uint8_t)> get_servo_position*/);
 
 			/**
 			 * Positionne le servomoteur à la position demandée en gérant les blocages
 			 */
 			ActionResult set_position(servo_t, Angle position);
 
-			interfaced_type* operator->() {
-				return &_module;
-			}
+			interfaced_type* operator->();
+
+			/**
+			 * Ajoute un offset à la valeur théorique où doit aller le servo
+			 */
+			void set_offset(servo_t servo, Angle offset);
+
+			Angle get_offset(servo_t servo);
 
 		private:
 			interfaced_type& _module;
