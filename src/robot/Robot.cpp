@@ -6,15 +6,15 @@ namespace PhysicalRobot {
 
 	// Le robot n'est pas initialisé à partir de `src/robot.ini`
 	// L'utilisateur doit donc fournir un ModuleManager non vierge s'il veut un robot fonctionnel
-	Robot::Robot(std::shared_ptr<ModuleManager> module_manager, std::vector<std::string> const& args)
-	        : Robot(std::move(module_manager), "guest", args) {}
+	Robot::Robot(std::shared_ptr<ModuleManager> module_manager, std::vector<std::string> const& args, Lidar::LidarType lidar)
+	        : Robot(std::move(module_manager), "guest", args, lidar) {}
 
 	// Le robot est initialisé à partir de `src/robot.ini` dans la section `[robot.<name>]`
-	Robot::Robot(std::string name, std::vector<std::string> const& args)
-	        : Robot(std::make_shared<ModuleManager>(), std::move(name), args) {}
+	Robot::Robot(std::string name, std::vector<std::string> const& args, Lidar::LidarType lidar)
+	        : Robot(std::make_shared<ModuleManager>(), std::move(name), args, lidar) {}
 
 	/// Initialise le robot à partir des arguments passes au programme.
-	Robot::Robot(std::shared_ptr<ModuleManager> module_manager, std::string name, std::vector<std::string> const& args)
+	Robot::Robot(std::shared_ptr<ModuleManager> module_manager, std::string name, std::vector<std::string> const& args, Lidar::LidarType lidar)
 	        : name(std::move(name)), _module_manager(std::move(module_manager)), _debug_active(false) {
 		assign_modules();
 
@@ -22,7 +22,7 @@ namespace PhysicalRobot {
 		_communicator->connect(args);
 
 		try {
-			_lidar = Lidar::open_lidar(Lidar::Any);
+			_lidar = Lidar::open_lidar(lidar);
 		} catch(std::runtime_error&) {
 			logWarn("Impossible to open the lidar.");
 			_lidar = nullptr;

@@ -16,7 +16,7 @@ namespace PhysicalRobot {
 		/// Initialise le robot a partir des arguments passes au programme.
 		/// Les modules du robot peuvent être initialisés à partir du fichier de constantes OU depuis un ModuleManager
 		/// @arg name Correspond au nom de section dans le `src/robot.ini`
-		Robot(std::shared_ptr<ModuleManager> module_manager, std::string name, std::vector<std::string> const& args);
+		Robot(std::shared_ptr<ModuleManager> module_manager, std::string name, std::vector<std::string> const& args, Lidar::LidarType);
 
 	public:
 		const std::string name;
@@ -29,10 +29,10 @@ namespace PhysicalRobot {
 		// static const int NB_RETRY_TIRETTE = 3;
 
 		// Initialisation du robot à partir d'un ModuleManager
-		Robot(std::shared_ptr<ModuleManager> module_manager, std::vector<std::string> const& args);
+		Robot(std::shared_ptr<ModuleManager> module_manager, std::vector<std::string> const& args, Lidar::LidarType);
 
 		// Initialisation du robot à partir du fichier `src/robot.ini`
-		Robot(std::string name, std::vector<std::string> const& args);
+		Robot(std::string name, std::vector<std::string> const& args, Lidar::LidarType);
 
 		virtual ~Robot();
 

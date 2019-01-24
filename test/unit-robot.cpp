@@ -20,7 +20,7 @@ TEST_CASE("Initialization of a common robot.") {
 
 		CHECK(m->get_nb_modules() == 2);
 
-		PhysicalRobot::Robot robot(m, {"ehCoucou", "NULL"});
+		PhysicalRobot::Robot robot(m, {"ehCoucou", "NULL"}, Lidar::None);
 
 		REQUIRE(robot.name == "guest");
 		CHECK(robot.get_module<PhysicalRobot::Servos>().get_nbr_servos() == 2);
@@ -29,8 +29,8 @@ TEST_CASE("Initialization of a common robot.") {
 	}
 
 	SECTION(".ini file initialization") {
-		PhysicalRobot::Robot robot("primary", {"ehCoucou", "NULL"});
+		PhysicalRobot::Robot robot("primary", {"ehCoucou", "NULL"}, Lidar::None);
 		CHECK(robot.get_module<PhysicalRobot::Servos>().get_id() == 2);
-		CHECK(robot.get_module<PhysicalRobot::IO>().get_id() == 5);
+		CHECK(robot.get_module<PhysicalRobot::IO>().get_id() == 4);
 	}
 }
