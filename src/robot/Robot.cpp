@@ -63,8 +63,8 @@ namespace PhysicalRobot {
 		}
 
 		for(auto module : GLOBAL_CONSTANTS()[name].get_modules()) {
-			/*if(module.first == "moving") {
-			    _module_manager->add_module<Moving>(module.second);
+			/*if(module.first == "navigation") {
+			    _module_manager->add_module<Navigation>(module.second);
 			} else */
 			if(module.first == "servos") {
 				// TODO : voir comment récupérer les servos à ajouter (`robot.ini` ou fichier .JSON ?)
@@ -73,9 +73,6 @@ namespace PhysicalRobot {
 				_module_manager->add_module<Motors>(module.second);
 			} else if(module.first == "io") {
 				_module_manager->add_module<IO>(module.second);
-			} else if(module.first == "avoidance") {
-				auto& avoidance = _module_manager->add_module<Avoidance>(module.second);
-				avoidance.set_position_turret(GLOBAL_CONSTANTS()[name].get_turret_position());
 			} else {
 				throw std::runtime_error("The module named '" + module.first + "' (ID: " + std::to_string(module.second) +
 				                         ") isn't known for the robot '" + name + "'.");

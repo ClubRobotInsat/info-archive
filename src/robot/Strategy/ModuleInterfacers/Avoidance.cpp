@@ -7,8 +7,14 @@
 namespace Strategy {
 	namespace Interfacer {
 		Avoidance::Avoidance(std::shared_ptr<PhysicalRobot::Robot> robot, Environment& env, Vector2m turret_shift)
-		        : _is_running(true), _robot(robot), _env(env), _turret_shift(turret_shift) {
+		        : _is_running(true)
+		        , _robot(robot)
+		        , _env(env)
+		        , _turret_shift(turret_shift)
+		        , _angle_detection_adversary(GLOBAL_CONSTANTS()["primary"].get_angle_adversary_detection()) {
 			_find_robots = std::thread(std::bind(&Avoidance::thread_lidar, this));
+			std::string name = (_robot->name != "guest" ? _robot->name : "primary");
+			set_turret_shift(GLOBAL_CONSTANTS()[name].get_turret_position());
 		}
 
 		Avoidance::~Avoidance() {
@@ -26,6 +32,7 @@ namespace Strategy {
 		}
 
 		bool Avoidance::adversary_detected(Distance threshold) const {
+			// TODO: use _angle_detection_adversary
 			repere::Position robot_position; // = this->_robot->get_module<PhysicalRobot::Moving>()::get_position();
 			auto adversaries = get_adversary_positions();
 
@@ -35,6 +42,18 @@ namespace Strategy {
 				}
 			}
 			return false;
+		}
+
+		void Avoidance::set_adversary_detection_angle(Angle angle) {
+			if(abs(angle) < 0.5_PI) {
+				_angle_detection_adversary.exchange(angle);
+			} else {
+				logWarn("Adversary detection angle too large! ", angle);
+			}
+		}
+
+		Angle Avoidance::get_adversary_detection_angle() const {
+			return _angle_detection_adversary;
 		}
 
 		void Avoidance::thread_lidar() {

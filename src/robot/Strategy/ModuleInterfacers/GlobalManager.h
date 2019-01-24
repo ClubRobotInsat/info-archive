@@ -6,6 +6,7 @@
 #define ROOT_INTERFACERMANAGER_H
 
 #include "../../Robot.h"
+#include "Avoidance.h"
 #include "Elevator.h"
 #include "Interfacer.hpp"
 #include "ServosManager.h"

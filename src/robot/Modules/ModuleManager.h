@@ -28,7 +28,6 @@
 
 #include "Module.hpp"
 
-#include "Avoidance.h"
 #include "IO.h"
 #include "Motors.h"
 //#include "Moving.h"

@@ -21,6 +21,7 @@ TEST_CASE("Global constants") {
 	                      "linear_precision=26\n"
 	                      "angular_speed=10\n"
 	                      "angular_precision=6\n"
+	                      "angle_adversary_detection=30\n"
 
 	                      "[robot.list]\n"
 	                      "bot=true\n"
@@ -57,6 +58,7 @@ TEST_CASE("Global constants") {
 	CHECK(bot.get_linear_precision() == 2.6_cm);
 	CHECK(bot.get_linear_speed() == 37.6_cm_s);
 	CHECK(bot.get_angular_precision() == 6_deg);
+	CHECK(bot.get_angle_adversary_detection() == 30_deg);
 	CHECK(bot.get_angular_speed() == 10_rad_s);
 	CHECK(bot.get_radius_rotation() == 6_cm);
 	CHECK(bot.get_start_angle() == 57_deg);

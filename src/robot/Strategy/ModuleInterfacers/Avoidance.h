@@ -7,7 +7,6 @@
 
 #include "../Environment/environment.h"
 #include "Interfacer.hpp"
-#include <MathToolbox/Repere.h>
 
 namespace Strategy {
 	namespace Interfacer {
@@ -29,6 +28,17 @@ namespace Strategy {
 			 */
 			bool adversary_detected(Distance threshold) const;
 
+			/**
+			 * Fonction permettant de modifier l'angle de détection de l'adversaire
+			 * Attention: il faut donner la taille de la demi-zone
+			 *
+			 * ex: pour avoir un cone de +/- 0.25_PI, donner 0.25_PI
+			 * default : +/- 0.25_PI
+			 */
+			void set_adversary_detection_angle(Angle angle);
+
+			Angle get_adversary_detection_angle() const;
+
 		private:
 			std::atomic_bool _is_running;
 
@@ -40,6 +50,7 @@ namespace Strategy {
 			 * y : décalage vers le côté droit du robot
 			 */
 			Vector2m _turret_shift;
+			std::atomic<Angle> _angle_detection_adversary;
 
 			void thread_lidar();
 			std::thread _find_robots;

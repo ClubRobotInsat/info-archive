@@ -42,6 +42,7 @@ namespace Constants {
 		_angular_speed = AngularSpeed::makeFromRad_s(read_field(reader, "robot", "angular_speed", 4));
 		_linear_precision = Distance::makeFromMm(read_field(reader, "robot", "linear_precision", 40));
 		_angular_precision = Angle::makeFromDeg(read_field(reader, "robot", "angular_precision", 4));
+		_angle_adversary_detection = Angle::makeFromDeg(read_field(reader, "robot", "angle_adversary_detection", 15));
 
 		_turret_position = {
 		    Distance::makeFromMm(reader[section]["turret_position_x"].asInt()),

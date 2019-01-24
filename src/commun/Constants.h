@@ -36,6 +36,7 @@ namespace Constants {
 		AngularSpeed _angular_speed; // unité arbitraire décidée en élec
 		Distance _linear_precision;
 		Angle _angular_precision;
+		Angle _angle_adversary_detection; // demi-zone de détection
 		Vector2m _turret_position;
 		Distance _radius_rotation;
 		Vector3m _size;
@@ -67,6 +68,10 @@ namespace Constants {
 
 		inline Angle get_angular_precision() const {
 			return _angular_precision;
+		}
+
+		inline Angle get_angle_adversary_detection() const {
+			return _angle_adversary_detection;
 		}
 
 		// POSITION_TOURELLE = { décalage avant, décalage vers la droite }
