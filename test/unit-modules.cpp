@@ -120,6 +120,21 @@ TEST_CASE("Servos' Module") {
 	}
 }
 
+
+#include "../src/robot/Modules/Navigation.h"
+
+TEST_CASE("Navigation Module") {
+    PhysicalRobot::Navigation my_module(1);
+
+    SECTION("Initialization") {
+        auto starting_point = my_module.get_coordinates();
+        CHECK(starting_point.getX().toM() == Approx(0));
+        CHECK(starting_point.getY().toM() == Approx(0));
+        CHECK(starting_point.getAngle().toRad() == Approx(0));
+    }
+}
+
+
 #include "../src/robot/Communication/NamedPipe.h"
 
 TEST_CASE("ModuleManager") {
