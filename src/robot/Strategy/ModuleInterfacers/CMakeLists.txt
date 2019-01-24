@@ -6,4 +6,4 @@ set(INTERFACERS_SOURCES
         GlobalManager.cpp)
 
 add_library(ModuleInterfacers STATIC ${INTERFACERS_SOURCES})
-target_link_libraries(ModuleInterfacers Modules)
+target_link_libraries(ModuleInterfacers Robot Environment)
