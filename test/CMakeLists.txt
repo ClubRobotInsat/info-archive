@@ -37,6 +37,7 @@ target_link_libraries(unit_testing_constants Outils_Robot)
 target_link_libraries(unit_testing_repere Outils_Robot)
 target_link_libraries(unit_testing_robot Robot)
 target_link_libraries(unit_testing_angle Modules)
+target_link_libraries(unit_testing_angular_speed Modules)
 
 set(UNITTEST_TARGET_NAME "unit_testing_all")
 add_executable(${UNITTEST_TARGET_NAME}

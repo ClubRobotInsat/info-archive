@@ -4,6 +4,8 @@
 
 #include "catch.hpp"
 
+#include <log/Log.h>
+
 #include "../src/robot/Modules/ModuleManager.h"
 
 class ModuleTest : public PhysicalRobot::Module {
@@ -45,7 +47,6 @@ private:
 	std::atomic_uint8_t _a, _b;
 };
 
-#include <log/Log.h>
 TEST_CASE("Basic module") {
 
 	SECTION("Simple tests.") {
@@ -79,12 +80,8 @@ TEST_CASE("Basic module") {
 }
 
 
-// Ce define très moche permets d'accéder aux fonctions et variables cachées des objets (TESTS uniquement)
-#define private public
 #include "../src/robot/Modules/Servos.h"
-#undef private
 
-#include <log/Log.h>
 TEST_CASE("Servos' Module") {
 	SECTION("Non-frame functions' module") {
 		PhysicalRobot::Servos my_module(2);
@@ -102,8 +99,8 @@ TEST_CASE("Servos' Module") {
 		// Servo 2 commandé en position
 		CHECK_FALSE(my_module.is_moving_done(2));
 
-		REQUIRE_THROWS_WITH(my_module.set_speed(1, 2), "Numéro du servo demandé invalide : 1");
-		my_module.set_speed(2, 6, PhysicalRobot::Rotation::CounterClockwise);
+		REQUIRE_THROWS_WITH(my_module.set_speed(1, 2_deg_s), "Numéro du servo demandé invalide : 1");
+		my_module.set_speed(2, 6_deg_s, PhysicalRobot::Rotation::CounterClockwise);
 
 		REQUIRE_THROWS_WITH(my_module.read_position(1), "Numéro du servo demandé invalide : 1");
 
@@ -194,7 +191,7 @@ TEST_CASE("ModuleManager") {
 			SECTION("Servos") {
 				auto& module_servos = manager.add_module<PhysicalRobot::Servos>(15);
 				module_servos.add_servo(254);
-				module_servos.set_speed(254, 500);
+				module_servos.set_speed(254, 500_mrad_s);
 
 				auto frames_servos = manager.write_frame();
 				REQUIRE(frames_servos.size() == 1);

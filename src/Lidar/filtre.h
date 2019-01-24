@@ -9,9 +9,9 @@
 // Filtre en ligne pour les relevés du Lidar
 class Filtre {
 public:
-	const TrameLidar& getTrame(const TrameLidar& input);
+	const FrameLidar& get_frame(const FrameLidar& input);
 
 private:
-	TrameLidar _state;
+	FrameLidar _state;
 	std::vector<double> _variances;
 };
