@@ -23,6 +23,7 @@ namespace Strategy {
 			 */
 			explicit ServosManager(interfaced_type& module_servos /*, std::function<Angle(servo_t, uint8_t)> get_servo_position*/);
 			explicit ServosManager(std::shared_ptr<PhysicalRobot::Robot> robot /*, std::function<Angle(servo_t, uint8_t)> get_servo_position*/);
+			explicit ServosManager(PhysicalRobot::Robot& robot /*, std::function<Angle(servo_t, uint8_t)> get_servo_position*/);
 
 			/**
 			 * Positionne le servomoteur à la position demandée en gérant les blocages

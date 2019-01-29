@@ -45,7 +45,7 @@ namespace PhysicalRobot {
 		/// Ajoute un module dont l'ID et le type sont uniques
 		/// @throw  si les paramètres sont mauvais ou si un module ayant le même id / type existe déjà
 		template <typename Module, typename... T>
-		Module& add_module(uint8_t id, T... params);
+		Module& add_module(uint8_t id, T&&... params);
 
 		/// Retourne vrai si un module de type 'Module' existe
 		/// @nothrow
@@ -111,7 +111,7 @@ namespace PhysicalRobot {
 	}
 
 	template <typename Module, typename... T>
-	Module& ModuleManager::add_module(uint8_t id, T... params) {
+	Module& ModuleManager::add_module(uint8_t id, T&&... params) {
 		if(id >= NB_MODULES_MAX) {
 			throw std::runtime_error("Impossible to add module n°" + std::to_string(id) + " (> " +
 			                         std::to_string(NB_MODULES_MAX) + ").");

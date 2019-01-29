@@ -57,7 +57,7 @@ namespace Strategy {
 
 	void AbstractStrategy::stop() {
 		for(auto interfacer : _interfacers) {
-			interfacer->get_robot().deactivation();
+			interfacer->get_robot()->deactivation();
 		}
 	}
 

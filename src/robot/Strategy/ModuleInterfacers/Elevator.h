@@ -32,6 +32,7 @@ namespace Strategy {
 			 * i.e., on commence en position 0, incrémenter va aller en position 1, puis décrémenter va aller en position 0.
 			 */
 			Elevator(PhysicalRobot::Motors& module, const std::vector<Angle>& positions, uint8_t id_motor);
+			Elevator(std::shared_ptr<PhysicalRobot::Robot> robot, const std::vector<Angle>& positions, uint8_t id_motor);
 			Elevator(PhysicalRobot::Robot& robot, const std::vector<Angle>& positions, uint8_t id_motor);
 
 			virtual ~Elevator() = default;

@@ -31,6 +31,8 @@ TEST_CASE("Interfacers") {
 		CHECK(interfacer2.set_position(42, 50_deg) == ActionResult::TIMEOUT);
 		interfacer2.set_offset(42, 18_deg);
 		CHECK(interfacer2.get_offset(42) == 18_deg);
+		ServosManager interfacer3(*robot /*, get_servo_position*/);
+		CHECK(interfacer3->get_nbr_servos() == 1);
 		Log::close(Log::NOTHING);
 	}
 
@@ -44,7 +46,34 @@ TEST_CASE("Interfacers") {
 		Distance sy = 30_cm;
 		Environment env({300, 200}, 1_cm, sy, (sqrt(sx * sx + sy * sy) / 2) * 1.2, Vector2m(0_m, 1_m));
 
-		Avoidance avoidance(robot, env);
-		CHECK(avoidance.get_adversary_positions().empty());
+		Avoidance avoidance2(robot, env);
+		CHECK(avoidance2.get_adversary_positions().empty());
+	}
+
+	SECTION("GlobalManager") {
+		auto module_manager = std::make_shared<PhysicalRobot::ModuleManager>();
+		auto robot =
+		    std::make_shared<PhysicalRobot::Robot>(module_manager, std::vector<std::string>({"ehCoucou", "NULL"}), Lidar::None);
+		GlobalManager manager(robot);
+		REQUIRE(manager.get_robot() == robot);
+
+		CHECK_FALSE(manager.has_interfacer<ServosManager>());
+		REQUIRE_THROWS_WITH(manager.get_interfacer<ServosManager>(), "The interfacer doesn't exist.");
+
+		REQUIRE_THROWS_WITH(manager.add_interfacer<ServosManager>(), "The module doesn't exist.");
+		module_manager->add_module<PhysicalRobot::Servos>(5);
+		REQUIRE_NOTHROW(manager.add_interfacer<ServosManager>());
+		REQUIRE_NOTHROW(manager.get_interfacer<ServosManager>());
+		CHECK(manager.has_interfacer<ServosManager>());
+
+		auto& servos = manager.get_interfacer<ServosManager>();
+		REQUIRE_NOTHROW(servos->add_servo(8));
+
+		Distance sx = 40_cm;
+		Distance sy = 30_cm;
+		Environment env({300, 200}, 1_cm, sy, (sqrt(sx * sx + sy * sy) / 2) * 1.2, Vector2m(0_m, 1_m));
+		REQUIRE_NOTHROW(manager.add_interfacer<Avoidance>(env));
+
+		CHECK(manager.size() == 2);
 	}
 }

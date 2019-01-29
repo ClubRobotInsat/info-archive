@@ -7,10 +7,14 @@
 namespace Strategy {
 	namespace Interfacer {
 
-		GlobalManager::GlobalManager(std::unique_ptr<PhysicalRobot::Robot> robot) : _robot(std::move(robot)) {}
+		GlobalManager::GlobalManager(std::shared_ptr<PhysicalRobot::Robot> robot) : _robot(std::move(robot)) {
+			if(_robot == nullptr) {
+				throw std::runtime_error("Interfacer::GlobalManager called with a nullptr as a robot.");
+			}
+		}
 
-		PhysicalRobot::Robot& GlobalManager::get_robot() const {
-			return *_robot;
+		std::shared_ptr<PhysicalRobot::Robot> GlobalManager::get_robot() const {
+			return _robot;
 		}
 	} // namespace Interfacer
 } // namespace Strategy

@@ -11,6 +11,9 @@ namespace Strategy {
 		Elevator::Elevator(PhysicalRobot::Motors& module, const std::vector<Angle>& positions, uint8_t id_motor)
 		        : _module(module), _positions(positions), _id_motor(id_motor) {}
 
+		Elevator::Elevator(std::shared_ptr<PhysicalRobot::Robot> robot, const std::vector<Angle>& positions, uint8_t id_motor)
+		        : Elevator(*robot, positions, id_motor) {}
+
 		Elevator::Elevator(PhysicalRobot::Robot& robot, const std::vector<Angle>& positions, uint8_t id_motor)
 		        : Elevator(robot.get_module<PhysicalRobot::Motors>(), positions, id_motor) {}
 
