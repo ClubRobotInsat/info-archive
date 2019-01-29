@@ -62,6 +62,8 @@ enum class LogType {
 class Log {
 public:
 	enum Output {
+		NOTHING,
+
 		OUTPUT_FIRST,
 
 		TERMINAL = OUTPUT_FIRST,
@@ -149,9 +151,9 @@ inline void Log::write(LogType type, const char* file_path, int line, const char
 	// If the log has not been previously opened, we open it as a color terminal log.
 	std::lock_guard<std::mutex> lock(_logMutex);
 
-	if(!_opened)
+	if(!_opened) {
 		Log::open(TERMINAL);
-
+	}
 	// Get the file's name from its path
 	const char* file_name = Log::getFileNameFromPath(file_path);
 

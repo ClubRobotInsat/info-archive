@@ -9,6 +9,8 @@ TEST_CASE("Interfacers") {
 	using namespace Strategy::Interfacer;
 
 	SECTION("ServosManager") {
+		/// Removes a necessary `logWarn` from terminal without disturbing the `catch` outputs
+		Log::open(Log::NOTHING, "", false);
 		REQUIRE(std::is_same<ServosManager::interfaced_type, PhysicalRobot::Servos>::value);
 		REQUIRE(std::is_same<ServosManager::servo_t, uint8_t>::value);
 
@@ -29,6 +31,7 @@ TEST_CASE("Interfacers") {
 		CHECK(interfacer2.set_position(42, 50_deg) == ActionResult::TIMEOUT);
 		interfacer2.set_offset(42, 18_deg);
 		CHECK(interfacer2.get_offset(42) == 18_deg);
+		Log::close(Log::NOTHING);
 	}
 
 	SECTION("Avoidance") {
