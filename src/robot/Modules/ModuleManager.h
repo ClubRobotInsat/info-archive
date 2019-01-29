@@ -76,16 +76,9 @@ namespace PhysicalRobot {
 		// FIXME Vérifier que les modules de grands `id`s peuvent communiquer
 		// FIXME sinon utiliser un compteur pour répartir la parole de manière cyclique
 		std::vector<GlobalFrame> write_frame() const;
+
 		/// Lecture d'une trame ; implémente l'API de `ParsingClassChecker`
 		void read_frame(const GlobalFrame&);
-
-		/*/// Construit la trame globale du robot depuis chaque module instantié
-		/// @maythrow si on module n'arrive pas à générer sa trame (très peu probable)
-		GlobalFrame write_frame() const;
-
-		/// Met à jour tous les modules depuis une trame qui contient l'état général du robot
-		/// @throw si la trame a un mauvais formatage
-		void read_frame(const GlobalFrame&);*/
 
 		/// Désactive tous les comportements mécaniques du robot (anciennement 'couperMeca')
 		void deactivation();

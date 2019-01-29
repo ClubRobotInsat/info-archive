@@ -6,7 +6,6 @@
 #define ROOT_NAMEDPIPE_H
 
 #include "Commun.h"
-
 #include "Serial.h"
 
 #include <fcntl.h>

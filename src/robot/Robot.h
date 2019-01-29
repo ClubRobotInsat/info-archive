@@ -1,14 +1,10 @@
 #ifndef _ROBOT_H_
 #define _ROBOT_H_
 
+#include "../Lidar/Driver/lidar.h"
 #include "Commun.h"
-
-#include "Modules/ModuleManager.h"
-
 #include "Communication/Communicator.h"
-
-#include "../Lidar/FindRobots.h"
-#include "../Lidar/filtre.h"
+#include "Modules/ModuleManager.h"
 
 namespace PhysicalRobot {
 
@@ -41,19 +37,9 @@ namespace PhysicalRobot {
 			return _module_manager->get_module<Module>();
 		}
 
-		std::optional<FrameLidar> get_lidar_frame() const {
-			if(_lidar != nullptr) {
-				return Filtre().get_frame(_lidar->get_frame());
-			}
-			return std::nullopt;
-		}
+		std::optional<FrameLidar> get_lidar_frame() const;
 
-		void set_debug(bool debug) {
-			_debug_active = debug;
-			if(_communicator != nullptr) {
-				_communicator->set_debug(debug);
-			}
-		}
+		void set_debug(bool debug);
 
 		// TODO : déplacer ce code dans la partie 'stratégie'
 		/// Attend la tirette au départ

@@ -3,6 +3,7 @@
 //
 
 #include "Avoidance.h"
+#include "../../../Lidar/FindRobots.h"
 
 namespace Strategy {
 	namespace Interfacer {

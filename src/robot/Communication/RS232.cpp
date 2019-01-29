@@ -10,7 +10,6 @@
 #include <termios.h>
 #endif
 
-
 namespace Communication {
 
 	/// Ouvre le port série indiqué et le configure

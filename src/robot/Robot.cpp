@@ -1,4 +1,6 @@
 #include "Robot.h"
+#include "../Lidar/filtre.h"
+
 #include <Constants.h>
 #include <log/Log.h>
 
@@ -32,6 +34,20 @@ namespace PhysicalRobot {
 	/// Finalise le robot
 	Robot::~Robot() {
 		deactivation();
+	}
+
+	std::optional<FrameLidar> Robot::get_lidar_frame() const {
+		if(_lidar != nullptr) {
+			return Filtre().get_frame(_lidar->get_frame());
+		}
+		return std::nullopt;
+	}
+
+	void Robot::set_debug(bool debug) {
+		_debug_active = debug;
+		if(_communicator != nullptr) {
+			_communicator->set_debug(debug);
+		}
 	}
 
 	void Robot::deactivation() {

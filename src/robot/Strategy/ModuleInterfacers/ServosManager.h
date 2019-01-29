@@ -7,7 +7,6 @@
 
 #include "../../Modules/Servos.h"
 #include "Interfacer.hpp"
-#include "ServosManager.h"
 
 namespace Strategy {
 	namespace Interfacer {

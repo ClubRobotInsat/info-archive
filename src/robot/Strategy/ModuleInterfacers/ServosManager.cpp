@@ -3,7 +3,6 @@
 //
 
 #include "ServosManager.h"
-#include <log/Log.h>
 
 namespace Strategy {
 	namespace Interfacer {
