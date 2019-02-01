@@ -45,8 +45,8 @@ namespace Constants {
 		_angle_adversary_detection = Angle::makeFromDeg(read_field(reader, "robot", "angle_adversary_detection", 15));
 
 		_turret_position = {
-		    Distance::makeFromMm(reader[section]["turret_position_x"].asInt()),
-		    Distance::makeFromMm(reader[section]["turret_position_y"].asInt()),
+		    Distance::makeFromMm(read_field(reader, section, "turret_position_x", 0)),
+		    Distance::makeFromMm(read_field(reader, section, "turret_position_y", 0)),
 		};
 
 		_radius_rotation = Distance::makeFromMm(read_field(reader, section, "radius_rotation", 250));

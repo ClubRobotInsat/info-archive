@@ -31,29 +31,30 @@ namespace Strategy {
 		// Arrête tous les actionneurs
 		virtual void stop();
 
-		Constants::RobotColor get_color() const {
-			return _color;
-		}
+		Constants::RobotColor get_color() const;
 
-		const repere::Repere& get_reference() const {
-			return GLOBAL_CONSTANTS().get_reference(_color);
-		}
+		const repere::Repere& get_reference() const;
 
 		Duration get_left_time() const;
 		Duration get_time() const;
 
 		void reset_timer();
 
-		Environment& get_environment() {
-			return *_env;
-		}
+		Environment& get_environment() const;
 
-		std::shared_ptr<Interfacer::GlobalManager> add_robot(std::unique_ptr<PhysicalRobot::Robot>);
-		std::shared_ptr<Interfacer::GlobalManager> add_robot(std::shared_ptr<Interfacer::GlobalManager>);
+		// Automatically tries to create all possible interfacers
+		// Call `add_manager`
+		std::shared_ptr<Interfacer::GlobalManager> add_robot(std::shared_ptr<PhysicalRobot::Robot>);
+		// Automatically tries to create all high-level PetriLab functions
+		std::shared_ptr<Interfacer::GlobalManager> add_manager(std::shared_ptr<Interfacer::GlobalManager>);
+
+		std::shared_ptr<Interfacer::GlobalManager> get_robot(const std::string& name);
 
 		int get_points() const;
 
 		int add_points(int n);
+
+		int set_points(int n);
 
 	protected:
 		AbstractStrategy(Constants::RobotColor);

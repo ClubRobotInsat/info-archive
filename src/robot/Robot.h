@@ -37,6 +37,13 @@ namespace PhysicalRobot {
 			return _module_manager->get_module<Module>();
 		}
 
+		template <typename Module>
+		bool has_module() const {
+			return _module_manager->has_module<Module>();
+		}
+
+		bool has_lidar() const;
+
 		std::optional<FrameLidar> get_lidar_frame() const;
 
 		void set_debug(bool debug);

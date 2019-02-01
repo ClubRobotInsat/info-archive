@@ -36,8 +36,12 @@ namespace PhysicalRobot {
 		deactivation();
 	}
 
+	bool Robot::has_lidar() const {
+		return _lidar != nullptr;
+	}
+
 	std::optional<FrameLidar> Robot::get_lidar_frame() const {
-		if(_lidar != nullptr) {
+		if(has_lidar()) {
 			return Filtre().get_frame(_lidar->get_frame());
 		}
 		return std::nullopt;

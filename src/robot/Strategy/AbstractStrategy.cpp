@@ -8,6 +8,11 @@
 
 #include "EmbeddedFiles.h"
 
+extern void init_petri_avoidance(std::shared_ptr<Strategy::Interfacer::GlobalManager> manager);
+// extern void init_petri_navigation(std::shared_ptr<Strategy::Interfacer::GlobalManager> manager, Constants::RobotColor color);
+extern void init_petri_servos(std::shared_ptr<Strategy::Interfacer::GlobalManager> manager, Constants::RobotColor color);
+void init_petri_utils(Strategy::AbstractStrategy& strategy);
+
 namespace Strategy {
 	AbstractStrategy::AbstractStrategy(Constants::RobotColor color) : _color(color), _nb_points(0) {
 		setThreadName("Main");
@@ -21,6 +26,15 @@ namespace Strategy {
 		                                     Vector2m{0_m, 0_m});
 
 		this->create_environment();
+
+		try {
+			logInfo("Loading Petri::Utils...");
+			init_petri_utils(*this);
+		} catch(std::exception const& e) {
+			logError("Impossible to initialize PetriLab: ", e.what());
+		}
+
+		set_points(0);
 	}
 
 	void AbstractStrategy::create_environment() {
@@ -61,6 +75,14 @@ namespace Strategy {
 		}
 	}
 
+	Constants::RobotColor AbstractStrategy::get_color() const {
+		return _color;
+	}
+
+	const repere::Repere& AbstractStrategy::get_reference() const {
+		return GLOBAL_CONSTANTS().get_reference(_color);
+	}
+
 	Duration AbstractStrategy::get_left_time() const {
 		// logDebug6("Il reste :", (_dureeTotaleMatch - _chronoMatch.getElapsedTime()).toS());
 		return _total_duration_match - get_time();
@@ -74,15 +96,56 @@ namespace Strategy {
 		_chrono_match.reset();
 	}
 
-	std::shared_ptr<Interfacer::GlobalManager> AbstractStrategy::add_robot(std::unique_ptr<PhysicalRobot::Robot> robot) {
-		auto manager = std::make_shared<Interfacer::GlobalManager>(std::move(robot));
+	Environment& AbstractStrategy::get_environment() const {
+		return *_env;
+	}
+
+	std::shared_ptr<Interfacer::GlobalManager> AbstractStrategy::add_robot(std::shared_ptr<PhysicalRobot::Robot> robot) {
+		auto manager = std::make_shared<Interfacer::GlobalManager>(robot);
+		// Interfacer::ServosManager
+		if(manager->get_robot()->has_module<PhysicalRobot::Servos>()) {
+			logInfo("Insertion of an Interfacer::ServosManager inside the robot '" + robot->name + "'");
+			manager->add_interfacer<Interfacer::ServosManager>();
+		}
+		// Interfacer::Avoidance
+		if(manager->get_robot()->has_lidar()) {
+			logInfo("Insertion of an Interfacer::Avoidance inside the robot '" + robot->name + "'");
+			manager->add_interfacer<Interfacer::Avoidance>(*_env, GLOBAL_CONSTANTS()[robot->name].get_turret_position());
+		}
+
+		return add_manager(manager);
+	}
+
+	std::shared_ptr<Interfacer::GlobalManager> AbstractStrategy::add_manager(std::shared_ptr<Interfacer::GlobalManager> manager) {
+		try {
+			// Interfacer::ServosManager
+			if(manager->has_interfacer<Interfacer::ServosManager>()) {
+				logInfo("Insertion of PetriLab::Servos functionalities associated with the robot '" +
+				        manager->get_robot()->name + "'");
+				init_petri_servos(manager, _color);
+			}
+			// Interfacer::Avoidance
+			if(manager->has_interfacer<Interfacer::Avoidance>()) {
+				logInfo("Insertion of PetriLab::Avoidance functionalities associated with the robot '" +
+				        manager->get_robot()->name + "'");
+				init_petri_avoidance(manager);
+			}
+		} catch(std::exception const& e) {
+			logError("Impossible to initialize PetriLab: ", e.what());
+		}
+
 		_interfacers.push_back(manager);
+
 		return manager;
 	}
 
-	std::shared_ptr<Interfacer::GlobalManager> AbstractStrategy::add_robot(std::shared_ptr<Interfacer::GlobalManager> manager) {
-		_interfacers.push_back(manager);
-		return manager;
+	std::shared_ptr<Interfacer::GlobalManager> AbstractStrategy::get_robot(const std::string& name) {
+		for(auto i : _interfacers) {
+			if(i->get_robot()->name == name) {
+				return i;
+			}
+		}
+		return nullptr;
 	}
 
 	int AbstractStrategy::get_points() const {
@@ -91,6 +154,11 @@ namespace Strategy {
 
 	int AbstractStrategy::add_points(int n) {
 		return _nb_points += n;
+	}
+
+	int AbstractStrategy::set_points(int n) {
+		_nb_points = n;
+		return _nb_points;
 	}
 
 	void AbstractStrategy::exec() {
