@@ -60,6 +60,16 @@ namespace PhysicalRobot {
 		return count;
 	}
 
+	std::vector<uint8_t> ModuleManager::get_list_modules() const {
+		std::vector<uint8_t> result;
+		for(uint8_t id = 0; id < NB_MODULES_MAX; ++id) {
+			if(has_module(id)) {
+				result.push_back(id);
+			}
+		}
+		return result;
+	}
+
 	Module& ModuleManager::get_module_by_id(uint8_t id) {
 		if(id >= NB_MODULES_MAX) {
 			throw std::runtime_error("Impossible to get module n°" + std::to_string(id) + " (> " +

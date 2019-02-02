@@ -25,6 +25,9 @@ TEST_CASE("Initialization of a common robot.") {
 		REQUIRE(robot.name == "guest");
 		CHECK(robot.get_module<PhysicalRobot::Servos>().get_nbr_servos() == 2);
 
+		std::map<uint8_t, std::string> list_modules = {{2, "Servos"}};
+		CHECK(robot.get_list_modules() == list_modules);
+
 		robot.deactivation();
 	}
 

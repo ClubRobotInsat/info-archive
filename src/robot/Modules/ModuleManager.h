@@ -60,6 +60,10 @@ namespace PhysicalRobot {
 		/// @nothrow
 		uint8_t get_nb_modules() const;
 
+		/// Retourne la liste de tous les modules instantiés
+		/// @nothrow
+		std::vector<uint8_t> get_list_modules() const;
+
 		/// Retourne le module selon l'id
 		/// Il faut appliquer `dynamic_cast<T&>(module);` pour convertir 'module' vers le type souhaité
 		/// @throw si l'id est trop grand ou si le module associé n'existe pas

@@ -10,7 +10,7 @@
 
 class ModuleTest : public PhysicalRobot::Module {
 public:
-	explicit ModuleTest(uint8_t id) : Module(id), _a(1), _b(2) {}
+	explicit ModuleTest(uint8_t id) : Module(id, "ModuleTest"), _a(1), _b(2) {}
 
 	// Accesseurs pour les tests
 	inline uint8_t get_a_value() const {
@@ -54,6 +54,7 @@ TEST_CASE("Basic module") {
 		CHECK(my_module.get_id() == 5);
 		CHECK(my_module.get_a_value() == 1);
 		CHECK(my_module.get_b_value() == 2);
+		CHECK(my_module.name == "ModuleTest");
 	}
 
 	SECTION("Frames manipulation.") {
@@ -93,6 +94,7 @@ TEST_CASE("Servos' Module") {
 		REQUIRE_NOTHROW(my_module.add_servo(42));
 		REQUIRE_THROWS_WITH(my_module.add_servo(0), "L'ID 0 des servos est réservé !");
 		CHECK(my_module.get_nbr_servos() == 4);
+		CHECK(my_module.name == "Servos");
 
 		REQUIRE_THROWS_WITH(my_module.set_position(1, 50_deg), "Numéro du servo demandé invalide : 1");
 		my_module.set_position(2, 50.4_deg);
@@ -148,6 +150,9 @@ TEST_CASE("ModuleManager") {
 		REQUIRE_NOTHROW(manager.get_module<ModuleTest>());
 		CHECK(manager.get_module<ModuleTest>().get_id() == 5);
 		CHECK(manager.get_module<PhysicalRobot::Servos>().get_id() == 6);
+
+		std::vector<uint8_t> list_modules = {5, 6};
+		CHECK(manager.get_list_modules() == list_modules);
 	}
 
 	SECTION("Frame manipulation") {
