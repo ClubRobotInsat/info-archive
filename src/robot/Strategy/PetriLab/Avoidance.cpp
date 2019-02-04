@@ -3,17 +3,17 @@
 //
 
 #include "Avoidance.h"
-#include "../ModuleInterfacers/GlobalManager.h"
+#include "../ModuleInterfacers/RobotManager.h"
 
 namespace {
-	std::shared_ptr<Strategy::Interfacer::GlobalManager> _manager;
+	std::shared_ptr<Strategy::Interfacer::RobotManager> _manager;
 
-	Strategy::Interfacer::Avoidance& avoidance() {
-		return _manager->get_interfacer<Strategy::Interfacer::Avoidance>();
+	Strategy::Interfacer::AvoidanceInterfacer& avoidance() {
+		return _manager->get_interfacer<Strategy::Interfacer::AvoidanceInterfacer>();
 	}
 } // namespace
 
-void init_petri_avoidance(std::shared_ptr<Strategy::Interfacer::GlobalManager> manager) {
+void init_petri_avoidance(std::shared_ptr<Strategy::Interfacer::RobotManager> manager) {
 	_manager = manager;
 }
 

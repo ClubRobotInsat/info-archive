@@ -2,23 +2,23 @@
 // Created by terae on 21/01/19.
 //
 
-#include "ServosManager.h"
+#include "ServosInterfacer.h"
 
 namespace Strategy {
 	namespace Interfacer {
 
-		ServosManager::ServosManager(interfaced_type& module_servos /*, std::function<Angle(uint8_t, uint8_t)> get_servo_position*/)
+		ServosInterfacer::ServosInterfacer(interfaced_type& module_servos /*, std::function<Angle(uint8_t, uint8_t)> get_servo_position*/)
 		        : AbstractInterfacer(), _module(module_servos) /*, _get_servo_position(get_servo_position)*/ {
 			std::fill(_offset, std::end(_offset), 0_deg);
 		}
 
-		ServosManager::ServosManager(std::shared_ptr<PhysicalRobot::Robot> robot /*, std::function<Angle(servo_t, uint8_t)> get_servo_position*/)
-		        : ServosManager(*robot /*, get_servo_position*/) {}
+		ServosInterfacer::ServosInterfacer(std::shared_ptr<PhysicalRobot::Robot> robot /*, std::function<Angle(servo_t, uint8_t)> get_servo_position*/)
+		        : ServosInterfacer(*robot /*, get_servo_position*/) {}
 
-		ServosManager::ServosManager(PhysicalRobot::Robot& robot /*, std::function<Angle(servo_t, uint8_t)> get_servo_position*/)
-		        : ServosManager(robot.get_module<PhysicalRobot::Servos>() /*, get_servo_position*/) {}
+		ServosInterfacer::ServosInterfacer(PhysicalRobot::Robot& robot /*, std::function<Angle(servo_t, uint8_t)> get_servo_position*/)
+		        : ServosInterfacer(robot.get_module<PhysicalRobot::Servos>() /*, get_servo_position*/) {}
 
-		ActionResult ServosManager::set_position(servo_t servo, Angle pos) {
+		ActionResult ServosInterfacer::set_position(servo_t servo, Angle pos) {
 			auto TIMEOUT_SERVO = 1000_ms; // 500_ms;
 			auto timeoutDate = TimePoint::now() + TIMEOUT_SERVO;
 
@@ -46,15 +46,15 @@ namespace Strategy {
 			}
 		}
 
-		ServosManager::interfaced_type* ServosManager::operator->() {
+		ServosInterfacer::interfaced_type* ServosInterfacer::operator->() {
 			return &_module;
 		}
 
-		void ServosManager::set_offset(servo_t servo, Angle offset) {
+		void ServosInterfacer::set_offset(servo_t servo, Angle offset) {
 			_offset[servo] = offset;
 		}
 
-		Angle ServosManager::get_offset(servo_t servo) {
+		Angle ServosInterfacer::get_offset(servo_t servo) {
 			return _offset[servo];
 		}
 	} // namespace Interfacer

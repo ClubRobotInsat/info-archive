@@ -3,14 +3,14 @@
 //
 
 #include "Navigation.h"
-#include "../ModuleInterfacers/GlobalManager.h"
+#include "../ModuleInterfacers/RobotManager.h"
 
 namespace {
 	std::shared_ptr<Strategy::Interfacer::GlobalManager> _manager;
 	Constants::RobotColor _color;
 
-	Strategy::Interfacer::ServosManager& navigation() {
-		return _manager->get_interfacer<Strategy::Interfacer::Navigation>();
+	Strategy::Interfacer::NavigationInterfacer& navigation() {
+		return _manager->get_interfacer<Strategy::Interfacer::NavigationInterfacer>();
 	}
 } // namespace
 

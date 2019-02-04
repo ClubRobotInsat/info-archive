@@ -16,7 +16,7 @@
 
 #include "Commun.h"
 #include "Environment/environment.h"
-#include "ModuleInterfacers/GlobalManager.h"
+#include "ModuleInterfacers/RobotManager.h"
 #include <Constants.h>
 
 #include <memory>
@@ -44,11 +44,11 @@ namespace Strategy {
 
 		// Automatically tries to create all possible interfacers
 		// Call `add_manager`
-		std::shared_ptr<Interfacer::GlobalManager> add_robot(std::shared_ptr<PhysicalRobot::Robot>);
+		std::shared_ptr<Interfacer::RobotManager> add_robot(std::shared_ptr<PhysicalRobot::Robot>);
 		// Automatically tries to create all high-level PetriLab functions
-		std::shared_ptr<Interfacer::GlobalManager> add_manager(std::shared_ptr<Interfacer::GlobalManager>);
+		std::shared_ptr<Interfacer::RobotManager> add_manager(std::shared_ptr<Interfacer::RobotManager>);
 
-		std::shared_ptr<Interfacer::GlobalManager> get_robot(const std::string& name);
+		std::shared_ptr<Interfacer::RobotManager> get_robot(const std::string& name);
 
 		int get_points() const;
 
@@ -69,7 +69,7 @@ namespace Strategy {
 		/// Thread dans lequel s'exécute la stratégie
 		std::thread _execution;
 
-		std::vector<std::shared_ptr<Interfacer::GlobalManager>> _interfacers;
+		std::vector<std::shared_ptr<Interfacer::RobotManager>> _interfacers;
 		std::unique_ptr<Environment> _env;
 
 	private:

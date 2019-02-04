@@ -10,7 +10,7 @@
 
 namespace Strategy {
 	namespace Interfacer {
-		class Elevator final : public AbstractInterfacer {
+		class ElevatorInterfacer final : public AbstractInterfacer {
 			static const Duration TIMEOUT;
 			/**
 			 * Correspond à l'offset de l'ascenseur = ce qui est rajouté de base à tous ses déplacements
@@ -30,11 +30,11 @@ namespace Strategy {
 			 * Construit l'ascenseur. Les angles des positions doivent être dans l'ordre croissant
 			 * i.e., on commence en position 0, incrémenter va aller en position 1, puis décrémenter va aller en position 0.
 			 */
-			Elevator(PhysicalRobot::Motors& module, const std::vector<Angle>& positions, uint8_t id_motor);
-			Elevator(std::shared_ptr<PhysicalRobot::Robot> robot, const std::vector<Angle>& positions, uint8_t id_motor);
-			Elevator(PhysicalRobot::Robot& robot, const std::vector<Angle>& positions, uint8_t id_motor);
+			ElevatorInterfacer(PhysicalRobot::Motors& module, const std::vector<Angle>& positions, uint8_t id_motor);
+			ElevatorInterfacer(std::shared_ptr<PhysicalRobot::Robot> robot, const std::vector<Angle>& positions, uint8_t id_motor);
+			ElevatorInterfacer(PhysicalRobot::Robot& robot, const std::vector<Angle>& positions, uint8_t id_motor);
 
-			virtual ~Elevator() = default;
+			virtual ~ElevatorInterfacer() = default;
 
 			/**
 			 * Balance une exception en cas de dépassement de bornes.

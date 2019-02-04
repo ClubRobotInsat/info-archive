@@ -3,18 +3,18 @@
 //
 
 #include "Servos.h"
-#include "../ModuleInterfacers/GlobalManager.h"
+#include "../ModuleInterfacers/RobotManager.h"
 
 namespace {
-	std::shared_ptr<Strategy::Interfacer::GlobalManager> _manager;
+	std::shared_ptr<Strategy::Interfacer::RobotManager> _manager;
 	Constants::RobotColor _color;
 
-	Strategy::Interfacer::ServosManager& servos() {
-		return _manager->get_interfacer<Strategy::Interfacer::ServosManager>();
+	Strategy::Interfacer::ServosInterfacer& servos() {
+		return _manager->get_interfacer<Strategy::Interfacer::ServosInterfacer>();
 	}
 } // namespace
 
-void init_petri_servos(std::shared_ptr<Strategy::Interfacer::GlobalManager> manager, Constants::RobotColor color) {
+void init_petri_servos(std::shared_ptr<Strategy::Interfacer::RobotManager> manager, Constants::RobotColor color) {
 	_manager = manager;
 	_color = color;
 }

@@ -2,47 +2,47 @@
 // Created by terae on 22/01/19.
 //
 
-#include "Elevator.h"
+#include "ElevatorInterfacer.h"
 
 namespace Strategy {
 	namespace Interfacer {
-		const Duration Elevator::TIMEOUT = 2_s;
+		const Duration ElevatorInterfacer::TIMEOUT = 2_s;
 
-		Elevator::Elevator(PhysicalRobot::Motors& module, const std::vector<Angle>& positions, uint8_t id_motor)
+		ElevatorInterfacer::ElevatorInterfacer(PhysicalRobot::Motors& module, const std::vector<Angle>& positions, uint8_t id_motor)
 		        : _module(module), _positions(positions), _id_motor(id_motor) {}
 
-		Elevator::Elevator(std::shared_ptr<PhysicalRobot::Robot> robot, const std::vector<Angle>& positions, uint8_t id_motor)
-		        : Elevator(*robot, positions, id_motor) {}
+		ElevatorInterfacer::ElevatorInterfacer(std::shared_ptr<PhysicalRobot::Robot> robot, const std::vector<Angle>& positions, uint8_t id_motor)
+		        : ElevatorInterfacer(*robot, positions, id_motor) {}
 
-		Elevator::Elevator(PhysicalRobot::Robot& robot, const std::vector<Angle>& positions, uint8_t id_motor)
-		        : Elevator(robot.get_module<PhysicalRobot::Motors>(), positions, id_motor) {}
+		ElevatorInterfacer::ElevatorInterfacer(PhysicalRobot::Robot& robot, const std::vector<Angle>& positions, uint8_t id_motor)
+		        : ElevatorInterfacer(robot.get_module<PhysicalRobot::Motors>(), positions, id_motor) {}
 
-		ActionResult Elevator::increment() {
+		ActionResult ElevatorInterfacer::increment() {
 			return this->set_elevator_blocking(_position + 1);
 		}
 
-		ActionResult Elevator::decrement() {
+		ActionResult ElevatorInterfacer::decrement() {
 			return this->set_elevator_blocking(_position - 1);
 		}
 
-		ActionResult Elevator::set_elevator_blocking(std::size_t pos) {
+		ActionResult ElevatorInterfacer::set_elevator_blocking(std::size_t pos) {
 			std::lock_guard<std::mutex> lock(_mutex_moves);
 
 			set_elevator(pos);
 			return wait_for_elevator();
 		}
 
-		ActionResult Elevator::set_angle_blocking(Angle angle) {
+		ActionResult ElevatorInterfacer::set_angle_blocking(Angle angle) {
 			std::lock_guard<std::mutex> lock(_mutex_moves);
-			logDebug("Elevator goes to the angle ", angle.toDeg());
+			logDebug("ElevatorInterfacer goes to the angle ", angle.toDeg());
 			_module.set_position_angle(_id_motor, angle);
 
 			return this->wait_for_elevator();
 		}
 
-		ActionResult Elevator::set_elevator(std::size_t pos) {
+		ActionResult ElevatorInterfacer::set_elevator(std::size_t pos) {
 			Angle angle = _positions.at(pos) + _offset;
-			logDebug("Elevator goes to the position ", angle.toDeg());
+			logDebug("ElevatorInterfacer goes to the position ", angle.toDeg());
 
 			_position = pos;
 			_module.set_position_angle(_id_motor, angle);
@@ -50,7 +50,7 @@ namespace Strategy {
 			return ActionResult::SUCCESS;
 		}
 
-		ActionResult Elevator::wait_for_elevator() {
+		ActionResult ElevatorInterfacer::wait_for_elevator() {
 			StopWatch compteur;
 			while(!this->verify_elevator_position() && compteur.getElapsedTime() < TIMEOUT) {
 				if(this->verify_elevator_blocking()) {
@@ -68,17 +68,17 @@ namespace Strategy {
 			return verify_elevator_position() ? ActionResult::SUCCESS : ActionResult::FAILURE;
 		}
 
-		bool Elevator::verify_elevator_position() const {
+		bool ElevatorInterfacer::verify_elevator_position() const {
 			return _module.is_position_finished(_id_motor);
 		}
 
-		bool Elevator::verify_elevator_blocking() const {
+		bool ElevatorInterfacer::verify_elevator_blocking() const {
 			// TODO
 			// return _module.is_blocking(_id_motor);
 			return false;
 		}
 
-		ActionResult Elevator::init(Strategy::Interfacer::Elevator::RotatingDirection sens) {
+		ActionResult ElevatorInterfacer::init(Strategy::Interfacer::ElevatorInterfacer::RotatingDirection sens) {
 			// TODO
 			return ActionResult::SUCCESS;
 			/*_module.set_position_angle(_id_motor, -10000_rad);
@@ -87,7 +87,7 @@ namespace Strategy {
 			return res;*/
 		}
 
-		Angle Elevator::get_angle() const {
+		Angle ElevatorInterfacer::get_angle() const {
 			while(!verify_elevator_position()) {
 				sleep(1_ms);
 			}

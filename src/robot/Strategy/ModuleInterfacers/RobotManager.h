@@ -5,16 +5,16 @@
 #ifndef ROOT_INTERFACERMANAGER_H
 #define ROOT_INTERFACERMANAGER_H
 
-#include "Avoidance.h"
-#include "Elevator.h"
-#include "ServosManager.h"
+#include "AvoidanceInterfacer.h"
+#include "ElevatorInterfacer.h"
+#include "ServosInterfacer.h"
 
 namespace Strategy {
 	namespace Interfacer {
 
-		class GlobalManager {
+		class RobotManager {
 		public:
-			GlobalManager(std::shared_ptr<PhysicalRobot::Robot> robot);
+			RobotManager(std::shared_ptr<PhysicalRobot::Robot> robot);
 
 			std::shared_ptr<PhysicalRobot::Robot> get_robot() const;
 
@@ -54,7 +54,7 @@ namespace Strategy {
 		};
 
 		template <typename Interfacer, typename... Args>
-		Interfacer& GlobalManager::add_interfacer(Args&&... params) {
+		Interfacer& RobotManager::add_interfacer(Args&&... params) {
 			static_assert(std::is_base_of<AbstractInterfacer, Interfacer>::value,
 			              "The specified module must inherit AbstractInterfacer as public.");
 			if(has_interfacer<Interfacer>()) {
@@ -68,7 +68,7 @@ namespace Strategy {
 		}
 
 		template <typename Interfacer>
-		bool GlobalManager::has_interfacer() const {
+		bool RobotManager::has_interfacer() const {
 			for(const auto& interfacer : _interfacers) {
 				if(typeid(Interfacer) == typeid(*interfacer)) {
 					return true;
@@ -78,7 +78,7 @@ namespace Strategy {
 		}
 
 		template <typename Interfacer>
-		Interfacer& GlobalManager::get_interfacer() {
+		Interfacer& RobotManager::get_interfacer() {
 			static_assert(std::is_base_of<AbstractInterfacer, Interfacer>::value,
 			              "The specified module must inherit AbstractInterfacer as public.");
 			for(const auto& interfacer : _interfacers) {

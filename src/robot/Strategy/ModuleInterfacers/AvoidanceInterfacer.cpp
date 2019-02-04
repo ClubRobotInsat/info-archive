@@ -2,37 +2,37 @@
 // Created by terae on 23/01/19.
 //
 
-#include "Avoidance.h"
+#include "AvoidanceInterfacer.h"
 #include "../../../Lidar/FindRobots.h"
 
 namespace Strategy {
 	namespace Interfacer {
-		Avoidance::Avoidance(std::shared_ptr<PhysicalRobot::Robot> robot, Environment& env, Vector2m turret_shift)
+		AvoidanceInterfacer::AvoidanceInterfacer(std::shared_ptr<PhysicalRobot::Robot> robot, Environment& env, Vector2m turret_shift)
 		        : _is_running(true)
 		        , _robot(robot)
 		        , _env(env)
 		        , _turret_shift(turret_shift)
 		        , _angle_detection_adversary(GLOBAL_CONSTANTS()["primary"].get_angle_adversary_detection()) {
-			_find_robots = std::thread(std::bind(&Avoidance::thread_lidar, this));
+			_find_robots = std::thread(std::bind(&AvoidanceInterfacer::thread_lidar, this));
 			std::string name = (_robot->name != "guest" ? _robot->name : "primary");
 			set_turret_shift(GLOBAL_CONSTANTS()[name].get_turret_position());
 		}
 
-		Avoidance::~Avoidance() {
+		AvoidanceInterfacer::~AvoidanceInterfacer() {
 			_is_running = false;
 			_find_robots.join();
 		}
 
-		void Avoidance::set_turret_shift(Vector2m shift) {
+		void AvoidanceInterfacer::set_turret_shift(Vector2m shift) {
 			_turret_shift = shift;
 		}
 
-		std::vector<repere::Position> Avoidance::get_adversary_positions() const {
+		std::vector<repere::Position> AvoidanceInterfacer::get_adversary_positions() const {
 			std::lock_guard<std::mutex> lk(_mutex_adversary);
 			return _adversary_positions;
 		}
 
-		bool Avoidance::adversary_detected(Distance threshold) const {
+		bool AvoidanceInterfacer::adversary_detected(Distance threshold) const {
 			// TODO: use _angle_detection_adversary
 			repere::Position robot_position; // = this->_robot->get_module<PhysicalRobot::Moving>()::get_position();
 			auto adversaries = get_adversary_positions();
@@ -45,7 +45,7 @@ namespace Strategy {
 			return false;
 		}
 
-		void Avoidance::set_adversary_detection_angle(Angle angle) {
+		void AvoidanceInterfacer::set_adversary_detection_angle(Angle angle) {
 			if(abs(angle) < 0.5_PI) {
 				_angle_detection_adversary.exchange(angle);
 			} else {
@@ -53,11 +53,11 @@ namespace Strategy {
 			}
 		}
 
-		Angle Avoidance::get_adversary_detection_angle() const {
+		Angle AvoidanceInterfacer::get_adversary_detection_angle() const {
 			return _angle_detection_adversary;
 		}
 
-		void Avoidance::thread_lidar() {
+		void AvoidanceInterfacer::thread_lidar() {
 			std::unique_ptr<OccupGrid> lidar_map =
 			    std::make_unique<OccupGrid>(toVec2(GLOBAL_CONSTANTS().get_table_size()), 100, 66);
 

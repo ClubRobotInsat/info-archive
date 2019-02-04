@@ -8,9 +8,9 @@
 
 #include "EmbeddedFiles.h"
 
-extern void init_petri_avoidance(std::shared_ptr<Strategy::Interfacer::GlobalManager> manager);
-// extern void init_petri_navigation(std::shared_ptr<Strategy::Interfacer::GlobalManager> manager, Constants::RobotColor color);
-extern void init_petri_servos(std::shared_ptr<Strategy::Interfacer::GlobalManager> manager, Constants::RobotColor color);
+extern void init_petri_avoidance(std::shared_ptr<Strategy::Interfacer::RobotManager> manager);
+// extern void init_petri_navigation(std::shared_ptr<Strategy::Interfacer::RobotManager> manager, Constants::RobotColor color);
+extern void init_petri_servos(std::shared_ptr<Strategy::Interfacer::RobotManager> manager, Constants::RobotColor color);
 void init_petri_utils(Strategy::AbstractStrategy& strategy);
 
 namespace Strategy {
@@ -100,33 +100,33 @@ namespace Strategy {
 		return *_env;
 	}
 
-	std::shared_ptr<Interfacer::GlobalManager> AbstractStrategy::add_robot(std::shared_ptr<PhysicalRobot::Robot> robot) {
-		auto manager = std::make_shared<Interfacer::GlobalManager>(robot);
-		// Interfacer::ServosManager
+	std::shared_ptr<Interfacer::RobotManager> AbstractStrategy::add_robot(std::shared_ptr<PhysicalRobot::Robot> robot) {
+		auto manager = std::make_shared<Interfacer::RobotManager>(robot);
+		// Interfacer::ServosInterfacer
 		if(manager->get_robot()->has_module<PhysicalRobot::Servos>()) {
-			logInfo("Insertion of an Interfacer::ServosManager inside the robot '" + robot->name + "'");
-			manager->add_interfacer<Interfacer::ServosManager>();
+			logInfo("Insertion of an Interfacer::ServosInterfacer inside the robot '" + robot->name + "'");
+			manager->add_interfacer<Interfacer::ServosInterfacer>();
 		}
-		// Interfacer::Avoidance
+		// Interfacer::AvoidanceInterfacer
 		if(manager->get_robot()->has_lidar()) {
-			logInfo("Insertion of an Interfacer::Avoidance inside the robot '" + robot->name + "'");
-			manager->add_interfacer<Interfacer::Avoidance>(*_env, GLOBAL_CONSTANTS()[robot->name].get_turret_position());
+			logInfo("Insertion of an Interfacer::AvoidanceInterfacer inside the robot '" + robot->name + "'");
+			manager->add_interfacer<Interfacer::AvoidanceInterfacer>(*_env, GLOBAL_CONSTANTS()[robot->name].get_turret_position());
 		}
 
 		return add_manager(manager);
 	}
 
-	std::shared_ptr<Interfacer::GlobalManager> AbstractStrategy::add_manager(std::shared_ptr<Interfacer::GlobalManager> manager) {
+	std::shared_ptr<Interfacer::RobotManager> AbstractStrategy::add_manager(std::shared_ptr<Interfacer::RobotManager> manager) {
 		try {
-			// Interfacer::ServosManager
-			if(manager->has_interfacer<Interfacer::ServosManager>()) {
+			// Interfacer::ServosInterfacer
+			if(manager->has_interfacer<Interfacer::ServosInterfacer>()) {
 				logInfo("Insertion of PetriLab::Servos functionalities associated with the robot '" +
 				        manager->get_robot()->name + "'");
 				init_petri_servos(manager, _color);
 			}
-			// Interfacer::Avoidance
-			if(manager->has_interfacer<Interfacer::Avoidance>()) {
-				logInfo("Insertion of PetriLab::Avoidance functionalities associated with the robot '" +
+			// Interfacer::AvoidanceInterfacer
+			if(manager->has_interfacer<Interfacer::AvoidanceInterfacer>()) {
+				logInfo("Insertion of PetriLab::AvoidanceInterfacer functionalities associated with the robot '" +
 				        manager->get_robot()->name + "'");
 				init_petri_avoidance(manager);
 			}
@@ -139,7 +139,7 @@ namespace Strategy {
 		return manager;
 	}
 
-	std::shared_ptr<Interfacer::GlobalManager> AbstractStrategy::get_robot(const std::string& name) {
+	std::shared_ptr<Interfacer::RobotManager> AbstractStrategy::get_robot(const std::string& name) {
 		for(auto i : _interfacers) {
 			if(i->get_robot()->name == name) {
 				return i;

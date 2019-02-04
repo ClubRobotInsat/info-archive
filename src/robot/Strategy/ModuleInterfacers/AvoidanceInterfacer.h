@@ -10,13 +10,13 @@
 
 namespace Strategy {
 	namespace Interfacer {
-		class Avoidance final : public AbstractInterfacer {
+		class AvoidanceInterfacer final : public AbstractInterfacer {
 		public:
 			using interfaced_type = void;
 
-			Avoidance(std::shared_ptr<PhysicalRobot::Robot> robot, Environment& env, Vector2m turret_shift = Vector2m(0_m, 0_m));
+			AvoidanceInterfacer(std::shared_ptr<PhysicalRobot::Robot> robot, Environment& env, Vector2m turret_shift = Vector2m(0_m, 0_m));
 
-			~Avoidance();
+			~AvoidanceInterfacer();
 
 			void set_turret_shift(Vector2m shift);
 

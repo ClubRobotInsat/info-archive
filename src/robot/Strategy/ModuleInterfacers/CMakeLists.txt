@@ -1,9 +1,9 @@
 set(INTERFACERS_SOURCES
         Interfacer.hpp
-        Avoidance.cpp
-        Elevator.cpp
-        ServosManager.cpp
-        GlobalManager.cpp)
+        AvoidanceInterfacer.cpp
+        ElevatorInterfacer.cpp
+        ServosInterfacer.cpp
+        RobotManager.cpp)
 
 add_library(ModuleInterfacers STATIC ${INTERFACERS_SOURCES})
 target_link_libraries(ModuleInterfacers Robot Environment)
