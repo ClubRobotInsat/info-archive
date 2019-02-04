@@ -77,7 +77,7 @@ namespace PhysicalRobot {
 		static uint16_t angular_speed_to_uint16_t(AngularSpeed as);
 
 	private:
-		static constexpr AngularSpeed MAX_SPEED = 360_deg_s;
+		static constexpr AngularSpeed MAX_SPEED = 361.44_deg_s; // datasheet p9: 60°/0.166s
 
 		struct Servo {
 			using CommandPosition = Angle;
