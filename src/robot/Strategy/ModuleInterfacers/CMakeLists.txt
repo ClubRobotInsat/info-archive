@@ -2,6 +2,7 @@ set(INTERFACERS_SOURCES
         Interfacer.hpp
         AvoidanceInterfacer.cpp
         ElevatorInterfacer.cpp
+        NavigationInterfacer.cpp
         ServosInterfacer.cpp
         RobotManager.cpp)
 

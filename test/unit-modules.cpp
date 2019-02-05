@@ -221,7 +221,7 @@ TEST_CASE("ModuleManager") {
 				}
 
 				SECTION("Simple commands") {
-					module_nav.forward(5_m);
+					module_nav.forward(5_m, PhysicalRobot::SensAdvance::Forward);
 					auto frames_nav = manager.write_frame();
 					REQUIRE(frames_nav.size() == 1);
 

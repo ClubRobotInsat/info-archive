@@ -13,7 +13,7 @@ int main() {
 	// TODO check address
 	Robot robot(m, {"prog_moving", "UDP", "192.168.0.222", "50000", "51"}, Lidar::None);
 	std::cout << "forward(5_cm)" << std::endl;
-	moving.forward(5_cm);
+	moving.forward(5_cm, SensAdvance::Forward);
 
 	std::cout << "stop" << std::endl;
 	moving.stop();
