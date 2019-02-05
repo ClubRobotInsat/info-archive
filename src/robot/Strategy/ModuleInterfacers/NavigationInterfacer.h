@@ -21,8 +21,7 @@ namespace Strategy {
 			using SensRotation = PhysicalRobot::SensRotation;
 			using SensAdvance = PhysicalRobot::SensAdvance;
 
-			NavigationInterfacer(std::shared_ptr<PhysicalRobot::Robot>, Environment&, std::shared_ptr<AvoidanceInterfacer>);
-			NavigationInterfacer(std::shared_ptr<PhysicalRobot::Robot>, Environment&);
+			NavigationInterfacer(std::shared_ptr<PhysicalRobot::Robot>, Environment&, AvoidanceInterfacer&);
 
 			repere::Coordinates get_origin_coordinates() const;
 
@@ -80,8 +79,7 @@ namespace Strategy {
 
 		private:
 			interfaced_type& _module;
-			std::shared_ptr<PhysicalRobot::Robot> _robot;
-			std::shared_ptr<AvoidanceInterfacer> _avoidance;
+			AvoidanceInterfacer& _avoidance;
 
 			template <typename T>
 			T peek_stack(const std::stack<T>& stack) const {

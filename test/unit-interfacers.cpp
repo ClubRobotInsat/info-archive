@@ -50,6 +50,28 @@ TEST_CASE("Interfacers") {
 		CHECK(avoidance2.get_adversary_positions().empty());
 	}
 
+	SECTION("NavigationInterfacer") {
+		REQUIRE(std::is_same<NavigationInterfacer::interfaced_type, PhysicalRobot::Navigation>::value);
+
+		auto manager = std::make_shared<PhysicalRobot::ModuleManager>();
+		manager->add_module<PhysicalRobot::Navigation>(2);
+		auto robot = std::make_shared<PhysicalRobot::Robot>(manager, std::vector<std::string>({"ehCoucou", "NULL"}), Lidar::None);
+
+		Distance sx = 40_cm;
+		Distance sy = 30_cm;
+		Environment env({300, 200}, 1_cm, sy, (sqrt(sx * sx + sy * sy) / 2) * 1.2, Vector2m(0_m, 1_m));
+		AvoidanceInterfacer avoidance(robot, env);
+
+		NavigationInterfacer navigation(robot, env, avoidance);
+		CHECK(navigation.get_linear_speed() == GLOBAL_CONSTANTS()["default"].get_linear_speed());
+		CHECK(navigation.get_angular_speed() == GLOBAL_CONSTANTS()["default"].get_angular_speed());
+		CHECK(navigation.get_linear_accuracy() == GLOBAL_CONSTANTS()["default"].get_linear_accuracy());
+		CHECK(navigation.get_angular_accuracy() == GLOBAL_CONSTANTS()["default"].get_angular_accuracy());
+
+		CHECK(navigation.optimal_rotation_sens({0_deg}, {179_deg}) == PhysicalRobot::SensRotation::Trigo);
+		CHECK(navigation.optimal_rotation_sens({0_deg}, {-179_deg}) == PhysicalRobot::SensRotation::Clockwise);
+	}
+
 	SECTION("RobotManager") {
 		auto module_manager = std::make_shared<PhysicalRobot::ModuleManager>();
 		auto robot =
@@ -74,6 +96,9 @@ TEST_CASE("Interfacers") {
 		Environment env({300, 200}, 1_cm, sy, (sqrt(sx * sx + sy * sy) / 2) * 1.2, Vector2m(0_m, 1_m));
 		REQUIRE_NOTHROW(manager.add_interfacer<AvoidanceInterfacer>(env));
 
-		CHECK(manager.size() == 2);
+		module_manager->add_module<PhysicalRobot::Navigation>(8);
+		REQUIRE_NOTHROW(manager.add_interfacer<NavigationInterfacer>(env, manager.get_interfacer<AvoidanceInterfacer>()));
+
+		CHECK(manager.size() == 3);
 	}
 }
