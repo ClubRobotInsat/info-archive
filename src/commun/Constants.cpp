@@ -73,22 +73,25 @@ namespace Constants {
 			}
 		}
 
-		_TCPIP_port_simu = static_cast<uint16_t>(read_field(_reader, "constants", "TCPIP_port", 4321));
+		const std::string section = "constants";
+
+		_TCPIP_port_simu = static_cast<uint16_t>(read_field(_reader, section, "TCPIP_port", 4321));
 		_table_size = {
-		    Distance::makeFromMm(read_field(_reader, "constants", "table_x", 3000)),
-		    Distance::makeFromMm(read_field(_reader, "constants", "table_y", 2000)),
+		    Distance::makeFromMm(read_field(_reader, section, "table_x", 3000)),
+		    Distance::makeFromMm(read_field(_reader, section, "table_y", 2000)),
 		    0_m,
 		};
-		_scale_environment = Distance::makeFromMm(read_field(_reader, "constants", "scale_environment", 10));
+		_scale_environment = Distance::makeFromMm(read_field(_reader, section, "scale_environment", 10));
 		_table_env_grid = {
 		    static_cast<uint16_t>(_table_size.x / _scale_environment),
 		    static_cast<uint16_t>(_table_size.y / _scale_environment),
 		};
 
-		_match_duration = Duration::makeFromS(read_field(_reader, "constants", "match_duration", 100));
+		_match_duration = Duration::makeFromS(read_field(_reader, section, "match_duration", 100));
 
-		_communication_delay = Duration::makeFromMs(read_field(_reader, "constants", "communication_delay", 3));
-		_frame_period = Duration::makeFromMs(read_field(_reader, "constants", "frame_period", 100));
+		_communication_delay = Duration::makeFromMs(read_field(_reader, section, "communication_delay", 3));
+		_frame_period = Duration::makeFromMs(read_field(_reader, section, "frame_period", 100));
+		_lidar_actualization_period = Duration::makeFromMs(read_field(_reader, section, "lidar_actualization_period", 300));
 	}
 
 	const Robot& Constants::operator[](const std::string& name) const {

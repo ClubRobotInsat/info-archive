@@ -28,6 +28,7 @@ TEST_CASE("Global constants") {
 		                      "scale_environment=5\n"
 		                      "communication_delay=15\n"
 		                      "frame_period=12\n"
+		                      "lidar_actualization_period=1000\n"
 
 		                      "[robot]\n"
 		                      "linear_speed=376\n"
@@ -64,6 +65,7 @@ TEST_CASE("Global constants") {
 		CHECK(cst.get_table_env_grid() == Vector2u16{300, 200});
 		CHECK(cst.get_default_communication_delay() == 15_ms);
 		CHECK(cst.get_frame_period() == 12_ms);
+		CHECK(cst.get_lidar_actualization_period() == 1_s);
 		REQUIRE_THROWS_WITH(cst["iron-man"], "Constants of the robot 'iron-man' does not exist.");
 
 		REQUIRE_NOTHROW(cst["bot"]);

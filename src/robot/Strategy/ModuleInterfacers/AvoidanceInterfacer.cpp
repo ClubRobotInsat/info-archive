@@ -64,7 +64,10 @@ namespace Strategy {
 			const int first_dynamic = 10;
 			int last_dynamic = 0;
 
+			StopWatch chrono;
 			while(_is_running) {
+				chrono.reset();
+
 				repere::Coordinates coords; // = this->_robot->get_module<PhysicalRobot::Moving>()::get_coordinates() + _turret_shift;
 				lidar_map->reset();
 
@@ -89,7 +92,12 @@ namespace Strategy {
 					                     std::make_unique<Circle>(Environment::DANGER_INFINITY, 20_cm, pos.getPos2D()));
 				}
 				_mutex_adversary.unlock();
-				sleep(200_ms);
+
+				auto to_sleep = GLOBAL_CONSTANTS().get_lidar_actualization_period() - chrono.getElapsedTime();
+				if(to_sleep < 0_s) {
+					logWarn("The Lidar frame's acquisition is too slow of ", to_sleep);
+				}
+				sleep(to_sleep);
 			}
 		}
 	} // namespace Interfacer

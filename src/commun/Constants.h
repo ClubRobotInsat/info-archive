@@ -157,6 +157,10 @@ namespace Constants {
 			return TABLE_2018;
 		}
 
+		inline Duration get_lidar_actualization_period() const {
+			return _lidar_actualization_period;
+		}
+
 	private:
 		uint16_t _TCPIP_port_simu;
 		Vector3m _table_size;
@@ -169,6 +173,8 @@ namespace Constants {
 		// Durée de temporisation entre l'envoi de deux messages successifs sur le médium de communication
 		Duration _communication_delay;
 		Duration _frame_period;
+
+		Duration _lidar_actualization_period;
 
 		IniFile _reader;
 
