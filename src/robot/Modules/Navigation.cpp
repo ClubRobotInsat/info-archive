@@ -22,7 +22,7 @@ namespace PhysicalRobot {
 		unlock_variables();
 	}
 
-	void Navigation::turnAbsolute(Angle angle) {
+	void Navigation::turn_absolute(Angle angle) {
 		lock_variables();
 		set_command(MovingCommand::TurnAbsolute);
 		_args_cmd[0] = angle_to_u16(angle);
@@ -30,7 +30,7 @@ namespace PhysicalRobot {
 		unlock_variables();
 	}
 
-	void Navigation::turnRelative(Angle angle) {
+	void Navigation::turn_relative(Angle angle) {
 		lock_variables();
 		set_command(MovingCommand::TurnRelative);
 		_args_cmd[0] = angle_to_u16(angle);

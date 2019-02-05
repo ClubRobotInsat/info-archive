@@ -8,350 +8,282 @@
 #define MANETTE_COUCHEE
 
 int main(int argc, char* argv[]) {
-    Log::open(argc, argv, false);
+	Log::open(argc, argv, false);
 
-    Strategy::IAWiiMote ia;
-    ia.start();
+	Strategy::IAWiiMote ia;
+	ia.start();
 }
 
 extern void init_petri_navigation(std::shared_ptr<Strategy::Interfacer::RobotManager> manager, Constants::RobotColor color);
 
 namespace Strategy {
-    IAWiiMote::IAWiiMote() {
-        auto robot = std::make_shared<PhysicalRobot::Robot>("primary", std::vector<std::string>(), Lidar::None);
-        _manager = std::make_shared<Interfacer::RobotManager>(robot);
+	IAWiiMote::IAWiiMote() {
+		auto robot = std::make_shared<PhysicalRobot::Robot>("primary", std::vector<std::string>(), Lidar::None);
+		_manager = std::make_shared<Interfacer::RobotManager>(robot);
 
-        try {
-            init_petri_navigation(_manager, Constants::RobotColor::Purple);
-        } catch (const std::exception& e) {
-            logError("Error while initializing IAWiiMote: ", e.what());
-            exit(1);
-        }
+		try {
+			init_petri_navigation(_manager, Constants::RobotColor::Purple);
+		} catch(const std::exception& e) {
+			logError("Error while initializing IAWiiMote: ", e.what());
+			exit(1);
+		}
 
-        _input_provider.registerEventHandler(this);
+		_input_provider.registerEventHandler(this);
 
-        // navigation -> set_reference?
-    }
+		// navigation -> set_reference?
+	}
 
-    IAWiiMote::~IAWiiMote() {
-        close();
-    }
+	IAWiiMote::~IAWiiMote() {
+		close();
+	}
 
-    void IAWiiMote::start() {
-        if (_is_running) {
-            _execution = std::thread(std::bind(&IAWiiMote::exec, this));
-        }
-    }
+	void IAWiiMote::start() {
+		if(_is_running) {
+			_execution = std::thread(std::bind(&IAWiiMote::exec, this));
+		}
+	}
 
-    void IAWiiMote::close() {
-        _is_running = false;
+	void IAWiiMote::close() {
+		_is_running = false;
 
-        logDebug("End of IAWiiMote");
-        _manager->get_robot()->deactivation();
+		logDebug("End of IAWiiMote");
+		_manager->get_robot()->deactivation();
 
-        auto handle = _execution.native_handle();
-        _execution.detach();
-        pthread_cancel(handle);
-        pthread_join(handle, nullptr);
+		auto handle = _execution.native_handle();
+		_execution.detach();
+		pthread_cancel(handle);
+		pthread_join(handle, nullptr);
 
-        stop();
-    }
+		stop();
+	}
 
-    void IAWiiMote::exec() {
-        setThreadName("IAWiiMote");
-        pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, nullptr);
+	void IAWiiMote::exec() {
+		setThreadName("IAWiiMote");
+		pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, nullptr);
 
-        _input_provider.startListening();
-        logDebug("End connexion with wii mote");
-        exit(0);
-    }
+		_input_provider.startListening();
+		logDebug("End connexion with wii mote");
+		exit(0);
+	}
 
-    /// Méthode appellée régulièrement pour traiter les entrées wiimote
-    void IAWiiMote::processWiimoteInput(WiimoteState &state) {
-        if(state.hasNunchuk()) {
+	/// Méthode appellée régulièrement pour traiter les entrées wiimote
+	void IAWiiMote::processWiimoteInput(WiimoteState& state) {
+		if(state.hasNunchuk()) {
 
-            state.getNunchukJoystickPosition(_angle_read, _magnitude_read);
+			state.getNunchukJoystickPosition(_angle_read, _magnitude_read);
 
-            if(magnitudeLue > 0.2) {
-                switch(getTypeDeplacement(angleLu)) {
-                    case AVANCER:
-                        avancer(SensAvance::Avant, magnitudeLue);
-                        break;
-                    case AVANCER_DROITE:
-                        // avancerCourbe(SensAvance::Avant, SensRotation::Horaire, magnitudeLue);
-                        break;
-                    case TOURNER_DROITE:
-                        tourner(SensRotation::Horaire, magnitudeLue);
-                        break;
-                    case RECULER_DROITE:
-                        // avancerCourbe(SensAvance::Arriere, SensRotation::Trigo, magnitudeLue);
-                        break;
-                    case RECULER:
-                        avancer(SensAvance::Arriere, magnitudeLue);
-                        break;
-                    case RECULER_GAUCHE:
-                        // avancerCourbe(SensAvance::Arriere, SensRotation::Horaire, magnitudeLue);
-                        break;
-                    case TOURNER_GAUCHE:
-                        tourner(SensRotation::Trigo, magnitudeLue);
-                        break;
-                    case AVANCER_GAUCHE:
-                        // avancerCourbe(SensAvance::Avant, SensRotation::Trigo, magnitudeLue);
-                        break;
-                    default:
-                        stop();
-                        break;
-                }
-            } else {
-                stop();
-            }
-        } else {
+			if(_magnitude_read > 0.2) {
+				switch(get_type_navigation(_angle_read)) {
+					case GO_FORWARD:
+						advance(SensAdvance::Forward, _magnitude_read);
+						break;
+					case TURN_RIGHT:
+						turn(SensRotation::Clockwise, _magnitude_read);
+						break;
+					case GO_BACKWARD:
+						advance(SensAdvance::Backward, _magnitude_read);
+						break;
+					case TURN_LEFT:
+						turn(SensRotation::Trigo, _magnitude_read);
+						break;
+					default:
+						stop();
+						break;
+				}
+			} else {
+				stop();
+			}
+		} else {
 // Soit on tient la manette comme dans mario kart, soit comme dans Wii Sport Resort
 #ifdef MANETTE_COUCHEE
-            if(state.isPressed(BUTTON_UP)) {
-                tourner(SensRotation::Horaire);
-            } else if(state.isPressed(BUTTON_LEFT)) {
-                avancer(SensAvance::Arriere);
-            } else if(state.isPressed(BUTTON_RIGHT)) {
-                avancer(SensAvance::Avant);
-            } else if(state.isPressed(BUTTON_DOWN)) {
-                tourner(SensRotation::Trigo);
-            } else {
-                stop();
-            }
+			if(state.isPressed(BUTTON_UP)) {
+				turn(SensRotation::Clockwise);
+			} else if(state.isPressed(BUTTON_LEFT)) {
+				advance(SensAdvance::Backward);
+			} else if(state.isPressed(BUTTON_RIGHT)) {
+				advance(SensAdvance::Forward);
+			} else if(state.isPressed(BUTTON_DOWN)) {
+				turn(SensRotation::Trigo);
+			} else {
+				stop();
+			}
 #else
-            if(state.isPressed(BUTTON_UP)) {
-			avancer(SensAvance::Arriere);
-		} else if(state.isPressed(BUTTON_LEFT)) {
-			tourner(SensRotation::Trigo);
-		} else if(state.isPressed(BUTTON_RIGHT)) {
-			tourner(SensRotation::Horaire);
-		} else if(state.isPressed(BUTTON_DOWN)) {
-			avancer(SensAvance::Avant);
-		} else {
-			stop();
-		}
+			if(state.isPressed(BUTTON_UP)) {
+				advance(SensAdvance::Backward);
+			} else if(state.isPressed(BUTTON_LEFT)) {
+				turn(SensRotation::Trigo);
+			} else if(state.isPressed(BUTTON_RIGHT)) {
+				turn(SensRotation::Clockwise);
+			} else if(state.isPressed(BUTTON_DOWN)) {
+				advance(SensAdvance::Forward);
+			} else {
+				stop();
+			}
 #endif
 
-// ascenseurs
 #ifdef MANETTE_COUCHEE
-            if(state.isPressed(BUTTON_B) || state.isPressed(BUTTON_PLUS)) {
-                if(_soutes_ouvertes) {
-                    fermerSouteG();
-                    fermerSouteD();
-                } else {
-                    ouvrirSouteD();
-                    ouvrirSouteG();
-                }
-
-                _soutes_ouvertes = !_soutes_ouvertes;
-                // monterAscenseursDe(1);
-            } else if(state.isPressed(BUTTON_A) || state.isPressed(BUTTON_MINUS)) {
+			if(state.isPressed(BUTTON_B) || state.isPressed(BUTTON_PLUS)) {
+				// TODO: use a servos' function F1
+			} else if(state.isPressed(BUTTON_A) || state.isPressed(BUTTON_MINUS)) {
 #else
-                if(state.isPressed(BUTTON_1)) {
-			monterAscenseursDe(1);
-		} else if(state.isPressed(BUTTON_2)) {
+			if(state.isPressed(BUTTON_1)) {
+				// TODO: use a servos' function F1
+			} else if(state.isPressed(BUTTON_2)) {
 #endif
-                if(_abeille_ouverte) {
-                    fermerAbeille();
-                } else {
-                    ouvrirAbeille();
-                }
-                _abeille_ouverte = !_abeille_ouverte;
-            } else if(state.isPressed(BUTTON_HOME)) {
-                if(_porte_ouverte) {
-                    fermerPorteCube();
-                } else {
-                    ouvrirPorteCube();
-                }
-                _porte_ouverte = !_porte_ouverte;
-            }
-                /*else
-                    // On revient à la position initiale
-                    if(state.isPressed(BUTTON_HOME)) {
-                    allerA_vec(_initial_position);
-                    tournerAbsolu(_initial_angle);
-                    std::cout << "Home sweet home" << std::endl;
-                } else if(state.isPressed(BUTTON_PLUS)) { // Modifie la vitesse de manière permanente (en plus de 1 et 2)
-                    setVitesseLineaireRapide();
-                    setVitesseAngulaireRapide();
-                } else if(state.isPressed(BUTTON_MINUS)) {
-                    setVitesseLineaireLente();
-                    setVitesseAngulaireLente();
-                }*/
-            else
+				// TODO: use a servos' function F2
+			} else if(state.isPressed(BUTTON_HOME)) {
+				// TODO: use a servos' function F3 OR goto_home()
+			} else
 
 // accélération - décélération
 #ifdef MANETTE_COUCHEE
-            if(state.isPressed(BUTTON_2)) {
+			    if(state.isPressed(BUTTON_2)) {
 #else
-                if(state.isPressed(BUTTON_A)) {
+			    if(state.isPressed(BUTTON_A)) {
 #endif
-                if(!linearVelocityVeryFast) {
-                    if(!linearVelocityFast) {
-                        setVitesseLineaire(getDeplacement().getVitesseLineaire() * 4);
-                        linearVelocityVeryFast = true;
-                        linearVelocityFast = true;
-                    } else {
-                        setVitesseLineaire(getDeplacement().getVitesseLineaire() * 2);
-                        linearVelocityVeryFast = true;
-                    }
-                }
+				if(!_linear_velocity_very_fast) {
+					if(!_linear_velocity_fast) {
+						setVitesseLineaire(getDeplacement().getVitesseLineaire() * 4);
+						_linear_velocity_very_fast = true;
+						_linear_velocity_fast = true;
+					} else {
+						setVitesseLineaire(getDeplacement().getVitesseLineaire() * 2);
+						_linear_velocity_very_fast = true;
+					}
+				}
 
-                if(!angularVelocityVeryFast) {
-                    if(!angularVelocityFast) {
-                        setVitesseAngulaire(getDeplacement().getVitesseAngulaire() * 4);
-                        angularVelocityVeryFast = true;
-                        angularVelocityFast = true;
-                    } else {
-                        setVitesseAngulaire(getDeplacement().getVitesseAngulaire() * 2);
-                        angularVelocityVeryFast = true;
-                    }
-                }
+				if(!_angular_velocity_very_fast) {
+					if(!_angular_velocity_fast) {
+						setVitesseAngulaire(getDeplacement().getVitesseAngulaire() * 4);
+						_angular_velocity_very_fast = true;
+						_angular_velocity_fast = true;
+					} else {
+						setVitesseAngulaire(getDeplacement().getVitesseAngulaire() * 2);
+						_angular_velocity_very_fast = true;
+					}
+				}
 #ifdef MANETTE_COUCHEE
-            } else if(state.isPressed(BUTTON_1)) {
+			} else if(state.isPressed(BUTTON_1)) {
 #else
-                } else if(state.isPressed(BUTTON_B)) {
+			} else if(state.isPressed(BUTTON_B)) {
 #endif
-                if(linearVelocityVeryFast) {
-                    setVitesseLineaire(getDeplacement().getVitesseLineaire() * 0.25);
-                    linearVelocityVeryFast = false;
-                    linearVelocityFast = false;
-                } else if(linearVelocityFast) {
-                    setVitesseLineaire(getDeplacement().getVitesseLineaire() * 0.5);
-                    linearVelocityFast = false;
-                }
+				if(_linear_velocity_very_fast) {
+					setVitesseLineaire(getDeplacement().getVitesseLineaire() * 0.25);
+					_linear_velocity_very_fast = false;
+					_linear_velocity_fast = false;
+				} else if(_linear_velocity_fast) {
+					setVitesseLineaire(getDeplacement().getVitesseLineaire() * 0.5);
+					_linear_velocity_fast = false;
+				}
 
-                if(angularVelocityVeryFast) {
-                    setVitesseAngulaire(getDeplacement().getVitesseAngulaire() * 0.25);
-                    angularVelocityVeryFast = false;
-                    angularVelocityFast = false;
-                } else if(angularVelocityFast) {
-                    setVitesseAngulaire(getDeplacement().getVitesseAngulaire() * 0.5);
-                    angularVelocityFast = false;
-                }
-            } else {
-                if(linearVelocityVeryFast) {
-                    setVitesseLineaire(getDeplacement().getVitesseLineaire() * 0.5);
-                    linearVelocityVeryFast = false;
-                    linearVelocityFast = true;
-                } else if(!linearVelocityFast) {
-                    setVitesseLineaire(getDeplacement().getVitesseLineaire() * 2);
-                    linearVelocityVeryFast = false;
-                    linearVelocityFast = true;
-                }
-                if(angularVelocityVeryFast) {
-                    setVitesseAngulaire(getDeplacement().getVitesseAngulaire() * 0.5);
-                    angularVelocityVeryFast = false;
-                    angularVelocityFast = true;
-                } else if(!angularVelocityFast) {
-                    setVitesseAngulaire(getDeplacement().getVitesseAngulaire() * 2);
-                    angularVelocityVeryFast = false;
-                    angularVelocityFast = true;
-                }
-            }
-        }
-    }
-
-    void IAWiiMote::go_forward(AdvanceSens sens, float magnitude = 1.0) {
-        TypeDeplacement typeDep = sens == SensAvance::Avant ? AVANCER : RECULER;
-
-        if(typeDeplacement != IMMOBILE && typeDeplacement != typeDep) {
-            stop();
-        }
-        if(typeDeplacement == IMMOBILE) {
-            getDeplacement().avancerInfini(sens, 1_ms);
-            magnitudeOld = magnitude;
-        } else if(!linearVelocityFast && magnitude >= 0.8) {
-            setVitesseLineaire(getDeplacement().getVitesseLineaire() * 2);
-            linearVelocityFast = true;
-        } else if(linearVelocityFast && magnitude < 0.8) {
-            setVitesseLineaire(getDeplacement().getVitesseLineaire() * 0.5);
-            linearVelocityFast = false;
-        }
-
-        typeDeplacement = typeDep;
-    }
-
-    void IAWiiMote::stop() {
-        std::cout << "stop !" << std::endl;
-        getDeplacement().arretUrgence();
-        typeDeplacement = IMMOBILE;
-    }
-
-    void IAWiiMote::turn(RotatingSens sens, float magnitude = 1.0) {
-        TypeDeplacement typeDep = sens == SensRotation::Horaire ? TOURNER_DROITE : TOURNER_GAUCHE;
-
-        if(typeDeplacement != IMMOBILE && typeDeplacement != typeDep) {
-            stop();
-        }
-        if(typeDeplacement == IMMOBILE) {
-            getDeplacement().tournerRelatif(sens == SensRotation::Trigo ? 179_deg : -179_deg, 1_ms);
-            std::cout << "tourner relatif" << std::endl;
-            magnitudeOld = magnitude;
-        } else if(!angularVelocityFast && magnitude >= 0.8) {
-            setVitesseAngulaire(getDeplacement().getVitesseAngulaire() * 2);
-            angularVelocityFast = true;
-        } else if(angularVelocityFast && magnitude < 0.8) {
-            setVitesseAngulaire(getDeplacement().getVitesseAngulaire() * 0.5);
-            angularVelocityFast = false;
-        }
-
-        typeDeplacement = typeDep;
-    }
-
-    void IAWiiMote::set_linear_speed(Speed);
-
-    void IAWiiMote::set_angular_speed(AngularSpeed) {
-    }
-
-    TypeNavigation IAWiiMote::get_type_navigation(float angle_nunchuk) {
-    }
-}
-
-
-void IAWiimote::stop() {
-
-}
-
-void IAWiimote::setVitesseLineaire(Speed linearVelocity) {
-    if(linearVelocityPushed) {
-        getDeplacement().popVitesseLineaire();
-    }
-    getDeplacement().pushVitesseLineaire(linearVelocity);
-    linearVelocityPushed = true;
-}
-
-void IAWiimote::setVitesseAngulaire(AngularSpeed angularVelocity) {
-    if(angularVelocityPushed) {
-        getDeplacement().popVitesseAngulaire();
-    }
-    getDeplacement().pushVitesseAngulaire(angularVelocity);
-    angularVelocityPushed = true;
-}
-
-TypeDeplacement IAWiimote::getTypeDeplacement(float angleNunchuk) {
-#ifdef NUNCHUK_UTILISER_COURBES
-    if(angleNunchuk >= 337.5 || angleNunchuk <= 22.5)
-		return AVANCER;
-	for(int i = 1; i <= 15; i += 2) {
-		if((angleNunchuk >= i * 22.5) && (angleNunchuk <= (i + 2) * 22.5))
-			return (TypeDeplacement)((i + 1) / 2);
+				if(_angular_velocity_very_fast) {
+					setVitesseAngulaire(getDeplacement().getVitesseAngulaire() * 0.25);
+					_angular_velocity_very_fast = false;
+					_angular_velocity_fast = false;
+				} else if(_angular_velocity_fast) {
+					setVitesseAngulaire(getDeplacement().getVitesseAngulaire() * 0.5);
+					_angular_velocity_fast = false;
+				}
+			} else {
+				if(_angular_velocity_very_fast) {
+					setVitesseLineaire(getDeplacement().getVitesseLineaire() * 0.5);
+					_angular_velocity_very_fast = false;
+					_angular_velocity_fast = true;
+				} else if(!_angular_velocity_fast) {
+					setVitesseLineaire(getDeplacement().getVitesseLineaire() * 2);
+					_angular_velocity_very_fast = false;
+					_angular_velocity_fast = true;
+				}
+				if(_angular_velocity_very_fast) {
+					setVitesseAngulaire(getDeplacement().getVitesseAngulaire() * 0.5);
+					_angular_velocity_very_fast = false;
+					_angular_velocity_fast = true;
+				} else if(!_angular_velocity_fast) {
+					setVitesseAngulaire(getDeplacement().getVitesseAngulaire() * 2);
+					_angular_velocity_very_fast = false;
+					_angular_velocity_fast = true;
+				}
+			}
+		}
 	}
 
+	void IAWiiMote::advance(SensAdvance sens, float magnitude) {
+		TypeNavigation type_nav = sens == SensAdvance::Forward ? GO_FORWARD : GO_BACKWARD;
 
-#else
-    if(angleNunchuk >= 315 || angleNunchuk <= 45)
-        return AVANCER;
-    if(angleNunchuk > 45 && angleNunchuk < 135)
-        return TOURNER_DROITE;
-    if(angleNunchuk >= 135 && angleNunchuk <= 225)
-        return RECULER;
-    if(angleNunchuk > 225 && angleNunchuk < 315)
-        return TOURNER_GAUCHE;
+		if(_type_navigation != DO_NOTHING && _type_navigation != type_nav) {
+			stop();
+		}
+		if(_type_navigation == DO_NOTHING) {
+			getDeplacement().avancerInfini(sens, 1_ms);
+			_magnitude_old = magnitude;
+		} else if(!_linear_velocity_fast && magnitude >= 0.8) {
+			setVitesseLineaire(getDeplacement().getVitesseLineaire() * 2);
+			_linear_velocity_fast = true;
+		} else if(_linear_velocity_fast && magnitude < 0.8) {
+			setVitesseLineaire(getDeplacement().getVitesseLineaire() * 0.5);
+			_linear_velocity_fast = false;
+		}
 
-#endif // NUNCHUK_UTILISER_COURBES
-    return IMMOBILE;
+		_type_navigation = type_nav;
+	}
+
+	void IAWiiMote::stop() {
+		logDebug("IAWiiMote::stop()!");
+		getDeplacement().arretUrgence();
+		_type_navigation = DO_NOTHING;
+	}
+
+	void IAWiiMote::turn(SensRotation sens, float magnitude) {
+		TypeNavigation type_nav = sens == SensRotation::Clockwise ? TURN_RIGHT : TURN_LEFT;
+
+		if(_type_navigation != DO_NOTHING && _type_navigation != type_nav) {
+			stop();
+		}
+		if(_type_navigation == DO_NOTHING) {
+			getDeplacement().tournerRelatif(sens == SensRotation::Trigo ? 179_deg : -179_deg, 1_ms);
+			std::cout << "tourner relatif" << std::endl;
+			_magnitude_old = magnitude;
+		} else if(!_angular_velocity_fast && magnitude >= 0.8) {
+			setVitesseAngulaire(getDeplacement().getVitesseAngulaire() * 2);
+			_angular_velocity_fast = true;
+		} else if(_angular_velocity_fast && magnitude < 0.8) {
+			setVitesseAngulaire(getDeplacement().getVitesseAngulaire() * 0.5);
+			_angular_velocity_fast = false;
+		}
+
+		_type_navigation = type_nav;
+	}
+
+	void IAWiiMote::set_linear_speed(Speed speed) {
+		if(_linear_velocity_pushed) {
+			getDeplacement().popVitesseLineaire();
+		}
+		getDeplacement().pushVitesseLineaire(speed);
+		_linear_velocity_pushed = true;
+	}
+
+	void IAWiiMote::set_angular_speed(AngularSpeed speed) {
+		if(_angular_velocity_pushed) {
+			getDeplacement().popVitesseAngulaire();
+		}
+		getDeplacement().pushVitesseAngulaire(speed);
+		_angular_velocity_pushed = true;
+	}
+
+	TypeNavigation IAWiiMote::get_type_navigation(float angle_nunchuk) {
+		if(angle_nunchuk >= 315 || angle_nunchuk <= 45)
+			return GO_FORWARD;
+		if(angle_nunchuk > 45 && angle_nunchuk < 135)
+			return TURN_RIGHT;
+		if(angle_nunchuk >= 135 && angle_nunchuk <= 225)
+			return GO_BACKWARD;
+		if(angle_nunchuk > 225 && angle_nunchuk < 315)
+			return TURN_LEFT;
+
+		return DO_NOTHING;
+	}
+} // namespace Strategy
+}
 }
 
 #undef MANETTE_COUCHEE
