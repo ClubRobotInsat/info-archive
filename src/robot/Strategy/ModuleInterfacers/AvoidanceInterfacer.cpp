@@ -44,6 +44,26 @@ namespace Strategy {
 			return false;
 		}
 
+		bool AvoidanceInterfacer::adversary_detected(PhysicalRobot::SensAdvance sens) const {
+			return adversary_detected(GLOBAL_CONSTANTS().get_threshold_adversary_detection(), sens);
+		}
+
+		bool AvoidanceInterfacer::adversary_detected(Distance threshold, PhysicalRobot::SensAdvance sens) const {
+			repere::Position robot_position = get_robot_position();
+			auto adversaries = get_adversary_positions();
+
+			for(repere::Position pos : adversaries) {
+				bool inside_radius = (robot_position.getPos2D() - pos.getPos2D()).norm() < threshold;
+				// TODO: find the trigonometric function which determines either a point is in the cone
+				// TODO: `_angle_detection_adversary` in front of the robot (or behind in function of `sens`)
+				bool in_front_of = true;
+				if(inside_radius && in_front_of) {
+					return true;
+				}
+			}
+			return false;
+		}
+
 		void AvoidanceInterfacer::set_adversary_detection_angle(Angle angle) {
 			if(abs(angle) < 0.5_PI) {
 				_angle_detection_adversary.exchange(angle);
@@ -67,8 +87,8 @@ namespace Strategy {
 			while(_is_running) {
 				chrono.reset();
 
-				auto pos = get_robot_position().getPos2D() + _turret_shift;
-				repere::Coordinates coords({pos}, get_robot_orientation());
+				auto turret_pos = get_robot_position().getPos2D() + _turret_shift;
+				repere::Coordinates coords({turret_pos}, get_robot_orientation());
 				lidar_map->reset();
 
 				auto frame = _robot->get_lidar_frame();

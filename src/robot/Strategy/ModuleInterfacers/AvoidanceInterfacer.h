@@ -28,7 +28,14 @@ namespace Strategy {
 			 * @return true si l'adversaire est devant le robot
 			 * @param threshold Ajustement de la distance à partir de laquelle l'adversaire est considéré comme dangereux
 			 */
-			bool adversary_detected(Distance threshold) const;
+			bool adversary_detected(Distance threshold = GLOBAL_CONSTANTS().get_threshold_adversary_detection()) const;
+
+			/**
+			 * @return true si l'adversaire est devant le robot en fonction de son @param sens de déplacement
+			 * @param threshold Ajustement de la distance à partir de laquelle l'adversaire est considéré comme dangereux
+			 */
+			bool adversary_detected(PhysicalRobot::SensAdvance) const;
+			bool adversary_detected(Distance threshold, PhysicalRobot::SensAdvance) const;
 
 			/**
 			 * Fonction permettant de modifier l'angle de détection de l'adversaire
