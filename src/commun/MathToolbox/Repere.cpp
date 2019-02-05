@@ -8,6 +8,9 @@ using namespace repere;
 
 Orientation::Orientation(Angle angle, const Repere& repere_parent) : _angle(angle), _repere(repere_parent) {}
 
+Orientation::Orientation(const repere::Coordinates& other, const Repere& repere_parent)
+        : Orientation(other.getAngle(repere_parent), repere_parent) {}
+
 Orientation::Orientation(const Orientation& other) = default;
 
 Position::Position(Vector3m pos, const Repere& repere_parent) : _pos(pos), _repere(repere_parent) {}
@@ -15,6 +18,9 @@ Position::Position(Vector3m pos, const Repere& repere_parent) : _pos(pos), _repe
 Position::Position(Vector2m pos, const Repere& repere_parent) : _pos(toVec3(pos)), _repere(repere_parent) {}
 
 Position::Position(Distance x, Distance y, const Repere& repere_parent) : _pos(x, y, 0_m), _repere(repere_parent) {}
+
+Position::Position(const repere::Coordinates& other, const repere::Repere& repere_parent)
+        : Position(other.getPos3D(repere_parent), repere_parent) {}
 
 Position::Position(const Position& other) = default;
 

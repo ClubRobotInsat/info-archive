@@ -42,6 +42,15 @@ namespace PhysicalRobot {
 			return _module_manager->has_module<Module>();
 		}
 
+		// map<ID, name>
+		std::map<uint8_t, std::string> get_list_modules() const {
+			std::map<uint8_t, std::string> result;
+			for(uint8_t id : _module_manager->get_list_modules()) {
+				result[id] = _module_manager->get_module_by_id(id).name;
+			}
+			return result;
+		}
+
 		bool has_lidar() const;
 
 		std::optional<FrameLidar> get_lidar_frame() const;

@@ -148,6 +148,14 @@ namespace Strategy {
 		return nullptr;
 	}
 
+	std::vector<std::string> AbstractStrategy::get_robot_names() const {
+		std::vector<std::string> result;
+		for(auto i : _interfacers) {
+			result.push_back(i->get_robot()->name);
+		}
+		return result;
+	}
+
 	int AbstractStrategy::get_points() const {
 		return _nb_points;
 	}

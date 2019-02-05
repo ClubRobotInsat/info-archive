@@ -50,6 +50,8 @@ namespace Strategy {
 
 		std::shared_ptr<Interfacer::RobotManager> get_robot(const std::string& name);
 
+		std::vector<std::string> get_robot_names() const;
+
 		int get_points() const;
 
 		int add_points(int n);

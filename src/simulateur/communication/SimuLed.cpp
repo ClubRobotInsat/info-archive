@@ -2,7 +2,7 @@
 
 #include <log/Log.h>
 
-SimuLed::SimuLed(uint8_t id) : Module(id), _on_off{false} {}
+SimuLed::SimuLed(uint8_t id) : Module(id, "SimuLed"), _on_off{false} {}
 
 void SimuLed::deactivation() {
 	_on_off = false;

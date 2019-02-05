@@ -10,42 +10,44 @@
 
 #include <atomic>
 
-enum class SensAdvance : uint8_t { Backward = 0, Forward = 1 };
-
-enum class SensRotation : uint8_t { Clockwise = 0, Trigo = 1 };
-
-inline std::ostream& operator<<(std::ostream& os, const SensAdvance& sens) {
-	os << (sens == SensAdvance::Forward ? "forward" : "backward");
-	return os;
-}
-
-inline std::ostream& operator<<(std::ostream& os, const SensRotation& sens) {
-	os << (sens == SensRotation::Trigo ? "trigo" : "clockwise");
-	return os;
-}
-
 namespace PhysicalRobot {
 	ENUM_CLASS_NS(PhysicalRobot, MovingCommand, GoForward, GoBackward, TurnRelative, TurnAbsolute, DoNothing, EmergencyStop, Stop);
+	ENUM_CLASS_NS(PhysicalRobot, SensAdvance, Backward, Forward);
+	ENUM_CLASS_NS(PhysicalRobot, SensRotation, Clockwise, Trigo);
 
 	class Navigation final : public Module {
 	public:
-		explicit Navigation(uint8_t id) : Module(id) {}
+		explicit Navigation(uint8_t id) : Module(id, "Navigation") {}
 
-		void forward(Distance distance);
-
-		void backward(Distance distance);
+		void forward(Distance distance, SensAdvance);
 
 		void turn_relative(Angle angle);
 
-		void turn_absolute(Angle angle);
+		void turn_absolute(Angle angle, SensRotation);
 
 		void stop();
 
+		bool is_physically_blocked() const;
+
 		repere::Coordinates get_coordinates() const;
 
-		const repere::Repere& get_reference() const {
-			return this->REFERENCE;
-		}
+		repere::Position get_position() const;
+
+		repere::Orientation get_orientation() const;
+
+		const repere::Repere& get_reference() const;
+
+		void update_linear_speed(Speed);
+
+		void update_angular_speed(AngularSpeed);
+
+		void update_linear_accuracy(Distance precision);
+
+		void update_angular_accuracy(Angle precision);
+
+		bool is_moving_done() const;
+
+		bool is_precision_reached() const;
 
 	protected:
 		std::vector<JSON> generate_list_jsons() const override;

@@ -14,7 +14,9 @@ namespace Strategy {
 		public:
 			using interfaced_type = void;
 
-			AvoidanceInterfacer(std::shared_ptr<PhysicalRobot::Robot> robot, Environment& env, Vector2m turret_shift = Vector2m(0_m, 0_m));
+			AvoidanceInterfacer(std::shared_ptr<PhysicalRobot::Robot> robot,
+			                    Environment& env,
+			                    Vector2m turret_shift = Vector2m(0_m, 0_m));
 
 			~AvoidanceInterfacer();
 
@@ -26,7 +28,14 @@ namespace Strategy {
 			 * @return true si l'adversaire est devant le robot
 			 * @param threshold Ajustement de la distance à partir de laquelle l'adversaire est considéré comme dangereux
 			 */
-			bool adversary_detected(Distance threshold) const;
+			bool adversary_detected(Distance threshold = GLOBAL_CONSTANTS().get_threshold_adversary_detection()) const;
+
+			/**
+			 * @return true si l'adversaire est devant le robot en fonction de son @param sens de déplacement
+			 * @param threshold Ajustement de la distance à partir de laquelle l'adversaire est considéré comme dangereux
+			 */
+			bool adversary_detected(PhysicalRobot::SensAdvance) const;
+			bool adversary_detected(Distance threshold, PhysicalRobot::SensAdvance) const;
 
 			/**
 			 * Fonction permettant de modifier l'angle de détection de l'adversaire
@@ -56,6 +65,10 @@ namespace Strategy {
 			std::thread _find_robots;
 			mutable std::mutex _mutex_adversary;
 			std::vector<repere::Position> _adversary_positions;
+
+			repere::Position get_robot_position() const;
+
+			repere::Orientation get_robot_orientation() const;
 		};
 	} // namespace Interfacer
 } // namespace Strategy

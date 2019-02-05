@@ -37,7 +37,7 @@ namespace PhysicalRobot {
 
 		static const servo_t ID_MAX_SERVOS = std::numeric_limits<uint8_t>::max();
 
-		explicit Servos(servo_t id) : Module(id) {}
+		explicit Servos(servo_t id) : Module(id, "Servos") {}
 
 		void add_servo(servo_t id, BlockingMode = BlockingMode::Unblocking);
 
