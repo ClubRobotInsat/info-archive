@@ -1,7 +1,8 @@
 set(HIGH_LEVEL_FUNCTIONS_SOURCE
-        #Navigation.cpp
+        Avoidance.cpp
+        Navigation.cpp
         Servos.cpp
-        Utils.cpp Avoidance.cpp Avoidance.h)
+        Utils.cpp)
 add_library(HighLevelFunctions STATIC ${HIGH_LEVEL_FUNCTIONS_SOURCE})
 
 # Dossier de génération de code de pétri.

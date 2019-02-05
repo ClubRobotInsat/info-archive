@@ -5,7 +5,9 @@ add_subdirectory(PetriLab)
 set(STRAT_SOURCE
         AbstractStrategy.cpp)
 add_library(Strategy STATIC ${STRAT_SOURCE})
-target_link_libraries(Strategy ModuleInterfacers)
+target_link_libraries(Strategy ModuleInterfacers HighLevelFunctions)
+
+include_directories(/usr/local/include/wiic/)
 
 set(WIIMOTE_SOURCES IA/IAWiiMote.cpp wiimote/Wiimote.cpp)
 add_executable(IAWiimote ${WIIMOTE_SOURCES})
@@ -21,7 +23,7 @@ if (RASPI)
 
     #link_directories(${PROJECT_SOURCE_DIR}/precompiled-libraries/)
     #add_subdirectory(precompiled-libraries)
-    target_link_libraries(IAWiimote ModuleInterfacers libwiimotecpp libwiimotec)
+    target_link_libraries(IAWiimote ModuleInterfacers HighLevelFunctions libwiimotecpp libwiimotec)
 else()
-    target_link_libraries(IAWiimote ModuleInterfacers wiicpp)
+    target_link_libraries(IAWiimote ModuleInterfacers HighLevelFunctions wiicpp)
 endif()

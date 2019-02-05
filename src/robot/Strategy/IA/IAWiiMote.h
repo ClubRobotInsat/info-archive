@@ -22,23 +22,25 @@ namespace Strategy {
 	class IAWiiMote : public WiimoteEventHandler {
 	public:
 		IAWiiMote();
-		~IAWiiMote();
+		virtual ~IAWiiMote();
 
 		void start();
 
 		void close();
 
 	private:
-		void exec();
+		[[noreturn]] void exec();
 
 		/// Méthode appellée régulièrement pour traiter les entrées wiimote
 		virtual void processWiimoteInput(WiimoteState& state) override;
 
-		void advance(SensAdvance, float magnitude = 1.0);
+		Interfacer::NavigationInterfacer& navigation();
+
+		void advance(PhysicalRobot::SensAdvance, float magnitude = 1.0);
 
 		void stop();
 
-		void turn(SensRotation, float magnitude = 1.0);
+		void turn(PhysicalRobot::SensRotation, float magnitude = 1.0);
 
 		void set_linear_speed(Speed);
 

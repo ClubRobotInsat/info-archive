@@ -6,7 +6,7 @@
 #include "../ModuleInterfacers/RobotManager.h"
 
 namespace {
-	std::shared_ptr<Strategy::Interfacer::GlobalManager> _manager;
+	std::shared_ptr<Strategy::Interfacer::RobotManager> _manager;
 	Constants::RobotColor _color;
 
 	Strategy::Interfacer::NavigationInterfacer& navigation() {
@@ -14,17 +14,18 @@ namespace {
 	}
 } // namespace
 
-void init_petri_navigation(std::shared_ptr<Strategy::Interfacer::GlobalManager> manager, Constants::RobotColor color) {
+void init_petri_navigation(std::shared_ptr<Strategy::Interfacer::RobotManager> manager, Constants::RobotColor color) {
 	_manager = manager;
 	_color = color;
 }
 
-ActionResult go_forward(Distance distance) {
-	sleep(1_s);
-	return ActionResult::TIMEOUT;
+using PhysicalRobot::SensAdvance;
+using PhysicalRobot::SensRotation;
+
+ActionResult forward(Distance distance) {
+	return navigation().forward(distance, SensAdvance::Forward);
 }
 
-ActionResult go_backward(Distance distance) {
-	sleep(1_s);
-	return ActionResult::TIMEOUT;
+ActionResult backward(Distance distance) {
+	return navigation().forward(distance, SensAdvance::Backward);
 }

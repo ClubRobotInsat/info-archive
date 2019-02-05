@@ -5,9 +5,10 @@
 #pragma once
 
 #include <ActionResult.h>
+#include <Constants.h>
 
 // @PetriLab@ Navigation
 
 // Déplacement linéaire
-ActionResult go_forward(Distance);
-ActionResult go_backward(Distance);
+ActionResult forward(Distance);
+ActionResult backward(Distance);

@@ -9,9 +9,9 @@
 #include "EmbeddedFiles.h"
 
 extern void init_petri_avoidance(std::shared_ptr<Strategy::Interfacer::RobotManager> manager);
-// extern void init_petri_navigation(std::shared_ptr<Strategy::Interfacer::RobotManager> manager, Constants::RobotColor color);
+extern void init_petri_navigation(std::shared_ptr<Strategy::Interfacer::RobotManager> manager, Constants::RobotColor color);
 extern void init_petri_servos(std::shared_ptr<Strategy::Interfacer::RobotManager> manager, Constants::RobotColor color);
-void init_petri_utils(Strategy::AbstractStrategy& strategy);
+extern void init_petri_utils(Strategy::AbstractStrategy& strategy);
 
 namespace Strategy {
 	AbstractStrategy::AbstractStrategy(Constants::RobotColor color) : _color(color), _nb_points(0) {

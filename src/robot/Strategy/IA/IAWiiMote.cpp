@@ -3,9 +3,10 @@
 //
 
 #include "IAWiiMote.h"
-#include "../PetriLab/Navigation.h"
 
 #define MANETTE_COUCHEE
+
+extern void init_petri_navigation(std::shared_ptr<Strategy::Interfacer::RobotManager> manager, Constants::RobotColor color);
 
 int main(int argc, char* argv[]) {
 	Log::open(argc, argv, false);
@@ -14,12 +15,19 @@ int main(int argc, char* argv[]) {
 	ia.start();
 }
 
-extern void init_petri_navigation(std::shared_ptr<Strategy::Interfacer::RobotManager> manager, Constants::RobotColor color);
-
 namespace Strategy {
+	using PhysicalRobot::SensAdvance;
+	using PhysicalRobot::SensRotation;
+
 	IAWiiMote::IAWiiMote() {
 		auto robot = std::make_shared<PhysicalRobot::Robot>("primary", std::vector<std::string>(), Lidar::None);
 		_manager = std::make_shared<Interfacer::RobotManager>(robot);
+		Distance sx = 40_cm;
+		Distance sy = 30_cm;
+		Environment env({300, 200}, 1_cm, sy, (sqrt(sx * sx + sy * sy) / 2) * 1.2, Vector2m(0_m, 1_m));
+
+		auto& avoidance = _manager->add_interfacer<Interfacer::AvoidanceInterfacer>(env);
+		_manager->add_interfacer<Interfacer::NavigationInterfacer>(env, avoidance);
 
 		try {
 			init_petri_navigation(_manager, Constants::RobotColor::Purple);
@@ -143,22 +151,22 @@ namespace Strategy {
 #endif
 				if(!_linear_velocity_very_fast) {
 					if(!_linear_velocity_fast) {
-						setVitesseLineaire(getDeplacement().getVitesseLineaire() * 4);
+						set_linear_speed(navigation().get_linear_speed() * 4);
 						_linear_velocity_very_fast = true;
 						_linear_velocity_fast = true;
 					} else {
-						setVitesseLineaire(getDeplacement().getVitesseLineaire() * 2);
+						set_linear_speed(navigation().get_linear_speed() * 2);
 						_linear_velocity_very_fast = true;
 					}
 				}
 
 				if(!_angular_velocity_very_fast) {
 					if(!_angular_velocity_fast) {
-						setVitesseAngulaire(getDeplacement().getVitesseAngulaire() * 4);
+						set_angular_speed(navigation().get_angular_speed() * 4);
 						_angular_velocity_very_fast = true;
 						_angular_velocity_fast = true;
 					} else {
-						setVitesseAngulaire(getDeplacement().getVitesseAngulaire() * 2);
+						set_angular_speed(navigation().get_angular_speed() * 2);
 						_angular_velocity_very_fast = true;
 					}
 				}
@@ -168,43 +176,47 @@ namespace Strategy {
 			} else if(state.isPressed(BUTTON_B)) {
 #endif
 				if(_linear_velocity_very_fast) {
-					setVitesseLineaire(getDeplacement().getVitesseLineaire() * 0.25);
+					set_linear_speed(navigation().get_linear_speed() * 0.25);
 					_linear_velocity_very_fast = false;
 					_linear_velocity_fast = false;
 				} else if(_linear_velocity_fast) {
-					setVitesseLineaire(getDeplacement().getVitesseLineaire() * 0.5);
+					set_linear_speed(navigation().get_linear_speed() * 0.5);
 					_linear_velocity_fast = false;
 				}
 
 				if(_angular_velocity_very_fast) {
-					setVitesseAngulaire(getDeplacement().getVitesseAngulaire() * 0.25);
+					set_angular_speed(navigation().get_angular_speed() * 0.25);
 					_angular_velocity_very_fast = false;
 					_angular_velocity_fast = false;
 				} else if(_angular_velocity_fast) {
-					setVitesseAngulaire(getDeplacement().getVitesseAngulaire() * 0.5);
+					set_angular_speed(navigation().get_angular_speed() * 0.5);
 					_angular_velocity_fast = false;
 				}
 			} else {
 				if(_angular_velocity_very_fast) {
-					setVitesseLineaire(getDeplacement().getVitesseLineaire() * 0.5);
+					set_linear_speed(navigation().get_linear_speed() * 0.5);
 					_angular_velocity_very_fast = false;
 					_angular_velocity_fast = true;
 				} else if(!_angular_velocity_fast) {
-					setVitesseLineaire(getDeplacement().getVitesseLineaire() * 2);
+					set_linear_speed(navigation().get_linear_speed() * 2);
 					_angular_velocity_very_fast = false;
 					_angular_velocity_fast = true;
 				}
 				if(_angular_velocity_very_fast) {
-					setVitesseAngulaire(getDeplacement().getVitesseAngulaire() * 0.5);
+					set_angular_speed(navigation().get_angular_speed() * 0.5);
 					_angular_velocity_very_fast = false;
 					_angular_velocity_fast = true;
 				} else if(!_angular_velocity_fast) {
-					setVitesseAngulaire(getDeplacement().getVitesseAngulaire() * 2);
+					set_angular_speed(navigation().get_angular_speed() * 2);
 					_angular_velocity_very_fast = false;
 					_angular_velocity_fast = true;
 				}
 			}
 		}
+	}
+
+	Interfacer::NavigationInterfacer& IAWiiMote::navigation() {
+		return _manager->get_interfacer<Interfacer::NavigationInterfacer>();
 	}
 
 	void IAWiiMote::advance(SensAdvance sens, float magnitude) {
@@ -214,13 +226,13 @@ namespace Strategy {
 			stop();
 		}
 		if(_type_navigation == DO_NOTHING) {
-			getDeplacement().avancerInfini(sens, 1_ms);
+			navigation().forward(10_m, sens, 1_ms);
 			_magnitude_old = magnitude;
 		} else if(!_linear_velocity_fast && magnitude >= 0.8) {
-			setVitesseLineaire(getDeplacement().getVitesseLineaire() * 2);
+			set_linear_speed(navigation().get_linear_speed() * 2);
 			_linear_velocity_fast = true;
 		} else if(_linear_velocity_fast && magnitude < 0.8) {
-			setVitesseLineaire(getDeplacement().getVitesseLineaire() * 0.5);
+			set_linear_speed(navigation().get_linear_speed() * 0.5);
 			_linear_velocity_fast = false;
 		}
 
@@ -229,7 +241,7 @@ namespace Strategy {
 
 	void IAWiiMote::stop() {
 		logDebug("IAWiiMote::stop()!");
-		getDeplacement().arretUrgence();
+		navigation().emergency_stop();
 		_type_navigation = DO_NOTHING;
 	}
 
@@ -240,14 +252,14 @@ namespace Strategy {
 			stop();
 		}
 		if(_type_navigation == DO_NOTHING) {
-			getDeplacement().tournerRelatif(sens == SensRotation::Trigo ? 179_deg : -179_deg, 1_ms);
+			navigation().turn_relative(sens == SensRotation::Trigo ? 179_deg : -179_deg, 1_ms);
 			std::cout << "tourner relatif" << std::endl;
 			_magnitude_old = magnitude;
 		} else if(!_angular_velocity_fast && magnitude >= 0.8) {
-			setVitesseAngulaire(getDeplacement().getVitesseAngulaire() * 2);
+			set_angular_speed(navigation().get_angular_speed() * 2);
 			_angular_velocity_fast = true;
 		} else if(_angular_velocity_fast && magnitude < 0.8) {
-			setVitesseAngulaire(getDeplacement().getVitesseAngulaire() * 0.5);
+			set_angular_speed(navigation().get_angular_speed() * 0.5);
 			_angular_velocity_fast = false;
 		}
 
@@ -256,17 +268,17 @@ namespace Strategy {
 
 	void IAWiiMote::set_linear_speed(Speed speed) {
 		if(_linear_velocity_pushed) {
-			getDeplacement().popVitesseLineaire();
+			navigation().pop_linear_speed();
 		}
-		getDeplacement().pushVitesseLineaire(speed);
+		navigation().push_linear_speed(speed);
 		_linear_velocity_pushed = true;
 	}
 
 	void IAWiiMote::set_angular_speed(AngularSpeed speed) {
 		if(_angular_velocity_pushed) {
-			getDeplacement().popVitesseAngulaire();
+			navigation().pop_angular_speed();
 		}
-		getDeplacement().pushVitesseAngulaire(speed);
+		navigation().push_angular_speed(speed);
 		_angular_velocity_pushed = true;
 	}
 
@@ -283,7 +295,5 @@ namespace Strategy {
 		return DO_NOTHING;
 	}
 } // namespace Strategy
-}
-}
 
 #undef MANETTE_COUCHEE
