@@ -7,18 +7,13 @@
 namespace Strategy {
 	namespace Interfacer {
 
-		// Constructors
-		NavigationInterfacer::NavigationInterfacer(std::shared_ptr<PhysicalRobot::Robot> robot, Environment& env)
-		        : NavigationInterfacer(robot, env, std::make_shared<AvoidanceInterfacer>(robot, env)) {}
-
-		NavigationInterfacer::NavigationInterfacer(std::shared_ptr<PhysicalRobot::Robot> robot,
-		                                           Environment& env,
-		                                           std::shared_ptr<AvoidanceInterfacer> avoidance_interfacer)
-		        : _module(_robot->get_module<interfaced_type>()), _robot(robot), _avoidance(avoidance_interfacer), _env(env) {
-			push_linear_speed(GLOBAL_CONSTANTS()[robot->name].get_linear_speed());
-			push_angular_speed(GLOBAL_CONSTANTS()[robot->name].get_angular_speed());
-			push_linear_accuracy(GLOBAL_CONSTANTS()[robot->name].get_linear_accuracy());
-			push_angular_accuracy(GLOBAL_CONSTANTS()[robot->name].get_angular_accuracy());
+		// Constructor
+		NavigationInterfacer::NavigationInterfacer(std::shared_ptr<PhysicalRobot::Robot> robot, Environment& env, AvoidanceInterfacer& avoidance)
+		        : _module(robot->get_module<interfaced_type>()), _avoidance(avoidance), _env(env) {
+			push_linear_speed(GLOBAL_CONSTANTS()[Constants::name(robot->name)].get_linear_speed());
+			push_angular_speed(GLOBAL_CONSTANTS()[Constants::name(robot->name)].get_angular_speed());
+			push_linear_accuracy(GLOBAL_CONSTANTS()[Constants::name(robot->name)].get_linear_accuracy());
+			push_angular_accuracy(GLOBAL_CONSTANTS()[Constants::name(robot->name)].get_angular_accuracy());
 		}
 
 		// States
@@ -104,7 +99,7 @@ namespace Strategy {
 
 		ActionResult NavigationInterfacer::internal_forward(Distance distance, SensAdvance sens, Duration timeout) {
 			auto threshold = std::min(distance + GLOBAL_CONSTANTS()["primary"].get_radius_rotation() / 2, 30_cm);
-			if(_avoidance->adversary_detected(threshold, sens)) {
+			if(_avoidance.adversary_detected(threshold, sens)) {
 				return ActionResult::BLOCKED_BY_ADV;
 			}
 
@@ -248,7 +243,7 @@ namespace Strategy {
 				}
 
 				// Adversary
-				if(check_adversary && _avoidance->adversary_detected(sens)) {
+				if(check_adversary && _avoidance.adversary_detected(sens)) {
 					return ActionResult::BLOCKED_BY_ADV;
 				}
 

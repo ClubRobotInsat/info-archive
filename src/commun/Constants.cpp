@@ -24,12 +24,18 @@ namespace Constants {
 
 	Robot::Robot(IniFile& reader, std::string name) {
 		const std::string section = "robot." + name;
-		_start_angle = Angle::makeFromDeg(reader[section]["angle"].asDouble());
-		_start_position = {
-		    Distance::makeFromMm(reader[section]["position_x"].asInt()),
-		    Distance::makeFromMm(reader[section]["position_y"].asInt()),
-		    Distance::makeFromMm(reader[section]["position_z"].asInt()),
-		};
+		try {
+			_start_angle = Angle::makeFromDeg(reader[section]["angle"].asDouble());
+			_start_position = {
+			    Distance::makeFromMm(reader[section]["position_x"].asInt()),
+			    Distance::makeFromMm(reader[section]["position_y"].asInt()),
+			    Distance::makeFromMm(reader[section]["position_z"].asInt()),
+			};
+		} catch(std::exception&) {
+			_start_angle = std::nullopt;
+			_start_position = std::nullopt;
+		}
+
 		for(auto it : reader) {
 			if(it.first == section + ".modules") {
 				for(auto field : it.second) {
@@ -70,6 +76,7 @@ namespace Constants {
 						_robots[robot.first] = std::unique_ptr<Robot>(new Robot(_reader, robot.first));
 					}
 				}
+				_robots["default"] = std::unique_ptr<Robot>(new Robot(_reader, "default"));
 			}
 		}
 
