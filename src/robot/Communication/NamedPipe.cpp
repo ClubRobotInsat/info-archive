@@ -5,11 +5,8 @@
 #include "NamedPipe.h"
 #include <log/Log.h>
 
-//#include <exception>
 #include <sys/stat.h> // stat, lstat, mkfifo, S_ISFIFO
 #include <unistd.h>   // close, unlink, write
-//#include <sstream>
-//#include <string>
 
 namespace Communication {
 	NamedPipe::NamedPipe(const std::string& path_read, const std::string& path_write)

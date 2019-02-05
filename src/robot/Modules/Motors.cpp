@@ -54,6 +54,16 @@ namespace PhysicalRobot {
 		unlock_variables();
 	}
 
+	void Motors::stop_controlled_motor(uint8_t id) {
+		uint8_t index = test_is_controlled_ok(id);
+
+		lock_variables();
+		// FIXME: electronic understands this as an order?
+		_controlled[index]->finished = true;
+		_state_changed.exchange(true);
+		unlock_variables();
+	}
+
 	bool Motors::is_position_finished(uint8_t id) const {
 		uint8_t index = test_is_controlled_ok(id);
 		std::lock_guard<std::mutex> lk(_mutex_variables);

@@ -10,7 +10,7 @@
 #include <Units.h>
 
 #include <Color.h>
-#include <ConstantesCommunes.h>
+#include <Constants.h>
 #include <MathToolbox/MathToolbox.h>
 #include <MathToolbox/Repere.h>
 

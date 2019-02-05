@@ -23,6 +23,18 @@ namespace Constants {
 	              // Valeur d'initialisation, qui permet de déctecter si la lecture du capteur couleur a déconné.
 	              Undef)
 
+	inline Constants::RobotColor string_to_color(std::string str) {
+		std::transform(str.cbegin(), str.cend(), str.begin(), ::tolower);
+		for(auto color : getEnumValues<Constants::RobotColor>()) {
+			std::string str_color(toString(color));
+			std::transform(str_color.cbegin(), str_color.cend(), str_color.begin(), ::tolower);
+			if(str == str_color) {
+				return color;
+			}
+		}
+		return Constants::RobotColor::Undef;
+	}
+
 	class Constants;
 	class Robot {
 		friend class Constants;
@@ -36,6 +48,7 @@ namespace Constants {
 		AngularSpeed _angular_speed; // unité arbitraire décidée en élec
 		Distance _linear_precision;
 		Angle _angular_precision;
+		Angle _angle_adversary_detection; // demi-zone de détection
 		Vector2m _turret_position;
 		Distance _radius_rotation;
 		Vector3m _size;
@@ -67,6 +80,10 @@ namespace Constants {
 
 		inline Angle get_angular_precision() const {
 			return _angular_precision;
+		}
+
+		inline Angle get_angle_adversary_detection() const {
+			return _angle_adversary_detection;
 		}
 
 		// POSITION_TOURELLE = { décalage avant, décalage vers la droite }
@@ -140,6 +157,10 @@ namespace Constants {
 			return TABLE_2018;
 		}
 
+		inline Duration get_lidar_actualization_period() const {
+			return _lidar_actualization_period;
+		}
+
 	private:
 		uint16_t _TCPIP_port_simu;
 		Vector3m _table_size;
@@ -152,6 +173,8 @@ namespace Constants {
 		// Durée de temporisation entre l'envoi de deux messages successifs sur le médium de communication
 		Duration _communication_delay;
 		Duration _frame_period;
+
+		Duration _lidar_actualization_period;
 
 		IniFile _reader;
 
@@ -171,7 +194,7 @@ inline Constants::RobotColor operator!(Constants::RobotColor const& c) {
 			return RobotColor::Yellow;
 		case RobotColor::Yellow:
 			return RobotColor::Purple;
-		case RobotColor::Undef:
+		default:
 			return RobotColor::Undef;
 	}
 }

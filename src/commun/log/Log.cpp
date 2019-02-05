@@ -24,7 +24,7 @@ namespace {
 			Log::closeAll();
 		}
 	};
-}
+} // namespace
 
 // Static variables implementation
 std::ostream* Log::_p_stream[Log::OUTPUT_COUNT] = {};
@@ -52,19 +52,22 @@ bool Log::openCommon(Output o, bool desync_with_stdio) {
 
 char const* Log::getFileNameFromPath(const char* file_path) {
 	const char* p = &file_path[0];
-	for(int i = 0; file_path[i] != '\0'; i++)
-		if(file_path[i] == '/' || file_path[i] == '\\')
+	for(int i = 0; file_path[i] != '\0'; i++) {
+		if(file_path[i] == '/' || file_path[i] == '\\') {
 			p = &file_path[i + 1];
+		}
+	}
 	return p;
 }
 
 void Log::doFormatting(std::string& msg, LogType type, Log::Output output) {
-	if(output == Log::TERMINAL)
+	if(output == Log::TERMINAL) {
 		Log::doTermFormatting(msg, type);
-	else if(output == Log::HTML)
+	} else if(output == Log::HTML) {
 		Log::doHTMLFormatting(msg, type);
-	else if(output == Log::RTF)
+	} else if(output == Log::RTF) {
 		Log::doRTFFormatting(msg, type);
+	}
 }
 
 // This "open()" parses argc and argv and calls the previous "open()".
@@ -85,23 +88,25 @@ void Log::open(int argc, char* argv[], bool desync_with_stdio) {
 	bool found = false;
 	for(int i = 1; i < argc; i++) {
 		int j = 0;
-		for(; argv[i][j] != '\0' && j < str_ref_len; j++)
-			if(argv[i][j] != str_ref[j])
+		for(; argv[i][j] != '\0' && j < str_ref_len; j++) {
+			if(argv[i][j] != str_ref[j]) {
 				break;
+			}
+		}
 
 		if(j == str_ref_len) {
 			std::string file_name = &argv[i][j];
 			found = true;
 
-			if(file_name == "stdout")
+			if(file_name == "stdout") {
 				open(TERMINAL, "stdout", desync_with_stdio);
-			else if(file_name == "stderr")
+			} else if(file_name == "stderr") {
 				open(TERMINAL, "stderr", desync_with_stdio);
-			else if(file_name == "stdout-nocolor")
+			} else if(file_name == "stdout-nocolor") {
 				open(TERMINAL_NO_COLOR, "stdout-nocolor", desync_with_stdio);
-			else if(file_name == "stderr-nocolor")
+			} else if(file_name == "stderr-nocolor") {
 				open(TERMINAL_NO_COLOR, "stderr-nocolor", desync_with_stdio);
-			else {
+			} else {
 				auto file_name_len = file_name.length();
 
 				if(file_name_len > 4 && ((file_name.substr(file_name_len - 4, file_name_len - 1) == ".htm") ||
@@ -111,32 +116,43 @@ void Log::open(int argc, char* argv[], bool desync_with_stdio) {
 					open(RTF, file_name, desync_with_stdio);
 				} else if(file_name_len > 3 && file_name.substr(file_name_len - 4, file_name_len - 1) == ".txt") {
 					open(TXT, file_name, desync_with_stdio);
-				} else
+				} else {
 					open(TERMINAL, "stdout", desync_with_stdio);
+				}
 			}
 		}
 	}
 
-	if(!found)
+	if(!found) {
 		open(TERMINAL, "stdout", desync_with_stdio);
+	}
 }
 
 void Log::open(Log::Output output, const std::string& filename, bool desync_with_stdio) {
-	if(!Log::openCommon(output, desync_with_stdio))
+	if(!Log::openCommon(output, desync_with_stdio)) {
 		return;
+	}
 
 	switch(output) {
+		case NOTHING: {
+			static std::ofstream ofs_null;
+			ofs_null.open("/dev/null", std::ofstream::out | std::ofstream::app);
+			Log::_p_stream[output] = &ofs_null;
+			break;
+		}
 		case TERMINAL:
-			if(filename == "stderr")
+			if(filename == "stderr") {
 				Log::_p_stream[output] = &std::cerr;
-			else
+			} else {
 				Log::_p_stream[output] = &std::cout;
+			}
 			break;
 		case TERMINAL_NO_COLOR:
-			if(filename == "stderr-nocolor")
+			if(filename == "stderr-nocolor") {
 				Log::_p_stream[output] = &std::cerr;
-			else
-				Log::_p_stream[output] = &std::cerr;
+			} else {
+				Log::_p_stream[output] = &std::cout;
+			}
 			break;
 		case TXT:
 			_TXTfile.open(filename);
@@ -177,6 +193,7 @@ void Log::open(Log::Output output, const std::string& filename, bool desync_with
 void Log::close(Output output) {
 	if(Log::_p_stream[output]) {
 		switch(output) {
+			case NOTHING:
 			case TERMINAL:
 			case TERMINAL_NO_COLOR:
 				break;
@@ -211,8 +228,9 @@ void Log::indent(int value) {
 
 	// We add value to the current indentation.
 	_threadInfos[id]._indent += value;
-	if(_threadInfos[id]._indent < 0)
+	if(_threadInfos[id]._indent < 0) {
 		_threadInfos[id]._indent = 0;
+	}
 }
 
 void Log::writeInternal(LogType type, Output outputIndex, std::stringstream& stream) {
@@ -252,8 +270,9 @@ void Log::writeInternal(LogType type, Output outputIndex, std::stringstream& str
 
 	// Finally write the message
 	if(outputIndex == TERMINAL) {
-		for(int i = 0; i < infos._indent; i++)
+		for(int i = 0; i < infos._indent; i++) {
 			(*_p_stream[outputIndex]) << ' ';
+		}
 
 		writeTermFormattedString(*_p_stream[outputIndex], msg_first_part);
 		writeTermFormattedString(*_p_stream[outputIndex], msg_second_part);
@@ -266,12 +285,14 @@ void Log::writeInternal(LogType type, Output outputIndex, std::stringstream& str
 		(*_p_stream[outputIndex]) << indentation << msg_first_part << msg_second_part << " <br/>"
 		                          << "</span>" << std::flush;
 	} else if(outputIndex == RTF) {
-		for(int i = 0; i < infos._indent; i++)
+		for(int i = 0; i < infos._indent; i++) {
 			(*_p_stream[outputIndex]) << "\\tab";
+		}
 		(*_p_stream[outputIndex]) << msg_first_part << msg_second_part << "\\par" << std::flush;
 	} else { // TXT or TERMINAL_NO_COLOR
-		for(int i = 0; i < infos._indent; i++)
+		for(int i = 0; i < infos._indent; i++) {
 			(*_p_stream[outputIndex]) << ' ';
+		}
 		(*_p_stream[outputIndex]) << msg_first_part << msg_second_part << std::endl;
 	}
 }

@@ -8,9 +8,13 @@
 
 #include "EmbeddedFiles.h"
 
+extern void init_petri_avoidance(std::shared_ptr<Strategy::Interfacer::RobotManager> manager);
+// extern void init_petri_navigation(std::shared_ptr<Strategy::Interfacer::RobotManager> manager, Constants::RobotColor color);
+extern void init_petri_servos(std::shared_ptr<Strategy::Interfacer::RobotManager> manager, Constants::RobotColor color);
+void init_petri_utils(Strategy::AbstractStrategy& strategy);
+
 namespace Strategy {
-	AbstractStrategy::AbstractStrategy(std::unique_ptr<PhysicalRobot::Robot> robot, Constants::RobotColor color)
-	        : _robot(std::move(robot)), _color(color) {
+	AbstractStrategy::AbstractStrategy(Constants::RobotColor color) : _color(color), _nb_points(0) {
 		setThreadName("Main");
 
 		Distance sx = GLOBAL_CONSTANTS()["primary"].get_size().x;
@@ -23,33 +27,18 @@ namespace Strategy {
 
 		this->create_environment();
 
-		auto adversary_finder = [this]() {
-			std::unique_ptr<OccupGrid> lidar_map =
-			    std::make_unique<OccupGrid>(toVec2(GLOBAL_CONSTANTS().get_table_size()), 100, 66);
+		try {
+			logInfo("Loading Petri::Utils...");
+			init_petri_utils(*this);
+		} catch(std::exception const& e) {
+			logError("Impossible to initialize PetriLab: ", e.what());
+		}
 
-			while(get_left_time() > 0_s) {
-				repere::Coordinates coords; // = this->_robot->get_module<PhysicalRobot::Moving>()::get_coordinates();
-				lidar_map->reset();
-
-				auto frame = _robot->get_lidar_frame();
-				if(frame != std::nullopt) {
-					lidar_map->accumulate(frame.value(), coords);
-					FindRobots robots;
-					robots.accumulate(*lidar_map);
-					_mutex_adversary.lock();
-					_adversary_positions = robots.get_results();
-				} else {
-					_mutex_adversary.lock();
-					_adversary_positions.clear();
-				}
-				_mutex_adversary.unlock();
-			}
-		};
-		_find_robots = std::thread(adversary_finder);
+		set_points(0);
 	}
 
 	void AbstractStrategy::create_environment() {
-		this->_env->loadFromJSON(nlohmann::json::parse(EmbeddedFiles::readText("table.json")));
+		this->_env->loadFromJSON(GLOBAL_CONSTANTS().TABLE_2018());
 	}
 
 	void AbstractStrategy::start(Duration match) {
@@ -61,8 +50,11 @@ namespace Strategy {
 
 		_execution = std::thread(std::bind(&AbstractStrategy::exec, this));
 
-		while(get_left_time() > 0_s)
-			sleep(100_ms);
+		while(get_left_time() > 0_s) {
+			sleep(1_s);
+		}
+
+		stop();
 
 		logDebug("FIN DU MATCH !");
 		logDebug("Funny action");
@@ -74,11 +66,24 @@ namespace Strategy {
 		pthread_cancel(handle);
 		pthread_join(handle, nullptr);
 
-		_find_robots.join();
+		stop();
+	}
+
+	void AbstractStrategy::stop() {
+		for(auto interfacer : _interfacers) {
+			interfacer->get_robot()->deactivation();
+		}
+	}
+
+	Constants::RobotColor AbstractStrategy::get_color() const {
+		return _color;
+	}
+
+	const repere::Repere& AbstractStrategy::get_reference() const {
+		return GLOBAL_CONSTANTS().get_reference(_color);
 	}
 
 	Duration AbstractStrategy::get_left_time() const {
-		sleep(1000_ms);
 		// logDebug6("Il reste :", (_dureeTotaleMatch - _chronoMatch.getElapsedTime()).toS());
 		return _total_duration_match - get_time();
 	}
@@ -91,9 +96,77 @@ namespace Strategy {
 		_chrono_match.reset();
 	}
 
-	std::vector<repere::Position> AbstractStrategy::get_adversary_positions() const {
-		std::lock_guard<std::mutex> lk(_mutex_adversary);
-		return _adversary_positions;
+	Environment& AbstractStrategy::get_environment() const {
+		return *_env;
+	}
+
+	std::shared_ptr<Interfacer::RobotManager> AbstractStrategy::add_robot(std::shared_ptr<PhysicalRobot::Robot> robot) {
+		auto manager = std::make_shared<Interfacer::RobotManager>(robot);
+		// Interfacer::ServosInterfacer
+		if(manager->get_robot()->has_module<PhysicalRobot::Servos>()) {
+			logInfo("Insertion of an Interfacer::ServosInterfacer inside the robot '" + robot->name + "'");
+			manager->add_interfacer<Interfacer::ServosInterfacer>();
+		}
+		// Interfacer::AvoidanceInterfacer
+		if(manager->get_robot()->has_lidar()) {
+			logInfo("Insertion of an Interfacer::AvoidanceInterfacer inside the robot '" + robot->name + "'");
+			manager->add_interfacer<Interfacer::AvoidanceInterfacer>(*_env, GLOBAL_CONSTANTS()[robot->name].get_turret_position());
+		}
+
+		return add_manager(manager);
+	}
+
+	std::shared_ptr<Interfacer::RobotManager> AbstractStrategy::add_manager(std::shared_ptr<Interfacer::RobotManager> manager) {
+		try {
+			// Interfacer::ServosInterfacer
+			if(manager->has_interfacer<Interfacer::ServosInterfacer>()) {
+				logInfo("Insertion of PetriLab::Servos functionalities associated with the robot '" +
+				        manager->get_robot()->name + "'");
+				init_petri_servos(manager, _color);
+			}
+			// Interfacer::AvoidanceInterfacer
+			if(manager->has_interfacer<Interfacer::AvoidanceInterfacer>()) {
+				logInfo("Insertion of PetriLab::AvoidanceInterfacer functionalities associated with the robot '" +
+				        manager->get_robot()->name + "'");
+				init_petri_avoidance(manager);
+			}
+		} catch(std::exception const& e) {
+			logError("Impossible to initialize PetriLab: ", e.what());
+		}
+
+		_interfacers.push_back(manager);
+
+		return manager;
+	}
+
+	std::shared_ptr<Interfacer::RobotManager> AbstractStrategy::get_robot(const std::string& name) {
+		for(auto i : _interfacers) {
+			if(i->get_robot()->name == name) {
+				return i;
+			}
+		}
+		return nullptr;
+	}
+
+	std::vector<std::string> AbstractStrategy::get_robot_names() const {
+		std::vector<std::string> result;
+		for(auto i : _interfacers) {
+			result.push_back(i->get_robot()->name);
+		}
+		return result;
+	}
+
+	int AbstractStrategy::get_points() const {
+		return _nb_points;
+	}
+
+	int AbstractStrategy::add_points(int n) {
+		return _nb_points += n;
+	}
+
+	int AbstractStrategy::set_points(int n) {
+		_nb_points = n;
+		return _nb_points;
 	}
 
 	void AbstractStrategy::exec() {

@@ -24,7 +24,8 @@ public:
 	void start() {
 		_thread = std::make_unique<std::thread>([this]() { run(); });
 	}
-	void run();
+
+	[[noreturn]] void run();
 
 	// Dis si les lidars sont branchés et fonctionnels
 	// {Sick, Hokuyo}

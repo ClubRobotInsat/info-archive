@@ -17,7 +17,7 @@ namespace PhysicalRobot {
 
 	class Navigation final : public Module {
 	public:
-		explicit Navigation(uint8_t id) : Module(id) {}
+		explicit Navigation(uint8_t id) : Module(id, "Navigation") {}
 
 		void forward(Distance distance);
 

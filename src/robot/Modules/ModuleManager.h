@@ -28,7 +28,6 @@
 
 #include "Module.hpp"
 
-#include "Avoidance.h"
 #include "IO.h"
 #include "Motors.h"
 #include "Navigation.h"
@@ -46,7 +45,7 @@ namespace PhysicalRobot {
 		/// Ajoute un module dont l'ID et le type sont uniques
 		/// @throw  si les paramètres sont mauvais ou si un module ayant le même id / type existe déjà
 		template <typename Module, typename... T>
-		Module& add_module(uint8_t id, T... params);
+		Module& add_module(uint8_t id, T&&... params);
 
 		/// Retourne vrai si un module de type 'Module' existe
 		/// @nothrow
@@ -60,6 +59,10 @@ namespace PhysicalRobot {
 		/// Retourne le nombre de modules instantiés
 		/// @nothrow
 		uint8_t get_nb_modules() const;
+
+		/// Retourne la liste de tous les modules instantiés
+		/// @nothrow
+		std::vector<uint8_t> get_list_modules() const;
 
 		/// Retourne le module selon l'id
 		/// Il faut appliquer `dynamic_cast<T&>(module);` pour convertir 'module' vers le type souhaité
@@ -77,16 +80,9 @@ namespace PhysicalRobot {
 		// FIXME Vérifier que les modules de grands `id`s peuvent communiquer
 		// FIXME sinon utiliser un compteur pour répartir la parole de manière cyclique
 		std::vector<GlobalFrame> write_frame() const;
+
 		/// Lecture d'une trame ; implémente l'API de `ParsingClassChecker`
 		void read_frame(const GlobalFrame&);
-
-		/*/// Construit la trame globale du robot depuis chaque module instantié
-		/// @maythrow si on module n'arrive pas à générer sa trame (très peu probable)
-		GlobalFrame write_frame() const;
-
-		/// Met à jour tous les modules depuis une trame qui contient l'état général du robot
-		/// @throw si la trame a un mauvais formatage
-		void read_frame(const GlobalFrame&);*/
 
 		/// Désactive tous les comportements mécaniques du robot (anciennement 'couperMeca')
 		void deactivation();
@@ -112,7 +108,7 @@ namespace PhysicalRobot {
 	}
 
 	template <typename Module, typename... T>
-	Module& ModuleManager::add_module(uint8_t id, T... params) {
+	Module& ModuleManager::add_module(uint8_t id, T&&... params) {
 		if(id >= NB_MODULES_MAX) {
 			throw std::runtime_error("Impossible to add module n°" + std::to_string(id) + " (> " +
 			                         std::to_string(NB_MODULES_MAX) + ").");

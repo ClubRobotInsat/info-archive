@@ -35,7 +35,7 @@ namespace PhysicalRobot {
 	class Module {
 	public:
 		/// Initialisation du module
-		explicit Module(uint8_t id) : _state_changed(false), _id(id) {}
+		Module(uint8_t id, std::string module_name) : name(module_name), _state_changed(false), _id(id) {}
 
 		virtual ~Module() = default;
 
@@ -85,6 +85,8 @@ namespace PhysicalRobot {
 
 		/// Arrêt mécanique du module
 		virtual void deactivation() = 0;
+
+		const std::string name;
 
 	protected:
 		/// Conversion entre le module C++ et une structure JSON Rust-friendly

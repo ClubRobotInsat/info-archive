@@ -29,7 +29,7 @@ class Lidar {
 public:
 	virtual ~Lidar() = default;
 
-	enum LidarType { Hokuyo, Sick, Any };
+	enum LidarType { Hokuyo, Sick, Any, None };
 
 	// Tente d'ouvrir un des lidars supportés.
 	static std::unique_ptr<Lidar> open_lidar(LidarType lidar = LidarType::Any);

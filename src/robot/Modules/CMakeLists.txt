@@ -2,7 +2,6 @@ set(MODULE_SOURCES
         Module.hpp
         ModuleManager.cpp
 
-        Avoidance.cpp
         IO.cpp
         Motors.cpp
         Navigation.cpp

@@ -66,6 +66,10 @@ namespace {
 }
 
 std::unique_ptr<Lidar> Lidar::open_lidar(LidarType lidarType) {
+	if(lidarType == Lidar::None) {
+		return nullptr;
+	}
+
 	// en énumérant à la main, on a un meilleur diagnostic qu'avec l'utilitaire
 	// libusb openByVidPid.
 

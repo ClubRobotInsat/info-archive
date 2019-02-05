@@ -10,7 +10,7 @@
 
 class ModuleTest : public PhysicalRobot::Module {
 public:
-	explicit ModuleTest(uint8_t id) : Module(id), _a(1), _b(2) {}
+	explicit ModuleTest(uint8_t id) : Module(id, "ModuleTest"), _a(1), _b(2) {}
 
 	// Accesseurs pour les tests
 	inline uint8_t get_a_value() const {
@@ -54,6 +54,7 @@ TEST_CASE("Basic module") {
 		CHECK(my_module.get_id() == 5);
 		CHECK(my_module.get_a_value() == 1);
 		CHECK(my_module.get_b_value() == 2);
+		CHECK(my_module.name == "ModuleTest");
 	}
 
 	SECTION("Frames manipulation.") {
@@ -93,6 +94,7 @@ TEST_CASE("Servos' Module") {
 		REQUIRE_NOTHROW(my_module.add_servo(42));
 		REQUIRE_THROWS_WITH(my_module.add_servo(0), "L'ID 0 des servos est réservé !");
 		CHECK(my_module.get_nbr_servos() == 4);
+		CHECK(my_module.name == "Servos");
 
 		REQUIRE_THROWS_WITH(my_module.set_position(1, 50_deg), "Numéro du servo demandé invalide : 1");
 		my_module.set_position(2, 50.4_deg);
@@ -121,14 +123,14 @@ TEST_CASE("Servos' Module") {
 #include "../src/robot/Modules/Navigation.h"
 
 TEST_CASE("Navigation Module") {
-    PhysicalRobot::Navigation my_module(1);
+	PhysicalRobot::Navigation my_module(1);
 
-    SECTION("Initialization") {
-        auto starting_point = my_module.get_coordinates();
-        CHECK(starting_point.getX().toM() == Approx(0));
-        CHECK(starting_point.getY().toM() == Approx(0));
-        CHECK(starting_point.getAngle().toRad() == Approx(0));
-    }
+	SECTION("Initialization") {
+		auto starting_point = my_module.get_coordinates();
+		CHECK(starting_point.getX().toM() == Approx(0));
+		CHECK(starting_point.getY().toM() == Approx(0));
+		CHECK(starting_point.getAngle().toRad() == Approx(0));
+	}
 }
 
 
@@ -163,6 +165,9 @@ TEST_CASE("ModuleManager") {
 		REQUIRE_NOTHROW(manager.get_module<ModuleTest>());
 		CHECK(manager.get_module<ModuleTest>().get_id() == 5);
 		CHECK(manager.get_module<PhysicalRobot::Servos>().get_id() == 6);
+
+		std::vector<uint8_t> list_modules = {5, 6};
+		CHECK(manager.get_list_modules() == list_modules);
 	}
 
 	SECTION("Frame manipulation") {
@@ -208,31 +213,30 @@ TEST_CASE("ModuleManager") {
 			}
 
 			SECTION("Navigation") {
-			    auto& module_nav = manager.add_module<PhysicalRobot::Navigation>(15);
+				auto& module_nav = manager.add_module<PhysicalRobot::Navigation>(15);
 
-			    SECTION("No commands") {
-			        auto frames_nav = manager.write_frame();
-			        REQUIRE(frames_nav.empty());
-			    }
+				SECTION("No commands") {
+					auto frames_nav = manager.write_frame();
+					REQUIRE(frames_nav.empty());
+				}
 
-			    SECTION("Simple commands") {
-			        module_nav.forward(5_m);
-			        auto frames_nav = manager.write_frame();
-			        REQUIRE(frames_nav.size() == 1);
+				SECTION("Simple commands") {
+					module_nav.forward(5_m);
+					auto frames_nav = manager.write_frame();
+					REQUIRE(frames_nav.size() == 1);
 
-                    GlobalFrame frame_nav = frames_nav[0];
-                    REQUIRE(frame_nav.getDonnees()[0] == module_nav.get_id());
+					GlobalFrame frame_nav = frames_nav[0];
+					REQUIRE(frame_nav.getDonnees()[0] == module_nav.get_id());
 
-                    JSON json = nlohmann::json::parse(
-                            frame_nav.getDonnees() + 1,
-                            frame_nav.getDonnees() + frame_nav.getNbDonnees());
-                    CHECK(std::string("GoForward") == json["command"]);
+					JSON json =
+					    nlohmann::json::parse(frame_nav.getDonnees() + 1, frame_nav.getDonnees() + frame_nav.getNbDonnees());
+					CHECK(std::string("GoForward") == json["command"]);
 
 
-			        // check that manager.write_frame() flushes frame buffer
-			        frames_nav = manager.write_frame();
-			        CHECK(frames_nav.empty());
-			    }
+					// check that manager.write_frame() flushes frame buffer
+					frames_nav = manager.write_frame();
+					CHECK(frames_nav.empty());
+				}
 			}
 		}
 
