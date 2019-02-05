@@ -10,22 +10,10 @@
 
 #include <atomic>
 
-enum class SensAdvance : uint8_t { Backward = 0, Forward = 1 };
-
-enum class SensRotation : uint8_t { Clockwise = 0, Trigo = 1 };
-
-inline std::ostream& operator<<(std::ostream& os, const SensAdvance& sens) {
-	os << (sens == SensAdvance::Forward ? "forward" : "backward");
-	return os;
-}
-
-inline std::ostream& operator<<(std::ostream& os, const SensRotation& sens) {
-	os << (sens == SensRotation::Trigo ? "trigo" : "clockwise");
-	return os;
-}
-
 namespace PhysicalRobot {
 	ENUM_CLASS_NS(PhysicalRobot, MovingCommand, GoForward, GoBackward, TurnRelative, TurnAbsolute, DoNothing, EmergencyStop, Stop);
+	ENUM_CLASS_NS(PhysicalRobot, SensAdvance, Backward, Forward);
+	ENUM_CLASS_NS(PhysicalRobot, SensRotation, Clockwise, Trigo);
 
 	class Navigation final : public Module {
 	public:
