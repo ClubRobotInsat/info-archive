@@ -87,4 +87,8 @@ TEST_CASE("Global constants") {
 		CHECK(bot.get_modules()["moving"] == 5);
 		CHECK(bot.get_modules()["servos"] == 14);
 	}
+
+	SECTION("Robot's default values") {
+		CHECK(GLOBAL_CONSTANTS()["default"].get_linear_speed() == 40_cm_s);
+	}
 }

@@ -14,11 +14,11 @@ namespace Strategy {
 		NavigationInterfacer::NavigationInterfacer(std::shared_ptr<PhysicalRobot::Robot> robot,
 		                                           Environment& env,
 		                                           std::shared_ptr<AvoidanceInterfacer> avoidance_interfacer)
-		        : _module(_robot->get_module<interfaced_type>()), _robot(robot), _avoidance(avoidance_interfacer), _env(env) {
-			push_linear_speed(GLOBAL_CONSTANTS()[robot->name].get_linear_speed());
-			push_angular_speed(GLOBAL_CONSTANTS()[robot->name].get_angular_speed());
-			push_linear_accuracy(GLOBAL_CONSTANTS()[robot->name].get_linear_accuracy());
-			push_angular_accuracy(GLOBAL_CONSTANTS()[robot->name].get_angular_accuracy());
+		        : _module(robot->get_module<interfaced_type>()), _avoidance(avoidance_interfacer), _env(env) {
+			push_linear_speed(GLOBAL_CONSTANTS()[Constants::name(robot->name)].get_linear_speed());
+			push_angular_speed(GLOBAL_CONSTANTS()[Constants::name(robot->name)].get_angular_speed());
+			push_linear_accuracy(GLOBAL_CONSTANTS()[Constants::name(robot->name)].get_linear_accuracy());
+			push_angular_accuracy(GLOBAL_CONSTANTS()[Constants::name(robot->name)].get_angular_accuracy());
 		}
 
 		// States

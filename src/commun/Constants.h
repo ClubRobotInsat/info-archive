@@ -35,13 +35,19 @@ namespace Constants {
 		return Constants::RobotColor::Undef;
 	}
 
+	inline std::string name(const std::string& robot_name) {
+		return (robot_name != "guest" ? robot_name : "default");
+	}
+
 	class Constants;
 	class Robot {
 		friend class Constants;
 		explicit Robot(IniFile& reader, std::string name);
 
-		Vector3m _start_position;
-		Angle _start_angle;
+		// Les attributs `optional` correspondent à des valeurs qui ne peuvent pas être entrées par défaut
+		std::optional<Vector3m> _start_position;
+		std::optional<Angle> _start_angle;
+
 		// Association de chaque nom de module à son ID
 		std::map<std::string, uint8_t> _modules;
 		Speed _linear_speed;
@@ -55,11 +61,11 @@ namespace Constants {
 
 	public:
 		inline Vector3m get_start_position() const {
-			return _start_position;
+			return _start_position.value();
 		}
 
 		inline Angle get_start_angle() const {
-			return _start_angle;
+			return _start_angle.value();
 		}
 
 		inline std::map<std::string, uint8_t> get_modules() const {

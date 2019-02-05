@@ -17,8 +17,8 @@ namespace Strategy {
 	AbstractStrategy::AbstractStrategy(Constants::RobotColor color) : _color(color), _nb_points(0) {
 		setThreadName("Main");
 
-		Distance sx = GLOBAL_CONSTANTS()["primary"].get_size().x;
-		Distance sy = GLOBAL_CONSTANTS()["primary"].get_size().y;
+		Distance sx = GLOBAL_CONSTANTS()["default"].get_size().x;
+		Distance sy = GLOBAL_CONSTANTS()["default"].get_size().y;
 		_env = std::make_unique<Environment>(GLOBAL_CONSTANTS().get_table_env_grid(),
 		                                     GLOBAL_CONSTANTS().get_scale_environment(),
 		                                     std::min(sx, sy) * 1.15,
