@@ -11,7 +11,7 @@ int main() {
 	auto& moving = m->add_module<Navigation>(2);
 
 	// TODO check address
-	Robot robot(m, {"prog_moving", "UDP", "192.168.0.222", "50000", "51"});
+	Robot robot(m, {"prog_moving", "UDP", "192.168.0.222", "50000", "51"}, Lidar::None);
 	std::cout << "forward(5_cm)" << std::endl;
 	moving.forward(5_cm);
 

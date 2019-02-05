@@ -16,7 +16,7 @@ namespace Strategy {
 		        : ServosInterfacer(*robot /*, get_servo_position*/) {}
 
 		ServosInterfacer::ServosInterfacer(PhysicalRobot::Robot& robot /*, std::function<Angle(servo_t, uint8_t)> get_servo_position*/)
-		        : ServosInterfacer(robot.get_module<PhysicalRobot::Servos>() /*, get_servo_position*/) {}
+		        : ServosInterfacer(robot.get_module<interfaced_type>() /*, get_servo_position*/) {}
 
 		ActionResult ServosInterfacer::set_position(servo_t servo, Angle pos) {
 			auto TIMEOUT_SERVO = 1000_ms; // 500_ms;

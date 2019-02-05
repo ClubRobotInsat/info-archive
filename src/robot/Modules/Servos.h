@@ -43,8 +43,6 @@ namespace PhysicalRobot {
 
 		uint8_t get_nbr_servos() const;
 
-		explicit Servos(servo_t id) : Module(id) {}
-
 		void set_position(servo_t, Angle);
 
 		void set_speed(servo_t servo, AngularSpeed speed, Rotation = Rotation::CounterClockwise);

@@ -46,8 +46,8 @@ namespace Constants {
 		std::map<std::string, uint8_t> _modules;
 		Speed _linear_speed;
 		AngularSpeed _angular_speed; // unité arbitraire décidée en élec
-		Distance _linear_precision;
-		Angle _angular_precision;
+		Distance _linear_accuracy;
+		Angle _angular_accuracy;
 		Angle _angle_adversary_detection; // demi-zone de détection
 		Vector2m _turret_position;
 		Distance _radius_rotation;
@@ -74,12 +74,12 @@ namespace Constants {
 			return _angular_speed;
 		}
 
-		inline Distance get_linear_precision() const {
-			return _linear_precision;
+		inline Distance get_linear_accuracy() const {
+			return _linear_accuracy;
 		}
 
-		inline Angle get_angular_precision() const {
-			return _angular_precision;
+		inline Angle get_angular_accuracy() const {
+			return _angular_accuracy;
 		}
 
 		inline Angle get_angle_adversary_detection() const {
@@ -161,6 +161,10 @@ namespace Constants {
 			return _lidar_actualization_period;
 		}
 
+		inline Distance get_threshold_adversary_detection() const {
+			return _threshold_adversary_detection;
+		}
+
 	private:
 		uint16_t _TCPIP_port_simu;
 		Vector3m _table_size;
@@ -175,6 +179,8 @@ namespace Constants {
 		Duration _frame_period;
 
 		Duration _lidar_actualization_period;
+
+		Distance _threshold_adversary_detection;
 
 		IniFile _reader;
 

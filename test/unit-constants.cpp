@@ -29,12 +29,13 @@ TEST_CASE("Global constants") {
 		                      "communication_delay=15\n"
 		                      "frame_period=12\n"
 		                      "lidar_actualization_period=1000\n"
+		                      "threshold_adversary_detection=200\n"
 
 		                      "[robot]\n"
 		                      "linear_speed=376\n"
-		                      "linear_precision=26\n"
+		                      "linear_accuracy=26\n"
 		                      "angular_speed=10\n"
-		                      "angular_precision=6\n"
+		                      "angular_accuracy=6\n"
 		                      "angle_adversary_detection=30\n"
 
 		                      "[robot.list]\n"
@@ -66,13 +67,14 @@ TEST_CASE("Global constants") {
 		CHECK(cst.get_default_communication_delay() == 15_ms);
 		CHECK(cst.get_frame_period() == 12_ms);
 		CHECK(cst.get_lidar_actualization_period() == 1_s);
+		CHECK(cst.get_threshold_adversary_detection() == 20_cm);
 		REQUIRE_THROWS_WITH(cst["iron-man"], "Constants of the robot 'iron-man' does not exist.");
 
 		REQUIRE_NOTHROW(cst["bot"]);
 		auto& bot = cst["bot"];
-		CHECK(bot.get_linear_precision() == 2.6_cm);
+		CHECK(bot.get_linear_accuracy() == 2.6_cm);
 		CHECK(bot.get_linear_speed() == 37.6_cm_s);
-		CHECK(bot.get_angular_precision() == 6_deg);
+		CHECK(bot.get_angular_accuracy() == 6_deg);
 		CHECK(bot.get_angle_adversary_detection() == 30_deg);
 		CHECK(bot.get_angular_speed() == 10_rad_s);
 		CHECK(bot.get_radius_rotation() == 6_cm);

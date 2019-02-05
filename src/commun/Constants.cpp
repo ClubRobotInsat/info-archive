@@ -40,8 +40,8 @@ namespace Constants {
 
 		_linear_speed = Speed::makeFromMm_s(read_field(reader, "robot", "linear_speed", 400));
 		_angular_speed = AngularSpeed::makeFromRad_s(read_field(reader, "robot", "angular_speed", 4));
-		_linear_precision = Distance::makeFromMm(read_field(reader, "robot", "linear_precision", 40));
-		_angular_precision = Angle::makeFromDeg(read_field(reader, "robot", "angular_precision", 4));
+		_linear_accuracy = Distance::makeFromMm(read_field(reader, "robot", "linear_accuracy", 40));
+		_angular_accuracy = Angle::makeFromDeg(read_field(reader, "robot", "angular_accuracy", 4));
 		_angle_adversary_detection = Angle::makeFromDeg(read_field(reader, "robot", "angle_adversary_detection", 15));
 
 		_turret_position = {
@@ -92,6 +92,8 @@ namespace Constants {
 		_communication_delay = Duration::makeFromMs(read_field(_reader, section, "communication_delay", 3));
 		_frame_period = Duration::makeFromMs(read_field(_reader, section, "frame_period", 100));
 		_lidar_actualization_period = Duration::makeFromMs(read_field(_reader, section, "lidar_actualization_period", 300));
+		_threshold_adversary_detection =
+		    Distance::makeFromMm(read_field(_reader, section, "threshold_adversary_detection", 300));
 	}
 
 	const Robot& Constants::operator[](const std::string& name) const {
