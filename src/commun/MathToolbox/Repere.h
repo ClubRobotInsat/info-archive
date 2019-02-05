@@ -131,6 +131,7 @@ namespace repere {
 
 	struct Orientation {
 		Orientation(Angle angle = 0_deg, const Repere& repere_parent = ABSOLUTE_REFERENCE);
+		Orientation(const Coordinates&, const Repere& repere_parent = ABSOLUTE_REFERENCE);
 		Orientation(const Orientation& other);
 
 		Angle getAngle(const Repere& repere = ABSOLUTE_REFERENCE) const {
@@ -150,6 +151,7 @@ namespace repere {
 		Position(Vector3m pos = {0_m, 0_m, 0_m}, const Repere& repere_parent = ABSOLUTE_REFERENCE);
 		Position(Vector2m pos, const Repere& repere_parent = ABSOLUTE_REFERENCE);
 		Position(Distance x, Distance y, const Repere& repere_parent = ABSOLUTE_REFERENCE);
+		Position(const Coordinates&, const Repere& repere_parent = ABSOLUTE_REFERENCE);
 		Position(const Position& other);
 
 		Position& operator=(const Position& position);
@@ -202,6 +204,14 @@ namespace repere {
 		Coordinates(const Coordinates& coords);
 
 		/// Getters
+		Position getPosition() const {
+			return Position(*this, _repere_parent);
+		}
+
+		Orientation getOrientation() const {
+			return Orientation(*this, _repere_parent);
+		}
+
 		Distance getX(const Repere& repere = ABSOLUTE_REFERENCE) const {
 			return repere.getPosition(_pos, _repere_parent).x;
 		}

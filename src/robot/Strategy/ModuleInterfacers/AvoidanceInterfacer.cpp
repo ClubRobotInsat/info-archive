@@ -33,8 +33,7 @@ namespace Strategy {
 		}
 
 		bool AvoidanceInterfacer::adversary_detected(Distance threshold) const {
-			// TODO: use _angle_detection_adversary
-			repere::Position robot_position; // = this->_robot->get_module<PhysicalRobot::Moving>()::get_position();
+			repere::Position robot_position = get_robot_position();
 			auto adversaries = get_adversary_positions();
 
 			for(repere::Position pos : adversaries) {
@@ -68,7 +67,8 @@ namespace Strategy {
 			while(_is_running) {
 				chrono.reset();
 
-				repere::Coordinates coords; // = this->_robot->get_module<PhysicalRobot::Moving>()::get_coordinates() + _turret_shift;
+				auto pos = get_robot_position().getPos2D() + _turret_shift;
+				repere::Coordinates coords({pos}, get_robot_orientation());
 				lidar_map->reset();
 
 				auto frame = _robot->get_lidar_frame();
@@ -98,6 +98,24 @@ namespace Strategy {
 					logWarn("The Lidar frame's acquisition is too slow of ", to_sleep);
 				}
 				sleep(to_sleep);
+			}
+		}
+
+		repere::Position AvoidanceInterfacer::get_robot_position() const {
+			try {
+				return _robot->get_module<PhysicalRobot::Navigation>().get_position();
+			} catch(const std::runtime_error&) {
+				logWarn("The module `Navigation` doesn't exist.");
+				return repere::Position();
+			}
+		}
+
+		repere::Orientation AvoidanceInterfacer::get_robot_orientation() const {
+			try {
+				return _robot->get_module<PhysicalRobot::Navigation>().get_orientation();
+			} catch(const std::runtime_error&) {
+				logWarn("The module `Navigation` doesn't exist.");
+				return repere::Orientation();
 			}
 		}
 	} // namespace Interfacer

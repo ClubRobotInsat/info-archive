@@ -58,6 +58,10 @@ namespace Strategy {
 			std::thread _find_robots;
 			mutable std::mutex _mutex_adversary;
 			std::vector<repere::Position> _adversary_positions;
+
+			repere::Position get_robot_position() const;
+
+			repere::Orientation get_robot_orientation() const;
 		};
 	} // namespace Interfacer
 } // namespace Strategy
