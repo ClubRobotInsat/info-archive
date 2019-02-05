@@ -35,9 +35,9 @@ namespace PhysicalRobot {
 
 		void backward(Distance distance);
 
-		void turnRelative(Angle angle);
+		void turn_relative(Angle angle);
 
-		void turnAbsolute(Angle angle);
+		void turn_absolute(Angle angle);
 
 		void stop();
 
