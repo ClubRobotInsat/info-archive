@@ -51,6 +51,8 @@ namespace PhysicalRobot {
 			return result;
 		}
 
+		Lidar::LidarType get_lidar_type() const;
+
 		bool has_lidar() const;
 
 		std::optional<FrameLidar> get_lidar_frame() const;
