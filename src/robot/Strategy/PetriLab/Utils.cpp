@@ -9,7 +9,7 @@ namespace {
 	Strategy::AbstractStrategy* _strategy;
 } // namespace
 
-void inits_petri_util(Strategy::AbstractStrategy& strategy) {
+void init_petri_utils(Strategy::AbstractStrategy& strategy) {
 	_strategy = &strategy;
 }
 
