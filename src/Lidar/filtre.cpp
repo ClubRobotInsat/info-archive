@@ -19,7 +19,7 @@ namespace {
 	const Distance MAX = 7_m;
 } // namespace
 
-const TrameLidar& Filtre::getTrame(const TrameLidar& input) {
+const FrameLidar& Filtre::get_frame(const FrameLidar& input) {
 	if(!_state.points.size()) { // premier relevé
 		// assume que ces valeurs restent constantes
 		_state.begin = input.begin;
@@ -40,7 +40,7 @@ const TrameLidar& Filtre::getTrame(const TrameLidar& input) {
 		Distance avg_voisins = (i == 0) ? (input.points[1]) :
 		                                  (i == _state.points.size()) ? (input.points[i - 1]) :
 		                                                                ((input.points[i - 1] + input.points[i + 1]) / 2);
-		double diff = in.toM() - avg_voisins.toM();
+		Distance diff = in - avg_voisins;
 		// double R = 0.01 + (diff*diff)*0.01;
 		double R = 0.004;
 		if(in < MIN) {

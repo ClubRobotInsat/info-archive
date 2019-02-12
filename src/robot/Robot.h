@@ -1,11 +1,10 @@
 #ifndef _ROBOT_H_
 #define _ROBOT_H_
 
+#include "../Lidar/Driver/lidar.h"
 #include "Commun.h"
-
-#include "Modules/ModuleManager.h"
-
 #include "Communication/Communicator.h"
+#include "Modules/ModuleManager.h"
 
 namespace PhysicalRobot {
 
@@ -13,7 +12,7 @@ namespace PhysicalRobot {
 		/// Initialise le robot a partir des arguments passes au programme.
 		/// Les modules du robot peuvent être initialisés à partir du fichier de constantes OU depuis un ModuleManager
 		/// @arg name Correspond au nom de section dans le `src/robot.ini`
-		Robot(std::shared_ptr<ModuleManager> module_manager, std::string name, std::vector<std::string> const& args);
+		Robot(std::shared_ptr<ModuleManager> module_manager, std::string name, std::vector<std::string> const& args, Lidar::LidarType);
 
 	public:
 		const std::string name;
@@ -26,10 +25,10 @@ namespace PhysicalRobot {
 		// static const int NB_RETRY_TIRETTE = 3;
 
 		// Initialisation du robot à partir d'un ModuleManager
-		Robot(std::shared_ptr<ModuleManager> module_manager, std::vector<std::string> const& args);
+		Robot(std::shared_ptr<ModuleManager> module_manager, std::vector<std::string> const& args, Lidar::LidarType);
 
 		// Initialisation du robot à partir du fichier `src/robot.ini`
-		Robot(std::string name, std::vector<std::string> const& args);
+		Robot(std::string name, std::vector<std::string> const& args, Lidar::LidarType);
 
 		virtual ~Robot();
 
@@ -38,12 +37,25 @@ namespace PhysicalRobot {
 			return _module_manager->get_module<Module>();
 		}
 
-		void set_debug(bool debug) {
-			_debug_active = debug;
-			if(_communicator != nullptr) {
-				_communicator->set_debug(debug);
-			}
+		template <typename Module>
+		bool has_module() const {
+			return _module_manager->has_module<Module>();
 		}
+
+		// map<ID, name>
+		std::map<uint8_t, std::string> get_list_modules() const {
+			std::map<uint8_t, std::string> result;
+			for(uint8_t id : _module_manager->get_list_modules()) {
+				result[id] = _module_manager->get_module_by_id(id).name;
+			}
+			return result;
+		}
+
+		bool has_lidar() const;
+
+		std::optional<FrameLidar> get_lidar_frame() const;
+
+		void set_debug(bool debug);
 
 		// TODO : déplacer ce code dans la partie 'stratégie'
 		/// Attend la tirette au départ
@@ -54,6 +66,7 @@ namespace PhysicalRobot {
 
 	protected:
 		std::shared_ptr<ModuleManager> _module_manager;
+		std::unique_ptr<Lidar> _lidar;
 
 		/// L'initialisation des modules du robot se fait ici
 		// Cette méthode n'est pas virtuelle pure

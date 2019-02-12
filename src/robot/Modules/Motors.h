@@ -17,7 +17,7 @@ namespace PhysicalRobot {
 		static const uint8_t ID_MAX_UNCONTROLLED_MOTORS = std::numeric_limits<uint8_t>::max();
 		static const uint8_t ID_MAX_BRUSHLESS = std::numeric_limits<uint8_t>::max();
 
-		explicit Motors(uint8_t id) : Module(id) {}
+		explicit Motors(uint8_t id) : Module(id, "Motors") {}
 
 		void add_controlled_motor(uint8_t id, RotatingDirection);
 		void add_uncontrolled_motor(uint8_t id);
@@ -30,6 +30,8 @@ namespace PhysicalRobot {
 		void set_position_angle(uint8_t motor, Angle);
 
 		void set_position_turns(uint8_t motor, uint8_t nb_turns, RotatingDirection);
+
+		void stop_controlled_motor(uint8_t motor);
 
 		bool is_position_finished(uint8_t motor) const;
 

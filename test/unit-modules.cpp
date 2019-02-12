@@ -4,11 +4,13 @@
 
 #include "catch.hpp"
 
+#include <log/Log.h>
+
 #include "../src/robot/Modules/ModuleManager.h"
 
 class ModuleTest : public PhysicalRobot::Module {
 public:
-	explicit ModuleTest(uint8_t id) : Module(id), _a(1), _b(2) {}
+	explicit ModuleTest(uint8_t id) : Module(id, "ModuleTest"), _a(1), _b(2) {}
 
 	// Accesseurs pour les tests
 	inline uint8_t get_a_value() const {
@@ -45,7 +47,6 @@ private:
 	std::atomic_uint8_t _a, _b;
 };
 
-#include <log/Log.h>
 TEST_CASE("Basic module") {
 
 	SECTION("Simple tests.") {
@@ -53,6 +54,7 @@ TEST_CASE("Basic module") {
 		CHECK(my_module.get_id() == 5);
 		CHECK(my_module.get_a_value() == 1);
 		CHECK(my_module.get_b_value() == 2);
+		CHECK(my_module.name == "ModuleTest");
 	}
 
 	SECTION("Frames manipulation.") {
@@ -79,12 +81,8 @@ TEST_CASE("Basic module") {
 }
 
 
-// Ce define très moche permets d'accéder aux fonctions et variables cachées des objets (TESTS uniquement)
-#define private public
 #include "../src/robot/Modules/Servos.h"
-#undef private
 
-#include <log/Log.h>
 TEST_CASE("Servos' Module") {
 	SECTION("Non-frame functions' module") {
 		PhysicalRobot::Servos my_module(2);
@@ -96,14 +94,15 @@ TEST_CASE("Servos' Module") {
 		REQUIRE_NOTHROW(my_module.add_servo(42));
 		REQUIRE_THROWS_WITH(my_module.add_servo(0), "L'ID 0 des servos est réservé !");
 		CHECK(my_module.get_nbr_servos() == 4);
+		CHECK(my_module.name == "Servos");
 
 		REQUIRE_THROWS_WITH(my_module.set_position(1, 50_deg), "Numéro du servo demandé invalide : 1");
 		my_module.set_position(2, 50.4_deg);
 		// Servo 2 commandé en position
 		CHECK_FALSE(my_module.is_moving_done(2));
 
-		REQUIRE_THROWS_WITH(my_module.set_speed(1, 2), "Numéro du servo demandé invalide : 1");
-		my_module.set_speed(2, 6, PhysicalRobot::Rotation::CounterClockwise);
+		REQUIRE_THROWS_WITH(my_module.set_speed(1, 2_deg_s), "Numéro du servo demandé invalide : 1");
+		my_module.set_speed(2, 6_deg_s, PhysicalRobot::Rotation::CounterClockwise);
 
 		REQUIRE_THROWS_WITH(my_module.read_position(1), "Numéro du servo demandé invalide : 1");
 
@@ -119,6 +118,21 @@ TEST_CASE("Servos' Module") {
 		CHECK(my_module.is_moving_done(4));
 	}
 }
+
+
+#include "../src/robot/Modules/Navigation.h"
+
+TEST_CASE("Navigation Module") {
+	PhysicalRobot::Navigation my_module(1);
+
+	SECTION("Initialization") {
+		auto starting_point = my_module.get_coordinates();
+		CHECK(starting_point.getX().toM() == Approx(0));
+		CHECK(starting_point.getY().toM() == Approx(0));
+		CHECK(starting_point.getAngle().toRad() == Approx(0));
+	}
+}
+
 
 #include "../src/robot/Communication/NamedPipe.h"
 
@@ -151,6 +165,9 @@ TEST_CASE("ModuleManager") {
 		REQUIRE_NOTHROW(manager.get_module<ModuleTest>());
 		CHECK(manager.get_module<ModuleTest>().get_id() == 5);
 		CHECK(manager.get_module<PhysicalRobot::Servos>().get_id() == 6);
+
+		std::vector<uint8_t> list_modules = {5, 6};
+		CHECK(manager.get_list_modules() == list_modules);
 	}
 
 	SECTION("Frame manipulation") {
@@ -179,7 +196,7 @@ TEST_CASE("ModuleManager") {
 			SECTION("Servos") {
 				auto& module_servos = manager.add_module<PhysicalRobot::Servos>(15);
 				module_servos.add_servo(254);
-				module_servos.set_speed(254, 500);
+				module_servos.set_speed(254, 500_mrad_s);
 
 				auto frames_servos = manager.write_frame();
 				REQUIRE(frames_servos.size() == 1);
@@ -191,8 +208,35 @@ TEST_CASE("ModuleManager") {
 
 				std::string msg(frame_servos.getDonnees() + 1, frame_servos.getDonnees() + frame_servos.getNbDonnees());
 
-				CHECK(msg == "{\"blocked\":false,\"color\":\"Yellow\",\"control\":\"Speed\",\"data\":500,\"id\":254,"
+				CHECK(msg == "{\"blocked\":false,\"color\":\"Yellow\",\"control\":\"Speed\",\"data\":81,\"id\":254,"
 				             "\"known_position\":511,\"mode\":\"Unblocking\",\"rotation\":\"CounterClockwise\"}");
+			}
+
+			SECTION("Navigation") {
+				auto& module_nav = manager.add_module<PhysicalRobot::Navigation>(15);
+
+				SECTION("No commands") {
+					auto frames_nav = manager.write_frame();
+					REQUIRE(frames_nav.empty());
+				}
+
+				SECTION("Simple commands") {
+					module_nav.forward(5_m, PhysicalRobot::SensAdvance::Forward);
+					auto frames_nav = manager.write_frame();
+					REQUIRE(frames_nav.size() == 1);
+
+					GlobalFrame frame_nav = frames_nav[0];
+					REQUIRE(frame_nav.getDonnees()[0] == module_nav.get_id());
+
+					JSON json =
+					    nlohmann::json::parse(frame_nav.getDonnees() + 1, frame_nav.getDonnees() + frame_nav.getNbDonnees());
+					CHECK(std::string("GoForward") == json["command"]);
+
+
+					// check that manager.write_frame() flushes frame buffer
+					frames_nav = manager.write_frame();
+					CHECK(frames_nav.empty());
+				}
 			}
 		}
 

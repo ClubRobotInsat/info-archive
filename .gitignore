@@ -1,9 +1,7 @@
-robot/Principal/petri/src/*
 cmake-build-debug/
 .DS_Store
 /.idea
 *~
-/petri
 /cmake-build-*
 /build_arm
 /build_arm.LAST_SAVE

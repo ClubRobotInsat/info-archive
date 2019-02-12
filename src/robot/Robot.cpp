@@ -1,4 +1,6 @@
 #include "Robot.h"
+#include "../Lidar/filtre.h"
+
 #include <Constants.h>
 #include <log/Log.h>
 
@@ -6,25 +8,50 @@ namespace PhysicalRobot {
 
 	// Le robot n'est pas initialisé à partir de `src/robot.ini`
 	// L'utilisateur doit donc fournir un ModuleManager non vierge s'il veut un robot fonctionnel
-	Robot::Robot(std::shared_ptr<ModuleManager> module_manager, std::vector<std::string> const& args)
-	        : Robot(std::move(module_manager), "guest", args) {}
+	Robot::Robot(std::shared_ptr<ModuleManager> module_manager, std::vector<std::string> const& args, Lidar::LidarType lidar)
+	        : Robot(std::move(module_manager), "guest", args, lidar) {}
 
 	// Le robot est initialisé à partir de `src/robot.ini` dans la section `[robot.<name>]`
-	Robot::Robot(std::string name, std::vector<std::string> const& args)
-	        : Robot(std::make_shared<ModuleManager>(), std::move(name), args) {}
+	Robot::Robot(std::string name, std::vector<std::string> const& args, Lidar::LidarType lidar)
+	        : Robot(std::make_shared<ModuleManager>(), std::move(name), args, lidar) {}
 
 	/// Initialise le robot à partir des arguments passes au programme.
-	Robot::Robot(std::shared_ptr<ModuleManager> module_manager, std::string name, std::vector<std::string> const& args)
+	Robot::Robot(std::shared_ptr<ModuleManager> module_manager, std::string name, std::vector<std::string> const& args, Lidar::LidarType lidar)
 	        : name(std::move(name)), _module_manager(std::move(module_manager)), _debug_active(false) {
 		assign_modules();
 
 		_communicator = std::make_unique<Communication::Communicator<ModuleManager>>(_module_manager);
 		_communicator->connect(args);
+
+		try {
+			_lidar = Lidar::open_lidar(lidar);
+		} catch(std::runtime_error&) {
+			logWarn("Impossible to open the lidar.");
+			_lidar = nullptr;
+		}
 	}
 
 	/// Finalise le robot
 	Robot::~Robot() {
 		deactivation();
+	}
+
+	bool Robot::has_lidar() const {
+		return _lidar != nullptr;
+	}
+
+	std::optional<FrameLidar> Robot::get_lidar_frame() const {
+		if(has_lidar()) {
+			return Filtre().get_frame(_lidar->get_frame());
+		}
+		return std::nullopt;
+	}
+
+	void Robot::set_debug(bool debug) {
+		_debug_active = debug;
+		if(_communicator != nullptr) {
+			_communicator->set_debug(debug);
+		}
 	}
 
 	void Robot::deactivation() {
@@ -56,19 +83,15 @@ namespace PhysicalRobot {
 		}
 
 		for(auto module : GLOBAL_CONSTANTS()[name].get_modules()) {
-			/*if(module.first == "moving") {
-			    _module_manager->add_module<Moving>(module.second);
-			} else */
-			if(module.first == "servos") {
+			if(module.first == "navigation") {
+				_module_manager->add_module<Navigation>(module.second);
+			} else if(module.first == "servos") {
 				// TODO : voir comment récupérer les servos à ajouter (`robot.ini` ou fichier .JSON ?)
 				_module_manager->add_module<Servos>(module.second);
 			} else if(module.first == "motors") {
 				_module_manager->add_module<Motors>(module.second);
 			} else if(module.first == "io") {
 				_module_manager->add_module<IO>(module.second);
-			} else if(module.first == "avoidance") {
-				auto& avoidance = _module_manager->add_module<Avoidance>(module.second);
-				avoidance.set_position_turret(GLOBAL_CONSTANTS()[name].get_turret_position());
 			} else {
 				throw std::runtime_error("The module named '" + module.first + "' (ID: " + std::to_string(module.second) +
 				                         ") isn't known for the robot '" + name + "'.");

@@ -5,7 +5,7 @@
 #include "IO.h"
 
 namespace PhysicalRobot {
-	IO::IO(uint8_t id) : Module(id) {}
+	IO::IO(uint8_t id) : Module(id, "IO") {}
 
 	bool IO::read_tirette() const {
 		std::lock_guard<std::mutex> lk(_mutex_variables);

@@ -14,9 +14,9 @@
 #ifndef ROOT_STRATEGY_H
 #define ROOT_STRATEGY_H
 
-#include "../Robot.h"
 #include "Commun.h"
 #include "Environment/environment.h"
+#include "ModuleInterfacers/RobotManager.h"
 #include <Constants.h>
 
 #include <memory>
@@ -28,25 +28,38 @@ namespace Strategy {
 	public:
 		void start(Duration match = GLOBAL_CONSTANTS().get_match_duration());
 
-		Constants::RobotColor get_color() const {
-			return _color;
-		}
+		// Arrête tous les actionneurs
+		virtual void stop();
 
-		const repere::Repere& get_reference() const {
-			return GLOBAL_CONSTANTS().get_reference(_color);
-		}
+		Constants::RobotColor get_color() const;
+
+		const repere::Repere& get_reference() const;
 
 		Duration get_left_time() const;
 		Duration get_time() const;
 
 		void reset_timer();
 
-		Environment& get_environment() {
-			return *_env;
-		}
+		Environment& get_environment() const;
+
+		// Automatically tries to create all possible interfacers
+		// Call `add_manager`
+		std::shared_ptr<Interfacer::RobotManager> add_robot(std::shared_ptr<PhysicalRobot::Robot>);
+		// Automatically tries to create all high-level PetriLab functions
+		std::shared_ptr<Interfacer::RobotManager> add_manager(std::shared_ptr<Interfacer::RobotManager>);
+
+		std::shared_ptr<Interfacer::RobotManager> get_robot(const std::string& name);
+
+		std::vector<std::string> get_robot_names() const;
+
+		int get_points() const;
+
+		int add_points(int n);
+
+		int set_points(int n);
 
 	protected:
-		AbstractStrategy(std::unique_ptr<PhysicalRobot::Robot>, Constants::RobotColor);
+		AbstractStrategy(Constants::RobotColor);
 
 		virtual ~AbstractStrategy() = default;
 
@@ -58,7 +71,7 @@ namespace Strategy {
 		/// Thread dans lequel s'exécute la stratégie
 		std::thread _execution;
 
-		std::unique_ptr<PhysicalRobot::Robot> _robot;
+		std::vector<std::shared_ptr<Interfacer::RobotManager>> _interfacers;
 		std::unique_ptr<Environment> _env;
 
 	private:
@@ -68,6 +81,8 @@ namespace Strategy {
 
 		Duration _total_duration_match = 0_s;
 		StopWatch _chrono_match;
+
+		std::atomic_int _nb_points;
 
 		// Appel de la fonction virtuelle 'execute' ; ça permets d'arrêter le thread de la stratégie à la fin du match
 		void exec();

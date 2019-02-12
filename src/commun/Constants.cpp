@@ -24,12 +24,18 @@ namespace Constants {
 
 	Robot::Robot(IniFile& reader, std::string name) {
 		const std::string section = "robot." + name;
-		_start_angle = Angle::makeFromDeg(reader[section]["angle"].asDouble());
-		_start_position = {
-		    Distance::makeFromMm(reader[section]["position_x"].asInt()),
-		    Distance::makeFromMm(reader[section]["position_y"].asInt()),
-		    Distance::makeFromMm(reader[section]["position_z"].asInt()),
-		};
+		try {
+			_start_angle = Angle::makeFromDeg(reader[section]["angle"].asDouble());
+			_start_position = {
+			    Distance::makeFromMm(reader[section]["position_x"].asInt()),
+			    Distance::makeFromMm(reader[section]["position_y"].asInt()),
+			    Distance::makeFromMm(reader[section]["position_z"].asInt()),
+			};
+		} catch(std::exception&) {
+			_start_angle = std::nullopt;
+			_start_position = std::nullopt;
+		}
+
 		for(auto it : reader) {
 			if(it.first == section + ".modules") {
 				for(auto field : it.second) {
@@ -40,12 +46,13 @@ namespace Constants {
 
 		_linear_speed = Speed::makeFromMm_s(read_field(reader, "robot", "linear_speed", 400));
 		_angular_speed = AngularSpeed::makeFromRad_s(read_field(reader, "robot", "angular_speed", 4));
-		_linear_precision = Distance::makeFromMm(read_field(reader, "robot", "linear_precision", 40));
-		_angular_precision = Angle::makeFromDeg(read_field(reader, "robot", "angular_precision", 4));
+		_linear_accuracy = Distance::makeFromMm(read_field(reader, "robot", "linear_accuracy", 40));
+		_angular_accuracy = Angle::makeFromDeg(read_field(reader, "robot", "angular_accuracy", 4));
+		_angle_adversary_detection = Angle::makeFromDeg(read_field(reader, "robot", "angle_adversary_detection", 15));
 
 		_turret_position = {
-		    Distance::makeFromMm(reader[section]["turret_position_x"].asInt()),
-		    Distance::makeFromMm(reader[section]["turret_position_y"].asInt()),
+		    Distance::makeFromMm(read_field(reader, section, "turret_position_x", 0)),
+		    Distance::makeFromMm(read_field(reader, section, "turret_position_y", 0)),
 		};
 
 		_radius_rotation = Distance::makeFromMm(read_field(reader, section, "radius_rotation", 250));
@@ -69,25 +76,31 @@ namespace Constants {
 						_robots[robot.first] = std::unique_ptr<Robot>(new Robot(_reader, robot.first));
 					}
 				}
+				_robots["default"] = std::unique_ptr<Robot>(new Robot(_reader, "default"));
 			}
 		}
 
-		_TCPIP_port_simu = static_cast<uint16_t>(read_field(_reader, "constants", "TCPIP_port", 4321));
+		const std::string section = "constants";
+
+		_TCPIP_port_simu = static_cast<uint16_t>(read_field(_reader, section, "TCPIP_port", 4321));
 		_table_size = {
-		    Distance::makeFromMm(read_field(_reader, "constants", "table_x", 3000)),
-		    Distance::makeFromMm(read_field(_reader, "constants", "table_y", 2000)),
+		    Distance::makeFromMm(read_field(_reader, section, "table_x", 3000)),
+		    Distance::makeFromMm(read_field(_reader, section, "table_y", 2000)),
 		    0_m,
 		};
-		_scale_environment = Distance::makeFromMm(read_field(_reader, "constants", "scale_environment", 10));
+		_scale_environment = Distance::makeFromMm(read_field(_reader, section, "scale_environment", 10));
 		_table_env_grid = {
 		    static_cast<uint16_t>(_table_size.x / _scale_environment),
 		    static_cast<uint16_t>(_table_size.y / _scale_environment),
 		};
 
-		_match_duration = Duration::makeFromS(read_field(_reader, "constants", "match_duration", 100));
+		_match_duration = Duration::makeFromS(read_field(_reader, section, "match_duration", 100));
 
-		_communication_delay = Duration::makeFromMs(read_field(_reader, "constants", "communication_delay", 3));
-		_frame_period = Duration::makeFromMs(read_field(_reader, "constants", "frame_period", 100));
+		_communication_delay = Duration::makeFromMs(read_field(_reader, section, "communication_delay", 3));
+		_frame_period = Duration::makeFromMs(read_field(_reader, section, "frame_period", 100));
+		_lidar_actualization_period = Duration::makeFromMs(read_field(_reader, section, "lidar_actualization_period", 300));
+		_threshold_adversary_detection =
+		    Distance::makeFromMm(read_field(_reader, section, "threshold_adversary_detection", 300));
 	}
 
 	const Robot& Constants::operator[](const std::string& name) const {

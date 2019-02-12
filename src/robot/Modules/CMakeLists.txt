@@ -2,10 +2,9 @@ set(MODULE_SOURCES
         Module.hpp
         ModuleManager.cpp
 
-        Avoidance.cpp
         IO.cpp
         Motors.cpp
-        #Moving.cpp
+        Navigation.cpp
         Servos.cpp)
 
 add_library(Modules STATIC ${MODULE_SOURCES})

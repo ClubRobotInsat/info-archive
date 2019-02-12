@@ -23,30 +23,49 @@ namespace Constants {
 	              // Valeur d'initialisation, qui permet de déctecter si la lecture du capteur couleur a déconné.
 	              Undef)
 
+	inline Constants::RobotColor string_to_color(std::string str) {
+		std::transform(str.cbegin(), str.cend(), str.begin(), ::tolower);
+		for(auto color : getEnumValues<Constants::RobotColor>()) {
+			std::string str_color(toString(color));
+			std::transform(str_color.cbegin(), str_color.cend(), str_color.begin(), ::tolower);
+			if(str == str_color) {
+				return color;
+			}
+		}
+		return Constants::RobotColor::Undef;
+	}
+
+	inline std::string name(const std::string& robot_name) {
+		return (robot_name != "guest" ? robot_name : "default");
+	}
+
 	class Constants;
 	class Robot {
 		friend class Constants;
 		explicit Robot(IniFile& reader, std::string name);
 
-		Vector3m _start_position;
-		Angle _start_angle;
+		// Les attributs `optional` correspondent à des valeurs qui ne peuvent pas être entrées par défaut
+		std::optional<Vector3m> _start_position;
+		std::optional<Angle> _start_angle;
+
 		// Association de chaque nom de module à son ID
 		std::map<std::string, uint8_t> _modules;
 		Speed _linear_speed;
 		AngularSpeed _angular_speed; // unité arbitraire décidée en élec
-		Distance _linear_precision;
-		Angle _angular_precision;
+		Distance _linear_accuracy;
+		Angle _angular_accuracy;
+		Angle _angle_adversary_detection; // demi-zone de détection
 		Vector2m _turret_position;
 		Distance _radius_rotation;
 		Vector3m _size;
 
 	public:
 		inline Vector3m get_start_position() const {
-			return _start_position;
+			return _start_position.value();
 		}
 
 		inline Angle get_start_angle() const {
-			return _start_angle;
+			return _start_angle.value();
 		}
 
 		inline std::map<std::string, uint8_t> get_modules() const {
@@ -61,12 +80,16 @@ namespace Constants {
 			return _angular_speed;
 		}
 
-		inline Distance get_linear_precision() const {
-			return _linear_precision;
+		inline Distance get_linear_accuracy() const {
+			return _linear_accuracy;
 		}
 
-		inline Angle get_angular_precision() const {
-			return _angular_precision;
+		inline Angle get_angular_accuracy() const {
+			return _angular_accuracy;
+		}
+
+		inline Angle get_angle_adversary_detection() const {
+			return _angle_adversary_detection;
 		}
 
 		// POSITION_TOURELLE = { décalage avant, décalage vers la droite }
@@ -140,6 +163,14 @@ namespace Constants {
 			return TABLE_2018;
 		}
 
+		inline Duration get_lidar_actualization_period() const {
+			return _lidar_actualization_period;
+		}
+
+		inline Distance get_threshold_adversary_detection() const {
+			return _threshold_adversary_detection;
+		}
+
 	private:
 		uint16_t _TCPIP_port_simu;
 		Vector3m _table_size;
@@ -152,6 +183,10 @@ namespace Constants {
 		// Durée de temporisation entre l'envoi de deux messages successifs sur le médium de communication
 		Duration _communication_delay;
 		Duration _frame_period;
+
+		Duration _lidar_actualization_period;
+
+		Distance _threshold_adversary_detection;
 
 		IniFile _reader;
 
@@ -171,7 +206,7 @@ inline Constants::RobotColor operator!(Constants::RobotColor const& c) {
 			return RobotColor::Yellow;
 		case RobotColor::Yellow:
 			return RobotColor::Purple;
-		case RobotColor::Undef:
+		default:
 			return RobotColor::Undef;
 	}
 }

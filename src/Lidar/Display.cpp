@@ -2,18 +2,18 @@
 /* info/robot/Lidar/affiche.cpp                                    2015-05-25 */
 /* Club Robot INSA Toulouse                                      Félix Poisot */
 /******************************************************************************/
-#include "affiche.h"
-#include <GLFW/include/GL/glfw.h>
+#include "Display.h"
+#include "../../third_parties/GLFW/include/GL/glfw.h"
 #include <log/Log.h>
 /******************************************************************************/
 
 // On suppose que c'est la seule utilisation d'OpenGL par le programme.
 
 const double ECHELLE = 180; // pixels par mètre
-const Vec2 ORIG = {50, 400};
+const Vector2f ORIG = {50, 400};
 
 
-Affiche::Affiche(Vec2 tailleTable) : _textureTable("table.tga") {
+Display::Display(Vector2m table_size) : _table_size(table_size), _frames(0) /*_textureTable("table.tga")*/ {
 	glfwInit();
 
 	if(!glfwOpenWindow(640, 480, 0, 0, 0, 0, 16, 0, GLFW_WINDOW)) {
@@ -44,31 +44,28 @@ Affiche::Affiche(Vec2 tailleTable) : _textureTable("table.tga") {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	_size = tailleTable;
-
 	_t0 = TimePoint::now();
 	_fpsT = TimePoint::now();
-	_frames = 0;
 }
 
-Affiche::~Affiche() {
+Display::~Display() {
 	try {
 		glfwCloseWindow();
 		glfwTerminate();
 	} catch(...) {
-		logError("Problème dans ~Affiche()");
+		logError("Problème dans Display()");
 	}
 }
 
-bool Affiche::isClosed() {
+bool Display::isClosed() {
 	return glfwGetKey(GLFW_KEY_ESC) || !glfwGetWindowParam(GLFW_OPENED);
 }
 
-void Affiche::begin() {
+void Display::begin() {
 	// mesure / affichage des FPS
 	auto t = TimePoint::now();
 	if((t - _fpsT) > 1.0_s) {
-		int fps = (int)((double)_frames / (double)((t - _fpsT).toS()));
+		int fps = static_cast<int>(static_cast<double>(_frames) / static_cast<double>((t - _fpsT).toS()));
 		char buffer[256] = "";
 		sprintf(buffer, "Affichage Lidar - FPS : %d", fps);
 		glfwSetWindowTitle(buffer);
@@ -79,13 +76,13 @@ void Affiche::begin() {
 	// dessin à faire à chaque fois
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	float ox = ORIG.x;
-	float oy = ORIG.y;
-	float stepx = _size.x * ECHELLE;
-	float stepy = _size.y * ECHELLE;
+	double ox = ORIG.x;
+	double oy = ORIG.y;
+	double stepx = _table_size.x.toM() * ECHELLE;
+	double stepy = _table_size.y.toM() * ECHELLE;
 	// table
 	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE0, _textureTable.getID());
+	// glBindTexture(GL_TEXTURE0, _textureTable.getID());
 	glBegin(GL_QUADS);
 	glColor3f(1.0f, 1.0f, 1.0f);
 	glTexCoord2f(0, 0);
@@ -104,24 +101,24 @@ void Affiche::begin() {
 	glDisable(GL_TEXTURE_2D);
 }
 
-void Affiche::end() {
+void Display::end() {
 	++_frames;
 	glfwSwapBuffers();
 	_t0 = TimePoint::now();
 }
 
 
-void Affiche::trameLidar(const TrameLidar& mesure, Vec2 orig, Angle orient, Vec4 couleur) {
-	float ox = ORIG.x + orig.x * ECHELLE;
-	float oy = ORIG.y - orig.y * ECHELLE;
+void Display::frame_lidar(const FrameLidar& mesure, const repere::Coordinates& lidar_coords, Vec4 couleur) {
+	double ox = ORIG.x + lidar_coords.getX().toM() * ECHELLE;
+	double oy = ORIG.y - lidar_coords.getY().toM() * ECHELLE;
 
-	Angle prevAngle = mesure.begin + orient;
-	float prevAmpl = mesure.points[0].toM() * ECHELLE;
+	Angle prevAngle = mesure.begin + lidar_coords.getAngle();
+	double prevAmpl = mesure.points[0].toM() * ECHELLE;
 
 	glBegin(GL_TRIANGLES);
 	for(size_t i = 1; i < mesure.points.size(); ++i) {
-		Angle angle = i * mesure.angularResolution + mesure.begin + orient;
-		float amplitude = mesure.points[i].toM() * ECHELLE;
+		Angle angle = i * mesure.angularResolution + mesure.begin + lidar_coords.getAngle();
+		double amplitude = mesure.points[i].toM() * ECHELLE;
 
 		glColor4f(couleur.r, couleur.g, couleur.b, couleur.a);
 		glVertex2d(ox, oy);
@@ -136,22 +133,23 @@ void Affiche::trameLidar(const TrameLidar& mesure, Vec2 orig, Angle orient, Vec4
 	glEnd();
 }
 
-void Affiche::grille(const OccupGrid& occ, Vec3 color) {
-	float s = 3 / (float)ECHELLE; // demi-taille du point
+void Display::grid(const OccupGrid& occ, Vec3 color) {
+	double s = 3 / ECHELLE; // demi-taille du point
 
 	glBegin(GL_QUADS);
 
-	float ox = ORIG.x;
-	float oy = ORIG.y;
+	double ox = ORIG.x;
+	double oy = ORIG.y;
 
 	auto r = occ.resolution();
 	for(int y = 0; y < r.y; ++y)
 		for(int x = 0; x < r.x; ++x) {
-			if(!occ(x, y))
+			if(!occ(x, y)) {
 				continue;
+			}
 
-			float mx = (x / (float)r.x) * _size.x;
-			float my = (y / (float)r.y) * _size.y;
+			double mx = (x / static_cast<double>(r.x)) * _table_size.x.toM();
+			double my = (y / static_cast<double>(r.y)) * _table_size.y.toM();
 
 			glColor3f(color.r, color.g, color.b);
 			glVertex2d(ox + (mx - s) * ECHELLE, oy - (my - s) * ECHELLE);
@@ -166,17 +164,17 @@ void Affiche::grille(const OccupGrid& occ, Vec3 color) {
 	glEnd();
 }
 
-void Affiche::candidats(std::vector<Vec2> pts, Vec3 color) {
-	float s = 5 / (float)ECHELLE; // demi-taille du point
+void Display::candidates(const std::vector<repere::Position>& pts, Vec3 color) {
+	double s = 5 / ECHELLE; // demi-taille du point
 
-	float ox = ORIG.x;
-	float oy = ORIG.y;
+	double ox = ORIG.x;
+	double oy = ORIG.y;
 
 	glBegin(GL_QUADS);
 
 	for(auto v : pts) {
-		auto x = v.x;
-		auto y = v.y;
+		auto x = v.getX().toM();
+		auto y = v.getY().toM();
 
 		glColor3f(color.r, color.g, color.b);
 		glVertex2d(ox + (x - s) * ECHELLE, oy - (y - s) * ECHELLE);

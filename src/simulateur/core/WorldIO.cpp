@@ -1,4 +1,3 @@
-#include "RobotPrincipal/Constantes.h"
 #include "SimulateurConstantes.h"
 
 #include "World.h"
@@ -64,7 +63,7 @@ void World::loadWorldFromFile(std::string filename) {
 	in.close();
 }
 
-Object3D& World::createRobotFromJSON(const JSON& json, Constantes::RobotColor color) {
+Object3D& World::createRobotFromJSON(const JSON& json, Constants::RobotColor color) {
 	// Permet de récupérer les spécificités du robot principal
 	auto robots = json["robot"];
 	auto it =
@@ -92,8 +91,9 @@ Object3D& World::createRobotFromJSON(const JSON& json, Constantes::RobotColor co
 	// IGraphicalInstance* graphicProp = getGraphics().createModel(position, "robot");
 	// graphicProp->setScale({0.008, 0.008, 0.012});
 	IGraphicalInstance* graphicProp = getGraphics().createCuboid(position, robotSize);
-	graphicProp->setColor(color == Constantes::RobotColor::Orange ? Json::toColor3f(robot["color"]["orange"]) :
-	                                                                Json::toColor3f(robot["color"]["green"]));
+	std::string str_color = toString(color);
+	std::transform(str_color.cbegin(), str_color.cend(), str_color.begin(), ::tolower);
+	graphicProp->setColor(Json::toColor3f(robot["robot"][str_color]));
 
 	Object3D& created = createObject(graphicProp, physicProp, position);
 	created.addTag(TAG_ROBOT);
@@ -101,7 +101,7 @@ Object3D& World::createRobotFromJSON(const JSON& json, Constantes::RobotColor co
 	return created;
 }
 
-Object3D& World::createRobotFromFile(std::string filename, Constantes::RobotColor color) {
+Object3D& World::createRobotFromFile(std::string filename, Constants::RobotColor color) {
 	JSON json;
 	std::ifstream in(filename);
 

@@ -20,22 +20,23 @@ SickLidar::SickLidar(libusb_device_handle* hnd) : _hDev(hnd), _recv(2048) {
 	/* Démarre le mode transmission continue */
 	const std::string go("\2sEN LMDscandata 1\3");
 	int w, rc;
-	rc = libusb_bulk_transfer(_hDev, EP_TOLIDAR, (unsigned char*)go.c_str(), go.size(), &w, 0);
-	if(rc)
+	rc = libusb_bulk_transfer(_hDev, EP_TOLIDAR, (unsigned char*)go.c_str(), static_cast<int>(go.size()), &w, 0);
+	if(rc) {
 		throw std::runtime_error("USB Write failed");
+	}
 
-	_acquisitionThread = std::thread([this]() { this->acquire(); });
+	_acquisition_thread = std::thread([this]() { this->acquire(); });
 }
 
 SickLidar::~SickLidar() {
 	libusb_close(_hDev);
-	if(_acquisitionThread.joinable()) {
-		_acquisitionThread.join();
+	if(_acquisition_thread.joinable()) {
+		_acquisition_thread.join();
 	}
 	// libusb_release_interface(_hDev, 0);
 }
 
-TrameLidar SickLidar::getTrame() {
+FrameLidar SickLidar::get_frame() {
 	if(_except) {
 		std::rethrow_exception(_except);
 	}
@@ -43,14 +44,14 @@ TrameLidar SickLidar::getTrame() {
 		sleep(1_s / 15);
 	}
 
-	std::lock_guard<std::mutex> lk(_acquisitionMutex);
+	std::lock_guard<std::mutex> lk(_acquisition_mutex);
 	return _lastTrame;
 }
 
 void SickLidar::acquire() {
 	try {
 		while(true) {
-			TrameLidar res;
+			FrameLidar res;
 			// Suffit d'attendre, les mesures arrivent en continu.
 
 			int rc;
@@ -58,16 +59,18 @@ void SickLidar::acquire() {
 			for(int retry = 3; retry > 0; --retry) {
 				try {
 					for(;;) {
-						rc = libusb_bulk_transfer(_hDev, EP_FROMLIDAR, _recv.data(), _recv.size(), &_cRecv, 0);
-						if(rc)
+						rc = libusb_bulk_transfer(_hDev, EP_FROMLIDAR, _recv.data(), static_cast<int>(_recv.size()), &_cRecv, 0);
+						if(rc) {
 							throw std::runtime_error("USB read failed !");
-
+						}
 
 						_cur = _recv.data();
-						if(_cRecv < 5)
+						if(_cRecv < 5) {
 							throw std::runtime_error("Lidar Sick: Trame invalide (trop courte)");
-						if(strncmp((const char*)_cur, "\2sSN ", 5) == 0)
+						}
+						if(strncmp(reinterpret_cast<const char*>(_cur), "\2sSN ", 5) == 0) {
 							break; // un seul type de trame compris.
+						}
 					}
 
 					// trame de type sSN
@@ -85,7 +88,7 @@ void SickLidar::acquire() {
 	}
 }
 
-Time SickLidar::getTimeOrigin() {
+Time SickLidar::get_time_origin() {
 	return {};
 }
 
@@ -94,8 +97,8 @@ Time SickLidar::getTimeOrigin() {
 		readHex();                \
 	}
 
-void SickLidar::readTelegram(TrameLidar& out) {
-	std::lock_guard<std::mutex> lk(_acquisitionMutex);
+void SickLidar::readTelegram(FrameLidar& out) {
+	std::lock_guard<std::mutex> lk(_acquisition_mutex);
 	// assume qu'on vient de lire sSN
 	_cur += 12; // 11+espace
 
@@ -116,7 +119,7 @@ void SickLidar::readTelegram(TrameLidar& out) {
 	angleStep = readHex();
 	sampleCount = readHex();
 
-	out.points.resize(sampleCount);
+	out.points.resize(static_cast<size_t>(sampleCount));
 	out.angularResolution = Angle::makeFromDeg(angleStep / 10000.0);
 	out.begin = Angle::makeFromDeg(startAngle / 10000.0);
 	out.end = Angle::makeFromDeg((startAngle + angleStep * sampleCount) / 10000.0);
@@ -138,19 +141,22 @@ int SickLidar::readHex() {
 	int acc = 0;
 	int c;
 	for(;;) {
-		if((_cur - _recv.data()) >= _cRecv)
+		if((_cur - _recv.data()) >= _cRecv) {
 			throw std::runtime_error("Lidar Sick: Trame corrompue (tronquée)");
+		}
 		c = *_cur;
-		if(c == ' ')
+		if(c == ' ') {
 			break;
+		}
 
 		acc <<= 4;
-		if('0' <= c && c <= '9')
+		if('0' <= c && c <= '9') {
 			acc += c - '0';
-		else if('A' <= c && c <= 'F')
+		} else if('A' <= c && c <= 'F') {
 			acc += (c - 'A') + 10;
-		else
+		} else {
 			throw std::runtime_error("Lidar Sick: Trame Corrompue (Caractère inattendu)");
+		}
 
 		_cur++;
 	}

@@ -25,7 +25,7 @@ public:
 UserHandler UserHandler::instance = UserHandler();
 
 
-using namespace Constantes;
+using namespace Constants;
 
 Simulateur* Simulateur::_instance = nullptr;
 
@@ -94,7 +94,7 @@ void Simulateur::disableSimulation() {
 	_theWorld.enableCollisions(false);
 }
 
-void Simulateur::addRobot(Constantes::RobotColor color) {
+void Simulateur::addRobot(Constants::RobotColor color) {
 	Object3D& robotObj = (_json_file.empty() ? _theWorld.createRobotFromJSON(GLOBAL_CONSTANTS().TABLE_2018(), color) :
 	                                           _theWorld.createRobotFromFile(_json_file, color));
 
@@ -120,6 +120,6 @@ void Simulateur::sendTextMessage(const std::string& message) {
 	_graphicalCtx->displayMessage(message);
 }
 
-Constantes::RobotColor Simulateur::getRobotColor() const {
+Constants::RobotColor Simulateur::getRobotColor() const {
 	return RobotColor::Undef;
 }

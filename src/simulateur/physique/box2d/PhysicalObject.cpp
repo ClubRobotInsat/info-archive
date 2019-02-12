@@ -13,7 +13,7 @@ PhysicalObject::PhysicalObject(PhysicalObjectDefinition& def, Box2DPhysicalConte
 	// Definition et création du body
 	b2BodyDef bodyDef;
 	bodyDef.type = def.getType();
-	bodyDef.position = b2Vec2(toBox2D(position.x), toBox2D(position.y));
+	bodyDef.position = b2Vec2(static_cast<float32>(toBox2D(position.x)), static_cast<float32>(toBox2D(position.y)));
 	_body = _context->getWorld().CreateBody(&bodyDef);
 
 	b2FixtureDef fixtureDef;
@@ -25,7 +25,7 @@ PhysicalObject::PhysicalObject(PhysicalObjectDefinition& def, Box2DPhysicalConte
 
 	// Masse
 	b2MassData massData;
-	massData.mass = def.getMass().toKg();
+	massData.mass = static_cast<float32>(def.getMass().toKg());
 	massData.I = 1;
 	massData.center = b2Vec2_zero;
 	_body->SetMassData(&massData);
@@ -75,7 +75,8 @@ void PhysicalObject::setPosition(Vector2m position) {
 	std::cout << "BOX2D::"
 	          << "Setted Position To:" << position.x.toM() << " & " << position.y.toM() << std::endl;
 #endif
-	_body->SetTransform(b2Vec2(toBox2D(position.x), toBox2D(position.y)), _body->GetAngle());
+	_body->SetTransform(b2Vec2(static_cast<float32>(toBox2D(position.x)), static_cast<float32>(toBox2D(position.y))),
+	                    _body->GetAngle());
 }
 
 // ********************************************* //
@@ -88,13 +89,15 @@ void PhysicalObject::setLinearVelocity(Speed speed) {
 	          << "Setted Speed To:" << speed.toM_s() << std::endl;
 #endif
 	float angle = _body->GetAngle();
-	_body->SetLinearVelocity(b2Vec2(toBox2D(speed) * cos(angle), toBox2D(speed) * sin(angle)));
+	_body->SetLinearVelocity(
+	    b2Vec2(static_cast<float32>(toBox2D(speed) * cos(angle)), static_cast<float32>(toBox2D(speed) * sin(angle))));
 }
 
 Speed PhysicalObject::getLinearVelocity() const {
 	b2Vec2 vec1 = _body->GetLinearVelocity();
 	Speed speedAbs = fromBox2DVL(sqrt(pow(vec1.x, 2) + pow(vec1.y, 2)));
-	b2Vec2 vec2 = b2Vec2(toBox2D(speedAbs) * cos(_body->GetAngle()), toBox2D(speedAbs) * sin(_body->GetAngle()));
+	b2Vec2 vec2 = b2Vec2(static_cast<float32>(toBox2D(speedAbs) * cos(_body->GetAngle())),
+	                     static_cast<float32>(toBox2D(speedAbs) * sin(_body->GetAngle())));
 	// Obtient la vitesse relative à l'angle (positive ou négative).
 	if(vec1.x * vec2.x + vec2.y * vec1.y > 0)
 		return speedAbs;
@@ -110,7 +113,7 @@ void PhysicalObject::setAngularVelocity(AngularSpeed velocity) {
 	std::cout << "BOX2D::"
 	          << "Setted Angular Speed To:" << velocity.toDeg_s() << std::endl;
 #endif
-	_body->SetAngularVelocity(toBox2D(velocity));
+	_body->SetAngularVelocity(static_cast<float32>(toBox2D(velocity)));
 }
 
 void PhysicalObject::setAngle(Angle angle) {
@@ -118,7 +121,7 @@ void PhysicalObject::setAngle(Angle angle) {
 	std::cout << "BOX2D::"
 	          << "Setted Angle To:" << angle.toDeg() << std::endl;
 #endif
-	_body->SetTransform(_body->GetPosition(), angle.toRad());
+	_body->SetTransform(_body->GetPosition(), static_cast<float32>(angle.toRad()));
 }
 
 Angle PhysicalObject::getAngle() const {
@@ -176,9 +179,8 @@ std::list<b2Vec2> PhysicalObject::getBodyPoints() const {
 
 			for(int i = 0; i < polygonShape->m_count; i++) {
 				b2Vec2 vertex = polygonShape->GetVertex(i);
-				result.emplace_back(
-				    toBox2D(absolutePositionPoint(Vector2m(fromBox2D(vertex.x), fromBox2D(vertex.y))).x),
-				           toBox2D(absolutePositionPoint(Vector2m(fromBox2D(vertex.x), fromBox2D(vertex.y))).y));
+				result.emplace_back(toBox2D(absolutePositionPoint(Vector2m(fromBox2D(vertex.x), fromBox2D(vertex.y))).x),
+				                    toBox2D(absolutePositionPoint(Vector2m(fromBox2D(vertex.x), fromBox2D(vertex.y))).y));
 			}
 		}
 		// La shape est un cercle ?
@@ -188,13 +190,14 @@ std::list<b2Vec2> PhysicalObject::getBodyPoints() const {
 			float angleStep = b2_pi / 4;
 			// permet de connaitre la position d'un point tous les PI/4 (en fonction de la pos initiale, des cos et sin)
 			for(int i = 0; i < 8; i++) {
-				result.emplace_back(
-				    (float)toBox2D(absolutePositionPoint(fromBox2D({(circleShape->m_radius * cos(angleStep * i)),
-				                                                    (circleShape->m_radius * sin(angleStep * i))}))
-				                       .x),
-				    (float)toBox2D(absolutePositionPoint(fromBox2D({(circleShape->m_radius * cos(angleStep * i)),
-				                                                    (circleShape->m_radius * sin(angleStep * i))}))
-				                       .y));
+				result.emplace_back(static_cast<float>(toBox2D(
+				                        absolutePositionPoint(fromBox2D({(circleShape->m_radius * cos(angleStep * i)),
+				                                                         (circleShape->m_radius * sin(angleStep * i))}))
+				                            .x)),
+				                    static_cast<float>(toBox2D(
+				                        absolutePositionPoint(fromBox2D({(circleShape->m_radius * cos(angleStep * i)),
+				                                                         (circleShape->m_radius * sin(angleStep * i))}))
+				                            .y)));
 			}
 		} else
 			std::cout
@@ -257,15 +260,17 @@ std::list<b2Vec2> PhysicalObject::absolutePositionList(const std::list<b2Vec2>& 
 	std::list<b2Vec2> result;
 
 	for(b2Vec2 vertex : points) {
-		result.push_back(b2Vec2(toBox2D(absolutePositionPoint(fromBox2D({vertex.x, vertex.y})).x),
-		                        toBox2D(absolutePositionPoint(fromBox2D({vertex.x, vertex.y})).x)));
+		result.push_back(b2Vec2(static_cast<float32>(toBox2D(absolutePositionPoint(fromBox2D({vertex.x, vertex.y})).x)),
+		                        static_cast<float32>(toBox2D(absolutePositionPoint(fromBox2D({vertex.x, vertex.y})).x))));
 	}
 	return result;
 }
 
 void PhysicalObject::addRevoluteJoint(PhysicalObject& other, Vector2m commonPoint) {
 	b2RevoluteJointDef def;
-	def.Initialize(_body, other._body, b2Vec2(toBox2D(commonPoint.x), toBox2D(commonPoint.y)));
+	def.Initialize(_body,
+	               other._body,
+	               b2Vec2(static_cast<float32>(toBox2D(commonPoint.x)), static_cast<float32>(toBox2D(commonPoint.y))));
 
 	b2Joint* joint = _context->getWorld().CreateJoint(&def);
 

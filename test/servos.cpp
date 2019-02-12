@@ -22,9 +22,9 @@ int main() {
 	servos.set_blocking_mode(ALL_SERVOS, BlockingMode::HoldOnBlock);
 	servos.set_color(ALL_SERVOS, Color::Blue);
 
-	Robot robot(m, {"prog_servos", "UDP", "192.168.0.222", "50000", "51"});
+	Robot robot(m, {"prog_servos", "UDP", "192.168.0.222", "50000", "51"}, Lidar::None);
 	std::cout << "set_speed(1000)" << std::endl;
-	servos.set_speed(ALL_SERVOS, 1000, Rotation::CounterClockwise);
+	servos.set_speed(ALL_SERVOS, 60_deg_s, Rotation::CounterClockwise);
 	sleep(500_ms);
 	servos.set_color(ALL_SERVOS, Color::Green);
 	sleep(1_s);
@@ -39,7 +39,7 @@ int main() {
 	servos.set_position(ALL_SERVOS, 0_deg);
 	sleep(1_s);
 
-	servos.set_speed(ALL_SERVOS, 300);
+	servos.set_speed(ALL_SERVOS, 30_deg_s);
 	sleep(5_s);
 
 	robot.deactivation();

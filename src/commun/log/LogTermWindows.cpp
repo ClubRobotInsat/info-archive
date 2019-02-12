@@ -57,10 +57,11 @@ static const TermFormat term_formats[LogType::ALL] = {
 void Log::writeTermFormattedString(ostream& p_stream, const string& str) {
 	std::string str_buffer = "";
 	HANDLE handle;
-	if(&p_stream == &cerr)
+	if(&p_stream == &cerr) {
 		handle = GetStdHandle(STD_ERROR_HANDLE);
-	else
+	} else {
 		handle = GetStdHandle(STD_OUTPUT_HANDLE);
+	}
 
 	// Parse the string, looking for a 0x1B;<front>;<back>; sequence
 	// NB : the user shouldn't write an ESCAPE character followed by a ';'.
@@ -76,18 +77,20 @@ void Log::writeTermFormattedString(ostream& p_stream, const string& str) {
 			p_stream << str_buffer << std::flush;
 			i += 5; // We jump over the sequence
 			str_buffer = "";
-		} else
+		} else {
 			str_buffer += str[i];
+		}
 	}
 	p_stream << str_buffer << std::flush;
 }
 
 void Log::resetTerm(ostream& p_stream) {
 	HANDLE handle;
-	if(&p_stream == &cerr)
+	if(&p_stream == &cerr) {
 		handle = GetStdHandle(STD_ERROR_HANDLE);
-	else
+	} else {
 		handle = GetStdHandle(STD_OUTPUT_HANDLE);
+	}
 	SetConsoleTextAttribute(handle, TERM_BLACK << 4 | TERM_LIGHTGRAY);
 }
 

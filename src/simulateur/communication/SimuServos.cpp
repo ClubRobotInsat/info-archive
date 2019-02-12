@@ -1,6 +1,6 @@
 #include "SimuServos.h"
 
-SimuServos::SimuServos(uint8_t id) : Module(id) {}
+SimuServos::SimuServos(uint8_t id) : Module(id, "SimuServos") {}
 
 uint8_t SimuServos::get_nbr_servos() const {
 	return 5; // TODO get_nbr_servos
