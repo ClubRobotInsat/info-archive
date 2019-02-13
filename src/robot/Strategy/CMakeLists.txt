@@ -12,6 +12,15 @@ include_directories(/usr/local/include/wiic/)
 set(WIIMOTE_SOURCES IA/IAWiiMote.cpp wiimote/Wiimote.cpp)
 add_executable(IAWiimote ${WIIMOTE_SOURCES})
 
+if(EXISTS "/usr/bin/petrilab")
+    set(USE_PETRILAB ON)
+    message(STATUS "PetriLab found at '/usr/bin/petrilab'")
+
+    add_executable(IAPrimary IA/IAPrimary.cpp)
+else()
+    set(USE_PETRILAB OFF)
+endif()
+
 if (RASPI)
     # WiiMote #
     message(STATUS "Compiling IAWiimote for the raspi")
@@ -24,6 +33,21 @@ if (RASPI)
     #link_directories(${PROJECT_SOURCE_DIR}/precompiled-libraries/)
     #add_subdirectory(precompiled-libraries)
     target_link_libraries(IAWiimote ModuleInterfacers HighLevelFunctions libwiimotecpp libwiimotec)
+
+    if(USE_PETRILAB)
+        # IAPrimary
+        message(STATUS "Compiling IAPrimary for the raspi")
+        link_directories(/usr/arm-linux-gnueabihf/lib)
+        target_link_libraries(IAPrimary ModuleInterfacers HighLevelFunctions PetriRuntime dl)
+    else()
+        message(WARNING "PetriLab is not installed, please run 'info/scripts/install.sh petri'")
+    endif()
 else()
     target_link_libraries(IAWiimote ModuleInterfacers HighLevelFunctions wiicpp)
+
+    if(USE_PETRILAB)
+        target_link_libraries(IAPrimary Strategy PetriRuntime)
+    else()
+        message(WARNING "PetriLab is not installed, please run 'info/scripts/install.sh petri'")
+    endif()
 endif()

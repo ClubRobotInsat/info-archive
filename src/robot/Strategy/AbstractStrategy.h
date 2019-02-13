@@ -60,6 +60,8 @@ namespace Strategy {
 
 		int set_points(int n);
 
+		bool debug_mode;
+
 	protected:
 		explicit AbstractStrategy(Constants::RobotColor);
 

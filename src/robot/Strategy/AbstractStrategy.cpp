@@ -104,12 +104,16 @@ namespace Strategy {
 		auto manager = std::make_shared<Interfacer::RobotManager>(robot);
 		// Interfacer::ServosInterfacer
 		if(manager->get_robot()->has_module<PhysicalRobot::Servos>()) {
-			logInfo("Insertion of an Interfacer::ServosInterfacer inside the robot '" + robot->name + "'");
+			if(debug_mode) {
+				logInfo("Insertion of an Interfacer::ServosInterfacer inside the robot '" + robot->name + "'");
+			}
 			manager->add_interfacer<Interfacer::ServosInterfacer>();
 		}
 		// Interfacer::AvoidanceInterfacer
 		if(manager->get_robot()->has_lidar()) {
-			logInfo("Insertion of an Interfacer::AvoidanceInterfacer inside the robot '" + robot->name + "'");
+			if(debug_mode) {
+				logInfo("Insertion of an Interfacer::AvoidanceInterfacer inside the robot '" + robot->name + "'");
+			}
 			manager->add_interfacer<Interfacer::AvoidanceInterfacer>(*_env, GLOBAL_CONSTANTS()[robot->name].get_turret_position());
 		}
 
@@ -120,14 +124,18 @@ namespace Strategy {
 		try {
 			// Interfacer::ServosInterfacer
 			if(manager->has_interfacer<Interfacer::ServosInterfacer>()) {
-				logInfo("Insertion of PetriLab::Servos functionalities associated with the robot '" +
-				        manager->get_robot()->name + "'");
+				if(debug_mode) {
+					logInfo("Insertion of PetriLab::Servos functionalities associated with the robot '" +
+					        manager->get_robot()->name + "'");
+				}
 				init_petri_servos(manager, _color);
 			}
 			// Interfacer::AvoidanceInterfacer
 			if(manager->has_interfacer<Interfacer::AvoidanceInterfacer>()) {
-				logInfo("Insertion of PetriLab::AvoidanceInterfacer functionalities associated with the robot '" +
-				        manager->get_robot()->name + "'");
+				if(debug_mode) {
+					logInfo("Insertion of PetriLab::AvoidanceInterfacer functionalities associated with the robot '" +
+					        manager->get_robot()->name + "'");
+				}
 				init_petri_avoidance(manager);
 			}
 		} catch(std::exception const& e) {
