@@ -5,7 +5,6 @@
 #ifndef ROOT_ELEVATOR_H
 #define ROOT_ELEVATOR_H
 
-#include "../../Modules/Motors.h"
 #include "Interfacer.hpp"
 
 namespace Strategy {

@@ -20,9 +20,6 @@ namespace PhysicalRobot {
 		/*******************************/
 		/********* CONSTANTES **********/
 		/*******************************/
-		// TODO : déplacer ce code dans la partie 'stratégie'
-		// Définit le nombre de demande d'actualisation de la carte contacteur pour être surs que la tirette est ok
-		// static const int NB_RETRY_TIRETTE = 3;
 
 		// Initialisation du robot à partir d'un ModuleManager
 		Robot(std::shared_ptr<ModuleManager> module_manager, std::vector<std::string> const& args, Lidar::LidarType);
@@ -58,10 +55,6 @@ namespace PhysicalRobot {
 		std::optional<FrameLidar> get_lidar_frame() const;
 
 		void set_debug(bool debug);
-
-		// TODO : déplacer ce code dans la partie 'stratégie'
-		/// Attend la tirette au départ
-		// void wait_for_tirette() const;
 
 		/// Désactivation du robot
 		virtual void deactivation();

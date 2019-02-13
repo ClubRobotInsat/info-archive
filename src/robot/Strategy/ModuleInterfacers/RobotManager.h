@@ -7,6 +7,7 @@
 
 #include "AvoidanceInterfacer.h"
 #include "ElevatorInterfacer.h"
+#include "IOInterfacer.h"
 #include "NavigationInterfacer.h"
 #include "ServosInterfacer.h"
 

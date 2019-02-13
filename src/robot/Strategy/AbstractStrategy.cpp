@@ -156,6 +156,21 @@ namespace Strategy {
 		return result;
 	}
 
+	void AbstractStrategy::wait_for_tirette() const {
+		for(auto i : _interfacers) {
+			auto& io = i->get_interfacer<Interfacer::IOInterfacer>();
+			if(!io.is_tirette_inserted()) {
+				logInfo("Waiting for the insertion of the tirette on robot '", i->get_robot()->name, "'.");
+				io.wait_insertion_tirette();
+			}
+		}
+
+		for(auto i : _interfacers) {
+			auto& io = i->get_interfacer<Interfacer::IOInterfacer>();
+			io.wait_deletion_tirette();
+		}
+	}
+
 	int AbstractStrategy::get_points() const {
 		return _nb_points;
 	}

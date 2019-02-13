@@ -5,7 +5,6 @@
 #ifndef ROOT_NAVIGATIONINTERFACER_H
 #define ROOT_NAVIGATIONINTERFACER_H
 
-#include "../../Modules/Navigation.h"
 #include "AvoidanceInterfacer.h"
 
 #include <list>

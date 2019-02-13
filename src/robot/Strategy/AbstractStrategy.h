@@ -52,6 +52,8 @@ namespace Strategy {
 
 		std::vector<std::string> get_robot_names() const;
 
+		void wait_for_tirette() const;
+
 		int get_points() const;
 
 		int add_points(int n);
