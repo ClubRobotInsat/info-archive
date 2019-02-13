@@ -3,8 +3,9 @@
 //
 
 #include "Constants.h"
-
 #include "EmbeddedFiles.h"
+
+#include <log/Log.h>
 
 const Constants::Constants& GLOBAL_CONSTANTS() {
 	const static Constants::Constants CONSTANTS(EmbeddedFiles::readText("../robot.ini"));
@@ -17,6 +18,15 @@ namespace Constants {
 		auto it = file[section];
 		if(it.member(field)) {
 			return it[field].asInt();
+		} else {
+			return default_value;
+		}
+	}
+
+	std::string read_field(IniFile& file, const std::string& section, const std::string& field, const std::string& default_value) {
+		auto it = file[section];
+		if(it.member(field)) {
+			return it[field].asString();
 		} else {
 			return default_value;
 		}
@@ -62,6 +72,21 @@ namespace Constants {
 		    Distance::makeFromMm(read_field(reader, section, "size_y", 300)),
 		    Distance::makeFromMm(read_field(reader, section, "size_z", 420)),
 		};
+
+		std::string lidar_type = read_field(reader, section, "lidar_type", "any");
+		lidar_type = lidar_type.substr(0, lidar_type.find_first_of(' '));
+		if(lidar_type == "any") {
+			_lidar_type = Lidar::Any;
+		} else if(lidar_type == "sick") {
+			_lidar_type = Lidar::Sick;
+		} else if(lidar_type == "hokuyo") {
+			_lidar_type = Lidar::Hokuyo;
+		} else {
+			if(lidar_type != "none") {
+				logWarn("Impossible to parse the 'lidar_type' field: considering that no lidar is conencted.");
+			}
+			_lidar_type = Lidar::None;
+		}
 	}
 
 	Constants::Constants(std::string ini_string) : _reader(IniFile('=', '#')) {

@@ -8,6 +8,7 @@
 #include "Enum/Enum.h"
 #include <ini/src/IniFile.hpp>
 
+#include "../Lidar/Driver/lidar.h"
 #include "Commun.h"
 #include "EmbeddedFiles.h"
 #include "Json.h"
@@ -58,6 +59,7 @@ namespace Constants {
 		Vector2m _turret_position;
 		Distance _radius_rotation;
 		Vector3m _size;
+		Lidar::LidarType _lidar_type;
 
 	public:
 		inline Vector3m get_start_position() const {
@@ -103,6 +105,10 @@ namespace Constants {
 
 		inline Vector3m get_size() const {
 			return _size;
+		}
+
+		inline Lidar::LidarType get_lidar_type() const {
+			return _lidar_type;
 		}
 	};
 

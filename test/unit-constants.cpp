@@ -53,6 +53,7 @@ TEST_CASE("Global constants") {
 		                      "turret_position_x=-30\n"
 		                      "turret_position_y=20\n"
 		                      "radius_rotation=60\n"
+		                      "lidar_type=hokuyo\n"
 
 		                      "[robot.bot.modules]\n"
 		                      "moving=5\n"
@@ -82,6 +83,7 @@ TEST_CASE("Global constants") {
 		CHECK(bot.get_start_position() == Vector3m{4_mm, 42_mm, 42_cm});
 		CHECK(bot.get_turret_position() == Vector2m{-3_cm, 2_cm});
 		CHECK(bot.get_size() == Vector3m{1_cm, 2_cm, 3_cm});
+		CHECK(bot.get_lidar_type() == Lidar::Hokuyo);
 
 		REQUIRE(bot.get_modules().size() == 2);
 		CHECK(bot.get_modules()["moving"] == 5);

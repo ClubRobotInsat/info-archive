@@ -61,7 +61,7 @@ namespace Strategy {
 		int set_points(int n);
 
 	protected:
-		AbstractStrategy(Constants::RobotColor);
+		explicit AbstractStrategy(Constants::RobotColor);
 
 		virtual ~AbstractStrategy() = default;
 
