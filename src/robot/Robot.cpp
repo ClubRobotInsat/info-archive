@@ -8,14 +8,17 @@ namespace PhysicalRobot {
 
 	// Le robot n'est pas initialisé à partir de `src/robot.ini`
 	// L'utilisateur doit donc fournir un ModuleManager non vierge s'il veut un robot fonctionnel
-	Robot::Robot(std::shared_ptr<ModuleManager> module_manager, std::vector<std::string> const& args, Lidar::LidarType lidar)
+	Robot::Robot(std::shared_ptr<ModuleManager> module_manager, const std::vector<std::string>& args, Lidar::LidarType lidar)
 	        : Robot(std::move(module_manager), "guest", args, lidar) {}
 
 	// Le robot est initialisé à partir de `src/robot.ini` dans la section `[robot.<name>]`
-	Robot::Robot(std::string name, std::vector<std::string> const& args, Lidar::LidarType lidar)
+	Robot::Robot(std::string name, const std::vector<std::string>& args, Lidar::LidarType lidar)
 	        : Robot(std::make_shared<ModuleManager>(), std::move(name), args, lidar) {}
 
-	/// Initialise le robot à partir des arguments passes au programme.
+	Robot::Robot(std::string name, const std::vector<std::string>& args)
+	        : Robot(std::make_shared<ModuleManager>(), std::move(name), args, GLOBAL_CONSTANTS()[name].get_lidar_type()) {}
+
+	/// Initialise le robot à partir des arguments passés au programme.
 	Robot::Robot(std::shared_ptr<ModuleManager> module_manager, std::string name, std::vector<std::string> const& args, Lidar::LidarType lidar)
 	        : name(std::move(name)), _module_manager(std::move(module_manager)), _debug_active(false) {
 		assign_modules();
@@ -34,6 +37,10 @@ namespace PhysicalRobot {
 	/// Finalise le robot
 	Robot::~Robot() {
 		deactivation();
+	}
+
+	std::type_index Robot::get_communication_protocol_type() const {
+		return _communicator->get_protocol_type();
 	}
 
 	Lidar::LidarType Robot::get_lidar_type() const {

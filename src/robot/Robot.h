@@ -22,10 +22,11 @@ namespace PhysicalRobot {
 		/*******************************/
 
 		// Initialisation du robot à partir d'un ModuleManager
-		Robot(std::shared_ptr<ModuleManager> module_manager, std::vector<std::string> const& args, Lidar::LidarType);
+		Robot(std::shared_ptr<ModuleManager> module_manager, const std::vector<std::string>& args, Lidar::LidarType);
 
 		// Initialisation du robot à partir du fichier `src/robot.ini`
-		Robot(std::string name, std::vector<std::string> const& args, Lidar::LidarType);
+		Robot(std::string name, const std::vector<std::string>& args, Lidar::LidarType);
+		Robot(std::string name, const std::vector<std::string>& args);
 
 		virtual ~Robot();
 
@@ -47,6 +48,8 @@ namespace PhysicalRobot {
 			}
 			return result;
 		}
+
+		std::type_index get_communication_protocol_type() const;
 
 		Lidar::LidarType get_lidar_type() const;
 

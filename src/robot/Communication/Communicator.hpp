@@ -10,7 +10,7 @@
 namespace Communication {
 	template <typename ParsingClass>
 	Communicator<ParsingClass>::Communicator(std::shared_ptr<ParsingClass> parser)
-	        : _parser(std::move(parser)), _connected(false), _debug_active(false) {
+	        : _parser(std::move(parser)), _protocol_type(typeid(void)), _connected(false), _debug_active(false) {
 		_chrono.reset();
 	}
 
@@ -27,6 +27,8 @@ namespace Communication {
 			logInfo("Initialisation de la communication élec/info.");
 		}
 
+		_protocol_type = typeid(void);
+
 		for(size_t i = 1; i < args.size() && !_connected; ++i) {
 			// - RS232 :
 			if(args[i] == "RS232") {
@@ -36,6 +38,7 @@ namespace Communication {
 				}
 
 				_protocol = std::make_unique<protocol_rs232>(args[i + 1]);
+				_protocol_type = typeid(protocol_rs232);
 				_connected.exchange(true);
 				break;
 			}
@@ -48,6 +51,7 @@ namespace Communication {
 				}
 
 				_protocol = std::make_unique<protocol_tcpip>(args[i + 1], stoi(args[i + 2]));
+				_protocol_type = typeid(protocol_tcpip);
 				_connected.exchange(true);
 				break;
 			}
@@ -60,6 +64,7 @@ namespace Communication {
 				}
 
 				_protocol = std::make_unique<protocol_udp>(args[i + 1], stoi(args[i + 2]), stoi(args[i + 3]));
+				_protocol_type = typeid(protocol_udp);
 				_connected.exchange(true);
 				break;
 			}
@@ -70,6 +75,7 @@ namespace Communication {
 					logDebug9("Initialisation de la connection au CAN local par pipes nommés");
 				}
 				_protocol = std::make_unique<protocol_pipes>("/tmp/read.pipe", "/tmp/write.pipe");
+				_protocol_type = typeid(protocol_pipes);
 				_connected.exchange(true);
 				break;
 			}
@@ -88,6 +94,7 @@ namespace Communication {
 				                                     args[i + 2],
 				                                     static_cast<uint16_t>(stoi(args[i + 3])),
 				                                     static_cast<uint16_t>(stoi(args[i + 4]))});
+				_protocol_type = typeid(protocol_ethernet);
 				_connected.exchange(true);
 				break;
 			}
@@ -107,6 +114,7 @@ namespace Communication {
 					logDebug9("Initialisation de la connexion au CAN local par le NullCommunicator");
 				}
 				_protocol = std::make_unique<protocol_null>();
+				_protocol_type = typeid(protocol_null);
 				_connected.exchange(true);
 			}
 
@@ -149,6 +157,12 @@ namespace Communication {
 			_connected.store(false);
 			_communication.join();
 		}
+		_protocol_type = typeid(void);
+	}
+
+	template <typename ParsingClass>
+	std::type_index Communicator<ParsingClass>::get_protocol_type() const {
+		return _protocol_type;
 	}
 
 	template <typename ParsingClass>
