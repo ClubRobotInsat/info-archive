@@ -73,7 +73,7 @@ namespace Strategy {
 		/// Thread dans lequel s'exécute la stratégie
 		std::thread _execution;
 
-		std::vector<std::shared_ptr<Interfacer::RobotManager>> _interfacers;
+		std::map<std::string, std::shared_ptr<Interfacer::RobotManager>> _interfacers;
 		std::unique_ptr<Environment> _env;
 
 	private:

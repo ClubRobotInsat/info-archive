@@ -70,8 +70,8 @@ namespace Strategy {
 	}
 
 	void AbstractStrategy::stop() {
-		for(auto interfacer : _interfacers) {
-			interfacer->get_robot()->deactivation();
+		for(auto& [name, manager] : _interfacers) {
+			manager->get_robot()->deactivation();
 		}
 	}
 
@@ -134,39 +134,39 @@ namespace Strategy {
 			logError("Impossible to initialize PetriLab: ", e.what());
 		}
 
-		_interfacers.push_back(manager);
+		_interfacers[manager->get_robot()->name] = manager;
 
 		return manager;
 	}
 
 	std::shared_ptr<Interfacer::RobotManager> AbstractStrategy::get_robot(const std::string& name) {
-		for(auto i : _interfacers) {
-			if(i->get_robot()->name == name) {
-				return i;
-			}
+		auto it = _interfacers.find(name);
+		if(it != _interfacers.cend()) {
+			return it->second;
 		}
+
 		return nullptr;
 	}
 
 	std::vector<std::string> AbstractStrategy::get_robot_names() const {
 		std::vector<std::string> result;
-		for(auto i : _interfacers) {
-			result.push_back(i->get_robot()->name);
-		}
+		std::transform(_interfacers.cbegin(), _interfacers.cend(), std::back_inserter(result), [](const auto& it) {
+			return it.first;
+		});
 		return result;
 	}
 
 	void AbstractStrategy::wait_for_tirette() const {
-		for(auto i : _interfacers) {
-			auto& io = i->get_interfacer<Interfacer::IOInterfacer>();
+		for(auto& [name, manager] : _interfacers) {
+			auto& io = manager->get_interfacer<Interfacer::IOInterfacer>();
 			if(!io.is_tirette_inserted()) {
-				logInfo("Waiting for the insertion of the tirette on robot '", i->get_robot()->name, "'.");
+				logInfo("Waiting for the insertion of the tirette on robot '", name, "'.");
 				io.wait_insertion_tirette();
 			}
 		}
 
 		for(auto i : _interfacers) {
-			auto& io = i->get_interfacer<Interfacer::IOInterfacer>();
+			auto& io = i.second->get_interfacer<Interfacer::IOInterfacer>();
 			io.wait_deletion_tirette();
 		}
 	}
