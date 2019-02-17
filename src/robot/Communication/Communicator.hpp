@@ -3,6 +3,7 @@
 //
 
 #include "Communicator.h"
+#include "CommunicatorParsing.hpp"
 #include "Protocol.h"
 #include <Constants.h>
 #include <log/Log.h>
@@ -27,107 +28,9 @@ namespace Communication {
 			logInfo("Initialisation de la communication élec/info.");
 		}
 
-		_protocol_type = typeid(void);
-
-		for(size_t i = 1; i < args.size() && !_connected; ++i) {
-			// - RS232 :
-			if(args[i] == "RS232") {
-				if((args.size() - 1) - i < 1) {
-					logError("Utilisation avec RS232 : \"", args[0], " RS232 /dev/ttyUSB0\"\n");
-					exit(EXIT_FAILURE);
-				}
-
-				_protocol = std::make_unique<protocol_rs232>(args[i + 1]);
-				_protocol_type = typeid(protocol_rs232);
-				_connected.exchange(true);
-				break;
-			}
-
-			// - TCPIP :
-			else if(args[i] == "TCPIP") {
-				if((args.size() - 1) - i < 2) {
-					logError("Utilisation avec TCPIP : \"", args[0], " TCPIP 127.0.0.1 1234\"\n");
-					exit(EXIT_FAILURE);
-				}
-
-				_protocol = std::make_unique<protocol_tcpip>(args[i + 1], stoi(args[i + 2]));
-				_protocol_type = typeid(protocol_tcpip);
-				_connected.exchange(true);
-				break;
-			}
-
-			// - UDP :
-			else if(args[i] == "UDP") {
-				if((args.size() - 1) - i < 3) {
-					logError("Utilisation avec UDP : \"", args[0], " UDP [@IP] [port local] [port distant]\"\n");
-					exit(EXIT_FAILURE);
-				}
-
-				_protocol = std::make_unique<protocol_udp>(args[i + 1], stoi(args[i + 2]), stoi(args[i + 3]));
-				_protocol_type = typeid(protocol_udp);
-				_connected.exchange(true);
-				break;
-			}
-
-			// - PIPES :
-			else if(args[i] == "PIPES") {
-				if(_debug_active) {
-					logDebug9("Initialisation de la connection au CAN local par pipes nommés");
-				}
-				_protocol = std::make_unique<protocol_pipes>("/tmp/read.pipe", "/tmp/write.pipe");
-				_protocol_type = typeid(protocol_pipes);
-				_connected.exchange(true);
-				break;
-			}
-
-			// - ETHERNET :
-			// TODO : voir comment ajouter les connexions UDP depuis le vector ; utiliser directement les constantes ?
-			else if(args[i] == "ETHERNET") {
-				if((args.size() - 1) - i < 4) {
-					// FIXME : on doit fournir une unique connexion UDP actuellement
-					logError("Utilisation **temporaire** avec ETHERNET : \"", args[0], " ETHERNET [ID] [@IP] [port local] [port distant]\"\n");
-					exit(EXIT_FAILURE);
-				}
-
-				_protocol = std::make_unique<protocol_ethernet>(
-				    protocol_ethernet::UDPConnection{static_cast<uint8_t>(stoi(args[i + 1])),
-				                                     args[i + 2],
-				                                     static_cast<uint16_t>(stoi(args[i + 3])),
-				                                     static_cast<uint16_t>(stoi(args[i + 4]))});
-				_protocol_type = typeid(protocol_ethernet);
-				_connected.exchange(true);
-				break;
-			}
-
-			// - LOCAL :
-			else if(args[i] == "LOCAL") {
-				if(_debug_active) {
-					logDebug9("Initialisation de la connexion au CAN local");
-				}
-				_protocol = std::make_unique<protocol_local>();
-				_connected.exchange(true);
-			}
-
-			// - NULL :
-			else if(args[i] == "NULL") {
-				if(_debug_active) {
-					logDebug9("Initialisation de la connexion au CAN local par le NullCommunicator");
-				}
-				_protocol = std::make_unique<protocol_null>();
-				_protocol_type = typeid(protocol_null);
-				_connected.exchange(true);
-			}
-
-			// - option SIMU pour les connexions LOCAL ou NULL
-			else if(args[i] == "SIMU") {
-				if(_debug_active) {
-					logDebug9("Initialisation socket client côté robot");
-				}
-				// TODO : voir si on garde cette architecture
-				/*_socketSimu = std::make_unique<Socket>(SockProtocol::TCP);
-				_socketSimu->connect("127.0.0.1", _default_port_TCPIP);
-				_simuConnected = true;*/
-			}
+		std::tie(_protocol_type, _protocol) = Arguments::Parser::make_protocol(Utils::split_vector(args, 1));
+		if(_protocol_type != typeid(void)) {
+			_connected.exchange(true);
 		}
 
 		// Cas où l'on n'a rien trouvé indiquant comment se connecter :
@@ -141,8 +44,8 @@ namespace Communication {
 			logInfo("- ", args[0], " TCPIP [adresse IP] [port] (ex : \"", args[0], " TCPIP 127.0.0.1 1234\")");
 			logInfo("- ", args[0], " UDP [adresse IP] [port local] [port distant] (ex : \"", args[0], " UDP 127.0.0.1 1234 40000");
 			logInfo("=== Connexion ethernet sur le LAN ===");
-			logInfo("- ", args[0], " ETHERNET");
-			logInfo("Ajouter SIMU pour établir une connection avec le socket du simu.");
+			logInfo("- ", args[0], " ETHERNET <[ID] [@IP] [local port] [remote port]>...");
+			// logInfo("Ajouter SIMU pour établir une connection avec le socket du simu.");
 			return false;
 		}
 

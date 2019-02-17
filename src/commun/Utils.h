@@ -132,6 +132,11 @@ namespace Utils {
 
 		return nbNum;
 	}
+
+	// Fonction qui retourne le sous-vector à partir de l'indice `offset
+	inline std::vector<std::string> split_vector(const std::vector<std::string>& args, std::size_t offset) {
+		return std::vector<std::string>(std::make_move_iterator(args.begin() + offset), std::make_move_iterator(args.cend()));
+	};
 } // namespace Utils
 
 #endif // UTILS_H
