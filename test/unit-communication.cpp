@@ -151,6 +151,11 @@ TEST_CASE("Protocol parsing's arguments") {
 		REQUIRE_NOTHROW(args.make_protocol());
 		CHECK(args.make_protocol() != nullptr);
 	}
+
+	SECTION("Real life") {
+		REQUIRE(GLOBAL_CONSTANTS()["primary"].get_protocol_type() == "ethernet");
+		CHECK_NOTHROW(Parser::make_protocol(GLOBAL_CONSTANTS()["primary"]));
+	}
 }
 
 template <Communication::SerialProtocolType T>

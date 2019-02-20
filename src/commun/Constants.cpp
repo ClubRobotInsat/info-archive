@@ -51,6 +51,7 @@ namespace Constants {
 				for(auto field : it.second) {
 					_modules[field.first] = static_cast<uint8_t>(field.second.asInt());
 				}
+				break;
 			}
 		}
 
@@ -87,6 +88,18 @@ namespace Constants {
 			}
 			_lidar_type = Lidar::None;
 		}
+
+		_protocol_type = read_field(reader, section, "protocol_type", "null");
+		_protocol_type = _protocol_type.substr(0, _protocol_type.find_first_of(' '));
+
+		for(auto it : reader) {
+			if(it.first == section + ".communication") {
+				for(auto field : it.second) {
+					_communication_arguments[field.first] = field.second.asString();
+				}
+				break;
+			}
+		}
 	}
 
 	Constants::Constants(std::string ini_string) : _reader(IniFile('=', '#')) {
@@ -101,9 +114,10 @@ namespace Constants {
 						_robots[robot.first] = std::unique_ptr<Robot>(new Robot(_reader, robot.first));
 					}
 				}
-				_robots["default"] = std::unique_ptr<Robot>(new Robot(_reader, "default"));
+				break;
 			}
 		}
+		_robots["default"] = std::unique_ptr<Robot>(new Robot(_reader, "default"));
 
 		const std::string section = "constants";
 

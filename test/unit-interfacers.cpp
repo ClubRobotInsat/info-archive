@@ -25,7 +25,7 @@ TEST_CASE("Interfacers") {
 		auto manager = std::make_shared<PhysicalRobot::ModuleManager>();
 		auto& s = manager->add_module<PhysicalRobot::Servos>(6);
 		s.add_servo(42);
-		auto robot = std::make_shared<PhysicalRobot::Robot>(manager, std::vector<std::string>({"ehCoucou", "NULL"}), Lidar::None);
+		auto robot = std::make_shared<PhysicalRobot::Robot>(manager, std::vector{"NULL"s}, Lidar::None);
 		ServosInterfacer interfacer2(robot /*, get_servo_position*/);
 		CHECK(interfacer2->get_nbr_servos() == 1);
 		CHECK(interfacer2.set_position(42, 50_deg) == ActionResult::TIMEOUT);
@@ -40,7 +40,7 @@ TEST_CASE("Interfacers") {
 		REQUIRE(std::is_same<AvoidanceInterfacer::interfaced_type, void>::value);
 
 		auto manager = std::make_shared<PhysicalRobot::ModuleManager>();
-		auto robot = std::make_shared<PhysicalRobot::Robot>(manager, std::vector<std::string>({"ehCoucou", "NULL"}), Lidar::None);
+		auto robot = std::make_shared<PhysicalRobot::Robot>(manager, std::vector{"NULL"s}, Lidar::None);
 
 		Distance sx = 40_cm;
 		Distance sy = 30_cm;
@@ -55,7 +55,7 @@ TEST_CASE("Interfacers") {
 
 		auto manager = std::make_shared<PhysicalRobot::ModuleManager>();
 		manager->add_module<PhysicalRobot::Navigation>(2);
-		auto robot = std::make_shared<PhysicalRobot::Robot>(manager, std::vector<std::string>({"ehCoucou", "NULL"}), Lidar::None);
+		auto robot = std::make_shared<PhysicalRobot::Robot>(manager, std::vector{"NULL"s}, Lidar::None);
 
 		Distance sx = 40_cm;
 		Distance sy = 30_cm;
@@ -74,8 +74,7 @@ TEST_CASE("Interfacers") {
 
 	SECTION("RobotManager") {
 		auto module_manager = std::make_shared<PhysicalRobot::ModuleManager>();
-		auto robot =
-		    std::make_shared<PhysicalRobot::Robot>(module_manager, std::vector<std::string>({"ehCoucou", "NULL"}), Lidar::None);
+		auto robot = std::make_shared<PhysicalRobot::Robot>(module_manager, std::vector{"NULL"s}, Lidar::None);
 		RobotManager manager(robot);
 		REQUIRE(manager.get_robot() == robot);
 

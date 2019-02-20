@@ -43,7 +43,7 @@ namespace Constants {
 	class Constants;
 	class Robot {
 		friend class Constants;
-		explicit Robot(IniFile& reader, std::string name);
+		Robot(IniFile& reader, std::string name);
 
 		// Les attributs `optional` correspondent à des valeurs qui ne peuvent pas être entrées par défaut
 		std::optional<Vector3m> _start_position;
@@ -60,6 +60,8 @@ namespace Constants {
 		Distance _radius_rotation;
 		Vector3m _size;
 		Lidar::LidarType _lidar_type;
+		std::string _protocol_type;
+		std::map<std::string, std::string> _communication_arguments;
 
 	public:
 		inline Vector3m get_start_position() const {
@@ -109,6 +111,14 @@ namespace Constants {
 
 		inline Lidar::LidarType get_lidar_type() const {
 			return _lidar_type;
+		}
+
+		inline std::string get_protocol_type() const {
+			return _protocol_type;
+		}
+
+		inline std::map<std::string, std::string> get_communication_arguments() const {
+			return _communication_arguments;
 		}
 	};
 
