@@ -45,6 +45,8 @@ namespace Communication {
 		/// Connexion au médiumm spécifié et début de la communication
 		bool connect(const std::vector<std::string>& args);
 
+		bool connect(const Constants::Robot&);
+
 		/// Arrêt de la communication et déconnexion du médium
 		void disconnect();
 

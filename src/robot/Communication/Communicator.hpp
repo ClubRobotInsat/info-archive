@@ -28,7 +28,7 @@ namespace Communication {
 			logInfo("Initialisation de la communication élec/info.");
 		}
 
-		std::tie(_protocol_type, _protocol) = Arguments::Parser::make_protocol(Utils::split_vector(args, 1));
+		std::tie(_protocol_type, _protocol) = Arguments::Parser::make_protocol(args);
 		if(_protocol_type != typeid(void)) {
 			_connected.exchange(true);
 		}
@@ -46,6 +46,31 @@ namespace Communication {
 			logInfo("=== Connexion ethernet sur le LAN ===");
 			logInfo("- ", args[0], " ETHERNET <[ID] [@IP] [local port] [remote port]>...");
 			// logInfo("Ajouter SIMU pour établir une connection avec le socket du simu.");
+			return false;
+		}
+
+		_communication = std::thread(&Communicator<ParsingClass>::communicate_with_elecs, this);
+		return true;
+	}
+
+	template <typename ParsingClass>
+	bool Communicator<ParsingClass>::connect(const Constants::Robot& constants) {
+		if(_debug_active) {
+			logInfo("Initialisation de la communication élec/info depuis le parsing du protocol par les constantes.");
+		}
+
+		std::tie(_protocol_type, _protocol) = Arguments::Parser::make_protocol(constants);
+		if(_protocol_type != typeid(void)) {
+			_connected.exchange(true);
+		}
+
+		if(!_connected) {
+			logInfo("Utilisation :\n");
+			logInfo("Dans le fichier 'info/src/robot.ini' :");
+			logInfo("Dans la section 'robot.<name>', rajouter l'entrée "
+			        "'protocol_type=[local|null|pipes|rs232|tcpip|udp|ethernet]'");
+			logInfo(
+			    "Dans la section 'robot.<name>.communication', rajouter les entrées correspondant au protocole choisi");
 			return false;
 		}
 

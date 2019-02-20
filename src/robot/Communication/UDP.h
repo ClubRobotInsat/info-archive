@@ -21,7 +21,7 @@ namespace Communication {
 	class UDP : public Serial {
 	public:
 		/// Ouvre la connexion
-		UDP(std::string address, uint16_t local_port, uint16_t remote_port);
+		UDP(const std::string& address, uint16_t local_port, uint16_t remote_port);
 
 		/// Ferme la connexion
 		~UDP() override;

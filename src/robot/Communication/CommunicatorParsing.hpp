@@ -23,7 +23,7 @@ namespace Communication {
 
 		class ArgumentsLocal final : public AbstractArguments {
 		public:
-			ArgumentsLocal(const std::vector<std::string>&) {}
+			explicit ArgumentsLocal(const std::vector<std::string>&) {}
 
 			ArgumentsLocal() {}
 
@@ -39,7 +39,7 @@ namespace Communication {
 
 		class ArgumentsNull final : public AbstractArguments {
 		public:
-			ArgumentsNull(const std::vector<std::string>&) {}
+			explicit ArgumentsNull(const std::vector<std::string>&) {}
 
 			ArgumentsNull() {}
 
@@ -58,7 +58,7 @@ namespace Communication {
 			std::string _tx;
 
 		public:
-			ArgumentsPipes(const std::vector<std::string>& args) {
+			explicit ArgumentsPipes(const std::vector<std::string>& args) {
 				if(args.size() < 2) {
 					throw ParsingError("Utilisation avec PIPES : \"<program_name> PIPES [rx.link] [tx.link]\"");
 				}
@@ -66,7 +66,9 @@ namespace Communication {
 				_tx = args[1];
 			}
 
-			ArgumentsPipes() : _rx("/tmp/read.pipe"), _tx("/tmp/write.pipe") {}
+			ArgumentsPipes(std::string rx, std::string tx) : _rx(std::move(rx)), _tx(std::move(tx)) {}
+
+			ArgumentsPipes() : ArgumentsPipes("/tmp/read.pipe", "/tmp/write.pipe") {}
 
 			std::unique_ptr<Protocol> make_protocol() override {
 				return std::make_unique<protocol_pipes>(_rx, _tx);
@@ -81,14 +83,14 @@ namespace Communication {
 			std::string _peripheral;
 
 		public:
-			ArgumentsRS232(const std::vector<std::string>& args) {
+			explicit ArgumentsRS232(const std::vector<std::string>& args) {
 				if(args.size() < 1) {
 					throw ParsingError("Utilisation avec RS232 : \"<program_name> RS232 /dev/ttyUSB0\"");
 				}
 				_peripheral = args[0];
 			}
 
-			ArgumentsRS232(std::string peripheral) : _peripheral(peripheral) {}
+			explicit ArgumentsRS232(std::string peripheral) : _peripheral(std::move(peripheral)) {}
 
 			std::unique_ptr<Protocol> make_protocol() override {
 				return std::make_unique<protocol_rs232>(_peripheral);
@@ -104,7 +106,7 @@ namespace Communication {
 			uint16_t _port;
 
 		public:
-			ArgumentsTCPIP(const std::vector<std::string>& args) {
+			explicit ArgumentsTCPIP(const std::vector<std::string>& args) {
 				if(args.size() < 2) {
 					throw ParsingError("Utilisation avec TCPIP : \"<program_name> TCPIP 127.0.0.1 1234\"");
 				}
@@ -129,7 +131,7 @@ namespace Communication {
 			uint16_t _remote_port;
 
 		public:
-			ArgumentsUDP(const std::vector<std::string>& args) {
+			explicit ArgumentsUDP(const std::vector<std::string>& args) {
 				if(args.size() < 3) {
 					throw ParsingError(
 					    "Utilisation avec UDP : \"<program_name> UDP [@IP] [port local] [port distant]\"");
@@ -155,7 +157,7 @@ namespace Communication {
 			std::vector<protocol_ethernet::UDPConnection> _connections;
 
 		public:
-			ArgumentsEthernet(const std::vector<std::string>& args) {
+			explicit ArgumentsEthernet(const std::vector<std::string>& args) {
 				if(args.size() % 4 != 0) {
 					throw ParsingError(
 					    "Utilisation avec ETHERNET : \"<program_name> <[ID] [@IP] [local port] [remote port]>...\"");
@@ -237,6 +239,97 @@ namespace Communication {
 						continue;
 					}
 					break;
+				}
+
+				if(arguments == nullptr) {
+					return std::make_pair<std::type_index, std::unique_ptr<Protocol>>(typeid(void), nullptr);
+				} else {
+					return std::make_pair(arguments->get_protocol_type(), arguments->make_protocol());
+				}
+			}
+
+			static std::pair<std::type_index, std::unique_ptr<Protocol>> make_protocol(const Constants::Robot& robot) {
+				const std::string protocol = robot.get_protocol_type();
+				auto map_arguments = robot.get_communication_arguments();
+				std::unique_ptr<AbstractArguments> arguments;
+
+				auto check_arguments_v = [&map_arguments](const std::vector<std::string>& fields) -> bool {
+					for(std::string field : fields) {
+						if(map_arguments.find(field) == map_arguments.cend()) {
+							return false;
+						}
+					}
+					return true;
+				};
+
+				auto check_arguments = [&check_arguments_v](const std::initializer_list<std::string>& fields) -> bool {
+					return check_arguments_v(std::vector(fields));
+				};
+
+				if(protocol == "local" && map_arguments.empty()) {
+					arguments = std::make_unique<ArgumentsLocal>();
+				} else if(protocol == "null" && map_arguments.empty()) {
+					arguments = std::make_unique<ArgumentsNull>();
+				} else if(protocol == "pipes" && map_arguments.size() == 2) {
+					if(check_arguments({"rx", "tx"})) {
+						arguments = std::make_unique<ArgumentsPipes>(map_arguments["rx"], map_arguments["tx"]);
+					} else {
+						throw ParsingError("Impossible to find the fields 'rx' and 'tx for a Pipes' communication.");
+					}
+				} else if(protocol == "pipes" && map_arguments.empty()) {
+					arguments = std::make_unique<ArgumentsPipes>();
+				} else if(protocol == "rs232") {
+					if(check_arguments({"peripheral"})) {
+						arguments = std::make_unique<ArgumentsRS232>(map_arguments["peripheral"]);
+					} else {
+						throw ParsingError("Impossible to find the field 'peripheral' for a RS232 communication.");
+					}
+				} else if(protocol == "tcpip" && map_arguments.size() == 2) {
+					if(check_arguments({"address", "port"})) {
+						arguments = std::make_unique<ArgumentsTCPIP>(map_arguments["address"], std::stoi(map_arguments["port"]));
+					} else {
+						throw ParsingError(
+						    "Impossible to find the fields 'address' and 'port' for a TCPIP communication.");
+					}
+				} else if(protocol == "udp" && map_arguments.size() == 3) {
+					if(check_arguments({"address", "local_port", "remote_port"})) {
+						arguments = std::make_unique<ArgumentsUDP>(map_arguments["address"],
+						                                           std::stoi(map_arguments["local_port"]),
+						                                           std::stoi(map_arguments["remote_port"]));
+					} else {
+						throw ParsingError("Impossible to find the fields 'address', 'local_port' and 'remote_port' "
+						                   "for an UDP communication.");
+					}
+				} else if(protocol == "ethernet" && map_arguments.size() % 4 == 0) {
+					const std::size_t nb_modules = map_arguments.size() / 4;
+					std::vector<std::string> expected_fields;
+					for(std::size_t i = 0; i < nb_modules; ++i) {
+						const std::string prefix = std::to_string(i) + '_';
+						expected_fields.emplace_back(prefix + "id");
+						expected_fields.emplace_back(prefix + "address");
+						expected_fields.emplace_back(prefix + "local_port");
+						expected_fields.emplace_back(prefix + "remote_port");
+					}
+
+					if(check_arguments_v(expected_fields)) {
+						std::vector<protocol_ethernet::UDPConnection> args;
+						for(std::size_t i = 0; i < nb_modules; ++i) {
+							const std::string prefix = std::to_string(i) + '_';
+
+							const uint8_t id = static_cast<uint8_t>(std::stoi(map_arguments[prefix + "id"]));
+							const std::string address = map_arguments[prefix + "address"];
+							const uint16_t local_port =
+							    static_cast<uint16_t>(std::stoi(map_arguments[prefix + "local_port"]));
+							const uint16_t remote_port =
+							    static_cast<uint16_t>(std::stoi(map_arguments[prefix + "remote_port"]));
+
+							args.emplace_back(id, address, local_port, remote_port);
+						}
+						arguments = std::make_unique<ArgumentsEthernet>(args);
+					} else {
+						throw ParsingError("Impossible to find the fields '<N>_id', '<N>_address', '<N>_local_port' "
+						                   "and '<N>_remote_port' for an Ethernet communication.");
+					}
 				}
 
 				if(arguments == nullptr) {

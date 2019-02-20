@@ -12,7 +12,7 @@ namespace PhysicalRobot {
 		/// Initialise le robot a partir des arguments passes au programme.
 		/// Les modules du robot peuvent être initialisés à partir du fichier de constantes OU depuis un ModuleManager
 		/// @arg name Correspond au nom de section dans le `src/robot.ini`
-		Robot(std::shared_ptr<ModuleManager> module_manager, std::string name, std::vector<std::string> const& args, Lidar::LidarType);
+		Robot(std::shared_ptr<ModuleManager> module_manager, std::string name, Lidar::LidarType);
 
 	public:
 		const std::string name;
@@ -25,8 +25,11 @@ namespace PhysicalRobot {
 		Robot(std::shared_ptr<ModuleManager> module_manager, const std::vector<std::string>& args, Lidar::LidarType);
 
 		// Initialisation du robot à partir du fichier `src/robot.ini`
-		Robot(std::string name, const std::vector<std::string>& args, Lidar::LidarType);
+		Robot(std::string name);
+		Robot(std::string name, Lidar::LidarType);
+		// Initialisation du robot à partir du fichier `src/robot.ini` mais choix du protocol de com en ligne de cmd
 		Robot(std::string name, const std::vector<std::string>& args);
+		Robot(std::string name, const std::vector<std::string>& args, Lidar::LidarType);
 
 		virtual ~Robot();
 

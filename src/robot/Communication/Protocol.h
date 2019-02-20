@@ -190,12 +190,11 @@ namespace Communication {
 		}
 
 	public:
-		SerialProtocol(std::string address, const std::string& local_port, const std::string& remote_port)
-		        : SerialProtocol(std::move(address),
-		                         static_cast<uint16_t>(std::stoi(local_port)),
-		                         static_cast<uint16_t>(std::stoi(remote_port))) {}
-		SerialProtocol(std::string address, uint16_t local_port, uint16_t remote_port)
-		        : AbstractSerialProtocol(std::make_shared<UDP>(std::move(address), local_port, remote_port)) {}
+		SerialProtocol(const std::string& address, const std::string& local_port, const std::string& remote_port)
+		        : SerialProtocol(address, static_cast<uint16_t>(std::stoi(local_port)), static_cast<uint16_t>(std::stoi(remote_port))) {
+		}
+		SerialProtocol(const std::string& address, uint16_t local_port, uint16_t remote_port)
+		        : AbstractSerialProtocol(std::make_shared<UDP>(address, local_port, remote_port)) {}
 	};
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
