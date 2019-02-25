@@ -7,6 +7,7 @@
 #include "../../core/Object3D.h"
 #include "Box2DPhysicalContext.h"
 #include "PhysicalObjectDefinition.h"
+#include "RobotController.h"
 
 PhysicalObject::PhysicalObject(PhysicalObjectDefinition& def, Box2DPhysicalContext* context, int id, Vector2m position)
         : _id(id), _context(context) {
@@ -95,9 +96,8 @@ void PhysicalObject::setLinearVelocity(Speed speed) {
 
 Speed PhysicalObject::getLinearVelocity() const {
 	b2Vec2 vec1 = _body->GetLinearVelocity();
-	Speed speedAbs = fromBox2DVL(sqrt(pow(vec1.x, 2) + pow(vec1.y, 2)));
-	b2Vec2 vec2 = b2Vec2(static_cast<float32>(toBox2D(speedAbs) * cos(_body->GetAngle())),
-	                     static_cast<float32>(toBox2D(speedAbs) * sin(_body->GetAngle())));
+	Speed speedAbs = fromBox2DVL(vec1.Length());
+	b2Vec2 vec2 = b2Vec2(static_cast<float32>(cos(_body->GetAngle())), static_cast<float32>(sin(_body->GetAngle())));
 	// Obtient la vitesse relative à l'angle (positive ou négative).
 	if(vec1.x * vec2.x + vec2.y * vec1.y > 0)
 		return speedAbs;
@@ -207,6 +207,11 @@ std::list<b2Vec2> PhysicalObject::getBodyPoints() const {
 
 	return result;
 }
+
+IRobotController* PhysicalObject::createRobotController() {
+	return new RobotController(*this);
+}
+
 
 void PhysicalObject::update(Object3D& parent) {
 	Vector2m newpos = fromBox2D(_body->GetPosition());

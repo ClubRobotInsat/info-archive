@@ -6,6 +6,7 @@
 #include "../../robot/Communication/Communicator.h"
 #include "../../robot/Modules/ModuleManager.h"
 #include "../communication/SimuCommunicator.h"
+#include "../physique/IRobotController.h"
 #include "Object3D.h"
 
 namespace Simu {
@@ -16,10 +17,15 @@ namespace Simu {
 
 		void connect(const std::shared_ptr<Communication::Protocol>& protocol);
 
-		void update();
+		void update(Duration time);
+
+		IRobotController& getController() {
+			return *_controller;
+		}
 
 	private:
 		std::string _name;
+		std::shared_ptr<IRobotController> _controller;
 		Object3D& _robotObject;
 
 		std::shared_ptr<PhysicalRobot::ModuleManager> _moduleMgr;

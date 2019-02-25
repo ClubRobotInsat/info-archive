@@ -138,6 +138,8 @@ public:
 	 */
 	CircleDefinition getBodyCircleDef() const;
 
+	IRobotController* createRobotController() override;
+
 	/**
 	 * Actualise la position de l'objet 3D passé en paramètre pour
 	 * qu'elle corresponde à la position de cet objet physique.

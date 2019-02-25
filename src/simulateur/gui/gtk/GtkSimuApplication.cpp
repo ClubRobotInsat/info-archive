@@ -16,8 +16,8 @@ gboolean emptyGtkQueue(void* data) {
 }
 
 
-GtkSimuApplication::GtkSimuApplication(int argc, char** argv, std::string id, GtkSimuContext& context, IGuiClient& guiClient)
-        : Gtk::Application(argc, argv, id), _context(context), _guiClient(guiClient) {
+GtkSimuApplication::GtkSimuApplication(int argc, char** argv, std::string id, GtkSimuContext& context)
+        : Gtk::Application(argc, argv, id), _context(context), _panelTestNavigation(context) {
 
 	// Window configuration
 	_mainWindow = std::make_unique<Gtk::Window>();
@@ -28,6 +28,7 @@ GtkSimuApplication::GtkSimuApplication(int argc, char** argv, std::string id, Gt
 	// Fill the window
 	_globalBox.add(_panelConnect);
 	_globalBox.add(_panelRobotState);
+	_globalBox.add(_panelTestNavigation);
 	_mainWindow->add(_globalBox);
 
 	// Signals
@@ -73,6 +74,6 @@ void GtkSimuApplication::queueAction(const std::function<void()>& action) {
 
 void GtkSimuApplication::onConnect() {
 	_context.queueAction([this]() {
-		_guiClient.connect({_panelConnect.getConnectionType(), _panelConnect.getConnectionArguments()});
+		_context.getGuiClient().connect({_panelConnect.getConnectionType(), _panelConnect.getConnectionArguments()});
 	});
 }

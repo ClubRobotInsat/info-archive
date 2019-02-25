@@ -3,6 +3,9 @@
 #include "../communication/SimuLed.h"
 #include "../communication/SimuServos.h"
 
+// TODO Le robotController devrait être obtenu grâce au contexte physique ou whatever
+#include "../physique/box2d/RobotController.h"
+
 namespace Simu {
 
 	using Communication::Communicator;
@@ -12,6 +15,7 @@ namespace Simu {
 	        : _name(name), _robotObject(robotObject), _moduleMgr(std::make_shared<ModuleManager>()) {
 
 		_communicator = std::make_shared<SimuCommunicator>(_moduleMgr);
+		_controller = std::shared_ptr<IRobotController>(robotObject.getPhysics().createRobotController());
 		assignModules();
 	}
 
@@ -19,7 +23,9 @@ namespace Simu {
 		_communicator->connect(protocol);
 	}
 
-	void SimuRobot::update() {}
+	void SimuRobot::update(Duration time) {
+		_controller->update(time);
+	}
 
 	void SimuRobot::assignModules() {
 		auto modules = GLOBAL_CONSTANTS()[_name].get_modules();

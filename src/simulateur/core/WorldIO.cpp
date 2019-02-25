@@ -65,10 +65,9 @@ void World::loadWorldFromFile(std::string filename) {
 
 Object3D& World::createRobotFromJSON(const JSON& json, Constants::RobotColor color) {
 	// Permet de récupérer les spécificités du robot principal
-	auto robots = json["robot"];
-	auto it =
-	    std::find_if(json["robot"].begin(), json["robot"].end(), [](const JSON& j) { return j["name"] == "principal"; });
-	if(it == json["robot"].end()) {
+	auto& robots = json["robot"];
+	auto it = std::find_if(robots.begin(), robots.end(), [](const JSON& j) { return j["name"] == "principal"; });
+	if(it == robots.end()) {
 		// TODO
 		Object3D* obj = &createCube({1_m, 1_m, 1_m}, {0_m, 0_m, 0_m}, 1_kg, STATIC_BODY, {0, 0, 0});
 		return *obj;
@@ -84,6 +83,7 @@ Object3D& World::createRobotFromJSON(const JSON& json, Constants::RobotColor col
 	auto angle = coords_robot.getAngle(REFERENCE_SIMULATOR);
 
 	Vector3m robotSize = Json::toVector3m(robot["size"]);
+	position.z += robotSize.z / 2;
 	IPhysicalInstance* physicProp = getPhysics().createCuboid(position, mass::HEAVY, DYNAMIC_BODY, robotSize);
 	physicProp->setAngle(angle);
 
@@ -93,7 +93,13 @@ Object3D& World::createRobotFromJSON(const JSON& json, Constants::RobotColor col
 	IGraphicalInstance* graphicProp = getGraphics().createCuboid(position, robotSize);
 	std::string str_color = toString(color);
 	std::transform(str_color.cbegin(), str_color.cend(), str_color.begin(), ::tolower);
-	graphicProp->setColor(Json::toColor3f(robot["robot"][str_color]));
+
+	// Set robot color
+	if(robot.find("robot") != robot.end() && robot["robot"].find(str_color) != robot["robot"].end()) {
+		graphicProp->setColor(Json::toColor3f(robot["robot"][str_color]));
+	} else {
+		graphicProp->setColor({0.5, 0.5, 0.5});
+	}
 
 	Object3D& created = createObject(graphicProp, physicProp, position);
 	created.addTag(TAG_ROBOT);

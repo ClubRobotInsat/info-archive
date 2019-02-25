@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+#include "../physique/IRobotController.h"
+
 struct IAProcessData {
 	std::string executablePath;
 	std::vector<std::string> parameters;
@@ -26,6 +28,11 @@ public:
 	/** Lancement d'un programme executant une IA. Une fois ce programme
 	 * lancé, le simulateur s'y connecte avec les paramètres donnés. */
 	virtual void createIAProcess(const IAProcessData& iaProcessData, const ConnectionData& connectionData) = 0;
+
+	/** Donne le controller qui permet de controller le robot. Si aucun
+	 * robot n'est controllable, retourne nullptr. */
+	// TODO ne plus utiliser des raw pointers ?
+	virtual IRobotController* getRobotController() = 0;
 };
 
 #endif // ROOT_IGUICLIENT_H

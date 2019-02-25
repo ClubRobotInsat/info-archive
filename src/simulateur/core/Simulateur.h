@@ -126,6 +126,10 @@ public:
 	 */
 	Constants::RobotColor getRobotColor() const;
 
+	Simu::SimuRobot& getRobot() {
+		return *_robot;
+	}
+
 	/**
 	 * Désactive la simulation physique de tous les objets et du robot sur la table
 	 * L'affichage n'est pas compromis

@@ -3,10 +3,10 @@
 
 #include "GtkSimuApplication.h"
 
-GtkSimuContext::GtkSimuContext(int argc, char** argv, std::string id, IGuiClient& guiClient) {
+GtkSimuContext::GtkSimuContext(int argc, char** argv, std::string id, IGuiClient& guiClient) : _guiClient(guiClient) {
 
 	auto gtkApp = [this, argc, argv, id, &guiClient]() {
-		this->_application = std::make_unique<GtkSimuApplication>(argc, argv, id, *this, guiClient);
+		this->_application = std::make_unique<GtkSimuApplication>(argc, argv, id, *this);
 		this->_application->callRun();
 	};
 

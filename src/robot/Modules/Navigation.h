@@ -75,13 +75,6 @@ namespace PhysicalRobot {
 
 		void set_command(MovingCommand command);
 
-		uint16_t distance_to_u16(Distance distance) const;
-
-		Distance u16_to_distance(uint16_t) const;
-
-		uint16_t angle_to_u16(Angle angle) const;
-
-		Angle u16_to_angle(uint16_t) const;
 	};
 } // namespace PhysicalRobot
 

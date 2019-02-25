@@ -11,12 +11,13 @@
 #include "GtkSimuContext.h"
 #include "PanelConnect.h"
 #include "PanelRobotState.h"
+#include "PanelTestNavigation.h"
 
 /** This class holds the gtk application, creates the main window
  * and executes every actions on the UI. */
 class GtkSimuApplication : public Gtk::Application {
 public:
-	GtkSimuApplication(int argc, char** argv, std::string id, GtkSimuContext& context, IGuiClient& guiClient);
+	GtkSimuApplication(int argc, char** argv, std::string id, GtkSimuContext& context);
 
 	~GtkSimuApplication() override;
 
@@ -35,11 +36,11 @@ public:
 
 private:
 	GtkSimuContext& _context;
-	IGuiClient& _guiClient;
 
 	std::unique_ptr<Gtk::Window> _mainWindow;
 
 	Gtk::VBox _globalBox;
+	PanelTestNavigation _panelTestNavigation;
 	PanelConnect _panelConnect;
 	PanelRobotState _panelRobotState;
 
@@ -55,6 +56,7 @@ private:
 	friend gboolean emptyGtkQueue(void* data);
 
 	void onConnect();
+	void onTestNavigation();
 };
 
 

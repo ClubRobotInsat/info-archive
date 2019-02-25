@@ -7,6 +7,8 @@
 
 #include "../core/IBehavior.h"
 
+class IRobotController;
+
 /** Cette interface permet de manipuler la partie physique
  * d'un objet du simulateur. */
 class IPhysicalInstance : public IBehavior {
@@ -36,6 +38,10 @@ public:
 
 	virtual AngularSpeed getAngularVelocity() const = 0;
 	virtual void setAngularVelocity(AngularSpeed speed) = 0;
+
+	/** Crée un controller pour l'instance de robot physique
+	 * passée en paramètres. */
+	virtual IRobotController* createRobotController() = 0;
 };
 
 #endif // ROOT_IPHYSICALBEHAVIOR_H

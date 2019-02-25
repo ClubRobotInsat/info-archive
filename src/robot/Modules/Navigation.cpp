@@ -4,7 +4,14 @@
 
 #include "Navigation.h"
 
+#include "NavigationUtility.h"
+
 namespace PhysicalRobot {
+
+    using NavigationUtility::angle_to_u16;
+    using NavigationUtility::u16_to_angle;
+    using NavigationUtility::distance_to_u16;
+    using NavigationUtility::u16_to_distance;
 
 	void Navigation::forward(Distance distance, SensAdvance sens) {
 		lock_variables();
@@ -142,20 +149,4 @@ namespace PhysicalRobot {
 		_moving_done = false;
 	}
 
-	uint16_t Navigation::distance_to_u16(Distance distance) const {
-		// TODO controller overflow et underflow
-		return static_cast<uint16_t>(distance.toMm() * 10);
-	}
-
-	Distance Navigation::u16_to_distance(uint16_t distance) const {
-		return Distance::makeFromMm(distance / 10.0);
-	}
-
-	uint16_t Navigation::angle_to_u16(Angle angle) const {
-		return static_cast<uint16_t>(angle.toMilliRad() * 10);
-	}
-
-	Angle Navigation::u16_to_angle(uint16_t angle) const {
-		return Angle::makeFromMilliRad(angle / 10.0);
-	}
 } // namespace PhysicalRobot

@@ -27,12 +27,17 @@ public:
 
 	void close() override;
 
+	IGuiClient& getGuiClient() {
+		return _guiClient;
+	}
+
 	/// Add an action to be executed on the simulator thread.
 	/// Used in the gtk thread to sync with the simulator thread.
 	void queueAction(const std::function<void()>& action);
 
 private:
 	std::unique_ptr<GtkSimuApplication> _application;
+	IGuiClient& _guiClient;
 
 	std::thread _gtkThread;
 	/// Actions that should be executed on the simulator thread

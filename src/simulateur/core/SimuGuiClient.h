@@ -16,6 +16,8 @@ public:
 
 	void createIAProcess(const IAProcessData& iaProcessData, const ConnectionData& connectionData) override;
 
+	IRobotController* getRobotController() override;
+
 private:
 	Simulateur& _simu;
 };

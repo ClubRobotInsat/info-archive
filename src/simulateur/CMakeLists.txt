@@ -31,6 +31,9 @@ add_executable(Simulator
         physique/box2d/PhysicalObjectDefinition.cpp
         physique/box2d/PhysicalObject.cpp
         physique/box2d/Box2DPhysicalContext.cpp
+        physique/box2d/RobotController.cpp
+        physique/box2d/pid/Asservissement.cpp
+        physique/box2d/pid/PID.cpp
 
         graphique/IGraphicalContext.h
         graphique/IGraphicalInstance.h
@@ -48,6 +51,7 @@ add_executable(Simulator
         communication/SimuCommunicator.cpp
         communication/SimuServos.cpp
         communication/SimuLed.cpp
+        communication/SimuNavigation.cpp
 
         ${root_SOURCE_DIR}/third_parties/include/json.hpp)
 
