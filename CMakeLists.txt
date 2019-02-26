@@ -72,7 +72,7 @@ if(${BITS} EQUAL 32)
 	set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -m32")
 endif()
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Waddress -Wbuiltin-macro-redefined -Werror=return-type -Winit-self -Wnon-virtual-dtor -Wno-sign-compare -Wold-style-cast -Woverloaded-virtual -Wsuggest-attribute=const -Wsuggest-attribute=noreturn -Wsuggest-attribute=pure -Wswitch -Wuninitialized -Wunreachable-code -Wunused-parameter -Wunused-value")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Waddress -Wbuiltin-macro-redefined -Werror=return-type -Winit-self -Wnon-virtual-dtor -Wno-sign-compare -Wold-style-cast -Woverloaded-virtual -Wsuggest-attribute=noreturn -Wswitch -Wuninitialized -Wunreachable-code -Wunused-parameter -Wunused-value")
 
 function(compile_petri TARGET_NAME PATH_TO_DOC OUTPUT)
 	add_custom_target(${TARGET_NAME}
