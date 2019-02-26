@@ -6,6 +6,7 @@
 #define ROOT_COMMUNICATORPARSING_H
 
 #include "Protocol.h"
+#include "log/Log.h"
 #include <typeindex>
 
 namespace Communication {
@@ -23,10 +24,9 @@ namespace Communication {
 
 		class ArgumentsLocal final : public AbstractArguments {
 		public:
-			explicit ArgumentsLocal(const std::vector<std::string>&) {}
+			explicit ArgumentsLocal(const std::vector<std::string>&) : ArgumentsLocal() {}
 
 			ArgumentsLocal() {}
-
 
 			std::unique_ptr<Protocol> make_protocol() override {
 				return std::make_unique<protocol_local>();
@@ -39,7 +39,7 @@ namespace Communication {
 
 		class ArgumentsNull final : public AbstractArguments {
 		public:
-			explicit ArgumentsNull(const std::vector<std::string>&) {}
+			explicit ArgumentsNull(const std::vector<std::string>&) : ArgumentsNull() {}
 
 			ArgumentsNull() {}
 

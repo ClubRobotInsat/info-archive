@@ -87,6 +87,7 @@ TEST_CASE("ParsingClassChecker", "[integration]") {
 
 TEST_CASE("Protocol parsing's arguments", "[integration]") {
 	using namespace Communication::Arguments;
+	Log::open(Log::NOTHING, "", false);
 
 	SECTION("Bad protocol") {
 		auto protocol = Parser::make_protocol({"BAD_PROTOCOL"});
@@ -128,10 +129,13 @@ TEST_CASE("Protocol parsing's arguments", "[integration]") {
 		CHECK(protocol.first == typeid(Communication::protocol_null));
 		CHECK(protocol.second != nullptr);
 	}
+
+	Log::close(Log::NOTHING);
 }
 
 TEST_CASE("Protocol parsing's arguments - UDP", "[segfault]") {
 	using namespace Communication::Arguments;
+	Log::open(Log::NOTHING, "", false);
 
 	SECTION("UDP") {
 		REQUIRE_THROWS_WITH(Parser::make_protocol({"UDP", "127.0.0.1", "5000" /*, "51"*/}),
@@ -166,6 +170,8 @@ TEST_CASE("Protocol parsing's arguments - UDP", "[segfault]") {
 		REQUIRE(GLOBAL_CONSTANTS()["primary"].get_protocol_type() == "ethernet");
 		CHECK_NOTHROW(Parser::make_protocol(GLOBAL_CONSTANTS()["primary"]));
 	}
+
+	Log::close(Log::NOTHING);
 }
 
 template <Communication::SerialProtocolType T>
@@ -192,6 +198,8 @@ void symetric_serial_test(Communication::SerialProtocol<T>& rx,
 }
 
 TEST_CASE("Serial Protocols", "[integration]") {
+	Log::open(Log::NOTHING, "", false);
+
 	std::atomic_bool running_execution = true;
 	auto stop_execution_after = [&running_execution](Duration delay) {
 		sleep(delay);
@@ -253,9 +261,13 @@ TEST_CASE("Serial Protocols", "[integration]") {
 		running_execution.exchange(true);
 		// TODO
 	}
+
+	Log::close(Log::NOTHING);
 }
 
 TEST_CASE("Serial Protocols - UDP", "[segfault]") {
+	Log::open(Log::NOTHING, "", false);
+
 	std::atomic_bool running_execution = true;
 	auto stop_execution_after = [&running_execution](Duration delay) {
 		sleep(delay);
@@ -291,9 +303,13 @@ TEST_CASE("Serial Protocols - UDP", "[segfault]") {
 			symetric_serial_test(sender, recver, frame, stop_execution_after, running_execution);
 		}
 	}
+
+	Log::close(Log::NOTHING);
 }
 
 TEST_CASE("Multi Serial Protocols", "[segfault]") {
+	Log::open(Log::NOTHING, "", false);
+
 	std::atomic_bool running_execution = true;
 	auto stop_execution_after = [&running_execution](Duration delay) {
 		sleep(delay);
@@ -341,4 +357,6 @@ TEST_CASE("Multi Serial Protocols", "[segfault]") {
 		t_send.join();
 		t.join();
 	}
+
+	Log::close(Log::NOTHING);
 }

@@ -144,15 +144,19 @@ namespace Communication {
 	template <>
 	class SerialProtocol<SERIAL_NULL> final : public AbstractSerialProtocol<SERIAL_NULL> {
 	public:
-		SerialProtocol() : AbstractSerialProtocol(std::make_shared<NullCommunicator>()) {}
+		SerialProtocol() : AbstractSerialProtocol(std::make_shared<NullCommunicator>()) {
+			logInfo("Instantiation of a SerialProtocol::NULL.");
+		}
 	};
 
 	template <>
 	class SerialProtocol<SERIAL_PIPES> final : public AbstractSerialProtocol<SERIAL_PIPES> {
 	public:
 		SerialProtocol() : SerialProtocol("/tmp/read.pipe", "/tmp/write.pipe") {}
-		SerialProtocol(std::string rx, std::string tx)
-		        : AbstractSerialProtocol(std::make_shared<NamedPipe>(std::move(rx), std::move(tx))) {}
+		SerialProtocol(const std::string& rx, const std::string& tx)
+		        : AbstractSerialProtocol(std::make_shared<NamedPipe>(rx, tx)) {
+			logInfo("Instantiation of a SerialProtocol::PIPES with [rx='", rx, "'] [tx='", tx, "'].");
+		}
 	};
 
 	template <>
@@ -161,16 +165,19 @@ namespace Communication {
 		explicit SerialProtocol(const std::string& peripheral)
 		        : AbstractSerialProtocol(std::make_shared<RS232>(peripheral)) {
 			set_delay(10_ms);
+			logInfo("Instantiation of a SerialProtocol::RS232 with [peripheral='", peripheral, "'].");
 		}
 	};
 
 	template <>
 	class SerialProtocol<SERIAL_TCPIP> final : public AbstractSerialProtocol<SERIAL_TCPIP> {
 	public:
-		SerialProtocol(std::string address, const std::string& port)
-		        : SerialProtocol(std::move(address), static_cast<uint16_t>(std::stoi(port))) {}
-		SerialProtocol(std::string address, uint16_t port)
-		        : AbstractSerialProtocol(std::make_shared<TCPIP>(std::move(address), port)) {}
+		SerialProtocol(const std::string& address, const std::string& port)
+		        : SerialProtocol(address, static_cast<uint16_t>(std::stoi(port))) {}
+		SerialProtocol(const std::string& address, uint16_t port)
+		        : AbstractSerialProtocol(std::make_shared<TCPIP>(address, port)) {
+			logInfo("Instantiation of a SerialProtocol::TCPIP with [address='", address, "'] [remote_port='", port, "'].");
+		}
 	};
 
 	template <>
@@ -194,7 +201,9 @@ namespace Communication {
 		        : SerialProtocol(address, static_cast<uint16_t>(std::stoi(local_port)), static_cast<uint16_t>(std::stoi(remote_port))) {
 		}
 		SerialProtocol(const std::string& address, uint16_t local_port, uint16_t remote_port)
-		        : AbstractSerialProtocol(std::make_shared<UDP>(address, local_port, remote_port)) {}
+		        : AbstractSerialProtocol(std::make_shared<UDP>(address, local_port, remote_port)) {
+			logInfo("Instantiation of a SerialProtocol::UDP with [address='", address, "'] [local_port='", local_port, "'] [remote_port='", remote_port, "'].");
+		}
 	};
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -241,8 +250,18 @@ namespace Communication {
 		        : MultiSerialProtocol(std::vector<UDPConnection>(connections)) {}
 
 		explicit MultiSerialProtocol(const std::vector<UDPConnection>& connections) : AbstractMultiSerialProtocol() {
+			logInfo("Instantiation of a MultiSerialProtocol::(ETHERNET, UDP) with ", connections.size(), " UDP connection(s):");
 			std::for_each(connections.begin(), connections.end(), [this](const UDPConnection& udp) {
 				_serials[udp.id_module] = std::make_shared<SerialProtocol<SERIAL_UDP>>(udp.address, udp.local_port, udp.remote_port);
+				logInfo("\tID n°",
+				        static_cast<int>(udp.id_module),
+				        ": [address='",
+				        udp.address,
+				        "']\t[local_port='",
+				        udp.local_port,
+				        "']\t[remote_port='",
+				        udp.remote_port,
+				        "'].");
 			});
 		}
 	};
