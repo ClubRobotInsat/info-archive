@@ -6,7 +6,7 @@
 
 #include <Constants.h>
 
-TEST_CASE("Global constants") {
+TEST_CASE("Global constants", "[integration]") {
 	SECTION("RobotColor") {
 		using namespace Constants;
 

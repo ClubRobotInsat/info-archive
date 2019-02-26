@@ -1,3 +1,5 @@
+[![Coverage Status](https://coveralls.io/repos/github/ClubRobotInsat/info/badge.svg?branch=develop)](https://coveralls.io/github/ClubRobotInsat/info?branch=develop)
+
 ![logo](https://etud.insa-toulouse.fr/~club_robot/sites/default/files/club_robot_smallsmall.png)
 
 Ce document permets de recenser l'ensemble des commandes utiles pour prendre en main le code informatique.

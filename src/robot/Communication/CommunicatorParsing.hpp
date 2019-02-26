@@ -141,7 +141,7 @@ namespace Communication {
 				_remote_port = static_cast<uint16_t>(stoi(args[2]));
 			}
 
-			ArgumentsUDP(std::string address, uint16_t local_port, uint16_t remote_port)
+			ArgumentsUDP(const std::string& address, uint16_t local_port, uint16_t remote_port)
 			        : _address(address), _local_port(local_port), _remote_port(remote_port) {}
 
 			std::unique_ptr<Protocol> make_protocol() override {

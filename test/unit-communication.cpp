@@ -9,7 +9,7 @@
 #include "../src/robot/Modules/ModuleManager.h"
 #include "communication/GlobalFrame.h"
 
-TEST_CASE("ParsingClassChecker") {
+TEST_CASE("ParsingClassChecker", "[integration]") {
 	SECTION("Validity test of the 'parses_frames' helper struct.") {
 		struct Ok {
 			void read_frame(const GlobalFrame&) {}
@@ -85,7 +85,7 @@ TEST_CASE("ParsingClassChecker") {
 	}
 }
 
-TEST_CASE("Protocol parsing's arguments") {
+TEST_CASE("Protocol parsing's arguments", "[integration]") {
 	using namespace Communication::Arguments;
 
 	SECTION("Bad protocol") {
@@ -108,20 +108,12 @@ TEST_CASE("Protocol parsing's arguments") {
 		                    "Impossible de se connecter au serveur 127.0.0.1:1234");
 	}
 
-	SECTION("UDP") {
-		REQUIRE_THROWS_WITH(Parser::make_protocol({"UDP", "127.0.0.1", "5000" /*, "51"*/}),
-		                    "Utilisation avec UDP : \"<program_name> UDP [@IP] [port local] [port distant]\"");
-		auto protocol = Parser::make_protocol({"UDP", "127.0.0.1", "5000", "51"});
-		CHECK(protocol.first == typeid(Communication::protocol_udp));
-		REQUIRE(protocol.second != nullptr);
-	}
-
 	SECTION("Pipes") {
 		REQUIRE_THROWS_WITH(Parser::make_protocol({"PIPES", "/tmp/read.pipe" /*, "/tmp/write.pipe"*/}),
 		                    "Utilisation avec PIPES : \"<program_name> PIPES [rx.link] [tx.link]\"");
 		auto protocol = Parser::make_protocol({"PIPES", "/tmp/read.pipe", "/tmp/write.pipe"});
 		CHECK(protocol.first == typeid(Communication::protocol_pipes));
-		REQUIRE(protocol.second != nullptr);
+		CHECK(protocol.second != nullptr);
 	}
 
 	SECTION("Local") {
@@ -134,7 +126,25 @@ TEST_CASE("Protocol parsing's arguments") {
 		REQUIRE_NOTHROW(Parser::make_protocol({"NULL"}));
 		auto protocol = Parser::make_protocol({"NULL"});
 		CHECK(protocol.first == typeid(Communication::protocol_null));
-		REQUIRE(protocol.second != nullptr);
+		CHECK(protocol.second != nullptr);
+	}
+}
+
+TEST_CASE("Protocol parsing's arguments - UDP", "[segfault]") {
+	using namespace Communication::Arguments;
+
+	SECTION("UDP") {
+		REQUIRE_THROWS_WITH(Parser::make_protocol({"UDP", "127.0.0.1", "5000" /*, "51"*/}),
+		                    "Utilisation avec UDP : \"<program_name> UDP [@IP] [port local] [port distant]\"");
+		{
+			std::unique_ptr<Communication::Protocol> ptr;
+			REQUIRE_NOTHROW(ptr = ArgumentsUDP("127.0.0.1", 5000, 51).make_protocol());
+			CHECK(ptr != nullptr);
+		}
+		CHECK(ArgumentsUDP(std::vector({"127.0.0.1"s, "5000"s, "51"s})).make_protocol() != nullptr);
+		auto protocol = Parser::make_protocol({"UDP", "127.0.0.1", "5000", "51"});
+		CHECK(protocol.first == typeid(Communication::protocol_udp));
+		CHECK(protocol.second != nullptr);
 	}
 
 	SECTION("Ethernet") {
@@ -181,7 +191,7 @@ void symetric_serial_test(Communication::SerialProtocol<T>& rx,
 	t.join();
 }
 
-TEST_CASE("Serial Protocols") {
+TEST_CASE("Serial Protocols", "[integration]") {
 	std::atomic_bool running_execution = true;
 	auto stop_execution_after = [&running_execution](Duration delay) {
 		sleep(delay);
@@ -243,6 +253,16 @@ TEST_CASE("Serial Protocols") {
 		running_execution.exchange(true);
 		// TODO
 	}
+}
+
+TEST_CASE("Serial Protocols - UDP", "[segfault]") {
+	std::atomic_bool running_execution = true;
+	auto stop_execution_after = [&running_execution](Duration delay) {
+		sleep(delay);
+		running_execution.exchange(false);
+	};
+
+	const GlobalFrame frame{0x5, 0xA4};
 
 	SECTION("UDP") {
 		SECTION("Bad initialization") {
@@ -273,7 +293,7 @@ TEST_CASE("Serial Protocols") {
 	}
 }
 
-TEST_CASE("Multi Serial Protocols") {
+TEST_CASE("Multi Serial Protocols", "[segfault]") {
 	std::atomic_bool running_execution = true;
 	auto stop_execution_after = [&running_execution](Duration delay) {
 		sleep(delay);

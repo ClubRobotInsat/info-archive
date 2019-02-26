@@ -83,7 +83,7 @@ TEST_CASE("Basic module") {
 
 #include "../src/robot/Modules/Servos.h"
 
-TEST_CASE("Servos' Module") {
+TEST_CASE("Servos' Module", "[integration]") {
 	SECTION("Non-frame functions' module") {
 		PhysicalRobot::Servos my_module(2);
 		my_module.add_servo(5, PhysicalRobot::BlockingMode::HoldOnBlock);
@@ -122,7 +122,7 @@ TEST_CASE("Servos' Module") {
 
 #include "../src/robot/Modules/Navigation.h"
 
-TEST_CASE("Navigation Module") {
+TEST_CASE("Navigation Module", "[integration]") {
 	PhysicalRobot::Navigation my_module(1);
 
 	SECTION("Initialization") {
@@ -136,7 +136,7 @@ TEST_CASE("Navigation Module") {
 
 #include "../src/robot/Communication/NamedPipe.h"
 
-TEST_CASE("ModuleManager") {
+TEST_CASE("ModuleManager", "[integration]") {
 
 	SECTION("basic functions") {
 		PhysicalRobot::ModuleManager manager;

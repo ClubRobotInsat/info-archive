@@ -5,7 +5,7 @@
 #include "../src/robot/Strategy/ModuleInterfacers/RobotManager.h"
 #include "catch.hpp"
 
-TEST_CASE("Interfacers") {
+TEST_CASE("Interfacers", "[integration]") {
 	using namespace Strategy::Interfacer;
 
 	SECTION("ServosInterfacer") {

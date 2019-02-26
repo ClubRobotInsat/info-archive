@@ -7,7 +7,7 @@
 #include "../src/robot/Robot.h"
 #include <Constants.h>
 
-TEST_CASE("Initialization of a common robot.") {
+TEST_CASE("Initialization of a common robot.", "[integration]") {
 	SECTION("ModuleManager initialization") {
 		auto m = std::make_shared<PhysicalRobot::ModuleManager>();
 
