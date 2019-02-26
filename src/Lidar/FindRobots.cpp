@@ -109,7 +109,7 @@ void FindRobots::accumulate(const OccupGrid& grid) {
 				// limite la densité des nouveaux candidats
 				SPIRAL(IVec2(x, y), MIN_SIZE, {
 					if(pos.x >= 0 && pos.x < tp.x && pos.y >= 0 && pos.y < tp.y) {
-						int ind2 = (pos.y * tp.x) + pos.x;
+						// int ind2 = (pos.y * tp.x) + pos.x;
 						scanned[ind] = 1;
 					}
 				});

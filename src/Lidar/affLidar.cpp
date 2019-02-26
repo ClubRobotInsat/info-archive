@@ -44,7 +44,7 @@ rgb hsv2rgb(hsv in) {
 	if(hh >= 360.0)
 		hh = 0.0;
 	hh /= 60.0;
-	i = (long)hh;
+	i = static_cast<long>(hh);
 	ff = hh - i;
 	p = in.v * (1.0 - in.s);
 	q = in.v * (1.0 - (in.s * ff));
@@ -96,7 +96,7 @@ void display_frame(const FrameLidar& mesure, float ox, float oy) {
 	glBegin(GL_TRIANGLES);
 	for(size_t i = 1; i < mesure.points.size(); ++i) {
 		Angle angle = i * mesure.angularResolution + mesure.begin + 180_deg;
-		float amplitude = mesure.points[i].toM() * 500;
+		float amplitude = static_cast<float>(mesure.points[i].toM() * 500);
 		hsv couleur;
 		couleur.h = mesure.points[i] / 4_m * 240;
 		couleur.s = 1;
@@ -186,7 +186,7 @@ int main(int argc, char** argv) {
 		auto t = TimePoint::now();
 
 		if((t - fpsT) > 1.0_s) {
-			int fps = (int)((double)frames / (double)((t - fpsT).toS()));
+			int fps = static_cast<int>(static_cast<double>(frames) / static_cast<double>((t - fpsT).toS()));
 			char buffer[256] = "";
 			sprintf(buffer, "Affichage Lidar - FPS : %d", fps);
 			glfwSetWindowTitle(buffer);

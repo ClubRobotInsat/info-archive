@@ -106,7 +106,7 @@ void Client::run() {
 void Client::_mainloop() {
 	for(;;) {
 		auto cmd = _sock->readTextTo('\n');
-		char nomLidar;
+		// char nomLidar;
 		if(cmd.size() == 0) {
 			continue;
 		}
