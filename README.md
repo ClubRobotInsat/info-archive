@@ -1,4 +1,10 @@
+[![Build Status](https://travis-ci.org/ClubRobotInsat/info.svg?branch=develop)](https://travis-ci.org/ClubRobotInsat/info)
 [![Coverage Status](https://coveralls.io/repos/github/ClubRobotInsat/info/badge.svg?branch=develop)](https://coveralls.io/github/ClubRobotInsat/info?branch=develop)
+[![Github license](https://img.shields.io/github/license/ClubRobotInsat/info.svg)](https://github.com/ClubRobotInsat/info/blob/develop/LICENSE)
+[![Github Issues](https://img.shields.io/github/issues/ClubRobotInsat/info.svg)](https://github.com/ClubRobotInsat/info/issues)
+[![Website](https://img.shields.io/website-up-down-green-red/https/clubrobotinsat.github.io.svg
+)](https://clubrobotinsat.github.io/)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/ClubRobotInsat/info.svg)
 
 ![logo](https://etud.insa-toulouse.fr/~club_robot/sites/default/files/club_robot_smallsmall.png)
 
