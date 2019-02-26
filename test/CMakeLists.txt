@@ -29,7 +29,7 @@ foreach(file ${files})
 endforeach()
 
 # Linkage de chaque exécutable par rapport à ses librairies nécessaires
-# Par défaut, 'Robot' regroupe tout
+# Par défaut, 'Strategy' regroupe tout
 target_link_libraries(unit_testing_frames Outils_Robot)
 target_link_libraries(unit_testing_modules Modules)
 target_link_libraries(unit_testing_communication Communication)

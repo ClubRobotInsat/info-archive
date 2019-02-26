@@ -248,7 +248,8 @@ namespace Communication {
 				}
 			}
 
-			static std::pair<std::type_index, std::unique_ptr<Protocol>> make_protocol(const Constants::Robot& robot) {
+			static std::pair<std::type_index, std::unique_ptr<Protocol>>
+			    make_protocol(const Constants::RobotInitializationData& robot) {
 				const std::string protocol = robot.get_protocol_type();
 				auto map_arguments = robot.get_communication_arguments();
 				std::unique_ptr<AbstractArguments> arguments;

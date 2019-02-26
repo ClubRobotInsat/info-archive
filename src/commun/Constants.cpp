@@ -32,7 +32,7 @@ namespace Constants {
 		}
 	}
 
-	Robot::Robot(IniFile& reader, std::string name) {
+	RobotInitializationData::RobotInitializationData(IniFile& reader, std::string name) {
 		const std::string section = "robot." + name;
 		try {
 			_start_angle = Angle::makeFromDeg(reader[section]["angle"].asDouble());
@@ -111,13 +111,14 @@ namespace Constants {
 			if(it.first == "robot.list") {
 				for(auto robot : it.second) {
 					if(robot.second.asBool()) {
-						_robots[robot.first] = std::unique_ptr<Robot>(new Robot(_reader, robot.first));
+						_robots[robot.first] =
+						    std::unique_ptr<RobotInitializationData>(new RobotInitializationData(_reader, robot.first));
 					}
 				}
 				break;
 			}
 		}
-		_robots["default"] = std::unique_ptr<Robot>(new Robot(_reader, "default"));
+		_robots["default"] = std::unique_ptr<RobotInitializationData>(new RobotInitializationData(_reader, "default"));
 
 		const std::string section = "constants";
 
@@ -142,7 +143,7 @@ namespace Constants {
 		    Distance::makeFromMm(read_field(_reader, section, "threshold_adversary_detection", 300));
 	}
 
-	const Robot& Constants::operator[](const std::string& name) const {
+	const RobotInitializationData& Constants::operator[](const std::string& name) const {
 		auto it = _robots.find(name);
 		if(it == _robots.cend()) {
 			throw std::runtime_error("Constants of the robot '" + name + "' does not exist.");

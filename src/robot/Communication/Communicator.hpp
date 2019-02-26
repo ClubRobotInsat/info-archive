@@ -54,7 +54,7 @@ namespace Communication {
 	}
 
 	template <typename ParsingClass>
-	bool Communicator<ParsingClass>::connect(const Constants::Robot& constants) {
+	bool Communicator<ParsingClass>::connect(const Constants::RobotInitializationData& constants) {
 		if(_debug_active) {
 			logInfo("Initialisation de la communication élec/info depuis le parsing du protocol par les constantes.");
 		}

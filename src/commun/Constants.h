@@ -41,9 +41,9 @@ namespace Constants {
 	}
 
 	class Constants;
-	class Robot {
+	class RobotInitializationData {
 		friend class Constants;
-		Robot(IniFile& reader, std::string name);
+		RobotInitializationData(IniFile& reader, std::string name);
 
 		// Les attributs `optional` correspondent à des valeurs qui ne peuvent pas être entrées par défaut
 		std::optional<Vector3m> _start_position;
@@ -123,12 +123,12 @@ namespace Constants {
 	};
 
 	class Constants {
-		std::map<std::string, std::unique_ptr<Robot>> _robots;
+		std::map<std::string, std::unique_ptr<RobotInitializationData>> _robots;
 
 	public:
 		explicit Constants(std::string ini_string);
 
-		const Robot& operator[](const std::string& name) const;
+		const RobotInitializationData& operator[](const std::string& name) const;
 
 		inline Duration get_match_duration() const {
 			return _match_duration;
