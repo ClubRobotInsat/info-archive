@@ -89,7 +89,6 @@ rgb hsv2rgb(hsv in) {
 
 
 void display_frame(const FrameLidar& mesure, float ox, float oy) {
-
 	Angle prevAngle = mesure.begin + 180_deg;
 	float prevAmpl = mesure.points[0].toM() * 500;
 
@@ -118,8 +117,6 @@ void display_frame(const FrameLidar& mesure, float ox, float oy) {
 }
 
 void display() {
-
-
 	// if(savedFrames < savedCount)
 	//	mesure.save_to_file("/tmp" + std::to_string(savedFrames++));
 

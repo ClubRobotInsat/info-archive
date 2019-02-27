@@ -90,7 +90,6 @@ void OccupGrid::_rsLine(IVec2 a, IVec2 b) {
 			(*this)(px, py) = 1;
 
 		cur += inc;
-
 	} while(px != b.x || py != b.y);
 }
 

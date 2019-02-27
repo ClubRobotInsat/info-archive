@@ -13,7 +13,6 @@ CanListener::CanListener(const std::string& port, const std::shared_ptr<Glib::Di
         , _refreshRate(20_ms)
         , _thread(0)
         , signal_on_message_received(receiver_signal_message_received) {
-
 	if(port.substr(0, 5) == "TCPIP") {
 		_can.reset(new Commun::CAN(std::make_unique<Commun::TCPIP>(port.substr(7, port.length() - 12), 1234)));
 		std::cout << "CAN listening on : " << port.substr(7, port.length() - 12) << ":1234" << std::endl;
@@ -27,7 +26,6 @@ CanListener::CanListener(const std::string& port, const std::shared_ptr<Glib::Di
 }
 
 void CanListener::start() {
-
 	_thread = Glib::Thread::create(sigc::mem_fun(*this, &CanListener::mainLoop), true);
 }
 

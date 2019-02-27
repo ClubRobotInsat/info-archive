@@ -31,7 +31,6 @@ void Scene::AddCube(float size, irr::core::vector3df position) {
 };
 
 void Scene::update() {
-
 	if(_device->run()) {
 		// Mise à jour du ratio de la fenetre (si l'utilisateur la redimensionne)
 		auto screenSize = _driver->getScreenSize();
@@ -169,6 +168,5 @@ void Scene::PutCameraObjet() {
 };
 
 void Scene::incrementId() {
-
 	_objectId++;
 }

@@ -19,7 +19,6 @@
 class Object3D;
 
 class World {
-
 public:
 	/**
 	 * Construction du monde de la simulation

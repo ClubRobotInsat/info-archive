@@ -171,7 +171,6 @@ namespace PhysicalRobot {
 
 	uint16_t Servos::angular_speed_to_uint16_t(AngularSpeed as) {
 		if(as > MAX_SPEED) {
-
 			as = MAX_SPEED;
 		}
 

@@ -12,7 +12,6 @@
 
 
 class SimulationToIrrlicht {
-
 public:
 	// une unite de irrlicht correspond a un decimetre
 

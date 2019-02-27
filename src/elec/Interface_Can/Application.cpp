@@ -7,7 +7,6 @@
 
 Application::Application(int argc, char** argv, std::string id)
         : Gtk::Application(argc, argv, id), _start_screen(), _monitor() {
-
 	_start_screen.startScreenSignalOnExit().connect(sigc::mem_fun(this, &Application::killStartScreen));
 	this->run(_start_screen);
 }

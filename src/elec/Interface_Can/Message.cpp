@@ -4,7 +4,6 @@
 #include "Message.h"
 
 Message::Message() {
-
 	add(_id);
 	add(_cmd);
 	add(_data);

@@ -12,9 +12,7 @@
 #include "../IGraphicalInstance.h"
 #include "SimulationToIrrlicht.h"
 
-
 class Object : public IGraphicalInstance {
-
 public:
 	Object(int id, irr::scene::ISceneNode* ptr);
 
@@ -34,6 +32,5 @@ private:
 
 	irr::scene::ISceneNode* _objectPtr;
 };
-
 
 #endif // PROJECT_OBJECT_H

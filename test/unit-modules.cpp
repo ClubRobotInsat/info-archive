@@ -48,7 +48,6 @@ private:
 };
 
 TEST_CASE("Basic module") {
-
 	SECTION("Simple tests.") {
 		ModuleTest my_module(5);
 		CHECK(my_module.get_id() == 5);
@@ -137,7 +136,6 @@ TEST_CASE("Navigation Module", "[integration]") {
 #include "../src/robot/Communication/NamedPipe.h"
 
 TEST_CASE("ModuleManager", "[integration]") {
-
 	SECTION("basic functions") {
 		PhysicalRobot::ModuleManager manager;
 

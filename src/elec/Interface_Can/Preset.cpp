@@ -46,7 +46,6 @@ PresetArray::PresetArray(std::string path) {
 
 
 void PresetArray::saveToFile(std::string path) {
-
 	JSON result;
 	result["presets"] = JSON(JSON::array());
 

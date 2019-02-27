@@ -23,7 +23,6 @@ enum DMAUsage {
 };
 
 class Serial {
-
 public:
 	Serial(PinName rx, PinName tx, int baudrate = 100000) : _rx{}, _tx{}, _rx_pin(rx), _tx_pin(tx) {}
 

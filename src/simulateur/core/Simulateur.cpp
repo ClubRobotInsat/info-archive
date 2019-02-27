@@ -36,7 +36,6 @@ Simulateur::Simulateur()
         , _theWorld(_physicalCtx.get(), _graphicalCtx.get())
         , _resetWorld(false)
         , _enablePhysics(true) {
-
 	_instance = this;
 
 	// Ajout du handler pour savoir quand la scène est fermée par l'utilisateur

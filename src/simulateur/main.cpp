@@ -48,7 +48,6 @@ bool parseArgument(int argc, char** argv, Simulateur& simulateur) {
 
 	int long_index = 0;
 	while((arg = getopt_long(argc, argv, "r:c:w:l:h:", long_options, &long_index)) != -1) {
-
 		switch(arg) {
 			case 'r':
 				if(std::string(optarg) == "off") {
@@ -124,7 +123,6 @@ void stopSimu() {
 }
 
 void parseConsole() {
-
 	while(_simuAlive) {
 		// Obtention de la commande de l'utilisateur.
 		std::string input;

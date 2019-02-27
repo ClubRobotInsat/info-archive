@@ -109,7 +109,6 @@ namespace ia_parsing {
 		TestMeca result = UNDEF;
 
 		while((arg = getopt_long(argc, argv, "csxajv:", long_options, &long_index)) != -1) {
-
 			switch(arg) {
 				case 'c':
 					result = TestMeca::PORTE_CUBES;

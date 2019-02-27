@@ -17,7 +17,6 @@ gboolean emptyGtkQueue(void* data) {
 
 
 GtkSimuApplication::GtkSimuApplication(int argc, char** argv, std::string id) : Gtk::Application(argc, argv, id) {
-
 	_mainWindow = std::make_unique<Gtk::Window>();
 	_mainWindow->set_title("Club robot Simulator 3");
 	_mainWindow->set_size_request(400, 800);

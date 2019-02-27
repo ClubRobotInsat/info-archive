@@ -77,7 +77,6 @@ namespace Strategy {
 	/// Méthode appellée régulièrement pour traiter les entrées wiimote
 	void IAWiiMote::processWiimoteInput(WiimoteState& state) {
 		if(state.hasNunchuk()) {
-
 			state.getNunchukJoystickPosition(_angle_read, _magnitude_read);
 
 			if(_magnitude_read > 0.2) {

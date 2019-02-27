@@ -5,12 +5,10 @@
 #ifndef ROOT_DIGITALOUT_H
 #define ROOT_DIGITALOUT_H
 
-
 #include "PinName.h"
 #include <iostream>
 
 class DigitalOut {
-
 public:
 	DigitalOut(PinName pin) : _pin(pin) {}
 
@@ -21,6 +19,5 @@ public:
 private:
 	PinName _pin;
 };
-
 
 #endif // ROOT_DIGITALOUT_H

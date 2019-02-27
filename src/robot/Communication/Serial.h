@@ -14,13 +14,13 @@ namespace Communication {
 		virtual ~Serial() = default;
 
 		/// Ecrit un octet sur le port
-		virtual void write_byte(uint8_t byte) final;
+		void write_byte(uint8_t byte);
 
 		/// Ecrit plusieurs octets sur le port
 		virtual void write_bytes(const uint8_t* bytes, std::size_t bytes_number) = 0;
 
 		/// Attend un octet sur le port et retourne le premier arrivé - BLOQUANT
-		virtual uint8_t read_byte() final;
+		uint8_t read_byte();
 
 		/// Attend plusieurs octets sur le port et retourne lorsque le nombre demandé a été reçu - BLOQUANT
 		/// @returns le nombre d'octets lus, c'est à dire :

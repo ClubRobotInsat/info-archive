@@ -10,7 +10,6 @@
  * A class that is used to store data that will be sent to a Gtk::Treeview
  */
 class Message : public Gtk::TreeModel::ColumnRecord {
-
 public:
 	Message();
 

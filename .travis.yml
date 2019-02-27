@@ -30,7 +30,6 @@ matrix:
         - lcov --directory . --zerocounters
       after_success:
         - cd ${TRAVIS_BUILD_DIR}
-        - build/test/unit_testing_all '[integration]'
         - lcov --directory . --capture --output-file coverage.info # capture coverage info
         - lcov --remove coverage.info 'test/*' '/usr/*' 'third_parties/*' --output-file coverage.info # filter out system and test code
         - lcov --list coverage.info # debug before upload
@@ -52,6 +51,7 @@ script:
   - $CXX --version
 
   - cd ${TRAVIS_BUILD_DIR}
+  - rm -rf build
   - cmake -H. -Bbuild ${CMAKE_OPTIONS}
   - cd build
   - make all -j $(nproc)

@@ -10,7 +10,6 @@ namespace Simu {
 
 	SimuRobot::SimuRobot(const std::string& name, Object3D& robotObject)
 	        : _name(name), _robotObject(robotObject), _moduleMgr(std::make_shared<ModuleManager>()) {
-
 		_communicator = std::make_shared<SimuCommunicator>(_moduleMgr);
 		assignModules();
 	}
