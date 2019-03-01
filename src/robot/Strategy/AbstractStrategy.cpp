@@ -15,6 +15,9 @@ extern void init_petri_utils(Strategy::AbstractStrategy& strategy);
 
 namespace Strategy {
 	AbstractStrategy::AbstractStrategy(Constants::RobotColor color) : _color(color), _nb_points(0) {
+		if(_color == Constants::RobotColor::Undef) {
+			throw std::runtime_error("The strategy color is undefined.");
+		}
 		setThreadName("Main");
 
 		Distance sx = GLOBAL_CONSTANTS()["default"].get_size().x;
@@ -51,7 +54,7 @@ namespace Strategy {
 		_execution = std::thread(std::bind(&AbstractStrategy::exec, this));
 
 		while(get_left_time() > 0_s) {
-			sleep(1_s);
+			sleep(100_ms);
 		}
 
 		stop();
