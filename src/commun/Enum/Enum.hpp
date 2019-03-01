@@ -361,6 +361,17 @@
 template <typename Enum>
 std::vector<Enum> const& getEnumValues();
 
+template <typename Enum>
+inline bool getFromString(const std::string &str, Enum &output) {
+	for (auto value : getEnumValues<Enum>()) {
+		if (toString(value) == str) {
+			output = value;
+			return true;
+		}
+	}
+	return false;
+}
+
 /**
  * Définit les fonctions getEnumValue, toString et operator<<(std::ostream &) pour l'enum demandée.
  * Cette définition se fait de manière automatique par les macros ENUM et ENUM_CLASS, il ne devrait pas avoir besoin
