@@ -4,21 +4,20 @@
 #include <cstdlib>
 #include <functional>
 
-#include "../graphique/irrlicht/Scene.h"
+#include "Commun.h"
+#include "log/Log.h"
 #include "SimulateurConstantes.h"
-//#include "../graphique/server/WebGraphicalContext.h"
+#include "../graphique/irrlicht/Scene.h"
 #include "../gui/gtk/GtkSimuContext.h"
 #include "../physique/box2d/Box2DPhysicalContext.h"
+//#include "../graphique/server/WebGraphicalContext.h"
 
 // Gestion de l'arrêt du simulateur.
-// TODO L'arrêt du simulateur doit être géré par le simulateur (retrait de la variable "simuAlive" dans le main)
-extern void stopSimu();
-
 class UserHandler : public IGraphicalUserListener {
 public:
 	static UserHandler instance;
 	void onExit() override {
-		stopSimu();
+		Simulateur::getInstance().requestStop();
 	}
 };
 
@@ -26,7 +25,7 @@ UserHandler UserHandler::instance = UserHandler();
 
 using Constants::RobotColor;
 
-Simulateur* Simulateur::_instance = nullptr;
+std::unique_ptr<Simulateur> Simulateur::_instance = nullptr;
 
 Simulateur::Simulateur()
         : _graphicalCtx(std::make_unique<Scene>())
@@ -36,22 +35,34 @@ Simulateur::Simulateur()
         , _resetWorld(false)
         , _enablePhysics(true) {
 
-	_instance = this;
-
 	// Ajout du handler pour savoir quand la scène est fermée par l'utilisateur
 	if(dynamic_cast<Scene*>(_graphicalCtx.get())) {
 		dynamic_cast<Scene&>(*_graphicalCtx).addWindowListener(&UserHandler::instance);
 	}
+
 }
 
 Simulateur::~Simulateur() {
-	endWorld();
-	_guiCtx->close();
-	_instance = nullptr;
+
 }
 
 void Simulateur::start() {
 	_guiCtx = std::make_unique<GtkSimuContext>(0, nullptr, "simu.gtk.app", _guiClient);
+
+	_simuAlive = true;
+	auto last = TimePoint::now();
+
+	while(_simuAlive) {
+		update(10_ms);
+
+		// On se cale sur 60 fps.
+		auto now = TimePoint::now();
+		sleep(std::max(0_s, 1 / 60_Hz - (now - last)));
+		last = now;
+	}
+
+	destroyWorld();
+	_guiCtx->close();
 }
 
 void Simulateur::update(Duration time) {
@@ -66,6 +77,10 @@ void Simulateur::update(Duration time) {
 	_theWorld.update(time);
 
 	_guiCtx->update();
+}
+
+void Simulateur::requestStop() {
+	_simuAlive = false;
 }
 
 void Simulateur::setJSONFile(const std::string& file) {
@@ -92,7 +107,7 @@ void Simulateur::initWorld() {
 
 void Simulateur::resetWorld() {
 	// Suppression de tous les objets
-	_theWorld.removeAllObject();
+	destroyWorld();
 
 	// Reconstruction de la table
 	initWorld();
@@ -100,6 +115,10 @@ void Simulateur::resetWorld() {
 	if(_robot != nullptr) {
 		addRobot(_robot->getName(), _robot->getColor());
 	}
+}
+
+void Simulateur::destroyWorld() {
+	_theWorld.removeAllObject();
 }
 
 void Simulateur::disableSimulation() {
@@ -111,12 +130,6 @@ void Simulateur::addRobot(std::string name, Constants::RobotColor color) {
 	                                           _theWorld.createRobotFromFile(_json_file, color));
 
 	_robot = std::make_unique<Simu::SimuRobot>(name, color, robotObj);
-}
-
-// Est-ce que cette méthode est vraiment nécessaire ?
-// Le simu s'arrête à l'appel du destructeur dans tous les cas -- Louis
-void Simulateur::endWorld() {
-	_theWorld.removeAllObject();
 }
 
 void Simulateur::sendTextMessage(const std::string& message) {

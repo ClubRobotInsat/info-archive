@@ -58,6 +58,9 @@ public:
 	 * Obtient un pointeur vers l'unique instance du simulateur
 	 */
 	static Simulateur& getInstance() {
+		if (_instance == nullptr) {
+			_instance = std::make_unique<Simulateur>();
+		}
 		return *_instance;
 	}
 
@@ -71,7 +74,10 @@ public:
 	 */
 	~Simulateur();
 
-	/** Démarre le simulateur */
+	/**
+	 * Execute la boucle principale du simulateur. Cette méthode
+	 * ne retourne pas tant que le simulateur ne s'est pas fermé.
+	 * */
 	void start();
 
 	/**
@@ -80,6 +86,12 @@ public:
 	World* getWorld() {
 		return &_theWorld;
 	}
+
+	/**
+	 * Envoie une demande d'arrêt au simulateur. Celui-ci effectue
+	 * les dernières opérations avant l'arrêt, puis s'arrête.
+	 * */
+	void requestStop();
 
 	/**
 	 * Mise à jour du monde et de l'état du robot
@@ -113,7 +125,7 @@ public:
 	/**
 	 * On arrête la simulation : suppression du robot et de tous les objets
 	 */
-	void endWorld();
+	void destroyWorld();
 
 	/**
 	 * On ajoute notre robot sur la table
@@ -135,7 +147,7 @@ public:
 
 private:
 	/// Unique instance du simulateur
-	static Simulateur* _instance;
+	static std::unique_ptr<Simulateur> _instance;
 
 	std::unique_ptr<IGraphicalContext> _graphicalCtx;
 	std::unique_ptr<IPhysicalContext> _physicalCtx;
@@ -149,6 +161,7 @@ private:
 
 	std::unique_ptr<Simu::SimuRobot> _robot;
 
+	std::atomic_bool _simuAlive = false;
 	/// On demande à réinitialiser la simulation?
 	std::atomic_bool _resetWorld;
 

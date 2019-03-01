@@ -2,7 +2,6 @@
 // Created by paul on 04/02/16.
 //
 
-#include <atomic>
 #include <getopt.h>
 #include <signal.h>
 
@@ -112,61 +111,18 @@ bool parseArgument(int argc, char** argv, Simulateur& simulateur) {
 	return parsingOK;
 }
 
-namespace {
-	std::atomic_bool _simuAlive = {true};
-	Simulateur _simu;
-} // namespace
-
-void stopSimu() {
-	_simuAlive = false;
-}
-
-void parseConsole() {
-
-	while(_simuAlive) {
-		// Obtention de la commande de l'utilisateur.
-		std::string input;
-		std::getline(std::cin, input);
-
-		// quitter
-		if(input == std::string("q")) {
-			_simuAlive = false;
-			// reset
-		} else if(input == std::string("r")) {
-			_simu.setResetWorldFlag(true);
-			// commande inconnue, afficher l'aide
-		} else {
-			std::cout << "help : q (quit), r (reset)"
-			          << std::endl; // TO DO Afficher l'aide de façon synchrone avec un buffer
-		}
-	}
-}
-
 int main(int argc, char** argv) {
+	Simulateur &simu = Simulateur::getInstance();
+
 	// On coupe proprement le simu.
-	signal(SIGINT, [](int) {
-		_simuAlive = false;
+	std::signal(SIGINT, [](int) {
+		Simulateur::getInstance().requestStop();
 		std::cout << "Demande d'arrêt du simulateur" << std::endl;
 	});
 
-	if(parseArgument(argc, argv, _simu)) {
+	if(parseArgument(argc, argv, simu)) {
 		logDebug5("Starting simulator");
-		_simu.start();
-
-		auto last = TimePoint::now();
-
-		// Thread pour analyser les entrées console ("entrée" pour reset par exemple)
-		std::thread consoleThread(std::bind(&parseConsole));
-		consoleThread.detach();
-
-		while(_simuAlive) {
-			_simu.update(10_ms);
-
-			// On se cale sur 60 fps.
-			auto now = TimePoint::now();
-			sleep(max(0_s, 1 / 60_Hz - (now - last)));
-			last = now;
-		}
+		simu.start();
 	}
 
 	return EXIT_SUCCESS;
