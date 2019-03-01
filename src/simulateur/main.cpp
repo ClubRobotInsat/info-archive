@@ -18,7 +18,7 @@ void printHelp(std::ostream& os = std::cout) {
 	std::string colors = "["s + toString(Constants::RobotColor::Purple) + "|" + toString(Constants::RobotColor::Yellow) + "]";
 	std::transform(colors.cbegin(), colors.cend(), colors.begin(), ::tolower);
 
-	os << "Usage : --robot [on|off] --world [on|off] --color " << colors << " --load <path.json> [--no-physics]" << std::endl;
+	os << "Usage : --robot [name|off] --world [on|off] --color " << colors << " --load <path.json> [--no-physics]" << std::endl;
 }
 
 /** Cette fonction parse les arguments envoyés au simu et
@@ -31,7 +31,7 @@ bool parseArgument(int argc, char** argv, Simulateur& simulateur) {
 	bool parsingOK = true;
 
 	bool no_physics = false;
-	bool robot = true;
+	std::string robot = "primary";
 	bool world = true;
 	std::string json_file;
 	Constants::RobotColor color = Constants::RobotColor::Undef;
@@ -50,9 +50,7 @@ bool parseArgument(int argc, char** argv, Simulateur& simulateur) {
 
 		switch(arg) {
 			case 'r':
-				if(std::string(optarg) == "off") {
-					robot = false;
-				}
+				robot = std::string(optarg);
 				break;
 			case 'c':
 				color = Constants::string_to_color(std::string(optarg));
@@ -90,8 +88,9 @@ bool parseArgument(int argc, char** argv, Simulateur& simulateur) {
 	simulateur.setJSONFile(json_file);
 
 	// Robot
-	if(robot) {
-		simulateur.addRobot(color);
+	if(robot != "off") {
+		simulateur.addRobot(robot, color);
+		logDebug5("Robot \"", robot, "\" ajouté ! ");
 		logDebug5(std::string("Couleur du robot : ") + toString(color));
 	} else {
 		logDebug4("Aucun robot ajouté.");

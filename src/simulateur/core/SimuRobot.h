@@ -13,7 +13,7 @@ namespace Simu {
 
 	class SimuRobot {
 	public:
-		explicit SimuRobot(const std::string& name, Object3D& robotObject);
+		explicit SimuRobot(const std::string& name, Constants::RobotColor robotColor, Object3D& robotObject);
 
 		void connect(const std::shared_ptr<Communication::Protocol>& protocol);
 
@@ -23,8 +23,17 @@ namespace Simu {
 			return *_controller;
 		}
 
+		Constants::RobotColor getColor() {
+			return _color;
+		}
+
+		std::string getName() {
+			return _name;
+		}
+
 	private:
 		std::string _name;
+		Constants::RobotColor _color;
 		std::shared_ptr<IRobotController> _controller;
 		Object3D& _robotObject;
 

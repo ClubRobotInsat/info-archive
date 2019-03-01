@@ -24,8 +24,7 @@ public:
 
 UserHandler UserHandler::instance = UserHandler();
 
-
-using namespace Constants;
+using Constants::RobotColor;
 
 Simulateur* Simulateur::_instance = nullptr;
 
@@ -79,7 +78,7 @@ Vector3m const CubeData::getPosition() {
 
 void Simulateur::initWorld() {
 	// Pour lire à partir du JSON
-	if(_json_file != "") {
+	if(!_json_file.empty()) {
 		_theWorld.loadWorldFromFile(_json_file);
 	} else {
 		_theWorld.loadWorldFromJSON(GLOBAL_CONSTANTS().TABLE_2018());
@@ -91,24 +90,27 @@ void Simulateur::initWorld() {
 	//_theWorld.writeJSONToFile("/tmp/table_simu.json");
 }
 
-void Simulateur::disableSimulation() {
-	_theWorld.enableCollisions(false);
-}
-
-void Simulateur::addRobot(Constants::RobotColor color) {
-	Object3D& robotObj = (_json_file.empty() ? _theWorld.createRobotFromJSON(GLOBAL_CONSTANTS().TABLE_2018(), color) :
-	                                           _theWorld.createRobotFromFile(_json_file, color));
-
-	_robot = std::make_unique<Simu::SimuRobot>("primary", robotObj);
-}
-
 void Simulateur::resetWorld() {
 	// Suppression de tous les objets
 	_theWorld.removeAllObject();
 
 	// Reconstruction de la table
 	initWorld();
-	addRobot(getRobotColor());
+
+	if (_robot != nullptr) {
+		addRobot(_robot->getName(), _robot->getColor());
+	}
+}
+
+void Simulateur::disableSimulation() {
+	_theWorld.enableCollisions(false);
+}
+
+void Simulateur::addRobot(std::string name, Constants::RobotColor color) {
+	Object3D& robotObj = (_json_file.empty() ? _theWorld.createRobotFromJSON(GLOBAL_CONSTANTS().TABLE_2018(), color) :
+	                                           _theWorld.createRobotFromFile(_json_file, color));
+
+	_robot = std::make_unique<Simu::SimuRobot>(name, color, robotObj);
 }
 
 // Est-ce que cette méthode est vraiment nécessaire ?
@@ -119,8 +121,4 @@ void Simulateur::endWorld() {
 
 void Simulateur::sendTextMessage(const std::string& message) {
 	_graphicalCtx->displayMessage(message);
-}
-
-Constants::RobotColor Simulateur::getRobotColor() const {
-	return RobotColor::Undef;
 }

@@ -119,12 +119,7 @@ public:
 	 * On ajoute notre robot sur la table
 	 * @param color couleur du robot, détermine sa position initiale et sa couleur d'affichage
 	 */
-	void addRobot(Constants::RobotColor color);
-
-	/**
-	 * Obtient la couleur du robot
-	 */
-	Constants::RobotColor getRobotColor() const;
+	void addRobot(std::string name, Constants::RobotColor color);
 
 	Simu::SimuRobot& getRobot() {
 		return *_robot;

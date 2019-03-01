@@ -1,7 +1,10 @@
 #include "SimuRobot.h"
 
+#include <log/Log.h>
+
 #include "../communication/SimuLed.h"
 #include "../communication/SimuServos.h"
+#include "../communication/SimuNavigation.h"
 
 // TODO Le robotController devrait être obtenu grâce au contexte physique ou whatever
 #include "../physique/box2d/RobotController.h"
@@ -11,8 +14,8 @@ namespace Simu {
 	using Communication::Communicator;
 	using PhysicalRobot::ModuleManager;
 
-	SimuRobot::SimuRobot(const std::string& name, Object3D& robotObject)
-	        : _name(name), _robotObject(robotObject), _moduleMgr(std::make_shared<ModuleManager>()) {
+	SimuRobot::SimuRobot(const std::string& name, Constants::RobotColor robotColor, Object3D& robotObject)
+	        : _name(name), _color(robotColor), _robotObject(robotObject), _moduleMgr(std::make_shared<ModuleManager>()) {
 
 		_communicator = std::make_shared<SimuCommunicator>(_moduleMgr);
 		_controller = std::shared_ptr<IRobotController>(robotObject.getPhysics().createRobotController());
@@ -30,7 +33,16 @@ namespace Simu {
 	void SimuRobot::assignModules() {
 		auto modules = GLOBAL_CONSTANTS()[_name].get_modules();
 
-		_moduleMgr->add_module<SimuLed>(1);
+		for (auto &moduleData : modules) {
+			if (moduleData.first == "navigation") {
+				logDebug3("Added navigation module at id ", static_cast<int>(moduleData.second));
+				_moduleMgr->add_module<SimuNavigation>(moduleData.second);
+			}
+			else if (moduleData.first == "servos") {
+				logDebug3("Added servos module at id ", static_cast<int>(moduleData.second));
+				_moduleMgr->add_module<SimuServos>(moduleData.second);
+			}
+		}
 	}
 
 } // namespace Simu
