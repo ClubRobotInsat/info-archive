@@ -13,20 +13,24 @@ namespace Strategy {
 
 		IOInterfacer::IOInterfacer(PhysicalRobot::Robot& robot) : IOInterfacer(robot.get_module<interfaced_type>()) {}
 
-		bool IOInterfacer::is_tirette_inserted() const {
+		IOInterfacer::TriggerState IOInterfacer::get_tirette_state() const {
 			return _module.read_tirette();
+		}
+
+		bool IOInterfacer::is_tirette_triggered() const {
+			return get_tirette_state() == TriggerState::Triggered;
 		}
 
 		void IOInterfacer::wait_insertion_tirette() const {
 			logInfo("Wait the insertion of the tirette.");
-			while(!is_tirette_inserted()) {
+			while(get_tirette_state() == IOInterfacer::TriggerState::Waiting) {
 				sleep(100_ms);
 			}
 			logInfo("Tirette inserted, please take off it!");
 		}
 
 		void IOInterfacer::wait_deletion_tirette() const {
-			while(!is_tirette_inserted()) {
+			while(get_tirette_state() == IOInterfacer::TriggerState::Triggered) {
 				sleep(100_ms);
 			}
 			logInfo("Tirette outside!");

@@ -167,7 +167,7 @@ namespace Strategy {
 	void AbstractStrategy::wait_for_tirette() const {
 		for(auto& [name, manager] : _interfacers) {
 			auto& io = manager->get_interfacer<Interfacer::IOInterfacer>();
-			if(!io.is_tirette_inserted()) {
+			if(!io.is_tirette_triggered()) {
 				logInfo("Waiting for the insertion of the tirette on robot '", name, "'.");
 				io.wait_insertion_tirette();
 			}

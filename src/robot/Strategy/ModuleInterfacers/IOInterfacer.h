@@ -13,12 +13,15 @@ namespace Strategy {
 		class IOInterfacer final : public AbstractInterfacer {
 		public:
 			using interfaced_type = PhysicalRobot::IO;
+			using TriggerState = PhysicalRobot::TriggerState;
 
 			explicit IOInterfacer(interfaced_type& module_io);
 			explicit IOInterfacer(std::shared_ptr<PhysicalRobot::Robot>);
 			explicit IOInterfacer(PhysicalRobot::Robot&);
 
-			bool is_tirette_inserted() const;
+			TriggerState get_tirette_state() const;
+
+			bool is_tirette_triggered() const;
 
 			void wait_insertion_tirette() const;
 

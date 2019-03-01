@@ -10,12 +10,14 @@
 #include "Module.hpp"
 
 namespace PhysicalRobot {
+	ENUM_CLASS_NS(PhysicalRobot, TriggerState, Triggered, Waiting);
+	ENUM_CLASS_NS(PhysicalRobot, IOState, On, Off);
 
 	class IO final : public Module {
 	public:
 		explicit IO(uint8_t id);
 
-		bool read_tirette() const;
+		TriggerState read_tirette() const;
 
 	private:
 		std::vector<JSON> generate_list_jsons() const override;
@@ -23,7 +25,7 @@ namespace PhysicalRobot {
 
 		void deactivation() override {}
 
-		bool _tirette;
+		std::atomic<TriggerState> _tirette;
 	};
 } // namespace PhysicalRobot
 
