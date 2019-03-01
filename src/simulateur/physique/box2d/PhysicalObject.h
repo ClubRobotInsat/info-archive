@@ -40,7 +40,7 @@ public:
 	/**
 	 * Destruction de l'objet physique
 	 */
-	virtual ~PhysicalObject() override;
+	~PhysicalObject() override;
 
 	int getId() const override;
 

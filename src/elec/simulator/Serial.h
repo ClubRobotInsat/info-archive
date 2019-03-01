@@ -25,7 +25,6 @@ enum DmaUsage {
 };
 
 class Serial {
-
 public:
 	Serial(PinName rx, PinName tx, int baudrate = 100000) : _read(), _write(), _rx{}, _tx{}, _rx_pin(rx), _tx_pin(tx) {}
 
@@ -54,6 +53,5 @@ private:
 	PinName _rx_pin;
 	PinName _tx_pin;
 };
-
 
 #endif // ROOT_SERIAL_H

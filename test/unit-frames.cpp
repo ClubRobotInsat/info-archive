@@ -2,7 +2,7 @@
 
 #include "communication/GlobalFrame.h"
 
-TEST_CASE("Global Frame") {
+TEST_CASE("Global Frame", "[integration]") {
 	GlobalFrame frame{0xFF, 0x8, 0x3, 0xD};
 
 	SECTION("get raw data array") {

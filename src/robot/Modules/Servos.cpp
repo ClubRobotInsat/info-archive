@@ -33,12 +33,14 @@ namespace PhysicalRobot {
 		std::lock_guard<std::mutex> lk(_mutex_variables);
 
 		// 'id == 0' veut dire qu'il n'y a pas de servo-moteur dans la représentation C
-		if(id == 0)
+		if(id == 0) {
 			return INDEX_BAD_ID;
+		}
 
 		for(servo_t index = 0; index < ID_MAX_SERVOS; ++index) {
-			if(_servos[index] != nullptr && _servos[index]->id == id)
+			if(_servos[index] != nullptr && _servos[index]->id == id) {
 				return index;
+			}
 		}
 
 		return INDEX_BAD_ID;
@@ -171,7 +173,6 @@ namespace PhysicalRobot {
 
 	uint16_t Servos::angular_speed_to_uint16_t(AngularSpeed as) {
 		if(as > MAX_SPEED) {
-
 			as = MAX_SPEED;
 		}
 
@@ -227,7 +228,6 @@ namespace PhysicalRobot {
 			}
 		}
 	}
-
 
 	void Servos::deactivation() {
 		lock_variables();

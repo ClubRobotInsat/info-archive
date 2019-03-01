@@ -3,15 +3,39 @@
 //
 
 #include "../src/robot/Robot.h"
+#include "../src/robot/Strategy/AbstractStrategy.h"
 #include "json.hpp"
+
+class StrategyServos final : public Strategy::AbstractStrategy {
+	uint8_t _n;
+
+public:
+	StrategyServos(uint8_t servo) : AbstractStrategy(Constants::RobotColor::Yellow), _n(servo) {
+		this->add_robot(std::make_shared<PhysicalRobot::Robot>("primary"));
+	}
+
+private:
+	void execute() override {
+		auto servos = _interfacers["primary"]->get_interfacer<Strategy::Interfacer::ServosInterfacer>();
+		servos->add_servo(_n);
+		// servos.set_position(_n, 80_deg);
+		servos->set_speed(_n, PhysicalRobot::Servos::MAX_SPEED);
+	}
+};
 
 using namespace PhysicalRobot;
 
-#define TEST_ROBOT 1
+#define TEST_STRAT 1
+#define TEST_ROBOT 0
 #define TEST_JSON 0
 
 int main() {
 	const uint8_t ALL_SERVOS = 254;
+
+#if TEST_STRAT
+	StrategyServos strat(ALL_SERVOS);
+	strat.start(10_s);
+#endif
 
 #if TEST_ROBOT
 	auto m = std::make_shared<ModuleManager>();
@@ -22,7 +46,7 @@ int main() {
 	servos.set_blocking_mode(ALL_SERVOS, BlockingMode::HoldOnBlock);
 	servos.set_color(ALL_SERVOS, Color::Blue);
 
-	Robot robot(m, {"prog_servos", "UDP", "192.168.0.222", "50000", "51"}, Lidar::None);
+	Robot robot(m, {"prog_servos", "UDP", "192.168.1.2", "50000", "51"}, Lidar::None);
 	std::cout << "set_speed(1000)" << std::endl;
 	servos.set_speed(ALL_SERVOS, 60_deg_s, Rotation::CounterClockwise);
 	sleep(500_ms);
@@ -47,6 +71,8 @@ int main() {
 #endif
 
 #if TEST_JSON
+	Communication::protocol_udp udp("192.168.1.2", 5000, 51);
+	udp.debug_active = true;
 	for(int i = 0; i < 1024; ++i) {
 		JSON json;
 		json["id"] = ALL_SERVOS;
@@ -68,10 +94,7 @@ int main() {
 
 		// std::cout << std::endl;
 
-		Communication::protocol_udp udp("192.168.0.222", 5000, 51);
-
 		udp.send_frame(f);
-		// sleep(0_ms);
 	}
 
 	sleep(5_s);

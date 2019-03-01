@@ -5,10 +5,11 @@
 #include "catch.hpp"
 
 #include "../src/robot/Communication/Communicator.h"
+#include "../src/robot/Communication/CommunicatorParsing.hpp"
 #include "../src/robot/Modules/ModuleManager.h"
 #include "communication/GlobalFrame.h"
 
-TEST_CASE("ParsingClassChecker") {
+TEST_CASE("ParsingClassChecker", "[integration]") {
 	SECTION("Validity test of the 'parses_frames' helper struct.") {
 		struct Ok {
 			void read_frame(const GlobalFrame&) {}
@@ -84,6 +85,95 @@ TEST_CASE("ParsingClassChecker") {
 	}
 }
 
+TEST_CASE("Protocol parsing's arguments", "[integration]") {
+	using namespace Communication::Arguments;
+	Log::open(Log::NOTHING, "", false);
+
+	SECTION("Bad protocol") {
+		auto protocol = Parser::make_protocol({"BAD_PROTOCOL"});
+		REQUIRE(protocol.first == typeid(void));
+		REQUIRE(protocol.second == nullptr);
+	}
+
+	SECTION("RS232") {
+		REQUIRE_THROWS_WITH(Parser::make_protocol({"RS232"}), "Utilisation avec RS232 : \"<program_name> RS232 /dev/ttyUSB0\"");
+		CHECK(ArgumentsRS232(std::vector({"RS232"s, "/dev/ttyUSB0"s})).get_protocol_type() == typeid(Communication::protocol_rs232));
+		REQUIRE_THROWS_WITH(ArgumentsRS232(std::vector({"RS232"s, "/dev/ttyUSB0"s})).make_protocol(), "Impossible d'ouvrir le port !");
+	}
+
+	SECTION("TCPIP") {
+		REQUIRE_THROWS_WITH(Parser::make_protocol({"TCPIP", "127.0.0.1" /*, "1234"*/}),
+		                    "Utilisation avec TCPIP : \"<program_name> TCPIP 127.0.0.1 1234\"");
+		CHECK(ArgumentsTCPIP({"127.0.0.1"s, "1234"s}).get_protocol_type() == typeid(Communication::protocol_tcpip));
+		REQUIRE_THROWS_WITH(ArgumentsTCPIP(std::vector({"127.0.0.1"s, "1234"s})).make_protocol(),
+		                    "Impossible de se connecter au serveur 127.0.0.1:1234");
+	}
+
+	SECTION("Pipes") {
+		REQUIRE_THROWS_WITH(Parser::make_protocol({"PIPES", "/tmp/read.pipe" /*, "/tmp/write.pipe"*/}),
+		                    "Utilisation avec PIPES : \"<program_name> PIPES [rx.link] [tx.link]\"");
+		auto protocol = Parser::make_protocol({"PIPES", "/tmp/read.pipe", "/tmp/write.pipe"});
+		CHECK(protocol.first == typeid(Communication::protocol_pipes));
+		CHECK(protocol.second != nullptr);
+	}
+
+	SECTION("Local") {
+		CHECK(ArgumentsLocal(std::vector<std::string>()).get_protocol_type() == typeid(Communication::protocol_local));
+		REQUIRE_THROWS_WITH(ArgumentsLocal(std::vector<std::string>()).make_protocol(),
+		                    "Impossible de se connecter au serveur 127.0.0.1:4321");
+	}
+
+	SECTION("Null") {
+		REQUIRE_NOTHROW(Parser::make_protocol({"NULL"}));
+		auto protocol = Parser::make_protocol({"NULL"});
+		CHECK(protocol.first == typeid(Communication::protocol_null));
+		CHECK(protocol.second != nullptr);
+	}
+
+	Log::close(Log::NOTHING);
+}
+
+TEST_CASE("Protocol parsing's arguments - UDP", "[segfault]") {
+	using namespace Communication::Arguments;
+	Log::open(Log::NOTHING, "", false);
+
+	SECTION("UDP") {
+		REQUIRE_THROWS_WITH(Parser::make_protocol({"UDP", "127.0.0.1", "5000" /*, "51"*/}),
+		                    "Utilisation avec UDP : \"<program_name> UDP [@IP] [port local] [port distant]\"");
+		{
+			std::unique_ptr<Communication::Protocol> ptr;
+			REQUIRE_NOTHROW(ptr = ArgumentsUDP("127.0.0.1", 5000, 51).make_protocol());
+			CHECK(ptr != nullptr);
+		}
+		CHECK(ArgumentsUDP(std::vector({"127.0.0.1"s, "5000"s, "51"s})).make_protocol() != nullptr);
+		auto protocol = Parser::make_protocol({"UDP", "127.0.0.1", "5000", "51"});
+		CHECK(protocol.first == typeid(Communication::protocol_udp));
+		CHECK(protocol.second != nullptr);
+	}
+
+	SECTION("Ethernet") {
+		REQUIRE_THROWS_WITH(Parser::make_protocol({"ETHERNET", "1", "127.0.0.1", "5000" /*, "51"*/}),
+		                    "Utilisation avec ETHERNET : \"<program_name> <[ID] [@IP] [local port] [remote "
+		                    "port]>...\"");
+		REQUIRE_NOTHROW(Parser::make_protocol({"ETHERNET", "1", "127.0.0.1", "5001", "51", "2", "127.0.0.1", "5002", "52"}));
+		auto protocol = Parser::make_protocol({"ETHERNET", "1", "127.0.0.1", "5001", "51", "2", "127.0.0.1", "5002", "52"});
+		CHECK(protocol.first == typeid(Communication::protocol_ethernet));
+		REQUIRE(protocol.second != nullptr);
+
+		ArgumentsEthernet args({Communication::protocol_ethernet::UDPConnection(1, "127.0.0.1", 6001, 61)});
+		args.add_connection(5, "127.0.0.1", 6002, 62);
+		REQUIRE_NOTHROW(args.make_protocol());
+		CHECK(args.make_protocol() != nullptr);
+	}
+
+	SECTION("Real life") {
+		REQUIRE(GLOBAL_CONSTANTS()["primary"].get_protocol_type() == "udp");
+		CHECK_NOTHROW(Parser::make_protocol(GLOBAL_CONSTANTS()["primary"]));
+	}
+
+	Log::close(Log::NOTHING);
+}
+
 template <Communication::SerialProtocolType T>
 void symetric_serial_test(Communication::SerialProtocol<T>& rx,
                           Communication::SerialProtocol<T>& tx,
@@ -107,7 +197,9 @@ void symetric_serial_test(Communication::SerialProtocol<T>& rx,
 	t.join();
 }
 
-TEST_CASE("Serial Protocols") {
+TEST_CASE("Serial Protocols", "[integration]") {
+	Log::open(Log::NOTHING, "", false);
+
 	std::atomic_bool running_execution = true;
 	auto stop_execution_after = [&running_execution](Duration delay) {
 		sleep(delay);
@@ -170,6 +262,20 @@ TEST_CASE("Serial Protocols") {
 		// TODO
 	}
 
+	Log::close(Log::NOTHING);
+}
+
+TEST_CASE("Serial Protocols - UDP", "[segfault]") {
+	Log::open(Log::NOTHING, "", false);
+
+	std::atomic_bool running_execution = true;
+	auto stop_execution_after = [&running_execution](Duration delay) {
+		sleep(delay);
+		running_execution.exchange(false);
+	};
+
+	const GlobalFrame frame{0x5, 0xA4};
+
 	SECTION("UDP") {
 		SECTION("Bad initialization") {
 			// Pas de privilège suffisant pour binder le port 10 en réception
@@ -197,9 +303,13 @@ TEST_CASE("Serial Protocols") {
 			symetric_serial_test(sender, recver, frame, stop_execution_after, running_execution);
 		}
 	}
+
+	Log::close(Log::NOTHING);
 }
 
-TEST_CASE("Multi Serial Protocols") {
+TEST_CASE("Multi Serial Protocols", "[segfault]") {
+	Log::open(Log::NOTHING, "", false);
+
 	std::atomic_bool running_execution = true;
 	auto stop_execution_after = [&running_execution](Duration delay) {
 		sleep(delay);
@@ -247,4 +357,6 @@ TEST_CASE("Multi Serial Protocols") {
 		t_send.join();
 		t.join();
 	}
+
+	Log::close(Log::NOTHING);
 }

@@ -31,7 +31,7 @@ protected:
 	}
 
 	/// Contient la logique de la stratégie elle-même
-	virtual void executer() override;
+	void executer() override;
 
 	void bilanPosition() {
 		auto posRobot = _robot->lireCoordonnees().getPos2D();
@@ -91,7 +91,7 @@ void IATestLidar::executer() {
 	auto const dimX = 1.5_m, dimY = 1_m;
 	Vector2m pos = {0_m, 0_m};
 	while(true) {
-		auto val1 = ((rand() % 1007 / 1007.0f) * 2 - 1) * dimX, val2 = ((rand() % 1007 / 1007.0f) * 2 - 1) * dimY;
+		auto val1 = ((rand_r() % 1007 / 1007.0f) * 2 - 1) * dimX, val2 = ((rand_r() % 1007 / 1007.0f) * 2 - 1) * dimY;
 		while(abs(val1) < 30_cm) {
 			val1 *= 2;
 		}

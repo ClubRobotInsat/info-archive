@@ -27,6 +27,7 @@ class band_matrix {
 private:
 	std::vector<std::vector<double>> _upper; // bande supérieure
 	std::vector<std::vector<double>> _lower; // bande inférieure
+
 public:
 	band_matrix() = default;
 	band_matrix(int dim, int n_u, int n_l);

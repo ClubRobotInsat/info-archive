@@ -85,7 +85,6 @@ void WiimoteInputProvider::startListening() {
 	std::cout << "\nLancement du pilotage\n\n" << std::endl;
 
 	do {
-
 		if(wii.Poll()) {
 			WiimoteState state(wiimote);
 

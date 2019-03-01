@@ -37,10 +37,10 @@ const FrameLidar& Filtre::get_frame(const FrameLidar& input) {
 		Distance& o = _state.points[i];
 
 		// traitement heuristique pour les valeurs aberrantes.
-		Distance avg_voisins = (i == 0) ? (input.points[1]) :
+		/*Distance avg_voisins = (i == 0) ? (input.points[1]) :
 		                                  (i == _state.points.size()) ? (input.points[i - 1]) :
-		                                                                ((input.points[i - 1] + input.points[i + 1]) / 2);
-		Distance diff = in - avg_voisins;
+		                                                                ((input.points[i - 1] + input.points[i + 1]) / 2);*/
+		// Distance diff = in - avg_voisins;
 		// double R = 0.01 + (diff*diff)*0.01;
 		double R = 0.004;
 		if(in < MIN) {

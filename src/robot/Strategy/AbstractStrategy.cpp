@@ -15,6 +15,9 @@ extern void init_petri_utils(Strategy::AbstractStrategy& strategy);
 
 namespace Strategy {
 	AbstractStrategy::AbstractStrategy(Constants::RobotColor color) : _color(color), _nb_points(0) {
+		if(_color == Constants::RobotColor::Undef) {
+			throw std::runtime_error("The strategy color is undefined.");
+		}
 		setThreadName("Main");
 
 		Distance sx = GLOBAL_CONSTANTS()["default"].get_size().x;
@@ -51,7 +54,7 @@ namespace Strategy {
 		_execution = std::thread(std::bind(&AbstractStrategy::exec, this));
 
 		while(get_left_time() > 0_s) {
-			sleep(1_s);
+			sleep(100_ms);
 		}
 
 		stop();
@@ -70,8 +73,8 @@ namespace Strategy {
 	}
 
 	void AbstractStrategy::stop() {
-		for(auto interfacer : _interfacers) {
-			interfacer->get_robot()->deactivation();
+		for(auto& [name, manager] : _interfacers) {
+			manager->get_robot()->deactivation();
 		}
 	}
 
@@ -104,12 +107,16 @@ namespace Strategy {
 		auto manager = std::make_shared<Interfacer::RobotManager>(robot);
 		// Interfacer::ServosInterfacer
 		if(manager->get_robot()->has_module<PhysicalRobot::Servos>()) {
-			logInfo("Insertion of an Interfacer::ServosInterfacer inside the robot '" + robot->name + "'");
+			if(debug_mode) {
+				logInfo("Insertion of an Interfacer::ServosInterfacer inside the robot '" + robot->name + "'");
+			}
 			manager->add_interfacer<Interfacer::ServosInterfacer>();
 		}
 		// Interfacer::AvoidanceInterfacer
 		if(manager->get_robot()->has_lidar()) {
-			logInfo("Insertion of an Interfacer::AvoidanceInterfacer inside the robot '" + robot->name + "'");
+			if(debug_mode) {
+				logInfo("Insertion of an Interfacer::AvoidanceInterfacer inside the robot '" + robot->name + "'");
+			}
 			manager->add_interfacer<Interfacer::AvoidanceInterfacer>(*_env, GLOBAL_CONSTANTS()[robot->name].get_turret_position());
 		}
 
@@ -120,40 +127,59 @@ namespace Strategy {
 		try {
 			// Interfacer::ServosInterfacer
 			if(manager->has_interfacer<Interfacer::ServosInterfacer>()) {
-				logInfo("Insertion of PetriLab::Servos functionalities associated with the robot '" +
-				        manager->get_robot()->name + "'");
+				if(debug_mode) {
+					logInfo("Insertion of PetriLab::Servos functionalities associated with the robot '" +
+					        manager->get_robot()->name + "'");
+				}
 				init_petri_servos(manager, _color);
 			}
 			// Interfacer::AvoidanceInterfacer
 			if(manager->has_interfacer<Interfacer::AvoidanceInterfacer>()) {
-				logInfo("Insertion of PetriLab::AvoidanceInterfacer functionalities associated with the robot '" +
-				        manager->get_robot()->name + "'");
+				if(debug_mode) {
+					logInfo("Insertion of PetriLab::AvoidanceInterfacer functionalities associated with the robot '" +
+					        manager->get_robot()->name + "'");
+				}
 				init_petri_avoidance(manager);
 			}
 		} catch(std::exception const& e) {
 			logError("Impossible to initialize PetriLab: ", e.what());
 		}
 
-		_interfacers.push_back(manager);
+		_interfacers[manager->get_robot()->name] = manager;
 
 		return manager;
 	}
 
 	std::shared_ptr<Interfacer::RobotManager> AbstractStrategy::get_robot(const std::string& name) {
-		for(auto i : _interfacers) {
-			if(i->get_robot()->name == name) {
-				return i;
-			}
+		auto it = _interfacers.find(name);
+		if(it != _interfacers.cend()) {
+			return it->second;
 		}
+
 		return nullptr;
 	}
 
 	std::vector<std::string> AbstractStrategy::get_robot_names() const {
 		std::vector<std::string> result;
-		for(auto i : _interfacers) {
-			result.push_back(i->get_robot()->name);
-		}
+		std::transform(_interfacers.cbegin(), _interfacers.cend(), std::back_inserter(result), [](const auto& it) {
+			return it.first;
+		});
 		return result;
+	}
+
+	void AbstractStrategy::wait_for_tirette() const {
+		for(auto& [name, manager] : _interfacers) {
+			auto& io = manager->get_interfacer<Interfacer::IOInterfacer>();
+			if(!io.is_tirette_triggered()) {
+				logInfo("Waiting for the insertion of the tirette on robot '", name, "'.");
+				io.wait_insertion_tirette();
+			}
+		}
+
+		for(auto i : _interfacers) {
+			auto& io = i.second->get_interfacer<Interfacer::IOInterfacer>();
+			io.wait_deletion_tirette();
+		}
 	}
 
 	int AbstractStrategy::get_points() const {

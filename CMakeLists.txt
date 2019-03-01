@@ -5,6 +5,7 @@ project(root)
 option(TARGET "Architecture cible" pc)
 option(COLOR "Sortie en couleur de la compilation" ON)
 option(DEBUG "Compilation avec les symboles de debug et sans optimisations" OFF)
+option(COVERAGE "Compilation avec '--coverage' pour l'utilisation de 'lcov'" OFF)
 set(BITS "64" CACHE . "Build en 32 ou 64 bits")
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -std=gnu++17")
@@ -38,6 +39,12 @@ else()
 	set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -flto")
 endif()
 
+if(COVERAGE)
+    message(STATUS "Building project with coverage information")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 --coverage")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -O0 --coverage")
+endif()
+
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL "^(Apple)?Clang$")
 	if (COLOR)
 		set(CMAKE_COLOR_MAKEFILE ON)
@@ -65,7 +72,7 @@ if(${BITS} EQUAL 32)
 	set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -m32")
 endif()
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Waddress -Wbuiltin-macro-redefined -Werror=return-type -Winit-self -Wnon-virtual-dtor -Wno-sign-compare -Wold-style-cast -Woverloaded-virtual -Wsuggest-attribute=const -Wsuggest-attribute=noreturn -Wsuggest-attribute=pure -Wswitch -Wuninitialized -Wunreachable-code -Wunused-parameter -Wunused-value")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Waddress -Wbuiltin-macro-redefined -Werror=return-type -Winit-self -Wnon-virtual-dtor -Wno-sign-compare -Wold-style-cast -Woverloaded-virtual -Wsuggest-attribute=noreturn -Wswitch -Wuninitialized -Wunreachable-code -Wunused-parameter -Wunused-value")
 
 function(compile_petri TARGET_NAME PATH_TO_DOC OUTPUT)
 	add_custom_target(${TARGET_NAME}

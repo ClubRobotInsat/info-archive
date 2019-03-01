@@ -25,7 +25,6 @@ public:
 };
 
 class Monitor : public Gtk::Window {
-
 public:
 	/**
 	 *
@@ -62,13 +61,13 @@ public:
 	void handleTrame(const std::deque<std::pair<Trame, std::chrono::milliseconds>>& buffer, bool isColored);
 
 	/**
-	* Send a Trame for pinging id.
-	* Trame Id : id.
-	* Trame Cmd : 0x00.
-	* Trame Data : [0x55].
-	* This function also set _internalCardData[id] to false.
-	* @param id : the id of the trame that will be sent.
-	*/
+	 * Send a Trame for pinging id.
+	 * Trame Id : id.
+	 * Trame Cmd : 0x00.
+	 * Trame Data : [0x55].
+	 * This function also set _internalCardData[id] to false.
+	 * @param id : the id of the trame that will be sent.
+	 */
 	void sendPing(uint8_t id);
 
 	/**
@@ -108,9 +107,9 @@ protected:
 	    filterBuffer(const std::deque<std::pair<Trame, std::chrono::milliseconds>>& buffer, const std::set<int>& acceptableIDs) const;
 
 	/**
-	* Return a string HH:MM:SS.
-	* For example : 16:34:10 if it is 16 hour past 34 minutes and 10 seconds.
-	*/
+	 * Return a string HH:MM:SS.
+	 * For example : 16:34:10 if it is 16 hour past 34 minutes and 10 seconds.
+	 */
 	std::string getLocalTime() const;
 
 	/**

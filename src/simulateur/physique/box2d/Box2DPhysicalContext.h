@@ -46,5 +46,4 @@ private:
 	int nextId();
 };
 
-
 #endif // ROOT_BOX2DPHYSICALCONTEXT_H

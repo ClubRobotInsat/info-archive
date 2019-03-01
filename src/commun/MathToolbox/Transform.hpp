@@ -108,7 +108,6 @@ Transform<T> Transform<T>::operator-(const Vector3<T_scalar>& ref) const {
 template <class T>
 template <class T_scalar>
 Transform<T> Transform<T>::operator*(const Transform<T_scalar>& ref) const {
-
 	Transform<T> result = *this;
 	result.position += this->rotation * ref.position;
 	result.rotation *= ref.rotation;

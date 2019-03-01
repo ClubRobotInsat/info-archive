@@ -157,7 +157,6 @@ vector<Vector2m> Environment::getTrajectory(Vector2m start, Vector2m end, Durati
 		// Ajoute les voisins à la liste.
 		vector<Neighbor> neighbors = getNeighbors(*candidate);
 		for(auto it = neighbors.begin(); it != neighbors.end(); it++) {
-
 			Node& neighbor = it->n;
 			bool contains = candidateNodes.find(&neighbor) != candidateNodes.end();
 			contains |= doneNodes.count(&neighbor) > 0;
@@ -177,7 +176,6 @@ vector<Vector2m> Environment::getTrajectory(Vector2m start, Vector2m end, Durati
 
 
 			if(!contains || effectiveCost < neighbor.effectiveCost) {
-
 				// Coût heuristique du départ au noeud final en passant par ce noeud.
 				float heuristicCost = effectiveCost + getHeuristicCost(neighbor, _nodes[ex][ey]);
 				previousNodes[&neighbor] = candidate;
@@ -423,8 +421,9 @@ Vector2m Environment::getCastaljau(vector<Vector2m> const& points, int r, int i,
 }
 
 vector<Vector2m> Environment::bezierize(vector<Vector2m> const& trajectory) {
-	if(trajectory.size() <= 2 || !_postProcessParameters.bezier.enabled)
+	if(trajectory.size() <= 2 || !_postProcessParameters.bezier.enabled) {
 		return trajectory;
+	}
 
 	// On décompose le trajet en parties, calculées pour chaque point de la trajectoire.
 	// Les parties comportent :
@@ -755,11 +754,13 @@ void Environment::drawShape(Shape& shape, vector<vector<Node>>& target, bool dyn
  * @param dynamic si vrai : on incrit la valeur en temps qu'obstacle dynamique.*/
 void Environment::drawRect(int rx, int ry, int w, int h, float angle, float dangerValue, bool dynamic) {
 	// on fait en sorte que 'angle' soit compris dans l'intervalle [0 ; 2*M_PI]
-	while(angle < 0)
+	while(angle < 0) {
 		angle += 2 * M_PI;
+	}
 
-	while(angle > 2 * M_PI)
+	while(angle > 2 * M_PI) {
 		angle -= 2 * M_PI;
+	}
 
 	bool rectDroit = angle == 0;
 	if(abs(angle - M_PI_2) < 0.0001) {
@@ -832,11 +833,11 @@ void Environment::drawRect(int rx, int ry, int w, int h, float angle, float dang
 				   (((angle < M_PI_2 or angle > 3 * M_PI_2) and y <= mD3 * x + pD3) or
 				    (angle > M_PI_2 and angle < 3 * M_PI_2 and y >= mD3 * x + pD3)) and
 				   ((angle > M_PI and y <= mD4 * x + pD4) or (angle < M_PI and y >= mD4 * x + pD4))) {
-
-					if(dynamic)
+					if(dynamic) {
 						this->_nodes[x][y].dynamicValue = max(dangerValue, this->_nodes[x][y].dynamicValue);
-					else
+					} else {
 						this->_nodes[x][y].staticValue = max(dangerValue, this->_nodes[x][y].staticValue);
+					}
 				}
 			}
 		}
@@ -1038,7 +1039,6 @@ void Environment::saveToTGA(const char* path, vector<Vector2m> const& traj) cons
 	}
 
 	for(int j = 0; j < traj.size(); j++) {
-
 		auto ptUnit = (traj[j] + _offset) * invGS;
 		if(j == 0) {
 			// ARRIVEE

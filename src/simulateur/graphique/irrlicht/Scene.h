@@ -15,7 +15,6 @@
 #include "Object.h"
 
 class Scene : public IGraphicalContext {
-
 public:
 	Scene();
 	void AddCamera();
@@ -31,7 +30,6 @@ public:
 	virtual IGraphicalInstance* createSphere(const Vector3m& position, Length radius);
 	virtual IGraphicalInstance* createModel(const Vector3m& position, const std::string& model);
 	virtual void remove(IGraphicalInstance* object);
-
 
 	void ChangePosition(irr::core::vector3df position, int id);
 	void Rotation(irr::core::vector3df rotation, int id);
@@ -54,6 +52,5 @@ private:
 	std::vector<IGraphicalUserListener*> _listeners;
 	int _objectId;
 };
-
 
 #endif // PROJECT_SCENE_H

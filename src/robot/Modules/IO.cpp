@@ -7,18 +7,23 @@
 namespace PhysicalRobot {
 	IO::IO(uint8_t id) : Module(id, "IO") {}
 
-	bool IO::read_tirette() const {
+	TriggerState IO::read_tirette() const {
 		std::lock_guard<std::mutex> lk(_mutex_variables);
 		return _tirette;
 	}
 
 	std::vector<JSON> IO::generate_list_jsons() const {
 		JSON j;
-		j["tirette"] = 0;
+		j["tirette"] = toString(TriggerState::Waiting);
 		return {j};
 	}
 
 	void IO::message_processing(const JSON& j) {
-		_tirette = j["tirette"];
+		for(auto ee : getEnumValues<TriggerState>()) {
+			if(toString(ee) == j["color"]) {
+				_tirette.exchange(ee);
+				break;
+			}
+		}
 	}
 } // namespace PhysicalRobot

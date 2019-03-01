@@ -46,7 +46,6 @@ bool parseArgument(int argc, char** argv, Simulateur& simulateur) {
 
 	int long_index = 0;
 	while((arg = getopt_long(argc, argv, "r:c:w:l:h:", long_options, &long_index)) != -1) {
-
 		switch(arg) {
 			case 'r':
 				robot = std::string(optarg);

@@ -23,11 +23,11 @@ BLUE="\x1B[34m"
 RST="\x1B[0m"
 
 # Ligne à modifier si on a une interface Internet avec un nom bizarre (dans 'send_file_to_rpi' aussi)
-ip_ssh=`arp -a | grep "enp3s0\|enp4s0\|eth0\|enx00e02f7000b5" | cut -d ' ' -f 2 | cut -d '(' -f 2 | cut -d ')' -f 1`
+ip_ssh=$(arp -a | grep "enp3s0\|enp4s0\|eth0\|enx00e02f7000b5" | cut -d ' ' -f 2 | cut -d '(' -f 2 | cut -d ')' -f 1)
 
 # Verification de l'adresse IP
 validateIP $ip_ssh
-if [[ $? -ne 0 ]]
+if [ $? -ne 0 ]
 then
 	echo -e "$RED Problème de connexion au raspi, vérifier le câble ethernet. $RST"
 	exit 1

@@ -15,7 +15,7 @@
 
 typedef unsigned char byte;
 
-SickLidar::SickLidar(libusb_device_handle* hnd) : _hDev(hnd), _recv(2048) {
+SickLidar::SickLidar(libusb_device_handle* hnd) : Lidar(Lidar::Sick), _hDev(hnd), _recv(2048) {
 	libusb_claim_interface(_hDev, 0);
 	/* Démarre le mode transmission continue */
 	const std::string go("\2sEN LMDscandata 1\3");

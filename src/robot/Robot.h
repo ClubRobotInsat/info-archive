@@ -12,7 +12,7 @@ namespace PhysicalRobot {
 		/// Initialise le robot a partir des arguments passes au programme.
 		/// Les modules du robot peuvent être initialisés à partir du fichier de constantes OU depuis un ModuleManager
 		/// @arg name Correspond au nom de section dans le `src/robot.ini`
-		Robot(std::shared_ptr<ModuleManager> module_manager, std::string name, std::vector<std::string> const& args, Lidar::LidarType);
+		Robot(std::shared_ptr<ModuleManager> module_manager, std::string name, Lidar::LidarType);
 
 	public:
 		const std::string name;
@@ -20,15 +20,16 @@ namespace PhysicalRobot {
 		/*******************************/
 		/********* CONSTANTES **********/
 		/*******************************/
-		// TODO : déplacer ce code dans la partie 'stratégie'
-		// Définit le nombre de demande d'actualisation de la carte contacteur pour être surs que la tirette est ok
-		// static const int NB_RETRY_TIRETTE = 3;
 
 		// Initialisation du robot à partir d'un ModuleManager
-		Robot(std::shared_ptr<ModuleManager> module_manager, std::vector<std::string> const& args, Lidar::LidarType);
+		Robot(std::shared_ptr<ModuleManager> module_manager, const std::vector<std::string>& args, Lidar::LidarType);
 
 		// Initialisation du robot à partir du fichier `src/robot.ini`
-		Robot(std::string name, std::vector<std::string> const& args, Lidar::LidarType);
+		Robot(std::string name);
+		Robot(std::string name, Lidar::LidarType);
+		// Initialisation du robot à partir du fichier `src/robot.ini` mais choix du protocol de com en ligne de cmd
+		Robot(std::string name, const std::vector<std::string>& args);
+		Robot(std::string name, const std::vector<std::string>& args, Lidar::LidarType);
 
 		virtual ~Robot();
 
@@ -51,15 +52,15 @@ namespace PhysicalRobot {
 			return result;
 		}
 
+		std::type_index get_communication_protocol_type() const;
+
+		Lidar::LidarType get_lidar_type() const;
+
 		bool has_lidar() const;
 
 		std::optional<FrameLidar> get_lidar_frame() const;
 
 		void set_debug(bool debug);
-
-		// TODO : déplacer ce code dans la partie 'stratégie'
-		/// Attend la tirette au départ
-		// void wait_for_tirette() const;
 
 		/// Désactivation du robot
 		virtual void deactivation();

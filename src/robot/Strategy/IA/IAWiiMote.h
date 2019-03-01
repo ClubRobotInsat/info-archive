@@ -32,7 +32,7 @@ namespace Strategy {
 		[[noreturn]] void exec();
 
 		/// Méthode appellée régulièrement pour traiter les entrées wiimote
-		virtual void processWiimoteInput(WiimoteState& state) override;
+		void processWiimoteInput(WiimoteState& state) override;
 
 		Interfacer::NavigationInterfacer& navigation();
 

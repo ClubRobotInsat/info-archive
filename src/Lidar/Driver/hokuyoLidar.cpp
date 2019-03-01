@@ -19,7 +19,7 @@ namespace {
 	}
 } // namespace
 
-HokuyoLidar::HokuyoLidar(const std::string& device) {
+HokuyoLidar::HokuyoLidar(const std::string& device) : Lidar(Lidar::Hokuyo) {
 	try {
 		_serial = std::make_unique<Communication::RS232>(device.c_str());
 	} catch(std::exception& e) {

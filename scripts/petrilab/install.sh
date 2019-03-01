@@ -16,6 +16,6 @@ if [[ "$VERSION" != "14.04" && "$VERSION" != "17.04" && "$VERSION" != "18.04" ]]
 	help
 fi
 
-cat petrilab_pub.pgp | sudo apt-key add -
+sudo apt-key add - < petrilab_pub.pgp
 echo "deb $(gpg server.link.gpg > /dev/null && cat server.link) $(lsb_release -c | rev | cut -f1 | rev) main" | sudo tee /etc/apt/sources.list.d/petrilab_$(lsb_release -c | rev | cut -f1 | rev).list && sudo apt-get update && sudo apt-get install petrilab
 

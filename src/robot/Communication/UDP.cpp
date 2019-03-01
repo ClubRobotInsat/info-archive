@@ -7,10 +7,8 @@
 #include <log/Log.h>
 
 namespace Communication {
-	UDP::UDP(std::string address, uint16_t local_port, uint16_t remote_port) {
-		if(address == "localhost") {
-			address = "127.0.0.1";
-		}
+	UDP::UDP(const std::string& addr, uint16_t local_port, uint16_t remote_port) {
+		const std::string address = (addr == "localhost" ? "127.0.0.1" : addr);
 
 		using asio::ip::udp;
 		asio::error_code err;

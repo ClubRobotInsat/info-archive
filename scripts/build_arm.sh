@@ -85,7 +85,7 @@ fi
 if [ $compile_lidar -eq 1 ]
 	then echo -e "${Green} Building affLidar${End}"
 	make printRobots -j ${cores}
-	if [ $? -e "0" ]
+	if [ $? -ne "0" ]
 		then echo -e "${Red}Failed to build printRobots${End}"
 	fi
 fi

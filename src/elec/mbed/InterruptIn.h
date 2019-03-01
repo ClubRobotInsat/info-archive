@@ -10,7 +10,6 @@
 #define ROOT_INTERRUPTIN_H
 
 class InterruptIn {
-
 public:
 	/** Create an InterruptIn connected to the specified pin
 	 *
@@ -34,7 +33,6 @@ public:
 	operator int() {
 		return 0;
 	};
-
 
 	/** Attach a function to call when a rising edge occurs on the input
 	 *

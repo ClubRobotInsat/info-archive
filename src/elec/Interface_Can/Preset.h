@@ -16,7 +16,6 @@
  * This class represent a preset for a can trame.
  */
 class Preset {
-
 public:
 	Preset(uint8_t id, uint8_t cmd, uint8_t data[6]);
 
@@ -32,7 +31,6 @@ public:
 	 */
 	std::string toString();
 
-
 private:
 	uint8_t _id;
 	uint8_t _cmd;
@@ -44,14 +42,12 @@ private:
  * This class represent an array of presets for a can trame.
  */
 class PresetArray {
-
 public:
 	/**
 	 * This function will initialize the array from the file specified by path.
 	 * @param path : the file where all the presets are loaded.
 	 */
 	PresetArray(std::string path);
-
 
 	/**
 	 * This function will save the preset to the given file.
@@ -73,6 +69,5 @@ public:
 private:
 	std::vector<Preset> _preset;
 };
-
 
 #endif // ROOT_PRESET_H

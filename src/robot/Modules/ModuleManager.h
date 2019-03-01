@@ -31,6 +31,7 @@
 #include "IO.h"
 #include "Motors.h"
 #include "Navigation.h"
+#include "Pumps.h"
 #include "Servos.h"
 
 #include <memory> // unique_ptr, make_unique

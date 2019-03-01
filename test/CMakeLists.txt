@@ -1,5 +1,5 @@
 add_executable(TEST_SERVOS servos.cpp)
-target_link_libraries(TEST_SERVOS Robot)
+target_link_libraries(TEST_SERVOS Strategy)
 
 add_executable(TEST_MOVING moving.cpp)
 target_link_libraries(TEST_MOVING Robot)
@@ -29,7 +29,7 @@ foreach(file ${files})
 endforeach()
 
 # Linkage de chaque exécutable par rapport à ses librairies nécessaires
-# Par défaut, 'Robot' regroupe tout
+# Par défaut, 'Strategy' regroupe tout
 target_link_libraries(unit_testing_frames Outils_Robot)
 target_link_libraries(unit_testing_modules Modules)
 target_link_libraries(unit_testing_communication Communication)

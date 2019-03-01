@@ -29,8 +29,7 @@ namespace Communication {
 
 		hostinfo = gethostbyname(address.c_str());
 		if(hostinfo == nullptr) {
-			logError("Impossible de trouver l'adresse du serveur '", address, "'\n");
-			exit(EXIT_FAILURE);
+			throw std::runtime_error("Impossible de trouver l'adresse du serveur '" + address + ".");
 		}
 
 		addr.sin_family = AF_INET;
@@ -39,8 +38,7 @@ namespace Communication {
 		memset(&(addr.sin_zero), 0, 8);
 
 		if(connect(_fd, reinterpret_cast<struct sockaddr*>(&addr), sizeof(struct sockaddr_in)) < 0) {
-			logError("Impossible de se connecter au serveur ", address, ":", port);
-			throw(34);
+			throw std::runtime_error("Impossible de se connecter au serveur " + address + ":" + std::to_string(port));
 		}
 
 		_connected = true;

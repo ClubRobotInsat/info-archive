@@ -29,7 +29,6 @@ public:
 	 */
 	PhysicalObjectDefinition(Mass mass = mass::LIGHT, const b2BodyType type = b2_dynamicBody)
 	        : _mass(mass), _type(type) {
-
 		createShape();
 	}
 
@@ -37,7 +36,6 @@ public:
 	 * Destruction de la définition physique de l'objet
 	 */
 	virtual ~PhysicalObjectDefinition() = default;
-
 
 	/**
 	 * Modifie la masse attribuée à l'objet
@@ -115,6 +113,5 @@ private:
 	/// shape active
 	std::shared_ptr<b2Shape> _shape;
 };
-
 
 #endif // TESTBOX2D_PHYSICALOBJECTDEFINITION_H

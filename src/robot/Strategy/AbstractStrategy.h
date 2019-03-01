@@ -52,14 +52,18 @@ namespace Strategy {
 
 		std::vector<std::string> get_robot_names() const;
 
+		void wait_for_tirette() const;
+
 		int get_points() const;
 
 		int add_points(int n);
 
 		int set_points(int n);
 
+		bool debug_mode;
+
 	protected:
-		AbstractStrategy(Constants::RobotColor);
+		explicit AbstractStrategy(Constants::RobotColor);
 
 		virtual ~AbstractStrategy() = default;
 
@@ -71,7 +75,7 @@ namespace Strategy {
 		/// Thread dans lequel s'exécute la stratégie
 		std::thread _execution;
 
-		std::vector<std::shared_ptr<Interfacer::RobotManager>> _interfacers;
+		std::map<std::string, std::shared_ptr<Interfacer::RobotManager>> _interfacers;
 		std::unique_ptr<Environment> _env;
 
 	private:

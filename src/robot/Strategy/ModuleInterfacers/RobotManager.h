@@ -7,8 +7,12 @@
 
 #include "AvoidanceInterfacer.h"
 #include "ElevatorInterfacer.h"
+#include "IOInterfacer.h"
 #include "NavigationInterfacer.h"
+#include "PumpsInterfacer.h"
 #include "ServosInterfacer.h"
+
+#include <typeindex>
 
 namespace Strategy {
 	namespace Interfacer {
@@ -51,7 +55,7 @@ namespace Strategy {
 
 		private:
 			std::shared_ptr<PhysicalRobot::Robot> _robot;
-			std::vector<std::unique_ptr<AbstractInterfacer>> _interfacers;
+			std::unordered_map<std::type_index, std::unique_ptr<AbstractInterfacer>> _interfacers;
 		};
 
 		template <typename Interfacer, typename... Args>
@@ -64,29 +68,22 @@ namespace Strategy {
 
 			auto interfacer = std::make_unique<Interfacer>(_robot, params...);
 			Interfacer& result = *interfacer;
-			_interfacers.push_back(std::move(interfacer));
+			_interfacers[typeid(Interfacer)] = std::move(interfacer);
 			return result;
 		}
 
 		template <typename Interfacer>
 		bool RobotManager::has_interfacer() const {
-			for(const auto& interfacer : _interfacers) {
-				if(typeid(Interfacer) == typeid(*interfacer)) {
-					return true;
-				}
-			}
-			return false;
+			return _interfacers.find(typeid(Interfacer)) != _interfacers.cend();
 		}
 
 		template <typename Interfacer>
 		Interfacer& RobotManager::get_interfacer() {
 			static_assert(std::is_base_of<AbstractInterfacer, Interfacer>::value,
 			              "The specified module must inherit AbstractInterfacer as public.");
-			for(const auto& interfacer : _interfacers) {
-				try {
-					return dynamic_cast<Interfacer&>(*interfacer);
-				} catch(std::bad_cast&) {
-				}
+			auto it = _interfacers.find(typeid(Interfacer));
+			if(it != _interfacers.cend()) {
+				return dynamic_cast<Interfacer&>(*(it->second));
 			}
 
 			throw std::runtime_error("The interfacer doesn't exist.");

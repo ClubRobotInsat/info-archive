@@ -15,8 +15,7 @@ using namespace PhysicalRobot;
 
 // Tests : cf [la datasheet](https://www.robotshop.com/media/files/pdf/manual-drs-0101.pdf) page 55
 
-TEST_CASE("Conversions 'uint16_t <-> Angle'") {
-
+TEST_CASE("Conversions 'uint16_t <-> Angle'", "[integration]") {
 	SECTION("uint16_t -> Angle") {
 		const double eps = .001;
 
@@ -39,8 +38,7 @@ TEST_CASE("Conversions 'uint16_t <-> Angle'") {
 
 // cf [la datasheet](https://www.robotshop.com/media/files/pdf/manual-drs-0101.pdf) page 9 : 60°/0.166s
 
-TEST_CASE("Conversions 'uint16_t <-> AngularSpeed'") {
-
+TEST_CASE("Conversions 'uint16_t <-> AngularSpeed'", "[integration]") {
 	SECTION("uint16_t -> AngularSpeed") {
 		double eps = .1;
 

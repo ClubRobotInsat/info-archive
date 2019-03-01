@@ -10,6 +10,7 @@
 
 namespace Strategy {
 	namespace Interfacer {
+
 		class AvoidanceInterfacer final : public AbstractInterfacer {
 		public:
 			using interfaced_type = void;

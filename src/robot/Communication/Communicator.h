@@ -27,6 +27,7 @@
 #include <condition_variable> // condition_variable
 #include <memory>             // unique_ptr
 #include <mutex>              // mutex, lock_guard
+#include <typeindex>          // std::type_index, typeid
 #include <variant>            // variant
 
 namespace Communication {
@@ -44,8 +45,12 @@ namespace Communication {
 		/// Connexion au médiumm spécifié et début de la communication
 		bool connect(const std::vector<std::string>& args);
 
+		bool connect(const Constants::RobotInitializationData&);
+
 		/// Arrêt de la communication et déconnexion du médium
 		void disconnect();
+
+		std::type_index get_protocol_type() const;
 
 		/// Active ou désactive l'affichage de débug des trames envoyées et reçues
 		void set_debug(bool active);
@@ -64,6 +69,8 @@ namespace Communication {
 
 		/// Protocole de communication ; contient la logique d'abstraction du médium pour la lecture et l'écriture
 		std::unique_ptr<Protocol> _protocol;
+
+		std::type_index _protocol_type;
 
 		std::atomic_bool _connected;
 

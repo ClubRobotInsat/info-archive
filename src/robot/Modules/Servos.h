@@ -37,7 +37,7 @@ namespace PhysicalRobot {
 
 		static const servo_t ID_MAX_SERVOS = std::numeric_limits<uint8_t>::max();
 
-		explicit Servos(servo_t id) : Module(id, "Servos") {}
+		explicit Servos(uint8_t id) : Module(id, "Servos") {}
 
 		void add_servo(servo_t id, BlockingMode = BlockingMode::Unblocking);
 
@@ -59,14 +59,7 @@ namespace PhysicalRobot {
 
 		bool is_moving_done(servo_t) const;
 
-	private:
-		// Retourne l'index associé au mapping du servo `id`. Si l'`id` est mauvais, retourne NB_MAX_SERVOS.
-		uint8_t get_index_of(servo_t) const;
-
-		std::vector<JSON> generate_list_jsons() const override;
-		void message_processing(const JSON&) override;
-
-		void deactivation() override;
+		static constexpr AngularSpeed MAX_SPEED = 361.44_deg_s; // datasheet p9: 60°/0.166s
 
 		SERVOS_TEST_ACCESS : static uint16_t angle_to_uint16t(Angle);
 
@@ -77,7 +70,13 @@ namespace PhysicalRobot {
 		static uint16_t angular_speed_to_uint16_t(AngularSpeed as);
 
 	private:
-		static constexpr AngularSpeed MAX_SPEED = 361.44_deg_s; // datasheet p9: 60°/0.166s
+		// Retourne l'index associé au mapping du servo `id`. Si l'`id` est mauvais, retourne NB_MAX_SERVOS.
+		uint8_t get_index_of(servo_t) const;
+
+		std::vector<JSON> generate_list_jsons() const override;
+		void message_processing(const JSON&) override;
+
+		void deactivation() override;
 
 		struct Servo {
 			using CommandPosition = Angle;
@@ -106,6 +105,5 @@ namespace PhysicalRobot {
 		std::unique_ptr<Servo> _servos[ID_MAX_SERVOS];
 	};
 } // namespace PhysicalRobot
-
 
 #endif // ROOT_SERVOS_H

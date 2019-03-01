@@ -25,7 +25,6 @@ Monitor::Monitor(std::string& port)
 
 
 {
-
 	//-----------------GUI Stuff|
 
 	this->set_size_request(800, 600);
@@ -157,7 +156,6 @@ bool Monitor::on_key_release_event(GdkEventKey* event) {
 }
 
 void Monitor::notify() {
-
 	// Tell the worker thread to stop sending us signals because we are already processing one
 	_canListener.isRequestingData(true);
 	auto buffer = _canListener.getTrameReceived();
@@ -182,15 +180,12 @@ std::string Monitor::convertToHexadecimal(const unsigned int& number, const bool
 
 
 void Monitor::updateInterface(bool colored, const std::string& id, const std::string& cmd, const std::string& time, const std::string& data) {
-
 	Gtk::TreeModel::Row row = *(_refTreeModel->prepend());
-
 
 	row[_message._id] = id;
 	row[_message._cmd] = cmd;
 	row[_message._time] = time;
 	row[_message._data] = data;
-
 
 	if(colored) {
 		row[_message._color] = "pink";
@@ -238,7 +233,6 @@ void Monitor::saveTramePreset() {
 
 
 Trame Monitor::buildTrameFromInput() const {
-
 	if(this->checkInputs()) {
 		try {
 			const int id = std::stoi(_trameId.get_buffer()->get_text(), nullptr, 10);
@@ -293,7 +287,6 @@ void Monitor::tooglePauseMode() {
 Monitor::~Monitor() {}
 
 void Monitor::handleTrame(const std::deque<std::pair<Trame, std::chrono::milliseconds>>& buffer, bool isColored) {
-
 	for(const auto pair : buffer) {
 		const Trame& trame = pair.first;
 		if(trame.getCmd() == 0x00_b and trame.getDonnee(0) == 0xaa_b) {
@@ -313,7 +306,6 @@ void Monitor::handleTrame(const std::deque<std::pair<Trame, std::chrono::millise
 std::deque<std::pair<Trame, std::chrono::milliseconds>>
     Monitor::filterBuffer(const std::deque<std::pair<Trame, std::chrono::milliseconds>>& buffer,
                           const std::set<int>& acceptableIDs) const {
-
 	std::deque<std::pair<Trame, std::chrono::milliseconds>> result;
 
 	for(auto& pair : buffer) {
@@ -322,7 +314,6 @@ std::deque<std::pair<Trame, std::chrono::milliseconds>>
 			result.push_back(pair);
 		}
 	}
-
 
 	return result;
 }
@@ -339,7 +330,6 @@ std::set<int> Monitor::generateIdSet() const {
 }
 
 void Monitor::onToggleAllClicked() {
-
 	for(auto& buttons : _buttonIdList) {
 		buttons->_button->set_active(_toggleAllIDs.get_active());
 	}
@@ -357,7 +347,6 @@ void Monitor::sendPing(uint8_t id) {
 }
 
 void Monitor::onPongReceived(uint8_t id) {
-
 	_pingStatus[id]->set_label("Connected !");
 	_pingStatus[id]->override_color(Gdk::RGBA("green"), Gtk::STATE_FLAG_NORMAL);
 	_internalCardData[id] = true;

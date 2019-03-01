@@ -8,6 +8,7 @@
 #include "Enum/Enum.h"
 #include <ini/src/IniFile.hpp>
 
+#include "../Lidar/Driver/lidar.h"
 #include "Commun.h"
 #include "resources/EmbeddedFiles.h"
 #include "Json.h"
@@ -40,9 +41,9 @@ namespace Constants {
 	}
 
 	class Constants;
-	class Robot {
+	class RobotInitializationData {
 		friend class Constants;
-		explicit Robot(IniFile& reader, std::string name);
+		RobotInitializationData(IniFile& reader, std::string name);
 
 		// Les attributs `optional` correspondent à des valeurs qui ne peuvent pas être entrées par défaut
 		std::optional<Vector3m> _start_position;
@@ -58,6 +59,9 @@ namespace Constants {
 		Vector2m _turret_position;
 		Distance _radius_rotation;
 		Vector3m _size;
+		Lidar::LidarType _lidar_type;
+		std::string _protocol_type;
+		std::map<std::string, std::string> _communication_arguments;
 
 	public:
 		inline Vector3m get_start_position() const {
@@ -104,15 +108,27 @@ namespace Constants {
 		inline Vector3m get_size() const {
 			return _size;
 		}
+
+		inline Lidar::LidarType get_lidar_type() const {
+			return _lidar_type;
+		}
+
+		inline std::string get_protocol_type() const {
+			return _protocol_type;
+		}
+
+		inline std::map<std::string, std::string> get_communication_arguments() const {
+			return _communication_arguments;
+		}
 	};
 
 	class Constants {
-		std::map<std::string, std::unique_ptr<Robot>> _robots;
+		std::map<std::string, std::unique_ptr<RobotInitializationData>> _robots;
 
 	public:
 		explicit Constants(std::string ini_string);
 
-		const Robot& operator[](const std::string& name) const;
+		const RobotInitializationData& operator[](const std::string& name) const;
 
 		inline Duration get_match_duration() const {
 			return _match_duration;

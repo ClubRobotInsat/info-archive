@@ -3,8 +3,9 @@
 //
 
 #include "Constants.h"
-
 #include "resources/EmbeddedFiles.h"
+
+#include <log/Log.h>
 
 const Constants::Constants& GLOBAL_CONSTANTS() {
 	const static Constants::Constants CONSTANTS(EmbeddedFiles::readText("../robot.ini"));
@@ -22,7 +23,16 @@ namespace Constants {
 		}
 	}
 
-	Robot::Robot(IniFile& reader, std::string name) {
+	std::string read_field(IniFile& file, const std::string& section, const std::string& field, const std::string& default_value) {
+		auto it = file[section];
+		if(it.member(field)) {
+			return it[field].asString();
+		} else {
+			return default_value;
+		}
+	}
+
+	RobotInitializationData::RobotInitializationData(IniFile& reader, std::string name) {
 		const std::string section = "robot." + name;
 		try {
 			_start_angle = Angle::makeFromDeg(reader[section]["angle"].asDouble());
@@ -41,6 +51,7 @@ namespace Constants {
 				for(auto field : it.second) {
 					_modules[field.first] = static_cast<uint8_t>(field.second.asInt());
 				}
+				break;
 			}
 		}
 
@@ -62,6 +73,33 @@ namespace Constants {
 		    Distance::makeFromMm(read_field(reader, section, "size_y", 300)),
 		    Distance::makeFromMm(read_field(reader, section, "size_z", 420)),
 		};
+
+		std::string lidar_type = read_field(reader, section, "lidar_type", "any");
+		lidar_type = lidar_type.substr(0, lidar_type.find_first_of(' '));
+		if(lidar_type == "any") {
+			_lidar_type = Lidar::Any;
+		} else if(lidar_type == "sick") {
+			_lidar_type = Lidar::Sick;
+		} else if(lidar_type == "hokuyo") {
+			_lidar_type = Lidar::Hokuyo;
+		} else {
+			if(lidar_type != "none") {
+				logWarn("Impossible to parse the 'lidar_type' field: considering that no lidar is conencted.");
+			}
+			_lidar_type = Lidar::None;
+		}
+
+		_protocol_type = read_field(reader, section, "protocol_type", "null");
+		_protocol_type = _protocol_type.substr(0, _protocol_type.find_first_of(' '));
+
+		for(auto it : reader) {
+			if(it.first == section + ".communication") {
+				for(auto field : it.second) {
+					_communication_arguments[field.first] = field.second.asString();
+				}
+				break;
+			}
+		}
 	}
 
 	Constants::Constants(std::string ini_string) : _reader(IniFile('=', '#')) {
@@ -73,12 +111,14 @@ namespace Constants {
 			if(it.first == "robot.list") {
 				for(auto robot : it.second) {
 					if(robot.second.asBool()) {
-						_robots[robot.first] = std::unique_ptr<Robot>(new Robot(_reader, robot.first));
+						_robots[robot.first] =
+						    std::unique_ptr<RobotInitializationData>(new RobotInitializationData(_reader, robot.first));
 					}
 				}
-				_robots["default"] = std::unique_ptr<Robot>(new Robot(_reader, "default"));
+				break;
 			}
 		}
+		_robots["default"] = std::unique_ptr<RobotInitializationData>(new RobotInitializationData(_reader, "default"));
 
 		const std::string section = "constants";
 
@@ -103,7 +143,7 @@ namespace Constants {
 		    Distance::makeFromMm(read_field(_reader, section, "threshold_adversary_detection", 300));
 	}
 
-	const Robot& Constants::operator[](const std::string& name) const {
+	const RobotInitializationData& Constants::operator[](const std::string& name) const {
 		auto it = _robots.find(name);
 		if(it == _robots.cend()) {
 			throw std::runtime_error("Constants of the robot '" + name + "' does not exist.");
