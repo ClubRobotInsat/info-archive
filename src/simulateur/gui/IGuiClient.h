@@ -29,10 +29,13 @@ public:
 	 * lancé, le simulateur s'y connecte avec les paramètres donnés. */
 	virtual void createIAProcess(const IAProcessData& iaProcessData, const ConnectionData& connectionData) = 0;
 
-	/** Donne le controller qui permet de controller le robot. Si aucun
-	 * robot n'est controllable, retourne nullptr. */
-	// TODO ne plus utiliser des raw pointers ?
-	virtual IRobotController* getRobotController() = 0;
+	/** Demande au robot du simulateur d'avancer d'une certaine distance.
+	 * Cette méthode est utilisée uniquement pour tester la navigation. */
+	virtual void testNavigationForward(Distance distance) = 0;
+
+	/** Demande au robot du simulateur de tourner d'un certain angle.
+	 * Cette méthode est utilisée uniquement pour tester la navigation. */
+	virtual void testNavigationTurn(Angle angle) = 0;
 };
 
 #endif // ROOT_IGUICLIENT_H

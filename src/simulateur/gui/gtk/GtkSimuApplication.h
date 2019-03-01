@@ -29,6 +29,8 @@ public:
 	/** Waits until the gtk app is completely stopped. */
 	void waitStopped();
 
+	void showDialog(const std::string& message);
+
 	void showErrorDialog(const std::string& message);
 
 	/** Queues an action to be executed on the gtk thread. */

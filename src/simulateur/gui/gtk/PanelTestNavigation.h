@@ -5,9 +5,6 @@
 
 #include "GtkSimuContext.h"
 
-// TODO le gui ne devrait pas dépendre de la physique
-#include "../../physique/IRobotController.h"
-
 class PanelTestNavigation : public Gtk::Frame {
 public:
 	PanelTestNavigation(GtkSimuContext& context);

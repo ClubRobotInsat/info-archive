@@ -26,23 +26,18 @@ void PanelTestNavigation::onValidate() const {
 	std::string angleStr = _angleText->get_text();
 
 	_context.queueAction([this, forward, distanceStr, turn, angleStr]() {
-		IRobotController* controller = _context.getGuiClient().getRobotController();
-
-		if(controller == nullptr) {
-			return;
-		}
 
 		if(forward) {
 			try {
 				double distance = std::stod(distanceStr);
-				controller->forward(Distance::makeFromM(distance));
+				_context.getGuiClient().testNavigationForward(Distance::makeFromM(distance));
 			} catch(std::exception& e) {
 				std::cerr << e.what() << std::endl;
 			}
 		} else if(turn) {
 			try {
 				double angle = std::stod(angleStr);
-				controller->turn(Angle::makeFromDeg(angle));
+				_context.getGuiClient().testNavigationTurn(Angle::makeFromDeg(angle));
 			} catch(std::exception& e) {
 				std::cerr << e.what() << std::endl;
 			}

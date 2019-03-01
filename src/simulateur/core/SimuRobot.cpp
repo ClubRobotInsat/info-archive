@@ -6,9 +6,6 @@
 #include "../communication/SimuNavigation.h"
 #include "../communication/SimuServos.h"
 
-// TODO Le robotController devrait être obtenu grâce au contexte physique ou whatever
-#include "../physique/box2d/RobotController.h"
-
 namespace Simu {
 
 	using Communication::Communicator;

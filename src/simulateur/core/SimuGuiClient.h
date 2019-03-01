@@ -16,7 +16,9 @@ public:
 
 	void createIAProcess(const IAProcessData& iaProcessData, const ConnectionData& connectionData) override;
 
-	IRobotController* getRobotController() override;
+	void testNavigationForward(Distance distance) override;
+
+	void testNavigationTurn(Angle angle) override;
 
 private:
 	Simulateur& _simu;

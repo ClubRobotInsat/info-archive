@@ -27,7 +27,16 @@ void SimuGuiClient::createIAProcess(const IAProcessData& iaProcessData, const Co
 	logDebug("Launching process : ", iaProcessData.executablePath);
 }
 
-IRobotController* SimuGuiClient::getRobotController() {
-	// TODO Le simu crash s'il n'y a pas de robot
-	return &_simu.getRobot().getController();
+void SimuGuiClient::testNavigationForward(Distance distance) {
+	if (_simu._robot != nullptr) {
+		auto &controller = _simu._robot->getController();
+		controller.forward(distance);
+	}
+}
+
+void SimuGuiClient::testNavigationTurn(Angle angle) {
+	if (_simu._robot != nullptr) {
+		auto &controller = _simu._robot->getController();
+		controller.turn(angle);
+	}
 }

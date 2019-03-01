@@ -59,10 +59,15 @@ void GtkSimuApplication::waitStopped() {
 	_stoppedCV.wait(lck);
 }
 
+void GtkSimuApplication::showDialog(const std::string &message) {
+	Gtk::MessageDialog infoDialog(*_mainWindow, "Info", false, Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK);
+	infoDialog.set_secondary_text(message.c_str());
+	infoDialog.run();
+}
+
 void GtkSimuApplication::showErrorDialog(const std::string& message) {
 	Gtk::MessageDialog errorDialog(*_mainWindow, "Error", false, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK);
 	errorDialog.set_secondary_text(message.c_str());
-
 	errorDialog.run();
 }
 
