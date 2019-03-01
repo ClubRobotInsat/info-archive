@@ -50,6 +50,21 @@
           </packing>
         </child>
         <child>
+          <object class="GtkLabel" id="arguments-tooltip">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="ellipsize">end</property>
+            <attributes>
+              <attribute name="foreground" value="#555557575353"/>
+            </attributes>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
           <object class="GtkBox" id="box3">
             <property name="visible">True</property>
             <property name="can_focus">False</property>

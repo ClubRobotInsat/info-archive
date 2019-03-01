@@ -19,6 +19,10 @@ private:
 	Gtk::ComboBoxText* _connectionType;
 	Gtk::Entry* _connectionArguments;
 	Gtk::Button* _connectButton;
+	Gtk::Label* _argumentsTooltip;
+
+
+	void onConnectionTypeChanged();
 };
 
 

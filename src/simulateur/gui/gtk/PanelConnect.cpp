@@ -11,9 +11,14 @@ PanelConnect::PanelConnect() {
 	_builder->get_widget("connection-type", _connectionType);
 	_builder->get_widget("connection-arguments", _connectionArguments);
 	_builder->get_widget("connect-button", _connectButton);
-	Widget* widget;
-	_builder->get_widget("root", widget);
-	add(*widget);
+	_builder->get_widget("arguments-tooltip", _argumentsTooltip);
+
+	Widget* root;
+	_builder->get_widget("root", root);
+	add(*root);
+
+	// signals
+	_connectionType->signal_changed().connect(sigc::mem_fun(*this, &PanelConnect::onConnectionTypeChanged));
 }
 
 Gtk::Button& PanelConnect::getConnectButton() {
@@ -67,4 +72,17 @@ std::vector<std::string> PanelConnect::getConnectionArguments() {
 		args.push_back(outputStream.str());
 
 	return args;
+}
+
+void PanelConnect::onConnectionTypeChanged() {
+	std::map<std::string, std::string> tooltip {
+		{"UDP", "[@IP] [local port] [remote port]"}
+	};
+
+	try {
+		_argumentsTooltip->set_text(tooltip.at(_connectionType->get_active_text()));
+	}
+	catch (std::exception &) {
+		_argumentsTooltip->set_text(" -- no information");
+	}
 }
