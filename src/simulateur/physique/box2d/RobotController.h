@@ -4,7 +4,6 @@
 
 #include "../IRobotController.h"
 
-#include "MathToolbox/Repere.h"
 #include "PhysicalObject.h"
 #include "pid/Asservissement.h"
 
@@ -22,7 +21,7 @@ public:
 
 	void emergencyStop();
 
-	void setFrame(const Vector2m& position, Angle angle) override;
+	repere::Coordinates getCoordinates() override;
 
 	SimuRobotState getState() override;
 

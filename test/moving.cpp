@@ -8,15 +8,22 @@ int main() {
 	auto m = std::make_shared<ModuleManager>();
 
 	// TODO check ID
-	auto& moving = m->add_module<Navigation>(2);
+	auto& navigation = m->add_module<Navigation>(1);
 
 	// TODO check address
-	Robot robot(m, {"prog_moving", "UDP", "192.168.0.222", "50000", "51"}, Lidar::None);
-	std::cout << "forward(5_cm)" << std::endl;
-	moving.forward(5_cm, SensAdvance::Forward);
+	Robot robot(m, {"prog_moving", "UDP", "127.0.0.1", "5000", "1234"}, Lidar::None);
 
+	std::cout << "forward(5_cm)" << std::endl;
+	navigation.forward(5_cm, SensAdvance::Forward);
+
+	getchar();
+	std::cout << "forward(30_cm)" << std::endl;
+	navigation.forward(30_cm, SensAdvance::Forward);
+
+	getchar();
+	std::cout << "Is the robot blocked ? " << navigation.is_physically_blocked() << std::endl;
 	std::cout << "stop" << std::endl;
-	moving.stop();
+	navigation.stop();
 
 	robot.deactivation();
 

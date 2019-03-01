@@ -1,5 +1,7 @@
 #include "SimuNavigation.h"
 
+#include <log/Log.h>
+
 #include "../../robot/Modules/NavigationUtility.h"
 
 using PhysicalRobot::NavigationUtility::angle_to_u16;
@@ -7,7 +9,8 @@ using PhysicalRobot::NavigationUtility::distance_to_u16;
 using PhysicalRobot::NavigationUtility::u16_to_angle;
 using PhysicalRobot::NavigationUtility::u16_to_distance;
 
-SimuNavigation::SimuNavigation(uint8_t id) : Module(id, "Simulator Navigation") {}
+SimuNavigation::SimuNavigation(uint8_t id, const std::shared_ptr<IRobotController>& robotController)
+        : Module(id, "Simulator Navigation"), _robotController(robotController) {}
 
 void SimuNavigation::deactivation() {}
 
@@ -16,14 +19,20 @@ MovingCommand SimuNavigation::get_current_command() {
 }
 
 std::vector<JSON> SimuNavigation::generate_list_jsons() const {
+	// Update from RobotController
+	repere::Coordinates _coords = _robotController->getCoordinates();
+	auto state = _robotController->getState();
+
 	JSON frame;
 
-	// Only writeable values are sent
+	// Only writeable values are sent (+ counter because Navigation modules needs it)
 	frame["x"] = distance_to_u16(_coords.getX());
 	frame["y"] = distance_to_u16(_coords.getY());
 	frame["angle"] = angle_to_u16(_coords.getAngle());
-	frame["blocked"] = _blocked.load();
-	frame["moving_done"] = _moving_done.load();
+	frame["blocked"] = state == SimuRobotState::Blocked;
+	frame["moving_done"] = state == SimuRobotState::Idle;
+
+	frame["counter"] = _counter;
 
 	return {frame};
 }
@@ -37,40 +46,57 @@ void SimuNavigation::message_processing(const JSON& frame) {
 	// Command parsing
 	if(frame["counter"] > _counter) {
 		// Stop current command
-		if(!_moving_done) {
+		if(_robotController->getState() != SimuRobotState::Idle) {
 			_robotController->stop();
 		}
 
-		_command = frame["command"];
+		if(!getFromString(frame["command"], _command)) {
+			throw std::runtime_error("Navigation command failed to parse");
+		}
 		_args_cmd[0] = frame["args_cmd1"];
 		_args_cmd[1] = frame["args_cmd2"];
 		_counter = frame["counter"];
 
 		// Execute next command
-		Distance distance = 0_m;
-		Angle angle = 0_deg;
+		Distance distance;
+		Angle angle;
+
+		auto robot_coords = _robotController->getCoordinates();
 
 		switch(_command) {
 			case MovingCommand::GoForward:
 				distance = u16_to_distance(_args_cmd[0]);
+				_robotController->forward(distance);
+				logDebug6("Forward ", distance);
+				break;
+
 			case MovingCommand::GoBackward:
 				distance = -u16_to_distance(_args_cmd[0]);
 				_robotController->forward(distance);
+				logDebug6("Backward ", -distance);
 				break;
 
 			case MovingCommand::TurnRelative:
-				// angle = _robotController->getAngle() + u16_to_angle(_args_cmd[0]);
+				angle = robot_coords.getAngle() + u16_to_angle(_args_cmd[0]);
+				_robotController->turn(angle);
+				logDebug6("Turn relative ", u16_to_angle(_args_cmd[0]));
+				break;
+
 			case MovingCommand::TurnAbsolute:
 				angle = u16_to_angle(_args_cmd[0]);
 				_robotController->turn(angle);
+				logDebug6("Turn absolute ", angle);
 				break;
 
 			case MovingCommand::EmergencyStop:
 			case MovingCommand::Stop:
 				_robotController->stop();
+				logDebug6("Stop");
 				break;
 			case MovingCommand::DoNothing:
 				break;
 		}
 	}
+
+	Module::_state_changed.exchange(true);
 }

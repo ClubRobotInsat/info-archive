@@ -21,7 +21,6 @@ void RobotController::reset() {
 }
 
 void RobotController::forward(Distance distance) {
-	std::cout << distance << std::endl;
 	_distanceGoal += distance;
 	_currentState = SimuRobotState::Moving;
 }
@@ -41,11 +40,8 @@ void RobotController::emergencyStop() {
 	_currentState = SimuRobotState::Stopped;
 }
 
-void RobotController::setFrame(const Vector2m&, Angle angle) {
-	reset();
-
-	_currentAngle = angle;
-	_angleGoal = angle;
+repere::Coordinates RobotController::getCoordinates() {
+	return repere::Coordinates(_robot.getPosition(), _robot.getAngle());
 }
 
 SimuRobotState RobotController::getState() {

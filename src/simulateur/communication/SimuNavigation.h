@@ -10,20 +10,13 @@ using PhysicalRobot::MovingCommand;
 
 class SimuNavigation : public PhysicalRobot::Module {
 public:
-	explicit SimuNavigation(uint8_t id);
+	explicit SimuNavigation(uint8_t id, const std::shared_ptr<IRobotController>& robotController);
 
 	void deactivation() override;
 
 	MovingCommand get_current_command();
 
 protected:
-	// writeable
-	/// x, y, angle
-	repere::Coordinates _coords;
-
-	std::atomic_bool _blocked;
-	std::atomic_bool _moving_done;
-
 	// read-only
 	std::atomic_bool _leds;
 	std::atomic_bool _asserv_on_off;

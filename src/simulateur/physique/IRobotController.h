@@ -3,6 +3,7 @@
 
 #include "Enum/Enum.h"
 #include "MathToolbox/MathToolbox.h"
+#include "MathToolbox/Repere.h"
 #include "Units.h"
 
 ENUM_CLASS(SimuRobotState, Moving, Blocked, Idle, Stopped);
@@ -19,7 +20,7 @@ public:
 
 	virtual void stop() = 0;
 
-	virtual void setFrame(const Vector2m& position, Angle angle) = 0;
+	virtual repere::Coordinates getCoordinates() = 0;
 
 	virtual SimuRobotState getState() = 0;
 

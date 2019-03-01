@@ -27,8 +27,8 @@ GtkSimuApplication::GtkSimuApplication(int argc, char** argv, std::string id, Gt
 
 	// Fill the window
 	_globalBox.add(_panelConnect);
-	_globalBox.add(_panelRobotState);
 	_globalBox.add(_panelTestNavigation);
+	_globalBox.add(_panelRobotState);
 	_mainWindow->add(_globalBox);
 
 	// Signals

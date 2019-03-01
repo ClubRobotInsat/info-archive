@@ -75,14 +75,11 @@ std::vector<std::string> PanelConnect::getConnectionArguments() {
 }
 
 void PanelConnect::onConnectionTypeChanged() {
-	std::map<std::string, std::string> tooltip {
-		{"UDP", "[@IP] [local port] [remote port]"}
-	};
+	std::map<std::string, std::string> tooltip{{"UDP", "[@IP] [local port] [remote port]"}};
 
 	try {
 		_argumentsTooltip->set_text(tooltip.at(_connectionType->get_active_text()));
-	}
-	catch (std::exception &) {
+	} catch(std::exception&) {
 		_argumentsTooltip->set_text(" -- no information");
 	}
 }

@@ -136,7 +136,8 @@ void parseConsole() {
 			_simu.setResetWorldFlag(true);
 			// commande inconnue, afficher l'aide
 		} else {
-			std::cout << "help : q (quit), r (reset)" << std::endl; // TO DO Afficher l'aide de façon synchrone avec un buffer
+			std::cout << "help : q (quit), r (reset)"
+			          << std::endl; // TO DO Afficher l'aide de façon synchrone avec un buffer
 		}
 	}
 }

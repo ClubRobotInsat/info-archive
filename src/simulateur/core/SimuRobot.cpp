@@ -3,8 +3,8 @@
 #include <log/Log.h>
 
 #include "../communication/SimuLed.h"
-#include "../communication/SimuServos.h"
 #include "../communication/SimuNavigation.h"
+#include "../communication/SimuServos.h"
 
 // TODO Le robotController devrait être obtenu grâce au contexte physique ou whatever
 #include "../physique/box2d/RobotController.h"
@@ -33,12 +33,11 @@ namespace Simu {
 	void SimuRobot::assignModules() {
 		auto modules = GLOBAL_CONSTANTS()[_name].get_modules();
 
-		for (auto &moduleData : modules) {
-			if (moduleData.first == "navigation") {
+		for(auto& moduleData : modules) {
+			if(moduleData.first == "navigation") {
 				logDebug3("Added navigation module at id ", static_cast<int>(moduleData.second));
-				_moduleMgr->add_module<SimuNavigation>(moduleData.second);
-			}
-			else if (moduleData.first == "servos") {
+				_moduleMgr->add_module<SimuNavigation>(moduleData.second, _controller);
+			} else if(moduleData.first == "servos") {
 				logDebug3("Added servos module at id ", static_cast<int>(moduleData.second));
 				_moduleMgr->add_module<SimuServos>(moduleData.second);
 			}

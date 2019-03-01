@@ -97,7 +97,7 @@ void Simulateur::resetWorld() {
 	// Reconstruction de la table
 	initWorld();
 
-	if (_robot != nullptr) {
+	if(_robot != nullptr) {
 		addRobot(_robot->getName(), _robot->getColor());
 	}
 }
