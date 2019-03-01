@@ -42,9 +42,7 @@ Simulateur::Simulateur()
 
 }
 
-Simulateur::~Simulateur() {
-
-}
+Simulateur::~Simulateur() {}
 
 void Simulateur::start() {
 	_guiCtx = std::make_unique<GtkSimuContext>(0, nullptr, "simu.gtk.app", _guiClient);
