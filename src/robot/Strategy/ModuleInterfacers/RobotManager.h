@@ -9,6 +9,7 @@
 #include "ElevatorInterfacer.h"
 #include "IOInterfacer.h"
 #include "NavigationInterfacer.h"
+#include "PumpsInterfacer.h"
 #include "ServosInterfacer.h"
 
 #include <typeindex>

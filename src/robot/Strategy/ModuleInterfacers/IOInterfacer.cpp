@@ -6,8 +6,7 @@
 
 namespace Strategy {
 	namespace Interfacer {
-		IOInterfacer::IOInterfacer(Strategy::Interfacer::IOInterfacer::interfaced_type& module_io)
-		        : AbstractInterfacer(), _module(module_io) {}
+		IOInterfacer::IOInterfacer(interfaced_type& module_io) : AbstractInterfacer(), _module(module_io) {}
 
 		IOInterfacer::IOInterfacer(std::shared_ptr<PhysicalRobot::Robot> robot) : IOInterfacer(*robot) {}
 

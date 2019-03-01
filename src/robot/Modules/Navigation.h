@@ -85,5 +85,4 @@ namespace PhysicalRobot {
 	};
 } // namespace PhysicalRobot
 
-
 #endif // ROOT_MODULEMOVING_H

@@ -4,6 +4,7 @@ set(INTERFACERS_SOURCES
         ElevatorInterfacer.cpp
         IOInterfacer.cpp
         NavigationInterfacer.cpp
+        PumpsInterfacer.cpp
         ServosInterfacer.cpp
         RobotManager.cpp)
 

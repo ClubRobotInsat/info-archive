@@ -5,6 +5,7 @@ set(MODULE_SOURCES
         IO.cpp
         Motors.cpp
         Navigation.cpp
+        Pumps.cpp
         Servos.cpp)
 
 add_library(Modules STATIC ${MODULE_SOURCES})

@@ -28,6 +28,7 @@ matrix:
         - cd ${TRAVIS_BUILD_DIR}
         # init coverage to 0 (optional)
         - lcov --directory . --zerocounters
+        - sudo apt install tree
       after_success:
         - cd ${TRAVIS_BUILD_DIR}
         - tree build

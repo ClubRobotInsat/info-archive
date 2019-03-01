@@ -106,5 +106,4 @@ namespace PhysicalRobot {
 	};
 } // namespace PhysicalRobot
 
-
 #endif // ROOT_SERVOS_H
