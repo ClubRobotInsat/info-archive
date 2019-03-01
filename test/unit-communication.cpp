@@ -167,7 +167,7 @@ TEST_CASE("Protocol parsing's arguments - UDP", "[segfault]") {
 	}
 
 	SECTION("Real life") {
-		REQUIRE(GLOBAL_CONSTANTS()["primary"].get_protocol_type() == "ethernet");
+		REQUIRE(GLOBAL_CONSTANTS()["primary"].get_protocol_type() == "udp");
 		CHECK_NOTHROW(Parser::make_protocol(GLOBAL_CONSTANTS()["primary"]));
 	}
 
