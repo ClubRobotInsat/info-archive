@@ -142,11 +142,11 @@ TEST_CASE("Protocol parsing's arguments - UDP", "[segfault]") {
 		                    "Utilisation avec UDP : \"<program_name> UDP [@IP] [port local] [port distant]\"");
 		{
 			std::unique_ptr<Communication::Protocol> ptr;
-			REQUIRE_NOTHROW(ptr = ArgumentsUDP("127.0.0.1", 5000, 51).make_protocol());
+			REQUIRE_NOTHROW(ptr = ArgumentsUDP("127.0.0.1", 5001, 51).make_protocol());
 			CHECK(ptr != nullptr);
 		}
-		CHECK(ArgumentsUDP(std::vector({"127.0.0.1"s, "5000"s, "51"s})).make_protocol() != nullptr);
-		auto protocol = Parser::make_protocol({"UDP", "127.0.0.1", "5000", "51"});
+		CHECK(ArgumentsUDP(std::vector({"127.0.0.1"s, "5002"s, "51"s})).make_protocol() != nullptr);
+		auto protocol = Parser::make_protocol({"UDP", "127.0.0.1", "5003", "51"});
 		CHECK(protocol.first == typeid(Communication::protocol_udp));
 		CHECK(protocol.second != nullptr);
 	}
@@ -156,18 +156,17 @@ TEST_CASE("Protocol parsing's arguments - UDP", "[segfault]") {
 		                    "Utilisation avec ETHERNET : \"<program_name> <[ID] [@IP] [local port] [remote "
 		                    "port]>...\"");
 		REQUIRE_NOTHROW(Parser::make_protocol({"ETHERNET", "1", "127.0.0.1", "5001", "51", "2", "127.0.0.1", "5002", "52"}));
-		auto protocol = Parser::make_protocol({"ETHERNET", "1", "127.0.0.1", "5001", "51", "2", "127.0.0.1", "5002", "52"});
+		auto protocol = Parser::make_protocol({"ETHERNET", "1", "127.0.0.1", "6001", "51", "2", "127.0.0.1", "6002", "52"});
 		CHECK(protocol.first == typeid(Communication::protocol_ethernet));
 		REQUIRE(protocol.second != nullptr);
 
-		ArgumentsEthernet args({Communication::protocol_ethernet::UDPConnection(1, "127.0.0.1", 6001, 61)});
-		args.add_connection(5, "127.0.0.1", 6002, 62);
+		ArgumentsEthernet args({Communication::protocol_ethernet::UDPConnection(1, "127.0.0.1", 7001, 61)});
+		args.add_connection(5, "127.0.0.1", 7002, 62);
 		REQUIRE_NOTHROW(args.make_protocol());
 		CHECK(args.make_protocol() != nullptr);
 	}
 
 	SECTION("Real life") {
-		REQUIRE(GLOBAL_CONSTANTS()["primary"].get_protocol_type() == "udp");
 		CHECK_NOTHROW(Parser::make_protocol(GLOBAL_CONSTANTS()["primary"]));
 	}
 
@@ -282,7 +281,7 @@ TEST_CASE("Serial Protocols - UDP", "[segfault]") {
 			REQUIRE_THROWS_WITH(Communication::protocol_udp("127.0.0.1", 10, 80),
 			                    "Failed to bind the receiving socket with 127.0.0.1:10.");
 
-			REQUIRE_NOTHROW(Communication::protocol_udp("localhost", 1234, 80));
+			REQUIRE_NOTHROW(Communication::protocol_udp("localhost", 2345, 80));
 
 			// Multiple use of the port 1234
 			Communication::protocol_udp udp("localhost", 1234, 80);

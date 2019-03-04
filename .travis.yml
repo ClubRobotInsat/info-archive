@@ -15,7 +15,7 @@ matrix:
     - os: linux
       compiler: gcc
       env:
-        - CMAKE_OPTIONS=-DDEBUG=ON -DBITS=64
+        - CMAKE_OPTIONS="-DDEBUG=ON -DBITS=64"
     - os: linux
       compiler: gcc
       before_script:
@@ -36,8 +36,9 @@ matrix:
         - lcov --remove coverage.info 'test/*' '/usr/*' 'third_parties/*' --output-file coverage.info # filter out system and test code
         - lcov --list coverage.info # debug before upload
         - coveralls-lcov --repo-token ${COVERALLS_TOKEN} coverage.info # uploads to coveralls
+        - bash <(curl -s https://codecov.io/bash) -f coverage.info || echo "Codecov did not collect coverage reports"
       env:
-        - CMAKE_OPTIONS=-DDEBUG=ON -DBITS=64 -DCOVERAGE=ON
+        - CMAKE_OPTIONS="-DDEBUG=ON -DBITS=64 -DCOVERAGE=ON"
 
 install:
   - cd ${TRAVIS_BUILD_DIR}
