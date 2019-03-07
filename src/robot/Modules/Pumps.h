@@ -13,11 +13,12 @@ namespace PhysicalRobot {
 	class Pumps final : public Module {
 	public:
 		using pump_t = uint8_t;
-		// using vacst_t = uint8_t;
+		using vacst_t = uint8_t;
 		using valve_t = uint8_t;
 
-		static const pump_t ID_MAX_PUMP = 1;
+		static const pump_t ID_MAX_PUMP = 2;
 		static const valve_t ID_MAX_VALVE = 8;
+		static const vacst_t ID_MAX_VACST = 8;
 
 		explicit Pumps(uint8_t id) : Module(id, "Pumps") {}
 
@@ -29,6 +30,9 @@ namespace PhysicalRobot {
 		void activate_valve(valve_t);
 		void deactivate_valve(valve_t);
 
+		void activate_vacst(vacst_t);
+		void deactivate_vacst(vacst_t);
+
 	private:
 		std::vector<JSON> generate_list_jsons() const override;
 		void message_processing(const JSON&) override;
@@ -37,10 +41,13 @@ namespace PhysicalRobot {
 
 		std::atomic<IOState> _pumps_on_off[ID_MAX_PUMP];
 		std::atomic<IOState> _valves_on_off[ID_MAX_VALVE];
+		std::atomic<IOState> _vacst_on_off[ID_MAX_VACST];
 		std::atomic_uint16_t _pump_intensity[ID_MAX_PUMP];
 
 		void test_is_pump_ok(pump_t) const;
 		void test_is_valve_ok(valve_t) const;
+		void test_is_vacst_ok(vacst_t) const;
+
 	};
 } // namespace PhysicalRobot
 
