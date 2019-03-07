@@ -7,45 +7,9 @@
 #include <log/Log.h>
 
 #include "../src/robot/Modules/ModuleManager.h"
+#include "TestUtils.hpp"
 
-class ModuleTest : public PhysicalRobot::Module {
-public:
-	explicit ModuleTest(uint8_t id) : Module(id, "ModuleTest"), _a(1), _b(2) {}
-
-	// Accesseurs pour les tests
-	inline uint8_t get_a_value() const {
-		return _a;
-	}
-	inline uint8_t get_b_value() const {
-		return _b;
-	}
-	void set_a_value(int a) {
-		_a = a;
-		_state_changed.exchange(true);
-	}
-	void set_b_value(int b) {
-		_b = b;
-		_state_changed.exchange(true);
-	}
-
-private:
-	std::vector<JSON> generate_list_jsons() const override {
-		JSON j;
-		j["a"] = _a.load();
-		j["b"] = _b.load();
-
-		return {j};
-	}
-
-	void message_processing(const JSON& j) override {
-		_a.exchange(j["a"]);
-		_b.exchange(j["b"]);
-	}
-
-	void deactivation() override {}
-
-	std::atomic_uint8_t _a, _b;
-};
+using TestUtils::ModuleTest;
 
 TEST_CASE("Basic module") {
 	SECTION("Simple tests.") {
@@ -78,7 +42,6 @@ TEST_CASE("Basic module") {
 		}
 	}
 }
-
 
 #include "../src/robot/Modules/Servos.h"
 
@@ -118,7 +81,6 @@ TEST_CASE("Servos' Module", "[integration]") {
 	}
 }
 
-
 #include "../src/robot/Modules/Navigation.h"
 
 TEST_CASE("Navigation Module", "[integration]") {
@@ -131,7 +93,6 @@ TEST_CASE("Navigation Module", "[integration]") {
 		CHECK(starting_point.getAngle().toRad() == Approx(0));
 	}
 }
-
 
 #include "../src/robot/Communication/NamedPipe.h"
 
@@ -150,7 +111,7 @@ TEST_CASE("ModuleManager", "[integration]") {
 		CHECK(manager.has_module<ModuleTest>());
 		CHECK(manager.has_module(5));
 		REQUIRE_THROWS_WITH(manager.add_module<ModuleTest>(5), "Double assignment of the module n°5.");
-		REQUIRE_THROWS_WITH(manager.add_module<ModuleTest>(8), "Double assignment of the module type: 10ModuleTest");
+		REQUIRE_THROWS_WITH(manager.add_module<ModuleTest>(8), "Double assignment of the module type: N9TestUtils10ModuleTestE");
 		manager.add_module<PhysicalRobot::Servos>(6);
 		CHECK(manager.get_nb_modules() == 2);
 
@@ -246,7 +207,9 @@ TEST_CASE("ModuleManager", "[integration]") {
 
 			REQUIRE_THROWS_WITH(manager.read_frame({}), "Frame does not contain the module's id.");
 			// la trame est drop vu que le module 13 n'est pas initialisé
+			Log::open(Log::NOTHING, "", false);
 			REQUIRE_NOTHROW(manager.read_frame({13}), "The module n°13 isn't initialized.");
+			Log::close(Log::NOTHING);
 			// TODO: some tests with a good frame
 		}
 	}

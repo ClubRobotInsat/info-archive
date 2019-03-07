@@ -8,6 +8,8 @@ target_link_libraries(TEST_MOVING Robot)
 add_library(catch_main OBJECT "unit.cpp")
 target_include_directories(catch_main PRIVATE "../third_parties/catch/single_include/catch2")
 
+add_library(test_utils STATIC TestUtils.hpp)
+target_link_libraries(test_utils Strategy)
 
 # Génération automatique de tous les exécutables de test
 file(GLOB files "unit-*.cpp")
@@ -31,14 +33,14 @@ endforeach()
 # Linkage de chaque exécutable par rapport à ses librairies nécessaires
 # Par défaut, 'Strategy' regroupe tout
 target_link_libraries(unit_testing_frames Outils_Robot)
-target_link_libraries(unit_testing_modules Modules)
+target_link_libraries(unit_testing_modules Modules test_utils)
 target_link_libraries(unit_testing_communication Communication)
 target_link_libraries(unit_testing_constants Outils_Robot)
 target_link_libraries(unit_testing_repere Outils_Robot)
 target_link_libraries(unit_testing_robot Robot)
 target_link_libraries(unit_testing_servos_conversions Modules)
 target_link_libraries(unit_testing_interfacers ModuleInterfacers)
-target_link_libraries(unit_testing_strategy Strategy)
+target_link_libraries(unit_testing_strategy Strategy test_utils)
 
 set(UNITTEST_TARGET_NAME "unit_testing_all")
 add_executable(${UNITTEST_TARGET_NAME}
