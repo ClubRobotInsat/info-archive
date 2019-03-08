@@ -361,15 +361,22 @@
 template <typename Enum>
 std::vector<Enum> const& getEnumValues();
 
+/**
+ * Fonction template permettant de trouver la valeur d'une Enum à partir de la chaine
+ * de caractères qui la représente.
+ * @tparam Enum
+ * @param str La représentation en chaine de caractère d'une valeur de l'enum. Peut être obtenue
+ * par exemple avec la méthode toString()
+ * @throws std::invalid_argument Si la chaine passée en paramètres n'est pas reconnue.
+ */
 template <typename Enum>
-inline bool getFromString(const std::string &str, Enum &output) {
+inline Enum fromString(const std::string &str) {
 	for (auto value : getEnumValues<Enum>()) {
 		if (toString(value) == str) {
-			output = value;
-			return true;
+			return value;
 		}
 	}
-	return false;
+	throw std::invalid_argument("Unknown value for enum");
 }
 
 /**

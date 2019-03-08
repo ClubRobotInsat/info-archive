@@ -9,6 +9,7 @@
 
 #include "GtkInclude.h"
 #include "GtkSimuContext.h"
+#include "PanelCentral.h"
 #include "PanelConnect.h"
 #include "PanelRobotState.h"
 #include "PanelTestNavigation.h"
@@ -43,6 +44,7 @@ private:
 
 	Gtk::VBox _globalBox;
 	PanelTestNavigation _panelTestNavigation;
+	PanelCentral _panelCentral;
 	PanelConnect _panelConnect;
 	PanelRobotState _panelRobotState;
 

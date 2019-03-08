@@ -17,7 +17,7 @@ gboolean emptyGtkQueue(void* data) {
 
 
 GtkSimuApplication::GtkSimuApplication(int argc, char** argv, std::string id, GtkSimuContext& context)
-        : Gtk::Application(argc, argv, id), _context(context), _panelTestNavigation(context) {
+        : Gtk::Application(argc, argv, id), _context(context), _panelTestNavigation(context), _panelCentral(context) {
 
 	// Window configuration
 	_mainWindow = std::make_unique<Gtk::Window>();
@@ -27,6 +27,7 @@ GtkSimuApplication::GtkSimuApplication(int argc, char** argv, std::string id, Gt
 
 	// Fill the window
 	_globalBox.add(_panelConnect);
+	_globalBox.add(_panelCentral);
 	_globalBox.add(_panelTestNavigation);
 	_globalBox.add(_panelRobotState);
 	_mainWindow->add(_globalBox);
@@ -59,7 +60,7 @@ void GtkSimuApplication::waitStopped() {
 	_stoppedCV.wait(lck);
 }
 
-void GtkSimuApplication::showDialog(const std::string &message) {
+void GtkSimuApplication::showDialog(const std::string& message) {
 	Gtk::MessageDialog infoDialog(*_mainWindow, "Info", false, Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK);
 	infoDialog.set_secondary_text(message.c_str());
 	infoDialog.run();

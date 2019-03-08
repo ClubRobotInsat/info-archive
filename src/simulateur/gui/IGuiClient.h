@@ -16,6 +16,10 @@ struct ConnectionData {
 	std::vector<std::string> parameters;
 };
 
+struct ResetData {
+	std::string color;
+};
+
 /** Cette classe permet à l'interface utilisateur de transmettre
  * les commandes de l'utilisateur au simulateur. */
 class IGuiClient {
@@ -36,6 +40,12 @@ public:
 	/** Demande au robot du simulateur de tourner d'un certain angle.
 	 * Cette méthode est utilisée uniquement pour tester la navigation. */
 	virtual void testNavigationTurn(Angle angle) = 0;
+
+	/** Reset le simulateur, avec les données passées en paramètres. */
+	virtual void reset(const ResetData& resetData) = 0;
+
+	/** Retourne les différentes couleurs possibles de robot. */
+	virtual std::vector<std::string> getRobotColors() const = 0;
 };
 
 #endif // ROOT_IGUICLIENT_H

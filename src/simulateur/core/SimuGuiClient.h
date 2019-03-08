@@ -20,6 +20,10 @@ public:
 
 	void testNavigationTurn(Angle angle) override;
 
+	void reset(const ResetData& resetData) override;
+
+	std::vector<std::string> getRobotColors() const override;
+
 private:
 	Simulateur& _simu;
 };

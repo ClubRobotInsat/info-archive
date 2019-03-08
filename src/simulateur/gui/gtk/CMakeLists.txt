@@ -2,6 +2,7 @@ add_library(GtkSimu
         GtkSimuContext.cpp
         GtkSimuApplication.cpp
         PanelConnect.cpp
+        PanelCentral.cpp
         PanelRobotState.cpp
         PanelTestNavigation.cpp)
 

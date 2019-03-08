@@ -2,6 +2,8 @@
 
 #include "Simulateur.h"
 
+using Constants::RobotColor;
+
 SimuGuiClient::SimuGuiClient(Simulateur& simulator) : _simu(simulator) {}
 
 SimuGuiClient::~SimuGuiClient() = default;
@@ -28,15 +30,30 @@ void SimuGuiClient::createIAProcess(const IAProcessData& iaProcessData, const Co
 }
 
 void SimuGuiClient::testNavigationForward(Distance distance) {
-	if (_simu._robot != nullptr) {
-		auto &controller = _simu._robot->getController();
+	if(_simu._robot != nullptr) {
+		auto& controller = _simu._robot->getController();
 		controller.forward(distance);
 	}
 }
 
 void SimuGuiClient::testNavigationTurn(Angle angle) {
-	if (_simu._robot != nullptr) {
-		auto &controller = _simu._robot->getController();
+	if(_simu._robot != nullptr) {
+		auto& controller = _simu._robot->getController();
 		controller.turn(angle);
 	}
+}
+
+void SimuGuiClient::reset(const ResetData& resetData) {
+	RobotColor color = fromString<RobotColor>(resetData.color);
+	_simu.resetWorld();
+}
+
+std::vector<std::string> SimuGuiClient::getRobotColors() const {
+	std::vector<std::string> result;
+
+	for(RobotColor robotColor : getEnumValues<RobotColor>()) {
+		result.emplace_back(toString(robotColor));
+	}
+
+	return result;
 }
