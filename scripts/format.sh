@@ -1,7 +1,7 @@
 #!/bin/bash
 
 OLD_DIR="$(pwd)"
-DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$DIR"
 
 if [ "$#" -gt 1 ]; then
@@ -10,13 +10,17 @@ if [ "$#" -gt 1 ]; then
 fi
 
 if [ "$#" -eq 0 ]; then
-    format_path=("commun" "robot" "simulateur")
+    format_path=("src/commun" "src/robot" "src/simulateur")
 else
     format_path=("$1")
 fi
 
-find "${format_path[@]}" \( -name "*.cpp" -o -name "*.h" -o -name "*.hpp" \) -not -path "commun/Units*" -not -path "simulateur/server/asio*" -not -path "simulateur/server/websocketpp*" -exec clang-format -i {} \;
+find "${format_path[@]}" \( -name "*.cpp" -o -name "*.h" -o -name "*.hpp" \) -not -path "src/simulateur/legacy*" -exec clang-format -i {} \;
+
+if [ "$?" -eq 0 ]; then
+    echo "Formatting done."
+else
+    echo "Formatting failed."
+fi
 
 cd "$OLD_DIR"
-
-echo "Formatting done."

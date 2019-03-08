@@ -111,7 +111,7 @@ bool parseArgument(int argc, char** argv, Simulateur& simulateur) {
 }
 
 int main(int argc, char** argv) {
-	Simulateur &simu = Simulateur::getInstance();
+	Simulateur& simu = Simulateur::getInstance();
 
 	// On coupe proprement le simu.
 	std::signal(SIGINT, [](int) {

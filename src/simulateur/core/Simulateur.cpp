@@ -4,12 +4,12 @@
 #include <cstdlib>
 #include <functional>
 
-#include "Commun.h"
-#include "log/Log.h"
-#include "SimulateurConstantes.h"
 #include "../graphique/irrlicht/Scene.h"
 #include "../gui/gtk/GtkSimuContext.h"
 #include "../physique/box2d/Box2DPhysicalContext.h"
+#include "Commun.h"
+#include "SimulateurConstantes.h"
+#include "log/Log.h"
 //#include "../graphique/server/WebGraphicalContext.h"
 
 // Gestion de l'arrêt du simulateur.
@@ -39,7 +39,6 @@ Simulateur::Simulateur()
 	if(dynamic_cast<Scene*>(_graphicalCtx.get())) {
 		dynamic_cast<Scene&>(*_graphicalCtx).addWindowListener(&UserHandler::instance);
 	}
-
 }
 
 Simulateur::~Simulateur() {}

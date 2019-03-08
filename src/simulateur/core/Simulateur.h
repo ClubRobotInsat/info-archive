@@ -58,7 +58,7 @@ public:
 	 * Obtient un pointeur vers l'unique instance du simulateur
 	 */
 	static Simulateur& getInstance() {
-		if (_instance == nullptr) {
+		if(_instance == nullptr) {
 			_instance = std::make_unique<Simulateur>();
 		}
 		return *_instance;
