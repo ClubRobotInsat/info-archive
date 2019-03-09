@@ -26,7 +26,6 @@ void PanelTestNavigation::onValidate() const {
 	std::string angleStr = _angleText->get_text();
 
 	_context.queueAction([this, forward, distanceStr, turn, angleStr]() {
-
 		if(forward) {
 			try {
 				double distance = std::stod(distanceStr);

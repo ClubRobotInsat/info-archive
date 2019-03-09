@@ -40,7 +40,7 @@ namespace detail {
 	struct is_type {
 		static const bool value = true;
 	};
-}
+} // namespace detail
 
 #define MBED_ENABLE_IF_CALLBACK_COMPATIBLE(F, M)                                                                    \
 	typename detail::enable_if<detail::is_type<M, &F::operator()>::value && sizeof(F) <= sizeof(uintptr_t)>::type = \
@@ -542,11 +542,12 @@ private:
 	template <typename F>
 	void generate(const F& f) {
 		static const ops ops = {
-		    &Callback::function_call<F>, &Callback::function_move<F>, &Callback::function_dtor<F>,
+		    &Callback::function_call<F>,
+		    &Callback::function_move<F>,
+		    &Callback::function_dtor<F>,
 		};
 
-		MBED_STATIC_ASSERT(sizeof(Callback) - sizeof(_ops) >= sizeof(F),
-		                   "Type F must not exceed the size of the Callback class");
+		MBED_STATIC_ASSERT(sizeof(Callback) - sizeof(_ops) >= sizeof(F), "Type F must not exceed the size of the Callback class");
 		memset(this, 0, sizeof(Callback));
 		new(this) F(f);
 		_ops = &ops;
@@ -1091,11 +1092,12 @@ private:
 	template <typename F>
 	void generate(const F& f) {
 		static const ops ops = {
-		    &Callback::function_call<F>, &Callback::function_move<F>, &Callback::function_dtor<F>,
+		    &Callback::function_call<F>,
+		    &Callback::function_move<F>,
+		    &Callback::function_dtor<F>,
 		};
 
-		MBED_STATIC_ASSERT(sizeof(Callback) - sizeof(_ops) >= sizeof(F),
-		                   "Type F must not exceed the size of the Callback class");
+		MBED_STATIC_ASSERT(sizeof(Callback) - sizeof(_ops) >= sizeof(F), "Type F must not exceed the size of the Callback class");
 		memset(this, 0, sizeof(Callback));
 		new(this) F(f);
 		_ops = &ops;
@@ -1641,11 +1643,12 @@ private:
 	template <typename F>
 	void generate(const F& f) {
 		static const ops ops = {
-		    &Callback::function_call<F>, &Callback::function_move<F>, &Callback::function_dtor<F>,
+		    &Callback::function_call<F>,
+		    &Callback::function_move<F>,
+		    &Callback::function_dtor<F>,
 		};
 
-		MBED_STATIC_ASSERT(sizeof(Callback) - sizeof(_ops) >= sizeof(F),
-		                   "Type F must not exceed the size of the Callback class");
+		MBED_STATIC_ASSERT(sizeof(Callback) - sizeof(_ops) >= sizeof(F), "Type F must not exceed the size of the Callback class");
 		memset(this, 0, sizeof(Callback));
 		new(this) F(f);
 		_ops = &ops;
@@ -2192,11 +2195,12 @@ private:
 	template <typename F>
 	void generate(const F& f) {
 		static const ops ops = {
-		    &Callback::function_call<F>, &Callback::function_move<F>, &Callback::function_dtor<F>,
+		    &Callback::function_call<F>,
+		    &Callback::function_move<F>,
+		    &Callback::function_dtor<F>,
 		};
 
-		MBED_STATIC_ASSERT(sizeof(Callback) - sizeof(_ops) >= sizeof(F),
-		                   "Type F must not exceed the size of the Callback class");
+		MBED_STATIC_ASSERT(sizeof(Callback) - sizeof(_ops) >= sizeof(F), "Type F must not exceed the size of the Callback class");
 		memset(this, 0, sizeof(Callback));
 		new(this) F(f);
 		_ops = &ops;
@@ -2744,11 +2748,12 @@ private:
 	template <typename F>
 	void generate(const F& f) {
 		static const ops ops = {
-		    &Callback::function_call<F>, &Callback::function_move<F>, &Callback::function_dtor<F>,
+		    &Callback::function_call<F>,
+		    &Callback::function_move<F>,
+		    &Callback::function_dtor<F>,
 		};
 
-		MBED_STATIC_ASSERT(sizeof(Callback) - sizeof(_ops) >= sizeof(F),
-		                   "Type F must not exceed the size of the Callback class");
+		MBED_STATIC_ASSERT(sizeof(Callback) - sizeof(_ops) >= sizeof(F), "Type F must not exceed the size of the Callback class");
 		memset(this, 0, sizeof(Callback));
 		new(this) F(f);
 		_ops = &ops;
@@ -3297,11 +3302,12 @@ private:
 	template <typename F>
 	void generate(const F& f) {
 		static const ops ops = {
-		    &Callback::function_call<F>, &Callback::function_move<F>, &Callback::function_dtor<F>,
+		    &Callback::function_call<F>,
+		    &Callback::function_move<F>,
+		    &Callback::function_dtor<F>,
 		};
 
-		MBED_STATIC_ASSERT(sizeof(Callback) - sizeof(_ops) >= sizeof(F),
-		                   "Type F must not exceed the size of the Callback class");
+		MBED_STATIC_ASSERT(sizeof(Callback) - sizeof(_ops) >= sizeof(F), "Type F must not exceed the size of the Callback class");
 		memset(this, 0, sizeof(Callback));
 		new(this) F(f);
 		_ops = &ops;

@@ -133,10 +133,8 @@ void CarteDeplacement2007::update(dure elapsed) {
 					else
 						_distanceAParcourir = _distanceTotaleParcourue - _distanceDemandee;
 
-					_angleDemande =
-					    btAtan2(_yConsigne - yPositionActuelle,
-					            _xConsigne -
-					                xPositionActuelle); // Est ce que c'est bien Z qui correspond é la coordonnée Y ?
+					_angleDemande = btAtan2(_yConsigne - yPositionActuelle,
+					                        _xConsigne - xPositionActuelle); // Est ce que c'est bien Z qui correspond é la coordonnée Y ?
 					if(_sensDeplacement)
 						_angleAAtteindre = _angleBrut + mod2Pi(_angleDemande - mod2Pi(_angleBrut));
 					else
@@ -159,10 +157,8 @@ void CarteDeplacement2007::update(dure elapsed) {
 					else
 						_distanceAParcourir = _distanceTotaleParcourue - _distanceDemandee;
 
-					_angleDemande =
-					    btAtan2(_yConsigne - yPositionActuelle,
-					            _xConsigne -
-					                xPositionActuelle); // Est ce que c'est bien Z qui correspond é la coordonnée Y ?
+					_angleDemande = btAtan2(_yConsigne - yPositionActuelle,
+					                        _xConsigne - xPositionActuelle); // Est ce que c'est bien Z qui correspond é la coordonnée Y ?
 					if(_sensDeplacement)
 						_angleAAtteindre = _angleBrut + mod2Pi(_angleDemande - mod2Pi(_angleBrut));
 					else
@@ -188,10 +184,8 @@ void CarteDeplacement2007::update(dure elapsed) {
 				else
 					_distanceAParcourir = _distanceTotaleParcourue - _distanceDemandee;
 
-				_angleDemande =
-				    btAtan2(_yConsigne - yPositionActuelle,
-				            _xConsigne -
-				                xPositionActuelle); // Est ce que c'est bien Z qui correspond é la coordonnée Y ?
+				_angleDemande = btAtan2(_yConsigne - yPositionActuelle,
+				                        _xConsigne - xPositionActuelle); // Est ce que c'est bien Z qui correspond é la coordonnée Y ?
 				if(_sensDeplacement)
 					_angleAAtteindre = _angleBrut + mod2Pi(_angleDemande - mod2Pi(_angleBrut));
 				else
@@ -215,8 +209,7 @@ void CarteDeplacement2007::update(dure elapsed) {
 					_distanceAParcourir = _distanceTotaleParcourue - 5;
 
 				_angleAAtteindre = _angleBrut;
-			} else if(_deplacementTermine ==
-			          0) { // Sinon on recalcule en permanence la distance restante et l'angle au point
+			} else if(_deplacementTermine == 0) { // Sinon on recalcule en permanence la distance restante et l'angle au point
 				x = _yConsigne - yPositionActuelle;
 				y = _xConsigne - xPositionActuelle;
 				_distanceDemandee = btSqrt(x * x + y * y);
@@ -226,10 +219,8 @@ void CarteDeplacement2007::update(dure elapsed) {
 				else
 					_distanceAParcourir = -1 * DISTANCE_INFINIE;
 
-				_angleDemande =
-				    btAtan2(_yConsigne - yPositionActuelle,
-				            _xConsigne -
-				                xPositionActuelle); // Est ce que c'est bien Z qui correspond é la coordonnée Y ?
+				_angleDemande = btAtan2(_yConsigne - yPositionActuelle,
+				                        _xConsigne - xPositionActuelle); // Est ce que c'est bien Z qui correspond é la coordonnée Y ?
 				if(_sensDeplacement)
 					_angleAAtteindre = _angleBrut + mod2Pi(_angleDemande - mod2Pi(_angleBrut));
 				else

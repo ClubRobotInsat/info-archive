@@ -10,9 +10,9 @@
 
 #include "../Lidar/Driver/lidar.h"
 #include "Commun.h"
-#include "resources/EmbeddedFiles.h"
 #include "Json.h"
 #include "MathToolbox/Repere.h"
+#include "resources/EmbeddedFiles.h"
 
 namespace Constants {
 	using namespace ini;

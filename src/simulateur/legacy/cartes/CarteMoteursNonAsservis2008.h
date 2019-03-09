@@ -29,8 +29,7 @@ public:
 	class ErreurNumMoteur : public std::runtime_error {
 	public:
 		ErreurNumMoteur(unsigned char num)
-		        : std::runtime_error("le numero " + to_string((short)num) +
-		                             " du moteur non asservis est supperieur a " +
+		        : std::runtime_error("le numero " + to_string((short)num) + " du moteur non asservis est supperieur a " +
 		                             to_string((short)MOTEUR_NON_ASSERVIS_NBR_MAX_MOTEUR)) {}
 	};
 
@@ -38,8 +37,7 @@ public:
 	class ErreurPuissanceMoteur : public std::runtime_error {
 	public:
 		ErreurPuissanceMoteur(char puissance)
-		        : std::runtime_error("la puissance " + to_string((short)puissance) +
-		                             " du moteur non asservis est supperieur a " +
+		        : std::runtime_error("la puissance " + to_string((short)puissance) + " du moteur non asservis est supperieur a " +
 		                             to_string((short)MOTEUR_NON_ASSERVIS_PUISSANCE_MAX)) {}
 	};
 

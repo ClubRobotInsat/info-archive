@@ -26,8 +26,7 @@ public:
 	public:
 		ErreurNumMoteur(unsigned char num)
 		        : std::runtime_error("le numero " + to_string((short)num) +
-		                             " du moteur non asservis est supperieur a " +
-		                             to_string((short)NBR_MAX_MOTEUR)) {}
+		                             " du moteur non asservis est supperieur a " + to_string((short)NBR_MAX_MOTEUR)) {}
 	};
 
 private:

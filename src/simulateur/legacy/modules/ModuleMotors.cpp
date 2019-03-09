@@ -64,8 +64,7 @@ void ModuleMotors::setEngineOn(uint8_t idCarte, uint8_t num_motor, SensRotation 
 void ModuleMotors::setEngineOff(uint8_t idCarte, uint8_t num_motor) {
 	if(idCarte == ID_ELEC_CARD_MOTORS) {
 		if(num_motor < (short)ConstantesPrincipal::Moteurs::NBR) {
-			Simulateur::getInstance().sendTextMessage(
-			    generateMessage(num_motor, "[non asservi] désactivation du moteur"));
+			Simulateur::getInstance().sendTextMessage(generateMessage(num_motor, "[non asservi] désactivation du moteur"));
 		} else {
 			logError("Numéro de moteur inexistant : Numéro demandé : ", (short)num_motor);
 		}
@@ -87,8 +86,7 @@ void ModuleMotors::setBrushlessOn(uint8_t idCarte, uint8_t num_motor) {
 void ModuleMotors::setBrushlessOff(uint8_t idCarte, uint8_t num_motor) {
 	if(idCarte == ID_ELEC_CARD_MOTORS) {
 		if(num_motor < (short)ConstantesPrincipal::Moteurs::NBR) {
-			Simulateur::getInstance().sendTextMessage(
-			    generateMessage(num_motor, "[brushless] désactivation du moteur"));
+			Simulateur::getInstance().sendTextMessage(generateMessage(num_motor, "[brushless] désactivation du moteur"));
 		} else {
 			logError("Numéro de moteur inexistant : Numéro demandé : ", (short)num_motor);
 		}

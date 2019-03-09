@@ -107,8 +107,8 @@ void ImageFiltree::UpdateFromData(const unsigned char* data_original) {
 			    pixel.r < m_color_min.r || pixel.g < m_color_min.g || pixel.b < m_color_min.b ||
 
 			    // Test des valeurs en relatif
-			    pixel_pourcentage.r > m_color_percent_max.r ||
-			    pixel_pourcentage.g > m_color_percent_max.g || pixel_pourcentage.b > m_color_percent_max.b ||
+			    pixel_pourcentage.r > m_color_percent_max.r || pixel_pourcentage.g > m_color_percent_max.g ||
+			    pixel_pourcentage.b > m_color_percent_max.b ||
 
 			    pixel_pourcentage.r < m_color_percent_min.r || pixel_pourcentage.g < m_color_percent_min.g ||
 			    pixel_pourcentage.b < m_color_percent_min.b) {
@@ -217,16 +217,13 @@ void ImageFiltree::FlouterBlanc() {
 		for(int y = 0; y < m_height; y++) {
 			if(x >= 1 && x < m_width - 1 && y >= 1 && y < m_height - 1) {
 				if(m_data[x - 1 + (y - 1) * m_width] != 0x00 || // Bas
-				   m_data[x + (y - 1) * m_width] != 0x00 ||
-				   m_data[x + 1 + (y - 1) * m_width] != 0x00 ||
+				   m_data[x + (y - 1) * m_width] != 0x00 || m_data[x + 1 + (y - 1) * m_width] != 0x00 ||
 
 				   m_data[x - 1 + y * m_width] != 0x00 || // Milieu
-				   m_data[x + y * m_width] != 0x00 ||
-				   m_data[x + 1 + y * m_width] != 0x00 ||
+				   m_data[x + y * m_width] != 0x00 || m_data[x + 1 + y * m_width] != 0x00 ||
 
 				   m_data[x - 1 + (y + 1) * m_width] != 0x00 || // Haut
-				   m_data[x + (y + 1) * m_width] != 0x00 ||
-				   m_data[x + 1 + (y + 1) * m_width] != 0x00) {
+				   m_data[x + (y + 1) * m_width] != 0x00 || m_data[x + 1 + (y + 1) * m_width] != 0x00) {
 					new_data[x + y * m_width] = 0xFF;
 				} else {
 					new_data[x + y * m_width] = 0x00;
@@ -248,28 +245,24 @@ void ImageFiltree::SuperFlouterBlanc() {
 		for(int y = 0; y < m_height; y++) {
 			if(x >= 2 && x < m_width - 2 && y >= 2 && y < m_height - 2) {
 				if(m_data[x - 2 + (y - 2) * m_width] != 0x00 || // Super-Bas
-				   m_data[x - 1 + (y - 2) * m_width] != 0x00 ||
-				   m_data[x + (y - 2) * m_width] != 0x00 || m_data[x + 1 + (y - 2) * m_width] != 0x00 ||
-				   m_data[x + 2 + (y - 2) * m_width] != 0x00 ||
+				   m_data[x - 1 + (y - 2) * m_width] != 0x00 || m_data[x + (y - 2) * m_width] != 0x00 ||
+				   m_data[x + 1 + (y - 2) * m_width] != 0x00 || m_data[x + 2 + (y - 2) * m_width] != 0x00 ||
 
 				   m_data[x - 2 + (y - 1) * m_width] != 0x00 || // Bas
-				   m_data[x - 1 + (y - 1) * m_width] != 0x00 ||
-				   m_data[x + (y - 1) * m_width] != 0x00 || m_data[x + 1 + (y - 1) * m_width] != 0x00 ||
-				   m_data[x + 2 + (y - 1) * m_width] != 0x00 ||
+				   m_data[x - 1 + (y - 1) * m_width] != 0x00 || m_data[x + (y - 1) * m_width] != 0x00 ||
+				   m_data[x + 1 + (y - 1) * m_width] != 0x00 || m_data[x + 2 + (y - 1) * m_width] != 0x00 ||
 
 				   m_data[x - 2 + y * m_width] != 0x00 || // Milieu
-				   m_data[x - 1 + y * m_width] != 0x00 ||
-				   m_data[x + y * m_width] != 0x00 || m_data[x + 1 + y * m_width] != 0x00 || m_data[x + 2 + y * m_width] != 0x00 ||
+				   m_data[x - 1 + y * m_width] != 0x00 || m_data[x + y * m_width] != 0x00 ||
+				   m_data[x + 1 + y * m_width] != 0x00 || m_data[x + 2 + y * m_width] != 0x00 ||
 
 				   m_data[x - 2 + (y + 1) * m_width] != 0x00 || // Haut
-				   m_data[x - 1 + (y + 1) * m_width] != 0x00 ||
-				   m_data[x + (y + 1) * m_width] != 0x00 || m_data[x + 1 + (y + 1) * m_width] != 0x00 ||
-				   m_data[x + 2 + (y + 1) * m_width] != 0x00 ||
+				   m_data[x - 1 + (y + 1) * m_width] != 0x00 || m_data[x + (y + 1) * m_width] != 0x00 ||
+				   m_data[x + 1 + (y + 1) * m_width] != 0x00 || m_data[x + 2 + (y + 1) * m_width] != 0x00 ||
 
 				   m_data[x - 2 + (y + 2) * m_width] != 0x00 || // Super-Haut
-				   m_data[x - 1 + (y + 2) * m_width] != 0x00 ||
-				   m_data[x + (y + 2) * m_width] != 0x00 || m_data[x + 1 + (y + 2) * m_width] != 0x00 ||
-				   m_data[x + 2 + (y + 2) * m_width] != 0x00) {
+				   m_data[x - 1 + (y + 2) * m_width] != 0x00 || m_data[x + (y + 2) * m_width] != 0x00 ||
+				   m_data[x + 1 + (y + 2) * m_width] != 0x00 || m_data[x + 2 + (y + 2) * m_width] != 0x00) {
 					new_data[x + y * m_width] = 0xFF;
 				} else {
 					new_data[x + y * m_width] = 0x00;

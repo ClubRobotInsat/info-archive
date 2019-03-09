@@ -8,10 +8,10 @@
 
 namespace PhysicalRobot {
 
-    using NavigationUtility::angle_to_u16;
-    using NavigationUtility::u16_to_angle;
-    using NavigationUtility::distance_to_u16;
-    using NavigationUtility::u16_to_distance;
+	using NavigationUtility::angle_to_u16;
+	using NavigationUtility::distance_to_u16;
+	using NavigationUtility::u16_to_angle;
+	using NavigationUtility::u16_to_distance;
 
 	void Navigation::forward(Distance distance, SensAdvance sens) {
 		lock_variables();
