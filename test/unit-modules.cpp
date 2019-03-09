@@ -7,7 +7,7 @@
 #include <log/Log.h>
 
 #include "../src/robot/Modules/ModuleManager.h"
-#include "TestUtils.hpp"
+#include "TestUtils.h"
 
 using TestUtils::ModuleTest;
 

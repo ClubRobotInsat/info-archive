@@ -3,7 +3,7 @@
 //
 
 #include "../src/robot/Strategy/AbstractStrategy.h"
-#include "TestUtils.hpp"
+#include "TestUtils.h"
 #include "catch.hpp"
 
 TEST_CASE("Strategy", "[integration]") {
@@ -57,12 +57,11 @@ TEST_CASE("Strategy", "[integration]") {
 		sleep(100_ms);
 		CHECK(chrono.getElapsedTime() - s.get_time() < 20_us);
 
-		TestUtils::strategy_has_run = false;
 		chrono.reset();
 		s.start(1_s);
 		auto duration = chrono.getElapsedTime();
 		CHECK(duration > 1_s);
 		CHECK(duration < 1.1_s + 20_us);
-		CHECK(TestUtils::strategy_has_run);
+		CHECK(s.is_execute_called());
 	}
 }
