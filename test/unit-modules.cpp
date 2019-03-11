@@ -46,39 +46,87 @@ TEST_CASE("Basic module") {
 #include "../src/robot/Modules/Servos.h"
 
 TEST_CASE("Servos' Module", "[integration]") {
+	PhysicalRobot::Servos my_module(2);
+
 	SECTION("Non-frame functions' module") {
-		PhysicalRobot::Servos my_module(2);
 		my_module.add_servo(5, PhysicalRobot::BlockingMode::HoldOnBlock);
 		my_module.add_servo(2, PhysicalRobot::BlockingMode::Unblocking);
 		my_module.add_servo(4);
 
+		REQUIRE_THROWS_WITH(my_module.add_servo(PhysicalRobot::Servos::ID_MAX_SERVOS), "ID du servo trop grand (255 >= 255) !");
 		REQUIRE_THROWS_WITH(my_module.add_servo(5), "Double assignation du servo 5 !");
 		REQUIRE_NOTHROW(my_module.add_servo(42));
 		REQUIRE_THROWS_WITH(my_module.add_servo(0), "L'ID 0 des servos est réservé !");
 		CHECK(my_module.get_nbr_servos() == 4);
 		CHECK(my_module.name == "Servos");
 
+		REQUIRE_THROWS_WITH(my_module.set_position(0, 50_deg), "Numéro du servo demandé invalide : 0");
 		REQUIRE_THROWS_WITH(my_module.set_position(1, 50_deg), "Numéro du servo demandé invalide : 1");
 		my_module.set_position(2, 50.4_deg);
 		// Servo 2 commandé en position
 		CHECK_FALSE(my_module.is_moving_done(2));
 
+		REQUIRE_THROWS_WITH(my_module.set_speed(0, 2_deg_s), "Numéro du servo demandé invalide : 0");
 		REQUIRE_THROWS_WITH(my_module.set_speed(1, 2_deg_s), "Numéro du servo demandé invalide : 1");
 		my_module.set_speed(2, 6_deg_s, PhysicalRobot::Rotation::CounterClockwise);
 
+		REQUIRE_THROWS_WITH(my_module.read_position(0), "Numéro du servo demandé invalide : 0");
 		REQUIRE_THROWS_WITH(my_module.read_position(1), "Numéro du servo demandé invalide : 1");
 
+		REQUIRE_THROWS_WITH(my_module.set_color(0, PhysicalRobot::Color::Green), "Numéro du servo demandé invalide : 0");
 		REQUIRE_THROWS_WITH(my_module.set_color(1, PhysicalRobot::Color::Green), "Numéro du servo demandé invalide : 1");
 		my_module.set_color(2, PhysicalRobot::Color::Green);
 
+		REQUIRE_THROWS_WITH(my_module.set_blocking_mode(1, PhysicalRobot::BlockingMode::HoldOnBlock),
+		                    "Numéro du servo demandé invalide : 1");
+		my_module.set_blocking_mode(2, PhysicalRobot::BlockingMode::HoldOnBlock);
+
+		REQUIRE_THROWS_WITH(my_module.get_blocking_mode(0), "Numéro du servo demandé invalide : 0");
+		REQUIRE_THROWS_WITH(my_module.get_blocking_mode(1), "Numéro du servo demandé invalide : 1");
+		CHECK(my_module.get_blocking_mode(2) == PhysicalRobot::BlockingMode::HoldOnBlock);
+
+		REQUIRE_THROWS_WITH(my_module.is_blocking(0), "Numéro du servo demandé invalide : 0");
 		REQUIRE_THROWS_WITH(my_module.is_blocking(1), "Numéro du servo demandé invalide : 1");
 		CHECK_FALSE(my_module.is_blocking(2));
 
+		REQUIRE_THROWS_WITH(my_module.is_moving_done(0), "Numéro du servo demandé invalide : 0");
 		REQUIRE_THROWS_WITH(my_module.is_moving_done(1), "Numéro du servo demandé invalide : 1");
 		// Servo 2 commandé en vitesse
 		CHECK(my_module.is_moving_done(2));
 		CHECK(my_module.is_moving_done(4));
 	}
+
+	SECTION("Frame functions' module") {
+		my_module.add_servo(12);
+		JSON json;
+		json["id"] = 12;
+		json["known_position"] = 546;
+		json["blocked"] = true;
+		json["control"] = "Speed";
+		json["data"] = 0;
+		json["rotation"] = "Clockwise";
+		json["mode"] = "Ublocking";
+		json["color"] = "Blue";
+
+
+		std::stringstream ss;
+		ss << json;
+		const std::string msg = ss.str();
+		my_module.update(GlobalFrame(std::vector<uint8_t>(msg.cbegin(), msg.cend())));
+		CHECK((my_module.read_position(12) - 11.240_deg).toDeg() < .001);
+		CHECK(my_module.is_blocking(12));
+	}
+}
+
+#include "../src/robot/Modules/IO.h"
+
+TEST_CASE("IO Module", "[integration]") {
+	PhysicalRobot::IO my_module(2);
+	CHECK(my_module.read_tirette() == PhysicalRobot::TriggerState::Waiting);
+
+	const std::string msg = "{\"tirette\":\"Triggered\"}";
+	my_module.update(GlobalFrame(std::vector<uint8_t>(msg.cbegin(), msg.cend())));
+	CHECK(my_module.read_tirette() == PhysicalRobot::TriggerState::Triggered);
 }
 
 #include "../src/robot/Modules/Navigation.h"

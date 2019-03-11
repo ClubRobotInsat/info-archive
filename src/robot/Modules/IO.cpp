@@ -5,7 +5,7 @@
 #include "IO.h"
 
 namespace PhysicalRobot {
-	IO::IO(uint8_t id) : Module(id, "IO") {}
+	IO::IO(uint8_t id) : Module(id, "IO"), _tirette(TriggerState::Waiting) {}
 
 	TriggerState IO::read_tirette() const {
 		std::lock_guard<std::mutex> lk(_mutex_variables);
@@ -20,7 +20,7 @@ namespace PhysicalRobot {
 
 	void IO::message_processing(const JSON& j) {
 		for(auto ee : getEnumValues<TriggerState>()) {
-			if(toString(ee) == j["color"]) {
+			if(toString(ee) == j["tirette"]) {
 				_tirette.exchange(ee);
 				break;
 			}

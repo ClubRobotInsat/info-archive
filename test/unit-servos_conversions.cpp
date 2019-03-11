@@ -39,12 +39,15 @@ TEST_CASE("Conversions 'uint16_t <-> Angle'", "[integration]") {
 // cf [la datasheet](https://www.robotshop.com/media/files/pdf/manual-drs-0101.pdf) page 9 : 60°/0.166s
 
 TEST_CASE("Conversions 'uint16_t <-> AngularSpeed'", "[integration]") {
+	CHECK(Servos::MAX_SPEED == 361.44_deg_s);
+
 	SECTION("uint16_t -> AngularSpeed") {
 		double eps = .1;
 
 		CHECK(std::abs((Servos::uint16_t_to_angular_speed(1019) - 360_deg_s).toDeg_s()) < eps);
 		CHECK(std::abs((Servos::uint16_t_to_angular_speed(255) - 90_deg_s).toDeg_s()) < eps);
 		CHECK(std::abs((Servos::uint16_t_to_angular_speed(510) - 180.2_deg_s).toDeg_s()) < eps);
+		CHECK(Servos::uint16_t_to_angular_speed(2000) == Servos::uint16_t_to_angular_speed(1023));
 	}
 
 	SECTION("AngularSpeed -> uint16_t") {
@@ -52,5 +55,6 @@ TEST_CASE("Conversions 'uint16_t <-> AngularSpeed'", "[integration]") {
 		CHECK(Servos::angular_speed_to_uint16_t(0_deg_s) == 0);
 		CHECK(Servos::angular_speed_to_uint16_t(180_deg_s) == 509);
 		CHECK(Servos::angular_speed_to_uint16_t(180.3_deg_s) == 510);
+		CHECK(Servos::angular_speed_to_uint16_t(362_deg_s) == Servos::angular_speed_to_uint16_t(Servos::MAX_SPEED));
 	}
 }

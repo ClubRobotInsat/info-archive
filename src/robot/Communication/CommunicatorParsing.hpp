@@ -242,7 +242,7 @@ namespace Communication {
 				}
 
 				if(arguments == nullptr) {
-					return std::make_pair<std::type_index, std::unique_ptr<Protocol>>(typeid(void), nullptr);
+					return std::pair<std::type_index, std::unique_ptr<Protocol>>(typeid(void), nullptr);
 				} else {
 					return std::make_pair(arguments->get_protocol_type(), arguments->make_protocol());
 				}
@@ -334,7 +334,7 @@ namespace Communication {
 				}
 
 				if(arguments == nullptr) {
-					return std::make_pair<std::type_index, std::unique_ptr<Protocol>>(typeid(void), nullptr);
+					return std::pair<std::type_index, std::unique_ptr<Protocol>>(typeid(void), nullptr);
 				} else {
 					return std::make_pair(arguments->get_protocol_type(), arguments->make_protocol());
 				}
