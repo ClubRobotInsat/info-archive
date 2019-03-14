@@ -115,6 +115,9 @@ TEST_CASE("Protocol parsing's arguments", "[integration]") {
 		auto protocol = Parser::make_protocol({"PIPES", "/tmp/read.pipe", "/tmp/write.pipe"});
 		CHECK(protocol.first == typeid(Communication::protocol_pipes));
 		CHECK(protocol.second != nullptr);
+
+		REQUIRE_NOTHROW(Parser::make_protocol({"PIPES", "/tmp/read.pipe", "/tmp/otherwrite.pipe"}));
+		REQUIRE_NOTHROW(Parser::make_protocol({"PIPES", "/tmp/otherread.pipe", "/tmp/write.pipe"}));
 	}
 
 	SECTION("Local") {

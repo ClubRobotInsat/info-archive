@@ -17,12 +17,12 @@ namespace Communication {
 
 		// Ouverture des FIFOs
 		if((_fd_read = open(_path_read.c_str(), O_RDWR)) == -1) {
-			std::cout << "impossible to open read" << std::endl;
-			throw ErrorPipeOpening("Echec de l'ouverture du FIFO read (open).");
+			throw ErrorPipeOpening("NamedPipe::open: Impossible to open the read FIFO.");
 		}
 		if((_fd_write = open(_path_write.c_str(), O_RDWR)) == -1) {
-			std::cout << "impossible to open write" << std::endl;
-			throw ErrorPipeOpening("Echec de l'ouverture du FIFO write (open).");
+			close(_fd_read);
+			unlink(_path_read.c_str());
+			throw ErrorPipeOpening("NamedPipe::open: Impossible to open the write FIFO.");
 		}
 	}
 
@@ -53,8 +53,9 @@ namespace Communication {
 				perror("Erreur retournée");
 				sleep(1_s);
 			}
-			if(val == 0)
+			if(val == 0) {
 				throw ErreurEOF();
+			}
 			nb_read += val;
 		}
 		return bytes_number;
