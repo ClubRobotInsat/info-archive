@@ -14,7 +14,7 @@
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkLabel">
+          <object class="GtkLabel" id="titl">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="margin_top">15</property>
@@ -22,6 +22,13 @@
             <property name="label" translatable="yes">Servo states</property>
             <property name="width_chars">14</property>
             <property name="max_width_chars">14</property>
+            <attributes>
+              <attribute name="font-desc" value="Sans Bold 18"/>
+              <attribute name="style" value="normal"/>
+              <attribute name="foreground" value="#cccc00000000"/>
+              <attribute name="gravity" value="auto"/>
+              <attribute name="gravity-hint" value="strong"/>
+            </attributes>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -34,7 +41,7 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkLabel">
+              <object class="GtkLabel" id="title">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="margin_left">60</property>
@@ -42,6 +49,10 @@
                 <property name="margin_top">20</property>
                 <property name="margin_bottom">20</property>
                 <property name="label" translatable="yes">Servo1</property>
+                <attributes>
+                  <attribute name="font-desc" value="Sans 14"/>
+                  <attribute name="foreground" value="#20204a4a8787"/>
+                </attributes>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -50,7 +61,109 @@
               </packing>
             </child>
             <child>
-              <placeholder/>
+              <object class="GtkBox" id="details-servo1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkBox" id="label-states">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="GtkLabel" id="blocked">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="margin_left">15</property>
+                        <property name="margin_right">15</property>
+                        <property name="margin_top">15</property>
+                        <property name="margin_bottom">15</property>
+                        <property name="label" translatable="yes">blocked</property>
+                        <attributes>
+                          <attribute name="foreground" value="#20204a4a8787"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="mode">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="margin_left">15</property>
+                        <property name="margin_right">15</property>
+                        <property name="margin_top">15</property>
+                        <property name="margin_bottom">15</property>
+                        <property name="label" translatable="yes">mode</property>
+                        <attributes>
+                          <attribute name="foreground" value="#20204a4a8787"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="color">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="margin_left">15</property>
+                        <property name="margin_right">15</property>
+                        <property name="margin_top">15</property>
+                        <property name="margin_bottom">15</property>
+                        <property name="label" translatable="yes">color</property>
+                        <attributes>
+                          <attribute name="foreground" value="#20204a4a8787"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkBox" id="states">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="margin_left">15</property>
+                    <property name="margin_right">15</property>
+                    <property name="margin_top">15</property>
+                    <property name="margin_bottom">15</property>
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
             </child>
           </object>
           <packing>
@@ -64,7 +177,7 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkLabel" id="label">
+              <object class="GtkLabel" id="tit">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="margin_left">60</property>
@@ -75,6 +188,10 @@
                 <property name="justify">center</property>
                 <property name="ellipsize">middle</property>
                 <property name="width_chars">0</property>
+                <attributes>
+                  <attribute name="font-desc" value="Sans 14"/>
+                  <attribute name="foreground" value="#4e4e9a9a0606"/>
+                </attributes>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -83,7 +200,65 @@
               </packing>
             </child>
             <child>
-              <placeholder/>
+              <object class="GtkBox" id="details-servo2">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkBox" id="label-state">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="GtkLabel" id="blocke">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="margin_left">15</property>
+                        <property name="margin_right">15</property>
+                        <property name="margin_top">15</property>
+                        <property name="margin_bottom">15</property>
+                        <property name="label" translatable="yes">blocked</property>
+                        <attributes>
+                          <attribute name="foreground" value="#4e4e9a9a0606"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkBox" id="state">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="margin_left">15</property>
+                    <property name="margin_right">15</property>
+                    <property name="margin_top">15</property>
+                    <property name="margin_bottom">15</property>
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
             </child>
           </object>
           <packing>
