@@ -6,6 +6,11 @@
 
 #include "TestUtils.h"
 #include <ActionResult.h>
+#include <Constants.h>
+#include <Units/Length.h>
+
+using namespace Units;
+using namespace Units::UnitsLiterals;
 
 // @PetriLab@ PetriSample
 

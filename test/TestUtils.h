@@ -7,6 +7,7 @@
 
 #include "../src/robot/Strategy/AbstractStrategy.h"
 #ifdef PETRILAB_EXISTS
+#include "Sample.h"
 #include <petrilab/Cpp/MemberPetriDynamicLib.h>
 #endif
 

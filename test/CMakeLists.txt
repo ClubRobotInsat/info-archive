@@ -8,11 +8,12 @@ target_link_libraries(TEST_MOVING Robot)
 add_library(catch_main OBJECT "unit.cpp")
 target_include_directories(catch_main PRIVATE "../third_parties/catch/single_include/catch2")
 
+add_library(petri_utils STATIC PetriSample.cpp)
 if(EXISTS "/usr/bin/petrilab")
     add_definitions(-DPETRILAB_EXISTS)
+    target_link_libraries(petri_utils PetriRuntime)
 endif()
 
-add_library(petri_utils STATIC PetriSample.cpp)
 add_library(test_utils STATIC TestUtils.cpp)
 target_link_libraries(test_utils Strategy petri_utils)
 

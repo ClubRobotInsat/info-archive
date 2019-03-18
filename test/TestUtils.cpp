@@ -70,10 +70,18 @@ namespace TestUtils {
 		    std::make_shared<PhysicalRobot::Robot>(modules_manager, std::vector({"StrategyTest"s, "NULL"s}), Lidar::None);
 
 		auto interfacers_manager = std::make_shared<Strategy::Interfacer::RobotManager>(physical_robot);
-		add_robot(physical_robot);
+		interfacers_manager->add_interfacer<TestUtils::InterfacerTest>();
+		this->add_manager(interfacers_manager);
 		init_petri_tests(interfacers_manager);
+	}
 
-#if defined(PETRILAB_EXISTS) && false
+	bool StrategyTest::is_execute_called() const {
+		return _execute_called;
+	}
+
+	void StrategyTest::execute() {
+		_execute_called = true;
+#if defined(PETRILAB_EXISTS)
 		auto petrilab = Petri::Generated::Sample::createLib(".");
 		petrilab->load();
 
@@ -84,13 +92,5 @@ namespace TestUtils {
 
 		ia->stop();
 #endif
-	}
-
-	bool StrategyTest::is_execute_called() const {
-		return _execute_called;
-	}
-
-	void StrategyTest::execute() {
-		_execute_called = true;
 	}
 } // namespace TestUtils
