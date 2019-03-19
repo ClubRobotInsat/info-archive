@@ -4,12 +4,22 @@
 
 #pragma once
 
+#include "Utils.h"
 #include <ActionResult.h>
 
 // @PetriLab@ Servos
 
-// Actions pour les pompes
-ActionResult open_right_door();
-ActionResult open_left_door();
-ActionResult close_right_door();
-ActionResult close_left_door();
+ActionResult forward_arm(Angle);
+ActionResult forward_hand(Angle);
+ActionResult backward_arm(Angle);
+ActionResult backward_hand(Angle);
+
+ActionResult forward_bottom_horizontal();
+ActionResult forward_bottom_vertical();
+ActionResult forward_top_external_rail();
+ActionResult forward_top_center_rail();
+
+ActionResult backward_bottom_horizontal();
+ActionResult backward_bottom_vertical();
+ActionResult backward_top_external_rail();
+ActionResult backward_top_center_rail();

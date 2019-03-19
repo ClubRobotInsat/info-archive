@@ -6,35 +6,180 @@
 #include "../ModuleInterfacers/RobotManager.h"
 
 namespace {
-	std::shared_ptr<Strategy::Interfacer::RobotManager> _manager;
+	using namespace Strategy::Interfacer;
+
+	std::shared_ptr<RobotManager> _manager;
 	Constants::RobotColor _color;
 
-	Strategy::Interfacer::ServosInterfacer& servos() {
-		return _manager->get_interfacer<Strategy::Interfacer::ServosInterfacer>();
+	ServosInterfacer& servos() {
+		return _manager->get_interfacer<ServosInterfacer>();
 	}
+
+	const ServosInterfacer::servo_t ID_SERVO_FORWARD_ARM = 1;
+	const ServosInterfacer::servo_t ID_SERVO_FORWARD_HAND = 2;
+	const ServosInterfacer::servo_t ID_SERVO_BACKWARD_ARM = 3;
+	const ServosInterfacer::servo_t ID_SERVO_BACKWARD_HAND = 4;
 } // namespace
 
-void init_petri_servos(std::shared_ptr<Strategy::Interfacer::RobotManager> manager, Constants::RobotColor color) {
+void init_petri_servos(std::shared_ptr<RobotManager> manager, Constants::RobotColor color) {
 	_manager = manager;
 	_color = color;
 }
 
-ActionResult open_right_door() {
-	if(_color == Constants::RobotColor::Yellow) {
-		return servos().set_position(6, 20_deg);
-	} else {
-		return servos().set_position(8, 80_deg);
-	}
+// Control of each servo
+ActionResult forward_arm(Angle angle) {
+	return servos().set_position(ID_SERVO_FORWARD_ARM, angle);
 }
 
-ActionResult open_left_door() {
-	return servos().set_position(5, 160_deg);
+ActionResult forward_hand(Angle angle) {
+	return servos().set_position(ID_SERVO_FORWARD_HAND, angle);
 }
 
-ActionResult close_right_door() {
-	return servos().set_position(6, 80_deg);
+ActionResult backward_arm(Angle angle) {
+	return servos().set_position(ID_SERVO_BACKWARD_ARM, angle);
 }
 
-ActionResult close_left_door() {
-	return servos().set_position(5, 50_deg);
+ActionResult backward_hand(Angle angle) {
+	return servos().set_position(ID_SERVO_BACKWARD_HAND, angle);
+}
+
+// Different positions of the forward-arm servo
+ActionResult forward_arm_bottom_horizontal() {
+	return forward_arm(50_deg);
+}
+
+ActionResult forward_arm_bottom_vertical() {
+	return forward_arm(10_deg);
+}
+
+ActionResult forward_arm_top_external_rail() {
+	return forward_arm(40_deg);
+}
+
+ActionResult forward_arm_top_internal_rail() {
+	return forward_arm(-50_deg);
+}
+
+// Different positions of the forward-hand servo
+ActionResult forward_hand_bottom_horizontal() {
+	return forward_hand(50_deg);
+}
+
+ActionResult forward_hand_bottom_vertical() {
+	return forward_hand(10_deg);
+}
+
+ActionResult forward_hand_top_external_rail() {
+	return forward_hand(40_deg);
+}
+
+ActionResult forward_hand_top_internal_rail() {
+	return forward_hand(-50_deg);
+}
+
+// Different positions of the backward-arm servo
+ActionResult backward_arm_bottom_horizontal() {
+	return backward_arm(50_deg);
+}
+
+ActionResult backward_arm_bottom_vertical() {
+	return backward_arm(10_deg);
+}
+
+ActionResult backward_arm_top_external_rail() {
+	return backward_arm(40_deg);
+}
+
+ActionResult backward_arm_top_internal_rail() {
+	return backward_arm(-50_deg);
+}
+
+// Different positions of the backward-hand servo
+ActionResult backward_hand_bottom_horizontal() {
+	return backward_hand(50_deg);
+}
+
+ActionResult backward_hand_bottom_vertical() {
+	return backward_hand(10_deg);
+}
+
+ActionResult backward_hand_top_external_rail() {
+	return backward_hand(40_deg);
+}
+
+ActionResult backward_hand_top_internal_rail() {
+	return backward_hand(-50_deg);
+}
+
+// Combined functions
+ActionResult forward_bottom_horizontal() {
+	std::vector<fun_ra> actions;
+
+	ADD_FN(actions, forward_hand_bottom_horizontal);
+	ADD_FN(actions, forward_arm_bottom_horizontal);
+
+	return _combine_actions(actions);
+}
+
+ActionResult forward_bottom_vertical() {
+	std::vector<fun_ra> actions;
+
+	ADD_FN(actions, forward_hand_bottom_vertical);
+	ADD_FN(actions, forward_arm_bottom_vertical);
+
+	return _combine_actions(actions);
+}
+
+ActionResult forward_top_external_rail() {
+	std::vector<fun_ra> actions;
+
+	ADD_FN(actions, forward_hand_top_external_rail);
+	ADD_FN(actions, forward_arm_top_external_rail);
+
+	return _combine_actions(actions);
+}
+
+ActionResult forward_top_internal_rail() {
+	std::vector<fun_ra> actions;
+
+	ADD_FN(actions, forward_hand_top_internal_rail);
+	ADD_FN(actions, forward_arm_top_internal_rail);
+
+	return _combine_actions(actions);
+}
+
+ActionResult backward_bottom_horizontal() {
+	std::vector<fun_ra> actions;
+
+	ADD_FN(actions, backward_hand_bottom_horizontal);
+	ADD_FN(actions, backward_arm_bottom_horizontal);
+
+	return _combine_actions(actions);
+}
+
+ActionResult backward_bottom_vertical() {
+	std::vector<fun_ra> actions;
+
+	ADD_FN(actions, backward_hand_bottom_vertical);
+	ADD_FN(actions, backward_arm_bottom_vertical);
+
+	return _combine_actions(actions);
+}
+
+ActionResult backward_top_external_rail() {
+	std::vector<fun_ra> actions;
+
+	ADD_FN(actions, backward_hand_top_external_rail);
+	ADD_FN(actions, backward_arm_top_external_rail);
+
+	return _combine_actions(actions);
+}
+
+ActionResult backward_top_internal_rail() {
+	std::vector<fun_ra> actions;
+
+	ADD_FN(actions, backward_hand_top_internal_rail);
+	ADD_FN(actions, backward_arm_top_internal_rail);
+
+	return _combine_actions(actions);
 }
