@@ -55,7 +55,7 @@ TEST_CASE("Strategy", "[integration]") {
 		StopWatch chrono;
 		TestUtils::StrategyTest s;
 		sleep(100_ms);
-		CHECK(chrono.getElapsedTime() - s.get_time() < 20_us);
+		CHECK(chrono.getElapsedTime() - s.get_time() < 100_us);
 
 		chrono.reset();
 		s.start(1_s);
