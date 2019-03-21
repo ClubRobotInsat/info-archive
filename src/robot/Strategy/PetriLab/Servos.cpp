@@ -52,6 +52,10 @@ ActionResult forward_arm_bottom_vertical() {
 	return forward_arm(10_deg);
 }
 
+ActionResult forward_arm_bottom_goldenium() {
+	return forward_arm(-10_deg);
+}
+
 ActionResult forward_arm_top_external_rail() {
 	return forward_arm(40_deg);
 }
@@ -67,6 +71,10 @@ ActionResult forward_hand_bottom_horizontal() {
 
 ActionResult forward_hand_bottom_vertical() {
 	return forward_hand(10_deg);
+}
+
+ActionResult forward_hand_bottom_goldenium() {
+	return forward_hand(-10_deg);
 }
 
 ActionResult forward_hand_top_external_rail() {
@@ -86,6 +94,10 @@ ActionResult backward_arm_bottom_vertical() {
 	return backward_arm(10_deg);
 }
 
+ActionResult backward_arm_bottom_goldenium() {
+	return backward_arm(-10_deg);
+}
+
 ActionResult backward_arm_top_external_rail() {
 	return backward_arm(40_deg);
 }
@@ -101,6 +113,10 @@ ActionResult backward_hand_bottom_horizontal() {
 
 ActionResult backward_hand_bottom_vertical() {
 	return backward_hand(10_deg);
+}
+
+ActionResult backward_hand_bottom_goldeniu() {
+	return backward_hand(-10_deg);
 }
 
 ActionResult backward_hand_top_external_rail() {
@@ -126,6 +142,15 @@ ActionResult forward_bottom_vertical() {
 
 	ADD_FN(actions, forward_hand_bottom_vertical);
 	ADD_FN(actions, forward_arm_bottom_vertical);
+
+	return _combine_actions(actions);
+}
+
+ActionResult forward_bottom_goldenium() {
+	std::vector<fun_ra> actions;
+
+	ADD_FN(actions, forward_hand_bottom_goldenium);
+	ADD_FN(actions, forward_arm_bottom_goldenium);
 
 	return _combine_actions(actions);
 }
@@ -162,6 +187,15 @@ ActionResult backward_bottom_vertical() {
 
 	ADD_FN(actions, backward_hand_bottom_vertical);
 	ADD_FN(actions, backward_arm_bottom_vertical);
+
+	return _combine_actions(actions);
+}
+
+ActionResult backward_bottom_goldenium() {
+	std::vector<fun_ra> actions;
+
+	ADD_FN(actions, backward_hand_bottom_goldenium);
+	ADD_FN(actions, backward_arm_bottom_goldenium);
 
 	return _combine_actions(actions);
 }

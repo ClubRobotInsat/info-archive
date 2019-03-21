@@ -16,10 +16,12 @@ ActionResult backward_hand(Angle);
 
 ActionResult forward_bottom_horizontal();
 ActionResult forward_bottom_vertical();
+ActionResult forward_bottom_goldenium();
 ActionResult forward_top_external_rail();
 ActionResult forward_top_center_rail();
 
 ActionResult backward_bottom_horizontal();
 ActionResult backward_bottom_vertical();
+ActionResult backward_bottom_goldenium();
 ActionResult backward_top_external_rail();
 ActionResult backward_top_center_rail();
