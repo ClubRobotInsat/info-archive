@@ -115,7 +115,7 @@ ActionResult backward_hand_bottom_vertical() {
 	return backward_hand(10_deg);
 }
 
-ActionResult backward_hand_bottom_goldeniu() {
+ActionResult backward_hand_bottom_goldenium() {
 	return backward_hand(-10_deg);
 }
 
