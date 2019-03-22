@@ -10,7 +10,7 @@
 
 #include "Commun.h"
 //#include "../Cartes/CarteDeplacementCommun.h"
-#include "../../Robot.h"
+#include "../../../../src/robot/Robot.h"
 #include "Evitement.h"
 #include "environment.h"
 #include <list>

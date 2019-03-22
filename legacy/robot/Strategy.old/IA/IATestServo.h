@@ -5,8 +5,8 @@
 #ifndef ROOT_IATESTSERVO_H
 #define ROOT_IATESTSERVO_H
 
+#include "../../../../src/robot/Robot.h"
 #include "../../../Principal/librobot/libRobot.h"
-#include "../../Robot.h"
 
 using namespace Commun;
 

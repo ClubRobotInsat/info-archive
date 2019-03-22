@@ -1,10 +1,10 @@
-include_directories(../Strategy/Environment)
+include_directories(../../../src/robot/Strategy/Environment)
 set(STRAT_SOURCE
-        ../Strategy/Environment/environment.cpp
-        ../Strategy/Environment/node.cpp
-        ../Strategy/Environment/shapes.h
-        ../../commun/MathToolbox/spline.cpp
-        ../Strategy/Environment/TGAWriter.cpp
+        ../../../src/robot/Strategy/Environment/environment.cpp
+        ../../../src/robot/Strategy/Environment/node.cpp
+        ../../../src/robot/Strategy/Environment/shapes.h
+        ../../../src/commun/MathToolbox/spline.cpp
+        ../../../src/robot/Strategy/Environment/TGAWriter.cpp
 
         StrategiePrincipal.cpp)
 

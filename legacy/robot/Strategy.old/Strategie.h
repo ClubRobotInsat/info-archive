@@ -7,7 +7,7 @@
 #ifndef _STRATEGIE_H_
 #define _STRATEGIE_H_
 
-#include "../Robot.h"
+#include "../../../src/robot/Robot.h"
 #include "Commun.h"
 #include "Environnement/environment.h"
 #include "ModuleInterfacers/Deplacement.h"

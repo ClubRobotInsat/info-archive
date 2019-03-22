@@ -8,8 +8,8 @@
 #ifndef Club_Robot_Servo_h
 #define Club_Robot_Servo_h
 
+#include "../../../../src/robot/Robot.h"
 #include "../../Commun/Modules/Servos2019.h"
-#include "../../Robot.h"
 #include <functional>
 
 namespace Commun {
