@@ -24,14 +24,17 @@ namespace PhysicalRobot {
 
 		void activate_pump(pump_t);
 		void deactivate_pump(pump_t);
+		IOState is_pump_activated(pump_t);
 
 		uint16_t get_pump_intensity(pump_t) const;
 
 		void activate_valve(valve_t);
 		void deactivate_valve(valve_t);
+		IOState is_valve_activated(valve_t);
 
 		void activate_vacst(vacst_t);
 		void deactivate_vacst(vacst_t);
+		IOState is_vacst_activated(vacst_t);
 
 	private:
 		std::vector<JSON> generate_list_jsons() const override;
@@ -47,7 +50,6 @@ namespace PhysicalRobot {
 		void test_is_pump_ok(pump_t) const;
 		void test_is_valve_ok(valve_t) const;
 		void test_is_vacst_ok(vacst_t) const;
-
 	};
 } // namespace PhysicalRobot
 

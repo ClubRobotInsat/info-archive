@@ -23,8 +23,7 @@ public:
 	class ErreurIDCarteTropGrand : public std::runtime_error {
 	public:
 		ErreurIDCarteTropGrand(unsigned char id)
-		        : std::runtime_error("impossible d'ajouter la carte d'ID " + to_string((short)id) +
-		                             " : cet ID est trop grand") {}
+		        : std::runtime_error("impossible d'ajouter la carte d'ID " + to_string((short)id) + " : cet ID est trop grand") {}
 	};
 
 	// lors de la réception d'une trame la redistribuer vers la bonne carte
@@ -93,8 +92,7 @@ public:
 	auto& getCarte() {
 		static_assert(std::is_same<std::underlying_type_t<decltype(_CarteInfo<ID>::idCarte)>, std::uint8_t>::value,
 		              "Type de l'ID invalide.");
-		static_assert(static_cast<std::uint8_t>(_CarteInfo<ID>::idCarte) < Trame::NB_CARTES_MAX,
-		              "ID Carte trop grand !!");
+		static_assert(static_cast<std::uint8_t>(_CarteInfo<ID>::idCarte) < Trame::NB_CARTES_MAX, "ID Carte trop grand !!");
 		return static_cast<typename _CarteInfo<ID>::typeCarte&>(*_cartes[(_CarteInfo<ID>::idCarte)]);
 	}
 

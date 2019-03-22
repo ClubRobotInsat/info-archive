@@ -18,9 +18,10 @@ using namespace std;
 #define FORMAT V4L2_PIX_FMT_MJPEG
 //#define FORMAT V4L2_PIX_FMT_YUYV
 
-#define GRAB_METHOD 1 // Peut valoir 0 ou 1 ; apparemment, avec 0, c'est du "streaming"
-                      // (V4L2_CAP_STREAMING) tandis qu'avec 0 c'est du "read I/O"
-                      // (V4L2_CAP_READWRITE)...
+#define GRAB_METHOD \
+	1 // Peut valoir 0 ou 1 ; apparemment, avec 0, c'est du "streaming"
+	  // (V4L2_CAP_STREAMING) tandis qu'avec 0 c'est du "read I/O"
+	  // (V4L2_CAP_READWRITE)...
 
 #define AVI_FILE_NAME "video1.avi" // Inutilisé ^^
 

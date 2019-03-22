@@ -54,8 +54,7 @@ void CarteIO2014::envoyerValeurCapteur(Trame const& t) {
 		aEnvoyer.addByte(Simulateur::getInstance().getRobotColor() == Constantes::RobotColor::Green ? 0x01_b : 0x00_b);
 		this->envoyer(aEnvoyer);
 	} // Envoie de l'état du capteur demandé
-	else if(t.getNbDonnees() == 1 && t.getDonnee(0) <= NBCAPTEURS &&
-	        t.getDonnee(0) > 0) { // les capteurs vont de 1 à 12
+	else if(t.getNbDonnees() == 1 && t.getDonnee(0) <= NBCAPTEURS && t.getDonnee(0) > 0) { // les capteurs vont de 1 à 12
 		Trame aEnvoyer(this->getId(), 2);
 		aEnvoyer.addByte(t.getDonnee(0));
 		aEnvoyer.addByte(_iContacteurs.getContactorState(t.getDonnee(0), this->getId()));

@@ -401,7 +401,7 @@ struct uvc_format_desc {
 struct uvc_entity {
 	struct list_head list;  /* Entity as part of a UVC device. */
 	struct list_head chain; /* Entity as part of a video device
-	             * chain. */
+	                         * chain. */
 	__u8 id;
 	__u16 type;
 	char name[64];

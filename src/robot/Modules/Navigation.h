@@ -74,7 +74,6 @@ namespace PhysicalRobot {
 
 
 		void set_command(MovingCommand command);
-
 	};
 } // namespace PhysicalRobot
 

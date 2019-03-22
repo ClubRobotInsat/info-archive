@@ -3,56 +3,26 @@
 //
 
 #include "../src/robot/Strategy/AbstractStrategy.h"
+#include "TestUtils.h"
 #include "catch.hpp"
-
-static bool strategy_has_run;
-static bool deactivation_called;
-
-namespace Strat {
-	class StrategyTest final : public Strategy::AbstractStrategy {
-	public:
-		StrategyTest(Constants::RobotColor color = Constants::RobotColor::Yellow) : AbstractStrategy(color) {}
-
-	private:
-		void execute() override {
-			strategy_has_run = true;
-		}
-	};
-
-	class ModuleTest final : public PhysicalRobot::Module {
-	public:
-		explicit ModuleTest(uint8_t id) : Module(id, "Test") {}
-
-		void deactivation() override {
-			deactivation_called = true;
-		}
-
-	private:
-		std::vector<JSON> generate_list_jsons() const override {
-			return {};
-		}
-
-		void message_processing(const JSON&) override {}
-	};
-} // namespace Strat
 
 TEST_CASE("Strategy", "[integration]") {
 	SECTION("Robot color") {
 		using Constants::RobotColor;
 
-		Strat::StrategyTest s1(RobotColor::Yellow);
+		TestUtils::StrategyTest s1(RobotColor::Yellow);
 		CHECK(s1.get_color() == RobotColor::Yellow);
 		CHECK(s1.get_reference() == GLOBAL_CONSTANTS().get_reference(RobotColor::Yellow));
 
-		Strat::StrategyTest s2(RobotColor::Purple);
+		TestUtils::StrategyTest s2(RobotColor::Purple);
 		CHECK(s2.get_color() == RobotColor::Purple);
 		CHECK(s2.get_reference() == GLOBAL_CONSTANTS().get_reference(RobotColor::Purple));
 
-		CHECK_THROWS_WITH(Strat::StrategyTest(RobotColor::Undef), "The strategy color is undefined.");
+		CHECK_THROWS_WITH(TestUtils::StrategyTest(RobotColor::Undef), "The strategy color is undefined.");
 	}
 
 	SECTION("Points") {
-		Strat::StrategyTest s;
+		TestUtils::StrategyTest s;
 		CHECK(s.get_points() == 0);
 
 		CHECK(s.add_points(15) == 15);
@@ -63,15 +33,15 @@ TEST_CASE("Strategy", "[integration]") {
 	}
 
 	SECTION("Interfacer::RobotManager") {
-		Strat::StrategyTest s;
+		TestUtils::StrategyTest s;
 		CHECK(s.get_robot_names().empty());
 
 		auto modules = std::make_shared<PhysicalRobot::ModuleManager>();
-		modules->add_module<Strat::ModuleTest>(0);
+		modules->add_module<TestUtils::ModuleTest>(0);
 		auto r1 = s.add_robot(std::make_shared<PhysicalRobot::Robot>(modules, std::vector({"NULL"s}), Lidar::None));
-		deactivation_called = false;
+		REQUIRE_FALSE(modules->get_module<TestUtils::ModuleTest>().is_deactivation_called());
 		s.stop();
-		REQUIRE(deactivation_called);
+		REQUIRE(modules->get_module<TestUtils::ModuleTest>().is_deactivation_called());
 		CHECK(s.get_robot_names().size() == 1);
 
 		const std::string NAME = "primary";
@@ -83,16 +53,15 @@ TEST_CASE("Strategy", "[integration]") {
 
 	SECTION("Time") {
 		StopWatch chrono;
-		Strat::StrategyTest s;
+		TestUtils::StrategyTest s;
 		sleep(100_ms);
-		CHECK(chrono.getElapsedTime() - s.get_time() < 20_us);
+		CHECK(chrono.getElapsedTime() - s.get_time() < 100_us);
 
-		strategy_has_run = false;
 		chrono.reset();
 		s.start(1_s);
 		auto duration = chrono.getElapsedTime();
 		CHECK(duration > 1_s);
 		CHECK(duration < 1.1_s + 20_us);
-		CHECK(strategy_has_run);
+		CHECK(s.is_execute_called());
 	}
 }

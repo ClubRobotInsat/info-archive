@@ -24,6 +24,14 @@ namespace PhysicalRobot {
 		unlock_variables();
 	}
 
+	IOState Pumps::is_pump_activated(pump_t id) {
+		test_is_pump_ok(id);
+
+		std::lock_guard<std::mutex> lk(_mutex_variables);
+		// TODO: use the intensity field
+		return _pumps_on_off[id];
+	}
+
 	uint16_t Pumps::get_pump_intensity(pump_t id) const {
 		test_is_pump_ok(id);
 
@@ -49,6 +57,13 @@ namespace PhysicalRobot {
 		unlock_variables();
 	}
 
+	IOState Pumps::is_valve_activated(valve_t id) {
+		test_is_valve_ok(id);
+
+		std::lock_guard<std::mutex> lk(_mutex_variables);
+		return _valves_on_off[id];
+	}
+
 	void Pumps::activate_vacst(vacst_t id) {
 		test_is_vacst_ok(id);
 
@@ -65,6 +80,13 @@ namespace PhysicalRobot {
 		_vacst_on_off[id] = IOState::Off;
 		_state_changed.exchange(true);
 		unlock_variables();
+	}
+
+	IOState Pumps::is_vacst_activated(vacst_t id) {
+		test_is_vacst_ok(id);
+
+		std::lock_guard<std::mutex> lk(_mutex_variables);
+		return _vacst_on_off[id];
 	}
 
 	std::vector<JSON> Pumps::generate_list_jsons() const {
@@ -90,7 +112,7 @@ namespace PhysicalRobot {
 	}
 
 	void Pumps::message_processing(const JSON& j) {
-	    _pump_intensity[0].exchange(j["pump_intensity"]);
+		_pump_intensity[0].exchange(j["pump_intensity"]);
 	}
 
 	void Pumps::deactivation() {

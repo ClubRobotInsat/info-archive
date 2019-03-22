@@ -9,3 +9,9 @@ add_library(HighLevelFunctions STATIC ${HIGH_LEVEL_FUNCTIONS_SOURCE})
 execute_process(
         COMMAND mkdir -p ${root_SOURCE_DIR}/src/robot/Strategy/PetriLab/src
 )
+if(EXISTS "/usr/bin/petrilab")
+    execute_process(
+            COMMAND petrilab -u Template.petri
+            WORKING_DIRECTORY ${root_SOURCE_DIR}/src/robot/Strategy/PetriLab
+    )
+endif()

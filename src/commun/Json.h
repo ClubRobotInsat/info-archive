@@ -95,5 +95,5 @@ namespace Json {
 
 		return value;
 	}
-}
+} // namespace Json
 #endif // ROOT_JSON_H

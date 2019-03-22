@@ -24,7 +24,6 @@
 
 #include <Commun.h> // GlobalFrame
 #include <Constants.h>
-#include <json.hpp>
 
 #include <atomic>     // atomic
 #include <functional> // function

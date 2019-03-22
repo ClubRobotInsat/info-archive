@@ -1,5 +1,4 @@
 [![Build Status](https://travis-ci.org/ClubRobotInsat/info.svg?branch=develop)](https://travis-ci.org/ClubRobotInsat/info)
-[![Coverage Status](https://coveralls.io/repos/github/ClubRobotInsat/info/badge.svg?branch=develop)](https://coveralls.io/github/ClubRobotInsat/info?branch=develop)
 [![CodeCov](https://codecov.io/gh/ClubRobotInsat/info/branch/develop/graph/badge.svg)](https://codecov.io/gh/ClubRobotInsat/info)
 [![CodeFactor](https://www.codefactor.io/repository/github/clubrobotinsat/info/badge/develop)](https://www.codefactor.io/repository/github/clubrobotinsat/info/overview/develop)
 [![Github license](https://img.shields.io/github/license/ClubRobotInsat/info.svg)](https://github.com/ClubRobotInsat/info/blob/develop/LICENSE)

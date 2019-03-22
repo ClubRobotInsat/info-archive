@@ -31,7 +31,7 @@ const std::string& EmbeddedFiles::readText(const std::string& path) {
 	}
 }
 
-std::map<std::string, std::string> &EmbeddedFiles::files() {
+std::map<std::string, std::string>& EmbeddedFiles::files() {
 	static std::map<std::string, std::string> _files{
 #ifndef READ_EXTERNAL_FILES
 #include "embedded"

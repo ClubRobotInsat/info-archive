@@ -5,6 +5,23 @@
 #pragma once
 
 #include <Constants.h>
+#include <functional>
+
+#define ADD_FN_CLASS(Vector, Class, Function, ...) Vector.push_back(std::bind(&Class::Function, this, ##__VA_ARGS__))
+#define ADD_FN(Vector, Function, ...) Vector.push_back(std::bind(Function, ##__VA_ARGS__))
+
+typedef std::function<ActionResult(void)> fun_ra;
+
+inline ActionResult _combine_actions(std::vector<fun_ra> actions) {
+	ActionResult result = ActionResult::SUCCESS;
+
+	for(fun_ra action : actions) {
+		if(result != ActionResult::SUCCESS && result != ActionResult::TIMEOUT)
+			return result;
+		result = action();
+	}
+	return result;
+}
 
 bool color_purple();
 bool color_yellow();

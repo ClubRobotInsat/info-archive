@@ -69,7 +69,7 @@ namespace Commun {
 			octets[i] = interface_elec_info.info_get_data();
 		}
 	}
-}
+} // namespace Commun
 
 
 #endif // ROOT_INTERFACE_H

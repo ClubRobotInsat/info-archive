@@ -22,6 +22,8 @@ TEST_CASE("Initialization of a common robot.", "[integration]") {
 
 		PhysicalRobot::Robot robot(m, std::vector{"NULL"s}, Lidar::None);
 
+		CHECK(robot.get_communication_protocol_type() == typeid(Communication::protocol_null));
+
 		REQUIRE(robot.name == "guest");
 		CHECK(robot.get_module<PhysicalRobot::Servos>().get_nbr_servos() == 2);
 

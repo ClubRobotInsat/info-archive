@@ -54,7 +54,7 @@ void CarteDebugDessin::traiterTrame(Trame const& t) {
 			}
 			break;
 
-		// TODO reception des formes
+			// TODO reception des formes
 
 		default:
 			throw Trame::ErreurTrameNonTraitee(t);

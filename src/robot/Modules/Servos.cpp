@@ -10,7 +10,7 @@ namespace PhysicalRobot {
 		std::lock_guard<std::mutex> lk(_mutex_variables);
 
 		if(id >= ID_MAX_SERVOS) {
-			throw std::runtime_error("ID du servo trop grand ("s + std::to_string(id) + " > " + std::to_string(ID_MAX_SERVOS) + ") !");
+			throw std::runtime_error("ID du servo trop grand ("s + std::to_string(id) + " >= " + std::to_string(ID_MAX_SERVOS) + ") !");
 		} else if(id == 0) {
 			throw std::runtime_error("L'ID 0 des servos est réservé !");
 		} else if(_servos[id]) {
@@ -211,7 +211,10 @@ namespace PhysicalRobot {
 	}
 
 	void Servos::message_processing(const JSON& servo) {
+		// Le mutex est bloqué par `update` donc on ne débloque temporairement pour appeler `get_index_of`
+		unlock_variables();
 		servo_t index = get_index_of(servo["id"]);
+		lock_variables();
 
 		if(_servos[index] != nullptr) {
 			// Les données de commande (position ou vitesse) ne sont pas prises en compte ici

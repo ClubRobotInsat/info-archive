@@ -50,7 +50,9 @@ void SimuNavigation::message_processing(const JSON& frame) {
 			_robotController->stop();
 		}
 
-		if(!getFromString(frame["command"], _command)) {
+		try {
+			_command = fromString<MovingCommand>(frame["command"]);
+		} catch(std::invalid_argument& e) {
 			throw std::runtime_error("Navigation command failed to parse");
 		}
 		_args_cmd[0] = frame["args_cmd1"];

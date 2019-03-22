@@ -24,7 +24,7 @@ public:
 	static const std::string& readText(const std::string& path);
 
 private:
-	static std::map<std::string, std::string> &files();
+	static std::map<std::string, std::string>& files();
 };
 
 #endif // ROOT_FILEMANAGER_H
