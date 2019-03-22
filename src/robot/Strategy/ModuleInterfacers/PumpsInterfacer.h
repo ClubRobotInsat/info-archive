@@ -5,6 +5,7 @@
 #ifndef ROOT_PUMPSINTERFACER_H
 #define ROOT_PUMPSINTERFACER_H
 
+#include "../PetriLab/Servos.h"
 #include "Interfacer.hpp"
 
 namespace Strategy {
@@ -54,9 +55,11 @@ namespace Strategy {
 				valve_t valve_right;
 			} _pump_forward, _pump_backward;
 
-			StockingRail _external_rail_forward[NBR_ATOMS_EXTERNAL_RAIL_FORWARD],
-			    _external_rail_backward[NBR_ATOMS_EXTERNAL_RAIL_BACKWARD], _internal_rail[NBR_ATOMS_INTERNAL_RAIL],
-			    _hand_forward[NBR_ATOMS_HAND_FORWARD], _hand_backward[NBR_ATOMS_HAND_BACKWARD];
+			std::array<StockingRail, NBR_ATOMS_EXTERNAL_RAIL_FORWARD> _external_rail_forward;
+			std::array<StockingRail, NBR_ATOMS_EXTERNAL_RAIL_BACKWARD> _external_rail_backward;
+			std::array<StockingRail, NBR_ATOMS_INTERNAL_RAIL> _internal_rail;
+			std::array<StockingRail, NBR_ATOMS_HAND_FORWARD> _hand_forward;
+			std::array<StockingRail, NBR_ATOMS_HAND_BACKWARD> _hand_backward;
 		};
 	} // namespace Interfacer
 } // namespace Strategy

@@ -9,11 +9,11 @@ namespace Strategy {
 
 		PumpsInterfacer::PumpsInterfacer(interfaced_type& module_pumps)
 		        : AbstractInterfacer(), _module(module_pumps), _pump_forward(0, 0, 1, 2), _pump_backward(1, 3, 4, 5) {
-			std::fill_n(_external_rail_forward, NBR_ATOMS_EXTERNAL_RAIL_FORWARD, StockingRail::Nothing);
-			std::fill_n(_external_rail_backward, NBR_ATOMS_EXTERNAL_RAIL_BACKWARD, StockingRail::Nothing);
-			std::fill_n(_internal_rail, NBR_ATOMS_INTERNAL_RAIL, StockingRail::Nothing);
-			std::fill_n(_hand_forward, NBR_ATOMS_HAND_FORWARD, StockingRail::Nothing);
-			std::fill_n(_hand_backward, NBR_ATOMS_HAND_BACKWARD, StockingRail::Nothing);
+			_external_rail_forward.fill(StockingRail::Nothing);
+			_external_rail_backward.fill(StockingRail::Nothing);
+			_internal_rail.fill(StockingRail::Nothing);
+			_hand_forward.fill(StockingRail::Nothing);
+			_hand_backward.fill(StockingRail::Nothing);
 
 			_module.deactivate_pump(_pump_forward.pump);
 			_module.deactivate_pump(_pump_backward.pump);
@@ -104,12 +104,26 @@ namespace Strategy {
 			ActionResult result;
 			switch(_module.is_pump_activated(_pump_forward.pump)) {
 				case PhysicalRobot::IOState::On:
+					result = ActionResult::FAILURE;
+					break;
+				case PhysicalRobot::IOState::Off:
+					switch(get_forward_position()) {
+						case ArmPosition::TOP_EXTERNAL_RAIL:
+							_external_rail_forward[0] = _hand_forward[0];
+							_external_rail_forward[1] = _hand_forward[1];
+							break;
+						case ArmPosition::TOP_INTERNAL_RAIL:
+							// TODO: les palets peuvent rouler donc il faut gérer plus dynamiquement leur place
+							_internal_rail[0] = _hand_forward[0];
+							_internal_rail[1] = _hand_forward[1];
+							break;
+						default:
+							logWarn("Bad forward arm position to release atoms: ", toString(get_forward_position()));
+							break;
+					}
 					_hand_backward[0] = Nothing;
 					_hand_backward[1] = Nothing;
 					result = ActionResult::SUCCESS;
-					break;
-				case PhysicalRobot::IOState::Off:
-					result = ActionResult::FAILURE;
 					break;
 			}
 			return result;
@@ -125,12 +139,26 @@ namespace Strategy {
 			ActionResult result;
 			switch(_module.is_pump_activated(_pump_backward.pump)) {
 				case PhysicalRobot::IOState::On:
+					result = ActionResult::FAILURE;
+					break;
+				case PhysicalRobot::IOState::Off:
+					switch(get_backward_position()) {
+						case ArmPosition::TOP_EXTERNAL_RAIL:
+							_external_rail_backward[0] = _hand_backward[0];
+							_external_rail_backward[1] = _hand_backward[1];
+							break;
+						case ArmPosition::TOP_INTERNAL_RAIL:
+							// TODO: les palets peuvent rouler donc il faut gérer plus dynamiquement leur place
+							_internal_rail[0] = _hand_backward[0];
+							_internal_rail[1] = _hand_backward[1];
+							break;
+						default:
+							logWarn("Bad backward arm position to release atoms: ", toString(get_backward_position()));
+							break;
+					}
 					_hand_backward[0] = Nothing;
 					_hand_backward[1] = Nothing;
 					result = ActionResult::SUCCESS;
-					break;
-				case PhysicalRobot::IOState::Off:
-					result = ActionResult::FAILURE;
 					break;
 			}
 			return result;
