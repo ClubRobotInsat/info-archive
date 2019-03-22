@@ -12,6 +12,10 @@ add_library(petri_utils STATIC PetriSample.cpp)
 if(EXISTS "/usr/bin/petrilab")
     add_definitions(-DPETRILAB_EXISTS)
     target_link_libraries(petri_utils PetriRuntime)
+    execute_process(
+            COMMAND petrilab -u Sample.petri
+            WORKING_DIRECTORY ${root_SOURCE_DIR}/test
+    )
 endif()
 
 add_library(test_utils STATIC TestUtils.cpp)
