@@ -85,8 +85,6 @@ endfunction()
 #add_definitions(-DGTKWIN_DISABLE)
 
 include_directories(src/commun /usr/local/include/)
-# TODO : je n'arrive pas à faire le `include_directories` depuis le CMakeLists.txt de `third_parties/` -- Terae
-include_directories(third_parties/include third_parties/asio/asio/include)
 add_subdirectory(third_parties)
 
 link_directories(/usr/local/lib/)
