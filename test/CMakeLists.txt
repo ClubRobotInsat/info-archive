@@ -1,8 +1,4 @@
-add_executable(TEST_SERVOS servos.cpp)
-target_link_libraries(TEST_SERVOS Strategy)
-
-add_executable(TEST_MOVING moving.cpp)
-target_link_libraries(TEST_MOVING Robot)
+add_subdirectory(RealWorld)
 
 # On ne peut pas utiliser la librairie "Catch2::Catch2" pour générer un unique fichier de test
 add_library(catch_main OBJECT "unit.cpp")

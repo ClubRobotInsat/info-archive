@@ -2,8 +2,8 @@
 // Created by terae on 14/10/18.
 //
 
-#include "../src/robot/Robot.h"
-#include "../src/robot/Strategy/AbstractStrategy.h"
+#include "../../src/robot/Robot.h"
+#include "../../src/robot/Strategy/AbstractStrategy.h"
 #include "json.hpp"
 
 class StrategyServos final : public Strategy::AbstractStrategy {
