@@ -12,14 +12,14 @@ include_directories(${root_SOURCE_DIR}/third_parties/petri/Runtime/Cpp/detail/js
 
 # Obtention d'Irrlicht
 FIND_PACKAGE(Irrlicht)
-# A faire : messages d'erreurs si irrlicht pas trouvé
+if (NOT ${IRRLICHT_FOUND})
+    message(FATAL_ERROR "Irrlicht was not found. Simulator cannot be built.")
+endif()
+
 include_directories(${IRRLICHT_INCLUDE_DIRS})
 message(STATUS "Irrlicht trouvé ici : ${IRRLICHT_INCLUDE_DIRS}")
 
-# TODO CMakeLists intermédiaires dans chaque répertoire
-add_executable(Simulator
-        main.cpp
-
+add_library(LibSimu
         core/Simulateur.cpp
         core/SimuGuiClient.cpp
         core/World.cpp
@@ -51,10 +51,12 @@ add_executable(Simulator
         communication/SimuCommunicator.cpp
         communication/SimuServos.cpp
         communication/SimuLed.cpp
-        communication/SimuNavigation.cpp
-
-        ${root_SOURCE_DIR}/third_parties/include/json.hpp)
+        communication/SimuNavigation.cpp)
 
 add_subdirectory(gui/gtk)
 
-target_link_libraries(Simulator Box2D Communication Outils_Simu ${IRRLICHT_LIBRARIES} GtkSimu)
+target_link_libraries(LibSimu GtkSimu Communication Outils_Simu)
+target_link_libraries(LibSimu Box2D ${IRRLICHT_LIBRARIES})
+
+add_executable(Simulator main.cpp)
+target_link_libraries(Simulator LibSimu)
