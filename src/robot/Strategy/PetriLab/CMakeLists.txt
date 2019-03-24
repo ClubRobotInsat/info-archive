@@ -1,6 +1,7 @@
 set(HIGH_LEVEL_FUNCTIONS_SOURCE
         Avoidance.cpp
         Navigation.cpp
+        Pumps.cpp
         Servos.cpp
         Utils.cpp)
 add_library(HighLevelFunctions STATIC ${HIGH_LEVEL_FUNCTIONS_SOURCE})

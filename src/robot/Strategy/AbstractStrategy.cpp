@@ -112,12 +112,36 @@ namespace Strategy {
 			}
 			manager->add_interfacer<Interfacer::ServosInterfacer>();
 		}
+		// Interfacer::IOInterfacer
+		if(manager->get_robot()->has_module<PhysicalRobot::IO>()) {
+			if(debug_mode) {
+				logInfo("Insertion of an Interfacer::IOInterfacer inside the robot '" + robot->name + "'");
+			}
+			manager->add_interfacer<Interfacer::IOInterfacer>();
+		}
+		// Interfacer::PumpsInterfacer
+		if(manager->get_robot()->has_module<PhysicalRobot::Pumps>()) {
+			if(debug_mode) {
+				logInfo("Insertion of an Interfacer::PumpsInterfacer inside the robot '" + robot->name + "'");
+			}
+			manager->add_interfacer<Interfacer::PumpsInterfacer>();
+		}
+
 		// Interfacer::AvoidanceInterfacer
 		if(manager->get_robot()->has_lidar()) {
 			if(debug_mode) {
 				logInfo("Insertion of an Interfacer::AvoidanceInterfacer inside the robot '" + robot->name + "'");
 			}
-			manager->add_interfacer<Interfacer::AvoidanceInterfacer>(*_env, GLOBAL_CONSTANTS()[robot->name].get_turret_position());
+			auto& avoidance =
+			    manager->add_interfacer<Interfacer::AvoidanceInterfacer>(get_environment(),
+			                                                             GLOBAL_CONSTANTS()[robot->name].get_turret_position());
+
+			if(manager->get_robot()->has_module<PhysicalRobot::Navigation>()) {
+				if(debug_mode) {
+					logInfo("Insertion of an Interfacer::NavigationInterfacer inside the robot '" + robot->name + "'");
+				}
+				manager->add_interfacer<Interfacer::NavigationInterfacer>(get_environment(), avoidance);
+			}
 		}
 
 		return add_manager(manager);

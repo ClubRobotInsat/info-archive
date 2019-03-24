@@ -14,6 +14,7 @@ namespace Strategy {
 		public:
 			using interfaced_type = PhysicalRobot::IO;
 			using TriggerState = PhysicalRobot::TriggerState;
+			using BuzzerState = PhysicalRobot::BuzzerState;
 
 			explicit IOInterfacer(interfaced_type& module_io);
 			explicit IOInterfacer(std::shared_ptr<PhysicalRobot::Robot>);
@@ -26,6 +27,12 @@ namespace Strategy {
 			void wait_insertion_tirette() const;
 
 			void wait_deletion_tirette() const;
+
+			void play_error_sound();
+
+			void play_success_sound();
+
+			void reset_buzzer();
 
 		private:
 			interfaced_type& _module;

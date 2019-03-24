@@ -116,6 +116,8 @@ namespace PhysicalRobot {
 				_module_manager->add_module<Motors>(module.second);
 			} else if(module.first == "io") {
 				_module_manager->add_module<IO>(module.second);
+			} else if(module.first == "pumps") {
+				_module_manager->add_module<Pumps>(module.second);
 			} else {
 				throw std::runtime_error("The module named '" + module.first + "' (ID: " + std::to_string(module.second) +
 				                         ") isn't known for the robot '" + name + "'.");

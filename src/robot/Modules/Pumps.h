@@ -17,10 +17,10 @@ namespace PhysicalRobot {
 		using valve_t = uint8_t;
 
 		static const pump_t ID_MAX_PUMP = 2;
-		static const valve_t ID_MAX_VALVE = 8;
-		static const vacst_t ID_MAX_VACST = 8;
+		static const valve_t ID_MAX_VALVE = 6;
+		static const vacst_t ID_MAX_VACST = 0;
 
-		explicit Pumps(uint8_t id) : Module(id, "Pumps") {}
+		explicit Pumps(uint8_t id);
 
 		void activate_pump(pump_t);
 		void deactivate_pump(pump_t);
@@ -42,10 +42,10 @@ namespace PhysicalRobot {
 
 		void deactivation() override;
 
-		std::atomic<IOState> _pumps_on_off[ID_MAX_PUMP];
-		std::atomic<IOState> _valves_on_off[ID_MAX_VALVE];
-		std::atomic<IOState> _vacst_on_off[ID_MAX_VACST];
-		std::atomic_uint16_t _pump_intensity[ID_MAX_PUMP];
+		std::array<std::atomic<IOState>, ID_MAX_PUMP> _pumps_on_off;
+		std::array<std::atomic<IOState>, ID_MAX_VALVE> _valves_on_off;
+		std::array<std::atomic<IOState>, ID_MAX_VACST> _vacst_on_off;
+		std::array<std::atomic_uint16_t, ID_MAX_PUMP> _pump_intensity;
 
 		void test_is_pump_ok(pump_t) const;
 		void test_is_valve_ok(valve_t) const;

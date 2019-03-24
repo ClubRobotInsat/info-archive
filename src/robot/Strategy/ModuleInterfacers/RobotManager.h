@@ -19,7 +19,7 @@ namespace Strategy {
 
 		class RobotManager {
 		public:
-			RobotManager(std::shared_ptr<PhysicalRobot::Robot> robot);
+			RobotManager(std::shared_ptr<PhysicalRobot::Robot>);
 
 			std::shared_ptr<PhysicalRobot::Robot> get_robot() const;
 
