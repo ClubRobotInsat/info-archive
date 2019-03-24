@@ -42,7 +42,7 @@ namespace Communication {
 			logInfo("- ", args[0], " PIPES");
 			logInfo("- ", args[0], " RS232 [peripherique] (ex : \"", args[0], " RS232 /dev/ttyUSB0\")");
 			logInfo("- ", args[0], " TCPIP [adresse IP] [port] (ex : \"", args[0], " TCPIP 127.0.0.1 1234\")");
-			logInfo("- ", args[0], " UDP [adresse IP] [port local] [port distant] (ex : \"", args[0], " UDP 127.0.0.1 1234 40000");
+			logInfo("- ", args[0], " UDP [adresse IP distante] [port local] [port distant] (ex : \"", args[0], " UDP 127.0.0.1 1234 40000");
 			logInfo("=== Connexion ethernet sur le LAN ===");
 			logInfo("- ", args[0], " ETHERNET <[ID] [@IP] [local port] [remote port]>...");
 			// logInfo("Ajouter SIMU pour établir une connection avec le socket du simu.");

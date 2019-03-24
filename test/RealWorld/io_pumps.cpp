@@ -45,7 +45,7 @@ int main() {
 	auto& pumps = m->add_module<Pumps>(5);
 
 	// TODO check address
-	Robot robot(m, {"prog_io_pumps"s, "UDP"s, "192.168.1.4"s, "5000"s, "51"s}, Lidar::None);
+	Robot robot(m, {"prog_io_pumps", "UDP", "192.168.1.4", "5000", "51"}, Lidar::None);
 	robot.set_debug(true);
 
 	std::cout << "insert tirette" << std::endl;

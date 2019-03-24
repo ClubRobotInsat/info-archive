@@ -13,7 +13,6 @@ namespace Communication {
 	AbstractSerialProtocol<P>::AbstractSerialProtocol(std::shared_ptr<Serial> serial)
 	        : Protocol(), _serial(std::move(serial)), _delay(GLOBAL_CONSTANTS().get_default_communication_delay()), protocol(P) {}
 
-
 	template <SerialProtocolType P>
 	GlobalFrame AbstractSerialProtocol<P>::recv_frame_blocking(const std::atomic_bool& running_execution) {
 		static uint8_t buf[GlobalFrame::DONNEES_TRAME_MAX];
