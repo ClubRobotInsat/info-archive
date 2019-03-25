@@ -97,7 +97,7 @@ namespace Communication {
 				logInfo("\t\t", P, "::recv_frame(): ends -> killer sent an empty frame.");
 			}
 
-			send_frame({});
+			// send_frame({});
 		});
 
 		auto create_recv_thread = [&running_execution, this]() -> std::future<GlobalFrame> {

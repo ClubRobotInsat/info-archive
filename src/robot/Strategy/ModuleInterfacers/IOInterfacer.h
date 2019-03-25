@@ -28,11 +28,11 @@ namespace Strategy {
 
 			void wait_deletion_tirette() const;
 
-			void play_error_sound();
+			void reset_buzzer();
 
 			void play_success_sound();
 
-			void reset_buzzer();
+			void play_error_sound();
 
 		private:
 			interfaced_type& _module;

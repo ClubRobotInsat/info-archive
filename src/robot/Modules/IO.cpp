@@ -15,6 +15,7 @@ namespace PhysicalRobot {
 	void IO::set_sound(BuzzerState buzzer) {
 		lock_variables();
 		_buzzer = buzzer;
+		_state_changed.exchange(true);
 		unlock_variables();
 	}
 

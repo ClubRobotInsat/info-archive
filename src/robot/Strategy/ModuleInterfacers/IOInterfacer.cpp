@@ -22,17 +22,29 @@ namespace Strategy {
 
 		void IOInterfacer::wait_insertion_tirette() const {
 			logInfo("Wait the insertion of the tirette.");
-			while(get_tirette_state() == IOInterfacer::TriggerState::Waiting) {
-				sleep(100_ms);
+			while(!is_tirette_triggered()) {
+				sleep(50_ms);
 			}
 			logInfo("Tirette inserted, please take off it!");
 		}
 
 		void IOInterfacer::wait_deletion_tirette() const {
-			while(get_tirette_state() == IOInterfacer::TriggerState::Triggered) {
-				sleep(100_ms);
+			while(is_tirette_triggered()) {
+				sleep(50_ms);
 			}
 			logInfo("Tirette outside!");
+		}
+
+		void IOInterfacer::reset_buzzer() {
+			_module.set_sound(BuzzerState::Rest);
+		}
+
+		void IOInterfacer::play_success_sound() {
+			_module.set_sound(BuzzerState::PlaySuccessSound);
+		}
+
+		void IOInterfacer::play_error_sound() {
+			_module.set_sound(BuzzerState::PlayErrorSound);
 		}
 	} // namespace Interfacer
 } // namespace Strategy

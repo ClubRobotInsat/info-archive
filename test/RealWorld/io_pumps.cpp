@@ -14,27 +14,32 @@ public:
 
 private:
 	void execute() override {
-		auto io = _interfacers["io"]->get_interfacer<Strategy::Interfacer::ServosInterfacer>();
-		auto pumps = _interfacers["pumps"]->get_interfacer<Strategy::Interfacer::PumpsInterfacer>();
-
-		wait_for_tirette();
+		auto io = _interfacers["primary"]->get_interfacer<Strategy::Interfacer::IOInterfacer>();
+		auto pumps = _interfacers["primary"]->get_interfacer<Strategy::Interfacer::PumpsInterfacer>();
+		_interfacers["primary"]->get_robot()->set_debug(true);
 
 		using Strategy::Interfacer::PumpsInterfacer;
 
+		wait_for_tirette();
+
+		io.play_success_sound();
+
+		sleep(5_s);
 		pumps.catch_forward(PumpsInterfacer::StockingRail::Blueium, PumpsInterfacer::StockingRail::Redium);
-		pumps.catch_forward(PumpsInterfacer::StockingRail::Goldenium, PumpsInterfacer::StockingRail::Nothing);
+		sleep(5_s);
+		pumps.catch_backward(PumpsInterfacer::StockingRail::Goldenium, PumpsInterfacer::StockingRail::Nothing);
 	}
 };
 
 using namespace PhysicalRobot;
 
-#define TEST_STRAT 0
-#define TEST_ROBOT 1
+#define TEST_STRAT 1
+#define TEST_ROBOT 0
 
 int main() {
 #if TEST_STRAT
 	StrategyIO strat;
-	strat.start(10_s);
+	strat.start(1000_s);
 #endif
 
 #if TEST_ROBOT
@@ -45,7 +50,7 @@ int main() {
 	auto& pumps = m->add_module<Pumps>(5);
 
 	// TODO check address
-	Robot robot(m, {"prog_io_pumps", "UDP", "192.168.1.4", "5000", "51"}, Lidar::None);
+	Robot robot(m, {"prog_io_pumps", "ETHERNET", "4", "192.168.1.4", "5004", "54", "5", "192.168.1.4", "5005", "55"}, Lidar::None);
 	robot.set_debug(true);
 
 	std::cout << "insert tirette" << std::endl;
