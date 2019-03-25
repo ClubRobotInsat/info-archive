@@ -1,5 +1,6 @@
 set(HIGH_LEVEL_FUNCTIONS_SOURCE
         Avoidance.cpp
+        IO.cpp
         Navigation.cpp
         Pumps.cpp
         Servos.cpp
