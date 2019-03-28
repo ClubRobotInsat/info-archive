@@ -17,7 +17,7 @@ gboolean emptyGtkQueue(void* data) {
 
 
 GtkSimuApplication::GtkSimuApplication(int argc, char** argv, std::string id, GtkSimuContext& context)
-        : Gtk::Application(argc, argv, id), _context(context), _panelTestNavigation(context), _panelCentral(context) {
+        : Gtk::Application(argc, argv, id), _context(context), _panelTestNavigation(context), _panelCentral(context), _panelRobotState() {
 
 	// Window configuration
 	_mainWindow = std::make_unique<Gtk::Window>();

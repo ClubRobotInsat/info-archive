@@ -8,10 +8,10 @@
 
 TEST_CASE("Global constants", "[integration]") {
 	SECTION("GENERATE JSON") {
-		PanelRobotState panel = new PanelRobotState();
-		JSON j = panel.generateTestJSON();
+		PanelRobotState *panel = new PanelRobotState();
+		/*JSON j = panel.generateTestJSON();
 
-		CHECK(j.)
+		CHECK(j.)*/
 	}
 	SECTION("TEST PRINT JSON") {}
 }

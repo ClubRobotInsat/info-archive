@@ -4,15 +4,15 @@
 #include "GtkInclude.h"
 #include <Json.h>
 
-template <class UnaryFunction>
-
-class PanelRobotState : {
+// template <class UnaryFunction>
+class PanelRobotState : public Gtk::Frame {
 public:
 	PanelRobotState();
 	void refreshPanel(JSON json);
 	JSON generateTestJSON();
 
 private:
+	template <class UnaryFunction>
 	void setElement(JSON json, UnaryFunction f);
 };
 
