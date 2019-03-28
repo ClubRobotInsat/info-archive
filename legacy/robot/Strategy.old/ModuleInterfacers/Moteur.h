@@ -5,8 +5,8 @@
 #ifndef Club_Robot_Moteur_h
 #define Club_Robot_Moteur_h
 
+#include "../../../../src/robot/Robot.h"
 #include "../../../Cartes/CarteMoteurs2018.h"
-#include "../../Robot.h"
 #include <vector>
 
 namespace Commun {

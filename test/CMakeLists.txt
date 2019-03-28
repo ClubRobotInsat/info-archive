@@ -49,6 +49,7 @@ target_link_libraries(unit_testing_constants Outils_Robot)
 target_link_libraries(unit_testing_repere Outils_Robot)
 target_link_libraries(unit_testing_robot Robot)
 target_link_libraries(unit_testing_servos_conversions Modules)
+target_link_libraries(unit_testing_simu_modules LibSimu Modules)
 target_link_libraries(unit_testing_interfacers ModuleInterfacers)
 target_link_libraries(unit_testing_strategy Strategy test_utils)
 target_link_libraries(unit_testing_petri Strategy test_utils)
@@ -70,7 +71,7 @@ add_executable(${UNITTEST_TARGET_NAME}
         ${files})
 
 target_include_directories(${UNITTEST_TARGET_NAME} PRIVATE "../third_parties/catch/single_include/catch2")
-target_link_libraries(${UNITTEST_TARGET_NAME} Strategy test_utils)
+target_link_libraries(${UNITTEST_TARGET_NAME} Strategy test_utils LibSimu)
 
 add_test(NAME "${UNITTEST_TARGET_NAME}"
         COMMAND ${UNITTEST_TARGET_NAME} "*"

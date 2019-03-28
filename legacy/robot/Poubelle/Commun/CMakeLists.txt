@@ -1,10 +1,10 @@
-add_subdirectory(../../Modules)
-add_subdirectory(../../Communication)
+add_subdirectory(../../../../src/robot/Modules)
+add_subdirectory(../../../../src/robot/Communication)
 
 set(ROBOT_SOURCE
-        ../../Robot.cpp)
+        ../../../../src/robot/Robot.cpp)
 add_library(Robot STATIC ${ROBOT_SOURCE})
-target_link_libraries(Robot ../../Modules ../../Communication)
+target_link_libraries(Robot ../../../../src/robot/Modules ../../../../src/robot/Communication)
 
 # add_executable(debug_TestCAN Commun/Test/TestCan.cpp Cartes/Carte.cpp Commun/Test/CarteTestCAN.cpp)
 # target_link_libraries(debug_TestCAN Robot)
