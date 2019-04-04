@@ -5,14 +5,6 @@ add_library(catch_main OBJECT "unit.cpp")
 target_include_directories(catch_main PRIVATE "../third_parties/catch/single_include/catch2")
 
 add_library(petri_utils STATIC PetriSample.cpp)
-if(EXISTS "/usr/bin/petrilab")
-    add_definitions(-DPETRILAB_EXISTS)
-    target_link_libraries(petri_utils PetriRuntime)
-    execute_process(
-            COMMAND petrilab -u Sample.petri
-            WORKING_DIRECTORY ${root_SOURCE_DIR}/test
-    )
-endif()
 
 add_library(test_utils STATIC TestUtils.cpp)
 target_link_libraries(test_utils Strategy petri_utils)
@@ -21,6 +13,26 @@ target_link_libraries(test_utils Strategy petri_utils)
 file(GLOB files "unit-*.cpp")
 # Suppression de certains fichiers ; voir https://stackoverflow.com/questions/15550777/how-do-i-exclude-a-single-file-from-a-cmake-fileglob-pattern#15551302
 list(REMOVE_ITEM files "${CMAKE_SOURCE_DIR}/test/unit-strategy_generator.cpp")
+
+if(RASPI)
+    list(REMOVE_ITEM files "${CMAKE_SOURCE_DIR}/test/unit-simu_modules.cpp")
+endif()
+
+if(EXISTS "/usr/bin/petrilab")
+    if(RASPI)
+        set(PETRILAB_PROFILE "ARM release")
+        target_link_libraries(petri_utils PetriRuntime dl)
+    else()
+        set(PETRILAB_PROFILE "Default")
+        target_link_libraries(petri_utils PetriRuntime)
+    endif()
+
+    add_definitions(-DPETRILAB_EXISTS)
+    execute_process(
+            COMMAND petrilab --update --profile ${PETRILAB_PROFILE} Sample.petri
+            WORKING_DIRECTORY ${root_SOURCE_DIR}/test
+    )
+endif()
 
 foreach(file ${files})
     get_filename_component(file_basename ${file} NAME_WE)
@@ -45,7 +57,6 @@ target_link_libraries(unit_testing_constants Outils_Robot)
 target_link_libraries(unit_testing_repere Outils_Robot)
 target_link_libraries(unit_testing_robot Robot)
 target_link_libraries(unit_testing_servos_conversions Modules)
-target_link_libraries(unit_testing_simu_modules LibSimu Modules)
 target_link_libraries(unit_testing_interfacers ModuleInterfacers)
 target_link_libraries(unit_testing_strategy Strategy test_utils)
 target_link_libraries(unit_testing_petri Strategy test_utils)
@@ -54,9 +65,14 @@ set(UNITTEST_TARGET_NAME "unit_testing_all")
 add_executable(${UNITTEST_TARGET_NAME}
         $<TARGET_OBJECTS:catch_main>
         ${files})
-
 target_include_directories(${UNITTEST_TARGET_NAME} PRIVATE "../third_parties/catch/single_include/catch2")
-target_link_libraries(${UNITTEST_TARGET_NAME} Strategy test_utils LibSimu)
+
+if(RASPI)
+    target_link_libraries(${UNITTEST_TARGET_NAME} Strategy test_utils)
+else()
+    target_link_libraries(unit_testing_simu_modules LibSimu Modules)
+    target_link_libraries(${UNITTEST_TARGET_NAME} Strategy test_utils LibSimu)
+endif()
 
 add_test(NAME "${UNITTEST_TARGET_NAME}"
         COMMAND ${UNITTEST_TARGET_NAME} "*"
