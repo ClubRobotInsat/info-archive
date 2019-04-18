@@ -4,10 +4,10 @@
 
 #include "../../robot/Modules/NavigationUtility.h"
 
-using PhysicalRobot::NavigationUtility::angle_to_u16;
-using PhysicalRobot::NavigationUtility::distance_to_u16;
-using PhysicalRobot::NavigationUtility::u16_to_angle;
-using PhysicalRobot::NavigationUtility::u16_to_distance;
+using PhysicalRobot::NavigationUtility::angle_to_i32;
+using PhysicalRobot::NavigationUtility::distance_to_i32;
+using PhysicalRobot::NavigationUtility::i32_to_angle;
+using PhysicalRobot::NavigationUtility::i32_to_distance;
 
 SimuNavigation::SimuNavigation(uint8_t id, const std::shared_ptr<IRobotController>& robotController)
         : Module(id, "Simulator Navigation"), _robotController(robotController) {}
@@ -26,9 +26,9 @@ std::vector<JSON> SimuNavigation::generate_list_jsons() const {
 	JSON frame;
 
 	// Only writeable values are sent (+ counter because Navigation modules needs it)
-	frame["x"] = distance_to_u16(_coords.getX());
-	frame["y"] = distance_to_u16(_coords.getY());
-	frame["angle"] = angle_to_u16(_coords.getAngle());
+	frame["x"] = distance_to_i32(_coords.getX());
+	frame["y"] = distance_to_i32(_coords.getY());
+	frame["angle"] = angle_to_i32(_coords.getAngle());
 	frame["blocked"] = state == SimuRobotState::Blocked;
 	frame["moving_done"] = state == SimuRobotState::Idle;
 
@@ -67,25 +67,25 @@ void SimuNavigation::message_processing(const JSON& frame) {
 
 		switch(_command) {
 			case MovingCommand::GoForward:
-				distance = u16_to_distance(_args_cmd[0]);
+				distance = i32_to_distance(_args_cmd[0]);
 				_robotController->forward(distance);
 				logDebug6("Forward ", distance);
 				break;
 
 			case MovingCommand::GoBackward:
-				distance = -u16_to_distance(_args_cmd[0]);
+				distance = -i32_to_distance(_args_cmd[0]);
 				_robotController->forward(distance);
 				logDebug6("Backward ", -distance);
 				break;
 
 			case MovingCommand::TurnRelative:
-				angle = robot_coords.getAngle() + u16_to_angle(_args_cmd[0]);
+				angle = robot_coords.getAngle() + i32_to_angle(_args_cmd[0]);
 				_robotController->turn(angle);
-				logDebug6("Turn relative ", u16_to_angle(_args_cmd[0]));
+				logDebug6("Turn relative ", i32_to_angle(_args_cmd[0]));
 				break;
 
 			case MovingCommand::TurnAbsolute:
-				angle = u16_to_angle(_args_cmd[0]);
+				angle = i32_to_angle(_args_cmd[0]);
 				_robotController->turn(angle);
 				logDebug6("Turn absolute ", angle);
 				break;

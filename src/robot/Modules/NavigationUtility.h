@@ -6,20 +6,20 @@ namespace PhysicalRobot {
 
 	namespace NavigationUtility {
 
-		inline uint16_t distance_to_u16(Distance distance) {
+		inline int32_t distance_to_i32(Distance distance) {
 			// TODO controller overflow et underflow
-			return static_cast<uint16_t>(distance.toMm() * 10);
+			return static_cast<int32_t>(distance.toMm() * 10);
 		}
 
-		inline Distance u16_to_distance(uint16_t distance) {
+		inline Distance i32_to_distance(int32_t distance) {
 			return Distance::makeFromMm(distance / 10.0);
 		}
 
-		inline uint16_t angle_to_u16(Angle angle) {
-			return static_cast<uint16_t>(angle.toMilliRad() * 10);
+		inline int32_t angle_to_i32(Angle angle) {
+			return static_cast<int32_t>(angle.toMilliRad() * 10);
 		}
 
-		inline Angle u16_to_angle(uint16_t angle) {
+		inline Angle i32_to_angle(int32_t angle) {
 			return Angle::makeFromMilliRad(angle / 10.0);
 		}
 	}; // namespace NavigationUtility

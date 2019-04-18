@@ -62,14 +62,14 @@ namespace PhysicalRobot {
 		/// x, y, angle
 		repere::Coordinates _coords;
 
-		std::atomic_bool _blocked;
+		std::atomic_bool _blocked = false;
 		std::atomic_bool _asserv_on_off;
 		std::atomic_bool _leds;
 		std::atomic_bool _reset;
 
 		MovingCommand _command;
 		uint16_t _args_cmd[2];
-		uint16_t _counter;
+		uint16_t _counter = 0;
 		std::atomic_bool _moving_done;
 
 

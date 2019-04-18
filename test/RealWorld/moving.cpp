@@ -11,16 +11,20 @@ int main() {
 	auto& navigation = m->add_module<Navigation>(1);
 
 	// TODO check address
-	Robot robot(m, {"prog_moving", "UDP", "127.0.0.1", "5000", "1234"}, Lidar::None);
+	Robot robot(m, {"prog_moving", "ETHERNET", "1", "192.168.1.1", "5001", "51"}, Lidar::None);
 
-	std::cout << "forward(5_cm)" << std::endl;
-	navigation.forward(5_cm, SensAdvance::Forward);
+	std::cout << "forward(10_cm)" << std::endl;
+	navigation.forward(10_cm, SensAdvance::Forward);
+
+	sleep(1_s);
+	std::cout << navigation.get_coordinates() << std::endl;
 
 	getchar();
-	std::cout << "forward(30_cm)" << std::endl;
-	navigation.forward(30_cm, SensAdvance::Forward);
+	std::cout << "backward(10_cm)" << std::endl;
+	// navigation.backward(10_cm);
+	navigation.turn_relative(20_deg);
+	sleep(10_ms);
 
-	getchar();
 	std::cout << "Is the robot blocked ? " << navigation.is_physically_blocked() << std::endl;
 	std::cout << "stop" << std::endl;
 	navigation.stop();

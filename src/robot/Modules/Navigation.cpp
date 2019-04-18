@@ -8,10 +8,10 @@
 
 namespace PhysicalRobot {
 
-	using NavigationUtility::angle_to_u16;
-	using NavigationUtility::distance_to_u16;
-	using NavigationUtility::u16_to_angle;
-	using NavigationUtility::u16_to_distance;
+	using NavigationUtility::angle_to_i32;
+	using NavigationUtility::distance_to_i32;
+	using NavigationUtility::i32_to_angle;
+	using NavigationUtility::i32_to_distance;
 
 	void Navigation::forward(Distance distance, SensAdvance sens) {
 		lock_variables();
@@ -20,7 +20,7 @@ namespace PhysicalRobot {
 		} else {
 			set_command(MovingCommand::GoBackward);
 		}
-		_args_cmd[0] = distance_to_u16(distance);
+		_args_cmd[0] = distance_to_i32(distance);
 		_state_changed.exchange(true);
 		unlock_variables();
 	}
@@ -29,7 +29,7 @@ namespace PhysicalRobot {
 		// TODO: use the rotating sens
 		lock_variables();
 		set_command(MovingCommand::TurnAbsolute);
-		_args_cmd[0] = angle_to_u16(angle);
+		_args_cmd[0] = angle_to_i32(angle);
 		_state_changed.exchange(true);
 		unlock_variables();
 	}
@@ -37,7 +37,7 @@ namespace PhysicalRobot {
 	void Navigation::turn_relative(Angle angle) {
 		lock_variables();
 		set_command(MovingCommand::TurnRelative);
-		_args_cmd[0] = angle_to_u16(angle);
+		_args_cmd[0] = angle_to_i32(angle);
 		_state_changed.exchange(true);
 		unlock_variables();
 	}
@@ -107,9 +107,9 @@ namespace PhysicalRobot {
 
 	std::vector<JSON> Navigation::generate_list_jsons() const {
 		JSON moving;
-		moving["x"] = distance_to_u16(_coords.getX());
-		moving["y"] = distance_to_u16(_coords.getY());
-		moving["angle"] = angle_to_u16(_coords.getAngle());
+		moving["x"] = distance_to_i32(_coords.getX());
+		moving["y"] = distance_to_i32(_coords.getY());
+		moving["angle"] = angle_to_i32(_coords.getAngle());
 		moving["blocked"] = _blocked.load();
 		moving["asserv_on_off"] = _asserv_on_off.load();
 		moving["led"] = _leds.load();
@@ -124,7 +124,7 @@ namespace PhysicalRobot {
 	}
 
 	void Navigation::message_processing(const JSON& json) {
-		_coords = repere::Coordinates({u16_to_distance(json["x"]), u16_to_distance(json["y"])}, u16_to_angle(json["angle"]));
+		_coords = repere::Coordinates({i32_to_distance(json["x"]), i32_to_distance(json["y"])}, i32_to_angle(json["angle"]));
 
 		_blocked = json["blocked"];
 

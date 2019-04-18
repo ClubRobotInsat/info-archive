@@ -152,8 +152,6 @@ namespace Constants {
 		const repere::Repere REFERENCE_ASTAR =
 		    repere::Repere({0_m, 0_m}, repere::Multiplier::SENS_POSITIVE, repere::Multiplier::SENS_POSITIVE);
 
-		// Convertir la table du fichier texte en un objet JSON à la pré-compilation
-
 		const repere::Repere& get_reference(RobotColor color) const {
 			switch(color) {
 				case RobotColor::Yellow:
@@ -173,6 +171,8 @@ namespace Constants {
 		inline const Duration& get_frame_period() const {
 			return _frame_period;
 		}
+
+		// Convertir la table du fichier texte en un objet JSON à la pré-compilation
 
 		const JSON& TABLE_2018() const {
 			static JSON TABLE_2018 = nlohmann::json::parse(EmbeddedFiles::readText("table_2018.json"));
