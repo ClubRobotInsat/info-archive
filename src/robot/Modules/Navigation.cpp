@@ -70,27 +70,34 @@ namespace PhysicalRobot {
 		return this->REFERENCE;
 	}
 
+	void Navigation::set_coordinates(const repere::Coordinates& coords) {
+		std::lock_guard<std::mutex> lk(_mutex_variables);
+		_reset = true;
+		_coords = coords;
+		// TODO envoyer l'ordre au robot de changer sa position.
+	}
+
 	void Navigation::update_linear_speed(Speed speed) {
 		lock_variables();
-		// TODO
+		_linear_speed = speed;
 		unlock_variables();
 	}
 
-	void Navigation::update_angular_speed(AngularSpeed precision) {
+	void Navigation::update_angular_speed(AngularSpeed angular_speed) {
 		lock_variables();
-		// TODO
+		_angular_speed = angular_speed;
 		unlock_variables();
 	}
 
-	void Navigation::update_linear_accuracy(Distance precision) {
+	void Navigation::update_linear_accuracy(Distance accuracy) {
 		lock_variables();
-		// TODO
+		_linear_accuracy = accuracy;
 		unlock_variables();
 	}
 
-	void Navigation::update_angular_accuracy(Angle precision) {
+	void Navigation::update_angular_accuracy(Angle accuracy) {
 		lock_variables();
-		// TODO
+		_angular_accuracy = accuracy;
 		unlock_variables();
 	}
 
@@ -101,8 +108,8 @@ namespace PhysicalRobot {
 
 	bool Navigation::is_precision_reached() const {
 		std::lock_guard<std::mutex> lk(_mutex_variables);
-		// TODO
-		return true;
+		// Pas de distinction pour l'instant.
+		return _moving_done;
 	}
 
 	std::vector<JSON> Navigation::generate_list_jsons() const {

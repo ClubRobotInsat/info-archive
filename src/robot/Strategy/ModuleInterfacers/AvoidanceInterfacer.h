@@ -25,6 +25,10 @@ namespace Strategy {
 
 			std::vector<repere::Position> get_adversary_positions() const;
 
+			/** Ajoute une position d'adversaire fictive. Utilisé entre autres dans les tests unitaires pour contrôller
+			 * que le traitement des positions de l'adversaire est correct. */
+			void add_fake_adversary_position(const repere::Position& position);
+
 			/**
 			 * @return true si l'adversaire est devant le robot
 			 * @param threshold Ajustement de la distance à partir de laquelle l'adversaire est considéré comme dangereux
@@ -66,6 +70,7 @@ namespace Strategy {
 			std::thread _find_robots;
 			mutable std::mutex _mutex_adversary;
 			std::vector<repere::Position> _adversary_positions;
+			std::vector<repere::Position> _fake_positions;
 
 			repere::Position get_robot_position() const;
 

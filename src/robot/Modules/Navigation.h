@@ -35,15 +35,26 @@ namespace PhysicalRobot {
 
 		repere::Orientation get_orientation() const;
 
+		void set_coordinates(const repere::Coordinates&);
+
 		const repere::Repere& get_reference() const;
 
+		/** Définit la vitesse maximale du robot lorsqu'il avance ou recule. */
 		void update_linear_speed(Speed);
 
+		/** Définit la vitesse angulaire maximale du robot lorsqu'il tourne
+		 * sur lui-même. */
 		void update_angular_speed(AngularSpeed);
 
-		void update_linear_accuracy(Distance precision);
+		/** La précision longitutinale indique au robot à partir de quel
+		 * moment il peut déterminer que son déplacement longitudinal est
+		 * terminé. */
+		void update_linear_accuracy(Distance accuracy);
 
-		void update_angular_accuracy(Angle precision);
+		/** La précision angulaire indique au robot à partir de quel
+		 * moment il peut déterminer que son déplacement angulaire est
+		 * terminé. */
+		void update_angular_accuracy(Angle accuracy);
 
 		bool is_moving_done() const;
 
@@ -61,6 +72,11 @@ namespace PhysicalRobot {
 
 		/// x, y, angle
 		repere::Coordinates _coords;
+
+		Speed _linear_speed;
+		AngularSpeed _angular_speed;
+		Distance _linear_accuracy;
+		Angle _angular_accuracy;
 
 		std::atomic_bool _blocked = false;
 		std::atomic_bool _asserv_on_off;
