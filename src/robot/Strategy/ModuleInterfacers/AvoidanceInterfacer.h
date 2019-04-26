@@ -19,7 +19,7 @@ namespace Strategy {
 			                    Environment& env,
 			                    Vector2m turret_shift = Vector2m(0_m, 0_m));
 
-			~AvoidanceInterfacer();
+			~AvoidanceInterfacer() override;
 
 			void set_turret_shift(Vector2m shift);
 
@@ -41,6 +41,10 @@ namespace Strategy {
 			 */
 			bool adversary_detected(PhysicalRobot::SensAdvance) const;
 			bool adversary_detected(Distance threshold, PhysicalRobot::SensAdvance) const;
+
+			/** Ajoute des DynamicShape correspondant aux adversaires detectés sur la table.
+			 * @returns l'id des DynamicShape ainsi ajoutées. */
+			std::vector<int> update_environment(Environment& env) const;
 
 			/**
 			 * Fonction permettant de modifier l'angle de détection de l'adversaire
@@ -66,8 +70,10 @@ namespace Strategy {
 			Vector2m _turret_shift;
 			std::atomic<Angle> _angle_detection_adversary;
 
-			void thread_lidar();
-			std::thread _find_robots;
+			void thread_lidar_main();
+			std::thread _thread_lidar;
+
+			/// Mutex gérant l'accès à la liste des positions de l'adversaire
 			mutable std::mutex _mutex_adversary;
 			std::vector<repere::Position> _adversary_positions;
 			std::vector<repere::Position> _fake_positions;

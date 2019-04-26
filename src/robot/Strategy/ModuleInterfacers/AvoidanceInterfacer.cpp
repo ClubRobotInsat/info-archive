@@ -13,13 +13,13 @@ namespace Strategy {
 		        , _env(env)
 		        , _turret_shift(turret_shift)
 		        , _angle_detection_adversary(GLOBAL_CONSTANTS()[Constants::name(_robot->name)].get_angle_adversary_detection()) {
-			_find_robots = std::thread(std::bind(&AvoidanceInterfacer::thread_lidar, this));
+			_thread_lidar = std::thread(std::bind(&AvoidanceInterfacer::thread_lidar_main, this));
 			set_turret_shift(GLOBAL_CONSTANTS()[Constants::name(_robot->name)].get_turret_position());
 		}
 
 		AvoidanceInterfacer::~AvoidanceInterfacer() {
 			_is_running = false;
-			_find_robots.join();
+			_thread_lidar.join();
 		}
 
 		void AvoidanceInterfacer::set_turret_shift(Vector2m shift) {
@@ -80,6 +80,22 @@ namespace Strategy {
 			return false;
 		}
 
+		std::vector<int> AvoidanceInterfacer::update_environment(Environment& env) const {
+			std::vector<int> result;
+			const int first_dynamic = 10;
+			int last_dynamic = 0;
+
+			const Distance adv_radius = 0.80f * env.getRobotRadius();
+
+			_mutex_adversary.lock();
+			for(const repere::Position& pos : _adversary_positions) {
+				int id = first_dynamic + last_dynamic++;
+				env.addDynamicShape(id, std::make_unique<Circle>(Environment::DANGER_INFINITY, adv_radius, pos.getPos2D()));
+			}
+			_mutex_adversary.unlock();
+			return result;
+		}
+
 		void AvoidanceInterfacer::set_adversary_detection_angle(Angle angle) {
 			if(abs(angle) < 0.5_PI) {
 				_angle_detection_adversary.exchange(angle);
@@ -92,12 +108,9 @@ namespace Strategy {
 			return _angle_detection_adversary;
 		}
 
-		void AvoidanceInterfacer::thread_lidar() {
+		void AvoidanceInterfacer::thread_lidar_main() {
 			std::unique_ptr<OccupGrid> lidar_map =
 			    std::make_unique<OccupGrid>(toVec2(GLOBAL_CONSTANTS().get_table_size()), 100, 66);
-
-			const int first_dynamic = 10;
-			int last_dynamic = 0;
 
 			StopWatch chrono;
 			while(_is_running) {
@@ -108,7 +121,8 @@ namespace Strategy {
 				lidar_map->reset();
 
 				auto frame = _robot->get_lidar_frame();
-				if(frame != std::nullopt) {
+
+				if(frame.has_value()) {
 					lidar_map->accumulate(frame.value(), coords);
 					FindRobots robots;
 					robots.accumulate(*lidar_map);
@@ -120,13 +134,6 @@ namespace Strategy {
 					_adversary_positions.clear();
 				}
 
-				for(int i = first_dynamic; i < first_dynamic + last_dynamic; ++i) {
-					_env.removeDynamicShape(i);
-				}
-				for(const repere::Position& pos : _adversary_positions) {
-					_env.addDynamicShape(first_dynamic + last_dynamic++,
-					                     std::make_unique<Circle>(Environment::DANGER_INFINITY, 20_cm, pos.getPos2D()));
-				}
 				_mutex_adversary.unlock();
 
 				auto to_sleep = GLOBAL_CONSTANTS().get_lidar_actualization_period() - chrono.getElapsedTime();
