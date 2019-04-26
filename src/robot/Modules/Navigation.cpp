@@ -49,6 +49,13 @@ namespace PhysicalRobot {
 		unlock_variables();
 	}
 
+	void Navigation::emergency_stop() {
+		lock_variables();
+		set_command(MovingCommand::EmergencyStop);
+		_state_changed.exchange(true);
+		unlock_variables();
+	}
+
 	bool Navigation::is_physically_blocked() const {
 		return _blocked;
 	}

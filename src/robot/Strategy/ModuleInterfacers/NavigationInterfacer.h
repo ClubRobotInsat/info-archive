@@ -56,9 +56,9 @@ namespace Strategy {
 			 * Actions
 			 */
 
-			ActionResult move_to(repere::Position destination, Duration timeout);
+			ActionResult move_to(repere::Coordinates destination, Duration timeout);
 
-			ActionResult move_to(repere::Position destination, SensAdvance = SensAdvance::Forward, Duration timeout = 25_s);
+			ActionResult move_to(repere::Coordinates destination, SensAdvance = SensAdvance::Forward, Duration timeout = 25_s);
 
 			ActionResult forward(Distance, SensAdvance, Duration timeout = 10_s);
 
@@ -115,9 +115,14 @@ namespace Strategy {
 			    get_lock_for_action(const TimePoint& try_until = TimePoint::distantFuture());
 			std::unique_lock<std::recursive_timed_mutex> get_lock_for_action(std::defer_lock_t);
 
-			std::function<bool()> test_unit_navigation_ended();
-			std::function<bool()> test_unit_navigation_accuracy_reached();
+			/** @returns Une fonction retournant true si le déplacement courant est terminé. */
+			std::function<bool()> get_check_moving_done();
 
+			/** @returns Une fonction retournant true si la précision a été atteinte pour le déplacement courant. */
+			std::function<bool()> get_check_accuracy_reached();
+
+			/** Attend la fin de la trajectoire et retourne le résultat. Si le robot est bloqué par l'adversaire,
+			 * il est arrêté en urgence. */
 			ActionResult wait_end_trajectory(const std::function<bool()>& condition_end_trajectory,
 			                                 TimePoint date_timeout,
 			                                 bool stop = true,
@@ -126,15 +131,24 @@ namespace Strategy {
 
 			ActionResult internal_forward(Distance, SensAdvance, Duration timeout);
 
-			// TODO: reverse-engineering the `AllerA` code to reproduce it
-			struct TrajectoryPart {
-				TrajectoryPart(const repere::Coordinates& coord, SensAdvance sens) : coordinates(coord), sens(sens) {}
+			struct TrajectoryPoint {
+				TrajectoryPoint(const repere::Coordinates& coord, SensAdvance sens) : coordinates(coord), sens(sens) {}
 
 				repere::Coordinates coordinates;
 				SensAdvance sens;
 			};
 
-			using Trajectory = std::list<TrajectoryPart>;
+			using Trajectory = std::list<TrajectoryPoint>;
+
+			Trajectory compute_trajectory(const repere::Coordinates& destination, SensAdvance sens);
+
+			ActionResult follow_trajectory(Trajectory&& trajectory, TimePoint const& timeoutDate);
+
+			ActionResult go_to_point_straight(const repere::Coordinates& destination, SensAdvance sens, TimePoint const& date_timeout);
+
+			/** Propose une position de repli en cas de bloquage par l'adversaire. Choisit un point possible
+			 * parmi un nombre fini de possibilités autour de la position présente du robot */
+			Distance compute_backup_distance(SensAdvance escapeSens, Distance escapeRadius);
 
 
 			mutable std::mutex _mutex_states;
@@ -146,6 +160,8 @@ namespace Strategy {
 			std::recursive_timed_mutex _mutex_action;
 
 			Environment& _env;
+			/// Si true, les trajectoires calculées par l'A* sont écrites dans un fichier.
+			bool _write_astar = false;
 
 			repere::Coordinates _origin_coordinates;
 		};

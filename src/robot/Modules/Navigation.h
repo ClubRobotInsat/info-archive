@@ -25,7 +25,14 @@ namespace PhysicalRobot {
 
 		void turn_absolute(Angle angle, SensRotation);
 
+		/** Arrête le robot. Le robot met à jour sa consigne pour qu'elle
+		 * corresponde à sa position actuelle. A la difference de emergency_stop(),
+		 * la commande donnée au moteurs du robot peut ne pas être nulle. */
 		void stop();
+
+		/** Arrêt d'urgence. Tant qu'il reste dans cet état, le robot fournit
+		 * une commande nulle aux moteurs. */
+		void emergency_stop();
 
 		bool is_physically_blocked() const;
 
