@@ -23,3 +23,6 @@ foreach(glade_file ${glade_files})
     get_filename_component(glade_filename ${glade_file} NAME)
     include_file(glade/${glade_filename})
 endforeach()
+
+add_executable(perso_test PanelRobotState.cpp)
+target_link_libraries(perso_test LibSimu)
