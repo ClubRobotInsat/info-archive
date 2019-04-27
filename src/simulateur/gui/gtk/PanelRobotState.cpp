@@ -68,7 +68,7 @@ void PanelRobotState::on_treeview_row_activated(const Gtk::TreeModel::Path& path
 	}
 }
 
-
+// Generate a JSON for testing
 JSON PanelRobotState::generateTestJSON() {
 
 	JSON json;

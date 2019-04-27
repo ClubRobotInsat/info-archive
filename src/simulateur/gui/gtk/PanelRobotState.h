@@ -24,6 +24,7 @@ protected:
 			add(col_status);
 		}
 
+		// Define data type for each column
 		Gtk::TreeModelColumn<Glib::ustring> col_name;
 		Gtk::TreeModelColumn<Glib::ustring> col_status;
 	};
