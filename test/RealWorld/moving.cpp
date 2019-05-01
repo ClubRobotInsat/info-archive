@@ -22,12 +22,14 @@ int main() {
 	getchar();
 	std::cout << "backward(10_cm)" << std::endl;
 	// navigation.backward(10_cm);
-	navigation.turn_relative(20_deg);
-	sleep(10_ms);
+	navigation.turn_absolute(20_deg, SensRotation::Trigo);
+	sleep(1_s);
 
 	std::cout << "Is the robot blocked ? " << navigation.is_physically_blocked() << std::endl;
 	std::cout << "stop" << std::endl;
 	navigation.stop();
+
+	getchar();
 
 	robot.deactivation();
 

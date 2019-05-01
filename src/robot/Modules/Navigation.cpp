@@ -37,7 +37,14 @@ namespace PhysicalRobot {
 	void Navigation::turn_relative(Angle angle) {
 		lock_variables();
 		set_command(MovingCommand::TurnRelative);
-		_args_cmd[0] = angle_to_i32(angle);
+
+		if(angle > 0_deg) {
+			_args_cmd[0] = angle_to_i32(angle);
+			_args_cmd[1] = 0;
+		} else {
+			_args_cmd[0] = angle_to_i32(-angle);
+			_args_cmd[1] = 1;
+		}
 		_state_changed.exchange(true);
 		unlock_variables();
 	}
@@ -134,6 +141,11 @@ namespace PhysicalRobot {
 		moving["args_cmd2"] = _args_cmd[1];
 		moving["counter"] = _counter;
 		moving["moving_done"] = _moving_done.load();
+
+		moving["max_lin_speed"] = NavigationUtility::speed_to_u16(_linear_speed);
+		moving["max_ang_speed"] = NavigationUtility::angular_speed_to_u16(_angular_speed);
+		moving["lin_accuracy"] = (uint16_t)NavigationUtility::distance_to_i32(_linear_accuracy);
+		moving["ang_accuracy"] = (uint16_t)NavigationUtility::angle_to_i32(_angular_accuracy);
 		return {moving};
 	}
 
