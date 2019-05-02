@@ -46,11 +46,12 @@ namespace Strategy {
 		this->_env->loadFromJSON(GLOBAL_CONSTANTS().TABLE_2018());
 	}
 
-	void AbstractStrategy::start(Duration match) {
-		_total_duration_match = match;
+	void AbstractStrategy::start(Duration match_duration) {
+		_total_duration_match = match_duration;
 
 		logDebug9("Couleur du robot : ", this->get_color());
 		logDebug("Début du match !");
+		logDebug("Durée: ", match_duration);
 		this->reset_timer();
 
 		_execution = std::thread(std::bind(&AbstractStrategy::exec, this));
@@ -108,20 +109,22 @@ namespace Strategy {
 	std::shared_ptr<Interfacer::RobotManager> AbstractStrategy::add_robot(std::shared_ptr<PhysicalRobot::Robot> robot) {
 		auto manager = std::make_shared<Interfacer::RobotManager>(robot);
 		// Interfacer::AvoidanceInterfacer
-		if(manager->get_robot()->has_lidar()) {
-			if(debug_mode) {
-				logInfo("Insertion of an Interfacer::AvoidanceInterfacer inside the robot '" + robot->name + "'");
-			}
-			auto& avoidance =
-			    manager->add_interfacer<Interfacer::AvoidanceInterfacer>(get_environment(),
-			                                                             GLOBAL_CONSTANTS()[robot->name].get_turret_position());
+		if(!robot->has_lidar()) {
+			logWarn("No lidar found. Avoidance may not work correctly");
+		}
+		if(debug_mode) {
+			logInfo("Insertion of an Interfacer::AvoidanceInterfacer inside the robot '" + robot->name + "'");
+		}
+		auto& avoidance =
+		    manager->add_interfacer<Interfacer::AvoidanceInterfacer>(get_environment(),
+		                                                             GLOBAL_CONSTANTS()[robot->name].get_turret_position());
 
-			if(manager->get_robot()->has_module<PhysicalRobot::Navigation>()) {
-				if(debug_mode) {
-					logInfo("Insertion of an Interfacer::NavigationInterfacer inside the robot '" + robot->name + "'");
-				}
-				manager->add_interfacer<Interfacer::NavigationInterfacer>(get_environment(), avoidance);
+		// Interfacer::NavigationInterfacer
+		if(manager->get_robot()->has_module<PhysicalRobot::Navigation>()) {
+			if(debug_mode) {
+				logInfo("Insertion of an Interfacer::NavigationInterfacer inside the robot '" + robot->name + "'");
 			}
+			manager->add_interfacer<Interfacer::NavigationInterfacer>(get_environment(), avoidance);
 		}
 		// Interfacer::IOInterfacer
 		if(manager->get_robot()->has_module<PhysicalRobot::IO>()) {

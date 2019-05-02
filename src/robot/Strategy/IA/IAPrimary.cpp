@@ -15,7 +15,7 @@ int main(int argc, char* argv[]) {
 
 	Strategy::IAPrimary strategy(Constants::RobotColor::Yellow);
 
-	strategy.start(GLOBAL_CONSTANTS().get_match_duration());
+	strategy.start(strategy.debug_mode ? 1_h : GLOBAL_CONSTANTS().get_match_duration());
 
 	return EXIT_SUCCESS;
 }
@@ -27,7 +27,7 @@ namespace Strategy {
 		}
 
 		auto physical_robot =
-		    std::make_shared<PhysicalRobot::Robot>(name, std::vector({"IAPrimary"s, "ETERNET"s, "1"s, "192.168.0.222"s, "50000"s, "51"s}));
+		    std::make_shared<PhysicalRobot::Robot>(name, std::vector({"IAPrimary"s, "ETHERNET"s, "1"s, "192.168.0.222"s, "50000"s, "51"s}));
 		add_robot(physical_robot);
 
 		// TODO: create the 'IAPrimary' network
