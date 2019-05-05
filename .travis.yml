@@ -49,7 +49,7 @@ script:
   - cmake -H. -Bbuild ${CMAKE_OPTIONS}
   - cd build
   - make all -j $(nproc)
-  - test/unit_testing_all '[integration]'
+  - unit_testing_all '[integration]'
 
 notifications:
   email: false
