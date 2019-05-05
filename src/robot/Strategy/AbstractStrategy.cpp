@@ -115,9 +115,12 @@ namespace Strategy {
 		if(debug_mode) {
 			logInfo("Insertion of an Interfacer::AvoidanceInterfacer inside the robot '" + robot->name + "'");
 		}
+
+		// FIXME default name is sometimes "guest", and sometimes "default"
+		std::string constantKey = robot->name == "guest" ? "default" : robot->name;
 		auto& avoidance =
 		    manager->add_interfacer<Interfacer::AvoidanceInterfacer>(get_environment(),
-		                                                             GLOBAL_CONSTANTS()[robot->name].get_turret_position());
+		                                                             GLOBAL_CONSTANTS()[constantKey].get_turret_position());
 
 		// Interfacer::NavigationInterfacer
 		if(manager->get_robot()->has_module<PhysicalRobot::Navigation>()) {

@@ -24,7 +24,7 @@ protected:
 
 	MovingCommand _command;
 	uint16_t _args_cmd[2];
-	uint16_t _counter;
+	uint16_t _counter = 0;
 
 	std::shared_ptr<IRobotController> _robotController;
 

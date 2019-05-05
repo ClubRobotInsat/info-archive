@@ -93,7 +93,7 @@ namespace PhysicalRobot {
 		std::atomic_bool _leds;
 		std::atomic_bool _reset;
 
-		MovingCommand _command;
+		MovingCommand _command = MovingCommand::DoNothing;
 		uint16_t _args_cmd[2];
 		uint16_t _counter = 0;
 		std::atomic_bool _moving_done;
