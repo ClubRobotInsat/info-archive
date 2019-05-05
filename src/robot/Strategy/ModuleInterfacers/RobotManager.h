@@ -17,6 +17,13 @@
 namespace Strategy {
 	namespace Interfacer {
 
+		/** @brief Le RobotManager permet de gérer les fonctions de haut niveau d'un robot.
+		 *
+		 * Là où le `PhysicalRobot::Robot` ne contient que les informations et l'API
+		 * nécessaire pour interagir directement avec le robot physique, le RobotManager
+		 * contient des `Interfacers` capables d'effectuer des operations plus complexes
+		 * (par exemple, aller à un certain point sur la table, effectuer des séquences
+		 * complètes d'opérations, etc). */
 		class RobotManager {
 		public:
 			RobotManager(std::shared_ptr<PhysicalRobot::Robot>);
@@ -30,7 +37,8 @@ namespace Strategy {
 			/**
 			 * Insert a new interfacer and builds it from a `PhysicalRobot::Robot` and specific arguments
 			 * @tparam Interfacer to build
-			 * @tparam T Optional additional arguments for the `Interfacer`
+			 * @tparam T Optional additional arguments for the `Interfacer`. The PhysicalRobot is automatically
+			 * added by the RobotManager, you may not include it in the additional arguments.
 			 * @return A reference to the built interfacer
 			 * @throws If the same `Interfacer` already exists
 			 * @todo Check if in some cases we should want several identical interfacers
