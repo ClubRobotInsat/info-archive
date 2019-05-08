@@ -6,7 +6,8 @@ set(MODULE_SOURCES
         Motors.cpp
         Navigation.cpp
         Pumps.cpp
-        Servos.cpp)
+        Servos.cpp
+        NavigationParameters.cpp)
 
 add_library(Modules STATIC ${MODULE_SOURCES})
 target_link_libraries(Modules Outils_Robot)

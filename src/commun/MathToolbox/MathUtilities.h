@@ -3,6 +3,9 @@
 #ifndef MATH_UTILITIES_H
 #define MATH_UTILITIES_H
 
+#include <cmath>
+#include <cstdint>
+
 #ifndef M_PI
 #define M_E 2.7182818284590452354
 #define M_LOG2E 1.4426950408889634074
@@ -32,5 +35,8 @@ bool estDansIntervalOuvert(T val, T bMin, T bMax) {
 	return (val > bMin) && (val < bMax);
 }
 
+uint64_t doubleToFixedPoint(double value, uint32_t pos) {
+	return uint64_t(round(value * (1 << pos)));
+}
 
 #endif
