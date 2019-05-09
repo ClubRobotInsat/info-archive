@@ -7,6 +7,6 @@ set(COMMUNICATION_SOURCE
         UDP.cpp
         Communicator.hpp
         Protocol.hpp
-        CommunicatorParsing.hpp)
+        CommunicatorParsing.cpp)
 add_library(Communication STATIC ${COMMUNICATION_SOURCE})
 target_link_libraries(Communication Outils_Robot)

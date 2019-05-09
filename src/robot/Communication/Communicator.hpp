@@ -3,7 +3,7 @@
 //
 
 #include "Communicator.h"
-#include "CommunicatorParsing.hpp"
+#include "CommunicatorParsing.h"
 #include "Protocol.h"
 #include <Constants.h>
 #include <log/Log.h>

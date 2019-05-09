@@ -5,7 +5,7 @@
 #include "catch.hpp"
 
 #include "../src/robot/Communication/Communicator.h"
-#include "../src/robot/Communication/CommunicatorParsing.hpp"
+#include "../src/robot/Communication/CommunicatorParsing.h"
 #include "../src/robot/Modules/ModuleManager.h"
 #include "communication/GlobalFrame.h"
 
