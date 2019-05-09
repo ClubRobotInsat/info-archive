@@ -33,7 +33,7 @@ TEST_CASE("Global constants", "[integration]") {
 
 		                      "[robot]\n"
 		                      "linear_speed=376\n"
-		                      "linear_accuracy=26\n"
+		                      "linear_accuracy=38\n"
 		                      "angular_speed=10\n"
 		                      "angular_accuracy=6\n"
 		                      "angle_adversary_detection=30\n"
@@ -74,7 +74,7 @@ TEST_CASE("Global constants", "[integration]") {
 
 		REQUIRE_NOTHROW(cst["bot"]);
 		auto& bot = cst["bot"];
-		CHECK(bot.get_linear_accuracy() == 2.6_cm);
+		CHECK(bot.get_linear_accuracy() == 3.8_cm);
 		CHECK(bot.get_linear_speed() == 37.6_cm_s);
 		CHECK(bot.get_angular_accuracy() == 6_deg);
 		CHECK(bot.get_angle_adversary_detection() == 30_deg);

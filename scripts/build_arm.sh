@@ -24,6 +24,8 @@ if [ $# -ne "0" ]
             then compile_wii=1
         elif [ "$arg" = "test" ]
             then compile_test=1
+        elif [ "$arg" = "ia_test" ]
+            then compile_ia_test=1
         elif [ "$arg" = "lidar" ]
             then compile_lidar=1
         else
@@ -36,6 +38,7 @@ else
     compile_primary=1
     compile_wii=1
     compile_test=1
+    compile_ia_test=1
     compile_lidar=1
 fi
 
@@ -78,11 +81,11 @@ if [ $compile_test -eq 1 ]; then
     building_process "unit_testing_all"
 fi
 
-if [ $compile_lidar -eq 1 ]
-	then echo -e "${Green} Building Lidar::printRobots${End}"
-	make printRobots -j ${cores}
-	if [ $? -ne "0" ]
-		then echo -e "${Red}Failed to build Lidar::printRobots${End}"
-	fi
+if [ $compile_ia_test -eq 1 ]; then
+    building_process "IATest"
+fi
+
+if [ $compile_lidar -eq 1 ]; then
+    building_process "printRobots"
 fi
 

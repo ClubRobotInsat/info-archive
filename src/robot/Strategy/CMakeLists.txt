@@ -24,6 +24,9 @@ else()
     set(USE_PETRILAB OFF)
 endif()
 
+add_executable(IATest IA/IATest.cpp)
+target_link_libraries(IATest Strategy)
+
 if (RASPI)
     # WiiMote #
     message(STATUS "Compiling IAWiimote for the raspi")
@@ -45,6 +48,10 @@ if (RASPI)
     else()
         message(WARNING "PetriLab is not installed, please run 'info/scripts/install.sh petri'")
     endif()
+
+    # IATest
+    message(STATUS "Compiling IATest for the raspi")
+    link_directories(/usr/arm-linux-gnueabihf/lib)
 else()
     target_link_libraries(IAWiimote ModuleInterfacers HighLevelFunctions wiicpp)
 
