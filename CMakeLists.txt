@@ -11,7 +11,12 @@ set(BITS "64" CACHE . "Build en 32 ou 64 bits")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -std=gnu++17")
 set(CMAKE_CXX_STANDARD 17)
 
-set(INFO_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/build")
+if(RASPI)
+	set(INFO_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/build_arm")
+else()
+	set(INFO_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/build")
+endif()
+
 execute_process(
 	COMMAND mkdir -p ${INFO_OUTPUT_DIRECTORY}
 )
@@ -82,6 +87,10 @@ function(compile_petri TARGET_NAME PATH_TO_DOC OUTPUT)
 			COMMAND petrilab --update --arch ${BITS} ${CMAKE_CURRENT_SOURCE_DIR}/${PATH_TO_DOC}
 			)
 endfunction()
+
+if(RASPI)
+	add_definitions(-DRASPI)
+endif()
 
 # Il y a du code pour les ombres, apparamment. Ca a pas l'air de marcher.
 # debug/CGTK semble désactivé depuis un moment également.

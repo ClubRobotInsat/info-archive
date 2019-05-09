@@ -36,10 +36,6 @@ namespace Constants {
 		return Constants::RobotColor::Undef;
 	}
 
-	inline std::string name(const std::string& robot_name) {
-		return (robot_name != "guest" ? robot_name : "default");
-	}
-
 	class Constants;
 	class RobotInitializationData {
 		friend class Constants;

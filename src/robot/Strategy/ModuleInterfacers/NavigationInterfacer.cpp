@@ -10,10 +10,10 @@ namespace Strategy {
 		// Constructor
 		NavigationInterfacer::NavigationInterfacer(std::shared_ptr<PhysicalRobot::Robot> robot, Environment& env, AvoidanceInterfacer& avoidance)
 		        : _module(robot->get_module<interfaced_type>()), _avoidance(avoidance), _env(env) {
-			push_linear_speed(GLOBAL_CONSTANTS()[Constants::name(robot->name)].get_linear_speed());
-			push_angular_speed(GLOBAL_CONSTANTS()[Constants::name(robot->name)].get_angular_speed());
-			push_linear_accuracy(GLOBAL_CONSTANTS()[Constants::name(robot->name)].get_linear_accuracy());
-			push_angular_accuracy(GLOBAL_CONSTANTS()[Constants::name(robot->name)].get_angular_accuracy());
+			push_linear_speed(GLOBAL_CONSTANTS()[robot->name].get_linear_speed());
+			push_angular_speed(GLOBAL_CONSTANTS()[robot->name].get_angular_speed());
+			push_linear_accuracy(GLOBAL_CONSTANTS()[robot->name].get_linear_accuracy());
+			push_angular_accuracy(GLOBAL_CONSTANTS()[robot->name].get_angular_accuracy());
 		}
 
 		// States

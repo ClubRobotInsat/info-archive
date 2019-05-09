@@ -100,9 +100,9 @@ namespace PhysicalRobot {
 	}
 
 	void Robot::assign_modules() {
-		// Un robot 'guest' est un robot dont l'initialisation se fait à partir d'un ModuleManager directement
+		// Un robot 'default' est un robot dont l'initialisation se fait à partir d'un ModuleManager directement
 		// sans passer par les constantes introduites dans `src/robot.ini`
-		if(name == "guest") {
+		if(name == "default") {
 			return;
 		}
 

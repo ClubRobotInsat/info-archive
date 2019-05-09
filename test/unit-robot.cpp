@@ -24,7 +24,7 @@ TEST_CASE("Initialization of a common robot.", "[integration]") {
 
 		CHECK(robot.get_communication_protocol_type() == typeid(Communication::protocol_null));
 
-		REQUIRE(robot.name == "guest");
+		REQUIRE(robot.name == "default");
 		CHECK(robot.get_module<PhysicalRobot::Servos>().get_nbr_servos() == 2);
 
 		std::map<uint8_t, std::string> list_modules = {{2, "Servos"}, {5, "IO"}};
