@@ -35,7 +35,7 @@ bool estDansIntervalOuvert(T val, T bMin, T bMax) {
 	return (val > bMin) && (val < bMax);
 }
 
-uint64_t doubleToFixedPoint(double value, uint32_t pos) {
+inline uint64_t doubleToFixedPoint(double value, uint32_t pos) {
 	return uint64_t(round(value * (1 << pos)));
 }
 

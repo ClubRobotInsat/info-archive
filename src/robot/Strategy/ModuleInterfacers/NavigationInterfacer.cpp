@@ -345,7 +345,7 @@ namespace Strategy {
 			// On calcule les angles (pour créer la trajectoire).
 			Trajectory trajectory;
 
-			for(int i = (int)trajectoryAstar.size() - 1; i >= 0; i--) {
+			for(int i = static_cast<int>(trajectoryAstar.size()) - 1; i >= 0; i--) {
 				Vector2m pos;
 
 				if(i == 0) {
