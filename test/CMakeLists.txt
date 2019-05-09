@@ -4,9 +4,16 @@ add_subdirectory(RealWorld)
 add_library(catch_main OBJECT "unit.cpp")
 target_include_directories(catch_main PRIVATE "../third_parties/catch/single_include/catch2")
 
-add_library(petri_utils STATIC PetriSample.cpp)
+# Génération automatique de tous les exécutables de test
+file(GLOB files "unit-*.cpp")
+# Suppression de certains fichiers ; voir https://stackoverflow.com/questions/15550777/how-do-i-exclude-a-single-file-from-a-cmake-fileglob-pattern#15551302
+list(REMOVE_ITEM files "${CMAKE_SOURCE_DIR}/test/unit-strategy_generator.cpp")
+
+add_library(test_utils STATIC TestUtils.cpp)
 
 if(EXISTS "/usr/bin/petrilab")
+    add_library(petri_utils STATIC PetriSample.cpp)
+
     if(RASPI)
         set(PETRILAB_PROFILE "ARM release")
         target_link_libraries(petri_utils PetriRuntime dl)
@@ -20,15 +27,11 @@ if(EXISTS "/usr/bin/petrilab")
             COMMAND petrilab --update --profile ${PETRILAB_PROFILE} Sample.petri
             WORKING_DIRECTORY ${root_SOURCE_DIR}/test
     )
+
+    target_link_libraries(test_utils Strategy petri_utils)
+else()
+    list(REMOVE_ITEM files "${CMAKE_SOURCE_DIR}/test/unit-petri.cpp")
 endif()
-
-add_library(test_utils STATIC TestUtils.cpp)
-target_link_libraries(test_utils Strategy petri_utils)
-
-# Génération automatique de tous les exécutables de test
-file(GLOB files "unit-*.cpp")
-# Suppression de certains fichiers ; voir https://stackoverflow.com/questions/15550777/how-do-i-exclude-a-single-file-from-a-cmake-fileglob-pattern#15551302
-list(REMOVE_ITEM files "${CMAKE_SOURCE_DIR}/test/unit-strategy_generator.cpp")
 
 if(RASPI)
     list(REMOVE_ITEM files "${CMAKE_SOURCE_DIR}/test/unit-simu_modules.cpp")
@@ -59,7 +62,9 @@ target_link_libraries(unit_testing_robot Robot)
 target_link_libraries(unit_testing_servos_conversions Modules)
 target_link_libraries(unit_testing_interfacers ModuleInterfacers)
 target_link_libraries(unit_testing_strategy Strategy test_utils)
-target_link_libraries(unit_testing_petri Strategy test_utils)
+if(EXISTS "/usr/bin/petrilab")
+    target_link_libraries(unit_testing_petri Strategy test_utils)
+endif()
 
 set(UNITTEST_TARGET_NAME "unit_testing_all")
 add_executable(${UNITTEST_TARGET_NAME}
