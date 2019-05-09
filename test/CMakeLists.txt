@@ -4,10 +4,9 @@ add_subdirectory(RealWorld)
 add_library(catch_main OBJECT "unit.cpp")
 target_include_directories(catch_main PRIVATE "../third_parties/catch/single_include/catch2")
 
-#add_library(petri_utils STATIC PetriSample.cpp)
+add_library(petri_utils STATIC PetriSample.cpp)
 
 if(EXISTS "/usr/bin/petrilab")
-else()
     if(RASPI)
         set(PETRILAB_PROFILE "ARM release")
         target_link_libraries(petri_utils PetriRuntime dl)
@@ -24,13 +23,12 @@ else()
 endif()
 
 add_library(test_utils STATIC TestUtils.cpp)
-#target_link_libraries(test_utils Strategy petri_utils)
+target_link_libraries(test_utils Strategy petri_utils)
 
 # Génération automatique de tous les exécutables de test
 file(GLOB files "unit-*.cpp")
 # Suppression de certains fichiers ; voir https://stackoverflow.com/questions/15550777/how-do-i-exclude-a-single-file-from-a-cmake-fileglob-pattern#15551302
 list(REMOVE_ITEM files "${CMAKE_SOURCE_DIR}/test/unit-strategy_generator.cpp")
-list(REMOVE_ITEM files "${CMAKE_SOURCE_DIR}/test/unit-petri.cpp")
 
 if(RASPI)
     list(REMOVE_ITEM files "${CMAKE_SOURCE_DIR}/test/unit-simu_modules.cpp")

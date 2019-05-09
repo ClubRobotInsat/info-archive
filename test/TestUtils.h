@@ -11,8 +11,6 @@
 #include <petrilab/Cpp/MemberPetriDynamicLib.h>
 #endif
 
-extern void init_petri_tests(std::shared_ptr<Strategy::Interfacer::RobotManager> manager);
-
 namespace TestUtils {
 
 	class ModuleTest : public PhysicalRobot::Module {
