@@ -19,8 +19,8 @@ namespace Simu {
 		assignModules();
 	}
 
-	void SimuRobot::connect(const std::shared_ptr<Communication::Protocol>& protocol) {
-		_communicator->connect(protocol);
+	void SimuRobot::connect(std::unique_ptr<Communication::Protocol>&& protocol) {
+		_communicator->connect(std::move(protocol));
 	}
 
 	void SimuRobot::update(Duration time) {

@@ -15,7 +15,7 @@ namespace Simu {
 	public:
 		explicit SimuRobot(const std::string& name, Constants::RobotColor robotColor, Object3D& robotObject);
 
-		void connect(const std::shared_ptr<Communication::Protocol>& protocol);
+		void connect(std::unique_ptr<Communication::Protocol>&& protocol);
 
 		void update(Duration time);
 

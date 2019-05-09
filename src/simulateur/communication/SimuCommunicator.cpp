@@ -10,10 +10,10 @@ SimuCommunicator::~SimuCommunicator() {
 	disconnect();
 }
 
-void SimuCommunicator::connect(const std::shared_ptr<Communication::Protocol>& protocol) {
+void SimuCommunicator::connect(std::unique_ptr<Communication::Protocol>&& protocol) {
 	disconnect();
 
-	_protocol = protocol;
+	_protocol = std::move(protocol);
 
 	if(_protocol != nullptr) {
 		_connected.store(true);

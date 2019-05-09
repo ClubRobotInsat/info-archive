@@ -5,6 +5,13 @@
 
 #include "resources/EmbeddedFiles.h"
 
+// clang-format off
+std::map<std::string, std::string> CONNECTIONS{
+	{"UDP", "[@IP] [local port] [remote port]"},
+	{"TCPIP", "[@IP] [remote port]"}
+};
+// clang-format on
+
 PanelConnect::PanelConnect() {
 	// On recupere le widget depuis un fichier embarqué dans l'executable
 	_builder = Gtk::Builder::create_from_string(EmbeddedFiles::readText("glade/connection-panel.glade"));
@@ -16,6 +23,14 @@ PanelConnect::PanelConnect() {
 	Widget* root;
 	_builder->get_widget("root", root);
 	add(*root);
+
+	// Initialization
+	for(auto& keyval : CONNECTIONS) {
+		_connectionType->append(keyval.first);
+	}
+
+	// TODO simulator.ini
+	_connectionArguments->set_text("localhost 5001");
 
 	// signals
 	_connectionType->signal_changed().connect(sigc::mem_fun(*this, &PanelConnect::onConnectionTypeChanged));
@@ -75,10 +90,8 @@ std::vector<std::string> PanelConnect::getConnectionArguments() {
 }
 
 void PanelConnect::onConnectionTypeChanged() {
-	std::map<std::string, std::string> tooltip{{"UDP", "[@IP] [local port] [remote port]"}};
-
 	try {
-		_argumentsTooltip->set_text(tooltip.at(_connectionType->get_active_text()));
+		_argumentsTooltip->set_text(CONNECTIONS.at(_connectionType->get_active_text()));
 	} catch(std::exception&) {
 		_argumentsTooltip->set_text(" -- no information");
 	}
