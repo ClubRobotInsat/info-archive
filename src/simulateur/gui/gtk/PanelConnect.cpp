@@ -7,8 +7,9 @@
 
 // clang-format off
 std::map<std::string, std::string> CONNECTIONS{
+    {"LOCAL", "[local port]"},
 	{"UDP", "[@IP] [local port] [remote port]"},
-	{"TCPIP", "[@IP] [remote port]"}
+	{"TCPIP", "[@IP] [remote port]"},
 };
 // clang-format on
 
@@ -30,7 +31,7 @@ PanelConnect::PanelConnect() {
 	}
 
 	// TODO simulator.ini
-	_connectionArguments->set_text("localhost 5001");
+	_connectionArguments->set_text("localhost 5101 5001");
 
 	// signals
 	_connectionType->signal_changed().connect(sigc::mem_fun(*this, &PanelConnect::onConnectionTypeChanged));

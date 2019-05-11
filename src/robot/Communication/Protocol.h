@@ -191,7 +191,7 @@ namespace Communication {
 				static uint8_t buf[GlobalFrame::DONNEES_TRAME_MAX];
 
 				size_t msg_size = _serial->read_bytes(buf, GlobalFrame::DONNEES_TRAME_MAX);
-				return GlobalFrame{static_cast<uint8_t>(msg_size), buf};
+				return GlobalFrame{static_cast<uint16_t>(msg_size), buf};
 			}
 			return GlobalFrame{};
 		}

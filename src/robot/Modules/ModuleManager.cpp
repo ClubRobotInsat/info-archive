@@ -39,7 +39,7 @@ namespace PhysicalRobot {
 		}
 		auto array = frame.getDonnees();
 
-		auto size = static_cast<uint8_t>(frame.getNbDonnees() - 1);
+		auto size = static_cast<uint16_t>(frame.getNbDonnees() - 1);
 		const uint8_t id = array[0];
 
 		// Vérification que le module existe, sinon on drop la trame
