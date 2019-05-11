@@ -6,8 +6,12 @@ namespace Communication {
 	}
 
 	uint8_t Serial::read_byte() {
-		uint8_t ret;
-		this->read_bytes(&ret, 1);
+		uint8_t ret = 0;
+		size_t read = 0;
+
+		while(read < 1) {
+			read = this->read_bytes(&ret, 1);
+		}
 		return ret;
 	}
 } // namespace Communication

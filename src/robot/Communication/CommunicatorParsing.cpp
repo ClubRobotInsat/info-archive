@@ -93,13 +93,17 @@ namespace Communication {
 			_address = args[0];
 			_local_port = static_cast<uint16_t>(stoi(args[1]));
 			_remote_port = static_cast<uint16_t>(stoi(args[2]));
+
+			if(args.size() > 3) {
+				_size_control = args[3] == "size";
+			}
 		}
 
 		ArgumentsUDP::ArgumentsUDP(const std::string& address, uint16_t local_port, uint16_t remote_port)
 		        : _address(address), _local_port(local_port), _remote_port(remote_port) {}
 
 		std::unique_ptr<Protocol> ArgumentsUDP::make_protocol() {
-			return std::make_unique<protocol_udp>(_address, _local_port, _remote_port);
+			return std::make_unique<protocol_udp>(_address, _local_port, _remote_port, _size_control);
 		}
 
 		std::type_index ArgumentsUDP::get_protocol_type() const {

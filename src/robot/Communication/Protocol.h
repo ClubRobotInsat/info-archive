@@ -182,15 +182,36 @@ namespace Communication {
 
 	template <>
 	class SerialProtocol<SERIAL_UDP> : public AbstractSerialProtocol<SERIAL_UDP> {
-		GlobalFrame generate_header(const GlobalFrame&) const final {
-			return {};
+		bool _size_control = false;
+
+		GlobalFrame generate_header(const GlobalFrame& f) const final {
+			GlobalFrame result;
+
+			if(_size_control) {
+				uint16_t msg_size = f.getNbDonnees();
+				result.addBytes({uint8_t(msg_size >> 8), uint8_t(msg_size)});
+			}
+			return result;
 		}
 
 		GlobalFrame recv_frame_blocking(const std::atomic_bool& running_execution) override {
 			while(running_execution) {
 				static uint8_t buf[GlobalFrame::DONNEES_TRAME_MAX];
+				size_t msg_size;
 
-				size_t msg_size = _serial->read_bytes(buf, GlobalFrame::DONNEES_TRAME_MAX);
+				if(_size_control) {
+					uint8_t a = _serial->read_byte();
+					uint8_t b = _serial->read_byte();
+					msg_size = uint16_t(a << 8) | b;
+					size_t counter = 0;
+
+					while(counter < msg_size && running_execution) {
+						counter += _serial->read_bytes(buf, msg_size - counter);
+					}
+				} else {
+					msg_size = _serial->read_bytes(buf, GlobalFrame::DONNEES_TRAME_MAX);
+				}
+
 				return GlobalFrame{static_cast<uint16_t>(msg_size), buf};
 			}
 			return GlobalFrame{};
@@ -200,9 +221,16 @@ namespace Communication {
 		SerialProtocol(const std::string& address, const std::string& local_port, const std::string& remote_port)
 		        : SerialProtocol(address, static_cast<uint16_t>(std::stoi(local_port)), static_cast<uint16_t>(std::stoi(remote_port))) {
 		}
-		SerialProtocol(const std::string& address, uint16_t local_port, uint16_t remote_port)
-		        : AbstractSerialProtocol(std::make_shared<UDP>(address, local_port, remote_port)) {
+		SerialProtocol(const std::string& address, uint16_t local_port, uint16_t remote_port, bool size_control = false)
+		        : AbstractSerialProtocol(std::make_shared<UDP>(address, local_port, remote_port)), _size_control(size_control) {
 			logInfo("Instantiation of a SerialProtocol::UDP with [address='", address, "'] [local_port='", local_port, "'] [remote_port='", remote_port, "'].");
+			if(_size_control) {
+				logInfo("Size control is active");
+			}
+		}
+
+		void set_size_control(bool size_control) {
+			_size_control = size_control;
 		}
 	};
 

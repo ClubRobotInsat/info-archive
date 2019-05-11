@@ -91,6 +91,8 @@ namespace Communication {
 			std::string _address;
 			uint16_t _local_port;
 			uint16_t _remote_port;
+			/// Add a size field to the message to control it arrived completely
+			bool _size_control = false;
 
 		public:
 			explicit ArgumentsUDP(const std::vector<std::string>& args);
