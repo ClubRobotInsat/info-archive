@@ -7,7 +7,7 @@
 
 // clang-format off
 std::map<std::string, std::string> CONNECTIONS{
-    {"LOCAL", "[local port]"},
+	{"LOCAL", "[local port]"},
 	{"UDP", "[@IP] [local port] [remote port]"},
 	{"TCPIP", "[@IP] [remote port]"},
 };
