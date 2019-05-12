@@ -26,7 +26,7 @@ void RobotController::forward(Distance distance) {
 }
 
 void RobotController::turn(Angle angle) {
-	_angleGoal += angle;
+	_angleGoal += angle.toMinusPiPi();
 	_currentState = SimuRobotState::Moving;
 }
 
@@ -75,7 +75,6 @@ void RobotController::update(Duration elapsed) {
 
 		// Check if goal is reached
 		if(abs(_currentDistance - _distanceGoal) < 0.4_mm && abs(_currentAngle - _angleGoal) < 0.4_deg) {
-
 			_currentState = SimuRobotState::Idle;
 		}
 

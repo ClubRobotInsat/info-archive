@@ -65,7 +65,7 @@ void Simulateur::start() {
 void Simulateur::update(Duration time) {
 	// Reset du monde si on a le flag
 	if(this->_resetWorld) {
-		resetWorld();
+		resetWorld(_robot->getColor());
 		_resetWorld = false;
 	}
 
@@ -102,7 +102,7 @@ void Simulateur::initWorld() {
 	//_theWorld.writeJSONToFile("/tmp/table_simu.json");
 }
 
-void Simulateur::resetWorld() {
+void Simulateur::resetWorld(RobotColor color) {
 	// Suppression de tous les objets
 	destroyWorld();
 
@@ -110,7 +110,7 @@ void Simulateur::resetWorld() {
 	initWorld();
 
 	if(_robot != nullptr) {
-		addRobot(_robot->getName(), _robot->getColor());
+		addRobot(_robot->getName(), color);
 	}
 }
 

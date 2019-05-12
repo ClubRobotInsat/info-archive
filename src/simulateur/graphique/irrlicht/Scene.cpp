@@ -4,6 +4,7 @@
 
 #include "Scene.h"
 #include "SimulationToIrrlicht.h"
+#include <log/Log.h>
 
 // TODO (pas urgent) lancer irrlicht sur un thread à part
 
@@ -128,22 +129,21 @@ IGraphicalInstance* Scene::createModel(const Vector3m& position, const std::stri
 }
 
 void Scene::remove(IGraphicalInstance* object) {
-	// TODO On peut pas faire comme ça, parce que IGraphicalInstance ne possède  [...]
-	// pas les méthodes de Object. Une manière propre de récupérer l'objet
-	// est de récuperer son Id, puis de récuperer l'objet dans la liste qui
-	// correspond à cet Id.
-
-	/*object.getInternalPtr()->remove();
-	int id = object->getId();
-	_listeObjet.erase(_listeObjet.begin() + id);*/
+	for(auto it = _listeObjet.begin(); it != _listeObjet.end(); it++) {
+		if((*it)->getId() == object->getId()) {
+			(*it)->getInternalPtr()->remove();
+			_listeObjet.erase(it);
+			return;
+		}
+	}
 }
 
 void Scene::ChangePosition(irr::core::vector3df position, int id) {
-	_listeObjet[id]->getInternalPtr()->setPosition(position);
+	getAt(id).getInternalPtr()->setPosition(position);
 };
 
 void Scene::Rotation(irr::core::vector3df rotation, int id) {
-	_listeObjet[id]->getInternalPtr()->setRotation(rotation);
+	getAt(id).getInternalPtr()->setRotation(rotation);
 };
 
 // Pas besoin pour l'instant
@@ -169,4 +169,14 @@ void Scene::PutCameraObjet() {
 
 void Scene::incrementId() {
 	_objectId++;
+}
+
+Object& Scene::getAt(int id) {
+	for(auto it = _listeObjet.begin(); it != _listeObjet.end(); it++) {
+		if((*it)->getId() == id) {
+			return **it;
+		}
+	}
+	logError("Id not found: ", id);
+	throw std::runtime_error("bad id");
 }

@@ -44,6 +44,8 @@ public:
 private:
 	void incrementId();
 
+	Object& getAt(int id);
+
 	irr::video::IVideoDriver* _driver;
 	irr::IrrlichtDevice* _device;
 	irr::scene::ISceneManager* _scenemanager;

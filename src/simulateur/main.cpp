@@ -72,7 +72,7 @@ bool parseArgument(int argc, char** argv, Simulateur& simulateur) {
 	}
 
 	if(color == Constants::RobotColor::Undef) {
-		logDebug5("Pas de couleur spécifiée.");
+		logError("Pas de couleur spécifiée.");
 		printHelp();
 		return false;
 	}
@@ -82,14 +82,14 @@ bool parseArgument(int argc, char** argv, Simulateur& simulateur) {
 		json_file = "";
 	}
 
-	logDebug5("Démarrage du simulateur");
+	logDebug("Démarrage du simulateur");
 	simulateur.setJSONFile(json_file);
 
 	// Robot
 	if(robot != "off") {
 		simulateur.addRobot(robot, color);
-		logDebug5("Robot \"", robot, "\" ajouté ! ");
-		logDebug5(std::string("Couleur du robot : ") + toString(color));
+		logDebug("Robot \"", robot, "\" ajouté ! ");
+		logDebug(std::string("Couleur du robot : ") + toString(color));
 	} else {
 		logDebug4("Aucun robot ajouté.");
 	}
@@ -97,7 +97,7 @@ bool parseArgument(int argc, char** argv, Simulateur& simulateur) {
 	// Monde
 	if(world) {
 		simulateur.initWorld();
-		logDebug5("Ajout du monde au simulateur...");
+		logDebug("Ajout du monde au simulateur...");
 	} else {
 		logDebug4("Le monde n'a pas été ajouté.");
 	}
@@ -120,7 +120,7 @@ int main(int argc, char** argv) {
 	});
 
 	if(parseArgument(argc, argv, simu)) {
-		logDebug5("Starting simulator");
+		logDebug("Starting simulator");
 		simu.start();
 	}
 

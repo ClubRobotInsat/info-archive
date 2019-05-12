@@ -58,7 +58,7 @@ void World::loadWorldFromFile(std::string filename) {
 	if(in >> json) {
 		loadWorldFromJSON(json);
 	} else {
-		// TODO
+		// TODO manage problems
 	}
 	in.close();
 }
@@ -68,7 +68,7 @@ Object3D& World::createRobotFromJSON(const JSON& json, Constants::RobotColor col
 	auto& robots = json["robot"];
 	auto it = std::find_if(robots.begin(), robots.end(), [](const JSON& j) { return j["name"] == "principal"; });
 	if(it == robots.end()) {
-		// TODO
+		// TODO default robot
 		Object3D* obj = &createCube({1_m, 1_m, 1_m}, {0_m, 0_m, 0_m}, 1_kg, STATIC_BODY, {0, 0, 0});
 		return *obj;
 	}

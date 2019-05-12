@@ -42,8 +42,8 @@ void SimuGuiClient::testNavigationTurn(Angle angle) {
 }
 
 void SimuGuiClient::reset(const ResetData& resetData) {
-	RobotColor color = fromString<RobotColor>(resetData.color);
-	_simu.resetWorld();
+	auto color = fromString<RobotColor>(resetData.color);
+	_simu.resetWorld(color);
 }
 
 std::vector<std::string> SimuGuiClient::getRobotColors() const {

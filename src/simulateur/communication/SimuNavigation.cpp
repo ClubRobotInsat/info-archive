@@ -87,7 +87,7 @@ void SimuNavigation::message_processing(const JSON& frame) {
 			case MovingCommand::TurnAbsolute:
 				angle = i32_to_angle(_args_cmd[0]);
 				_robotController->turn(angle);
-				logDebug6("Turn absolute ", angle);
+				logDebug6("Turn absolute ", angle.toDeg(), " deg");
 				break;
 
 			case MovingCommand::EmergencyStop:

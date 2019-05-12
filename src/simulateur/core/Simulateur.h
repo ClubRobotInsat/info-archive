@@ -120,7 +120,7 @@ public:
 	/**
 	 * Réinitialisation du simulateur : objets + robot
 	 */
-	void resetWorld();
+	void resetWorld(Constants::RobotColor color);
 
 	/**
 	 * On arrête la simulation : suppression du robot et de tous les objets
