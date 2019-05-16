@@ -2,8 +2,8 @@
 // Created by terae on 9/10/18.
 //
 
-#ifndef ROOT_MODULEMOTEURS_H
-#define ROOT_MODULEMOTEURS_H
+#ifndef ROOT_MODULENAVIGATIONPARAMETERS_H
+#define ROOT_MODULENAVIGATIONPARAMETERS_H
 
 #include "Module.hpp"
 
@@ -45,4 +45,4 @@ namespace PhysicalRobot {
 	};
 } // namespace PhysicalRobot
 
-#endif // ROOT_MODULEMOTEURS_H
+#endif // ROOT_MODULENAVIGATIONPARAMETERS_H

@@ -1,4 +1,5 @@
 
+#include "../../src/robot/Modules/NavigationParameters.h"
 #include "../../src/robot/Robot.h"
 #include "../../src/robot/Strategy/ModuleInterfacers/NavigationInterfacer.h"
 #include "../../src/robot/Strategy/ModuleInterfacers/RobotManager.h"
@@ -8,13 +9,13 @@ using namespace PhysicalRobot;
 using namespace Strategy::Interfacer;
 
 int main(int argc, char** argv) {
-	std::string action("move_to");
 	std::string target("simu");
+	std::string action("move_to");
 	if(argc > 1) {
-		action = argv[1];
+		target = argv[1];
 	}
 	if(argc > 2) {
-		target = argv[2];
+		action = argv[2];
 	}
 
 	auto& constants = GLOBAL_CONSTANTS()["primary"];
@@ -24,6 +25,11 @@ int main(int argc, char** argv) {
 
 	auto m = std::make_shared<ModuleManager>();
 	auto& nav_module = m->add_module<Navigation>(1);
+
+	if(action == "parameters") {
+		m->add_module<NavigationParameters>(10);
+	}
+
 	std::shared_ptr<Robot> robot;
 
 	logDebug4("Target: ", target);
@@ -54,7 +60,21 @@ int main(int argc, char** argv) {
 	logDebug4("Testing ", action);
 
 	if(action == "module") {
-		std::cout << "[TODO]" << std::endl;
+		std::cout << "[TODO] This test uses directly the Navigation module" << std::endl;
+	} else if(action == "parameters") {
+		std::cout << "-> This test uses the NavigationParameters module" << std::endl
+		          << "(type 'q' to quit)" << std::endl;
+		auto& nav_params = m->get_module<NavigationParameters>();
+
+		int c = getchar();
+		nav_params.set_inter_axial_length(10_cm);
+
+		while(c != 'q') {
+			std::cout << "robot position " << nav_module.get_coordinates() << std::endl;
+			c = getchar();
+		}
+
+		nav_params.set_inter_axial_length(10_cm);
 	} else if(action == "interfacer") {
 		std::cout << "forward(10_cm)?" << std::endl;
 		getchar();
@@ -68,6 +88,7 @@ int main(int argc, char** argv) {
 	} else if(action == "move_to") {
 		Vector2m startPos{constants.get_start_position().x, constants.get_start_position().y};
 		Angle startAngle = constants.get_start_angle();
+		nav_module.set_coordinates(repere::Coordinates{startPos, startAngle});
 		std::cout << "Set coordinates to " << startPos << ", " << startAngle.toDeg() << " deg" << std::endl;
 
 		Vector2m finalPos{2_m, 1_m};
@@ -77,7 +98,7 @@ int main(int argc, char** argv) {
 		result = nav_interfacer.move_to(repere::Coordinates{finalPos, finalAngle});
 		std::cout << "Result: " << result << ", coordinates: " << nav_module.get_coordinates() << std::endl;
 	} else {
-		std::cout << "Test one of: move_to, interfacer, module" << std::endl;
+		std::cout << "Test one of: move_to, interfacer, module, parameters" << std::endl;
 	}
 
 	robot->deactivation();
