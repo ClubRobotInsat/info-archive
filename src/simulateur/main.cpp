@@ -79,7 +79,10 @@ bool parseArgument(int argc, char** argv, Simulateur& simulateur) {
 	std::ifstream file(json_file.c_str());
 	if(!file) {
 		// Utilisation de TABLE_2018 par défaut
+		logDebug4("Utilisation de TABLE_2018.json par défaut.");
 		json_file = "";
+	} else {
+		logDebug("Utilisation d'une nouvelle table de jeu : '", json_file, "'.");
 	}
 
 	logDebug("Démarrage du simulateur");
