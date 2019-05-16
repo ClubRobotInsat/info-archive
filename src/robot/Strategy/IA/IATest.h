@@ -16,6 +16,11 @@ namespace Strategy {
 		void execute() override;
 
 		void funny_action() override;
+
+		std::shared_ptr<PhysicalRobot::ModuleManager> _module_manager;
+		std::shared_ptr<Interfacer::RobotManager> _robot_manager;
+
+		PhysicalRobot::Servos::servo_t _id_servo;
 	};
 } // namespace Strategy
 
