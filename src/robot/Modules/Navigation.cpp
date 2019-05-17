@@ -132,6 +132,12 @@ namespace PhysicalRobot {
 		return _moving_done;
 	}
 
+	void Navigation::set_asserv_on_off(bool activated) {
+		lock_variables();
+		_asserv_on_off = activated;
+		unlock_variables();
+	}
+
 	std::vector<JSON> Navigation::generate_list_jsons() const {
 		JSON moving;
 		moving["x"] = distance_to_i32(_coords.getX());

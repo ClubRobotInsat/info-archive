@@ -22,7 +22,13 @@ namespace Strategy {
 
 			NavigationInterfacer(std::shared_ptr<PhysicalRobot::Robot>, Environment&, AvoidanceInterfacer&);
 
+			interfaced_type* operator->();
+
 			repere::Coordinates get_origin_coordinates() const;
+
+			void activate_asserv();
+
+			void deactivate_asserv();
 
 			// Linear speed
 			Speed get_linear_speed() const;
@@ -61,6 +67,8 @@ namespace Strategy {
 			ActionResult move_to(repere::Coordinates destination, SensAdvance = SensAdvance::Forward, Duration timeout = 25_s);
 
 			ActionResult forward(Distance, SensAdvance, Duration timeout = 10_s);
+
+			ActionResult forward_infinity(SensAdvance, Duration timeout = 10_s);
 
 			/// Tourne selon le sens le plus rapide qui permets d'orienter le robot à l'angle absolu souhaité
 			ActionResult turn_absolute(repere::Orientation, Duration timeout = 10_s);

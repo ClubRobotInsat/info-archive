@@ -70,6 +70,8 @@ namespace PhysicalRobot {
 
 		bool is_precision_reached() const;
 
+		void set_asserv_on_off(bool activated);
+
 	protected:
 		std::vector<JSON> generate_list_jsons() const override;
 

@@ -16,9 +16,21 @@ namespace Strategy {
 			push_angular_accuracy(GLOBAL_CONSTANTS()[robot->name].get_angular_accuracy());
 		}
 
+		NavigationInterfacer::interfaced_type* NavigationInterfacer::operator->() {
+			return &_module;
+		}
+
 		// States
 		repere::Coordinates NavigationInterfacer::get_origin_coordinates() const {
 			return _origin_coordinates;
+		}
+
+		void NavigationInterfacer::activate_asserv() {
+			_module.set_asserv_on_off(true);
+		}
+
+		void NavigationInterfacer::deactivate_asserv() {
+			_module.set_asserv_on_off(false);
 		}
 
 		Speed NavigationInterfacer::get_linear_speed() const {
@@ -186,6 +198,11 @@ namespace Strategy {
 
 			logDebug("END OF NavigationInterfacer::forward(); STATUS = ", result);
 			return result;
+		}
+
+		ActionResult NavigationInterfacer::forward_infinity(SensAdvance sens, Duration timeout) {
+			const static Distance infinity = Distance::makeFromMm(std::numeric_limits<int32_t>::max() / 10.0);
+			return forward(infinity, sens, timeout);
 		}
 
 		ActionResult NavigationInterfacer::turn_absolute(repere::Orientation angle, Duration timeout) {
