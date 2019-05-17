@@ -27,13 +27,12 @@ using Constants::RobotColor;
 
 std::unique_ptr<Simulateur> Simulateur::_instance = nullptr;
 
+
 Simulateur::Simulateur()
         : _graphicalCtx(std::make_unique<Scene>())
         , _physicalCtx(std::make_unique<Box2DPhysicalContext>(b2Vec2(0, 0)))
         , _guiClient(*this)
-        , _theWorld(_physicalCtx.get(), _graphicalCtx.get())
-        , _resetWorld(false)
-        , _enablePhysics(true) {
+        , _theWorld(_physicalCtx.get(), _graphicalCtx.get()) {
 
 	// Ajout du handler pour savoir quand la scène est fermée par l'utilisateur
 	if(dynamic_cast<Scene*>(_graphicalCtx.get())) {
@@ -44,6 +43,7 @@ Simulateur::Simulateur()
 Simulateur::~Simulateur() {}
 
 void Simulateur::start() {
+	initWorld();
 	_guiCtx = std::make_unique<GtkSimuContext>(0, nullptr, "simu.gtk.app", _guiClient);
 
 	_simuAlive = true;
@@ -58,19 +58,15 @@ void Simulateur::start() {
 		last = now;
 	}
 
-	destroyWorld();
 	_guiCtx->close();
+	destroyWorld();
 }
 
 void Simulateur::update(Duration time) {
-	// Reset du monde si on a le flag
-	if(this->_resetWorld) {
-		resetWorld(_robot->getColor());
-		_resetWorld = false;
-	}
-
 	// Mise à jour du monde
-	_robot->update(time);
+	if(_robot) {
+		_robot->update(time);
+	}
 	_theWorld.update(time);
 
 	_guiCtx->update();
@@ -84,8 +80,17 @@ void Simulateur::setJSONFile(const std::string& file) {
 	_json_file = file;
 }
 
-Vector3m const CubeData::getPosition() {
-	return Vector3m(position.x + size.x / 2, position.y + size.y / 2, position.z + size.z / 2);
+void Simulateur::setPhysicsEnabled(bool enabled) {
+	_enablePhysics = enabled;
+	_theWorld.enableCollisions(_enablePhysics);
+}
+
+void Simulateur::resetWorld() {
+	// Suppression de tous les objets
+	destroyWorld();
+
+	// Reconstruction de la table
+	initWorld();
 }
 
 void Simulateur::initWorld() {
@@ -95,6 +100,12 @@ void Simulateur::initWorld() {
 	} else {
 		_theWorld.loadWorldFromJSON(GLOBAL_CONSTANTS().TABLE_2019());
 	}
+
+	if(_robotName != "off") {
+		addRobot(_robotName, _robotColor);
+	}
+	_theWorld.enableCollisions(_enablePhysics);
+
 	// Pour obtenir le JSON à partir du code de création de la table
 	//_theWorld.createTable();
 	//_theWorld.createAllObjects(getRobotColor());
@@ -102,24 +113,10 @@ void Simulateur::initWorld() {
 	//_theWorld.writeJSONToFile("/tmp/table_simu.json");
 }
 
-void Simulateur::resetWorld(RobotColor color) {
-	// Suppression de tous les objets
-	destroyWorld();
-
-	// Reconstruction de la table
-	initWorld();
-
-	if(_robot != nullptr) {
-		addRobot(_robot->getName(), color);
-	}
-}
-
 void Simulateur::destroyWorld() {
-	_theWorld.removeAllObject();
-}
+	_robot = nullptr;
 
-void Simulateur::disableSimulation() {
-	_theWorld.enableCollisions(false);
+	_theWorld.removeAllObject();
 }
 
 void Simulateur::addRobot(std::string name, Constants::RobotColor color) {

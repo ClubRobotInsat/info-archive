@@ -76,21 +76,21 @@ bool parseArgument(int argc, char** argv, Simulateur& simulateur) {
 		printHelp();
 		return false;
 	}
+	logDebug("Démarrage du simulateur");
 	std::ifstream file(json_file.c_str());
 	if(!file) {
 		// Utilisation de TABLE_2018 par défaut
-		logDebug4("Utilisation de TABLE_2018.json par défaut.");
+		logDebug4("Utilisation de TABLE_2019.json par défaut.");
 		json_file = "";
 	} else {
 		logDebug("Utilisation d'une nouvelle table de jeu : '", json_file, "'.");
 	}
-
-	logDebug("Démarrage du simulateur");
 	simulateur.setJSONFile(json_file);
 
 	// Robot
+	simulateur.setRobotName(robot);
+	simulateur.setRobotColor(color);
 	if(robot != "off") {
-		simulateur.addRobot(robot, color);
 		logDebug("Robot \"", robot, "\" ajouté ! ");
 		logDebug(std::string("Couleur du robot : ") + toString(color));
 	} else {
@@ -98,15 +98,15 @@ bool parseArgument(int argc, char** argv, Simulateur& simulateur) {
 	}
 
 	// Monde
+	simulateur.setWorldEnabled(world);
 	if(world) {
-		simulateur.initWorld();
 		logDebug("Ajout du monde au simulateur...");
 	} else {
 		logDebug4("Le monde n'a pas été ajouté.");
 	}
 
+	simulateur.setPhysicsEnabled(!no_physics);
 	if(no_physics) {
-		simulateur.disableSimulation();
 		logDebug4("Desactivation de la physique");
 	}
 

@@ -41,9 +41,7 @@ GtkSimuApplication::GtkSimuApplication(int argc, char** argv, std::string id, Gt
 	g_timeout_add(20, emptyGtkQueue, this);
 }
 
-GtkSimuApplication::~GtkSimuApplication() {
-	_mainWindow->close();
-}
+GtkSimuApplication::~GtkSimuApplication() = default;
 
 int GtkSimuApplication::callRun() {
 	return run(*_mainWindow);
