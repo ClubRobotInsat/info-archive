@@ -31,7 +31,7 @@ public:
 	void entreAxesAuto();
 
 	/// Contient la logique de la stratégie elle-même
-	[[noreturn]] virtual void executer();
+	[[noreturn]] void execute();
 
 private:
 	Interfacer::NavigationInterfacer& navigation() {

@@ -3,17 +3,40 @@
 #include <cstdio>
 #include <cstdlib>
 
+#include <getopt.h>
+
 #define HAUTEUR_TABLE 2100
 #define LARGEUR_TABLE 3002
 
 using namespace Interfacer;
 
 int main(int argc, char* argv[]) {
-	logDebug6("Initialisation du robot...Veuillez patienter...");
+	logDebug6("Initialisation du robot... Veuillez patienter...");
 	CalibrationDepla calibration(argc, argv);
 
-	calibration.executer();
+	calibration.execute();
 }
+
+struct ParsingArguments {
+	ParsingArguments(int argc, char* argv[]);
+
+	bool should_exit() const;
+
+	uint8_t get_id_robot() const;
+	uint8_t get_id_navigation() const;
+
+	std::string get_local_port() const;
+	std::string get_remote_port() const;
+
+	std::string get_ip() const;
+
+private:
+	uint8_t _id_robot;
+	uint8_t _id_navigation;
+	bool _should_exit;
+
+	void print_help(std::ostream& os = std::cout);
+};
 
 CalibrationDepla::CalibrationDepla(int argc, char** argv) {
 	// Initialize parameters
@@ -32,8 +55,23 @@ CalibrationDepla::CalibrationDepla(int argc, char** argv) {
 	_rapport_D_sur_G = 0.0f;
 	_distanceParcourue = 0.0f;
 
-	// Initialize robot
-	auto physical_robot = std::make_shared<PhysicalRobot::Robot>("primary");
+	ParsingArguments parser(argc, argv);
+	if(parser.should_exit()) {
+		exit(2);
+	}
+
+	auto _module_manager = std::make_shared<PhysicalRobot::ModuleManager>();
+	auto& navigation = _module_manager->add_module<PhysicalRobot::Navigation>(parser.get_id_navigation());
+
+	std::vector<std::string> communicator_arguments{"ETHERNET",
+	                                                std::to_string(parser.get_id_navigation()),
+	                                                parser.get_ip(),
+	                                                parser.get_local_port(),
+	                                                parser.get_remote_port()};
+
+	auto physical_robot =
+	    std::make_shared<PhysicalRobot::Robot>(_module_manager, communicator_arguments, Lidar::LidarType::None, true);
+
 	_robot = std::make_shared<RobotManager>(physical_robot);
 
 	Distance sx = 40_cm;
@@ -43,6 +81,7 @@ CalibrationDepla::CalibrationDepla(int argc, char** argv) {
 	auto& avoidance_interfacer = _robot->add_interfacer<AvoidanceInterfacer>(*_env);
 	_robot->add_interfacer<NavigationInterfacer>(*_env, avoidance_interfacer);
 }
+
 // clang-format off
 /*
 void CalibrationDepla::attendreFinDeplacement(Duration timeout) {
@@ -73,7 +112,7 @@ void CalibrationDepla::attendreBlocage() {
 	}
 }*/
 
-void CalibrationDepla::executer() {
+void CalibrationDepla::execute() {
 
 	logDebug6("Changement de la precision angulaire de fin de mouvement...");
 	navigation().push_angular_accuracy(10_deg);
@@ -1502,3 +1541,56 @@ void CalibrationDepla::entreAxesAuto() {
  */
 
 // clang-format on
+
+
+ParsingArguments::ParsingArguments(int argc, char* argv[]) : _id_robot(1), _id_navigation(1), _should_exit(false) {
+	int arg;
+	static struct option long_options[] = {{"id-robot", optional_argument, 0, 'r'},
+	                                       {"id-navigation", optional_argument, 0, 'n'},
+	                                       {"help", no_argument, 0, 'h'},
+	                                       {0, 0, 0, 0}};
+
+	int long_index = 0;
+	while((arg = getopt_long(argc, argv, "r:n:h:", long_options, &long_index)) != -1) {
+		switch(arg) {
+			case 'r':
+				_id_robot = static_cast<uint8_t>(std::stoi(optarg));
+				break;
+			case 'n':
+				_id_navigation = static_cast<uint8_t>(std::stoi(optarg));
+				break;
+			case 'h':
+			default:
+				print_help();
+		}
+	}
+}
+
+bool ParsingArguments::should_exit() const {
+	return _should_exit;
+}
+
+uint8_t ParsingArguments::get_id_robot() const {
+	return _id_robot;
+}
+
+uint8_t ParsingArguments::get_id_navigation() const {
+	return _id_navigation;
+}
+
+std::string ParsingArguments::get_local_port() const {
+	return std::to_string(5000 + _id_navigation);
+}
+
+std::string ParsingArguments::get_remote_port() const {
+	return std::to_string(50 + _id_navigation);
+}
+
+std::string ParsingArguments::get_ip() const {
+	return "191.168." + std::to_string(get_id_robot()) + "." + std::to_string(get_id_navigation());
+}
+
+void ParsingArguments::print_help(std::ostream& os) {
+	os << "Usage: [--id-robot <id>] [--id-navigation <id>]" << std::endl;
+	_should_exit = true;
+}
