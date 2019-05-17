@@ -7,9 +7,11 @@ class DummyRobotController : public IRobotController {
 
 	void forward(Distance) override {}
 
-	void turn(Angle) override {}
+	void turnRelative(Angle) override {}
 
 	void stop() override {}
+
+	void setCoordinates(const repere::Coordinates&) override {}
 
 	repere::Coordinates getCoordinates() override {
 		return repere::Coordinates();

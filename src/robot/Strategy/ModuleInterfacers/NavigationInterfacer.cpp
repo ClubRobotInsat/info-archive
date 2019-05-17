@@ -407,7 +407,7 @@ namespace Strategy {
 
 				// Si une erreur s'est produite, on abandonne
 				if(result != ActionResult::SUCCESS) {
-					logWarn("[follow_trajectory] failed : ", result);
+					logWarn("failed : ", result);
 					return result;
 				}
 
@@ -430,11 +430,13 @@ namespace Strategy {
 			// FIXME cette valeur peut être fausse suivant le repère qu'on utilise.
 			Angle direction = atan2(diff.y, diff.x);
 
+			logDebug4("Position actuelle: ", origin);
 			// Turn to direction
 			auto lock = get_lock_for_action(date_timeout);
 
 			ActionResult result;
 			if(lock.owns_lock()) {
+				logDebug("Repositionnement vers ", direction.toDeg(), " deg");
 				_module.turn_absolute(direction, optimal_rotation_sens(origin.getAngle(ref), direction));
 				result = wait_end_trajectory(get_check_moving_done(), date_timeout);
 			} else {
@@ -442,7 +444,9 @@ namespace Strategy {
 				result = ActionResult::FAILURE;
 			}
 
+			logDebug4("Angle actuel: ", _module.get_coordinates().getAngle().toDeg(), " deg");
 			if(result == ActionResult::SUCCESS) {
+				logDebug("Avancée de ", diff.norm());
 				result = internal_forward(diff.norm(), sens, date_timeout - TimePoint::now());
 			}
 

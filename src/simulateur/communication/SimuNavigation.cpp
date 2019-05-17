@@ -79,21 +79,21 @@ void SimuNavigation::message_processing(const JSON& frame) {
 				break;
 
 			case MovingCommand::TurnRelative:
-				angle = robot_coords.getAngle() + i32_to_angle(_args_cmd[0]);
-				_robotController->turn(angle);
-				logDebug6("Turn relative ", i32_to_angle(_args_cmd[0]));
+				angle = i32_to_angle(_args_cmd[0]);
+				_robotController->turnRelative(angle);
+				logDebug6("Turn relative ", angle.toDeg(), " deg");
 				break;
 
 			case MovingCommand::TurnAbsolute:
-				angle = i32_to_angle(_args_cmd[0]);
-				_robotController->turn(angle);
-				logDebug6("Turn absolute ", angle.toDeg(), " deg");
+				angle = (i32_to_angle(_args_cmd[0]) - robot_coords.getAngle()).toMinusPiPi();
+				_robotController->turnRelative(angle);
+				logDebug6("Turn absolute ", i32_to_angle(_args_cmd[0]).toDeg(), " deg");
 				break;
 
 			case MovingCommand::EmergencyStop:
 			case MovingCommand::Stop:
 				_robotController->stop();
-				logDebug6("Stop");
+				logDebug8("Stop");
 				break;
 			case MovingCommand::DoNothing:
 				break;

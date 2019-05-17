@@ -37,7 +37,7 @@ void SimuGuiClient::testNavigationForward(Distance distance) {
 void SimuGuiClient::testNavigationTurn(Angle angle) {
 	if(_simu._robot != nullptr) {
 		auto& controller = _simu._robot->getController();
-		controller.turn(angle);
+		controller.turnRelative(angle);
 	}
 }
 

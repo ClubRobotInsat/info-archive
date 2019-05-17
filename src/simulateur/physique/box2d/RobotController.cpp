@@ -25,7 +25,7 @@ void RobotController::forward(Distance distance) {
 	_currentState = SimuRobotState::Moving;
 }
 
-void RobotController::turn(Angle angle) {
+void RobotController::turnRelative(Angle angle) {
 	_angleGoal += angle.toMinusPiPi();
 	_currentState = SimuRobotState::Moving;
 }
@@ -40,8 +40,13 @@ void RobotController::emergencyStop() {
 	_currentState = SimuRobotState::Stopped;
 }
 
+void RobotController::setCoordinates(const repere::Coordinates& coords) {
+	auto currentCoords = getCoordinates();
+	_positionOffset = coords.getPos2D() - currentCoords.getPos2D();
+}
+
 repere::Coordinates RobotController::getCoordinates() {
-	return repere::Coordinates(_robot.getPosition(), _robot.getAngle());
+	return repere::Coordinates(_robot.getPosition() - _positionOffset, _robot.getAngle());
 }
 
 SimuRobotState RobotController::getState() {
