@@ -24,6 +24,7 @@ struct ParsingArguments {
 
 	uint8_t get_id_robot() const;
 	uint8_t get_id_navigation() const;
+	uint8_t get_id_navigation_parameters() const;
 
 	std::string get_local_port() const;
 	std::string get_remote_port() const;
@@ -33,6 +34,7 @@ struct ParsingArguments {
 private:
 	uint8_t _id_robot;
 	uint8_t _id_navigation;
+	uint8_t _id_navigation_parameters;
 	bool _should_exit;
 
 	void print_help(std::ostream& os = std::cout);
@@ -62,6 +64,8 @@ CalibrationDepla::CalibrationDepla(int argc, char** argv) {
 
 	auto _module_manager = std::make_shared<PhysicalRobot::ModuleManager>();
 	auto& navigation = _module_manager->add_module<PhysicalRobot::Navigation>(parser.get_id_navigation());
+	auto& navigation_parameters =
+	    _module_manager->add_module<PhysicalRobot::NavigationParameters>(parser.get_id_navigation_parameters());
 
 	std::vector<std::string> communicator_arguments{"ETHERNET",
 	                                                std::to_string(parser.get_id_navigation()),
@@ -1532,21 +1536,22 @@ void CalibrationDepla::entreAxesAuto() {
 
 	getRobot().getCarte<DEPLACEMENT>().reglerParametre(ParametresCarte::Mecanique_EntreAxe, _entreAxe);
 
-	_deplacement.avancer(200_mm);
+	navigation().forward(200_mm, SensAdvance::Forward);
 	sleep(1_s);
 	this->attendreFinDeplacement();
 
 	logDebug0("FIN CALIBRATION ENTREAXE");
 }
- */
 
 // clang-format on
 
 
-ParsingArguments::ParsingArguments(int argc, char* argv[]) : _id_robot(1), _id_navigation(1), _should_exit(false) {
+ParsingArguments::ParsingArguments(int argc, char* argv[])
+        : _id_robot(1), _id_navigation(1), _id_navigation_parameters(10), _should_exit(false) {
 	int arg;
 	static struct option long_options[] = {{"id-robot", optional_argument, 0, 'r'},
 	                                       {"id-navigation", optional_argument, 0, 'n'},
+	                                       {"id-navigation-parameters", optional_argument, 0, 'p'},
 	                                       {"help", no_argument, 0, 'h'},
 	                                       {0, 0, 0, 0}};
 
@@ -1558,6 +1563,9 @@ ParsingArguments::ParsingArguments(int argc, char* argv[]) : _id_robot(1), _id_n
 				break;
 			case 'n':
 				_id_navigation = static_cast<uint8_t>(std::stoi(optarg));
+				break;
+			case 'p':
+				_id_navigation_parameters = static_cast<uint8_t>(std::stoi(optarg));
 				break;
 			case 'h':
 			default:
@@ -1578,6 +1586,10 @@ uint8_t ParsingArguments::get_id_navigation() const {
 	return _id_navigation;
 }
 
+uint8_t ParsingArguments::get_id_navigation_parameters() const {
+	return _id_navigation_parameters;
+}
+
 std::string ParsingArguments::get_local_port() const {
 	return std::to_string(5000 + _id_navigation);
 }
@@ -1591,6 +1603,6 @@ std::string ParsingArguments::get_ip() const {
 }
 
 void ParsingArguments::print_help(std::ostream& os) {
-	os << "Usage: [--id-robot <id>] [--id-navigation <id>]" << std::endl;
+	os << "Usage: [--id-robot <id>] [--id-navigation <id>] [--id-navigation-parameters <id>]" << std::endl;
 	_should_exit = true;
 }

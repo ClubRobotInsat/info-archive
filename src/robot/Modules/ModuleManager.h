@@ -31,6 +31,7 @@
 #include "IO.h"
 #include "Motors.h"
 #include "Navigation.h"
+#include "NavigationParameters.h"
 #include "Pumps.h"
 #include "Servos.h"
 
