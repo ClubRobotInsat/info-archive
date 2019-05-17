@@ -1,6 +1,8 @@
 
 #include "RobotController.h"
 
+#include <log/Log.h>
+
 RobotController::RobotController(PhysicalObject& robot)
         : _robot(robot), _currentState(SimuRobotState::Idle), _blockedCounter(0) {
 
@@ -84,13 +86,13 @@ void RobotController::update(Duration elapsed) {
 		}
 
 		// Check if the robot is blocked
-		if(distanceDiff < 0.1_mm && angleDiff < 0.1_deg) {
+		if(abs(distanceDiff) < 0.1_mm && abs(angleDiff) < 0.1_deg) {
 			_blockedCounter++;
 		} else {
 			_blockedCounter = 0;
 		}
 
-		if(_blockedCounter > 5) {
+		if(_blockedCounter > 10) {
 			_blockedCounter = 0;
 			stop();
 			_currentState = SimuRobotState::Blocked;
