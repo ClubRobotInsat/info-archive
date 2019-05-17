@@ -48,7 +48,7 @@ int main(int argc, char** argv) {
 	Distance sx = 40_cm;
 	Distance sy = 30_cm;
 	Environment env({300, 200}, 1_cm, sy, (sqrt(sx * sx + sy * sy) / 2) * 1.2, Vector2m(0_m, 1_m));
-	env.loadFromJSON(GLOBAL_CONSTANTS().TABLE_2018());
+	env.loadFromJSON(GLOBAL_CONSTANTS().TABLE_2019());
 
 	auto& avoidance = manager.add_interfacer<AvoidanceInterfacer>(env);
 	auto& nav_interfacer = manager.add_interfacer<NavigationInterfacer>(env, avoidance);

@@ -43,7 +43,7 @@ namespace Strategy {
 	}
 
 	void AbstractStrategy::create_environment() {
-		this->_env->loadFromJSON(GLOBAL_CONSTANTS().TABLE_2018());
+		this->_env->loadFromJSON(GLOBAL_CONSTANTS().TABLE_2019());
 	}
 
 	void AbstractStrategy::start(Duration match_duration) {

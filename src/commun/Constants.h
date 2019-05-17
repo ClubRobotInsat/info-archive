@@ -170,9 +170,9 @@ namespace Constants {
 
 		// Convertir la table du fichier texte en un objet JSON à la pré-compilation
 
-		const JSON& TABLE_2018() const {
-			static JSON TABLE_2018 = nlohmann::json::parse(EmbeddedFiles::readText("table_2018.json"));
-			return TABLE_2018;
+		const JSON& TABLE_2019() const {
+			static JSON TABLE_2019 = nlohmann::json::parse(EmbeddedFiles::readText("table_2019.json"));
+			return TABLE_2019;
 		}
 
 		inline Duration get_lidar_actualization_period() const {
