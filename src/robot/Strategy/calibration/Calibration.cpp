@@ -9,6 +9,8 @@
 #define LARGEUR_TABLE 3002
 
 using namespace Interfacer;
+using SensAdvance = Strategy::Interfacer::NavigationInterfacer::SensAdvance;
+using SensRotation = Strategy::Interfacer::NavigationInterfacer::SensRotation;
 
 int main(int argc, char* argv[]) {
 	logDebug6("Initialisation du robot... Veuillez patienter...");
@@ -42,30 +44,29 @@ private:
 
 CalibrationDepla::CalibrationDepla(int argc, char** argv) {
 	// Initialize parameters
-	_angleBrutRobot = 0.0f;
-	_angleBrutRobot_Avant = 0.0f;
-	_distD_Apres = 0.0f;
-	_distG_Apres = 0.0f;
-	_distD_Avant = 0.0f;
-	_distG_Avant = 0.0f;
+	_angleBrutRobot = 0_deg;
+	_angleBrutRobot_Avant = 0_deg;
+	_distD_Apres = 0_m;
+	_distG_Apres = 0_m;
+	_distD_Avant = 0_m;
+	_distG_Avant = 0_m;
 	_rapportEntreAxe_Reel_sur_Mesure = 0.0f;
-	_entreAxe = 0.0f;
-	_diamRoueD = 0.0f;
-	_diamRoueG = 0.0f;
+	_entreAxe = 0_m;
+	_diamRoueD = 0_m;
+	_diamRoueG = 0_m;
 	_choix = 0;
 	_facteurEchelle_Reel_sur_Mesure = 0.0f;
 	_rapport_D_sur_G = 0.0f;
-	_distanceParcourue = 0.0f;
+	_distanceParcourue = 0_m;
 
 	ParsingArguments parser(argc, argv);
 	if(parser.should_exit()) {
 		exit(2);
 	}
 
-	auto _module_manager = std::make_shared<PhysicalRobot::ModuleManager>();
-	auto& navigation = _module_manager->add_module<PhysicalRobot::Navigation>(parser.get_id_navigation());
-	auto& navigation_parameters =
-	    _module_manager->add_module<PhysicalRobot::NavigationParameters>(parser.get_id_navigation_parameters());
+	_module_manager = std::make_shared<PhysicalRobot::ModuleManager>();
+	_module_manager->add_module<PhysicalRobot::Navigation>(parser.get_id_navigation());
+	_module_manager->add_module<PhysicalRobot::NavigationParameters>(parser.get_id_navigation_parameters());
 
 	std::vector<std::string> communicator_arguments{"ETHERNET",
 	                                                std::to_string(parser.get_id_navigation()),
@@ -108,13 +109,12 @@ void CalibrationDepla::attendreFinDeplacement(Duration timeout) {
 
 		sleep(20_ms);
 	}
-}
-
-void CalibrationDepla::attendreBlocage() {
-	while(!_deplacement.verifierNouveauBlocage()) {
-		sleep(10_ms);
-	}
 }*/
+// clang-format on
+
+void CalibrationDepla::check_physical_blocking_appeared() {
+	assert(_res == ActionResult::BLOCKED);
+}
 
 void CalibrationDepla::execute() {
 
@@ -159,9 +159,9 @@ le pic ou les valeurs dans setDefaultParams.\n");
 		this->setDefaultParams();
 		// this->displayCurrentSate();
 
-		/*switch(_choix) {
+		switch(_choix) {
 			case 0:
-				//this->pid();
+				// this->pid();
 				break;
 			case 1:
 				this->diametres();
@@ -175,22 +175,23 @@ le pic ou les valeurs dans setDefaultParams.\n");
 			case 4:
 				this->testDeplacement();
 				break;
-			case 5:
-				this->diametresAuto();
-				this->displayCurrentSate();
-				this->facteurEchelleAuto();
-				this->displayCurrentSate();
-				this->entreAxesAuto();
-				_deplacement.allerADecompose(2.7_m, 1_m, SensAvance::Arriere);
-				this->attendreFinDeplacement();
-				_deplacement.tournerAbsolu(-0.5_PI, SensRotation::Trigo);
-				break;
+				/*case 5:
+				    this->diametresAuto();
+				    this->displayCurrentSate();
+				    this->facteurEchelleAuto();
+				    this->displayCurrentSate();
+				    this->entreAxesAuto();
+				    _deplacement.allerADecompose(2.7_m, 1_m, SensAvance::Arriere);
+				    this->attendreFinDeplacement();
+				    _deplacement.tournerAbsolu(-0.5_PI, SensRotation::Trigo);
+				    break;*/
 		}
 		this->displayCurrentSate();
-		this->saveDatas();*/
+		this->saveDatas();
 	}
 }
 
+// clang-format off
 void CalibrationDepla::displayCurrentSate() {
 	/*logDebug0("Parametres mecaniques actuels");
 	_deplacement.demanderParametre(ParametresCarte::Mecanique_DiametreRoueD);
@@ -216,14 +217,12 @@ void CalibrationDepla::setDefaultParams() {
 	sleep(100_ms);
 	_deplacement.reglerParametre(ParametresCarte::Mecanique_DiametreRoueG,
 	                             0.0639245); // Secondaire : 0. | Principal : 0.0639554
-	sleep(100_ms);
-	_deplacement.reglerParametre(ParametresCarte::Mecanique_EntreAxe,
-	                             0.292404); // Secondaire : 0. | Principal : 0.292692
 	sleep(100_ms);*/
+	navigation_parameters().set_inter_axial_length(29.2404_cm);
 }
-/*
+
 void CalibrationDepla::pid() {
-	logDebug0("DEBUT CALIBRATION DU PID");
+	/*logDebug0("DEBUT CALIBRATION DU PID");
 	_choix = 1;
 	int valeur;
 	while(_choix != 0) {
@@ -1050,60 +1049,63 @@ void CalibrationDepla::desactiverPuisActiverAsserv() {
 		_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, true);
 		_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::POSITION, true);
 	}
-	printf("Changements enregistrés\n");
+	printf("Changements enregistrés\n");*/
 }
+// clang-format on
 
 void CalibrationDepla::diametres() {
 	logDebug0("DEBUT CALIBRATION RAPPORT DES DIAMETRES");
 	// logDebug3("Changement vitesse max");
-	_deplacement.reglerParametre(ParametresCarte::Longitudinal_VitesseMax, (float)(600) / 1000.0);
+	navigation().push_linear_speed(40_cm_s);
 
-	_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, false);
-	_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::POSITION, false);
+	navigation().deactivate_asserv();
+
 	logDebug3("Asservissement OFF");
 
 	logDebug0("RECALER ROBOT.....(puis ENTREE)");
 	getchar(); // PAUSE ____________________________________________
 
-	_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueD);
-
+	/*_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueD);
 	while(!_deplacement.parametreActualise())
-		sleep(100_ms);
+	    sleep(100_ms);
 	_distD_Avant = _deplacement.lireParametre();
-	logDebug0("Distance Roue D : ", _distD_Avant);
-	_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueG);
+	logDebug0("Distance Roue D : ", _distD_Avant);*/
+
+	/*_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueG);
 	while(!_deplacement.parametreActualise())
-		sleep(100_ms);
+	    sleep(100_ms);
 	_distG_Avant = _deplacement.lireParametre();
-	logDebug0("Distance Roue G : ", _distG_Avant);
-	logDebug0("Distance Roue G : ", _distG_Avant);
+	logDebug0("Distance Roue G : ", _distG_Avant);*/
 
 	logDebug0("FAIRE PARCOURIR ROBOT ET LE RECALER AVEC LE MEME ANGLE....(puis ENTREE)");
 	getchar(); // PAUSE ____________________________________________
 
-	_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueD);
+	/*_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueD);
 	while(!_deplacement.parametreActualise())
-		sleep(100_ms);
+	    sleep(100_ms);
 	_distD_Apres = _deplacement.lireParametre();
-	logDebug0("Distance Roue D apres : ", _distD_Apres);
-	_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueG);
-	while(!_deplacement.parametreActualise())
-		sleep(10_ms);
-	_distG_Apres = _deplacement.lireParametre();
-	logDebug0("Distance Roue G apres : ", _distG_Apres);
+	logDebug0("Distance Roue D apres : ", _distD_Apres);*/
 
-	_rapport_D_sur_G = fabs(_distD_Apres - _distD_Avant) / fabs(_distG_Apres - _distG_Avant);
+	/*_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueG);
+	while(!_deplacement.parametreActualise())
+	    sleep(10_ms);
+	_distG_Apres = _deplacement.lireParametre();
+	logDebug0("Distance Roue G apres : ", _distG_Apres);*/
+
+	_rapport_D_sur_G = abs(_distD_Apres - _distD_Avant) / abs(_distG_Apres - _distG_Avant);
 	logDebug0("Rapport diam D / G = ", _rapport_D_sur_G);
 
-	_deplacement.demanderParametre(ParametresCarte::Mecanique_DiametreRoueD);
+	/*_deplacement.demanderParametre(ParametresCarte::Mecanique_DiametreRoueD);
 	while(!_deplacement.parametreActualise())
-		sleep(100_ms);
-	_diamRoueD = _deplacement.lireParametre();
-	_deplacement.demanderParametre(ParametresCarte::Mecanique_DiametreRoueG);
+	    sleep(100_ms);
+	_diamRoueD = _deplacement.lireParametre();*/
+
+	/*_deplacement.demanderParametre(ParametresCarte::Mecanique_DiametreRoueG);
 	while(!_deplacement.parametreActualise())
-		sleep(100_ms);
-	_diamRoueG = _deplacement.lireParametre();
-	_deplacement.reglerParametre(ParametresCarte::Mecanique_DiametreRoueG, _diamRoueG * _rapport_D_sur_G);
+	    sleep(100_ms);
+	_diamRoueG = _deplacement.lireParametre();*/
+
+	/*_deplacement.reglerParametre(ParametresCarte::Mecanique_DiametreRoueG, _diamRoueG * _rapport_D_sur_G);*/
 	logDebug0("Diametre Roue D = ", _diamRoueD);
 	logDebug0("Diametre Roue G compense = ", _diamRoueG * _rapport_D_sur_G);
 
@@ -1113,54 +1115,55 @@ void CalibrationDepla::diametres() {
 void CalibrationDepla::facteurEchelle() {
 	logDebug0("DEBUT CALIBRATION DU FACTEUR D'ECHELLE DES ENCODEURS");
 
-	_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, false);
-	_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::POSITION, false);
+	navigation().deactivate_asserv();
 	logDebug3("Asservissement OFF");
 
 	logDebug0("RECALER ROBOT...., puis entrée");
 	getchar(); // PAUSE ____________________________________________
 
-	_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueD);
+	/*_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueD);
 	while(!_deplacement.parametreActualise())
-		sleep(100_ms);
+	    sleep(100_ms);
 	_distD_Avant = _deplacement.lireParametre();
-	logDebug0("Distance Roue D : ", _distD_Avant);
-	_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueG);
+	logDebug0("Distance Roue D : ", _distD_Avant);*/
+
+	/*_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueG);
 	while(!_deplacement.parametreActualise())
-		sleep(100_ms);
+	    sleep(100_ms);
 	_distG_Avant = _deplacement.lireParametre();
-	logDebug0("Distance Roue G : ", _distG_Avant);
+	logDebug0("Distance Roue G : ", _distG_Avant);*/
 
 	logDebug0("START.....(puis ENTREE)");
 	getchar(); // PAUSE ____________________________________________
-	_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, true);
-	_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::POSITION, true);
+	navigation().activate_asserv();
 	logDebug3("Asservissement ON");
 
-	_deplacement.avancerInfini(VITESSE_LINEAIRE_RECALAGE, SensAvance::Arriere);
-	this->attendreBlocage();
+	navigation().push_linear_speed(REPOSITIONING_LINEAR_SPEED);
+	_res = navigation().forward_infinity(SensAdvance::Backward);
+
+	navigation().pop_linear_speed();
 
 	sleep(1_s);
 
-	_deplacement.arreter();
+	navigation().stop();
 
-	_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, false);
-	_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::POSITION, false);
+	navigation().deactivate_asserv();
 	logDebug3("Asservissement OFF");
 
 	logDebug0("VERIF ROBOT CALE SUR AVANT.....(puis ENTREE)");
 	getchar(); // PAUSE ____________________________________________
 
-	_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueD);
+	/*_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueD);
 	while(!_deplacement.parametreActualise())
-		sleep(100_ms);
+	    sleep(100_ms);
 	_distD_Apres = _deplacement.lireParametre();
-	logDebug0("Distance Roue D apres : ", _distD_Apres);
-	_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueG);
+	logDebug0("Distance Roue D apres : ", _distD_Apres);*/
+
+	/*_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueG);
 	while(!_deplacement.parametreActualise())
-		sleep(100_ms);
+	    sleep(100_ms);
 	_distG_Apres = _deplacement.lireParametre();
-	logDebug0("Distance Roue G apres : ", _distG_Apres);
+	logDebug0("Distance Roue G apres : ", _distG_Apres);*/
 
 	_distanceParcourue = ((_distD_Apres - _distD_Avant) + (_distG_Apres - _distG_Avant)) / 2.0;
 	logDebug0("Distance parcourue = ", _distanceParcourue);
@@ -1169,22 +1172,22 @@ void CalibrationDepla::facteurEchelle() {
 	// = LONGUEUR TABLE (3000) - LONGUEUR ROBOT (210) / distanceParcourue
 	// 2.792 Pour Chronos
 	// 2.852 pour Pan
-	_facteurEchelle_Reel_sur_Mesure = 2.60 / _distanceParcourue; // Secondaire : 2. //Principal : 2.
+	_facteurEchelle_Reel_sur_Mesure = 2.60_m / _distanceParcourue; // Secondaire : 2. //Principal : 2.
 	logDebug0("Facteur d'echelle reel / mesure = ", _facteurEchelle_Reel_sur_Mesure);
 
-	_deplacement.demanderParametre(ParametresCarte::Mecanique_DiametreRoueD);
+	/*_deplacement.demanderParametre(ParametresCarte::Mecanique_DiametreRoueD);
 	while(!_deplacement.parametreActualise())
-		sleep(100_ms);
+	    sleep(100_ms);
 	_diamRoueD = _deplacement.lireParametre() * _facteurEchelle_Reel_sur_Mesure;
 	_deplacement.reglerParametre(ParametresCarte::Mecanique_DiametreRoueD, _diamRoueD);
-	logDebug0("Diametre Roue D calibre = ", _diamRoueD);
+	logDebug0("Diametre Roue D calibre = ", _diamRoueD);*/
 
-	_deplacement.demanderParametre(ParametresCarte::Mecanique_DiametreRoueG);
+	/*_deplacement.demanderParametre(ParametresCarte::Mecanique_DiametreRoueG);
 	while(!_deplacement.parametreActualise())
-		sleep(100_ms);
+	    sleep(100_ms);
 	_diamRoueG = _deplacement.lireParametre() * _facteurEchelle_Reel_sur_Mesure;
 	_deplacement.reglerParametre(ParametresCarte::Mecanique_DiametreRoueG, _diamRoueG);
-	logDebug0("Diametre Roue G calibre = ", _diamRoueG);
+	logDebug0("Diametre Roue G calibre = ", _diamRoueG);*/
 
 	logDebug0("FIN CALIBRATION DU FACTEUR D'ECHELLE DES ENCODEURS");
 }
@@ -1193,186 +1196,176 @@ void CalibrationDepla::entreAxes() {
 
 	logDebug0("DEBUT CALIBRATION ENTREAXE (Distance entre les 2 roues codeuses)");
 
-	_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, false);
-	_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::POSITION, false);
+	navigation().deactivate_asserv();
 	logDebug3("Asservissement OFF");
 
 	logDebug0("RECALER ROBOT..... puis entrée");
 	getchar(); // PAUSE ____________________________________________
 
-	_deplacement.demanderParametre(ParametresCarte::Etat_AngleBrut);
-	while(!_deplacement.parametreActualise())
-		sleep(100_ms);
-	_angleBrutRobot_Avant = _deplacement.lireParametre();
+	_angleBrutRobot_Avant = navigation()->get_orientation().getAngle();
 	logDebug0("Angle brut du robot = ", _angleBrutRobot_Avant);
 
 	logDebug0("START.....(puis ENTREE)");
 	getchar(); // PAUSE ____________________________________________
-	_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, true);
-	_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::POSITION, true);
+	navigation().activate_asserv();
 	logDebug3("Asservissement ON");
 
-	_deplacement.avancer(400_mm);
-	this->attendreFinDeplacement();
+	navigation().forward(400_mm, SensAdvance::Forward);
 
-	_dep->pushVitesseAngulaire(2_rad_s);
+	navigation().push_angular_speed(2_rad_s);
 
-	_deplacement.tourner(10_PI);
-	this->attendreFinDeplacement(TEMPS_DEPLACEMENT_MAX * 20);
+	// Blocking function
+	navigation().turn_relative(10_PI);
 
-	_dep->popVitesseAngulaire();
+	navigation().pop_angular_speed();
+	navigation().stop();
 
-	_deplacement.arreter();
-
-	_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, false);
-	_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::POSITION, false);
+	navigation().deactivate_asserv();
 	logDebug3("Asservissement OFF");
 
 	logDebug0("RECALER ROBOT SUR ARRIERE.....(puis ENTREE)");
 	getchar(); // PAUSE ____________________________________________
 
-	_deplacement.demanderParametre(ParametresCarte::Etat_AngleBrut);
-	while(!_deplacement.parametreActualise())
-		sleep(100_ms);
-	_angleBrutRobot = _deplacement.lireParametre();
+	_angleBrutRobot = navigation()->get_orientation().getAngle();
 	logDebug0("Angle brut du robot = ", _angleBrutRobot);
 
-	_rapportEntreAxe_Reel_sur_Mesure = (_angleBrutRobot - _angleBrutRobot_Avant) / (10.0 * M_PI);
+	_rapportEntreAxe_Reel_sur_Mesure = (_angleBrutRobot - _angleBrutRobot_Avant).toDeg() / (10.0 * M_PI);
 	logDebug0("Rapport Entreaxe reel / mesure = ", _rapportEntreAxe_Reel_sur_Mesure);
 
-	_deplacement.demanderParametre(ParametresCarte::Mecanique_EntreAxe);
+	/*_deplacement.demanderParametre(ParametresCarte::Mecanique_EntreAxe);
 	while(!_deplacement.parametreActualise())
-		sleep(100_ms);
+	    sleep(100_ms);
 	_entreAxe = _deplacement.lireParametre();
-	logDebug0("Ancien EntreAxe = ", _entreAxe);
+	logDebug0("Ancien EntreAxe = ", _entreAxe);*/
 
 	_entreAxe = _entreAxe * _rapportEntreAxe_Reel_sur_Mesure;
 	logDebug0("Nouvel EntreAxe = ", _entreAxe);
 
-	getRobot().getCarte<DEPLACEMENT>().reglerParametre(ParametresCarte::Mecanique_EntreAxe, _entreAxe);
+	navigation_parameters().set_inter_axial_length(_entreAxe);
 
 	logDebug0("FIN CALIBRATION ENTREAXE");
 }
 
 void CalibrationDepla::saveDatas() {
 	FILE* F = fopen("calibration_deplacementla.txt", "a");
-	fprintf(F, "%.10f\t%.10f\t%.10f\n", _diamRoueD, _diamRoueG, _entreAxe);
+	fprintf(F, "%.10f\t%.10f\t%.10f\n", _diamRoueD.toMm(), _diamRoueG.toMm(), _entreAxe.toMm());
 	fclose(F);
 
 	logDebug6("Fin du programme");
 }
 
 void CalibrationDepla::testDeplacement() {
-	_deplacement.allerADecompose(2.675_m, 1.225_m, SensAvance::Avant);
-	this->attendreFinDeplacement();
-	_deplacement.tournerAbsolu(0_rad, SensRotation::Trigo);
-	this->attendreFinDeplacement();
+	/*deplacement.allerADecompose(2.675_m, 1.225_m, SensAvance::Avant);
+	this->attendreFinDeplacement();*/
+	navigation().turn_absolute(0_rad, SensRotation::Trigo);
 	getchar();
-	_deplacement.allerADecompose(50_cm, 30_cm, SensAvance::Avant);
-	this->attendreFinDeplacement();
-	_deplacement.tournerAbsolu(0.5_PI, SensRotation::Trigo);
-	this->attendreFinDeplacement();
+	/*_deplacement.allerADecompose(50_cm, 30_cm, SensAvance::Avant);
+	this->attendreFinDeplacement();*/
+	navigation().turn_absolute(0.5_PI, SensRotation::Trigo);
 	getchar();
-	/ *dep->allerADecompose(32.5_cm, 1.225_m, SENS_AVANT);
+	/*dep->allerADecompose(32.5_cm, 1.225_m, SENS_AVANT);
 	 attendreFinDeplacement();
 	 dep->allerADecompose(32.5_cm, 50_cm, SENS_AVANT);
 	 attendreFinDeplacement();getchar();
 	 dep->allerADecompose(1_m, 50_cm, SENS_AVANT);
 	 attendreFinDeplacement();
 	 dep->allerADecompose(1_m, 1.225_m, SENS_AVANT);
-	 attendreFinDeplacement();* /
+	 attendreFinDeplacement();
 	_deplacement.allerADecompose(2.675_m, 1.225_m, SensAvance::Avant);
-	this->attendreFinDeplacement();
-	_deplacement.tournerAbsolu(0_rad, SensRotation::Trigo);
-	this->attendreFinDeplacement();
-	_deplacement.arreter();
+	this->attendreFinDeplacement();*/
+	navigation().turn_absolute(0_rad, SensRotation::Trigo);
+	navigation().stop();
 }
 
 void CalibrationDepla::diametresAuto() {
 	logDebug0("DEBUT CALIBRATION RAPPORT DES DIAMETRES");
 
-	_deplacement.allerADecompose(1.5_m, 1.1_m, SensAvance::Avant);
-	this->attendreFinDeplacement();
+	/*_deplacement.allerADecompose(1.5_m, 1.1_m, SensAvance::Avant);
+	this->attendreFinDeplacement();*/
 
 	// dep->pointerVers(0, 1100, SENS_TRIGO);
 	// attendreFinDeplacement();
 
-	_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, false);
+	/*_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, false);*/
 
-	_deplacement.avancerInfini(200_mm_s, SensAvance::Arriere);
-	this->attendreBlocage();
+	navigation().push_linear_speed(200_mm_s);
+	navigation().forward_infinity(SensAdvance::Backward);
+	navigation().pop_linear_speed();
+	check_physical_blocking_appeared();
 	sleep(1_s);
 
-	_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueD);
+	/*_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueD);
 	while(!_deplacement.parametreActualise())
-		sleep(10_ms);
+	    sleep(10_ms);
 	_distD_Avant = _deplacement.lireParametre();
-	logDebug0("Distance Roue D : ", _distD_Avant);
-	_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueG);
+	logDebug0("Distance Roue D : ", _distD_Avant);*/
+
+	/*_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueG);
 	while(!_deplacement.parametreActualise())
-		sleep(10_ms);
+	    sleep(10_ms);
 	_distG_Avant = _deplacement.lireParametre();
-	logDebug0("Distance Roue G : ", _distG_Avant);
+	logDebug0("Distance Roue G : ", _distG_Avant);*/
 
-	_deplacement.arreter();
+	navigation().stop();
 
-	_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, true);
+	/*_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, true);*/
 
-	_deplacement.avancer(200_mm);
-	sleep(100_ms);
-	this->attendreFinDeplacement();
+	navigation().forward(200_mm, SensAdvance::Forward);
 
-	_deplacement.allerADecompose(2.7_m, 35_cm, SensAvance::Avant);
+	/*_deplacement.allerADecompose(2.7_m, 35_cm, SensAvance::Avant);
 	this->attendreFinDeplacement();
 	_deplacement.allerADecompose(30_cm, 35_cm, SensAvance::Avant);
 	this->attendreFinDeplacement();
 	_deplacement.allerADecompose(30_cm, 1.1_m, SensAvance::Avant);
 	this->attendreFinDeplacement();
 	_deplacement.allerADecompose(2.7_m, 1.1_m, SensAvance::Avant);
-	this->attendreFinDeplacement();
+	this->attendreFinDeplacement();*/
 
-	_deplacement.tourner(3_rad);
-	this->attendreFinDeplacement();
-	_deplacement.pointerVers(Coordonnees({0_m, 1.1_m}, 0_deg, _deplacement.getReference()), SensRotation::Trigo);
-	this->attendreFinDeplacement();
+	navigation().turn_relative(3_rad);
 
-	_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, false);
+	/*_deplacement.pointerVers(Coordonnees({0_m, 1.1_m}, 0_deg, navigation()->get_reference()), SensRotation::Trigo);
+	this->attendreFinDeplacement();*/
 
-	_deplacement.avancerInfini(200_mm_s, SensAvance::Arriere);
-	this->attendreBlocage();
+	/*_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, false);*/
+
+	navigation().push_linear_speed(200_mm_s);
+	navigation().forward_infinity(SensAdvance::Backward);
+	navigation().pop_linear_speed();
+	check_physical_blocking_appeared();
 	sleep(1_s);
 
-	_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueD);
+	/*_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueD);
 	while(!_deplacement.parametreActualise())
-		sleep(10_ms);
+	    sleep(10_ms);
 	_distD_Apres = _deplacement.lireParametre();
-	logDebug0("Distance Roue D apres : ", _distD_Apres);
-	_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueG);
-	while(!_deplacement.parametreActualise())
-		sleep(10_ms);
-	_distG_Apres = _deplacement.lireParametre();
-	logDebug0("Distance Roue G apres : ", _distG_Apres);
+	logDebug0("Distance Roue D apres : ", _distD_Apres);*/
 
-	_rapport_D_sur_G = fabs(_distD_Apres - _distD_Avant) / fabs(_distG_Apres - _distG_Avant);
+	/*_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueG);
+	while(!_deplacement.parametreActualise())
+	    sleep(10_ms);
+	_distG_Apres = _deplacement.lireParametre();
+	logDebug0("Distance Roue G apres : ", _distG_Apres);*/
+
+	_rapport_D_sur_G = abs(_distD_Apres - _distD_Avant) / abs(_distG_Apres - _distG_Avant);
 	logDebug0("Rapport diam D / G = ", _rapport_D_sur_G);
 
-	_deplacement.arreter();
+	navigation().stop();
 
-	_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, true);
+	/*_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, true);*/
 
-	_deplacement.avancer(200_mm);
-	sleep(100_ms);
-	this->attendreFinDeplacement();
+	navigation().forward(200_mm, SensAdvance::Forward);
 
-	_deplacement.demanderParametre(ParametresCarte::Mecanique_DiametreRoueD);
+	/*_deplacement.demanderParametre(ParametresCarte::Mecanique_DiametreRoueD);
 	while(!_deplacement.parametreActualise())
-		sleep(10_ms);
-	_diamRoueD = _deplacement.lireParametre();
-	_deplacement.demanderParametre(ParametresCarte::Mecanique_DiametreRoueG);
+	    sleep(10_ms);
+	_diamRoueD = _deplacement.lireParametre();*/
+
+	/*_deplacement.demanderParametre(ParametresCarte::Mecanique_DiametreRoueG);
 	while(!_deplacement.parametreActualise())
-		sleep(10_ms);
-	_diamRoueG = _deplacement.lireParametre();
-	_deplacement.reglerParametre(ParametresCarte::Mecanique_DiametreRoueG, _diamRoueG * _rapport_D_sur_G);
+	    sleep(10_ms);
+	_diamRoueG = _deplacement.lireParametre();*/
+
+	/*_deplacement.reglerParametre(ParametresCarte::Mecanique_DiametreRoueG, _diamRoueG * _rapport_D_sur_G);*/
 	logDebug0("Diametre Roue D = ", _diamRoueD);
 	logDebug0("Diametre Roue G compense = ", _diamRoueG * _rapport_D_sur_G);
 
@@ -1382,84 +1375,90 @@ void CalibrationDepla::diametresAuto() {
 void CalibrationDepla::facteurEchelleAuto() {
 	logDebug0("DEBUT CALIBRATION DU FACTEUR D'ECHELLE DES ENCODEURS");
 
-	_deplacement.allerADecompose(2.7_m, 1.1_m, SensAvance::Avant);
-	this->attendreFinDeplacement();
+	/*_deplacement.allerADecompose(2.7_m, 1.1_m, SensAvance::Avant);
+	this->attendreFinDeplacement();*/
 
-	_deplacement.pointerVers(Coordonnees({0_m, 1100_mm}, 0_deg, _deplacement.getReference()), SensRotation::Trigo);
-	this->attendreFinDeplacement();
+	/*_deplacement.pointerVers(repere::Coordinates({0_m, 1100_mm}, 0_deg, navigation()->get_reference()),
+	SensRotation::Trigo); this->attendreFinDeplacement();*/
 
-	_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, false);
+	/*_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, false);*/
 
-	_deplacement.avancerInfini(200_mm_s, SensAvance::Arriere);
-	this->attendreBlocage();
+	navigation().push_linear_speed(200_mm_s);
+	navigation().forward_infinity(SensAdvance::Backward);
+	navigation().pop_linear_speed();
+	check_physical_blocking_appeared();
 	sleep(1_s);
 
-	_deplacement.definirCoordonnees(
-	    Coordonnees(Vector2m((3_m - RobotPrincipal::RAYON_ROBOT_RECALAGE), _robot->actualiserEtLireCoordonnees().getY()),
-	                -1_PI,
-	                _deplacement.getReference()));
+	/*_deplacement.definirCoordonnees(
+	    Coordonnees(Vector2m((3_m - RobotPrincipal::RAYON_ROBOT_RECALAGE),
+	   _robot->actualiserEtLireCoordonnees().getY()), -1_PI, navigation()->get_reference()));*/
 
-	_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueD);
+	/*_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueD);
 	while(!_deplacement.parametreActualise())
-		sleep(10_ms);
+	    sleep(10_ms);
 	_distD_Avant = _deplacement.lireParametre();
-	logDebug0("Distance Roue D : ", _distD_Avant);
-	_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueG);
+	logDebug0("Distance Roue D : ", _distD_Avant);*/
+
+	/*_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueG);
 	while(!_deplacement.parametreActualise())
-		sleep(10_ms);
+	    sleep(10_ms);
 	_distG_Avant = _deplacement.lireParametre();
-	logDebug0("Distance Roue G : ", _distG_Avant);
+	logDebug0("Distance Roue G : ", _distG_Avant);*/
 
-	_deplacement.arreter();
+	navigation().stop();
 
-	_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, true);
+	/*_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, true);*/
 
 	//_deplacement.allerA(2.6_m, _robot->actualiserEtLireCoordonnees().getY(), SensAvance::Avant);
-	this->attendreFinDeplacement();
+	// this->attendreFinDeplacement();
 
-	_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, false);
+	/*_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, false);*/
 
-	_deplacement.avancerInfini(200_mm_s, SensAvance::Avant);
-	this->attendreBlocage();
+	navigation().push_linear_speed(200_mm_s);
+	navigation().forward_infinity(SensAdvance::Forward);
+	navigation().pop_linear_speed();
+	check_physical_blocking_appeared();
 	sleep(1_s);
 
-	_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueD);
+	/*_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueD);
 	while(!_deplacement.parametreActualise())
-		sleep(10_ms);
+	    sleep(10_ms);
 	_distD_Apres = _deplacement.lireParametre();
-	logDebug0("Distance Roue D apres : ", _distD_Apres);
-	_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueG);
+	logDebug0("Distance Roue D apres : ", _distD_Apres);*/
+
+	/*_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueG);
 	while(!_deplacement.parametreActualise())
-		sleep(10_ms);
+	    sleep(10_ms);
 	_distG_Apres = _deplacement.lireParametre();
-	logDebug0("Distance Roue G apres : ", _distG_Apres);
+	logDebug0("Distance Roue G apres : ", _distG_Apres);*/
 
-	_deplacement.arreter();
-	_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, true);
+	navigation().stop();
 
-	_distanceParcourue = ((_distD_Apres - _distD_Avant) + (_distG_Apres - _distG_Avant)) / 2.0;
-	logDebug0("Distance parcourue = ", _distanceParcourue);
+	/*_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, true);*/
+
+	/*_distanceParcourue = ((_distD_Apres - _distD_Avant) + (_distG_Apres - _distG_Avant)) / 2.0;
+	logDebug0("Distance parcourue = ", _distanceParcourue);*/
 
 	// distance théorique parcourue (longueur de la table - taille du robot) / distance parcourue
-	_facteurEchelle_Reel_sur_Mesure = (3 - 0.255) / _distanceParcourue;
+	_facteurEchelle_Reel_sur_Mesure = (3_m - 255_mm) / _distanceParcourue;
 	logDebug0("Facteur d'echelle reel / mesure = ", _facteurEchelle_Reel_sur_Mesure);
 
-	_deplacement.demanderParametre(ParametresCarte::Mecanique_DiametreRoueD);
+	/*_deplacement.demanderParametre(ParametresCarte::Mecanique_DiametreRoueD);
 	while(!_deplacement.parametreActualise())
-		sleep(10_ms);
+	    sleep(10_ms);
 	_diamRoueD = _deplacement.lireParametre() * _facteurEchelle_Reel_sur_Mesure;
 	_deplacement.reglerParametre(ParametresCarte::Mecanique_DiametreRoueD, _diamRoueD);
-	logDebug0("Diametre Roue D calibre = ", _diamRoueD);
+	logDebug0("Diametre Roue D calibre = ", _diamRoueD);*/
 
-	_deplacement.demanderParametre(ParametresCarte::Mecanique_DiametreRoueG);
+	/*_deplacement.demanderParametre(ParametresCarte::Mecanique_DiametreRoueG);
 	while(!_deplacement.parametreActualise())
-		sleep(10_ms);
+	    sleep(10_ms);
 	_diamRoueG = _deplacement.lireParametre() * _facteurEchelle_Reel_sur_Mesure;
 	_deplacement.reglerParametre(ParametresCarte::Mecanique_DiametreRoueG, _diamRoueG);
-	logDebug0("Diametre Roue G calibre = ", _diamRoueG);
+	logDebug0("Diametre Roue G calibre = ", _diamRoueG);*/
 
-	_deplacement.allerADecompose(2.7_m, 1.1_m, SensAvance::Arriere);
-	this->attendreFinDeplacement();
+	/*_deplacement.allerADecompose(2.7_m, 1.1_m, SensAvance::Arriere);
+	this->attendreFinDeplacement();*/
 
 	logDebug0("FIN CALIBRATION DU FACTEUR D'ECHELLE DES ENCODEURS");
 }
@@ -1468,83 +1467,72 @@ void CalibrationDepla::entreAxesAuto() {
 
 	logDebug0("DEBUT CALIBRATION ENTREAXE");
 
-	_deplacement.allerADecompose(2.7_m, 1.1_m, SensAvance::Avant);
-	this->attendreFinDeplacement();
+	/*_deplacement.allerADecompose(2.7_m, 1.1_m, SensAvance::Avant);
+	this->attendreFinDeplacement();*/
 
-	_deplacement.pointerVers(Coordonnees({1.5_m, 1.1_m}, 0_deg, _deplacement.getReference()), SensRotation::Trigo);
-	this->attendreFinDeplacement();
+	/*_deplacement.pointerVers(Coordonnees({1.5_m, 1.1_m}, 0_deg, navigation()->get_reference()), SensRotation::Trigo);
+	this->attendreFinDeplacement();*/
 
-	_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, false);
+	/*_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, false);*/
 
-	_deplacement.avancerInfini(200_mm_s, SensAvance::Arriere);
-	this->attendreBlocage();
+	navigation().push_linear_speed(200_mm_s);
+	navigation().forward_infinity(SensAdvance::Backward);
+	navigation().pop_linear_speed();
+	check_physical_blocking_appeared();
 	sleep(1_s);
 
-	_deplacement.definirCoordonnees(
-	    Coordonnees(Vector2m((3_m - RobotPrincipal::RAYON_ROBOT_RECALAGE), _robot->actualiserEtLireCoordonnees().getY()),
-	                -1_PI,
-	                _deplacement.getReference()));
+	/*_deplacement.definirCoordonnees(
+	    Coordonnees(Vector2m((3_m - RobotPrincipal::RAYON_ROBOT_RECALAGE),
+	   _robot->actualiserEtLireCoordonnees().getY()), -1_PI, navigation()->get_reference()));*/
 
-	_deplacement.demanderParametre(ParametresCarte::Etat_AngleBrut);
-	while(!getRobot().getCarte<DEPLACEMENT>().parametreActualise())
-		sleep(100_ms);
-	_angleBrutRobot_Avant = _deplacement.lireParametre();
+	_angleBrutRobot_Avant = navigation()->get_orientation().getAngle();
 	logDebug0("Angle brut du robot = ", _angleBrutRobot_Avant);
 
-	_deplacement.arreter();
+	navigation().stop();
 
-	_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, true);
+	/*_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, true);*/
 
-	_deplacement.avancer(200_mm);
-	sleep(1_s);
-	this->attendreFinDeplacement();
-
-	_dep->pushVitesseAngulaire(4_rad_s);
-
-	_deplacement.tourner(10_PI);
-	this->attendreFinDeplacement();
-
-	_dep->popPrecionAngulaire();
-
-	_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, false);
-
-	_deplacement.avancerInfini(200_mm_s, SensAvance::Arriere);
-	this->attendreBlocage();
+	navigation().forward(200_mm, SensAdvance::Forward);
 	sleep(1_s);
 
-	_deplacement.demanderParametre(ParametresCarte::Etat_AngleBrut);
-	while(!getRobot().getCarte<DEPLACEMENT>().parametreActualise())
-		sleep(100_ms);
-	_angleBrutRobot = _deplacement.lireParametre();
+	navigation().push_angular_speed(4_rad_s);
+	navigation().turn_relative(10_PI);
+	navigation().pop_angular_speed(); // FIXME: in the legacy code, they pop the angular precision
+
+	/*_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, false);*/
+
+	navigation().push_linear_speed(200_mm_s);
+	navigation().forward_infinity(SensAdvance::Backward);
+	navigation().pop_linear_speed();
+	check_physical_blocking_appeared();
+	sleep(1_s);
+
+	_angleBrutRobot = navigation()->get_orientation().getAngle();
 	logDebug0("Angle brut du robot = ", _angleBrutRobot);
 
-	_deplacement.arreter();
+	navigation().stop();
 
-	_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, true);
+	/*_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, true);*/
 
 	_rapportEntreAxe_Reel_sur_Mesure = (_angleBrutRobot - _angleBrutRobot_Avant) / (10.0 * M_PI);
 	logDebug0("Rapport Entreaxe reel / mesure = ", _rapportEntreAxe_Reel_sur_Mesure);
 
-	_deplacement.demanderParametre(ParametresCarte::Mecanique_EntreAxe);
+	/*_deplacement.demanderParametre(ParametresCarte::Mecanique_EntreAxe);
 	while(!_deplacement.parametreActualise())
-		sleep(100_ms);
+	    sleep(100_ms);
 	_entreAxe = _deplacement.lireParametre();
-	logDebug0("Ancien EntreAxe = ", _entreAxe);
+	logDebug0("Ancien EntreAxe = ", _entreAxe);*/
 
 	_entreAxe = _entreAxe * _rapportEntreAxe_Reel_sur_Mesure;
 	logDebug0("Nouvel EntreAxe = ", _entreAxe);
 
-	getRobot().getCarte<DEPLACEMENT>().reglerParametre(ParametresCarte::Mecanique_EntreAxe, _entreAxe);
+	navigation_parameters().set_inter_axial_length(_entreAxe);
 
 	navigation().forward(200_mm, SensAdvance::Forward);
 	sleep(1_s);
-	this->attendreFinDeplacement();
 
 	logDebug0("FIN CALIBRATION ENTREAXE");
 }
-
-// clang-format on
-
 
 ParsingArguments::ParsingArguments(int argc, char* argv[])
         : _id_robot(1), _id_navigation(1), _id_navigation_parameters(10), _should_exit(false) {
