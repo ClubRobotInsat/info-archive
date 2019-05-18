@@ -3,7 +3,6 @@
 
 PanelRobotState::PanelRobotState() {
 	_builder = Gtk::Builder::create_from_string(EmbeddedFiles::readText("glade/state-panel.glade"));
-	_builder->get_widget("quit-button", _quitButton);
 	_builder->get_widget("tree-view", _treeView);
 
 	// We set columns
@@ -13,9 +12,7 @@ PanelRobotState::PanelRobotState() {
 	_treeView->append_column("Status", m_columns.col_status);
 
 	// signals
-	_quitButton->signal_clicked().connect(sigc::mem_fun(*this, &PanelRobotState::on_button_quit));
 	_treeView->signal_row_activated().connect(sigc::mem_fun(*this, &PanelRobotState::on_treeview_row_activated));
-	show_all_children();
 
 	// Test
 	setTreeView(generateTestJSON());
@@ -52,11 +49,6 @@ void PanelRobotState::addChild(JSON root, Gtk::TreeModel::Row& row) {
 			childrow[m_columns.col_status] = it.value().dump();
 		}
 	}
-}
-
-// We quit the panel when we click on Quit button
-void PanelRobotState::on_button_quit() {
-	hide();
 }
 
 // We veil the row's details when clicking it

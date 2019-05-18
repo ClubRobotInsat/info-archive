@@ -13,7 +13,6 @@ public:
 
 protected:
 	// Signal handler
-	void on_button_quit();
 	void on_treeview_row_activated(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn* column);
 
 	// Tree model columns
@@ -37,7 +36,6 @@ protected:
 private:
 	Glib::RefPtr<Gtk::Builder> _builder;
 
-	Gtk::Button* _quitButton;
 	Gtk::TreeView* _treeView;
 
 	void setTreeView(JSON root);
