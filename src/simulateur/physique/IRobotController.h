@@ -16,9 +16,12 @@ public:
 
 	virtual void forward(Distance distance) = 0;
 
-	virtual void turn(Angle angle) = 0;
+	/// Tourne de l'angle demandé, par rapport à l'angle actuel.
+	virtual void turnRelative(Angle angle) = 0;
 
 	virtual void stop() = 0;
+
+	virtual void setCoordinates(const repere::Coordinates& coords) = 0;
 
 	virtual repere::Coordinates getCoordinates() = 0;
 

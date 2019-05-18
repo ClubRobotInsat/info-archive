@@ -15,7 +15,12 @@ T get_input(std::string msg) {
 }
 
 int main() {
-	std::unique_ptr<Lidar> lidar = Lidar::Lidar::open_lidar(Lidar::Any);
+	std::unique_ptr<Lidar> lidar = Lidar::Lidar::open_lidar(Lidar::Sick);
+	if(lidar == nullptr) {
+		std::cerr << "No lidar found, exiting" << std::endl;
+		return 5;
+	}
+
 	std::unique_ptr<Filtre> filtre = std::make_unique<Filtre>();
 	std::unique_ptr<OccupGrid> map = std::make_unique<OccupGrid>(toVec2(GLOBAL_CONSTANTS().get_table_size()), 100, 66);
 	FindRobots robots;

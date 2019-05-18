@@ -87,7 +87,10 @@ std::unique_ptr<Lidar> Lidar::open_lidar(LidarType lidarType) {
 		}
 	}
 
+	std::cout << "LidarType: " << lidarType << std::endl;
+	std::cout << "Sick has been found? " << std::boolalpha << (sick != nullptr) << std::endl;
 	if(sick && lidarType != LidarType::Hokuyo) {
+		std::cout << "Trying to open the Sick lidar" << std::endl;
 		libusb_device_handle* hnd;
 		int rc;
 		if(sick)
@@ -102,6 +105,7 @@ std::unique_ptr<Lidar> Lidar::open_lidar(LidarType lidarType) {
 
 		return std::make_unique<SickLidar>(hnd);
 	} else if(lidarType != LidarType::Sick) {
+		std::cout << "Trying to open the Hokuyo lidar" << std::endl;
 // peut apparaitre sous plusieurs noms. on essaie des noms connus dans
 // l'ordre
 #define TRY(name)                                   \

@@ -8,32 +8,34 @@ namespace PhysicalRobot {
 
 	// Le robot n'est pas initialisé à partir de `src/robot.ini`
 	// L'utilisateur doit donc fournir un ModuleManager non vierge s'il veut un robot fonctionnel
-	Robot::Robot(std::shared_ptr<ModuleManager> module_manager, const std::vector<std::string>& args, Lidar::LidarType lidar)
-	        : Robot(std::move(module_manager), "guest", lidar) {
+	Robot::Robot(std::shared_ptr<ModuleManager> module_manager, const std::vector<std::string>& args, Lidar::LidarType lidar, bool debug_active)
+	        : Robot(std::move(module_manager), "default", lidar, debug_active) {
 		_communicator = std::make_unique<Communication::Communicator<ModuleManager>>(_module_manager);
 		_communicator->connect(args);
 	}
 
 	// Le robot est initialisé à partir de `src/robot.ini` dans la section `[robot.<name>]`
-	Robot::Robot(std::string name) : Robot(std::move(name), GLOBAL_CONSTANTS()[name].get_lidar_type()) {}
+	Robot::Robot(std::string name, bool debug_active)
+	        : Robot(std::move(name), GLOBAL_CONSTANTS()[name].get_lidar_type(), debug_active) {}
 
-	Robot::Robot(std::string name, Lidar::LidarType lidar) : Robot(std::make_shared<ModuleManager>(), name, lidar) {
+	Robot::Robot(std::string name, Lidar::LidarType lidar, bool debug_active)
+	        : Robot(std::make_shared<ModuleManager>(), name, lidar, debug_active) {
 		_communicator = std::make_unique<Communication::Communicator<ModuleManager>>(_module_manager);
 		_communicator->connect(GLOBAL_CONSTANTS()[name]);
 	}
 
-	Robot::Robot(std::string name, const std::vector<std::string>& args, Lidar::LidarType lidar)
-	        : Robot(std::make_shared<ModuleManager>(), name, lidar) {
+	Robot::Robot(std::string name, const std::vector<std::string>& args, Lidar::LidarType lidar, bool debug_active)
+	        : Robot(std::make_shared<ModuleManager>(), name, lidar, debug_active) {
 		_communicator = std::make_unique<Communication::Communicator<ModuleManager>>(_module_manager);
 		_communicator->connect(args);
 	}
 
-	Robot::Robot(std::string name, const std::vector<std::string>& args)
-	        : Robot(name, args, GLOBAL_CONSTANTS()[name].get_lidar_type()) {}
+	Robot::Robot(std::string name, const std::vector<std::string>& args, bool debug_active)
+	        : Robot(name, args, GLOBAL_CONSTANTS()[name].get_lidar_type(), debug_active) {}
 
 	/// Initialise le robot à partir des arguments passés au programme.
-	Robot::Robot(std::shared_ptr<ModuleManager> module_manager, std::string name, Lidar::LidarType lidar)
-	        : name(std::move(name)), _module_manager(std::move(module_manager)), _debug_active(false) {
+	Robot::Robot(std::shared_ptr<ModuleManager> module_manager, std::string name, Lidar::LidarType lidar, bool debug_active)
+	        : name(std::move(name)), _module_manager(std::move(module_manager)), _debug_active(debug_active) {
 		assign_modules();
 
 		try {
@@ -100,9 +102,9 @@ namespace PhysicalRobot {
 	}
 
 	void Robot::assign_modules() {
-		// Un robot 'guest' est un robot dont l'initialisation se fait à partir d'un ModuleManager directement
+		// Un robot 'default' est un robot dont l'initialisation se fait à partir d'un ModuleManager directement
 		// sans passer par les constantes introduites dans `src/robot.ini`
-		if(name == "guest") {
+		if(name == "default") {
 			return;
 		}
 
@@ -116,6 +118,10 @@ namespace PhysicalRobot {
 				_module_manager->add_module<Motors>(module.second);
 			} else if(module.first == "io") {
 				_module_manager->add_module<IO>(module.second);
+			} else if(module.first == "pumps") {
+				_module_manager->add_module<Pumps>(module.second);
+			} else if(module.first == "navigation_parameters") {
+				_module_manager->add_module<NavigationParameters>(module.second);
 			} else {
 				throw std::runtime_error("The module named '" + module.first + "' (ID: " + std::to_string(module.second) +
 				                         ") isn't known for the robot '" + name + "'.");

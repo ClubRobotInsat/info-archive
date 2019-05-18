@@ -255,7 +255,7 @@ namespace repere {
 	};
 
 	inline std::ostream& operator<<(std::ostream& os, const Coordinates& coords) {
-		os << "[x=" << coords.getX() << ", y=" << coords.getY() << ", θ=" << coords.getAngle() << " deg]";
+		os << "[x=" << coords.getX() << ", y=" << coords.getY() << ", θ=" << coords.getAngle().toDeg() << " deg]";
 		return os;
 	}
 

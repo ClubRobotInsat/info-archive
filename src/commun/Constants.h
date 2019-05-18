@@ -36,10 +36,6 @@ namespace Constants {
 		return Constants::RobotColor::Undef;
 	}
 
-	inline std::string name(const std::string& robot_name) {
-		return (robot_name != "guest" ? robot_name : "default");
-	}
-
 	class Constants;
 	class RobotInitializationData {
 		friend class Constants;
@@ -152,8 +148,6 @@ namespace Constants {
 		const repere::Repere REFERENCE_ASTAR =
 		    repere::Repere({0_m, 0_m}, repere::Multiplier::SENS_POSITIVE, repere::Multiplier::SENS_POSITIVE);
 
-		// Convertir la table du fichier texte en un objet JSON à la pré-compilation
-
 		const repere::Repere& get_reference(RobotColor color) const {
 			switch(color) {
 				case RobotColor::Yellow:
@@ -174,9 +168,11 @@ namespace Constants {
 			return _frame_period;
 		}
 
-		const JSON& TABLE_2018() const {
-			static JSON TABLE_2018 = nlohmann::json::parse(EmbeddedFiles::readText("table_2018.json"));
-			return TABLE_2018;
+		// Convertir la table du fichier texte en un objet JSON à la pré-compilation
+
+		const JSON& TABLE_2019() const {
+			static JSON TABLE_2019 = nlohmann::json::parse(EmbeddedFiles::readText("table_2019.json"));
+			return TABLE_2019;
 		}
 
 		inline Duration get_lidar_actualization_period() const {

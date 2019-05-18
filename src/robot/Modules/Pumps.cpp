@@ -6,6 +6,19 @@
 
 namespace PhysicalRobot {
 
+	Pumps::Pumps(uint8_t id) : Module(id, "Pumps") {
+		for(pump_t i = 0; i < ID_MAX_PUMP; ++i) {
+			_pumps_on_off[i] = IOState::Off;
+			_pump_intensity[i] = 0;
+		}
+		for(valve_t i = 0; i < ID_MAX_VALVE; ++i) {
+			_valves_on_off[i] = IOState::Off;
+		}
+		for(vacst_t i = 0; i < ID_MAX_VACST; ++i) {
+			_vacst_on_off[i] = IOState::Off;
+		}
+	}
+
 	void Pumps::activate_pump(pump_t id) {
 		test_is_pump_ok(id);
 
@@ -94,25 +107,29 @@ namespace PhysicalRobot {
 
 		JSON pumps;
 
-		for(pump_t id = 0; id < ID_MAX_VACST; ++id) {
+		for(pump_t id = 0; id < ID_MAX_PUMP; ++id) {
 			pumps["pumps"][id] = toString(_pumps_on_off[id].load());
 		}
 
-		pumps["pump_intensity"] = _pump_intensity[0].load();
+		for(pump_t id = 0; id < ID_MAX_PUMP; ++id) {
+			pumps["pump_intensity"][id] = _pump_intensity[id].load();
+		}
 
 		for(valve_t id = 0; id < ID_MAX_VALVE; ++id) {
-			pumps["valves"][id] = toString(_valves_on_off[id]);
+			pumps["valves"][id] = toString(_valves_on_off[id].load());
 		}
 
 		for(vacst_t id = 0; id < ID_MAX_VACST; ++id) {
-			pumps["vacuostats"][id] = toString(_vacst_on_off[id]);
+			pumps["vacuostats"][id] = toString(_vacst_on_off[id].load());
 		}
 
 		return std::vector({pumps});
 	}
 
 	void Pumps::message_processing(const JSON& j) {
-		_pump_intensity[0].exchange(j["pump_intensity"]);
+		for(pump_t id = 0; id < ID_MAX_PUMP; ++id) {
+			_pump_intensity[id].exchange(j["pump_intensity"][id]);
+		}
 	}
 
 	void Pumps::deactivation() {

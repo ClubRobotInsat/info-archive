@@ -8,13 +8,19 @@ GtkSimuContext::GtkSimuContext(int argc, char** argv, std::string id, IGuiClient
 	auto gtkApp = [this, argc, argv, id]() {
 		this->_application = std::make_unique<GtkSimuApplication>(argc, argv, id, *this);
 		this->_application->callRun();
+		this->_application = nullptr;
 	};
 
 	_gtkThread = std::thread(gtkApp);
-	_gtkThread.detach();
 }
 
-GtkSimuContext::~GtkSimuContext() = default;
+GtkSimuContext::~GtkSimuContext() {
+	// TODO ensure complete thread safety
+	if(_application != nullptr) {
+		_application->queueAction([this]() { _application->stop(); });
+	}
+	_gtkThread.join();
+}
 
 void GtkSimuContext::update() {
 	std::lock_guard<std::mutex> guard(_actionsQueueMutex);

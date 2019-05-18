@@ -12,6 +12,9 @@ include_directories(/usr/local/include/wiic/)
 set(WIIMOTE_SOURCES IA/IAWiiMote.cpp wiimote/Wiimote.cpp)
 add_executable(IAWiimote ${WIIMOTE_SOURCES})
 
+add_executable(Calibration calibration/Calibration.cpp)
+target_link_libraries(Calibration ModuleInterfacers HighLevelFunctions)
+
 if(EXISTS "/usr/bin/petrilab")
     set(USE_PETRILAB ON)
     message(STATUS "PetriLab found at '/usr/bin/petrilab'")
@@ -20,6 +23,9 @@ if(EXISTS "/usr/bin/petrilab")
 else()
     set(USE_PETRILAB OFF)
 endif()
+
+add_executable(IATest IA/IATest.cpp)
+target_link_libraries(IATest Strategy)
 
 if (RASPI)
     # WiiMote #
@@ -42,6 +48,10 @@ if (RASPI)
     else()
         message(WARNING "PetriLab is not installed, please run 'info/scripts/install.sh petri'")
     endif()
+
+    # IATest
+    message(STATUS "Compiling IATest for the raspi")
+    link_directories(/usr/arm-linux-gnueabihf/lib)
 else()
     target_link_libraries(IAWiimote ModuleInterfacers HighLevelFunctions wiicpp)
 

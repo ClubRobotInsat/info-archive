@@ -4,7 +4,11 @@
 
 #include "TestUtils.h"
 
+#ifdef PETRILAB_EXISTS
 extern void init_petri_tests(std::shared_ptr<Strategy::Interfacer::RobotManager> manager);
+#else
+void init_petri_tests(std::shared_ptr<Strategy::Interfacer::RobotManager>) {}
+#endif
 
 namespace TestUtils {
 

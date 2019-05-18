@@ -15,12 +15,12 @@ public:
 
 	/** Change le protocole actuel de la communication, et
 	 * reboot la communication. */
-	void connect(const std::shared_ptr<Communication::Protocol>& protocol);
+	void connect(std::unique_ptr<Communication::Protocol>&& protocol);
 
 	void disconnect();
 
 private:
-	std::shared_ptr<Communication::Protocol> _protocol;
+	std::unique_ptr<Communication::Protocol> _protocol;
 
 	/// Le module manager qui contient les différents modules
 	std::shared_ptr<PhysicalRobot::ModuleManager> _moduleMgr;

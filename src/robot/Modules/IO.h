@@ -12,12 +12,14 @@
 namespace PhysicalRobot {
 	ENUM_CLASS_NS(PhysicalRobot, TriggerState, Triggered, Waiting);
 	ENUM_CLASS_NS(PhysicalRobot, IOState, On, Off);
+	ENUM_CLASS_NS(PhysicalRobot, BuzzerState, Rest, PlayErrorSound, PlaySuccessSound);
 
 	class IO final : public Module {
 	public:
 		explicit IO(uint8_t id);
 
 		TriggerState read_tirette() const;
+		void set_sound(BuzzerState);
 
 	private:
 		std::vector<JSON> generate_list_jsons() const override;
@@ -26,6 +28,7 @@ namespace PhysicalRobot {
 		void deactivation() override {}
 
 		std::atomic<TriggerState> _tirette;
+		std::atomic<BuzzerState> _buzzer;
 	};
 } // namespace PhysicalRobot
 

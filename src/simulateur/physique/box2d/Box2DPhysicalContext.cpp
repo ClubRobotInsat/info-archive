@@ -52,7 +52,7 @@ IPhysicalInstance* Box2DPhysicalContext::createCylinder(const Vector3m& position
 }
 
 void Box2DPhysicalContext::remove(IPhysicalInstance* object) {
-	for(auto it = _objects.begin(); it == _objects.end(); it++) {
+	for(auto it = _objects.begin(); it != _objects.end(); it++) {
 		if((*it)->getId() == object->getId()) {
 			_objects.erase(it);
 			return;

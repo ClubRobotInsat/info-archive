@@ -58,9 +58,9 @@ public:
 	 * être un objet JSON décrivant l'état du monde. */
 	void loadWorldFromFile(std::string filename);
 
-	Object3D& createRobotFromJSON(const JSON& json, Constants::RobotColor color);
+	Object3D& createRobotFromJSON(const JSON& json, const std::string& robotName, Constants::RobotColor color);
 
-	Object3D& createRobotFromFile(std::string filename, Constants::RobotColor color);
+	Object3D& createRobotFromFile(std::string filename, const std::string& robotName, Constants::RobotColor color);
 
 	/**
 	 * Ecrit le contenu du monde dans un json et le renvoit.

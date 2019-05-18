@@ -19,8 +19,8 @@ namespace Simu {
 		assignModules();
 	}
 
-	void SimuRobot::connect(const std::shared_ptr<Communication::Protocol>& protocol) {
-		_communicator->connect(protocol);
+	void SimuRobot::connect(std::unique_ptr<Communication::Protocol>&& protocol) {
+		_communicator->connect(std::move(protocol));
 	}
 
 	void SimuRobot::update(Duration time) {
@@ -32,10 +32,10 @@ namespace Simu {
 
 		for(auto& moduleData : modules) {
 			if(moduleData.first == "navigation") {
-				logDebug3("Added navigation module at id ", static_cast<int>(moduleData.second));
+				logDebug8("Added navigation module at id ", static_cast<int>(moduleData.second));
 				_moduleMgr->add_module<SimuNavigation>(moduleData.second, _controller);
 			} else if(moduleData.first == "servos") {
-				logDebug3("Added servos module at id ", static_cast<int>(moduleData.second));
+				logDebug8("Added servos module at id ", static_cast<int>(moduleData.second));
 				_moduleMgr->add_module<SimuServos>(moduleData.second);
 			}
 		}

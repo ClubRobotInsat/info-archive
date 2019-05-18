@@ -26,7 +26,7 @@ namespace Strategy {
 
 	class AbstractStrategy {
 	public:
-		void start(Duration match = GLOBAL_CONSTANTS().get_match_duration());
+		void start(Duration match_duration = GLOBAL_CONSTANTS().get_match_duration());
 
 		// Arrête tous les actionneurs
 		virtual void stop();
@@ -60,7 +60,7 @@ namespace Strategy {
 
 		int set_points(int n);
 
-		bool debug_mode;
+		bool debug_mode = true;
 
 	protected:
 		explicit AbstractStrategy(Constants::RobotColor);

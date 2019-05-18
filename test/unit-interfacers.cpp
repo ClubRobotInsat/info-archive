@@ -40,6 +40,7 @@ TEST_CASE("Interfacers", "[integration]") {
 		REQUIRE(std::is_same<AvoidanceInterfacer::interfaced_type, void>::value);
 
 		auto manager = std::make_shared<PhysicalRobot::ModuleManager>();
+		auto& nav = manager->add_module<PhysicalRobot::Navigation>(1);
 		auto robot = std::make_shared<PhysicalRobot::Robot>(manager, std::vector{"NULL"s}, Lidar::None);
 
 		Distance sx = 40_cm;
@@ -48,6 +49,29 @@ TEST_CASE("Interfacers", "[integration]") {
 
 		AvoidanceInterfacer avoidance2(robot, env);
 		CHECK(avoidance2.get_adversary_positions().empty());
+
+		avoidance2.set_adversary_detection_angle(45_deg);
+		nav.set_coordinates(repere::Coordinates({0.5_m, 1_m}, 135_deg));
+
+		SECTION("Adversary in front") {
+			avoidance2.add_fake_adversary_position({0.3_m, 1.3_m});
+			CHECK(avoidance2.adversary_detected(50_cm, PhysicalRobot::SensAdvance::Forward));
+			CHECK_FALSE(avoidance2.adversary_detected(50_cm, PhysicalRobot::SensAdvance::Backward));
+		}
+
+		SECTION("Adversary in back") {
+			avoidance2.add_fake_adversary_position({0.8_m, 0.8_m});
+			CHECK(avoidance2.adversary_detected(50_cm, PhysicalRobot::SensAdvance::Backward));
+			CHECK_FALSE(avoidance2.adversary_detected(50_cm, PhysicalRobot::SensAdvance::Forward));
+		}
+
+		SECTION("Adversaries on sides") {
+			avoidance2.add_fake_adversary_position({0.6_m, 1.3_m});
+			avoidance2.add_fake_adversary_position({0.2_m, 0.9_m});
+			CHECK_FALSE(avoidance2.adversary_detected(50_cm, PhysicalRobot::SensAdvance::Backward));
+			CHECK_FALSE(avoidance2.adversary_detected(50_cm, PhysicalRobot::SensAdvance::Forward));
+			CHECK(avoidance2.adversary_detected(50_cm));
+		}
 	}
 
 	SECTION("NavigationInterfacer") {

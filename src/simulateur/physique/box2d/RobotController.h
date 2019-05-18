@@ -15,11 +15,14 @@ public:
 
 	void forward(Distance distance) override;
 
-	void turn(Angle angle) override;
+	void turnRelative(Angle angle) override;
 
 	void stop() override;
 
 	void emergencyStop();
+
+	/** Set position offset of the robot. Angle not supported. */
+	void setCoordinates(const repere::Coordinates& coords) override;
 
 	repere::Coordinates getCoordinates() override;
 
@@ -43,6 +46,7 @@ private:
 
 	Vector2m _prevPosition;
 	Angle _prevAngle;
+	Vector2m _positionOffset;
 };
 
 

@@ -6,7 +6,7 @@
     </Headers>
     <Macros />
     <Profiles Default="Default">
-      <Profile Name="Default" SourceOutputPath="." LibOutputPath="../build/test" DeployMode="DoNothing" DeployPath="" DeployScript="#!/bin/sh&#xA;&#xA;/bin/cp &quot;$PETRI_LIB_PATH&quot; .&#xA;" DeployWhenDebug="True" Port="12345" DebugMode="Attach" Hostname="localhost" HostProgram="" HostProgramArguments="">
+      <Profile Name="Default" SourceOutputPath="." LibOutputPath="../build" DeployMode="DoNothing" DeployPath="" DeployScript="#!/bin/sh&#xA;&#xA;/bin/cp &quot;$PETRI_LIB_PATH&quot; .&#xA;" DeployWhenDebug="True" Port="12345" DebugMode="Attach" Hostname="localhost" HostProgram="" HostProgramArguments="">
         <Compiler Invocation="/usr/bin/g++">
           <Flag Value="--std=c++17" />
         </Compiler>
@@ -19,8 +19,22 @@
         <LibPaths />
         <Libs />
       </Profile>
+      <Profile Name="ARM release" SourceOutputPath="." LibOutputPath="../build/test" DeployMode="DoNothing" DeployPath="" DeployScript="#!/bin/sh&#xA;&#xA;/bin/cp &quot;$PETRI_LIB_PATH&quot; .&#xA;" DeployWhenDebug="True" Port="12345" DebugMode="Attach" Hostname="localhost" HostProgram="" HostProgramArguments="">
+        <Compiler Invocation="/usr/bin/arm-linux-gnueabihf-g++-7">
+          <Flag Value="--std=c++17" />
+          <LinkerFlag Value="/media/storage/terae/Programs/ClubRobot/info/precompiled-libraries/libPetriRuntime.so" />
+        </Compiler>
+        <IncludePaths>
+          <IncludePath Path="../src/commun" Recursive="false" />
+          <IncludePath Path="../third_parties" Recursive="false" />
+          <IncludePath Path="../third_parties/include" Recursive="false" />
+          <IncludePath Path="../third_parties/asio/asio/include" Recursive="false" />
+        </IncludePaths>
+        <LibPaths />
+        <Libs />
+      </Profile>
     </Profiles>
-    <Window X="0" Y="0" W="1918" H="1059" />
+    <Window X="0" Y="0" W="958" H="1059" />
   </Settings>
   <PetriNet ID="0" Name="Root" X="0" Y="0" Active="true" RequiredTokens="0" Radius="30">
     <Comments />

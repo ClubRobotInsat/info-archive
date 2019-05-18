@@ -26,6 +26,6 @@ target_link_libraries(Outils_Simu pthread Resources)
 add_dependencies(Outils_Simu InfoSubmodules)
 
 #file(COPY table_2017.json table_2018.json DESTINATION ${CMAKE_BINARY_DIR}/src)
-include_file(table_2018.json)
+include_file(table_2019.json)
 include_file(../robot.ini)
 #target_compile_definitions(Outils_${SIMU_OU_ROBOT} PRIVATE INI_FILE_PATH="${CMAKE_BINARY_DIR}/src/robot.ini")

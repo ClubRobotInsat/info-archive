@@ -36,7 +36,7 @@ namespace Communication {
 				throw ErrorUDPCommunication("Failed to open the receiving socket.");
 			}
 
-			const std::string local_address = "127.0.0.1";
+			const std::string local_address = "0.0.0.0";
 			_recv_socket->bind(udp::endpoint(asio::ip::make_address(local_address), local_port), err);
 
 			if(err) {

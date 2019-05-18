@@ -1,6 +1,8 @@
 
 #include "RobotController.h"
 
+#include <log/Log.h>
+
 RobotController::RobotController(PhysicalObject& robot)
         : _robot(robot), _currentState(SimuRobotState::Idle), _blockedCounter(0) {
 
@@ -25,8 +27,8 @@ void RobotController::forward(Distance distance) {
 	_currentState = SimuRobotState::Moving;
 }
 
-void RobotController::turn(Angle angle) {
-	_angleGoal += angle;
+void RobotController::turnRelative(Angle angle) {
+	_angleGoal += angle.toMinusPiPi();
 	_currentState = SimuRobotState::Moving;
 }
 
@@ -40,8 +42,13 @@ void RobotController::emergencyStop() {
 	_currentState = SimuRobotState::Stopped;
 }
 
+void RobotController::setCoordinates(const repere::Coordinates& coords) {
+	auto currentCoords = getCoordinates();
+	_positionOffset = coords.getPos2D() - currentCoords.getPos2D();
+}
+
 repere::Coordinates RobotController::getCoordinates() {
-	return repere::Coordinates(_robot.getPosition(), _robot.getAngle());
+	return repere::Coordinates(_robot.getPosition() - _positionOffset, _robot.getAngle());
 }
 
 SimuRobotState RobotController::getState() {
@@ -75,18 +82,17 @@ void RobotController::update(Duration elapsed) {
 
 		// Check if goal is reached
 		if(abs(_currentDistance - _distanceGoal) < 0.4_mm && abs(_currentAngle - _angleGoal) < 0.4_deg) {
-
 			_currentState = SimuRobotState::Idle;
 		}
 
 		// Check if the robot is blocked
-		if(distanceDiff < 0.1_mm && angleDiff < 0.1_deg) {
+		if(abs(distanceDiff) < 0.1_mm && abs(angleDiff) < 0.1_deg) {
 			_blockedCounter++;
 		} else {
 			_blockedCounter = 0;
 		}
 
-		if(_blockedCounter > 5) {
+		if(_blockedCounter > 10) {
 			_blockedCounter = 0;
 			stop();
 			_currentState = SimuRobotState::Blocked;

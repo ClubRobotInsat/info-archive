@@ -8,10 +8,10 @@
 
 namespace PhysicalRobot {
 
-	using NavigationUtility::angle_to_u16;
-	using NavigationUtility::distance_to_u16;
-	using NavigationUtility::u16_to_angle;
-	using NavigationUtility::u16_to_distance;
+	using NavigationUtility::angle_to_i32;
+	using NavigationUtility::distance_to_i32;
+	using NavigationUtility::i32_to_angle;
+	using NavigationUtility::i32_to_distance;
 
 	void Navigation::forward(Distance distance, SensAdvance sens) {
 		lock_variables();
@@ -20,16 +20,22 @@ namespace PhysicalRobot {
 		} else {
 			set_command(MovingCommand::GoBackward);
 		}
-		_args_cmd[0] = distance_to_u16(distance);
+		_args_cmd[0] = uint16_t(distance_to_i32(distance));
 		_state_changed.exchange(true);
 		unlock_variables();
 	}
 
-	void Navigation::turn_absolute(Angle angle, SensRotation) {
-		// TODO: use the rotating sens
+	void Navigation::turn_absolute(Angle angle, SensRotation sens) {
 		lock_variables();
 		set_command(MovingCommand::TurnAbsolute);
-		_args_cmd[0] = angle_to_u16(angle);
+		_args_cmd[0] = uint16_t(angle_to_i32(angle));
+
+		if(sens == SensRotation::Trigo) {
+			_args_cmd[1] = 0;
+		} else {
+			_args_cmd[1] = 1;
+		}
+
 		_state_changed.exchange(true);
 		unlock_variables();
 	}
@@ -37,7 +43,14 @@ namespace PhysicalRobot {
 	void Navigation::turn_relative(Angle angle) {
 		lock_variables();
 		set_command(MovingCommand::TurnRelative);
-		_args_cmd[0] = angle_to_u16(angle);
+
+		if(angle > 0_deg) {
+			_args_cmd[0] = uint16_t(angle_to_i32(angle));
+			_args_cmd[1] = 0;
+		} else {
+			_args_cmd[0] = uint16_t(angle_to_i32(-angle));
+			_args_cmd[1] = 1;
+		}
 		_state_changed.exchange(true);
 		unlock_variables();
 	}
@@ -45,6 +58,13 @@ namespace PhysicalRobot {
 	void Navigation::stop() {
 		lock_variables();
 		set_command(MovingCommand::Stop);
+		_state_changed.exchange(true);
+		unlock_variables();
+	}
+
+	void Navigation::emergency_stop() {
+		lock_variables();
+		set_command(MovingCommand::EmergencyStop);
 		_state_changed.exchange(true);
 		unlock_variables();
 	}
@@ -67,30 +87,37 @@ namespace PhysicalRobot {
 	}
 
 	const repere::Repere& Navigation::get_reference() const {
-		return this->REFERENCE;
+		return Navigation::REFERENCE;
+	}
+
+	void Navigation::set_coordinates(const repere::Coordinates& coords) {
+		std::lock_guard<std::mutex> lk(_mutex_variables);
+		_reset = true;
+		_coords = coords;
+		_state_changed.exchange(true);
 	}
 
 	void Navigation::update_linear_speed(Speed speed) {
 		lock_variables();
-		// TODO
+		_linear_speed = speed;
 		unlock_variables();
 	}
 
-	void Navigation::update_angular_speed(AngularSpeed precision) {
+	void Navigation::update_angular_speed(AngularSpeed angular_speed) {
 		lock_variables();
-		// TODO
+		_angular_speed = angular_speed;
 		unlock_variables();
 	}
 
-	void Navigation::update_linear_accuracy(Distance precision) {
+	void Navigation::update_linear_accuracy(Distance accuracy) {
 		lock_variables();
-		// TODO
+		_linear_accuracy = accuracy;
 		unlock_variables();
 	}
 
-	void Navigation::update_angular_accuracy(Angle precision) {
+	void Navigation::update_angular_accuracy(Angle accuracy) {
 		lock_variables();
-		// TODO
+		_angular_accuracy = accuracy;
 		unlock_variables();
 	}
 
@@ -101,15 +128,21 @@ namespace PhysicalRobot {
 
 	bool Navigation::is_precision_reached() const {
 		std::lock_guard<std::mutex> lk(_mutex_variables);
-		// TODO
-		return true;
+		// Pas de distinction pour l'instant.
+		return _moving_done;
+	}
+
+	void Navigation::set_asserv_on_off(bool activated) {
+		lock_variables();
+		_asserv_on_off = activated;
+		unlock_variables();
 	}
 
 	std::vector<JSON> Navigation::generate_list_jsons() const {
 		JSON moving;
-		moving["x"] = distance_to_u16(_coords.getX());
-		moving["y"] = distance_to_u16(_coords.getY());
-		moving["angle"] = angle_to_u16(_coords.getAngle());
+		moving["x"] = distance_to_i32(_coords.getX());
+		moving["y"] = distance_to_i32(_coords.getY());
+		moving["angle"] = angle_to_i32(_coords.getAngle());
 		moving["blocked"] = _blocked.load();
 		moving["asserv_on_off"] = _asserv_on_off.load();
 		moving["led"] = _leds.load();
@@ -120,11 +153,16 @@ namespace PhysicalRobot {
 		moving["args_cmd2"] = _args_cmd[1];
 		moving["counter"] = _counter;
 		moving["moving_done"] = _moving_done.load();
+
+		moving["max_lin_speed"] = NavigationUtility::speed_to_u16(_linear_speed);
+		moving["max_ang_speed"] = NavigationUtility::angular_speed_to_u16(_angular_speed);
+		moving["lin_accuracy"] = uint16_t(NavigationUtility::distance_to_i32(_linear_accuracy));
+		moving["ang_accuracy"] = uint16_t(NavigationUtility::angle_to_i32(_angular_accuracy));
 		return {moving};
 	}
 
 	void Navigation::message_processing(const JSON& json) {
-		_coords = repere::Coordinates({u16_to_distance(json["x"]), u16_to_distance(json["y"])}, u16_to_angle(json["angle"]));
+		_coords = repere::Coordinates({i32_to_distance(json["x"]), i32_to_distance(json["y"])}, i32_to_angle(json["angle"]));
 
 		_blocked = json["blocked"];
 

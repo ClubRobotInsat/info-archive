@@ -72,38 +72,41 @@ bool parseArgument(int argc, char** argv, Simulateur& simulateur) {
 	}
 
 	if(color == Constants::RobotColor::Undef) {
-		logDebug5("Pas de couleur spécifiée.");
+		logError("Pas de couleur spécifiée.");
 		printHelp();
 		return false;
 	}
+	logDebug("Démarrage du simulateur");
 	std::ifstream file(json_file.c_str());
 	if(!file) {
 		// Utilisation de TABLE_2018 par défaut
+		logDebug4("Utilisation de TABLE_2019.json par défaut.");
 		json_file = "";
+	} else {
+		logDebug("Utilisation d'une nouvelle table de jeu : '", json_file, "'.");
 	}
-
-	logDebug5("Démarrage du simulateur");
 	simulateur.setJSONFile(json_file);
 
 	// Robot
+	simulateur.setRobotName(robot);
+	simulateur.setRobotColor(color);
 	if(robot != "off") {
-		simulateur.addRobot(robot, color);
-		logDebug5("Robot \"", robot, "\" ajouté ! ");
-		logDebug5(std::string("Couleur du robot : ") + toString(color));
+		logDebug("Robot \"", robot, "\" ajouté ! ");
+		logDebug(std::string("Couleur du robot : ") + toString(color));
 	} else {
 		logDebug4("Aucun robot ajouté.");
 	}
 
 	// Monde
+	simulateur.setWorldEnabled(world);
 	if(world) {
-		simulateur.initWorld();
-		logDebug5("Ajout du monde au simulateur...");
+		logDebug("Ajout du monde au simulateur...");
 	} else {
 		logDebug4("Le monde n'a pas été ajouté.");
 	}
 
+	simulateur.setPhysicsEnabled(!no_physics);
 	if(no_physics) {
-		simulateur.disableSimulation();
 		logDebug4("Desactivation de la physique");
 	}
 
@@ -114,13 +117,10 @@ int main(int argc, char** argv) {
 	Simulateur& simu = Simulateur::getInstance();
 
 	// On coupe proprement le simu.
-	std::signal(SIGINT, [](int) {
-		Simulateur::getInstance().requestStop();
-		std::cout << "Demande d'arrêt du simulateur" << std::endl;
-	});
+	std::signal(SIGINT, [](int) { Simulateur::getInstance().requestStop(); });
 
 	if(parseArgument(argc, argv, simu)) {
-		logDebug5("Starting simulator");
+		logDebug("Starting simulator");
 		simu.start();
 	}
 

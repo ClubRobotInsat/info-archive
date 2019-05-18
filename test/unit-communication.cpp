@@ -5,7 +5,7 @@
 #include "catch.hpp"
 
 #include "../src/robot/Communication/Communicator.h"
-#include "../src/robot/Communication/CommunicatorParsing.hpp"
+#include "../src/robot/Communication/CommunicatorParsing.h"
 #include "../src/robot/Modules/ModuleManager.h"
 #include "communication/GlobalFrame.h"
 
@@ -281,15 +281,17 @@ TEST_CASE("Serial Protocols - UDP", "[segfault]") {
 	SECTION("UDP") {
 		SECTION("Bad initialization") {
 			// Pas de privilège suffisant pour binder le port 10 en réception
-			REQUIRE_THROWS_WITH(Communication::protocol_udp("127.0.0.1", 10, 80),
-			                    "Failed to bind the receiving socket with 127.0.0.1:10.");
-
+#ifdef RASPI
+			REQUIRE_NOTHROW(Communication::protocol_udp("127.0.0.1", 10, 80));
+#else
+			REQUIRE_THROWS_WITH(Communication::protocol_udp("127.0.0.1", 10, 80), "Failed to bind the receiving socket with 0.0.0.0:10.");
+#endif
 			REQUIRE_NOTHROW(Communication::protocol_udp("localhost", 2345, 80));
 
 			// Multiple use of the port 1234
 			Communication::protocol_udp udp("localhost", 1234, 80);
 			REQUIRE_THROWS_WITH(Communication::protocol_udp("localhost", 1234, 80),
-			                    "Failed to bind the receiving socket with 127.0.0.1:1234.");
+			                    "Failed to bind the receiving socket with 0.0.0.0:1234.");
 		}
 
 		SECTION("Simple communication") {

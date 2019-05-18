@@ -5,6 +5,7 @@ set(MODULE_SOURCES
         IO.cpp
         Motors.cpp
         Navigation.cpp
+        NavigationParameters.cpp
         Pumps.cpp
         Servos.cpp)
 
