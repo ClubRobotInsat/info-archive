@@ -75,6 +75,7 @@ void Simulateur::update(Duration time) {
 }
 
 void Simulateur::requestStop() {
+	logDebug7("Stop request received");
 	_simuAlive = false;
 }
 

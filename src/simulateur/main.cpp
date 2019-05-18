@@ -117,10 +117,7 @@ int main(int argc, char** argv) {
 	Simulateur& simu = Simulateur::getInstance();
 
 	// On coupe proprement le simu.
-	std::signal(SIGINT, [](int) {
-		Simulateur::getInstance().requestStop();
-		std::cout << "Demande d'arrêt du simulateur" << std::endl;
-	});
+	std::signal(SIGINT, [](int) { Simulateur::getInstance().requestStop(); });
 
 	if(parseArgument(argc, argv, simu)) {
 		logDebug("Starting simulator");
