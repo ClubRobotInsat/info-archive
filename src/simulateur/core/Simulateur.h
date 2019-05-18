@@ -9,14 +9,14 @@
 
 #include <atomic>
 
+#include "../gui/IGuiClient.h"
 #include "../gui/IGuiContext.h"
-#include "SimuGuiClient.h"
 #include "SimuRobot.h"
 #include "World.h"
 
 enum SIMU_YEAR { MOON = 2017, CITY = 2018 };
 
-class Simulateur {
+class Simulateur : public IGuiClient {
 public:
 	/**
 	 * Obtient un pointeur vers l'unique instance du simulateur
@@ -78,7 +78,7 @@ public:
 	/**
 	 * Active ou désactive les collisions. Ce paramètre prend effet immédiatement.
 	 * */
-	void setPhysicsEnabled(bool enabled);
+	void setPhysicsEnabled(bool enabled) override;
 
 
 	/**
@@ -106,12 +106,28 @@ public:
 	 */
 	void resetWorld();
 
+	/**
+	 * Réinitialisation du simulateur avec les données de reset.
+	 * */
+	void resetWorld(const ResetData& resetData) override;
+
+	ResetData getResetData() override;
 
 	Simu::SimuRobot& getRobot() {
 		return *_robot;
 	}
 
 	void sendTextMessage(const std::string& message);
+
+	void connect(const ConnectionData& connectionData) override;
+
+	void createIAProcess(const IAProcessData& iaProcessData, const ConnectionData& connectionData) override;
+
+	void testNavigationForward(Distance distance) override;
+
+	void testNavigationTurn(Angle angle) override;
+
+	std::vector<std::string> getRobotColors() const override;
 
 private:
 	/// Unique instance du simulateur
@@ -122,7 +138,6 @@ private:
 	std::unique_ptr<IGuiContext> _guiCtx;
 
 	friend class SimuGuiClient;
-	SimuGuiClient _guiClient;
 
 	/// Le monde dans lequel on stocke tous les objets
 	World _theWorld;

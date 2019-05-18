@@ -21,7 +21,6 @@ message(STATUS "Irrlicht trouvé ici : ${IRRLICHT_INCLUDE_DIRS}")
 
 add_library(LibSimu
         core/Simulateur.cpp
-        core/SimuGuiClient.cpp
         core/World.cpp
         core/WorldIO.cpp
         core/Object3D.cpp

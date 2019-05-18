@@ -4,12 +4,14 @@
 #include <cstdlib>
 #include <functional>
 
+#include "../../robot/Communication/CommunicatorParsing.h"
 #include "../graphique/irrlicht/Scene.h"
 #include "../gui/gtk/GtkSimuContext.h"
 #include "../physique/box2d/Box2DPhysicalContext.h"
 #include "Commun.h"
 #include "SimulateurConstantes.h"
 #include "log/Log.h"
+
 //#include "../graphique/server/WebGraphicalContext.h"
 
 // Gestion de l'arrêt du simulateur.
@@ -23,6 +25,7 @@ public:
 
 UserHandler UserHandler::instance = UserHandler();
 
+using namespace Communication::Arguments;
 using Constants::RobotColor;
 
 std::unique_ptr<Simulateur> Simulateur::_instance = nullptr;
@@ -31,7 +34,6 @@ std::unique_ptr<Simulateur> Simulateur::_instance = nullptr;
 Simulateur::Simulateur()
         : _graphicalCtx(std::make_unique<Scene>())
         , _physicalCtx(std::make_unique<Box2DPhysicalContext>(b2Vec2(0, 0)))
-        , _guiClient(*this)
         , _theWorld(_physicalCtx.get(), _graphicalCtx.get()) {
 
 	// Ajout du handler pour savoir quand la scène est fermée par l'utilisateur
@@ -44,7 +46,7 @@ Simulateur::~Simulateur() {}
 
 void Simulateur::start() {
 	initWorld();
-	_guiCtx = std::make_unique<GtkSimuContext>(0, nullptr, "simu.gtk.app", _guiClient);
+	_guiCtx = std::make_unique<GtkSimuContext>(0, nullptr, "simu.gtk.app", *this);
 
 	_simuAlive = true;
 	auto last = TimePoint::now();
@@ -93,12 +95,73 @@ void Simulateur::resetWorld() {
 	initWorld();
 }
 
+void Simulateur::connect(const ConnectionData& connectionData) {
+	std::vector<std::string> args = connectionData.parameters;
+	args.insert(args.begin(), connectionData.method);
+
+	auto result = Parser::make_protocol(args);
+	if(result.first != typeid(void)) {
+		logDebug("Connecting to robot with : ", connectionData.method);
+		_robot->connect(std::move(result.second));
+	} else {
+		logError("Failed to connect with given arguments");
+	}
+}
+
+void Simulateur::createIAProcess(const IAProcessData& iaProcessData, const ConnectionData& connectionData) {
+	logDebug("Launching process : ", iaProcessData.executablePath);
+}
+
+void Simulateur::testNavigationForward(Distance distance) {
+	if(_robot != nullptr) {
+		auto& controller = _robot->getController();
+		controller.forward(distance);
+	}
+}
+
+void Simulateur::testNavigationTurn(Angle angle) {
+	if(_robot != nullptr) {
+		auto& controller = _robot->getController();
+		controller.turnRelative(angle);
+	}
+}
+
+void Simulateur::resetWorld(const ResetData& resetData) {
+	auto color = fromString<RobotColor>(resetData.color);
+
+	setRobotName(resetData.name);
+	setRobotColor(color);
+	setWorldEnabled(resetData.enableWorld);
+	resetWorld();
+}
+
+ResetData Simulateur::getResetData() {
+	return ResetData{
+	    _robotName,
+	    toString(_robotColor),
+	    _enableWorld,
+	    _enablePhysics,
+	};
+}
+
+std::vector<std::string> Simulateur::getRobotColors() const {
+	std::vector<std::string> result;
+
+	for(RobotColor robotColor : getEnumValues<RobotColor>()) {
+		result.emplace_back(toString(robotColor));
+	}
+
+	return result;
+}
+
 void Simulateur::initWorld() {
 	// Pour lire à partir du JSON
-	if(!_json_file.empty()) {
-		_theWorld.loadWorldFromFile(_json_file);
-	} else {
-		_theWorld.loadWorldFromJSON(GLOBAL_CONSTANTS().TABLE_2019());
+	if(_enableWorld) {
+		if(!_json_file.empty()) {
+			_theWorld.loadWorldFromFile(_json_file);
+		} else {
+			_theWorld.loadWorldFromJSON(GLOBAL_CONSTANTS().TABLE_2019());
+		}
 	}
 
 	if(_robotName != "off") {
@@ -110,7 +173,7 @@ void Simulateur::initWorld() {
 	//_theWorld.createTable();
 	//_theWorld.createAllObjects(getRobotColor());
 	//_theWorld.createDebugObjects();
-	//_theWorld.writeJSONToFile("/tmp/table_simu.json");
+	//_theWorld.writeJSONToFile("/tmp/tablejson");
 }
 
 void Simulateur::destroyWorld() {
