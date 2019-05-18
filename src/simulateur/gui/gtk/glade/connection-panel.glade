@@ -2,58 +2,30 @@
 <!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.12"/>
-  <object class="GtkFrame" id="root">
+  <object class="GtkBox" id="root">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="label_xalign">0</property>
-    <property name="shadow_type">none</property>
+    <property name="orientation">vertical</property>
     <child>
-      <object class="GtkBox" id="box1">
+      <object class="GtkBox" id="box2">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="orientation">vertical</property>
         <child>
-          <object class="GtkBox" id="box2">
+          <object class="GtkLabel" id="label1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <child>
-              <object class="GtkLabel" id="label1">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Connection Type </property>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkComboBoxText" id="connection-type">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
+            <property name="label" translatable="yes">Connection Type </property>
           </object>
           <packing>
-            <property name="expand">False</property>
+            <property name="expand">True</property>
             <property name="fill">True</property>
             <property name="position">0</property>
           </packing>
         </child>
         <child>
-          <object class="GtkLabel" id="arguments-tooltip">
+          <object class="GtkComboBoxText" id="connection-type">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="ellipsize">end</property>
-            <attributes>
-              <attribute name="foreground" value="#555557575353"/>
-            </attributes>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -61,58 +33,75 @@
             <property name="position">1</property>
           </packing>
         </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">0</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="arguments-tooltip">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="ellipsize">end</property>
+        <attributes>
+          <attribute name="foreground" value="#555557575353"/>
+        </attributes>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">1</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkBox" id="box3">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <child>
-          <object class="GtkBox" id="box3">
+          <object class="GtkLabel" id="label2">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <child>
-              <object class="GtkLabel" id="label2">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Connection Value</property>
-                <property name="ellipsize">middle</property>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkEntry" id="connection-arguments">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
+            <property name="label" translatable="yes">Connection Value</property>
+            <property name="ellipsize">middle</property>
           </object>
           <packing>
-            <property name="expand">False</property>
+            <property name="expand">True</property>
             <property name="fill">True</property>
-            <property name="position">2</property>
+            <property name="position">0</property>
           </packing>
         </child>
         <child>
-          <object class="GtkButton" id="connect-button">
-            <property name="label" translatable="yes">Connect</property>
+          <object class="GtkEntry" id="connection-arguments">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
           </object>
           <packing>
-            <property name="expand">False</property>
+            <property name="expand">True</property>
             <property name="fill">True</property>
-            <property name="position">4</property>
+            <property name="position">1</property>
           </packing>
         </child>
       </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">2</property>
+      </packing>
     </child>
-    <child type="label_item">
-      <placeholder/>
+    <child>
+      <object class="GtkButton" id="connect-button">
+        <property name="label" translatable="yes">Connect</property>
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="receives_default">True</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">4</property>
+      </packing>
     </child>
   </object>
 </interface>

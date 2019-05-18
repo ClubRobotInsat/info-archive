@@ -2,50 +2,39 @@
 <!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
-  <object class="GtkFrame" id="root">
+  <object class="GtkBox" id="root">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="label_xalign">0</property>
-    <property name="shadow_type">none</property>
+    <property name="orientation">vertical</property>
+    <property name="spacing">4</property>
     <child>
-      <object class="GtkBox">
+      <object class="GtkScrolledWindow">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="orientation">vertical</property>
-        <property name="spacing">4</property>
+        <property name="can_focus">True</property>
+        <property name="shadow_type">in</property>
+        <property name="min_content_width">400</property>
+        <property name="min_content_height">200</property>
+        <property name="propagate_natural_width">True</property>
+        <property name="propagate_natural_height">True</property>
         <child>
-          <object class="GtkScrolledWindow">
+          <object class="GtkTreeView" id="tree-view">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="shadow_type">in</property>
-            <property name="min_content_width">400</property>
-            <property name="min_content_height">200</property>
-            <property name="propagate_natural_width">True</property>
-            <property name="propagate_natural_height">True</property>
-            <child>
-              <object class="GtkTreeView" id="tree-view">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="reorderable">True</property>
-                <property name="enable_grid_lines">horizontal</property>
-                <child internal-child="selection">
-                  <object class="GtkTreeSelection"/>
-                </child>
-              </object>
+            <property name="reorderable">True</property>
+            <property name="enable_grid_lines">horizontal</property>
+            <child internal-child="selection">
+              <object class="GtkTreeSelection"/>
             </child>
           </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <placeholder/>
         </child>
       </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">0</property>
+      </packing>
     </child>
-    <child type="label_item">
+    <child>
       <placeholder/>
     </child>
   </object>
