@@ -8,7 +8,7 @@ class PanelRobotState : public Gtk::Frame {
 public:
 	PanelRobotState();
 
-	void refreshPanel(JSON json);
+	void refreshPanel(const JSON& json);
 	JSON generateTestJSON();
 
 protected:
@@ -28,18 +28,19 @@ protected:
 		Gtk::TreeModelColumn<Glib::ustring> col_status;
 	};
 
-	ModelColumns m_columns;
+	ModelColumns _columns;
 
 	// Child widgets:
-	Glib::RefPtr<Gtk::TreeStore> refTreeModel;
+	Glib::RefPtr<Gtk::TreeStore> _refTreeModel;
 
 private:
 	Glib::RefPtr<Gtk::Builder> _builder;
 
 	Gtk::TreeView* _treeView;
 
-	void setTreeView(JSON root);
-	void addChild(JSON root, Gtk::TreeModel::Row& row);
+	void updateRow(Gtk::TreeModel::Row row, const JSON::const_iterator& it);
+	void setTreeView(const JSON& root);
+	void addChild(const JSON& root, Gtk::TreeModel::Row& row);
 };
 
 #endif // ROOT_PANELROBOTSTATE_H

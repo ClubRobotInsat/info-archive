@@ -10,7 +10,7 @@ using PhysicalRobot::NavigationUtility::i32_to_angle;
 using PhysicalRobot::NavigationUtility::i32_to_distance;
 
 SimuNavigation::SimuNavigation(uint8_t id, const std::shared_ptr<IRobotController>& robotController)
-        : Module(id, "Simulator Navigation"), _robotController(robotController) {}
+        : SimuModule(id, "Simulator Navigation"), _robotController(robotController) {}
 
 void SimuNavigation::deactivation() {}
 
@@ -18,17 +18,23 @@ MovingCommand SimuNavigation::get_current_command() {
 	return _command;
 }
 
+JSON SimuNavigation::getModuleState() {
+	JSON json;
+	json["state"] = toString(_robotController->getState());
+	return json;
+}
+
 std::vector<JSON> SimuNavigation::generate_list_jsons() const {
 	// Update from RobotController
-	repere::Coordinates _coords = _robotController->getCoordinates();
+	repere::Coordinates coords = _robotController->getCoordinates();
 	auto state = _robotController->getState();
 
 	JSON frame;
 
 	// Only writeable values are sent (+ counter because Navigation modules needs it)
-	frame["x"] = distance_to_i32(_coords.getX());
-	frame["y"] = distance_to_i32(_coords.getY());
-	frame["angle"] = angle_to_i32(_coords.getAngle());
+	frame["x"] = distance_to_i32(coords.getX());
+	frame["y"] = distance_to_i32(coords.getY());
+	frame["angle"] = angle_to_i32(coords.getAngle());
 	frame["blocked"] = state == SimuRobotState::Blocked;
 	frame["moving_done"] = state == SimuRobotState::Idle;
 

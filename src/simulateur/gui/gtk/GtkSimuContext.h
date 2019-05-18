@@ -1,6 +1,7 @@
 #ifndef ROOT_GTKSIMUCONTEXT_H
 #define ROOT_GTKSIMUCONTEXT_H
 
+#include <atomic>
 #include <list>
 #include <memory>
 #include <mutex>
@@ -25,6 +26,8 @@ public:
 
 	void displayErrorMessage(const std::string& message) override;
 
+	void displayRobotState(const JSON& robotState);
+
 	void close() override;
 
 	IGuiClient& getGuiClient() {
@@ -40,6 +43,8 @@ private:
 	IGuiClient& _guiClient;
 
 	std::thread _gtkThread;
+	std::atomic_bool _appRunning;
+
 	/// Actions that should be executed on the simulator thread
 	std::list<std::function<void()>> _actionsQueue;
 	std::mutex _actionsQueueMutex;

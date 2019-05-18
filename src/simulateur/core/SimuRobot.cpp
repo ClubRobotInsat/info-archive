@@ -27,6 +27,18 @@ namespace Simu {
 		_controller->update(time);
 	}
 
+	JSON SimuRobot::getFullState() {
+		JSON json;
+
+		for(auto id : _moduleMgr->get_list_modules()) {
+			// TODO avoid dynamic cast
+			auto& module = dynamic_cast<SimuModule&>(_moduleMgr->get_module_by_id(id));
+			json[module.name] = module.getModuleState();
+		}
+
+		return json;
+	}
+
 	void SimuRobot::assignModules() {
 		auto modules = GLOBAL_CONSTANTS()[_name].get_modules();
 

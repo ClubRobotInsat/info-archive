@@ -3,15 +3,20 @@
 
 #include "GtkSimuApplication.h"
 
-GtkSimuContext::GtkSimuContext(int argc, char** argv, std::string id, IGuiClient& guiClient) : _guiClient(guiClient) {
+GtkSimuContext::GtkSimuContext(int argc, char** argv, std::string id, IGuiClient& guiClient)
+        : _guiClient(guiClient), _appRunning{false} {
 
 	auto gtkApp = [this, argc, argv, id]() {
 		this->_application = std::make_unique<GtkSimuApplication>(argc, argv, id, *this);
+		_appRunning = true;
 		this->_application->callRun();
+		_appRunning = false;
 		this->_application = nullptr;
 	};
 
 	_gtkThread = std::thread(gtkApp);
+	while(!_appRunning)
+		sleep(1_us);
 }
 
 GtkSimuContext::~GtkSimuContext() {
@@ -42,6 +47,10 @@ void GtkSimuContext::displayMessage(const std::string& message) {
 
 void GtkSimuContext::displayErrorMessage(const std::string& message) {
 	_application->queueAction([this, message]() { _application->showErrorDialog(message); });
+}
+
+void GtkSimuContext::displayRobotState(const JSON& robotState) {
+	_application->queueAction([this, robotState]() { _application->updateRobotState(robotState); });
 }
 
 void GtkSimuContext::close() {

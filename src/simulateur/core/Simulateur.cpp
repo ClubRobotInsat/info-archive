@@ -68,6 +68,7 @@ void Simulateur::update(Duration time) {
 	// Mise à jour du monde
 	if(_robot) {
 		_robot->update(time);
+		_guiCtx->displayRobotState(_robot->getFullState());
 	}
 	_theWorld.update(time);
 

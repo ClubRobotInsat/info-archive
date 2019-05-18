@@ -2,19 +2,21 @@
 #ifndef ROOT_SIMUNAVIGATION_H
 #define ROOT_SIMUNAVIGATION_H
 
-#include "../../robot/Modules/Module.hpp"
 #include "../../robot/Modules/Navigation.h"
 #include "../physique/IRobotController.h"
+#include "SimuModule.h"
 
 using PhysicalRobot::MovingCommand;
 
-class SimuNavigation : public PhysicalRobot::Module {
+class SimuNavigation : public SimuModule {
 public:
 	explicit SimuNavigation(uint8_t id, const std::shared_ptr<IRobotController>& robotController);
 
 	void deactivation() override;
 
 	MovingCommand get_current_command();
+
+	JSON getModuleState() override;
 
 protected:
 	// read-only

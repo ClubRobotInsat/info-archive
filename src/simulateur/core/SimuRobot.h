@@ -19,6 +19,8 @@ namespace Simu {
 
 		void update(Duration time);
 
+		JSON getFullState();
+
 		IRobotController& getController() {
 			return *_controller;
 		}

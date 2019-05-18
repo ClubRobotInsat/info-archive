@@ -1,13 +1,15 @@
 #ifndef ROOT_SIMULED_H
 #define ROOT_SIMULED_H
 
-#include "../../robot/Modules/Module.hpp"
+#include "SimuModule.h"
 
-class SimuLed : public PhysicalRobot::Module {
+class SimuLed : public SimuModule {
 public:
 	explicit SimuLed(uint8_t id);
 
 	void deactivation() override;
+
+	JSON getModuleState() override;
 
 protected:
 	bool _on_off;

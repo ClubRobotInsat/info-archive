@@ -34,6 +34,10 @@ public:
 
 	void showErrorDialog(const std::string& message);
 
+	void updateRobotState(const JSON& robotState) {
+		_panelRobotState.refreshPanel(robotState);
+	}
+
 	/** Queues an action to be executed on the gtk thread. */
 	void queueAction(const std::function<void()>& action);
 
