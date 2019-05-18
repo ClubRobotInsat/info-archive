@@ -184,8 +184,8 @@ void Simulateur::destroyWorld() {
 }
 
 void Simulateur::addRobot(std::string name, Constants::RobotColor color) {
-	Object3D& robotObj = (_json_file.empty() ? _theWorld.createRobotFromJSON(GLOBAL_CONSTANTS().TABLE_2019(), color) :
-	                                           _theWorld.createRobotFromFile(_json_file, color));
+	Object3D& robotObj = (_json_file.empty() ? _theWorld.createRobotFromJSON(GLOBAL_CONSTANTS().TABLE_2019(), name, color) :
+	                                           _theWorld.createRobotFromFile(_json_file, name, color));
 
 	_robot = std::make_unique<Simu::SimuRobot>(name, color, robotObj);
 }
