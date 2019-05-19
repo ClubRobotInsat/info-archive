@@ -19,6 +19,14 @@ namespace PhysicalRobot {
 
 		void set_inter_axial_length(Distance length);
 
+		Distance get_left_wheel_radius() const;
+
+		Distance get_right_wheel_radius() const;
+
+		float get_right_wheel_coef() const;
+
+		Distance get_inter_axial_length() const;
+
 	protected:
 		std::vector<JSON> generate_list_jsons() const override;
 

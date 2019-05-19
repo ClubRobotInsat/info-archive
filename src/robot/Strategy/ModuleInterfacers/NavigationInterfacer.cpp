@@ -26,11 +26,11 @@ namespace Strategy {
 		}
 
 		void NavigationInterfacer::activate_asserv() {
-			_module.set_asserv_on_off(true);
+			_module.set_asserv_enabled(true);
 		}
 
 		void NavigationInterfacer::deactivate_asserv() {
-			_module.set_asserv_on_off(false);
+			_module.set_asserv_enabled(false);
 		}
 
 		Speed NavigationInterfacer::get_linear_speed() const {

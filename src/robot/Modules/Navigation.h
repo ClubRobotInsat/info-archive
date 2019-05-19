@@ -45,6 +45,10 @@ namespace PhysicalRobot {
 
 		repere::Orientation get_orientation() const;
 
+		Distance get_left_wheel_distance() const;
+
+		Distance get_right_wheel_distance() const;
+
 		void set_coordinates(const repere::Coordinates&);
 
 		const repere::Repere& get_reference() const;
@@ -70,7 +74,11 @@ namespace PhysicalRobot {
 
 		bool is_precision_reached() const;
 
-		void set_asserv_on_off(bool activated);
+		void set_linear_asserv_enabled(bool activated);
+
+		void set_angular_asserv_enabled(bool activated);
+
+		void set_asserv_enabled(bool activated);
 
 	protected:
 		std::vector<JSON> generate_list_jsons() const override;
@@ -84,6 +92,10 @@ namespace PhysicalRobot {
 
 		/// x, y, angle
 		repere::Coordinates _coords;
+		/// Distance parcourue par la roue gauche
+		Distance _left_dist;
+		/// Distance parcourue par la roue droite
+		Distance _right_dist;
 
 		Speed _linear_speed;
 		AngularSpeed _angular_speed;
@@ -91,7 +103,8 @@ namespace PhysicalRobot {
 		Angle _angular_accuracy;
 
 		std::atomic_bool _blocked = false;
-		std::atomic_bool _asserv_on_off;
+		std::atomic_bool _asserv_lin;
+		std::atomic_bool _asserv_ang;
 		std::atomic_bool _leds;
 		std::atomic_bool _reset;
 
