@@ -28,7 +28,7 @@ void init_petri_navigation(std::shared_ptr<Strategy::Interfacer::RobotManager> m
 ActionResult forward(Distance distance, SensAdvance sens) {
 	logInfo("Forward ", distance, ", ", sens, ":");
 	Duration timeout = distance / get_linear_speed() + ADD_TIMEOUT_SECURITY;
-	auto res = navigation().forward(distance, sens);
+	auto res = navigation().forward(distance, sens, timeout);
 	if(res != ActionResult::SUCCESS) {
 		logError("Failure of Forward ", distance, ", ", sens, ": ", res);
 	}

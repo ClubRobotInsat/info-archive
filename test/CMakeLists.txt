@@ -23,6 +23,7 @@ if(EXISTS "/usr/bin/petrilab")
         target_link_libraries(petri_utils PetriRuntime)
     endif()
 
+    message(STATUS "Compiling Sample.petri")
     add_definitions(-DPETRILAB_EXISTS)
     execute_process(
             COMMAND petrilab --update --profile ${PETRILAB_PROFILE} Sample.petri

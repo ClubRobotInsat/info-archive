@@ -90,6 +90,7 @@ endfunction()
 
 if(RASPI)
 	add_definitions(-DRASPI)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-psabi")
 endif()
 
 # Il y a du code pour les ombres, apparamment. Ca a pas l'air de marcher.

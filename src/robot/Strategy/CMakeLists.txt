@@ -46,6 +46,11 @@ if (RASPI)
         message(STATUS "Compiling IAPrimary for the raspi")
         link_directories(/usr/arm-linux-gnueabihf/lib)
         target_link_libraries(IAPrimary ModuleInterfacers HighLevelFunctions dl)
+
+        execute_process(
+                COMMAND petrilab --update --profile "ARM release" PetriLab/Template.petri
+                WORKING_DIRECTORY ${root_SOURCE_DIR}/src/robot/Strategy
+        )
     else()
         message(WARNING "PetriLab is not installed, please run 'info/scripts/install.sh petri'")
     endif()
@@ -57,6 +62,10 @@ else()
     target_link_libraries(IAWiimote ModuleInterfacers HighLevelFunctions wiicpp)
 
     if(USE_PETRILAB)
+        execute_process(
+                COMMAND petrilab --update --profile "Default" PetriLab/Template.petri
+                WORKING_DIRECTORY ${root_SOURCE_DIR}/src/robot/Strategy
+        )
     else()
         message(WARNING "PetriLab is not installed, please run 'info/scripts/install.sh petri'")
     endif()

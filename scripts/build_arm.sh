@@ -52,6 +52,7 @@ dir=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 cd ${dir}
 
 petri_primary="${dir}/src/robot/Strategy/PetriLab/Template.petri"
+petri_test="${dir}/test/Sample.petri"
 
 mkdir -p build_arm && cd build_arm
 
@@ -74,7 +75,7 @@ building_petrilab () {
     file="$1"
     echo -e "${Yellow}Compiling the PetriLab Network '${file}'${End}"
     # -u pour update : génère, compile et déploi la librairie dynamique
-    petrilab -uv --profile ARM\ release "${file}"
+    petrilab -uv --profile 'ARM release' "${file}"
 
     if [ $? -eq "0" ]; then
         echo -e "${Green}Compilation Ok${End}"
@@ -86,6 +87,7 @@ building_petrilab () {
 
 if [ $compile_all -eq 1 ]; then
     building_petrilab "${petri_primary}"
+    building_petrilab "${petri_test}"
     building_process "all"
 fi
 
@@ -99,6 +101,7 @@ if [ $compile_wii -eq 1 ]; then
 fi
 
 if [ $compile_test -eq 1 ]; then
+    building_petrilab "${petri_test}"
     building_process "unit_testing_all"
 fi
 

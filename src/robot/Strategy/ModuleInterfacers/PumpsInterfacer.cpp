@@ -87,6 +87,7 @@ namespace Strategy {
 					result = ActionResult::SUCCESS;
 					break;
 				case PhysicalRobot::IOState::Off:
+				default:
 					_module.deactivate_pump(_pump_backward.pump);
 					result = ActionResult::FAILURE;
 					break;
@@ -138,9 +139,6 @@ namespace Strategy {
 
 			ActionResult result;
 			switch(_module.is_pump_activated(_pump_backward.pump)) {
-				case PhysicalRobot::IOState::On:
-					result = ActionResult::FAILURE;
-					break;
 				case PhysicalRobot::IOState::Off:
 					switch(get_backward_position()) {
 						case ArmPosition::TOP_EXTERNAL_RAIL:
@@ -159,6 +157,10 @@ namespace Strategy {
 					_hand_backward[0] = Nothing;
 					_hand_backward[1] = Nothing;
 					result = ActionResult::SUCCESS;
+					break;
+				case PhysicalRobot::IOState::On:
+				default:
+					result = ActionResult::FAILURE;
 					break;
 			}
 			return result;
