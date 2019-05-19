@@ -51,6 +51,8 @@ echo -e "${Green}Compiling with '-j ${cores}'${End}"
 dir=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 cd ${dir}
 
+petri_primary="${dir}/src/robot/Strategy/PetriLab/Template.petri"
+
 mkdir -p build_arm && cd build_arm
 
 echo -e "${Green} Generating CMakeFile${End}"
@@ -58,18 +60,37 @@ cmake .. -DRASPI="1" -DCMAKE_TOOLCHAIN_FILE="../Cross-Compilation.cmake"
 
 building_process () {
     target="$1"
-    echo -e "${Green}Building '${target}'${End}"
+    echo -e ""
+    echo -e "${Yellow}Building '${target}'${End}"
     make "${target}" -j ${cores}
     if [ $? -ne "0" ]
         then echo -e "${Red}Failed to build '${target}'${End}"
+    else
+        echo -e "${Green}Successfully built '${target}'${End}"
+    fi
+}
+
+building_petrilab () {
+    file="$1"
+    echo -e "${Yellow}Compiling the PetriLab Network '${file}'${End}"
+    # -u pour update : génère, compile et déploi la librairie dynamique
+    petrilab -uv --profile ARM\ release "${file}"
+
+    if [ $? -eq "0" ]; then
+        echo -e "${Green}Compilation Ok${End}"
+    else
+        echo -e "${Red}Compilation failed${End}"
+        exit 1
     fi
 }
 
 if [ $compile_all -eq 1 ]; then
+    building_petrilab "${petri_primary}"
     building_process "all"
 fi
 
 if [ $compile_primary -eq 1 ]; then
+    building_petrilab "${petri_primary}"
     building_process "IAPrimary"
 fi
 

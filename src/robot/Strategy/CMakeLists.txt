@@ -20,7 +20,7 @@ if(EXISTS "/usr/bin/petrilab")
     message(STATUS "PetriLab found at '/usr/bin/petrilab'")
 
     add_executable(IAPrimary IA/IAPrimary.cpp)
-    target_link_libraries(IAPrimary Strategy PetriRuntime)
+    target_link_libraries(IAPrimary Strategy -L../../../../precompiled-libraries/ PetriRuntime)
 else()
     set(USE_PETRILAB OFF)
 endif()
