@@ -19,7 +19,7 @@
         <LibPaths />
         <Libs />
       </Profile>
-      <Profile Name="ARM release" SourceOutputPath="." LibOutputPath="../build/test" DeployMode="DoNothing" DeployPath="" DeployScript="#!/bin/sh&#xA;&#xA;/bin/cp &quot;$PETRI_LIB_PATH&quot; .&#xA;" DeployWhenDebug="True" Port="12345" DebugMode="Attach" Hostname="localhost" HostProgram="" HostProgramArguments="">
+      <Profile Name="ARM release" SourceOutputPath="." LibOutputPath="../build_arm/test" DeployMode="DoNothing" DeployPath="" DeployScript="#!/bin/sh&#xA;&#xA;/bin/cp &quot;$PETRI_LIB_PATH&quot; .&#xA;" DeployWhenDebug="True" Port="12345" DebugMode="Attach" Hostname="localhost" HostProgram="" HostProgramArguments="">
         <Compiler Invocation="/usr/bin/arm-linux-gnueabihf-g++-7">
           <Flag Value="--std=c++17" />
           <LinkerFlag Value="/media/storage/terae/Programs/ClubRobot/info/precompiled-libraries/libPetriRuntime.so" />
@@ -34,7 +34,7 @@
         <Libs />
       </Profile>
     </Profiles>
-    <Window X="0" Y="0" W="958" H="1059" />
+    <Window X="0" Y="0" W="958" H="529" />
   </Settings>
   <PetriNet ID="0" Name="Root" X="0" Y="0" Active="true" RequiredTokens="0" Radius="30">
     <Comments />
