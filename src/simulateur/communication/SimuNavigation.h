@@ -21,7 +21,8 @@ public:
 protected:
 	// read-only
 	std::atomic_bool _leds;
-	std::atomic_bool _asserv_on_off;
+	std::atomic_bool _asserv_lin;
+	std::atomic_bool _asserv_ang;
 	std::atomic_bool _reset;
 
 	MovingCommand _command;

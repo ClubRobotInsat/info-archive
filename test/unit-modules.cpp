@@ -235,6 +235,7 @@ TEST_CASE("ModuleManager", "[integration]") {
 					GlobalFrame frame_nav = frames_nav[0];
 					REQUIRE(frame_nav.getDonnees()[0] == module_nav.get_id());
 
+					INFO(std::string(frame_nav.getDonnees() + 1, frame_nav.getDonnees() + frame_nav.getNbDonnees()));
 					JSON json =
 					    nlohmann::json::parse(frame_nav.getDonnees() + 1, frame_nav.getDonnees() + frame_nav.getNbDonnees());
 					CHECK(std::string("GoForward") == json["command"]);

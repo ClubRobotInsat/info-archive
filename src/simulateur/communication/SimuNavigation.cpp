@@ -46,7 +46,8 @@ std::vector<JSON> SimuNavigation::generate_list_jsons() const {
 void SimuNavigation::message_processing(const JSON& frame) {
 	// Only readeable values are read
 	_leds = frame["led"];
-	_asserv_on_off = frame["asserv_on_off"];
+	_asserv_lin = frame["asserv_lin"];
+	_asserv_lin = frame["asserv_ang"];
 	_reset = frame["reset"];
 
 	// Command parsing
