@@ -40,10 +40,14 @@ namespace Strategy {
 		}
 
 		void IOInterfacer::play_success_sound() {
+			_module.set_sound(BuzzerState::Rest);
+			sleep(50_ms);
 			_module.set_sound(BuzzerState::PlaySuccessSound);
 		}
 
 		void IOInterfacer::play_error_sound() {
+			_module.set_sound(BuzzerState::Rest);
+			sleep(50_ms);
 			_module.set_sound(BuzzerState::PlayErrorSound);
 		}
 	} // namespace Interfacer

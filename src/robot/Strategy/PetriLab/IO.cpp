@@ -18,16 +18,12 @@ void init_petri_io(std::shared_ptr<Strategy::Interfacer::RobotManager> manager) 
 }
 
 ActionResult play_success_sound() {
-	io().reset_buzzer();
-	sleep(50_ms);
 	io().play_success_sound();
 	sleep(2_s);
 	return ActionResult::SUCCESS;
 }
 
 ActionResult play_error_sound() {
-	io().reset_buzzer();
-	sleep(50_ms);
 	io().play_error_sound();
 	sleep(2_s);
 	return ActionResult::SUCCESS;
