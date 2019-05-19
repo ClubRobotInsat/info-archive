@@ -10,6 +10,7 @@ file(GLOB files "unit-*.cpp")
 list(REMOVE_ITEM files "${CMAKE_SOURCE_DIR}/test/unit-strategy_generator.cpp")
 
 add_library(test_utils STATIC TestUtils.cpp)
+target_link_libraries(test_utils Strategy)
 
 if(EXISTS "/usr/bin/petrilab")
     add_library(petri_utils STATIC PetriSample.cpp)
@@ -28,7 +29,7 @@ if(EXISTS "/usr/bin/petrilab")
             WORKING_DIRECTORY ${root_SOURCE_DIR}/test
     )
 
-    target_link_libraries(test_utils Strategy petri_utils)
+    target_link_libraries(test_utils petri_utils)
 else()
     list(REMOVE_ITEM files "${CMAKE_SOURCE_DIR}/test/unit-petri.cpp")
 endif()
@@ -54,7 +55,7 @@ endforeach()
 # Linkage de chaque exécutable par rapport à ses librairies nécessaires
 # Par défaut, 'Strategy' regroupe tout
 target_link_libraries(unit_testing_frames Outils_Robot)
-target_link_libraries(unit_testing_modules Modules Strategy test_utils)
+target_link_libraries(unit_testing_modules Modules test_utils)
 target_link_libraries(unit_testing_communication Communication)
 target_link_libraries(unit_testing_constants Outils_Robot)
 target_link_libraries(unit_testing_repere Outils_Robot)
