@@ -20,7 +20,7 @@ if(EXISTS "/usr/bin/petrilab")
     message(STATUS "PetriLab found at '/usr/bin/petrilab'")
 
     add_executable(IAPrimary IA/IAPrimary.cpp)
-    target_link_libraries(IAPrimary Strategy -L../../../../precompiled-libraries/ PetriRuntime)
+    target_link_libraries(IAPrimary Strategy)
 else()
     set(USE_PETRILAB OFF)
 endif()
@@ -32,20 +32,19 @@ if (RASPI)
     # WiiMote #
     message(STATUS "Compiling IAWiimote for the raspi")
 
-    add_library(libwiimotecpp SHARED IMPORTED)
-    add_library(libwiimotec SHARED IMPORTED)
-    set_target_properties(libwiimotecpp PROPERTIES IMPORTED_LOCATION "../../../precompiled-libraries/libwiicpp.so")
-    set_target_properties(libwiimotec PROPERTIES IMPORTED_LOCATION "../../../precompiled-libraries/libwiic.so")
+    #add_library(libwiimotecpp SHARED IMPORTED)
+    #add_library(libwiimotec SHARED IMPORTED)
+    #set_target_properties(libwiimotecpp PROPERTIES IMPORTED_LOCATION "../../../precompiled-libraries/libwiicpp.so")
+    #set_target_properties(libwiimotec PROPERTIES IMPORTED_LOCATION "../../../precompiled-libraries/libwiic.so")
 
     #link_directories(${PROJECT_SOURCE_DIR}/precompiled-libraries/)
     #add_subdirectory(precompiled-libraries)
-    target_link_libraries(IAWiimote ModuleInterfacers HighLevelFunctions libwiimotecpp libwiimotec)
+    target_link_libraries(IAWiimote ModuleInterfacers HighLevelFunctions -L../../../../precompiled-libraries/ wiicpp wiic)
 
     if(USE_PETRILAB)
         # IAPrimary
         message(STATUS "Compiling IAPrimary for the raspi")
-        link_directories(/usr/arm-linux-gnueabihf/lib)
-        target_link_libraries(IAPrimary ModuleInterfacers HighLevelFunctions dl)
+        target_link_libraries(IAPrimary dl -L../../../../precompiled-libraries/ PetriRuntime)
 
         execute_process(
                 COMMAND petrilab --update --profile "ARM release" PetriLab/Template.petri
@@ -57,9 +56,9 @@ if (RASPI)
 
     # IATest
     message(STATUS "Compiling IATest for the raspi")
-    link_directories(/usr/arm-linux-gnueabihf/lib)
 else()
     target_link_libraries(IAWiimote ModuleInterfacers HighLevelFunctions wiicpp)
+    target_link_libraries(IAPrimary PetriRuntime)
 
     if(USE_PETRILAB)
         execute_process(

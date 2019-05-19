@@ -17,7 +17,7 @@ if(EXISTS "/usr/bin/petrilab")
 
     if(RASPI)
         set(PETRILAB_PROFILE "ARM release")
-        target_link_libraries(petri_utils PetriRuntime dl)
+        target_link_libraries(petri_utils -L../../precompiled-libraries/ PetriRuntime dl)
     else()
         set(PETRILAB_PROFILE "Default")
         target_link_libraries(petri_utils PetriRuntime)
@@ -68,15 +68,18 @@ if(EXISTS "/usr/bin/petrilab")
     target_link_libraries(unit_testing_petri Strategy test_utils)
 endif()
 
-# Tests spéciaux (avec des problèmes de compatibilité c++17
-add_executable(unit_testing14_simulator_gtk $<TARGET_OBJECTS:catch_main> unit14-simulator-gtk.cpp)
-target_link_libraries(unit_testing14_simulator_gtk GtkSimu)
-set_property(TARGET unit_testing14_simulator_gtk PROPERTY CXX_STANDARD 14)
-target_include_directories(unit_testing14_simulator_gtk PRIVATE "../third_parties/catch/single_include/catch2")
-target_compile_definitions(unit_testing14_simulator_gtk PRIVATE CATCH_CONFIG_FAST_COMPILE)
-add_test(NAME "unit_testing14_simulator_gtk"
-        COMMAND unit_testing14_simulator_gtk "*"
-        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+if(RASPI)
+else()
+    # Tests spéciaux (avec des problèmes de compatibilité c++17
+    add_executable(unit_testing14_simulator_gtk $<TARGET_OBJECTS:catch_main> unit14-simulator-gtk.cpp)
+    target_link_libraries(unit_testing14_simulator_gtk GtkSimu)
+    set_property(TARGET unit_testing14_simulator_gtk PROPERTY CXX_STANDARD 14)
+    target_include_directories(unit_testing14_simulator_gtk PRIVATE "../third_parties/catch/single_include/catch2")
+    target_compile_definitions(unit_testing14_simulator_gtk PRIVATE CATCH_CONFIG_FAST_COMPILE)
+    add_test(NAME "unit_testing14_simulator_gtk"
+            COMMAND unit_testing14_simulator_gtk "*"
+            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+endif()
 
 # Ajout d'un executable qui lance tous les tests
 set(UNITTEST_TARGET_NAME "unit_testing_all")
