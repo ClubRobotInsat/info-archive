@@ -84,6 +84,8 @@ namespace Strategy {
 			/// Helpers
 			SensRotation optimal_rotation_sens(repere::Orientation from, repere::Orientation to);
 
+			EXCEPTION_CLASS(ExceptionStack);
+
 		private:
 			interfaced_type& _module;
 			AvoidanceInterfacer& _avoidance;
@@ -100,7 +102,7 @@ namespace Strategy {
 				if(stack.size() > 1000) {
 					const std::string msg_error = "Too much values on the stack!";
 					logError(msg_error);
-					throw std::runtime_error(msg_error);
+					throw ExceptionStack(msg_error);
 				}
 				stack.push(value);
 			}
@@ -111,7 +113,7 @@ namespace Strategy {
 				if(stack.size() == 1) {
 					const std::string msg_error = "Only one value on the stack, can't pop!";
 					logError(msg_error);
-					throw std::runtime_error(msg_error);
+					throw ExceptionStack(msg_error);
 				}
 				T result = stack.top();
 				stack.pop();
