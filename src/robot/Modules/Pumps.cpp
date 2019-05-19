@@ -127,8 +127,10 @@ namespace PhysicalRobot {
 	}
 
 	void Pumps::message_processing(const JSON& j) {
-		for(pump_t id = 0; id < ID_MAX_PUMP; ++id) {
-			_pump_intensity[id].exchange(j["pump_intensity"][id]);
+		if(json_has_field(j, "pump_intensity")) {
+			for(pump_t id = 0; id < ID_MAX_PUMP; ++id) {
+				_pump_intensity[id].exchange(j["pump_intensity"][id]);
+			}
 		}
 	}
 

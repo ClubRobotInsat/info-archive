@@ -24,6 +24,7 @@
 
 #include <Commun.h> // GlobalFrame
 #include <Constants.h>
+#include <log/Log.h>
 
 #include <atomic>     // atomic
 #include <functional> // function
@@ -60,7 +61,11 @@ namespace PhysicalRobot {
 		void update(const GlobalFrame& f) {
 			lock_variables();
 			std::string msg(f.getDonnees(), f.getDonnees() + f.getNbDonnees());
-			message_processing(JSON::parse(msg));
+			try {
+				message_processing(JSON::parse(msg));
+			} catch(nlohmann::detail::parse_error& e) {
+				logError("JSON parsing error: ", e.what());
+			}
 			unlock_variables();
 		}
 
@@ -95,6 +100,22 @@ namespace PhysicalRobot {
 		/// Mise à jour du module à partir d'une structure JSON Rust-friendly entrante
 		/// Cette fonction est appelée par 'update' et ne doit pas toucher au mutex
 		virtual void message_processing(const JSON&) = 0;
+
+		/// @return true si le JSON contient la liste des champs spécifiés
+		bool json_has_fields(const JSON& j, std::vector<std::string> fields) const {
+			for(std::string field : fields) {
+				if(j.find(field) == j.cend()) {
+					logError("JSON doesn't have the field '", field, "': ", j);
+					return false;
+				}
+			}
+			return true;
+		}
+
+		/// @return true si le JSON contient le champ spécifié
+		bool json_has_field(const JSON& j, std::string field) const {
+			return json_has_fields(j, std::vector<std::string>{field});
+		}
 
 		/// Bloque l'accés aux variables membres
 		void lock_variables() {

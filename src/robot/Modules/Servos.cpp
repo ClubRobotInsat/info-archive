@@ -211,22 +211,24 @@ namespace PhysicalRobot {
 	}
 
 	void Servos::message_processing(const JSON& servo) {
-		// Le mutex est bloqué par `update` donc on ne débloque temporairement pour appeler `get_index_of`
-		unlock_variables();
-		servo_t index = get_index_of(servo["id"]);
-		lock_variables();
+		if(json_has_fields(servo, {"id", "known_position", "blocked", "color"})) {
+			// Le mutex est bloqué par `update` donc on ne débloque temporairement pour appeler `get_index_of`
+			unlock_variables();
+			servo_t index = get_index_of(servo["id"]);
+			lock_variables();
 
-		if(_servos[index] != nullptr) {
-			// Les données de commande (position ou vitesse) ne sont pas prises en compte ici
-			// Seule l'informatique a le droit d'écriture dessus
-			_servos[index]->position = uint16t_to_angle(servo["known_position"]);
-			_servos[index]->blocked.exchange(servo["blocked"]);
+			if(_servos[index] != nullptr) {
+				// Les données de commande (position ou vitesse) ne sont pas prises en compte ici
+				// Seule l'informatique a le droit d'écriture dessus
+				_servos[index]->position = uint16t_to_angle(servo["known_position"]);
+				_servos[index]->blocked.exchange(servo["blocked"]);
 
-			_servos[index]->color.exchange(Color::Red);
-			for(auto ee : getEnumValues<Color>()) {
-				if(toString(ee) == servo["color"]) {
-					_servos[index]->color.exchange(ee);
-					break;
+				_servos[index]->color.exchange(Color::Red);
+				for(auto ee : getEnumValues<Color>()) {
+					if(toString(ee) == servo["color"]) {
+						_servos[index]->color.exchange(ee);
+						break;
+					}
 				}
 			}
 		}

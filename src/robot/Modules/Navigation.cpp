@@ -162,14 +162,16 @@ namespace PhysicalRobot {
 	}
 
 	void Navigation::message_processing(const JSON& json) {
-		_coords = repere::Coordinates({i32_to_distance(json["x"]), i32_to_distance(json["y"])}, i32_to_angle(json["angle"]));
+		if(json_has_fields(json, {"x", "y", "angle", "blocked", "counter", "moving_done"})) {
+			_coords = repere::Coordinates({i32_to_distance(json["x"]), i32_to_distance(json["y"])}, i32_to_angle(json["angle"]));
 
-		_blocked = json["blocked"];
+			_blocked = json["blocked"];
 
-		// moving_done est valide seulement si ils parlent
-		// de la commande actuelle.
-		if(json["counter"] == _counter) {
-			_moving_done = json["moving_done"];
+			// moving_done est valide seulement si ils parlent
+			// de la commande actuelle.
+			if(json["counter"] == _counter) {
+				_moving_done = json["moving_done"];
+			}
 		}
 	}
 

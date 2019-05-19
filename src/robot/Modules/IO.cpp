@@ -27,10 +27,13 @@ namespace PhysicalRobot {
 	}
 
 	void IO::message_processing(const JSON& j) {
-		for(auto ee : getEnumValues<TriggerState>()) {
-			if(toString(ee) == j["tirette"]) {
-				_tirette.exchange(ee);
-				break;
+		if(json_has_field(j, "tirette")) {
+			const std::string tirette_state = j["tirette"];
+			for(auto ee : getEnumValues<TriggerState>()) {
+				if(toString(ee) == tirette_state) {
+					_tirette.exchange(ee);
+					break;
+				}
 			}
 		}
 	}
