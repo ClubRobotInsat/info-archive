@@ -15,7 +15,7 @@ add_definitions(${GTKMM_CFLAGS_OTHER})
 
 set_property(TARGET GtkSimu PROPERTY CXX_STANDARD 14)
 
-target_link_libraries(GtkSimu ${GTKMM_LIBRARIES})
+target_link_libraries(GtkSimu Resources ${GTKMM_LIBRARIES})
 
 # glade files
 file(GLOB glade_files ${CMAKE_SOURCE_DIR}/src/simulateur/gui/gtk/glade/*.glade)
@@ -23,6 +23,3 @@ foreach(glade_file ${glade_files})
     get_filename_component(glade_filename ${glade_file} NAME)
     include_file(glade/${glade_filename})
 endforeach()
-
-add_executable(perso_test PanelRobotState.cpp)
-target_link_libraries(perso_test LibSimu)

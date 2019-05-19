@@ -1,4 +1,5 @@
 #include "PanelRobotState.h"
+
 #include <resources/EmbeddedFiles.h>
 
 PanelRobotState::PanelRobotState() {
