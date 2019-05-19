@@ -24,5 +24,5 @@ else
 fi
 
 echo ""
-./scripts/send_file_to_rpi.sh ./build_arm/src/robot/Principal/IA2018.so
-./scripts/send_file_to_rpi.sh ./build_arm/src/robot/Strategy/IAPrimary
+./scripts/send_file_to_rpi.sh ./build_arm/src/robot/Strategy/Template.so
+./scripts/send_file_to_rpi.sh ./build_arm/IATest
