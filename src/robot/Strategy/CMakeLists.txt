@@ -58,9 +58,9 @@ if (RASPI)
     message(STATUS "Compiling IATest for the raspi")
 else()
     target_link_libraries(IAWiimote ModuleInterfacers HighLevelFunctions wiicpp)
-    target_link_libraries(IAPrimary PetriRuntime)
 
     if(USE_PETRILAB)
+        target_link_libraries(IAPrimary PetriRuntime)
         execute_process(
                 COMMAND petrilab --update --profile "Default" PetriLab/Template.petri
                 WORKING_DIRECTORY ${root_SOURCE_DIR}/src/robot/Strategy
