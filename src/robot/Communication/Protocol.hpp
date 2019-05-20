@@ -144,7 +144,7 @@ namespace Communication {
 	template <MultiSerialProtocolType M, SerialProtocolType P>
 	void AbstractMultiSerialProtocol<M, P>::send_frame(const GlobalFrame& f) {
 		// Suppression de l'octet 0 qui correspond à l'ID ; envoi de tout le reste
-		auto msg_size = static_cast<uint8_t>(f.getNbDonnees() - 1);
+		auto msg_size = static_cast<uint16_t>(f.getNbDonnees() - 1);
 		uint8_t id = f.getDonnee(0);
 		if(auto it = _serials.find(id); it != _serials.cend()) {
 			it->second->send_frame(GlobalFrame{msg_size, f.getDonnees() + 1});
