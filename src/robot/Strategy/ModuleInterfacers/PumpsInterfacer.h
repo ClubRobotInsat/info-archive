@@ -5,7 +5,7 @@
 #ifndef ROOT_PUMPSINTERFACER_H
 #define ROOT_PUMPSINTERFACER_H
 
-#include "../PetriLab/Servos.h"
+#include "../PetriLab/ServosPrimary.h"
 #include "Interfacer.hpp"
 
 namespace Strategy {

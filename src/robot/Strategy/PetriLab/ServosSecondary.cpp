@@ -2,7 +2,7 @@
 // Created by terae on 01/02/19.
 //
 
-#include "Servos.h"
+#include "ServosSecondary.h"
 #include "../ModuleInterfacers/RobotManager.h"
 
 namespace {
@@ -15,8 +15,8 @@ namespace {
 		return _manager->get_interfacer<ServosInterfacer>();
 	}
 
-	const ServosInterfacer::servo_t ID_SERVO_FORWARD_ARM = 1;
-	const ServosInterfacer::servo_t ID_SERVO_FORWARD_HAND = 2;
+	const ServosInterfacer::servo_t ID_SERVO_FORWARD_ARM = 254;
+	const ServosInterfacer::servo_t ID_SERVO_FORWARD_HAND = 254;
 	const ServosInterfacer::servo_t ID_SERVO_BACKWARD_ARM = 3;
 	const ServosInterfacer::servo_t ID_SERVO_BACKWARD_HAND = 4;
 

@@ -2,8 +2,10 @@ set(HIGH_LEVEL_FUNCTIONS_SOURCE
         Avoidance.cpp
         IO.cpp
         Navigation.cpp
-        Pumps.cpp
-        Servos.cpp
+        PumpsPrimary.cpp
+        PumpsSecondary.cpp
+        ServosPrimary.cpp
+        ServosSecondary.cpp
         Utils.cpp)
 add_library(HighLevelFunctions STATIC ${HIGH_LEVEL_FUNCTIONS_SOURCE})
 
@@ -18,7 +20,11 @@ if(EXISTS "/usr/bin/petrilab")
         set(PETRILAB_PROFILE "Default")
     endif()
     execute_process(
-            COMMAND petrilab --update --profile ${PETRILAB_PROFILE} Template.petri
+            COMMAND petrilab --update --profile ${PETRILAB_PROFILE} Primary.petri
+            WORKING_DIRECTORY ${root_SOURCE_DIR}/src/robot/Strategy/PetriLab
+    )
+    execute_process(
+            COMMAND petrilab --update --profile ${PETRILAB_PROFILE} Secondary.petri
             WORKING_DIRECTORY ${root_SOURCE_DIR}/src/robot/Strategy/PetriLab
     )
 endif()

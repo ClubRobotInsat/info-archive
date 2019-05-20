@@ -11,11 +11,6 @@ End='\033[0;0m'
 
 scripts/build_arm.sh primary
 
-echo ""
-echo -e "${Yellow}Compilation du réseau Petri${End}"
-# -u pour update : génère, compile et déploi la librairie dynamique
-petrilab -uv --profile ARM\ release src/robot/Principal/petri/IA2018.petri
-
 if [ $? -eq "0" ]; then
     echo -e "${Green}Compilation réussie${End}"
 else
@@ -24,5 +19,5 @@ else
 fi
 
 echo ""
-./scripts/send_file_to_rpi.sh ./build_arm/src/robot/Strategy/Template.so
-./scripts/send_file_to_rpi.sh ./build_arm/IATest
+./scripts/send_file_to_rpi.sh ./build_arm/src/robot/Strategy/Primary.so
+./scripts/send_file_to_rpi.sh ./build_arm/IAPrimary

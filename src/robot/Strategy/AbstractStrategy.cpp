@@ -16,7 +16,8 @@ extern void init_petri_servos(std::shared_ptr<Strategy::Interfacer::RobotManager
 extern void init_petri_utils(Strategy::AbstractStrategy& strategy);
 
 namespace Strategy {
-	AbstractStrategy::AbstractStrategy(Constants::RobotColor color) : _color(color), _nb_points(0) {
+	AbstractStrategy::AbstractStrategy(Constants::RobotColor color, std::string name)
+	        : name(name), _color(color), _nb_points(0) {
 		if(_color == Constants::RobotColor::Undef) {
 			throw std::runtime_error("The strategy color is undefined.");
 		}
@@ -218,6 +219,10 @@ namespace Strategy {
 			return it.first;
 		});
 		return result;
+	}
+
+	std::string AbstractStrategy::get_robot_name() const {
+		return name;
 	}
 
 	void AbstractStrategy::wait_for_tirette() const {

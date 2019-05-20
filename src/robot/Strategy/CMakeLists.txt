@@ -21,6 +21,9 @@ if(EXISTS "/usr/bin/petrilab")
 
     add_executable(IAPrimary IA/IAPrimary.cpp)
     target_link_libraries(IAPrimary Strategy)
+
+    add_executable(IASecondary IA/IASecondary.cpp)
+    target_link_libraries(IASecondary Strategy)
 else()
     set(USE_PETRILAB OFF)
 endif()
@@ -47,7 +50,16 @@ if (RASPI)
         target_link_libraries(IAPrimary dl -L../../../../precompiled-libraries/ PetriRuntime)
 
         execute_process(
-                COMMAND petrilab --update --profile "ARM release" PetriLab/Template.petri
+                COMMAND petrilab --update --profile "ARM release" PetriLab/Primary.petri
+                WORKING_DIRECTORY ${root_SOURCE_DIR}/src/robot/Strategy
+        )
+
+        # IASecondary
+        message(STATUS "Compiling IASecondary for the raspi")
+        target_link_libraries(IASecondary dl -L../../../../precompiled-libraries/ PetriRuntime)
+
+        execute_process(
+                COMMAND petrilab --update --profile "ARM release" PetriLab/Secondary.petri
                 WORKING_DIRECTORY ${root_SOURCE_DIR}/src/robot/Strategy
         )
     else()
@@ -62,7 +74,13 @@ else()
     if(USE_PETRILAB)
         target_link_libraries(IAPrimary PetriRuntime)
         execute_process(
-                COMMAND petrilab --update --profile "Default" PetriLab/Template.petri
+                COMMAND petrilab --update --profile "Default" PetriLab/Primary.petri
+                WORKING_DIRECTORY ${root_SOURCE_DIR}/src/robot/Strategy
+        )
+
+        target_link_libraries(IASecondary PetriRuntime)
+        execute_process(
+                COMMAND petrilab --update --profile "Default" PetriLab/Secondary.petri
                 WORKING_DIRECTORY ${root_SOURCE_DIR}/src/robot/Strategy
         )
     else()

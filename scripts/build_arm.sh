@@ -1,12 +1,13 @@
 #!/bin/bash
 
 print_usage () {
-    echo "Usage : $0 [all|primary|wii|test|ia_test|lidar]"
+    echo "Usage : $0 [all|primary|secondary|wii|test|ia_test|lidar]"
 }
 
 #Arguments
 compile_all=0
 compile_primary=0
+compile_secondary=0
 compile_wii=0
 compile_test=0
 compile_ia_test=0
@@ -20,6 +21,8 @@ if [ $# -ne "0" ]
             then compile_all=1
         elif [ "$arg" = "primary" ]
             then compile_primary=1
+        elif [ "$arg" = "secondary" ]
+            then compile_secondary=1
         elif [ "$arg" = "wii" ]
             then compile_wii=1
         elif [ "$arg" = "test" ]
@@ -36,6 +39,7 @@ if [ $# -ne "0" ]
 else
     print_usage
     compile_primary=1
+    compile_secondary=1
     compile_wii=1
     compile_test=1
     compile_ia_test=1
@@ -51,7 +55,8 @@ echo -e "${Green}Compiling with '-j ${cores}'${End}"
 dir=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 cd ${dir}
 
-petri_primary="${dir}/src/robot/Strategy/PetriLab/Template.petri"
+petri_primary="${dir}/src/robot/Strategy/PetriLab/Primary.petri"
+petri_secondary="${dir}/src/robot/Strategy/PetriLab/Secondary.petri"
 petri_test="${dir}/test/Sample.petri"
 
 mkdir -p build_arm && cd build_arm
@@ -94,6 +99,11 @@ fi
 if [ $compile_primary -eq 1 ]; then
     building_petrilab "${petri_primary}"
     building_process "IAPrimary"
+fi
+
+if [ $compile_secondary -eq 1 ]; then
+    building_petrilab "${petri_secondary}"
+    building_process "IASecondary"
 fi
 
 if [ $compile_wii -eq 1 ]; then
