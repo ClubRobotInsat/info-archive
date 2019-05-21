@@ -70,6 +70,7 @@ namespace PhysicalRobot {
 	}
 
 	bool Navigation::is_physically_blocked() const {
+		std::lock_guard<std::mutex> lk(_mutex_variables);
 		return _blocked;
 	}
 

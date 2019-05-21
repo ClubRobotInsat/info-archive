@@ -62,7 +62,7 @@ private:
 
 	Distance _diamRoueG;
 	Distance _diamRoueD;
-	double _rapport_D_sur_G;
+	double _rapport_G_sur_D;
 
 	int _choix;
 

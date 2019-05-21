@@ -8,9 +8,9 @@
 
 namespace PhysicalRobot {
 
-	void NavigationParameters::set_coder_radius(Distance radius) {
+	void NavigationParameters::set_left_coder_radius(Distance radius) {
 		std::lock_guard<std::mutex> lk(_mutex_variables);
-		_coder_radius = uint16_t(NavigationUtility::distance_to_i32(radius));
+		_left_coder_radius = uint16_t(NavigationUtility::distance_to_i32(radius));
 	}
 
 	void NavigationParameters::set_right_wheel_coef(float coef) {
@@ -25,12 +25,12 @@ namespace PhysicalRobot {
 
 	Distance NavigationParameters::get_left_wheel_radius() const {
 		std::lock_guard<std::mutex> lk(_mutex_variables);
-		return NavigationUtility::i32_to_distance(_coder_radius);
+		return NavigationUtility::i32_to_distance(_left_coder_radius);
 	}
 
 	Distance NavigationParameters::get_right_wheel_radius() const {
 		std::lock_guard<std::mutex> lk(_mutex_variables);
-		return NavigationUtility::i32_to_distance(_coder_radius) * _right_wheel_coef;
+		return NavigationUtility::i32_to_distance(_left_coder_radius) * _right_wheel_coef;
 	}
 
 	float NavigationParameters::get_right_wheel_coef() const {
@@ -53,7 +53,7 @@ namespace PhysicalRobot {
 
 	std::vector<JSON> NavigationParameters::generate_list_jsons() const {
 		JSON result;
-		result["coder_radius"] = _coder_radius;
+		result["coder_radius"] = _left_coder_radius;
 		result["right_wheel_coef"] = convertFloat(_right_wheel_coef);
 		result["inter_axial_length"] = _inter_axial_length;
 		result["pos_kp"] = convertFloat(_pos_kp);

@@ -56,7 +56,7 @@ CalibrationDepla::CalibrationDepla(int argc, char** argv) {
 	_diamRoueG = 0_m;
 	_choix = 0;
 	_facteurEchelle_Reel_sur_Mesure = 0.0f;
-	_rapport_D_sur_G = 0.0f;
+	_rapport_G_sur_D = 0.0f;
 	_distanceParcourue = 0_m;
 
 	ParsingArguments parser(argc, argv);
@@ -1057,7 +1057,6 @@ void CalibrationDepla::diametres() {
 	logDebug0("DEBUT CALIBRATION RAPPORT DES DIAMETRES");
 	// logDebug3("Changement vitesse max");
 	navigation().push_linear_speed(40_cm_s);
-
 	navigation().deactivate_asserv();
 
 	logDebug3("Asservissement OFF");
@@ -1065,49 +1064,33 @@ void CalibrationDepla::diametres() {
 	logDebug0("RECALER ROBOT.....(puis ENTREE)");
 	getchar(); // PAUSE ____________________________________________
 
-	/*_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueD);
-	while(!_deplacement.parametreActualise())
-	    sleep(100_ms);
-	_distD_Avant = _deplacement.lireParametre();
-	logDebug0("Distance Roue D : ", _distD_Avant);*/
+	_distD_Avant = navigation()->get_right_wheel_distance();
+	logDebug0("Distance Roue D : ", _distD_Avant);
 
-	/*_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueG);
-	while(!_deplacement.parametreActualise())
-	    sleep(100_ms);
-	_distG_Avant = _deplacement.lireParametre();
-	logDebug0("Distance Roue G : ", _distG_Avant);*/
+	_distG_Avant = navigation()->get_left_wheel_distance();
+	logDebug0("Distance Roue G : ", _distG_Avant);
 
 	logDebug0("FAIRE PARCOURIR ROBOT ET LE RECALER AVEC LE MEME ANGLE....(puis ENTREE)");
 	getchar(); // PAUSE ____________________________________________
 
-	/*_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueD);
-	while(!_deplacement.parametreActualise())
-	    sleep(100_ms);
-	_distD_Apres = _deplacement.lireParametre();
-	logDebug0("Distance Roue D apres : ", _distD_Apres);*/
+	_distD_Apres = navigation()->get_right_wheel_distance();
+	logDebug0("Distance Roue D apres : ", _distD_Apres);
 
-	/*_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueG);
-	while(!_deplacement.parametreActualise())
-	    sleep(10_ms);
-	_distG_Apres = _deplacement.lireParametre();
-	logDebug0("Distance Roue G apres : ", _distG_Apres);*/
+	_distG_Apres = navigation()->get_left_wheel_distance();
+	logDebug0("Distance Roue G apres : ", _distG_Apres);
 
-	_rapport_D_sur_G = abs(_distD_Apres - _distD_Avant) / abs(_distG_Apres - _distG_Avant);
-	logDebug0("Rapport diam D / G = ", _rapport_D_sur_G);
+	_rapport_G_sur_D = abs(_distG_Apres - _distG_Avant) / abs(_distD_Apres - _distD_Avant);
+	logDebug0("Rapport diam D / G = ", _rapport_G_sur_D);
 
-	/*_deplacement.demanderParametre(ParametresCarte::Mecanique_DiametreRoueD);
-	while(!_deplacement.parametreActualise())
-	    sleep(100_ms);
-	_diamRoueD = _deplacement.lireParametre();*/
+	_diamRoueD = navigation_parameters().get_right_wheel_radius() * 2;
+	_diamRoueG = navigation_parameters().get_left_wheel_radius() * 2;
 
-	/*_deplacement.demanderParametre(ParametresCarte::Mecanique_DiametreRoueG);
-	while(!_deplacement.parametreActualise())
-	    sleep(100_ms);
-	_diamRoueG = _deplacement.lireParametre();*/
+	navigation_parameters().set_right_wheel_coef(_rapport_G_sur_D);
+	logDebug0("Diametre Roue D compense = ", _diamRoueD * _rapport_G_sur_D);
+	logDebug0("Diametre Roue G          = ", _diamRoueG);
 
-	/*_deplacement.reglerParametre(ParametresCarte::Mecanique_DiametreRoueG, _diamRoueG * _rapport_D_sur_G);*/
-	logDebug0("Diametre Roue D = ", _diamRoueD);
-	logDebug0("Diametre Roue G compense = ", _diamRoueG * _rapport_D_sur_G);
+	navigation().pop_linear_speed();
+	navigation().activate_asserv();
 
 	logDebug0("FIN CALIBRATION RAPPORT DES DIAMETRES");
 }
@@ -1121,17 +1104,11 @@ void CalibrationDepla::facteurEchelle() {
 	logDebug0("RECALER ROBOT...., puis entrée");
 	getchar(); // PAUSE ____________________________________________
 
-	/*_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueD);
-	while(!_deplacement.parametreActualise())
-	    sleep(100_ms);
-	_distD_Avant = _deplacement.lireParametre();
-	logDebug0("Distance Roue D : ", _distD_Avant);*/
+	_distD_Avant = navigation()->get_right_wheel_distance();
+	logDebug0("Distance Roue D : ", _distD_Avant);
 
-	/*_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueG);
-	while(!_deplacement.parametreActualise())
-	    sleep(100_ms);
-	_distG_Avant = _deplacement.lireParametre();
-	logDebug0("Distance Roue G : ", _distG_Avant);*/
+	_distG_Avant = navigation()->get_left_wheel_distance();
+	logDebug0("Distance Roue G : ", _distG_Avant);
 
 	logDebug0("START.....(puis ENTREE)");
 	getchar(); // PAUSE ____________________________________________
@@ -1153,17 +1130,11 @@ void CalibrationDepla::facteurEchelle() {
 	logDebug0("VERIF ROBOT CALE SUR AVANT.....(puis ENTREE)");
 	getchar(); // PAUSE ____________________________________________
 
-	/*_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueD);
-	while(!_deplacement.parametreActualise())
-	    sleep(100_ms);
-	_distD_Apres = _deplacement.lireParametre();
-	logDebug0("Distance Roue D apres : ", _distD_Apres);*/
+	_distD_Apres = navigation()->get_right_wheel_distance();
+	logDebug0("Distance Roue D apres : ", _distD_Apres);
 
-	/*_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueG);
-	while(!_deplacement.parametreActualise())
-	    sleep(100_ms);
-	_distG_Apres = _deplacement.lireParametre();
-	logDebug0("Distance Roue G apres : ", _distG_Apres);*/
+	_distG_Apres = navigation()->get_left_wheel_distance();
+	logDebug0("Distance Roue G apres : ", _distG_Apres);
 
 	_distanceParcourue = ((_distD_Apres - _distD_Avant) + (_distG_Apres - _distG_Avant)) / 2.0;
 	logDebug0("Distance parcourue = ", _distanceParcourue);
@@ -1175,19 +1146,14 @@ void CalibrationDepla::facteurEchelle() {
 	_facteurEchelle_Reel_sur_Mesure = 2.60_m / _distanceParcourue; // Secondaire : 2. //Principal : 2.
 	logDebug0("Facteur d'echelle reel / mesure = ", _facteurEchelle_Reel_sur_Mesure);
 
-	/*_deplacement.demanderParametre(ParametresCarte::Mecanique_DiametreRoueD);
-	while(!_deplacement.parametreActualise())
-	    sleep(100_ms);
-	_diamRoueD = _deplacement.lireParametre() * _facteurEchelle_Reel_sur_Mesure;
-	_deplacement.reglerParametre(ParametresCarte::Mecanique_DiametreRoueD, _diamRoueD);
-	logDebug0("Diametre Roue D calibre = ", _diamRoueD);*/
+	_diamRoueD = navigation_parameters().get_right_wheel_radius() * _facteurEchelle_Reel_sur_Mesure * 2;
+	_rapport_G_sur_D = _diamRoueG / _diamRoueD;
+	navigation_parameters().set_right_wheel_coef(static_cast<float>(_rapport_G_sur_D));
+	logDebug0("Diametre Roue D calibre = ", _diamRoueD, ", rapport G / D = ", _rapport_G_sur_D);
 
-	/*_deplacement.demanderParametre(ParametresCarte::Mecanique_DiametreRoueG);
-	while(!_deplacement.parametreActualise())
-	    sleep(100_ms);
-	_diamRoueG = _deplacement.lireParametre() * _facteurEchelle_Reel_sur_Mesure;
-	_deplacement.reglerParametre(ParametresCarte::Mecanique_DiametreRoueG, _diamRoueG);
-	logDebug0("Diametre Roue G calibre = ", _diamRoueG);*/
+	_diamRoueG = navigation_parameters().get_left_wheel_radius() * _facteurEchelle_Reel_sur_Mesure * 2;
+	navigation_parameters().set_left_coder_radius(_diamRoueG / 2);
+	logDebug0("Diametre Roue G calibre = ", _diamRoueG);
 
 	logDebug0("FIN CALIBRATION DU FACTEUR D'ECHELLE DES ENCODEURS");
 }
@@ -1232,11 +1198,8 @@ void CalibrationDepla::entreAxes() {
 	_rapportEntreAxe_Reel_sur_Mesure = (_angleBrutRobot - _angleBrutRobot_Avant).toDeg() / (10.0 * M_PI);
 	logDebug0("Rapport Entreaxe reel / mesure = ", _rapportEntreAxe_Reel_sur_Mesure);
 
-	/*_deplacement.demanderParametre(ParametresCarte::Mecanique_EntreAxe);
-	while(!_deplacement.parametreActualise())
-	    sleep(100_ms);
-	_entreAxe = _deplacement.lireParametre();
-	logDebug0("Ancien EntreAxe = ", _entreAxe);*/
+	_entreAxe = navigation_parameters().get_inter_axial_length();
+	logDebug0("Ancien EntreAxe = ", _entreAxe);
 
 	_entreAxe = _entreAxe * _rapportEntreAxe_Reel_sur_Mesure;
 	logDebug0("Nouvel EntreAxe = ", _entreAxe);
@@ -1280,13 +1243,9 @@ void CalibrationDepla::testDeplacement() {
 void CalibrationDepla::diametresAuto() {
 	logDebug0("DEBUT CALIBRATION RAPPORT DES DIAMETRES");
 
-	/*_deplacement.allerADecompose(1.5_m, 1.1_m, SensAvance::Avant);
-	this->attendreFinDeplacement();*/
+	navigation().move_to(repere::Coordinates({1.5_m, 1.1_m}, 0_deg), Strategy::Interfacer::NavigationInterfacer::SensAdvance::Forward);
 
-	// dep->pointerVers(0, 1100, SENS_TRIGO);
-	// attendreFinDeplacement();
-
-	/*_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, false);*/
+	navigation()->set_angular_asserv_enabled(false);
 
 	navigation().push_linear_speed(200_mm_s);
 	navigation().forward_infinity(SensAdvance::Backward);
@@ -1294,21 +1253,15 @@ void CalibrationDepla::diametresAuto() {
 	check_physical_blocking_appeared();
 	sleep(1_s);
 
-	/*_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueD);
-	while(!_deplacement.parametreActualise())
-	    sleep(10_ms);
-	_distD_Avant = _deplacement.lireParametre();
-	logDebug0("Distance Roue D : ", _distD_Avant);*/
+	_distD_Avant = navigation()->get_right_wheel_distance();
+	logDebug0("Distance Roue D : ", _distD_Avant);
 
-	/*_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueG);
-	while(!_deplacement.parametreActualise())
-	    sleep(10_ms);
-	_distG_Avant = _deplacement.lireParametre();
-	logDebug0("Distance Roue G : ", _distG_Avant);*/
+	_distG_Avant = navigation()->get_left_wheel_distance();
+	logDebug0("Distance Roue G : ", _distG_Avant);
 
 	navigation().stop();
 
-	/*_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, true);*/
+	navigation()->set_angular_asserv_enabled(true);
 
 	navigation().forward(200_mm, SensAdvance::Forward);
 
@@ -1326,7 +1279,7 @@ void CalibrationDepla::diametresAuto() {
 	/*_deplacement.pointerVers(Coordonnees({0_m, 1.1_m}, 0_deg, navigation()->get_reference()), SensRotation::Trigo);
 	this->attendreFinDeplacement();*/
 
-	/*_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, false);*/
+	navigation()->set_angular_asserv_enabled(false);
 
 	navigation().push_linear_speed(200_mm_s);
 	navigation().forward_infinity(SensAdvance::Backward);
@@ -1334,40 +1287,27 @@ void CalibrationDepla::diametresAuto() {
 	check_physical_blocking_appeared();
 	sleep(1_s);
 
-	/*_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueD);
-	while(!_deplacement.parametreActualise())
-	    sleep(10_ms);
-	_distD_Apres = _deplacement.lireParametre();
-	logDebug0("Distance Roue D apres : ", _distD_Apres);*/
+	_distD_Apres = navigation()->get_right_wheel_distance();
+	logDebug0("Distance Roue D apres : ", _distD_Apres);
 
-	/*_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueG);
-	while(!_deplacement.parametreActualise())
-	    sleep(10_ms);
-	_distG_Apres = _deplacement.lireParametre();
-	logDebug0("Distance Roue G apres : ", _distG_Apres);*/
+	_distG_Apres = navigation()->get_left_wheel_distance();
+	logDebug0("Distance Roue G apres : ", _distG_Apres);
 
-	_rapport_D_sur_G = abs(_distD_Apres - _distD_Avant) / abs(_distG_Apres - _distG_Avant);
-	logDebug0("Rapport diam D / G = ", _rapport_D_sur_G);
+	_rapport_G_sur_D = abs(_distG_Apres - _distG_Avant) / abs(_distD_Apres - _distD_Avant);
+	logDebug0("Rapport diam D / G = ", _rapport_G_sur_D);
 
 	navigation().stop();
 
-	/*_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, true);*/
+	navigation()->set_angular_asserv_enabled(true);
 
 	navigation().forward(200_mm, SensAdvance::Forward);
 
-	/*_deplacement.demanderParametre(ParametresCarte::Mecanique_DiametreRoueD);
-	while(!_deplacement.parametreActualise())
-	    sleep(10_ms);
-	_diamRoueD = _deplacement.lireParametre();*/
+	_diamRoueD = navigation_parameters().get_right_wheel_radius() * 2;
+	_diamRoueG = navigation_parameters().get_left_wheel_radius() * 2;
 
-	/*_deplacement.demanderParametre(ParametresCarte::Mecanique_DiametreRoueG);
-	while(!_deplacement.parametreActualise())
-	    sleep(10_ms);
-	_diamRoueG = _deplacement.lireParametre();*/
-
-	/*_deplacement.reglerParametre(ParametresCarte::Mecanique_DiametreRoueG, _diamRoueG * _rapport_D_sur_G);*/
-	logDebug0("Diametre Roue D = ", _diamRoueD);
-	logDebug0("Diametre Roue G compense = ", _diamRoueG * _rapport_D_sur_G);
+	navigation_parameters().set_right_wheel_coef(_rapport_G_sur_D);
+	logDebug0("Diametre Roue D compense = ", _diamRoueD * _rapport_G_sur_D);
+	logDebug0("Diametre Roue G          = ", _diamRoueG);
 
 	logDebug0("FIN CALIBRATION RAPPORT DES DIAMETRES");
 }
@@ -1375,44 +1315,25 @@ void CalibrationDepla::diametresAuto() {
 void CalibrationDepla::facteurEchelleAuto() {
 	logDebug0("DEBUT CALIBRATION DU FACTEUR D'ECHELLE DES ENCODEURS");
 
-	/*_deplacement.allerADecompose(2.7_m, 1.1_m, SensAvance::Avant);
-	this->attendreFinDeplacement();*/
+	navigation().move_to(repere::Coordinates({2.7_m, 1.1_m}, 0_deg));
 
-	/*_deplacement.pointerVers(repere::Coordinates({0_m, 1100_mm}, 0_deg, navigation()->get_reference()),
-	SensRotation::Trigo); this->attendreFinDeplacement();*/
+	navigation()->set_angular_asserv_enabled(false);
 
-	/*_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, false);*/
+	navigation().recaling_left(SensAdvance::Backward, 3_m - GLOBAL_CONSTANTS()["primary"].get_size().y / 2);
 
-	navigation().push_linear_speed(200_mm_s);
-	navigation().forward_infinity(SensAdvance::Backward);
-	navigation().pop_linear_speed();
-	check_physical_blocking_appeared();
-	sleep(1_s);
+	_distD_Avant = navigation()->get_right_wheel_distance();
+	logDebug0("Distance Roue D : ", _distD_Avant);
 
-	/*_deplacement.definirCoordonnees(
-	    Coordonnees(Vector2m((3_m - RobotPrincipal::RAYON_ROBOT_RECALAGE),
-	   _robot->actualiserEtLireCoordonnees().getY()), -1_PI, navigation()->get_reference()));*/
-
-	/*_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueD);
-	while(!_deplacement.parametreActualise())
-	    sleep(10_ms);
-	_distD_Avant = _deplacement.lireParametre();
-	logDebug0("Distance Roue D : ", _distD_Avant);*/
-
-	/*_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueG);
-	while(!_deplacement.parametreActualise())
-	    sleep(10_ms);
-	_distG_Avant = _deplacement.lireParametre();
-	logDebug0("Distance Roue G : ", _distG_Avant);*/
+	_distG_Avant = navigation()->get_left_wheel_distance();
+	logDebug0("Distance Roue G : ", _distG_Avant);
 
 	navigation().stop();
 
-	/*_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, true);*/
+	navigation()->set_angular_asserv_enabled(true);
 
-	//_deplacement.allerA(2.6_m, _robot->actualiserEtLireCoordonnees().getY(), SensAvance::Avant);
-	// this->attendreFinDeplacement();
+	navigation().move_to(repere::Coordinates({2.6_m, navigation()->get_position().getPos2D().y}));
 
-	/*_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, false);*/
+	navigation()->set_angular_asserv_enabled(false);
 
 	navigation().push_linear_speed(200_mm_s);
 	navigation().forward_infinity(SensAdvance::Forward);
@@ -1420,45 +1341,27 @@ void CalibrationDepla::facteurEchelleAuto() {
 	check_physical_blocking_appeared();
 	sleep(1_s);
 
-	/*_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueD);
-	while(!_deplacement.parametreActualise())
-	    sleep(10_ms);
-	_distD_Apres = _deplacement.lireParametre();
-	logDebug0("Distance Roue D apres : ", _distD_Apres);*/
+	_distD_Apres = navigation()->get_right_wheel_distance();
+	logDebug0("Distance Roue D apres : ", _distD_Apres);
 
-	/*_deplacement.demanderParametre(ParametresCarte::Etat_DistanceRoueG);
-	while(!_deplacement.parametreActualise())
-	    sleep(10_ms);
-	_distG_Apres = _deplacement.lireParametre();
-	logDebug0("Distance Roue G apres : ", _distG_Apres);*/
+	_distG_Apres = navigation()->get_left_wheel_distance();
+	logDebug0("Distance Roue G apres : ", _distG_Apres);
 
 	navigation().stop();
 
-	/*_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, true);*/
+	navigation()->set_angular_asserv_enabled(true);
 
-	/*_distanceParcourue = ((_distD_Apres - _distD_Avant) + (_distG_Apres - _distG_Avant)) / 2.0;
-	logDebug0("Distance parcourue = ", _distanceParcourue);*/
+	_distanceParcourue = ((_distD_Apres - _distD_Avant) + (_distG_Apres - _distG_Avant)) / 2.0;
+	logDebug0("Distance parcourue = ", _distanceParcourue);
 
 	// distance théorique parcourue (longueur de la table - taille du robot) / distance parcourue
 	_facteurEchelle_Reel_sur_Mesure = (3_m - 255_mm) / _distanceParcourue;
 	logDebug0("Facteur d'echelle reel / mesure = ", _facteurEchelle_Reel_sur_Mesure);
 
-	/*_deplacement.demanderParametre(ParametresCarte::Mecanique_DiametreRoueD);
-	while(!_deplacement.parametreActualise())
-	    sleep(10_ms);
-	_diamRoueD = _deplacement.lireParametre() * _facteurEchelle_Reel_sur_Mesure;
-	_deplacement.reglerParametre(ParametresCarte::Mecanique_DiametreRoueD, _diamRoueD);
-	logDebug0("Diametre Roue D calibre = ", _diamRoueD);*/
+	_diamRoueG = navigation_parameters().get_left_wheel_radius() * _facteurEchelle_Reel_sur_Mesure * 2;
+	navigation_parameters().set_left_coder_radius(_diamRoueG);
 
-	/*_deplacement.demanderParametre(ParametresCarte::Mecanique_DiametreRoueG);
-	while(!_deplacement.parametreActualise())
-	    sleep(10_ms);
-	_diamRoueG = _deplacement.lireParametre() * _facteurEchelle_Reel_sur_Mesure;
-	_deplacement.reglerParametre(ParametresCarte::Mecanique_DiametreRoueG, _diamRoueG);
-	logDebug0("Diametre Roue G calibre = ", _diamRoueG);*/
-
-	/*_deplacement.allerADecompose(2.7_m, 1.1_m, SensAvance::Arriere);
-	this->attendreFinDeplacement();*/
+	navigation().move_to(repere::Coordinates({2.7_m, 1.1_m}), SensAdvance::Backward);
 
 	logDebug0("FIN CALIBRATION DU FACTEUR D'ECHELLE DES ENCODEURS");
 }
@@ -1467,30 +1370,18 @@ void CalibrationDepla::entreAxesAuto() {
 
 	logDebug0("DEBUT CALIBRATION ENTREAXE");
 
-	/*_deplacement.allerADecompose(2.7_m, 1.1_m, SensAvance::Avant);
-	this->attendreFinDeplacement();*/
+	navigation().move_to(repere::Coordinates({2.7_m, 1.1_m}, 0_deg), SensAdvance::Forward);
 
-	/*_deplacement.pointerVers(Coordonnees({1.5_m, 1.1_m}, 0_deg, navigation()->get_reference()), SensRotation::Trigo);
-	this->attendreFinDeplacement();*/
+	navigation()->set_angular_asserv_enabled(false);
 
-	/*_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, false);*/
-
-	navigation().push_linear_speed(200_mm_s);
-	navigation().forward_infinity(SensAdvance::Backward);
-	navigation().pop_linear_speed();
-	check_physical_blocking_appeared();
-	sleep(1_s);
-
-	/*_deplacement.definirCoordonnees(
-	    Coordonnees(Vector2m((3_m - RobotPrincipal::RAYON_ROBOT_RECALAGE),
-	   _robot->actualiserEtLireCoordonnees().getY()), -1_PI, navigation()->get_reference()));*/
+	navigation().recaling_left(SensAdvance::Backward, 3_m - GLOBAL_CONSTANTS()["primary"].get_size().y / 2);
 
 	_angleBrutRobot_Avant = navigation()->get_orientation().getAngle();
 	logDebug0("Angle brut du robot = ", _angleBrutRobot_Avant);
 
 	navigation().stop();
 
-	/*_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, true);*/
+	navigation()->set_angular_asserv_enabled(true);
 
 	navigation().forward(200_mm, SensAdvance::Forward);
 	sleep(1_s);
@@ -1499,7 +1390,7 @@ void CalibrationDepla::entreAxesAuto() {
 	navigation().turn_relative(10_PI);
 	navigation().pop_angular_speed(); // FIXME: in the legacy code, they pop the angular precision
 
-	/*_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, false);*/
+	navigation()->set_angular_asserv_enabled(false);
 
 	navigation().push_linear_speed(200_mm_s);
 	navigation().forward_infinity(SensAdvance::Backward);
@@ -1512,16 +1403,12 @@ void CalibrationDepla::entreAxesAuto() {
 
 	navigation().stop();
 
-	/*_deplacement.activerAsservissement(CarteInfo<DEPLACEMENT>::typeCarte::ANGLE, true);*/
+	navigation()->set_angular_asserv_enabled(true);
 
 	_rapportEntreAxe_Reel_sur_Mesure = (_angleBrutRobot - _angleBrutRobot_Avant) / (10.0 * M_PI);
 	logDebug0("Rapport Entreaxe reel / mesure = ", _rapportEntreAxe_Reel_sur_Mesure);
 
-	/*_deplacement.demanderParametre(ParametresCarte::Mecanique_EntreAxe);
-	while(!_deplacement.parametreActualise())
-	    sleep(100_ms);
-	_entreAxe = _deplacement.lireParametre();
-	logDebug0("Ancien EntreAxe = ", _entreAxe);*/
+	_entreAxe = navigation_parameters().get_inter_axial_length();
 
 	_entreAxe = _entreAxe * _rapportEntreAxe_Reel_sur_Mesure;
 	logDebug0("Nouvel EntreAxe = ", _entreAxe);

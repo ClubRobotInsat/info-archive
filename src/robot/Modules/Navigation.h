@@ -113,7 +113,6 @@ namespace PhysicalRobot {
 		uint16_t _counter = 0;
 		std::atomic_bool _moving_done;
 
-
 		void set_command(MovingCommand command);
 	};
 } // namespace PhysicalRobot

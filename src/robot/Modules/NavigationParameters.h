@@ -13,7 +13,7 @@ namespace PhysicalRobot {
 	public:
 		explicit NavigationParameters(uint8_t id) : Module(id, "NavigationParameters") {}
 
-		void set_coder_radius(Distance radius);
+		void set_left_coder_radius(Distance radius);
 
 		void set_right_wheel_coef(float coef);
 
@@ -35,8 +35,8 @@ namespace PhysicalRobot {
 		void deactivation() override;
 
 	private:
-		/// Le rayon d'une roue codeuse en mm
-		uint16_t _coder_radius = 300;
+		/// Le rayon d'une roue codeuse en dizième de mm
+		uint16_t _left_coder_radius = 300;
 		/// Coefficient de correction de la roue codeuse droite, pour corriger
 		/// le sens et l'écart de diamètre entre les deux roues.
 		float _right_wheel_coef = 1;

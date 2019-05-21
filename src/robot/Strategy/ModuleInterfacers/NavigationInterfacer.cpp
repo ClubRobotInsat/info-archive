@@ -8,8 +8,11 @@ namespace Strategy {
 	namespace Interfacer {
 
 		// Constructor
-		NavigationInterfacer::NavigationInterfacer(std::shared_ptr<PhysicalRobot::Robot> robot, Environment& env, AvoidanceInterfacer& avoidance)
-		        : _module(robot->get_module<interfaced_type>()), _avoidance(avoidance), _env(env) {
+		NavigationInterfacer::NavigationInterfacer(std::shared_ptr<PhysicalRobot::Robot> robot,
+		                                           Environment& env,
+		                                           AvoidanceInterfacer& avoidance,
+		                                           const repere::Repere& reference)
+		        : _module(robot->get_module<interfaced_type>()), _avoidance(avoidance), _reference(reference), _env(env) {
 			push_linear_speed(GLOBAL_CONSTANTS()[robot->name].get_linear_speed());
 			push_angular_speed(GLOBAL_CONSTANTS()[robot->name].get_angular_speed());
 			push_linear_accuracy(GLOBAL_CONSTANTS()[robot->name].get_linear_accuracy());
@@ -23,6 +26,10 @@ namespace Strategy {
 		// States
 		repere::Coordinates NavigationInterfacer::get_origin_coordinates() const {
 			return _origin_coordinates;
+		}
+
+		const repere::Repere& NavigationInterfacer::get_reference() const {
+			return _reference;
 		}
 
 		void NavigationInterfacer::activate_asserv() {
@@ -117,7 +124,7 @@ namespace Strategy {
 				SensAdvance escapeSens = (sens == SensAdvance::Forward) ? SensAdvance::Backward : SensAdvance::Forward;
 				Distance escapeRadius = this->compute_backup_distance(escapeSens, 20_cm);
 
-				// Si pn ne peut pas reculer assez : on se considère bloqué par adv.
+				// Si on ne peut pas reculer assez : on se considère bloqué par adv.
 				if(escapeRadius <= 1_cm) {
 					return ActionResult::BLOCKED_BY_ADV;
 				}
@@ -166,9 +173,8 @@ namespace Strategy {
 			auto begin = TimePoint::now();
 
 			auto initial_coords = _module.get_coordinates();
-			auto ref = _module.get_reference();
-			auto initial_pos = initial_coords.getPos2D(ref);
-			auto initial_angle = initial_coords.getAngle(ref);
+			auto initial_pos = initial_coords.getPos2D(get_reference());
+			auto initial_angle = initial_coords.getAngle(get_reference());
 
 			int reverser = (sens == SensAdvance::Forward ? 1 : -1);
 			auto final_coords = initial_pos + reverser * distance * Vector2d{cos(initial_angle), sin(initial_angle)};
@@ -178,7 +184,7 @@ namespace Strategy {
 			ActionResult result;
 			do {
 				sleep(GLOBAL_CONSTANTS().get_frame_period());
-				auto current_pos = _module.get_coordinates().getPos2D(ref);
+				auto current_pos = _module.get_coordinates().getPos2D(get_reference());
 				distance = (final_coords - current_pos).norm();
 				logDebug("Current pos: ", current_pos, " | dest: ", final_coords, " | left distance: ", distance);
 				result = internal_forward(distance, sens, timeout - (TimePoint::now() - begin));
@@ -253,6 +259,22 @@ namespace Strategy {
 			return (to.getAngle() - from.getAngle()).toMinusPiPi() >= 0_rad ? SensRotation::Trigo : SensRotation::Clockwise;
 		}
 
+		ActionResult NavigationInterfacer::recaling_top(SensAdvance sens, Distance y) {
+			return recaling_helper(sens, y, std::make_pair(90_deg, -90_deg), false);
+		}
+
+		ActionResult NavigationInterfacer::recaling_bottom(SensAdvance sens, Distance y) {
+			return recaling_helper(sens, y, std::make_pair(-90_deg, 90_deg), false);
+		}
+
+		ActionResult NavigationInterfacer::recaling_right(SensAdvance sens, Distance x) {
+			return recaling_helper(sens, x, std::make_pair(0_deg, 180_deg), true);
+		}
+
+		ActionResult NavigationInterfacer::recaling_left(SensAdvance sens, Distance x) {
+			return recaling_helper(sens, x, std::make_pair(180_deg, 0_deg), true);
+		}
+
 		std::unique_lock<std::recursive_timed_mutex> NavigationInterfacer::try_get_lock_for_action() {
 			auto lock = std::unique_lock<std::recursive_timed_mutex>(_mutex_action, std::defer_lock);
 			lock.try_lock();
@@ -320,7 +342,7 @@ namespace Strategy {
 
 			using namespace repere;
 			const Repere& ref_astar = GLOBAL_CONSTANTS().REFERENCE_ASTAR;
-			const Repere& ref = _module.get_reference();
+			const Repere& ref = get_reference();
 
 			// On récupère la trajectoire depuis l'environnement
 			Coordinates origin = _module.get_coordinates();
@@ -424,8 +446,7 @@ namespace Strategy {
 		                                                        SensAdvance sens,
 		                                                        TimePoint const& date_timeout) {
 			repere::Coordinates origin = _module.get_coordinates();
-			auto ref = _module.get_reference();
-			Vector2m diff = destination.getPos2D(ref) - origin.getPos2D(ref);
+			Vector2m diff = destination.getPos2D(get_reference()) - origin.getPos2D(get_reference());
 
 			// FIXME cette valeur peut être fausse suivant le repère qu'on utilise.
 			Angle direction = atan2(diff.y, diff.x);
@@ -437,7 +458,7 @@ namespace Strategy {
 			ActionResult result;
 			if(lock.owns_lock()) {
 				logDebug("Repositionnement vers ", direction.toDeg(), " deg");
-				_module.turn_absolute(direction, optimal_rotation_sens(origin.getAngle(ref), direction));
+				_module.turn_absolute(direction, optimal_rotation_sens(origin.getAngle(get_reference()), direction));
 				result = wait_end_trajectory(get_check_moving_done(), date_timeout);
 			} else {
 				logDebug6("Module is unavailable");
@@ -466,13 +487,67 @@ namespace Strategy {
 			// On teste plusieurs positions possibles.
 			while(escapeRadius > 0_cm) {
 				// On recule
-				Vector2m escapePosition = coords.getPos2D() + direction * escapeRadius.toM();
+				Vector2m escapePosition = coords.getPos2D(get_reference()) + direction * escapeRadius.toM();
 				if(!_env.isForbidden(escapePosition)) {
 					break;
 				}
 				escapeRadius -= escapeStep;
 			}
 			return escapeRadius;
+		}
+
+		ActionResult NavigationInterfacer::recaling_helper(SensAdvance sens, Distance D, std::pair<Angle, Angle> angles, bool isX) {
+			// Ces constantes permettent aux recallages d'etre immunisés à un palet farceur qui se glisserait entre le robot et un mur
+			static constexpr Angle OFFSET_MAX_RECALING_ANGLE = 8_deg;
+			static constexpr Distance OFFSET_MAX_RECALING_DISTANCE = 5_cm;
+
+			Angle angle = (sens == SensAdvance::Forward ? angles.first : angles.second);
+			ActionResult result = turn_absolute(angle);
+			if(result != ActionResult::SUCCESS) {
+				logError("Failed to turn at the good angle");
+				return result;
+			}
+
+			push_linear_speed(get_linear_speed() / 2);
+			result = forward_infinity(sens, 10_s);
+			pop_linear_speed();
+
+			if(result != ActionResult::SUCCESS && result != ActionResult::BLOCKED) {
+				logError("Failed to reach the recaling wall");
+				stop();
+				return result;
+			}
+
+			Vector2m old_pos = _module.get_position().getPos2D(get_reference());
+			Angle old_angle = _module.get_orientation().getAngle(get_reference());
+
+			Distance old_distance = (isX ? old_pos.x : old_pos.y);
+
+			Distance variation_distance = abs(old_distance - D);
+			Angle variation_angle = abs(old_angle - angle).toMinusPiPi();
+
+			if(variation_distance > OFFSET_MAX_RECALING_DISTANCE) {
+				logWarn("Problem while recaling the robot: the variation between the actual position and the expected "
+				        "position in ",
+				        (isX ? "X" : "Y"),
+				        " is too important: ",
+				        variation_distance);
+				return ActionResult::BLOCKED;
+			}
+
+			if(variation_angle > OFFSET_MAX_RECALING_ANGLE) {
+				logWarn("Problem while recaling the robot: the variation between the actual angle and the expected "
+				        "angle is too important: ",
+				        variation_angle);
+				return ActionResult::BLOCKED;
+			}
+
+			if(isX) {
+				_module.set_coordinates(repere::Coordinates({D, old_distance}, angle, get_reference()));
+			} else {
+				_module.set_coordinates(repere::Coordinates({old_distance, D}, angle, get_reference()));
+			}
+			return ActionResult::SUCCESS;
 		}
 	} // namespace Interfacer
 } // namespace Strategy

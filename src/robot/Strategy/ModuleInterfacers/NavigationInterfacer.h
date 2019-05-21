@@ -20,11 +20,16 @@ namespace Strategy {
 			using SensRotation = PhysicalRobot::SensRotation;
 			using SensAdvance = PhysicalRobot::SensAdvance;
 
-			NavigationInterfacer(std::shared_ptr<PhysicalRobot::Robot>, Environment&, AvoidanceInterfacer&);
+			NavigationInterfacer(std::shared_ptr<PhysicalRobot::Robot>,
+			                     Environment&,
+			                     AvoidanceInterfacer&,
+			                     const repere::Repere& reference = repere::ABSOLUTE_REFERENCE);
 
 			interfaced_type* operator->();
 
 			repere::Coordinates get_origin_coordinates() const;
+
+			const repere::Repere& get_reference() const;
 
 			void activate_asserv();
 
@@ -63,7 +68,6 @@ namespace Strategy {
 			 */
 
 			ActionResult move_to(repere::Coordinates destination, Duration timeout);
-
 			ActionResult move_to(repere::Coordinates destination, SensAdvance = SensAdvance::Forward, Duration timeout = 25_s);
 
 			ActionResult forward(Distance, SensAdvance, Duration timeout = 10_s);
@@ -84,11 +88,21 @@ namespace Strategy {
 			/// Helpers
 			SensRotation optimal_rotation_sens(repere::Orientation from, repere::Orientation to);
 
+			/// Recallages
+			ActionResult recaling_top(SensAdvance sens, Distance y);
+
+			ActionResult recaling_bottom(SensAdvance sens, Distance y);
+
+			ActionResult recaling_right(SensAdvance sens, Distance x);
+
+			ActionResult recaling_left(SensAdvance sens, Distance x);
+
 			EXCEPTION_CLASS(ExceptionStack);
 
 		private:
 			interfaced_type& _module;
 			AvoidanceInterfacer& _avoidance;
+			const repere::Repere& _reference;
 
 			template <typename T>
 			T peek_stack(const std::stack<T>& stack) const {
@@ -159,6 +173,8 @@ namespace Strategy {
 			/** Propose une position de repli en cas de bloquage par l'adversaire. Choisit un point possible
 			 * parmi un nombre fini de possibilités autour de la position présente du robot */
 			Distance compute_backup_distance(SensAdvance escapeSens, Distance escapeRadius);
+
+			ActionResult recaling_helper(SensAdvance, Distance other_component, std::pair<Angle, Angle> angles, bool isX);
 
 
 			mutable std::mutex _mutex_states;

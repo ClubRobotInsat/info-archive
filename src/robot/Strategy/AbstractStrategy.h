@@ -65,7 +65,7 @@ namespace Strategy {
 		bool debug_mode = true;
 
 	protected:
-		explicit AbstractStrategy(Constants::RobotColor, std::string name);
+		explicit AbstractStrategy(Constants::RobotColor, std::string name = "default");
 
 		virtual ~AbstractStrategy() = default;
 

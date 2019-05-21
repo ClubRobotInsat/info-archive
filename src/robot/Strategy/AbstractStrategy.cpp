@@ -126,7 +126,9 @@ namespace Strategy {
 			if(debug_mode) {
 				logInfo("Insertion of an Interfacer::NavigationInterfacer inside the robot '" + robot->name + "'");
 			}
-			manager->add_interfacer<Interfacer::NavigationInterfacer>(get_environment(), avoidance);
+			manager->add_interfacer<Interfacer::NavigationInterfacer>(get_environment(),
+			                                                          avoidance,
+			                                                          GLOBAL_CONSTANTS().get_reference(_color));
 		}
 		// Interfacer::IOInterfacer
 		if(manager->get_robot()->has_module<PhysicalRobot::IO>()) {

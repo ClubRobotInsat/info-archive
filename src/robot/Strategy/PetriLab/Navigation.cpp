@@ -128,6 +128,22 @@ Distance get_distance_robot_position(Distance x, Distance y) {
 	return (get_position() - repere::Position(x, y, get_reference()).getPos2D(get_reference())).norm();
 }
 
+ActionResult recaling_top(SensAdvance sens, Distance y) {
+	return navigation().recaling_top(sens, y);
+}
+
+ActionResult recaling_bottom(SensAdvance sens, Distance y) {
+	return navigation().recaling_bottom(sens, y);
+}
+
+ActionResult recaling_right(SensAdvance sens, Distance x) {
+	return navigation().recaling_right(sens, x);
+}
+
+ActionResult recaling_left(SensAdvance sens, Distance x) {
+	return navigation().recaling_left(sens, x);
+}
+
 ActionResult set_fast_linear_speed() {
 	try {
 		navigation().push_linear_speed(get_linear_speed() * 2);
