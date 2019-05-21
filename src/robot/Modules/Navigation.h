@@ -103,8 +103,8 @@ namespace PhysicalRobot {
 		Angle _angular_accuracy;
 
 		std::atomic_bool _blocked = false;
-		std::atomic_bool _asserv_lin;
-		std::atomic_bool _asserv_ang;
+		std::atomic_bool _asserv_lin = true;
+		std::atomic_bool _asserv_ang = true;
 		std::atomic_bool _leds;
 		std::atomic_bool _reset;
 

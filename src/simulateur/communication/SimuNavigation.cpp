@@ -35,6 +35,8 @@ std::vector<JSON> SimuNavigation::generate_list_jsons() const {
 	frame["x"] = distance_to_i32(coords.getX());
 	frame["y"] = distance_to_i32(coords.getY());
 	frame["angle"] = angle_to_i32(coords.getAngle());
+	frame["left_dist"] = 0;
+	frame["right_dist"] = 0;
 	frame["blocked"] = state == SimuRobotState::Blocked;
 	frame["moving_done"] = state == SimuRobotState::Idle;
 

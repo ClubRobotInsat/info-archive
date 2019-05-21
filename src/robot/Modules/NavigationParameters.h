@@ -39,7 +39,7 @@ namespace PhysicalRobot {
 		uint16_t _left_coder_radius = 300;
 		/// Coefficient de correction de la roue codeuse droite, pour corriger
 		/// le sens et l'écart de diamètre entre les deux roues.
-		float _right_wheel_coef = 1;
+		float _right_wheel_coef = 1.00428;
 		/// La distance entre les roues codeuses en mm
 		uint16_t _inter_axial_length = 2970;
 		/// Le coefficient proportionnel sur la position

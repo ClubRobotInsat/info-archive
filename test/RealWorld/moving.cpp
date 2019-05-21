@@ -36,9 +36,10 @@ int main(int argc, char** argv) {
 	if(target == "simu") {
 		robot = std::make_shared<Robot>(m, std::vector<std::string>{"prog_moving", "UDP", "localhost", "5001", "5101"}, Lidar::None);
 	} else if(target == "robot") {
-		robot = std::make_shared<Robot>(m,
-		                                std::vector<std::string>{"prog_moving", "ETHERNET", "1", "192.168.1.1", "5001", "51"},
-		                                Lidar::None);
+		robot = std::make_shared<Robot>(
+		    m,
+		    std::vector<std::string>{"prog_moving", "ETHERNET", "1", "192.168.1.1", "5001", "51", "10", "192.168.1.1", "5010", "60"},
+		    Lidar::None);
 	} else {
 		std::cout << "Available targets: simu, robot" << std::endl;
 		exit(-1);
@@ -65,9 +66,11 @@ int main(int argc, char** argv) {
 		std::cout << "-> This test uses the NavigationParameters module" << std::endl
 		          << "(type 'q' to quit)" << std::endl;
 		auto& nav_params = m->get_module<NavigationParameters>();
+		nav_params.set_inter_axial_length(10_cm);
 
 		int c = getchar();
-		nav_params.set_inter_axial_length(10_cm);
+		nav_interfacer.deactivate_asserv();
+		// nav_interfacer.turn_absolute(40_deg);
 
 		while(c != 'q') {
 			std::cout << "robot position " << nav_module.get_coordinates() << std::endl;
