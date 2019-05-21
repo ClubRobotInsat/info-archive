@@ -144,6 +144,16 @@ ActionResult recaling_left(SensAdvance sens, Distance x) {
 	return navigation().recaling_left(sens, x);
 }
 
+ActionResult activate_asserv() {
+	navigation().activate_asserv();
+	return ActionResult::SUCCESS;
+}
+
+ActionResult deactivate_asserv() {
+	navigation().deactivate_asserv();
+	return ActionResult::SUCCESS;
+}
+
 ActionResult set_fast_linear_speed() {
 	try {
 		navigation().push_linear_speed(get_linear_speed() * 2);

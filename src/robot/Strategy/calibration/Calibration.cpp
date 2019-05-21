@@ -28,8 +28,11 @@ struct ParsingArguments {
 	uint8_t get_id_navigation() const;
 	uint8_t get_id_navigation_parameters() const;
 
-	std::string get_local_port() const;
-	std::string get_remote_port() const;
+	std::string get_local_port_navigation() const;
+	std::string get_remote_port_navigation() const;
+
+	std::string get_local_port_navigation_parameters() const;
+	std::string get_remote_port_navigation_parameters() const;
 
 	std::string get_ip() const;
 
@@ -71,8 +74,12 @@ CalibrationDepla::CalibrationDepla(int argc, char** argv) {
 	std::vector<std::string> communicator_arguments{"ETHERNET",
 	                                                std::to_string(parser.get_id_navigation()),
 	                                                parser.get_ip(),
-	                                                parser.get_local_port(),
-	                                                parser.get_remote_port()};
+	                                                parser.get_local_port_navigation(),
+	                                                parser.get_remote_port_navigation(),
+	                                                std::to_string(parser.get_id_navigation_parameters()),
+	                                                parser.get_ip(),
+	                                                parser.get_local_port_navigation_parameters(),
+	                                                parser.get_remote_port_navigation_parameters()};
 
 	auto physical_robot =
 	    std::make_shared<PhysicalRobot::Robot>(_module_manager, communicator_arguments, Lidar::LidarType::None, true);
@@ -1465,12 +1472,20 @@ uint8_t ParsingArguments::get_id_navigation_parameters() const {
 	return _id_navigation_parameters;
 }
 
-std::string ParsingArguments::get_local_port() const {
+std::string ParsingArguments::get_local_port_navigation() const {
 	return std::to_string(5000 + _id_navigation);
 }
 
-std::string ParsingArguments::get_remote_port() const {
+std::string ParsingArguments::get_remote_port_navigation() const {
 	return std::to_string(50 + _id_navigation);
+}
+
+std::string ParsingArguments::get_local_port_navigation_parameters() const {
+	return std::to_string(5000 + _id_navigation_parameters);
+}
+
+std::string ParsingArguments::get_remote_port_navigation_parameters() const {
+	return std::to_string(50 + _id_navigation_parameters);
 }
 
 std::string ParsingArguments::get_ip() const {

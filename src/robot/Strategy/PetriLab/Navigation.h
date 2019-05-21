@@ -55,6 +55,9 @@ ActionResult recaling_bottom(SensAdvance sens, Distance y);
 ActionResult recaling_right(SensAdvance sens, Distance x);
 ActionResult recaling_left(SensAdvance sens, Distance x);
 
+ActionResult activate_asserv();
+ActionResult deactivate_asserv();
+
 // @PetriLab@ Speed
 
 ActionResult set_fast_linear_speed();
