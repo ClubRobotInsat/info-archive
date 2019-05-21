@@ -111,24 +111,28 @@ namespace PhysicalRobot {
 	void Navigation::update_linear_speed(Speed speed) {
 		lock_variables();
 		_linear_speed = speed;
+		_state_changed.exchange(true);
 		unlock_variables();
 	}
 
 	void Navigation::update_angular_speed(AngularSpeed angular_speed) {
 		lock_variables();
 		_angular_speed = angular_speed;
+		_state_changed.exchange(true);
 		unlock_variables();
 	}
 
 	void Navigation::update_linear_accuracy(Distance accuracy) {
 		lock_variables();
 		_linear_accuracy = accuracy;
+		_state_changed.exchange(true);
 		unlock_variables();
 	}
 
 	void Navigation::update_angular_accuracy(Angle accuracy) {
 		lock_variables();
 		_angular_accuracy = accuracy;
+		_state_changed.exchange(true);
 		unlock_variables();
 	}
 
@@ -146,12 +150,14 @@ namespace PhysicalRobot {
 	void Navigation::set_linear_asserv_enabled(bool activated) {
 		lock_variables();
 		_asserv_lin = activated;
+		_state_changed.exchange(true);
 		unlock_variables();
 	}
 
 	void Navigation::set_angular_asserv_enabled(bool activated) {
 		lock_variables();
 		_asserv_ang = activated;
+		_state_changed.exchange(true);
 		unlock_variables();
 	}
 
@@ -159,6 +165,7 @@ namespace PhysicalRobot {
 		lock_variables();
 		_asserv_lin = activated;
 		_asserv_ang = activated;
+		_state_changed.exchange(true);
 		unlock_variables();
 	}
 

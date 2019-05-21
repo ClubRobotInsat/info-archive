@@ -1489,7 +1489,7 @@ std::string ParsingArguments::get_remote_port_navigation_parameters() const {
 }
 
 std::string ParsingArguments::get_ip() const {
-	return "191.168." + std::to_string(get_id_robot()) + "." + std::to_string(get_id_navigation());
+	return "192.168." + std::to_string(get_id_robot()) + "." + std::to_string(get_id_navigation());
 }
 
 void ParsingArguments::print_help(std::ostream& os) {

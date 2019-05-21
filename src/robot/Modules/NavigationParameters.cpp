@@ -9,18 +9,24 @@
 namespace PhysicalRobot {
 
 	void NavigationParameters::set_left_coder_radius(Distance radius) {
-		std::lock_guard<std::mutex> lk(_mutex_variables);
+		lock_variables();
 		_left_coder_radius = uint16_t(NavigationUtility::distance_to_i32(radius));
+		_state_changed.exchange(true);
+		unlock_variables();
 	}
 
 	void NavigationParameters::set_right_wheel_coef(float coef) {
-		std::lock_guard<std::mutex> lk(_mutex_variables);
+		lock_variables();
 		_right_wheel_coef = coef;
+		_state_changed.exchange(true);
+		unlock_variables();
 	}
 
 	void NavigationParameters::set_inter_axial_length(Distance length) {
-		std::lock_guard<std::mutex> lk(_mutex_variables);
+		lock_variables();
 		_inter_axial_length = uint16_t(NavigationUtility::distance_to_i32(length));
+		_state_changed.exchange(true);
+		unlock_variables();
 	}
 
 	Distance NavigationParameters::get_left_wheel_radius() const {
