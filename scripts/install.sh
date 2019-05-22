@@ -53,7 +53,8 @@ raspi_installed=0
 if [ $install_apt -eq 1 ]
     then echo -e "${Yellow}Installation des logiciels nécessaires${End}"
     sudo apt-get update
-    sudo apt-get install mono-complete cmake git libbox2d-dev gcc-7 g++-7 libbluetooth-dev build-essential libglu1-mesa-dev curl libgtkmm-3.0-dev libusb-1.0-0-dev clang-format libirrlicht-dev # libglfw-dev
+    sudo apt-get install cmake git libbox2d-dev gcc-7 g++-7 libbluetooth-dev build-essential libglu1-mesa-dev curl libgtkmm-3.0-dev libusb-1.0-0-dev clang-format libirrlicht-dev # libglfw-dev
+    sudo usermod -a -G dialout ${USER}
 fi
 
 if [ $install_hook -eq 1 ]
@@ -88,7 +89,7 @@ if [ $install_wii -eq 1 ]
     cmake src
     make
     sudo make install
-	sudo ldconfig
+    sudo ldconfig
 
     if [ $? -eq "0" ]
         then echo -e "${Green}Installation de libwiic réussie${End}"

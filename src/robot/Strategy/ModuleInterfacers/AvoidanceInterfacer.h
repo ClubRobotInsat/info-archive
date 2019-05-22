@@ -21,7 +21,7 @@ namespace Strategy {
 
 			~AvoidanceInterfacer() override;
 
-			void set_turret_shift(Vector2m shift);
+			void set_turret_shift(const Vector2m& shift);
 
 			std::vector<repere::Position> get_adversary_positions() const;
 

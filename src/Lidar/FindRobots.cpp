@@ -12,7 +12,7 @@ namespace {
 	const int MIN_PTS = 6;   // nb de points à trouver pour considérer une victoire
 
 	// score minimal pour qu'un condidat soit reporté à l'utilisateur
-	const int MIN_WIN = 10;
+	const int MIN_WIN = 0;
 	const int MAX_WIN = 12; // cap de score.
 } // namespace
 

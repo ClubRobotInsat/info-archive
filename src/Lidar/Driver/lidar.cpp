@@ -103,15 +103,18 @@ std::unique_ptr<Lidar> Lidar::open_lidar(LidarType lidarType) {
 		if(!hnd)
 			throw std::runtime_error("Erreur inconnue.");
 
+		std::cout << "Sick lidar found!" << std::endl;
 		return std::make_unique<SickLidar>(hnd);
 	} else if(lidarType != LidarType::Sick) {
 		std::cout << "Trying to open the Hokuyo lidar" << std::endl;
 // peut apparaitre sous plusieurs noms. on essaie des noms connus dans
 // l'ordre
-#define TRY(name)                                   \
-	try {                                           \
-		return std::make_unique<HokuyoLidar>(name); \
-	} catch(...) {                                  \
+#define TRY(name)                                         \
+	try {                                                 \
+		auto lidar = std::make_unique<HokuyoLidar>(name); \
+		std::cout << "Hokuyo lidar found!" << std::endl;  \
+		return lidar;                                     \
+	} catch(...) {                                        \
 	}
 		TRY("/dev/ttyACM0");
 		TRY("/dev/ttyACM1");

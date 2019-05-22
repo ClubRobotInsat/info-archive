@@ -22,7 +22,7 @@ namespace Strategy {
 			_thread_lidar.join();
 		}
 
-		void AvoidanceInterfacer::set_turret_shift(Vector2m shift) {
+		void AvoidanceInterfacer::set_turret_shift(const Vector2m& shift) {
 			_turret_shift = shift;
 		}
 
@@ -130,6 +130,7 @@ namespace Strategy {
 					_mutex_adversary.lock();
 					_adversary_positions = robots.get_results();
 				} else {
+					logWarn("AvoidanceInterfacer::thread_lidar_main does not have any frame");
 					_mutex_adversary.lock();
 					_adversary_positions.clear();
 				}
