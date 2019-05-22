@@ -19,8 +19,16 @@ MovingCommand SimuNavigation::get_current_command() {
 }
 
 JSON SimuNavigation::getModuleState() {
+	lock_variables();
 	JSON json;
+	repere::Coordinates coords = _robotController->getCoordinates();
+
+	json["position"] = {};
+	json["position"]["x"] = coords.getX().toM();
+	json["position"]["y"] = coords.getY().toM();
+	json["position"]["angle"] = coords.getAngle().toDeg();
 	json["state"] = toString(_robotController->getState());
+	unlock_variables();
 	return json;
 }
 
