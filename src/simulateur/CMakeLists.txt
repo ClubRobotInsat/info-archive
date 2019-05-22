@@ -50,7 +50,9 @@ add_library(LibSimu
         communication/SimuCommunicator.cpp
         communication/SimuServos.cpp
         communication/SimuLed.cpp
-        communication/SimuNavigation.cpp)
+        communication/SimuNavigation.cpp
+        communication/SimuPumps.cpp
+        communication/SimuIO.cpp)
 
 add_subdirectory(gui/gtk)
 

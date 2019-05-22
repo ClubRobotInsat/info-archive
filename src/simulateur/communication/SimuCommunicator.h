@@ -9,7 +9,7 @@
 
 class SimuCommunicator {
 public:
-	SimuCommunicator(const std::shared_ptr<PhysicalRobot::ModuleManager>& moduleMgr);
+	explicit SimuCommunicator(const std::shared_ptr<PhysicalRobot::ModuleManager>& moduleMgr);
 
 	~SimuCommunicator();
 

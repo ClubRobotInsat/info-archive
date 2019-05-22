@@ -41,7 +41,7 @@ void SimuCommunicator::communicationThread() {
 			std::vector<GlobalFrame> written_frames = _moduleMgr->write_frame();
 
 			if(written_frames.empty()) {
-				throw std::runtime_error("No response frame sent by the simubot module");
+				logWarn("No response frame sent by the simubot module");
 			} else {
 				for(const GlobalFrame& frame : written_frames) {
 					_protocol->send_frame(frame);

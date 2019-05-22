@@ -217,7 +217,7 @@ namespace PhysicalRobot {
 			servo_t index = get_index_of(servo["id"]);
 			lock_variables();
 
-			if(_servos[index] != nullptr) {
+			if(index != ID_MAX_SERVOS && _servos[index] != nullptr) {
 				// Les données de commande (position ou vitesse) ne sont pas prises en compte ici
 				// Seule l'informatique a le droit d'écriture dessus
 				_servos[index]->position = uint16t_to_angle(servo["known_position"]);

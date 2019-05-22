@@ -2,8 +2,10 @@
 
 #include <log/Log.h>
 
+#include "../communication/SimuIO.h"
 #include "../communication/SimuLed.h"
 #include "../communication/SimuNavigation.h"
+#include "../communication/SimuPumps.h"
 #include "../communication/SimuServos.h"
 
 namespace Simu {
@@ -49,6 +51,12 @@ namespace Simu {
 			} else if(moduleData.first == "servos") {
 				logDebug8("Added servos module at id ", static_cast<int>(moduleData.second));
 				_moduleMgr->add_module<SimuServos>(moduleData.second);
+			} else if(moduleData.first == "pumps") {
+				logDebug8("Added pumps module at id ", static_cast<int>(moduleData.second));
+				_moduleMgr->add_module<SimuPumps>(moduleData.second);
+			} else if(moduleData.first == "io") {
+				logDebug8("Added io module at id ", static_cast<int>(moduleData.second));
+				_moduleMgr->add_module<SimuIO>(moduleData.second);
 			}
 		}
 	}
