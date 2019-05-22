@@ -8,8 +8,13 @@
 
 int main(int argc, char* argv[]) {
 	Log::open(argc, argv, false);
+	Strategy::IAArguments args(argc, argv);
 
-	Strategy::IASecondary strategy(Constants::RobotColor::Yellow);
+	if(args.should_exit()) {
+		exit(1);
+	}
+
+	Strategy::IASecondary strategy(args);
 
 	strategy.start(strategy.debug_mode ? 1_h : GLOBAL_CONSTANTS().get_match_duration());
 
@@ -17,12 +22,20 @@ int main(int argc, char* argv[]) {
 }
 
 namespace Strategy {
-	IASecondary::IASecondary(Constants::RobotColor color) : AbstractStrategy(color, "secondary") {
+	IASecondary::IASecondary(const IAArguments& args) : AbstractStrategy(args.get_color(), "secondary") {
 		if(debug_mode) {
 			logInfo("Initialization of the physical robot '", name, "'");
+			args.print_parsed_arguments();
 		}
 
-		auto physical_robot = std::make_shared<PhysicalRobot::Robot>(name, true);
+		std::shared_ptr<PhysicalRobot::Robot> physical_robot;
+
+		if(args.is_running_on_simulator()) {
+			physical_robot =
+			    std::make_shared<PhysicalRobot::Robot>(name, std::vector({"IAPrimary"s, "UDP"s, "localhost"s, "5001"s, "5101"s}), true);
+		} else {
+			physical_robot = std::make_shared<PhysicalRobot::Robot>(name, true);
+		}
 		add_robot(physical_robot);
 
 		_petrilab = Petri::Generated::Secondary::createLib(".");

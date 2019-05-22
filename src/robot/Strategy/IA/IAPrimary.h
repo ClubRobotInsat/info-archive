@@ -6,13 +6,14 @@
 #define ROOT_IAPRIMARY_H
 
 #include "../AbstractStrategy.h"
+#include "IAParsing.h"
 #include <petrilab/Cpp/MemberPetriDynamicLib.h>
 
 namespace Strategy {
 
 	class IAPrimary final : public AbstractStrategy {
 	public:
-		explicit IAPrimary(Constants::RobotColor);
+		explicit IAPrimary(const IAArguments& arguments);
 
 		std::shared_ptr<Interfacer::RobotManager> get_robot() const;
 

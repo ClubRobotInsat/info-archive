@@ -3,6 +3,7 @@
 //
 
 #include "../AbstractStrategy.h"
+#include "IAParsing.h"
 #include <petrilab/Cpp/MemberPetriDynamicLib.h>
 
 #ifndef ROOT_IASECONDARY_H
@@ -12,7 +13,7 @@ namespace Strategy {
 
 	class IASecondary final : public AbstractStrategy {
 	public:
-		explicit IASecondary(Constants::RobotColor);
+		explicit IASecondary(const IAArguments& args);
 
 		std::shared_ptr<Interfacer::RobotManager> get_robot() const;
 

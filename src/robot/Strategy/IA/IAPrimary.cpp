@@ -12,8 +12,13 @@ int main(int argc, char* argv[]) {
 	art.print_chocobot();
 
 	Log::open(argc, argv, false);
+	Strategy::IAArguments args(argc, argv);
 
-	Strategy::IAPrimary strategy(Constants::RobotColor::Yellow);
+	if(args.should_exit()) {
+		exit(1);
+	}
+
+	Strategy::IAPrimary strategy(args);
 
 	strategy.start(strategy.debug_mode ? 1_h : GLOBAL_CONSTANTS().get_match_duration());
 
@@ -21,13 +26,20 @@ int main(int argc, char* argv[]) {
 }
 
 namespace Strategy {
-	IAPrimary::IAPrimary(Constants::RobotColor color) : AbstractStrategy(color, "primary") {
+	IAPrimary::IAPrimary(const IAArguments& args) : AbstractStrategy(args.get_color(), "primary") {
 		if(debug_mode) {
 			logInfo("Initialization of the physical robot '", name, "'");
+			args.print_parsed_arguments();
 		}
 
-		auto physical_robot = std::make_shared<PhysicalRobot::Robot>(
-		    name /*, std::vector({"IAPrimary"s, "ETHERNET"s, "1"s, "192.168.0.222"s, "50000"s, "51"s})*/, true);
+		std::shared_ptr<PhysicalRobot::Robot> physical_robot;
+
+		if(args.is_running_on_simulator()) {
+			physical_robot =
+			    std::make_shared<PhysicalRobot::Robot>(name, std::vector({"IAPrimary"s, "UDP"s, "localhost"s, "5001"s, "5101"s}), true);
+		} else {
+			physical_robot = std::make_shared<PhysicalRobot::Robot>(name, true);
+		}
 		add_robot(physical_robot);
 
 		_petrilab = Petri::Generated::Primary::createLib(".");
