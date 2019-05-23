@@ -20,11 +20,7 @@ if(EXISTS "/usr/bin/petrilab")
     set(USE_PETRILAB ON)
     message(STATUS "PetriLab found at '/usr/bin/petrilab'")
 
-    add_executable(IAPrimary IA/IAPrimary.cpp)
-    target_link_libraries(IAPrimary Strategy)
-
-    add_executable(IASecondary IA/IASecondary.cpp)
-    target_link_libraries(IASecondary Strategy)
+    add_library(IAOneRobot IA/IAOneRobot.cpp)
 else()
     set(USE_PETRILAB OFF)
 endif()
@@ -43,21 +39,16 @@ if (RASPI)
 
     #link_directories(${PROJECT_SOURCE_DIR}/precompiled-libraries/)
     #add_subdirectory(precompiled-libraries)
-    target_link_libraries(IAWiimote ModuleInterfacers HighLevelFunctions -L../../../../precompiled-libraries/ wiicpp wiic)
+    target_link_libraries(IAWiimote ModuleInterfacers HighLevelFunctions -${PROJECT_SOURCE_DIR}/precompiled-libraries/ wiicpp wiic)
 
     if(USE_PETRILAB)
-        # IAPrimary
-        message(STATUS "Compiling IAPrimary for the raspi")
-        target_link_libraries(IAPrimary dl -L../../../../precompiled-libraries/ PetriRuntime)
+        target_link_libraries(IAOneRobot dl -L${PROJECT_SOURCE_DIR}/precompiled-libraries/)
 
+        message(STATUS "Compiling PetriLab IAs for the raspi")
         execute_process(
                 COMMAND petrilab --update --profile "ARM release" PetriLab/Primary.petri
                 WORKING_DIRECTORY ${root_SOURCE_DIR}/src/robot/Strategy
         )
-
-        # IASecondary
-        message(STATUS "Compiling IASecondary for the raspi")
-        target_link_libraries(IASecondary dl -L../../../../precompiled-libraries/ PetriRuntime)
 
         execute_process(
                 COMMAND petrilab --update --profile "ARM release" PetriLab/Secondary.petri
@@ -73,13 +64,11 @@ else()
     target_link_libraries(IAWiimote ModuleInterfacers HighLevelFunctions wiicpp)
 
     if(USE_PETRILAB)
-        target_link_libraries(IAPrimary PetriRuntime)
         execute_process(
                 COMMAND petrilab --update --profile "Default" PetriLab/Primary.petri
                 WORKING_DIRECTORY ${root_SOURCE_DIR}/src/robot/Strategy
         )
 
-        target_link_libraries(IASecondary PetriRuntime)
         execute_process(
                 COMMAND petrilab --update --profile "Default" PetriLab/Secondary.petri
                 WORKING_DIRECTORY ${root_SOURCE_DIR}/src/robot/Strategy
@@ -88,3 +77,11 @@ else()
         message(WARNING "PetriLab is not installed, please run 'info/scripts/install.sh petri'")
     endif()
 endif()
+
+target_link_libraries(IAOneRobot Strategy PetriRuntime)
+
+add_executable(IAPrimary IA/IAPrimary.cpp)
+target_link_libraries(IAPrimary IAOneRobot)
+
+add_executable(IASecondary IA/IASecondary.cpp)
+target_link_libraries(IASecondary IAOneRobot)

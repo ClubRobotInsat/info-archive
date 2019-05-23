@@ -102,10 +102,11 @@ namespace PhysicalRobot {
 	}
 
 	void Navigation::set_coordinates(const repere::Coordinates& coords) {
-		std::lock_guard<std::mutex> lk(_mutex_variables);
+		lock_variables();
 		_reset = true;
 		_coords = coords;
 		_state_changed.exchange(true);
+		unlock_variables();
 	}
 
 	void Navigation::update_linear_speed(Speed speed) {
