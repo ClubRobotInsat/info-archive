@@ -9,7 +9,7 @@
 
 int main(int argc, char* argv[]) {
 	AsciiArt art(std::cout);
-	art.print_chocobot();
+	art.print_patatohm();
 
 	Log::open(argc, argv, false);
 	Strategy::IAArguments args(argc, argv);

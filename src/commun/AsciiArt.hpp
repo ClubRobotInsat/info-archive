@@ -14,7 +14,7 @@ public:
 
 	void print_chocobot() const {
 		_os << "\n\n" << std::endl;
-		for(std::string str : CHOCOBOT) {
+		for(const std::string& str : CHOCOBOT) {
 			for(char c : str) {
 				if(c == '.' || c == ',') {
 					_os << COLOR_GRAY << c << RST;
@@ -29,7 +29,39 @@ public:
 		    << std::endl;
 	}
 
-	void print_string(std::string to_print, const std::string& COLOR_IN = COLOR_GRAY, const std::string& COLOR_OUT = COLOR_WHITE) {
+	void print_patatohm() const {
+		_os << "\n\n" << std::endl;
+		for(const std::string& str : PATATOHM) {
+			for(char c : str) {
+				if(c == ',' || c == '#') {
+					_os << COLOR_YELLOW << c << RST;
+				} else {
+					_os << COLOR_BLUE << c << RST;
+				}
+			}
+			_os << std::endl;
+		}
+		_os << COLOR_BLUE << "\n\n               P A T " << COLOR_YELLOW << "A T ' " << COLOR_BLUE << "\u03A9"
+		    << COLOR_YELLOW << " H M\n"
+		    << RST << std::endl;
+	}
+
+	void print_tuberkulex() const {
+		_os << "\n\n" << std::endl;
+		for(const std::string& str : TUBHERKULEX) {
+			for(char c : str) {
+				if(c == '#') {
+					_os << COLOR_GRAY << c << RST;
+				} else {
+					_os << COLOR_LIGHT_RED << c << RST;
+				}
+			}
+			_os << std::endl;
+		}
+		_os << COLOR_GRAY << "\n\n         T U B ' H E R K U L " << COLOR_LIGHT_RED << "E X" << RST << std::endl;
+	}
+
+	void print_string(const std::string& to_print, const std::string& COLOR_IN = COLOR_GRAY, const std::string& COLOR_OUT = COLOR_WHITE) {
 		_os << std::string(8, '\n') << std::endl;
 
 		for(int i = 0; i < 16; ++i) {
@@ -109,6 +141,39 @@ private:
 	     "                         ,,,     ,,,,   ,,,,     ,,,                         ",
 	     "                            ,,,  ,,,,   ,,,,  ,,,                            ",
 	     "                               ,,,,,,,,,,,,,,,                               "}};
+
+	const std::array<std::string, 29> PATATOHM = {
+	    {"                      +++,,,                      ",  "                    +++++,,,,,,                   ",
+	     "                  ++++       ,,,                  ",  "                ++++           ,,,                ",
+	     "                ++              ,,,               ",  "      ,,,,,,   ########          ,,, ,,,,,,,      ",
+	     "   ,,,,,,,  ###############  ,,,  ,,  ,,,,,,,,,,  ",  " ,,,,      ##################     ,,,         ,,, ",
+	     "+++       ####################     ,,          +++",  "+++      #########   #######  ## , ,,,         +++",
+	     "+++      #########   #######  ##,   ,,,         +++", " +++     ##############    ######   ,, ,      +++ ",
+	     "  +++    ########################   ,,  ,,   ++++ ",  "   +++,, #########################  ,,, ,,,,,+++  ",
+	     "    ++++ #########################  ,,,   ,+++    ",  "   ,,,+++#########################  ,,,  +++,,,   ",
+	     "  ,,,  ++++#######################  ,,,+++   ,,,  ",  " ,,,     #+++####################   ++++,     ,,, ",
+	     " ,,      ####+++################# ++++,        ,,,",  ",,,      ######++++############++++,,,         ,,,",
+	     ",,,      #########++++######++++#  ,,          ,,,",  " ,++     ############+++++++##    ,,,         +,, ",
+	     "  ++++++  ######++++++++#++++++++++,,      +++++  ",  "    +++++++++++++++########    +++++++++++++++    ",
+	     "             ###########        ,,,               ",  "                               ,,,                ",
+	     "                 ++++         ,,,                 ",  "                   ++++   ,,,,                   ",
+	     "                     ++++,,,,                     "}};
+
+	const std::array<std::string, 28> TUBHERKULEX = {
+	    {"                   ;                   ",  "                  ;;;;.                ",
+	     "                  ;;;,;;;;          `  ",  "                  ;;;;;;..`        ;;; ",
+	     "                    ,;;;;;.   .;;;;;;;;",  "                          ;;;;;;;;;;;;;",
+	     "                          ;;;;. ,;;;;;;",  "                          ;`.;;;;;;;;;`",
+	     "                          .;;;;;;;;;,  ",  "                          `    ``      ",
+	     "                #################      ",  "                 ###############       ",
+	     "                  #####   #####        ",  "                  #####   #####        ",
+	     "                  #####   #####        ",  "                  #####   #####        ",
+	     "          ,;;;;; #####     #####       ",  "          ;;;;` #####       #####      ",
+	     "   ;;, .;;;;;  ####################     ", " ;;;;;;;;;;, #######################   ",
+	     ";;;;;;;;;;  #####    #######    #####  ",  "   ;;;;;;  ######    #######    ###### ",
+	     "   ;;;;;; #############   #############",  " .;;;;;;;;  #########################  ",
+	     " ;;;;;;;;;;;.                          ",  "  ;;;;;;;;;;;;;;;;;;;;;;;`             ",
+	     "   ``   `;;;;;;;;;.    .               ",  "          ;;;;;;;                      "}};
 
 	const std::map<char, std::array<std::string, 16>> _letter_converter = {
 	    {'A',

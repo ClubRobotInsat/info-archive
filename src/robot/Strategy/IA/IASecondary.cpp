@@ -4,9 +4,13 @@
 
 #include "IASecondary.h"
 #include "../PetriLab/src/Secondary.h"
+#include <AsciiArt.hpp>
 #include <petrilab/Cpp/PetriLab.h>
 
 int main(int argc, char* argv[]) {
+	AsciiArt art(std::cout);
+	art.print_tuberkulex();
+
 	Log::open(argc, argv, false);
 	Strategy::IAArguments args(argc, argv);
 
