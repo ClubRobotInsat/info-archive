@@ -46,7 +46,7 @@ void refresh() {
 		auto mf = filtre2->get_frame(mesure);
 		affiche->frame_lidar(mf, coords, {0, 0.5, 0.5, 0.7f});
 		map->accumulate(mf, coords);
-	};
+	}
 
 	affiche->grid(*map, {0, 0, 0});
 

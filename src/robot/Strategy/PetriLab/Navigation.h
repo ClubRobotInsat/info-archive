@@ -43,7 +43,7 @@ ActionResult forward(Distance);
 ActionResult turn_absolute(Angle);
 ActionResult move_to(Distance x, Distance y, Angle final_angle);
 
-// @PetriLab@ Helpers
+// @PetriLab@ NavigationHelpers
 
 Vector2m get_position();
 ActionResult set_position(Distance x, Distance y);

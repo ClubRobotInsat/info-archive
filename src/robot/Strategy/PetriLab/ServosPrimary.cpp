@@ -132,7 +132,7 @@ ActionResult backward_hand_top_internal_rail() {
 
 // Combined functions
 ActionResult forward_bottom_horizontal() {
-	std::vector<fun_ra> actions;
+	std::vector<fun_ar> actions;
 
 	ADD_FN(actions, forward_hand_bottom_horizontal);
 	ADD_FN(actions, forward_arm_bottom_horizontal);
@@ -143,7 +143,7 @@ ActionResult forward_bottom_horizontal() {
 }
 
 ActionResult forward_bottom_vertical() {
-	std::vector<fun_ra> actions;
+	std::vector<fun_ar> actions;
 
 	ADD_FN(actions, forward_hand_bottom_vertical);
 	ADD_FN(actions, forward_arm_bottom_vertical);
@@ -154,7 +154,7 @@ ActionResult forward_bottom_vertical() {
 }
 
 ActionResult forward_bottom_goldenium() {
-	std::vector<fun_ra> actions;
+	std::vector<fun_ar> actions;
 
 	ADD_FN(actions, forward_hand_bottom_goldenium);
 	ADD_FN(actions, forward_arm_bottom_goldenium);
@@ -165,7 +165,7 @@ ActionResult forward_bottom_goldenium() {
 }
 
 ActionResult forward_top_external_rail() {
-	std::vector<fun_ra> actions;
+	std::vector<fun_ar> actions;
 
 	ADD_FN(actions, forward_hand_top_external_rail);
 	ADD_FN(actions, forward_arm_top_external_rail);
@@ -176,7 +176,7 @@ ActionResult forward_top_external_rail() {
 }
 
 ActionResult forward_top_internal_rail() {
-	std::vector<fun_ra> actions;
+	std::vector<fun_ar> actions;
 
 	ADD_FN(actions, forward_hand_top_internal_rail);
 	ADD_FN(actions, forward_arm_top_internal_rail);
@@ -191,7 +191,7 @@ ArmPosition get_forward_position() {
 }
 
 ActionResult backward_bottom_horizontal() {
-	std::vector<fun_ra> actions;
+	std::vector<fun_ar> actions;
 
 	ADD_FN(actions, backward_hand_bottom_horizontal);
 	ADD_FN(actions, backward_arm_bottom_horizontal);
@@ -202,7 +202,7 @@ ActionResult backward_bottom_horizontal() {
 }
 
 ActionResult backward_bottom_vertical() {
-	std::vector<fun_ra> actions;
+	std::vector<fun_ar> actions;
 
 	ADD_FN(actions, backward_hand_bottom_vertical);
 	ADD_FN(actions, backward_arm_bottom_vertical);
@@ -213,7 +213,7 @@ ActionResult backward_bottom_vertical() {
 }
 
 ActionResult backward_bottom_goldenium() {
-	std::vector<fun_ra> actions;
+	std::vector<fun_ar> actions;
 
 	ADD_FN(actions, backward_hand_bottom_goldenium);
 	ADD_FN(actions, backward_arm_bottom_goldenium);
@@ -224,7 +224,7 @@ ActionResult backward_bottom_goldenium() {
 }
 
 ActionResult backward_top_external_rail() {
-	std::vector<fun_ra> actions;
+	std::vector<fun_ar> actions;
 
 	ADD_FN(actions, backward_hand_top_external_rail);
 	ADD_FN(actions, backward_arm_top_external_rail);
@@ -235,7 +235,7 @@ ActionResult backward_top_external_rail() {
 }
 
 ActionResult backward_top_internal_rail() {
-	std::vector<fun_ra> actions;
+	std::vector<fun_ar> actions;
 
 	ADD_FN(actions, backward_hand_top_internal_rail);
 	ADD_FN(actions, backward_arm_top_internal_rail);

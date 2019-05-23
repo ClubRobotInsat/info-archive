@@ -17,7 +17,7 @@ namespace {
 		return navigation()->get_reference();
 	}
 
-	static const Duration ADD_TIMEOUT_SECURITY = 1_s;
+	const Duration ADD_TIMEOUT_SECURITY = 1_s;
 } // namespace
 
 void init_petri_navigation(std::shared_ptr<Strategy::Interfacer::RobotManager> manager, Constants::RobotColor color) {
