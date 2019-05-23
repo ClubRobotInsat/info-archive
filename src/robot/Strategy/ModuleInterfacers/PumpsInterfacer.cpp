@@ -108,18 +108,18 @@ namespace Strategy {
 					result = ActionResult::FAILURE;
 					break;
 				case PhysicalRobot::IOState::Off:
-					switch(get_forward_position()) {
-						case ArmPosition::TOP_EXTERNAL_RAIL:
+					switch(get_front_position()) {
+						case ArmPosition::TOP_EXTERNAL_STORAGE:
 							_external_rail_forward[0] = _hand_forward[0];
 							_external_rail_forward[1] = _hand_forward[1];
 							break;
-						case ArmPosition::TOP_INTERNAL_RAIL:
+						case ArmPosition::TOP_INTERNAL_STORAGE:
 							// TODO: les palets peuvent rouler donc il faut gérer plus dynamiquement leur place
 							_internal_rail[0] = _hand_forward[0];
 							_internal_rail[1] = _hand_forward[1];
 							break;
 						default:
-							logWarn("Bad forward arm position to release atoms: ", toString(get_forward_position()));
+							logWarn("Bad forward arm position to release atoms: ", toString(get_front_position()));
 							break;
 					}
 					_hand_backward[0] = Nothing;
@@ -140,18 +140,18 @@ namespace Strategy {
 			ActionResult result;
 			switch(_module.is_pump_activated(_pump_backward.pump)) {
 				case PhysicalRobot::IOState::Off:
-					switch(get_backward_position()) {
-						case ArmPosition::TOP_EXTERNAL_RAIL:
+					switch(get_back_position()) {
+						case ArmPosition::TOP_EXTERNAL_STORAGE:
 							_external_rail_backward[0] = _hand_backward[0];
 							_external_rail_backward[1] = _hand_backward[1];
 							break;
-						case ArmPosition::TOP_INTERNAL_RAIL:
+						case ArmPosition::TOP_INTERNAL_STORAGE:
 							// TODO: les palets peuvent rouler donc il faut gérer plus dynamiquement leur place
 							_internal_rail[0] = _hand_backward[0];
 							_internal_rail[1] = _hand_backward[1];
 							break;
 						default:
-							logWarn("Bad backward arm position to release atoms: ", toString(get_backward_position()));
+							logWarn("Bad backward arm position to release atoms: ", toString(get_back_position()));
 							break;
 					}
 					_hand_backward[0] = Nothing;

@@ -15,13 +15,18 @@ namespace {
 		return _manager->get_interfacer<ServosInterfacer>();
 	}
 
-	const ServosInterfacer::servo_t ID_SERVO_FORWARD_ARM = 254;
-	const ServosInterfacer::servo_t ID_SERVO_FORWARD_HAND = 254;
-	const ServosInterfacer::servo_t ID_SERVO_BACKWARD_ARM = 3;
-	const ServosInterfacer::servo_t ID_SERVO_BACKWARD_HAND = 4;
+	const ServosInterfacer::servo_t ID_SERVO_FRONT_ARM = 254;
+	const ServosInterfacer::servo_t ID_SERVO_FRONT_HAND = 254;
+	const ServosInterfacer::servo_t ID_SERVO_BACK_ARM = 3;
+	const ServosInterfacer::servo_t ID_SERVO_BACK_HAND = 4;
+	const ServosInterfacer::servo_t ID_SERVO_FRONT_LEFT_STORAGE = 254;
+	const ServosInterfacer::servo_t ID_SERVO_FRONT_RIGHT_STORAGE = 254;
+	const ServosInterfacer::servo_t ID_SERVO_BACK_LEFT_STORAGE = 254;
+	const ServosInterfacer::servo_t ID_SERVO_BACK_RIGHT_STORAGE = 254;
+	const ServosInterfacer::servo_t ID_SERVO_INTERNAL_STORAGE = 254;
 
-	ArmPosition forward_position;
-	ArmPosition backward_position;
+	ArmPosition front_position;
+	ArmPosition back_position;
 } // namespace
 
 void init_petri_servos(std::shared_ptr<RobotManager> manager, Constants::RobotColor color) {
@@ -30,221 +35,141 @@ void init_petri_servos(std::shared_ptr<RobotManager> manager, Constants::RobotCo
 }
 
 // Control of each servo
-ActionResult forward_arm(Angle angle) {
-	return servos().set_position(ID_SERVO_FORWARD_ARM, angle);
+ActionResult front_arm(Angle angle) {
+	return servos().set_position(ID_SERVO_FRONT_ARM, angle);
 }
 
-ActionResult forward_hand(Angle angle) {
-	return servos().set_position(ID_SERVO_FORWARD_HAND, angle);
+ActionResult front_hand(Angle angle) {
+	return servos().set_position(ID_SERVO_FRONT_HAND, angle);
 }
 
-ActionResult backward_arm(Angle angle) {
-	return servos().set_position(ID_SERVO_BACKWARD_ARM, angle);
+ActionResult back_arm(Angle angle) {
+	return servos().set_position(ID_SERVO_BACK_ARM, angle);
 }
 
-ActionResult backward_hand(Angle angle) {
-	return servos().set_position(ID_SERVO_BACKWARD_HAND, angle);
+ActionResult back_hand(Angle angle) {
+	return servos().set_position(ID_SERVO_BACK_HAND, angle);
 }
 
-// Different positions of the forward-arm servo
-ActionResult forward_arm_bottom_horizontal() {
-	return forward_arm(50_deg);
+ActionResult arm_position(Arm arm, Angle angle) {
+	if(arm == Arm::FRONT) {
+		return front_arm(angle);
+	} else {
+		return back_arm(angle);
+	}
 }
 
-ActionResult forward_arm_bottom_vertical() {
-	return forward_arm(10_deg);
+ActionResult hand(Arm arm, Angle angle) {
+	if(arm == Arm::FRONT) {
+		return front_hand(angle);
+	} else {
+		return back_hand(angle);
+	}
 }
 
-ActionResult forward_arm_bottom_goldenium() {
-	return forward_arm(-10_deg);
+ActionResult external_storage(ExternalStorage storage, Angle angle) {
+	ServosInterfacer::servo_t id;
+
+	if(storage == ExternalStorage::FRONT_LEFT) {
+		id = ID_SERVO_FRONT_LEFT_STORAGE;
+	} else if(storage == ExternalStorage::FRONT_RIGHT) {
+		id = ID_SERVO_FRONT_RIGHT_STORAGE;
+	} else if(storage == ExternalStorage::BACK_LEFT) {
+		id = ID_SERVO_BACK_LEFT_STORAGE;
+	} else if(storage == ExternalStorage::BACK_RIGHT) {
+		id = ID_SERVO_BACK_RIGHT_STORAGE;
+	}
+	return servos().set_position(id, angle);
 }
 
-ActionResult forward_arm_top_external_rail() {
-	return forward_arm(40_deg);
+ActionResult internal_storage(Angle angle) {
+	return servos().set_position(ID_SERVO_INTERNAL_STORAGE, angle);
 }
 
-ActionResult forward_arm_top_internal_rail() {
-	return forward_arm(-50_deg);
+ArmPosition get_back_position() {
+	return back_position;
 }
 
-// Different positions of the forward-hand servo
-ActionResult forward_hand_bottom_horizontal() {
-	return forward_hand(50_deg);
+ArmPosition get_front_position() {
+	return front_position;
 }
 
-ActionResult forward_hand_bottom_vertical() {
-	return forward_hand(10_deg);
-}
 
-ActionResult forward_hand_bottom_goldenium() {
-	return forward_hand(-10_deg);
-}
-
-ActionResult forward_hand_top_external_rail() {
-	return forward_hand(40_deg);
-}
-
-ActionResult forward_hand_top_internal_rail() {
-	return forward_hand(-50_deg);
-}
-
-// Different positions of the backward-arm servo
-ActionResult backward_arm_bottom_horizontal() {
-	return backward_arm(50_deg);
-}
-
-ActionResult backward_arm_bottom_vertical() {
-	return backward_arm(10_deg);
-}
-
-ActionResult backward_arm_bottom_goldenium() {
-	return backward_arm(-10_deg);
-}
-
-ActionResult backward_arm_top_external_rail() {
-	return backward_arm(40_deg);
-}
-
-ActionResult backward_arm_top_internal_rail() {
-	return backward_arm(-50_deg);
-}
-
-// Different positions of the backward-hand servo
-ActionResult backward_hand_bottom_horizontal() {
-	return backward_hand(50_deg);
-}
-
-ActionResult backward_hand_bottom_vertical() {
-	return backward_hand(10_deg);
-}
-
-ActionResult backward_hand_bottom_goldenium() {
-	return backward_hand(-10_deg);
-}
-
-ActionResult backward_hand_top_external_rail() {
-	return backward_hand(40_deg);
-}
-
-ActionResult backward_hand_top_internal_rail() {
-	return backward_hand(-50_deg);
+void set_position(Arm arm, ArmPosition position) {
+	if(arm == Arm::FRONT) {
+		front_position = position;
+	} else {
+		back_position = position;
+	}
 }
 
 // Combined functions
-ActionResult forward_bottom_horizontal() {
+ActionResult arm_bottom_horizontal(Arm arm) {
 	std::vector<fun_ar> actions;
 
-	ADD_FN(actions, forward_hand_bottom_horizontal);
-	ADD_FN(actions, forward_arm_bottom_horizontal);
+	ADD_FN(actions, hand, arm, 50_deg);
+	ADD_FN(actions, arm_position, arm, 50_deg);
 
-	forward_position = ArmPosition::BOTTOM_HORIZONTAL;
+	set_position(arm, ArmPosition::BOTTOM_HORIZONTAL);
 
 	return _combine_actions(actions);
 }
 
-ActionResult forward_bottom_vertical() {
+ActionResult arm_bottom_vertical(Arm arm) {
 	std::vector<fun_ar> actions;
 
-	ADD_FN(actions, forward_hand_bottom_vertical);
-	ADD_FN(actions, forward_arm_bottom_vertical);
+	ADD_FN(actions, hand, arm, 50_deg);
+	ADD_FN(actions, arm_position, arm, 50_deg);
 
-	forward_position = ArmPosition::BOTTOM_VERTICAL;
+	set_position(arm, ArmPosition::BOTTOM_VERTICAL);
 
 	return _combine_actions(actions);
 }
 
-ActionResult forward_bottom_goldenium() {
+ActionResult arm_goldenium(Arm arm) {
 	std::vector<fun_ar> actions;
 
-	ADD_FN(actions, forward_hand_bottom_goldenium);
-	ADD_FN(actions, forward_arm_bottom_goldenium);
+	ADD_FN(actions, hand, arm, 50_deg);
+	ADD_FN(actions, arm_position, arm, 50_deg);
 
-	forward_position = ArmPosition::BOTTOM_GOLDENIUM;
+	set_position(arm, ArmPosition::BOTTOM_GOLDENIUM);
 
 	return _combine_actions(actions);
 }
 
-ActionResult forward_top_external_rail() {
+ActionResult arm_external_storage(Arm arm) {
 	std::vector<fun_ar> actions;
 
-	ADD_FN(actions, forward_hand_top_external_rail);
-	ADD_FN(actions, forward_arm_top_external_rail);
+	ADD_FN(actions, hand, arm, 50_deg);
+	ADD_FN(actions, arm_position, arm, 50_deg);
 
-	forward_position = ArmPosition::TOP_EXTERNAL_RAIL;
+	set_position(arm, ArmPosition::TOP_EXTERNAL_STORAGE);
 
 	return _combine_actions(actions);
 }
 
-ActionResult forward_top_internal_rail() {
+ActionResult arm_internal_storage(Arm arm) {
 	std::vector<fun_ar> actions;
 
-	ADD_FN(actions, forward_hand_top_internal_rail);
-	ADD_FN(actions, forward_arm_top_internal_rail);
+	ADD_FN(actions, hand, arm, 50_deg);
+	ADD_FN(actions, arm_position, arm, 50_deg);
 
-	forward_position = ArmPosition::TOP_INTERNAL_RAIL;
+	set_position(arm, ArmPosition::TOP_INTERNAL_STORAGE);
 
 	return _combine_actions(actions);
 }
 
-ArmPosition get_forward_position() {
-	return forward_position;
+ActionResult open_external_storage(ExternalStorage storage) {
+	return external_storage(storage, 50_deg);
 }
 
-ActionResult backward_bottom_horizontal() {
-	std::vector<fun_ar> actions;
-
-	ADD_FN(actions, backward_hand_bottom_horizontal);
-	ADD_FN(actions, backward_arm_bottom_horizontal);
-
-	backward_position = ArmPosition::BOTTOM_HORIZONTAL;
-
-	return _combine_actions(actions);
+ActionResult close_external_storage(ExternalStorage storage) {
+	return external_storage(storage, 0_deg);
 }
 
-ActionResult backward_bottom_vertical() {
-	std::vector<fun_ar> actions;
-
-	ADD_FN(actions, backward_hand_bottom_vertical);
-	ADD_FN(actions, backward_arm_bottom_vertical);
-
-	backward_position = ArmPosition::BOTTOM_VERTICAL;
-
-	return _combine_actions(actions);
+ActionResult open_internal_storage() {
+	return internal_storage(0_deg);
 }
-
-ActionResult backward_bottom_goldenium() {
-	std::vector<fun_ar> actions;
-
-	ADD_FN(actions, backward_hand_bottom_goldenium);
-	ADD_FN(actions, backward_arm_bottom_goldenium);
-
-	backward_position = ArmPosition::BOTTOM_GOLDENIUM;
-
-	return _combine_actions(actions);
-}
-
-ActionResult backward_top_external_rail() {
-	std::vector<fun_ar> actions;
-
-	ADD_FN(actions, backward_hand_top_external_rail);
-	ADD_FN(actions, backward_arm_top_external_rail);
-
-	backward_position = ArmPosition::TOP_EXTERNAL_RAIL;
-
-	return _combine_actions(actions);
-}
-
-ActionResult backward_top_internal_rail() {
-	std::vector<fun_ar> actions;
-
-	ADD_FN(actions, backward_hand_top_internal_rail);
-	ADD_FN(actions, backward_arm_top_internal_rail);
-
-	backward_position = ArmPosition::TOP_INTERNAL_RAIL;
-
-	return _combine_actions(actions);
-}
-
-ArmPosition get_backward_position() {
-	return backward_position;
+ActionResult close_internal_storage() {
+	return internal_storage(20_deg);
 }

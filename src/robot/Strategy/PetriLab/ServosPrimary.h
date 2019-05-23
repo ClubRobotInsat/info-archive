@@ -7,25 +7,32 @@
 #include "Utils.h"
 #include <ActionResult.h>
 
-ENUM_CLASS(ArmPosition, BOTTOM_HORIZONTAL, BOTTOM_VERTICAL, BOTTOM_GOLDENIUM, TOP_EXTERNAL_RAIL, TOP_INTERNAL_RAIL);
+ENUM_CLASS(Arm, FRONT, BACK);
+ENUM_CLASS(ArmPosition, BOTTOM_HORIZONTAL, BOTTOM_VERTICAL, BOTTOM_GOLDENIUM, TOP_EXTERNAL_STORAGE, TOP_INTERNAL_STORAGE);
+ENUM_CLASS(ExternalStorage, FRONT_LEFT, FRONT_RIGHT, BACK_LEFT, BACK_RIGHT);
 
 // @PetriLab@ Servos
 
-ActionResult forward_arm(Angle);
-ActionResult forward_hand(Angle);
-ActionResult backward_arm(Angle);
-ActionResult backward_hand(Angle);
+ActionResult front_arm(Angle);
+ActionResult front_hand(Angle);
+ActionResult back_arm(Angle);
+ActionResult back_hand(Angle);
+ActionResult arm_position(Arm arm, Angle angle);
+ActionResult hand(Arm arm, Angle angle);
 
-ActionResult forward_bottom_horizontal();
-ActionResult forward_bottom_vertical();
-ActionResult forward_bottom_goldenium();
-ActionResult forward_top_external_rail();
-ActionResult forward_top_center_rail();
-ArmPosition get_forward_position();
+ActionResult external_storage(ExternalStorage, Angle);
+ActionResult internal_storage(Angle);
 
-ActionResult backward_bottom_horizontal();
-ActionResult backward_bottom_vertical();
-ActionResult backward_bottom_goldenium();
-ActionResult backward_top_external_rail();
-ActionResult backward_top_center_rail();
-ArmPosition get_backward_position();
+ArmPosition get_front_position();
+ArmPosition get_back_position();
+
+ActionResult arm_bottom_horizontal(Arm arm);
+ActionResult arm_bottom_vertical(Arm arm);
+ActionResult arm_goldenium(Arm arm);
+ActionResult arm_external_storage(Arm arm);
+ActionResult arm_internal_storage(Arm arm);
+
+ActionResult open_external_storage(ExternalStorage);
+ActionResult close_external_storage(ExternalStorage);
+ActionResult open_internal_storage();
+ActionResult close_internal_storage();
