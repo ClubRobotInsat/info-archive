@@ -46,7 +46,13 @@ ActionResult move_to(Distance x, Distance y, Angle final_angle);
 // @PetriLab@ Helpers
 
 Vector2m get_position();
+ActionResult set_position(Distance x, Distance y);
+
 Angle get_angle();
+ActionResult set_angle(Angle angle);
+
+ActionResult set_coordinates(Distance x, Distance y, Angle angle);
+
 // Returns the distance as the crow flies between the robot and a given position
 Distance get_distance_robot_position(Distance x, Distance y);
 

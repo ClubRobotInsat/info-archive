@@ -120,8 +120,23 @@ Vector2m get_position() {
 	return navigation()->get_position().getPos2D(get_reference());
 }
 
+ActionResult set_position(Distance x, Distance y) {
+	navigation()->set_coordinates(repere::Coordinates({x, y}, get_angle(), get_reference()));
+	return ActionResult::SUCCESS;
+}
+
 Angle get_angle() {
 	return navigation()->get_orientation().getAngle(get_reference());
+}
+
+ActionResult set_angle(Angle angle) {
+	navigation()->set_coordinates(repere::Coordinates(get_position(), angle, get_reference()));
+	return ActionResult::SUCCESS;
+}
+
+ActionResult set_coordinates(Distance x, Distance y, Angle angle) {
+	navigation()->set_coordinates(repere::Coordinates({x, y}, angle, get_reference()));
+	return ActionResult::SUCCESS;
 }
 
 Distance get_distance_robot_position(Distance x, Distance y) {
