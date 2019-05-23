@@ -200,6 +200,8 @@ namespace Strategy {
 
 			if(result != ActionResult::SUCCESS) {
 				logWarn("Failed to forward to ", final_coords, ", sens: ", sens, ", result: ", result);
+				_module.stop();
+				sleep(100_ms);
 			}
 
 			logDebug("END OF NavigationInterfacer::forward(); STATUS = ", result);
@@ -310,7 +312,7 @@ namespace Strategy {
 
 				// Adversary
 				if(check_adversary && _avoidance.adversary_detected(sens)) {
-					this->emergency_stop();
+					this->stop();
 					return ActionResult::BLOCKED_BY_ADV;
 				}
 

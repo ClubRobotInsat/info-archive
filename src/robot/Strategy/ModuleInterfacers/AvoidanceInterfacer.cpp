@@ -112,6 +112,7 @@ namespace Strategy {
 			std::unique_ptr<OccupGrid> lidar_map =
 			    std::make_unique<OccupGrid>(toVec2(GLOBAL_CONSTANTS().get_table_size()), 100, 66);
 
+			FindRobots robots;
 			StopWatch chrono;
 			while(_is_running) {
 				chrono.reset();
@@ -124,7 +125,6 @@ namespace Strategy {
 
 				if(frame.has_value()) {
 					lidar_map->accumulate(frame.value(), coords);
-					FindRobots robots;
 					robots.accumulate(*lidar_map);
 
 					_mutex_adversary.lock();
