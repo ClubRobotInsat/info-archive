@@ -3,19 +3,22 @@
 //
 
 #include "Scene.h"
+#include "AxisSceneNode.h"
 #include "SimulationToIrrlicht.h"
+
 #include <log/Log.h>
 
-// TODO (pas urgent) lancer irrlicht sur un thread à part
+// TODO Intégrer irrlicht dans la fenêtre gtk
 
 Scene::Scene() : _objectId(0) {
-	_device = irr::createDevice(irr::video::EDT_OPENGL, irr::core::dimension2d<irr::u32>(800, 600), 32, false, true, false, 0);
+	_device = irr::createDevice(irr::video::EDT_OPENGL, irr::core::dimension2d<irr::u32>(800, 600), 32, false, true, false, this);
 	_scenemanager = _device->getSceneManager();
 	_driver = _device->getVideoDriver();
 
 	// Camera
 	AddCameraMaya(-1000.f, 200.f, 100.f);
 	_scenemanager->getActiveCamera()->setTarget(irr::core::vector3df(15.f, 0.f, 10.f));
+	AddAxis();
 
 	// Lumière venant du haut
 	irr::scene::ILightSceneNode* light1 = _scenemanager->addLightSceneNode();
@@ -30,6 +33,11 @@ void Scene::AddCube(float size, irr::core::vector3df position) {
 	_listeObjet.push_back(std::make_unique<Object>(_objectId, cube));
 	incrementId();
 };
+
+void Scene::AddAxis() {
+	auto* axis = new AxesSceneNode(_scenemanager->getRootSceneNode(), _scenemanager, -1);
+	axis->setAxesScale(10);
+}
 
 void Scene::update() {
 	if(_device->run()) {
@@ -138,6 +146,15 @@ void Scene::remove(IGraphicalInstance* object) {
 	}
 }
 
+bool Scene::OnEvent(const irr::SEvent& event) {
+	if(event.EventType == irr::EET_MOUSE_INPUT_EVENT) {
+		if(event.MouseInput.Event == irr::EMIE_LMOUSE_PRESSED_DOWN) {
+		}
+	}
+
+	return false;
+}
+
 void Scene::ChangePosition(irr::core::vector3df position, int id) {
 	getAt(id).getInternalPtr()->setPosition(position);
 };
@@ -156,11 +173,17 @@ void Scene::Loop() {
 };
 
 void Scene::AddCamera() {
-	_scenemanager->addCameraSceneNode(0, irr::core::vector3df(-5, -5, -5), irr::core::vector3df(5, 0, 0));
+	if(_camera != nullptr)
+		_camera->remove();
+
+	_camera = _scenemanager->addCameraSceneNode(0, irr::core::vector3df(-5, -5, -5), irr::core::vector3df(5, 0, 0));
 };
 
 void Scene::AddCameraMaya(irr::f32 rotatespeed, irr::f32 zoomspeed, irr::f32 translationspeed) {
-	_scenemanager->addCameraSceneNodeMaya(0, rotatespeed, zoomspeed, translationspeed, -1, 40.f);
+	if(_camera != nullptr)
+		_camera->remove();
+
+	_camera = _scenemanager->addCameraSceneNodeMaya(0, rotatespeed, zoomspeed, translationspeed, -1, 40.f);
 };
 
 void Scene::PutCameraObjet() {

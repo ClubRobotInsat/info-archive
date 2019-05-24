@@ -12,6 +12,8 @@ class AxesSceneNode : public scene::ISceneNode {
 	scene::SMeshBuffer YMeshBuffer;
 	scene::SMeshBuffer XMeshBuffer;
 
+	core::aabbox3df BoundingBox;
+
 	video::SColor ZColor;
 	video::SColor YColor;
 	video::SColor XColor;
@@ -41,20 +43,21 @@ public:
 		this->setPosition(core::vector3df(0, 0, 0));
 		this->setRotation(core::vector3df(0, 0, 0));
 		this->setScale(core::vector3df(1, 1, 1));
+		// setAutomaticCulling(scene::EAC_OFF);
 		// Axes Box Coordinates Settings
 		setAxesCoordinates();
 	}
 
-	virtual ~AxesSceneNode() {}
+	~AxesSceneNode() override = default;
 
-	virtual void OnRegisterSceneNode() {
+	void OnRegisterSceneNode() override {
 		if(IsVisible) {
 			SceneManager->registerNodeForRendering(this);
-			ISceneNode::OnRegisterSceneNode();
 		}
+		ISceneNode::OnRegisterSceneNode();
 	}
 
-	virtual void render() {
+	void render() override {
 		video::IVideoDriver* driver = SceneManager->getVideoDriver();
 		driver->setMaterial(ZMeshBuffer.Material);
 		driver->setTransform(video::ETS_WORLD, AbsoluteTransformation);
@@ -69,10 +72,15 @@ public:
 		driver->drawMeshBuffer(&XMeshBuffer);
 	}
 
+	const core::aabbox3d<f32>& getBoundingBox() const override {
+		return BoundingBox;
+	}
+
 	void setAxesCoordinates() {
 		ZMeshBuffer.Vertices.set_used(8);
 		ZMeshBuffer.Material.Wireframe = false;
 		ZMeshBuffer.Material.Lighting = false;
+		ZMeshBuffer.BoundingBox.reset(0, 0, 0);
 		ZMeshBuffer.Vertices[0] = video::S3DVertex(-0.25, -0.25, 0, -1, -1, -1, ZColor, 0, 1);
 		ZMeshBuffer.Vertices[1] = video::S3DVertex(0.25, -0.25, 0, 1, -1, -1, ZColor, 1, 1);
 		ZMeshBuffer.Vertices[2] = video::S3DVertex(0.25, 0.25, 0, 1, 1, -1, ZColor, 1, 0);
@@ -81,11 +89,11 @@ public:
 		ZMeshBuffer.Vertices[5] = video::S3DVertex(0.25, 0.25, 25, 1, 1, 1, ZColor, 0, 0);
 		ZMeshBuffer.Vertices[6] = video::S3DVertex(-0.25, 0.25, 25, -1, 1, 1, ZColor, 1, 0);
 		ZMeshBuffer.Vertices[7] = video::S3DVertex(-0.25, -0.25, 25, -1, -1, 1, ZColor, 1, 1);
-		ZMeshBuffer.BoundingBox.reset(0, 0, 0);
 
 		YMeshBuffer.Vertices.set_used(8);
 		YMeshBuffer.Material.Wireframe = false;
 		YMeshBuffer.Material.Lighting = false;
+		YMeshBuffer.BoundingBox.reset(0, 0, 0);
 		YMeshBuffer.Vertices[0] = video::S3DVertex(-0.25, 0, 0.25, -1, -1, -1, YColor, 0, 1);
 		YMeshBuffer.Vertices[1] = video::S3DVertex(0.25, 0, 0.25, 1, -1, -1, YColor, 1, 1);
 		YMeshBuffer.Vertices[2] = video::S3DVertex(0.25, 0, -0.25, 1, 1, -1, YColor, 1, 0);
@@ -94,11 +102,11 @@ public:
 		YMeshBuffer.Vertices[5] = video::S3DVertex(0.25, 25, -0.25, 1, 1, 1, YColor, 0, 0);
 		YMeshBuffer.Vertices[6] = video::S3DVertex(-0.25, 25, -0.25, -1, 1, 1, YColor, 1, 0);
 		YMeshBuffer.Vertices[7] = video::S3DVertex(-0.25, 25, 0.25, -1, -1, 1, YColor, 1, 1);
-		YMeshBuffer.BoundingBox.reset(0, 0, 0);
 
 		XMeshBuffer.Vertices.set_used(8);
 		XMeshBuffer.Material.Wireframe = false;
 		XMeshBuffer.Material.Lighting = false;
+		XMeshBuffer.BoundingBox.reset(0, 0, 0);
 		XMeshBuffer.Vertices[0] = video::S3DVertex(0, -0.25, 0.25, -1, -1, -1, XColor, 0, 1);
 		XMeshBuffer.Vertices[1] = video::S3DVertex(0, -0.25, -0.25, 1, -1, -1, XColor, 1, 1);
 		XMeshBuffer.Vertices[2] = video::S3DVertex(0, 0.25, -0.25, 1, 1, -1, XColor, 1, 0);
@@ -107,11 +115,11 @@ public:
 		XMeshBuffer.Vertices[5] = video::S3DVertex(25, 0.25, -0.25, 1, 1, 1, XColor, 0, 0);
 		XMeshBuffer.Vertices[6] = video::S3DVertex(25, 0.25, 0.25, -1, 1, 1, XColor, 1, 0);
 		XMeshBuffer.Vertices[7] = video::S3DVertex(25, -0.25, 0.25, -1, -1, 1, XColor, 1, 1);
-		XMeshBuffer.BoundingBox.reset(0, 0, 0);
-	}
 
-	virtual const core::aabbox3d<f32>& getBoundingBox() const {
-		return ZMeshBuffer.BoundingBox;
+		BoundingBox.reset(0, 0, 0);
+		BoundingBox.addInternalBox(XMeshBuffer.BoundingBox);
+		BoundingBox.addInternalBox(YMeshBuffer.BoundingBox);
+		BoundingBox.addInternalBox(ZMeshBuffer.BoundingBox);
 	}
 
 	void setAxesScale(f32 scale) {
