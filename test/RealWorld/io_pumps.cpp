@@ -25,9 +25,9 @@ private:
 		io.play_success_sound();
 
 		sleep(5_s);
-		pumps.catch_forward(PumpsInterfacer::StockingRail::Blueium, PumpsInterfacer::StockingRail::Redium);
+		pumps.catch_front(PumpsInterfacer::AtomType::Blueium, PumpsInterfacer::AtomType::Redium);
 		sleep(5_s);
-		pumps.catch_backward(PumpsInterfacer::StockingRail::Goldenium, PumpsInterfacer::StockingRail::Nothing);
+		pumps.catch_back(PumpsInterfacer::AtomType::Goldenium, PumpsInterfacer::AtomType::Nothing);
 	}
 };
 

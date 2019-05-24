@@ -18,7 +18,7 @@ namespace Strategy {
 			using pump_t = interfaced_type::pump_t;
 			using valve_t = interfaced_type::valve_t;
 
-			enum StockingRail {
+			enum AtomType {
 				Nothing = 0,
 				Redium = 60,
 				Greenium = 120,
@@ -27,21 +27,21 @@ namespace Strategy {
 			};
 
 			// Nombre de vannes par pompe sans compter celle de dépressurisation
-			static const uint8_t NBR_ATOMS_EXTERNAL_RAIL_FORWARD = 2;
-			static const uint8_t NBR_ATOMS_EXTERNAL_RAIL_BACKWARD = 2;
-			static const uint8_t NBR_ATOMS_INTERNAL_RAIL = 3;
-			static const uint8_t NBR_ATOMS_HAND_FORWARD = 2;
-			static const uint8_t NBR_ATOMS_HAND_BACKWARD = 2;
+			static const uint8_t NBR_ATOMS_FRONT_EXTERNAL_STORAGE = 2;
+			static const uint8_t NBR_ATOMS_BACK_EXTERNAL_STORAGE = 2;
+			static const uint8_t NBR_ATOMS_INTERNAL_STORAGE = 3;
+			static const uint8_t NBR_ATOMS_FRONT_HAND = 2;
+			static const uint8_t NBR_ATOMS_BACK_HAND = 2;
 
 			explicit PumpsInterfacer(interfaced_type& module_pumps);
 			explicit PumpsInterfacer(std::shared_ptr<PhysicalRobot::Robot>);
 			explicit PumpsInterfacer(PhysicalRobot::Robot&);
 
-			ActionResult catch_forward(StockingRail left, StockingRail right);
-			ActionResult catch_backward(StockingRail left, StockingRail right);
+			ActionResult catch_front(AtomType left, AtomType right);
+			ActionResult catch_back(AtomType left, AtomType right);
 
-			ActionResult release_forward();
-			ActionResult release_backward();
+			ActionResult release_front();
+			ActionResult release_back();
 
 		private:
 			interfaced_type& _module;
@@ -53,13 +53,13 @@ namespace Strategy {
 				valve_t evacuation;
 				valve_t valve_left;
 				valve_t valve_right;
-			} _pump_forward, _pump_backward;
+			} _front_pump, _back_pump;
 
-			std::array<StockingRail, NBR_ATOMS_EXTERNAL_RAIL_FORWARD> _external_rail_forward;
-			std::array<StockingRail, NBR_ATOMS_EXTERNAL_RAIL_BACKWARD> _external_rail_backward;
-			std::array<StockingRail, NBR_ATOMS_INTERNAL_RAIL> _internal_rail;
-			std::array<StockingRail, NBR_ATOMS_HAND_FORWARD> _hand_forward;
-			std::array<StockingRail, NBR_ATOMS_HAND_BACKWARD> _hand_backward;
+			std::array<AtomType, NBR_ATOMS_FRONT_EXTERNAL_STORAGE> _front_external_storage;
+			std::array<AtomType, NBR_ATOMS_BACK_EXTERNAL_STORAGE> _back_external_storage;
+			std::array<AtomType, NBR_ATOMS_INTERNAL_STORAGE> _internal_storage;
+			std::array<AtomType, NBR_ATOMS_FRONT_HAND> _front_hand;
+			std::array<AtomType, NBR_ATOMS_BACK_HAND> _back_hand;
 		};
 	} // namespace Interfacer
 } // namespace Strategy

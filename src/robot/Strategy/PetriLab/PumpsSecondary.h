@@ -10,10 +10,7 @@
 
 // @PetriLab@ Pumps
 
-using StockingRail = Strategy::Interfacer::PumpsInterfacer::StockingRail;
+using AtomType = Strategy::Interfacer::PumpsInterfacer::AtomType;
 
-ActionResult catch_forward(StockingRail left, StockingRail right);
-ActionResult catch_backward(StockingRail left, StockingRail right);
-
-ActionResult release_forward();
-ActionResult release_backward();
+ActionResult catch_atom(AtomType atom);
+ActionResult release_atom();

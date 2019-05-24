@@ -19,18 +19,18 @@ void init_petri_pumps(std::shared_ptr<RobotManager> manager) {
 	_manager = manager;
 }
 
-ActionResult catch_forward(StockingRail left, StockingRail right) {
-	return pumps().catch_forward(left, right);
+ActionResult catch_front(AtomType left, AtomType right) {
+	return pumps().catch_front(left, right);
 }
 
-ActionResult catch_backward(StockingRail left, StockingRail right) {
-	return pumps().catch_backward(left, right);
+ActionResult catch_back(AtomType left, AtomType right) {
+	return pumps().catch_back(left, right);
 }
 
-ActionResult release_forward() {
-	return pumps().release_forward();
+ActionResult release_front() {
+	return pumps().release_front();
 }
 
-ActionResult release_backward() {
-	return pumps().release_backward();
+ActionResult release_back() {
+	return pumps().release_back();
 }
