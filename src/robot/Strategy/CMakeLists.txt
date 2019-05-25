@@ -21,6 +21,13 @@ if(EXISTS "/usr/bin/petrilab")
     message(STATUS "PetriLab found at '/usr/bin/petrilab'")
 
     add_library(IAOneRobot IA/IAOneRobot.cpp)
+    target_link_libraries(IAOneRobot Strategy PetriRuntime)
+
+    add_executable(IAPrimary IA/IAPrimary.cpp)
+    target_link_libraries(IAPrimary IAOneRobot)
+
+    add_executable(IASecondary IA/IASecondary.cpp)
+    target_link_libraries(IASecondary IAOneRobot)
 else()
     set(USE_PETRILAB OFF)
 endif()
@@ -77,11 +84,3 @@ else()
         message(WARNING "PetriLab is not installed, please run 'info/scripts/install.sh petri'")
     endif()
 endif()
-
-target_link_libraries(IAOneRobot Strategy PetriRuntime)
-
-add_executable(IAPrimary IA/IAPrimary.cpp)
-target_link_libraries(IAPrimary IAOneRobot)
-
-add_executable(IASecondary IA/IASecondary.cpp)
-target_link_libraries(IASecondary IAOneRobot)
