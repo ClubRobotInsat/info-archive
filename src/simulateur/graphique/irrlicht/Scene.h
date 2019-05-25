@@ -37,10 +37,7 @@ public:
 
 	bool OnEvent(const irr::SEvent& event) override;
 
-	void ChangePosition(irr::core::vector3df position, int id);
-	void Rotation(irr::core::vector3df rotation, int id);
 	// void AddTexture (std::string image) ;
-	void PutCameraObjet();
 	void Loop();
 
 	void addWindowListener(IGraphicalUserListener* listener) {
@@ -48,19 +45,31 @@ public:
 	}
 
 private:
-	void incrementId();
-
 	Object& getAt(int id);
 
 	irr::video::IVideoDriver* _driver;
 	irr::IrrlichtDevice* _device;
 	irr::scene::ISceneManager* _scenemanager;
 	irr::scene::ICameraSceneNode* _camera;
+	irr::scene::ISceneCollisionManager* _collisions;
 
 	std::vector<std::unique_ptr<Object>> _listeObjet;
 
 	std::vector<IGraphicalUserListener*> _listeners;
 	int _objectId;
+
+
+	void incrementId();
+
+	/** Make camera look at the object corresponding to the given id. */
+	void cameraLookAt();
+
+	/** Ajoute le node à la scene, définit sa position et retourne son id.
+	 * Cette méthode peut également effectuer d'autres opérations de setup
+	 * sur l'objet. */
+	Object& setupAndAddObject(irr::scene::ISceneNode* node, const Vector3m& position);
+
+	Object& setupAndAddMeshObject(irr::scene::IMeshSceneNode* node, const Vector3m& position);
 };
 
 #endif // PROJECT_SCENE_H

@@ -20,10 +20,10 @@ public:
 
 	void ObjectSetColor(irr::scene::ISceneNode* Target, irr::u32 a, irr::u32 r, irr::u32 g, irr::u32 b);
 
-	virtual int getId() const;
-	virtual void setColor(const Color3f& color);
-	virtual void setScale(const Vector3f& scale);
-	virtual Color3f getColor();
+	int getId() const override;
+	void setColor(const Color3f& color) override;
+	void setScale(const Vector3f& scale) override;
+	Color3f getColor() override;
 
 	void update(Object3D& parent) override;
 
