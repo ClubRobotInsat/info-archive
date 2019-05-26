@@ -10,7 +10,7 @@
       <Header File="ServosPrimary.h" />
     </Headers>
     <Macros />
-    <Profiles Default="ARM release">
+    <Profiles Default="Default">
       <Profile Name="Default" SourceOutputPath="src" LibOutputPath="../../../../build" DeployMode="DoNothing" DeployPath="" DeployScript="#!/bin/sh&#xA;&#xA;/bin/cp &quot;$PETRI_LIB_PATH&quot; .&#xA;" DeployWhenDebug="True" Port="12345" DebugMode="Attach" Hostname="localhost" HostProgram="" HostProgramArguments="">
         <Compiler Invocation="/usr/bin/g++">
           <Flag Value="--std=c++17" />
@@ -38,54 +38,54 @@
         <Libs />
       </Profile>
     </Profiles>
-    <Window X="0" Y="18" W="1916" H="1041" />
+    <Window X="960" Y="18" W="956" H="1041" />
   </Settings>
   <PetriNet ID="0" Name="Root" X="0" Y="0" Active="true" RequiredTokens="0" Radius="30">
     <Comments />
     <States>
       <Exit ID="1" Name="End" X="560" Y="240" Active="false" RequiredTokens="1" Radius="25" Function="Petri::Utility::doNothing()" />
-      <Action ID="2" Name="BEGIN" X="300" Y="410" Active="true" RequiredTokens="0" Radius="20" Function="backward(50_cm)" />
-      <Action ID="3" Name="go to accelerator" X="600" Y="530" Active="false" RequiredTokens="1" Radius="20" Function="move_to_vec(Vector2m{2_m, 1_m}, 90_deg)" />
+      <Action ID="2" Name="BEGIN" X="300" Y="410" Active="true" RequiredTokens="0" Radius="20" Function="Petri::Utility::doNothing()" />
+      <Action ID="3" Name="go to accelerator" X="600" Y="530" Active="false" RequiredTokens="1" Radius="20" Function="move_to(2_m, 1.7_m, 90_deg)" />
       <PetriNet ID="4" Name="catch start atom" X="440" Y="500" Active="false" RequiredTokens="1" Radius="30">
         <Comments />
         <States>
-          <Exit ID="9" Name="End" X="230" Y="200" Active="false" RequiredTokens="1" Radius="25" Function="Petri::Utility::doNothing()" />
-          <Action ID="10" Name="forward" X="50" Y="140" Active="true" RequiredTokens="0" Radius="20" Function="forward(5_cm)" />
-          <Action ID="11" Name="arm down" X="170" Y="50" Active="false" RequiredTokens="1" Radius="20" Function="arm_bottom_horizontal(Arm::FRONT)" />
-          <Action ID="12" Name="pump" X="330" Y="50" Active="false" RequiredTokens="1" Radius="20" Function="catch_front(AtomType::Nothing, AtomType::Redium)" />
-          <Action ID="13" Name="arm up" X="430" Y="100" Active="false" RequiredTokens="1" Radius="20" Function="arm_external_storage(Arm::FRONT)" />
-          <Action ID="14" Name="pump release" X="420" Y="190" Active="false" RequiredTokens="1" Radius="20" Function="release_front()" />
+          <Exit ID="6" Name="End" X="230" Y="200" Active="false" RequiredTokens="1" Radius="25" Function="Petri::Utility::doNothing()" />
+          <Action ID="7" Name="forward" X="50" Y="140" Active="true" RequiredTokens="0" Radius="20" Function="forward(5_cm)" />
+          <Action ID="8" Name="arm down" X="170" Y="50" Active="false" RequiredTokens="1" Radius="20" Function="arm_bottom_horizontal(Arm::FRONT)" />
+          <Action ID="9" Name="pump" X="330" Y="50" Active="false" RequiredTokens="1" Radius="20" Function="catch_front(AtomType::Nothing, AtomType::Redium)" />
+          <Action ID="10" Name="arm up" X="430" Y="100" Active="false" RequiredTokens="1" Radius="20" Function="arm_external_storage(Arm::FRONT)" />
+          <Action ID="11" Name="pump release" X="420" Y="190" Active="false" RequiredTokens="1" Radius="20" Function="release_front()" />
         </States>
         <Transitions>
-          <Transition ID="15" Name="true" X="110" Y="90" BeforeID="10" AfterID="11" Condition="true" W="50" H="30" ShiftX="0" ShiftY="-5" ShiftAmplitude="150" />
-          <Transition ID="16" Name="true" X="250" Y="50" BeforeID="11" AfterID="12" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="160" />
-          <Transition ID="17" Name="true" X="380" Y="80" BeforeID="12" AfterID="13" Condition="true" W="50" H="30" ShiftX="0" ShiftY="5" ShiftAmplitude="111.80339887498948" />
-          <Transition ID="18" Name="true" X="430" Y="140" BeforeID="13" AfterID="14" Condition="true" W="50" H="30" ShiftX="5" ShiftY="-5" ShiftAmplitude="90.553851381374173" />
-          <Transition ID="19" Name="true" X="325" Y="195" BeforeID="14" AfterID="9" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="190.26297590440447" />
+          <Transition ID="12" Name="true" X="110" Y="90" BeforeID="7" AfterID="8" Condition="true" W="50" H="30" ShiftX="0" ShiftY="-5" ShiftAmplitude="150" />
+          <Transition ID="13" Name="true" X="250" Y="50" BeforeID="8" AfterID="9" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="160" />
+          <Transition ID="14" Name="true" X="380" Y="80" BeforeID="9" AfterID="10" Condition="true" W="50" H="30" ShiftX="0" ShiftY="5" ShiftAmplitude="111.80339887498948" />
+          <Transition ID="15" Name="true" X="430" Y="140" BeforeID="10" AfterID="11" Condition="true" W="50" H="30" ShiftX="5" ShiftY="-5" ShiftAmplitude="90.553851381374173" />
+          <Transition ID="16" Name="true" X="325" Y="195" BeforeID="11" AfterID="6" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="190.26297590440447" />
         </Transitions>
       </PetriNet>
-      <PetriNet ID="30" Name="drop first atom" X="730" Y="460" Active="false" RequiredTokens="1" Radius="30">
+      <PetriNet ID="5" Name="drop first atom" X="730" Y="460" Active="false" RequiredTokens="1" Radius="30">
         <Comments />
         <States>
-          <Exit ID="31" Name="End" X="210" Y="110" Active="false" RequiredTokens="1" Radius="25" Function="Petri::Utility::doNothing()" />
-          <Action ID="5" Name="stick to accelerator" X="430" Y="330" Active="true" RequiredTokens="0" Radius="20" Function="forward(5_cm)" />
-          <Action ID="6" Name="open storage" X="490" Y="250" Active="false" RequiredTokens="1" Radius="20" Function="open_external_storage(ExternalStorage::FRONT_RIGHT)" />
-          <Action ID="7" Name="1 s" X="510" Y="170" Active="false" RequiredTokens="1" Radius="20" Function="Petri::Utility::pause(1s)" />
-          <Action ID="8" Name="close" X="450" Y="110" Active="false" RequiredTokens="1" Radius="20" Function="close_external_storage(ExternalStorage::FRONT_RIGHT)" />
+          <Exit ID="17" Name="End" X="210" Y="110" Active="false" RequiredTokens="1" Radius="25" Function="Petri::Utility::doNothing()" />
+          <Action ID="18" Name="stick to accelerator" X="430" Y="330" Active="true" RequiredTokens="0" Radius="20" Function="forward(5_cm)" />
+          <Action ID="19" Name="open storage" X="490" Y="250" Active="false" RequiredTokens="1" Radius="20" Function="open_external_storage(ExternalStorage::FRONT_RIGHT)" />
+          <Action ID="20" Name="1 s" X="510" Y="170" Active="false" RequiredTokens="1" Radius="20" Function="Petri::Utility::pause(1s)" />
+          <Action ID="21" Name="close" X="450" Y="110" Active="false" RequiredTokens="1" Radius="20" Function="close_external_storage(ExternalStorage::FRONT_RIGHT)" />
         </States>
         <Transitions>
-          <Transition ID="23" Name="true" X="454.94923727723892" Y="295.050762722761" BeforeID="5" AfterID="6" Condition="true" W="50" H="30" ShiftX="-5.0507627227610783" ShiftY="5.0507627227610215" ShiftAmplitude="100" />
-          <Transition ID="24" Name="true" X="505.11408311956745" Y="210" BeforeID="6" AfterID="7" Condition="true" W="50" H="30" ShiftX="5.1140831195674537" ShiftY="0" ShiftAmplitude="82.462112512353215" />
-          <Transition ID="25" Name="true" X="489.20357986616835" Y="135.39821006691579" BeforeID="7" AfterID="8" Condition="true" W="50" H="30" ShiftX="9.2035798661683543" ShiftY="-4.6017899330842056" ShiftAmplitude="84.8528137423857" />
-          <Transition ID="34" Name="true" X="330" Y="81" BeforeID="8" AfterID="31" Condition="true" W="50" H="30" ShiftX="0" ShiftY="-29" ShiftAmplitude="240" />
+          <Transition ID="22" Name="true" X="454.94923727723892" Y="295.050762722761" BeforeID="18" AfterID="19" Condition="true" W="50" H="30" ShiftX="-5.0507627227610783" ShiftY="5.0507627227610215" ShiftAmplitude="100" />
+          <Transition ID="23" Name="true" X="505.11408311956745" Y="210" BeforeID="19" AfterID="20" Condition="true" W="50" H="30" ShiftX="5.1140831195674537" ShiftY="0" ShiftAmplitude="82.462112512353215" />
+          <Transition ID="24" Name="true" X="489.20357986616835" Y="135.39821006691579" BeforeID="20" AfterID="21" Condition="true" W="50" H="30" ShiftX="9.2035798661683543" ShiftY="-4.6017899330842056" ShiftAmplitude="84.8528137423857" />
+          <Transition ID="25" Name="true" X="330" Y="81" BeforeID="21" AfterID="17" Condition="true" W="50" H="30" ShiftX="0" ShiftY="-29" ShiftAmplitude="240" />
         </Transitions>
       </PetriNet>
     </States>
     <Transitions>
-      <Transition ID="20" Name="true" X="513" Y="528" BeforeID="4" AfterID="3" Condition="true" W="50" H="30" ShiftX="-7" ShiftY="13" ShiftAmplitude="162.78820596099706" />
-      <Transition ID="21" Name="true" X="370" Y="455" BeforeID="2" AfterID="4" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="166.43316977093238" />
-      <Transition ID="32" Name="true" X="674.55370903897449" Y="504.55370903897455" BeforeID="3" AfterID="30" Condition="true" W="50" H="30" ShiftX="9.553709038974489" ShiftY="9.5537090389745458" ShiftAmplitude="147.648230602334" />
-      <Transition ID="35" Name="end" X="645" Y="350" BeforeID="30" AfterID="1" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="278.02877548915689" />
+      <Transition ID="26" Name="true" X="513" Y="528" BeforeID="4" AfterID="3" Condition="true" W="50" H="30" ShiftX="-7" ShiftY="13" ShiftAmplitude="162.78820596099706" />
+      <Transition ID="27" Name="true" X="370" Y="455" BeforeID="2" AfterID="4" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="166.43316977093238" />
+      <Transition ID="28" Name="true" X="674.55370903897449" Y="504.55370903897455" BeforeID="3" AfterID="5" Condition="true" W="50" H="30" ShiftX="9.553709038974489" ShiftY="9.5537090389745458" ShiftAmplitude="147.648230602334" />
+      <Transition ID="29" Name="end" X="645" Y="350" BeforeID="5" AfterID="1" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="278.02877548915689" />
     </Transitions>
   </PetriNet>
 </Document>

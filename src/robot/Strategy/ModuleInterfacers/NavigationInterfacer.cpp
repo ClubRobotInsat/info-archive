@@ -387,8 +387,10 @@ namespace Strategy::Interfacer {
 			}
 
 			Vector2m nextPos = trajectoryAstar[i];
+			Angle nextAngle = i == 0 ? destination.getAngle() :
+			                           Angle::makeFromValue(std::atan2((nextPos.y - pos.y).toM(), (nextPos.x - pos.x).toM()));
 
-			Coordinates coords(nextPos, Angle::makeFromValue(std::atan2((nextPos.y - pos.y).toM(), (nextPos.x - pos.x).toM())), ref_astar);
+			Coordinates coords(nextPos, nextAngle, ref_astar);
 
 			trajectory.push_back({coords, sens});
 		}
@@ -426,6 +428,7 @@ namespace Strategy::Interfacer {
 
 			if(trajectory.empty()) {
 				// Le robot tourne pour se positionner correctement
+				logDebug("Repositionnement final: ", nextPos.getAngle().toDeg(), " deg");
 				result = turn_absolute(nextPos.getAngle(), timeoutDate - TimePoint::now());
 			}
 		}
@@ -438,8 +441,6 @@ namespace Strategy::Interfacer {
 	                                                        TimePoint const& date_timeout) {
 		repere::Coordinates origin = _module.get_coordinates();
 		Vector2m diff = destination.getPos2D() - origin.getPos2D();
-
-		// FIXME cette valeur peut être fausse suivant le repère qu'on utilise.
 		Angle direction = atan2(diff.y, diff.x);
 
 		logDebug4("Position actuelle: ", origin);
