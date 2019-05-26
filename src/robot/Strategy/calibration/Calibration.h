@@ -45,6 +45,7 @@ private:
 	void check_physical_blocking_appeared();
 
 	std::shared_ptr<Interfacer::RobotManager> _robot;
+	Distance _length_robot;
 	std::shared_ptr<PhysicalRobot::ModuleManager> _module_manager;
 	std::unique_ptr<Environment> _env;
 
@@ -55,7 +56,7 @@ private:
 
 	Distance _entreAxe;
 	double _rapportEntreAxe_Reel_sur_Mesure;
-	Angle _angleBrutRobot;
+	Angle _angleBrutRobot_Apres;
 	Angle _angleBrutRobot_Avant;
 	double _facteurEchelle_Reel_sur_Mesure;
 	Distance _distanceParcourue;

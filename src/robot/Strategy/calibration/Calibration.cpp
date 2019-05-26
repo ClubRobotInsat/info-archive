@@ -38,10 +38,15 @@ struct ParsingArguments {
 
 	std::string get_ip() const;
 
+	std::string get_robot_name() const;
+
 private:
 	uint8_t _id_robot;
 	uint8_t _id_navigation;
 	uint8_t _id_navigation_parameters;
+
+	std::string _robot_name;
+
 	bool _should_exit;
 
 	void print_help(std::ostream& os = std::cout);
@@ -49,7 +54,7 @@ private:
 
 CalibrationDepla::CalibrationDepla(int argc, char** argv) {
 	// Initialize parameters
-	_angleBrutRobot = 0_deg;
+	_angleBrutRobot_Apres = 0_deg;
 	_angleBrutRobot_Avant = 0_deg;
 	_distD_Apres = 0_m;
 	_distG_Apres = 0_m;
@@ -94,6 +99,8 @@ CalibrationDepla::CalibrationDepla(int argc, char** argv) {
 
 	auto& avoidance_interfacer = _robot->add_interfacer<AvoidanceInterfacer>(*_env);
 	_robot->add_interfacer<NavigationInterfacer>(*_env, avoidance_interfacer);
+
+	_length_robot = GLOBAL_CONSTANTS()[parser.get_robot_name()].get_size().x;
 }
 
 // clang-format off
@@ -1120,28 +1127,39 @@ void CalibrationDepla::facteurEchelle() {
 	logDebug0("RECALER ROBOT CONTRE MUR EN X=0.....(puis ENTREE)");
 	getchar(); // PAUSE ____________________________________________
 
+	_distD_Avant = navigation()->get_right_wheel_distance();
+	logDebug0("Distance Roue D : ", _distD_Avant);
+
+	_distG_Avant = navigation()->get_left_wheel_distance();
+	logDebug0("Distance Roue G : ", _distG_Avant);
+
+	navigation().push_linear_speed(REPOSITIONING_LINEAR_SPEED);
+	_res = navigation().forward_infinity(SensAdvance::Forward);
+	navigation().pop_linear_speed();
+
 	_distD_Apres = navigation()->get_right_wheel_distance();
 	logDebug0("Distance Roue D apres : ", _distD_Apres);
 
 	_distG_Apres = navigation()->get_left_wheel_distance();
 	logDebug0("Distance Roue G apres : ", _distG_Apres);
 
+	Distance d = GLOBAL_CONSTANTS().get_table_size().x - _length_robot;
+
 	_distanceParcourue = ((_distD_Apres - _distD_Avant) + (_distG_Apres - _distG_Avant)) / 2.0;
-	logDebug0("Distance parcourue = ", _distanceParcourue);
+	logDebug0("Distance parcourue = ", _distanceParcourue, " au lieu de ", d, (abs(d - _distanceParcourue) < 1_mm ? ", ACCEPTABLE" : ", NON ACCEPTABLE"));
 
 	// FacteurEchelle_Reel_sur_Mesure = distance théorique parcourue / distanceParcourue
-	// = LONGUEUR TABLE (3000) - LONGUEUR ROBOT (210) / distanceParcourue
-	// 2.792 Pour Chronos
-	// 2.852 pour Pan
-	_facteurEchelle_Reel_sur_Mesure = 2.60_m / _distanceParcourue; // Secondaire : 2. //Principal : 2.
+	// = LONGUEUR TABLE (3000) - LONGUEUR ROBOT / distanceParcourue
+	_facteurEchelle_Reel_sur_Mesure = d / _distanceParcourue;
 	logDebug0("Facteur d'echelle reel / mesure = ", _facteurEchelle_Reel_sur_Mesure);
 
 	_diamRoueD = navigation_parameters().get_right_wheel_radius() * _facteurEchelle_Reel_sur_Mesure * 2;
-	_rapport_D_sur_G = _diamRoueG / _diamRoueD;
-	navigation_parameters().set_right_wheel_coef(static_cast<float>(_rapport_D_sur_G));
-	logDebug0("Diametre Roue D calibre = ", _diamRoueD, ", rapport G / D = ", _rapport_D_sur_G);
-
 	_diamRoueG = navigation_parameters().get_left_wheel_radius() * _facteurEchelle_Reel_sur_Mesure * 2;
+
+	_rapport_D_sur_G = _diamRoueD / _diamRoueG;
+	navigation_parameters().set_right_wheel_coef(static_cast<float>(_rapport_D_sur_G));
+	logDebug0("Diametre Roue D calibre = ", _diamRoueG * _rapport_D_sur_G, ", rapport G / D = ", _rapport_D_sur_G);
+
 	navigation_parameters().set_left_coder_radius(_diamRoueG / 2);
 	logDebug0("Diametre Roue G calibre = ", _diamRoueG);
 
@@ -1161,17 +1179,16 @@ void CalibrationDepla::entreAxes() {
 	_angleBrutRobot_Avant = navigation()->get_orientation().getAngle();
 	logDebug0("Angle brut du robot = ", _angleBrutRobot_Avant);
 
-	logDebug0("START.....(puis ENTREE)");
+	const int NBR_TOURS = 40;
+	logDebug0("START.....(puis ENTREE) - ", NBR_TOURS, " tours");
 	getchar(); // PAUSE ____________________________________________
 	navigation().activate_asserv();
 	logDebug3("Asservissement ON");
 
-	navigation().forward(400_mm, SensAdvance::Forward);
-
 	navigation().push_angular_speed(2_rad_s);
 
 	// Blocking function
-	navigation().turn_relative(10_PI);
+	navigation().turn_relative(NBR_TOURS * 2_PI);
 
 	navigation().pop_angular_speed();
 	navigation().stop();
@@ -1179,13 +1196,13 @@ void CalibrationDepla::entreAxes() {
 	navigation().deactivate_asserv();
 	logDebug3("Asservissement OFF");
 
-	logDebug0("RECALER ROBOT SUR ARRIERE.....(puis ENTREE)");
+	logDebug0("RECALER ROBOT SUR ANGLE.....(puis ENTREE)");
 	getchar(); // PAUSE ____________________________________________
 
-	_angleBrutRobot = navigation()->get_orientation().getAngle();
-	logDebug0("Angle brut du robot = ", _angleBrutRobot);
+	_angleBrutRobot_Apres = navigation()->get_orientation().getAngle();
+	logDebug0("Angle brut du robot = ", _angleBrutRobot_Apres);
 
-	_rapportEntreAxe_Reel_sur_Mesure = (_angleBrutRobot - _angleBrutRobot_Avant).toDeg() / (10.0 * M_PI);
+	_rapportEntreAxe_Reel_sur_Mesure = (_angleBrutRobot_Apres - _angleBrutRobot_Avant).toDeg() / (NBR_TOURS * M_PI);
 	logDebug0("Rapport Entreaxe reel / mesure = ", _rapportEntreAxe_Reel_sur_Mesure);
 
 	_entreAxe = navigation_parameters().get_inter_axial_length();
@@ -1388,14 +1405,14 @@ void CalibrationDepla::entreAxesAuto() {
 	check_physical_blocking_appeared();
 	sleep(1_s);
 
-	_angleBrutRobot = navigation()->get_orientation().getAngle();
-	logDebug0("Angle brut du robot = ", _angleBrutRobot);
+	_angleBrutRobot_Apres = navigation()->get_orientation().getAngle();
+	logDebug0("Angle brut du robot = ", _angleBrutRobot_Apres);
 
 	navigation().stop();
 
 	navigation()->set_angular_asserv_enabled(true);
 
-	_rapportEntreAxe_Reel_sur_Mesure = (_angleBrutRobot - _angleBrutRobot_Avant) / (10.0 * M_PI);
+	_rapportEntreAxe_Reel_sur_Mesure = (_angleBrutRobot_Apres - _angleBrutRobot_Avant) / (10.0 * M_PI);
 	logDebug0("Rapport Entreaxe reel / mesure = ", _rapportEntreAxe_Reel_sur_Mesure);
 
 	_entreAxe = navigation_parameters().get_inter_axial_length();
@@ -1414,7 +1431,8 @@ void CalibrationDepla::entreAxesAuto() {
 ParsingArguments::ParsingArguments(int argc, char* argv[])
         : _id_robot(1), _id_navigation(1), _id_navigation_parameters(10), _should_exit(false) {
 	int arg;
-	static struct option long_options[] = {{"id-robot", optional_argument, 0, 'r'},
+	static struct option long_options[] = {{"robot", optional_argument, 0, 'r'},
+	                                       {"id-robot", optional_argument, 0, 'i'},
 	                                       {"id-navigation", optional_argument, 0, 'n'},
 	                                       {"id-navigation-parameters", optional_argument, 0, 'p'},
 	                                       {"help", no_argument, 0, 'h'},
@@ -1424,6 +1442,9 @@ ParsingArguments::ParsingArguments(int argc, char* argv[])
 	while((arg = getopt_long(argc, argv, "r:n:h:", long_options, &long_index)) != -1) {
 		switch(arg) {
 			case 'r':
+				_robot_name = optarg;
+				break;
+			case 'i':
 				_id_robot = static_cast<uint8_t>(std::stoi(optarg));
 				break;
 			case 'n':
@@ -1475,7 +1496,11 @@ std::string ParsingArguments::get_ip() const {
 	return "192.168." + std::to_string(get_id_robot()) + "." + std::to_string(get_id_navigation());
 }
 
+std::string ParsingArguments::get_robot_name() const {
+	return _robot_name;
+}
+
 void ParsingArguments::print_help(std::ostream& os) {
-	os << "Usage: [--id-robot <id>] [--id-navigation <id>] [--id-navigation-parameters <id>]" << std::endl;
+	os << "Usage: [--robot <name>] [--id-robot <id>] [--id-navigation <id>] [--id-navigation-parameters <id>]" << std::endl;
 	_should_exit = true;
 }
