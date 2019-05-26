@@ -112,7 +112,6 @@ namespace PhysicalRobot {
 			if(module.first == "navigation") {
 				_module_manager->add_module<Navigation>(module.second);
 			} else if(module.first == "servos") {
-				// TODO : voir comment récupérer les servos à ajouter (`robot.ini` ou fichier .JSON ?)
 				_module_manager->add_module<Servos>(module.second);
 			} else if(module.first == "motors") {
 				_module_manager->add_module<Motors>(module.second);

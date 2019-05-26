@@ -140,7 +140,7 @@ void CalibrationDepla::execute() {
 	logDebug6("Attente 1 sec...");
 	sleep(1_s);
 
-	// TODO : petit tutoriel explicatif avant.
+	printf("\033[1;31mTuto de Cubot : http://cubot.fr/ateliers/asservissement/chap-3/\n\n");
 	printf("\033[1;32m---------------------------------------------------------\n");
 	printf("------------ Programme de calibration depla -------------\n");
 	printf("---------------------------------------------------------\033[0m\n");
@@ -1395,7 +1395,7 @@ void CalibrationDepla::entreAxesAuto() {
 
 	navigation().push_angular_speed(4_rad_s);
 	navigation().turn_relative(10_PI);
-	navigation().pop_angular_speed(); // FIXME: in the legacy code, they pop the angular precision
+	navigation().pop_angular_speed();
 
 	navigation()->set_angular_asserv_enabled(false);
 

@@ -235,7 +235,6 @@ namespace Strategy::Interfacer {
 		TimePoint date_timeout = TimePoint::now() + timeout;
 		auto lock = get_lock_for_action(date_timeout);
 		if(lock.owns_lock()) {
-			// FIXME: elecs get a relative value or an absolute one?
 			_module.turn_relative(angle);
 			return wait_end_trajectory(get_check_moving_done(), date_timeout, true, false);
 		}
