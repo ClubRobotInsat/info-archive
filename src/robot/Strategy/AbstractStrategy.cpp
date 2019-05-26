@@ -145,10 +145,15 @@ namespace Strategy {
 		}
 		// Interfacer::ServosInterfacer
 		if(manager->get_robot()->has_module<PhysicalRobot::Servos>()) {
+			const auto list_id = GLOBAL_CONSTANTS()[robot->name].get_list_id_servos();
 			if(debug_mode) {
-				logInfo("Insertion of an Interfacer::ServosInterfacer inside the robot '" + robot->name + "'");
+				logInfo("Insertion of an Interfacer::ServosInterfacer inside the robot '" + robot->name + "' with " +
+				        std::to_string(list_id.size()) + " servos");
 			}
-			manager->add_interfacer<Interfacer::ServosInterfacer>();
+			auto& servos = manager->add_interfacer<Interfacer::ServosInterfacer>();
+			for(uint8_t id : list_id) {
+				servos->add_servo(id);
+			}
 		}
 
 		return add_manager(manager);

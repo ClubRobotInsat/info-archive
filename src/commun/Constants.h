@@ -59,6 +59,8 @@ namespace Constants {
 		std::string _protocol_type;
 		std::map<std::string, std::string> _communication_arguments;
 
+		std::vector<uint8_t> _list_id_servos;
+
 	public:
 		inline Vector3m get_start_position() const {
 			return _start_position.value();
@@ -115,6 +117,10 @@ namespace Constants {
 
 		inline std::map<std::string, std::string> get_communication_arguments() const {
 			return _communication_arguments;
+		}
+
+		inline std::vector<uint8_t> get_list_id_servos() const {
+			return _list_id_servos;
 		}
 	};
 

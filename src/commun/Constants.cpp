@@ -48,7 +48,7 @@ namespace Constants {
 
 		for(auto it : reader) {
 			if(it.first == section + ".modules") {
-				for(auto field : it.second) {
+				for(const auto& field : it.second) {
 					_modules[field.first] = static_cast<uint8_t>(field.second.asInt());
 				}
 				break;
@@ -100,6 +100,14 @@ namespace Constants {
 				break;
 			}
 		}
+
+		if(_modules.find("servos") != _modules.cend()) {
+			const std::string servos = section + ".servos";
+			const uint8_t NBR = read_field(reader, servos, "nbr", 0);
+			for(uint8_t i = 0; i < NBR; ++i) {
+				_list_id_servos.push_back(reader[servos][std::to_string(i) + "_id"].asInt());
+			}
+		}
 	}
 
 	Constants::Constants(const std::string& ini_string) : _reader(IniFile('=', '#')) {
@@ -109,7 +117,7 @@ namespace Constants {
 
 		for(auto it : _reader) {
 			if(it.first == "robot.list") {
-				for(auto robot : it.second) {
+				for(const auto& robot : it.second) {
 					if(robot.second.asBool()) {
 						_robots[robot.first] =
 						    std::unique_ptr<RobotInitializationData>(new RobotInitializationData(_reader, robot.first));
