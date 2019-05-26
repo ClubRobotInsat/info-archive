@@ -94,7 +94,7 @@ namespace Constants {
 
 		for(auto it : reader) {
 			if(it.first == section + ".communication") {
-				for(auto field : it.second) {
+				for(const auto& field : it.second) {
 					_communication_arguments[field.first] = field.second.asString();
 				}
 				break;
@@ -102,7 +102,7 @@ namespace Constants {
 		}
 	}
 
-	Constants::Constants(std::string ini_string) : _reader(IniFile('=', '#')) {
+	Constants::Constants(const std::string& ini_string) : _reader(IniFile('=', '#')) {
 		std::stringstream ss;
 		ss << ini_string;
 		_reader.decode(ss);

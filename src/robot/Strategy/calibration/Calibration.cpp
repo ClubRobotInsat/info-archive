@@ -8,6 +8,8 @@
 #define HAUTEUR_TABLE 2100
 #define LARGEUR_TABLE 3002
 
+/// Tuto : http://cubot.fr/ateliers/asservissement/chap-3/
+
 using namespace Interfacer;
 using SensAdvance = Strategy::Interfacer::NavigationInterfacer::SensAdvance;
 using SensRotation = Strategy::Interfacer::NavigationInterfacer::SensRotation;
@@ -59,7 +61,7 @@ CalibrationDepla::CalibrationDepla(int argc, char** argv) {
 	_diamRoueG = 0_m;
 	_choix = 0;
 	_facteurEchelle_Reel_sur_Mesure = 0.0f;
-	_rapport_G_sur_D = 0.0f;
+	_rapport_D_sur_G = 0.0f;
 	_distanceParcourue = 0_m;
 
 	ParsingArguments parser(argc, argv);
@@ -136,12 +138,12 @@ void CalibrationDepla::execute() {
 	printf("------------ Programme de calibration depla -------------\n");
 	printf("---------------------------------------------------------\033[0m\n");
 	printf("\033[1;31mCalibration PID :\033[0m\n-- Pour régler le PID du robot.\n");
-	printf(
-	    "\033[1;31mCalibration facteur d'echelle :\033[0m\n-- si le robot ne parcours pas les distances demandees.\n");
-	printf("\033[1;31mCalibration entre axe :\033[0m\n-- si l'asserv angulaire n'est pas précis.\n\
--- Entraxe = distance entre les 2 roues codeuses.\n");
 	printf("\033[1;31mCalibration diametres :\033[0m\n-- a faire dans tous les cas.\n\
 --Correspond au réglage des diamètres des roues.\n");
+	printf(
+	    "\033[1;31mCalibration facteur d'echelle :\033[0m\n-- si le robot ne parcourt pas les distances demandées.\n");
+	printf("\033[1;31mCalibration entre axe :\033[0m\n-- si l'asserv angulaire n'est pas précis.\n\
+-- Entraxe = distance entre les 2 roues codeuses.\n");
 	printf("\033[1;31mDANS TOUS LES CAS :\033[0m\n\
 -- régler les valeurs initiales (dans setDefaultParams) aux valeur mesurées sur le robot\n\
 => \033[0;33mMesurer entre axe entre les roues codeuses\033[0m (+ diametre des roues si elles ont changé) \n\
@@ -1077,7 +1079,8 @@ void CalibrationDepla::diametres() {
 	_distG_Avant = navigation()->get_left_wheel_distance();
 	logDebug0("Distance Roue G : ", _distG_Avant);
 
-	logDebug0("FAIRE PARCOURIR ROBOT ET LE RECALER AVEC LE MEME ANGLE....(puis ENTREE)");
+	logDebug0("FAIRE AVANCER LE ROBOT DE 4 MÈTRES EN LIGNE PARFAITEMENT DROITE ET LE RECALER AVEC LE MÊME "
+	          "ANGLE....(puis ENTREE)");
 	getchar(); // PAUSE ____________________________________________
 
 	_distD_Apres = navigation()->get_right_wheel_distance();
@@ -1086,15 +1089,21 @@ void CalibrationDepla::diametres() {
 	_distG_Apres = navigation()->get_left_wheel_distance();
 	logDebug0("Distance Roue G apres : ", _distG_Apres);
 
-	_rapport_G_sur_D = abs(_distG_Apres - _distG_Avant) / abs(_distD_Apres - _distD_Avant);
-	logDebug0("Rapport diam D / G = ", _rapport_G_sur_D);
+	_rapport_D_sur_G = abs(_distD_Apres - _distD_Avant) / abs(_distG_Apres - _distG_Avant);
+	logDebug0("Rapport diam G / D = ", _rapport_D_sur_G);
 
+	navigation_parameters().set_right_wheel_coef(_rapport_D_sur_G);
 	_diamRoueD = navigation_parameters().get_right_wheel_radius() * 2;
 	_diamRoueG = navigation_parameters().get_left_wheel_radius() * 2;
 
-	navigation_parameters().set_right_wheel_coef(_rapport_G_sur_D);
-	logDebug0("Diametre Roue D compense = ", _diamRoueD * _rapport_G_sur_D);
-	logDebug0("Diametre Roue G          = ", _diamRoueG);
+	logDebug0("Diametre Roue G                  = ", _diamRoueG);
+	logDebug0("Diametre Roue D = Roue G * coeff = ",
+	          _diamRoueG * _rapport_D_sur_G,
+	          ", Diametre connu Roue D = ",
+	          _diamRoueD,
+	          " (erreur de ",
+	          abs(_diamRoueG * _rapport_D_sur_G - _diamRoueD),
+	          (abs(_diamRoueG * _rapport_D_sur_G - _diamRoueD) < 1_mm ? ", ACCEPTABLE)" : ", NON ACCEPTABLE)"));
 
 	navigation().pop_linear_speed();
 	navigation().activate_asserv();
@@ -1108,33 +1117,7 @@ void CalibrationDepla::facteurEchelle() {
 	navigation().deactivate_asserv();
 	logDebug3("Asservissement OFF");
 
-	logDebug0("RECALER ROBOT...., puis entrée");
-	getchar(); // PAUSE ____________________________________________
-
-	_distD_Avant = navigation()->get_right_wheel_distance();
-	logDebug0("Distance Roue D : ", _distD_Avant);
-
-	_distG_Avant = navigation()->get_left_wheel_distance();
-	logDebug0("Distance Roue G : ", _distG_Avant);
-
-	logDebug0("START.....(puis ENTREE)");
-	getchar(); // PAUSE ____________________________________________
-	navigation().activate_asserv();
-	logDebug3("Asservissement ON");
-
-	navigation().push_linear_speed(REPOSITIONING_LINEAR_SPEED);
-	_res = navigation().forward_infinity(SensAdvance::Backward);
-
-	navigation().pop_linear_speed();
-
-	sleep(1_s);
-
-	navigation().stop();
-
-	navigation().deactivate_asserv();
-	logDebug3("Asservissement OFF");
-
-	logDebug0("VERIF ROBOT CALE SUR AVANT.....(puis ENTREE)");
+	logDebug0("RECALER ROBOT CONTRE MUR EN X=0.....(puis ENTREE)");
 	getchar(); // PAUSE ____________________________________________
 
 	_distD_Apres = navigation()->get_right_wheel_distance();
@@ -1154,9 +1137,9 @@ void CalibrationDepla::facteurEchelle() {
 	logDebug0("Facteur d'echelle reel / mesure = ", _facteurEchelle_Reel_sur_Mesure);
 
 	_diamRoueD = navigation_parameters().get_right_wheel_radius() * _facteurEchelle_Reel_sur_Mesure * 2;
-	_rapport_G_sur_D = _diamRoueG / _diamRoueD;
-	navigation_parameters().set_right_wheel_coef(static_cast<float>(_rapport_G_sur_D));
-	logDebug0("Diametre Roue D calibre = ", _diamRoueD, ", rapport G / D = ", _rapport_G_sur_D);
+	_rapport_D_sur_G = _diamRoueG / _diamRoueD;
+	navigation_parameters().set_right_wheel_coef(static_cast<float>(_rapport_D_sur_G));
+	logDebug0("Diametre Roue D calibre = ", _diamRoueD, ", rapport G / D = ", _rapport_D_sur_G);
 
 	_diamRoueG = navigation_parameters().get_left_wheel_radius() * _facteurEchelle_Reel_sur_Mesure * 2;
 	navigation_parameters().set_left_coder_radius(_diamRoueG / 2);
@@ -1300,8 +1283,8 @@ void CalibrationDepla::diametresAuto() {
 	_distG_Apres = navigation()->get_left_wheel_distance();
 	logDebug0("Distance Roue G apres : ", _distG_Apres);
 
-	_rapport_G_sur_D = abs(_distG_Apres - _distG_Avant) / abs(_distD_Apres - _distD_Avant);
-	logDebug0("Rapport diam D / G = ", _rapport_G_sur_D);
+	_rapport_D_sur_G = abs(_distG_Apres - _distG_Avant) / abs(_distD_Apres - _distD_Avant);
+	logDebug0("Rapport diam D / G = ", _rapport_D_sur_G);
 
 	navigation().stop();
 
@@ -1312,8 +1295,8 @@ void CalibrationDepla::diametresAuto() {
 	_diamRoueD = navigation_parameters().get_right_wheel_radius() * 2;
 	_diamRoueG = navigation_parameters().get_left_wheel_radius() * 2;
 
-	navigation_parameters().set_right_wheel_coef(_rapport_G_sur_D);
-	logDebug0("Diametre Roue D compense = ", _diamRoueD * _rapport_G_sur_D);
+	navigation_parameters().set_right_wheel_coef(_rapport_D_sur_G);
+	logDebug0("Diametre Roue D compense = ", _diamRoueD * _rapport_D_sur_G);
 	logDebug0("Diametre Roue G          = ", _diamRoueG);
 
 	logDebug0("FIN CALIBRATION RAPPORT DES DIAMETRES");

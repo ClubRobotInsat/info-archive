@@ -122,7 +122,7 @@ namespace Constants {
 		std::map<std::string, std::unique_ptr<RobotInitializationData>> _robots;
 
 	public:
-		explicit Constants(std::string ini_string);
+		explicit Constants(const std::string& ini_string);
 
 		const RobotInitializationData& operator[](const std::string& name) const;
 

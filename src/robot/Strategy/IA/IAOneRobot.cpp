@@ -23,6 +23,9 @@ namespace Strategy {
 			physical_robot = std::make_shared<PhysicalRobot::Robot>(name, true);
 		}
 		add_robot(physical_robot);
+
+		get_robot()->get_interfacer<Interfacer::NavigationInterfacer>()->set_coordinates(repere::Coordinates(
+		    GLOBAL_CONSTANTS()[name].get_start_position(), GLOBAL_CONSTANTS()[name].get_start_angle(), get_reference()));
 	}
 
 	std::shared_ptr<Interfacer::RobotManager> IAOneRobot::get_robot() const {
