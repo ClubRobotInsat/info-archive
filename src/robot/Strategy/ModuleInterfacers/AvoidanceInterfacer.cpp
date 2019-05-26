@@ -133,7 +133,9 @@ namespace Strategy::Interfacer {
 				_mutex_adversary.lock();
 				_adversary_positions = robots.get_results();
 			} else {
-				logWarn("AvoidanceInterfacer::thread_lidar_main does not have any frame");
+				if(_robot->has_lidar()) {
+					logWarn("AvoidanceInterfacer::thread_lidar_main does not have any frame");
+				}
 				_mutex_adversary.lock();
 				_adversary_positions.clear();
 			}

@@ -7,11 +7,8 @@
 namespace Strategy::Interfacer {
 
 	// Constructor
-	NavigationInterfacer::NavigationInterfacer(std::shared_ptr<PhysicalRobot::Robot> robot,
-	                                           Environment& env,
-	                                           AvoidanceInterfacer& avoidance,
-	                                           const repere::Repere& reference)
-	        : _module(robot->get_module<interfaced_type>()), _avoidance(avoidance), _reference(reference), _env(env) {
+	NavigationInterfacer::NavigationInterfacer(std::shared_ptr<PhysicalRobot::Robot> robot, Environment& env, AvoidanceInterfacer& avoidance)
+	        : _module(robot->get_module<interfaced_type>()), _avoidance(avoidance), _env(env) {
 		push_linear_speed(GLOBAL_CONSTANTS()[robot->name].get_linear_speed());
 		push_angular_speed(GLOBAL_CONSTANTS()[robot->name].get_angular_speed());
 		push_linear_accuracy(GLOBAL_CONSTANTS()[robot->name].get_linear_accuracy());
@@ -25,10 +22,6 @@ namespace Strategy::Interfacer {
 	// States
 	repere::Coordinates NavigationInterfacer::get_origin_coordinates() const {
 		return _origin_coordinates;
-	}
-
-	const repere::Repere& NavigationInterfacer::get_reference() const {
-		return _reference;
 	}
 
 	void NavigationInterfacer::activate_asserv() {
@@ -172,8 +165,8 @@ namespace Strategy::Interfacer {
 		auto begin = TimePoint::now();
 
 		auto initial_coords = _module.get_coordinates();
-		auto initial_pos = initial_coords.getPos2D(get_reference());
-		auto initial_angle = initial_coords.getAngle(get_reference());
+		auto initial_pos = initial_coords.getPos2D();
+		auto initial_angle = initial_coords.getAngle();
 
 		int reverser = (sens == SensAdvance::Forward ? 1 : -1);
 		auto final_coords = initial_pos + reverser * distance * Vector2d{cos(initial_angle), sin(initial_angle)};
@@ -183,7 +176,7 @@ namespace Strategy::Interfacer {
 		ActionResult result;
 		do {
 			sleep(GLOBAL_CONSTANTS().get_frame_period());
-			auto current_pos = _module.get_coordinates().getPos2D(get_reference());
+			auto current_pos = _module.get_coordinates().getPos2D();
 			distance = (final_coords - current_pos).norm();
 			logDebug("Current pos: ", current_pos, " | dest: ", final_coords, " | left distance: ", distance);
 			result = internal_forward(distance, sens, timeout - (TimePoint::now() - begin));
@@ -231,11 +224,14 @@ namespace Strategy::Interfacer {
 		return ActionResult::FAILURE;
 	}
 
-	ActionResult NavigationInterfacer::turn_relative(Angle angle, Duration timeout) {
+	ActionResult NavigationInterfacer::turn_relative(Angle angle, Duration timeout, const repere::Repere& repere) {
 		TimePoint date_timeout = TimePoint::now() + timeout;
 		auto lock = get_lock_for_action(date_timeout);
+
+		Angle real_angle = repere::ABSOLUTE_REFERENCE.convertDeltaAngle(repere, angle);
+
 		if(lock.owns_lock()) {
-			_module.turn_relative(angle);
+			_module.turn_relative(real_angle);
 			return wait_end_trajectory(get_check_moving_done(), date_timeout, true, false);
 		}
 		logDebug3("Module not available");
@@ -340,12 +336,11 @@ namespace Strategy::Interfacer {
 
 		using namespace repere;
 		const Repere& ref_astar = GLOBAL_CONSTANTS().REFERENCE_ASTAR;
-		const Repere& ref = get_reference();
 
 		// On récupère la trajectoire depuis l'environnement
 		Coordinates origin = _module.get_coordinates();
 
-		logDebug3("[compute_trajectory] from ", origin.getPos2D(ref), " to ", destination.getPos2D(ref));
+		logDebug3("[compute_trajectory] from ", origin.getPos2D(), " to ", destination.getPos2D());
 
 		// Récupération de la trajectoire calculée par l'A* en prenant en compte les adversaires
 		auto adversary_shapes = _avoidance.update_environment(_env);
@@ -354,7 +349,7 @@ namespace Strategy::Interfacer {
 			std::stringstream sstream;
 
 			for(auto& position : _avoidance.get_adversary_positions()) {
-				sstream << position.getPos2D(ref) << ", ";
+				sstream << position.getPos2D() << ", ";
 			}
 			logDebug4("[compute_trajectory] adversaries detected: ", sstream.str());
 		}
@@ -442,7 +437,7 @@ namespace Strategy::Interfacer {
 	                                                        SensAdvance sens,
 	                                                        TimePoint const& date_timeout) {
 		repere::Coordinates origin = _module.get_coordinates();
-		Vector2m diff = destination.getPos2D(get_reference()) - origin.getPos2D(get_reference());
+		Vector2m diff = destination.getPos2D() - origin.getPos2D();
 
 		// FIXME cette valeur peut être fausse suivant le repère qu'on utilise.
 		Angle direction = atan2(diff.y, diff.x);
@@ -454,7 +449,7 @@ namespace Strategy::Interfacer {
 		ActionResult result;
 		if(lock.owns_lock()) {
 			logDebug("Repositionnement vers ", direction.toDeg(), " deg");
-			_module.turn_absolute(direction, optimal_rotation_sens(origin.getAngle(get_reference()), direction));
+			_module.turn_absolute(direction, optimal_rotation_sens(origin.getAngle(), direction));
 			result = wait_end_trajectory(get_check_moving_done(), date_timeout);
 		} else {
 			logDebug6("Module is unavailable");
@@ -483,7 +478,7 @@ namespace Strategy::Interfacer {
 		// On teste plusieurs positions possibles.
 		while(escapeRadius > 0_cm) {
 			// On recule
-			Vector2m escapePosition = coords.getPos2D(get_reference()) + direction * escapeRadius.toM();
+			Vector2m escapePosition = coords.getPos2D() + direction * escapeRadius.toM();
 			if(!_env.isForbidden(escapePosition)) {
 				break;
 			}
@@ -514,8 +509,8 @@ namespace Strategy::Interfacer {
 			return result;
 		}
 
-		Vector2m old_pos = _module.get_position().getPos2D(get_reference());
-		Angle old_angle = _module.get_orientation().getAngle(get_reference());
+		Vector2m old_pos = _module.get_position().getPos2D();
+		Angle old_angle = _module.get_orientation().getAngle();
 
 		Distance old_distance = (isX ? old_pos.x : old_pos.y);
 
@@ -539,9 +534,9 @@ namespace Strategy::Interfacer {
 		}
 
 		if(isX) {
-			_module.set_coordinates(repere::Coordinates({D, old_distance}, angle, get_reference()));
+			_module.set_coordinates(repere::Coordinates({D, old_distance}, angle));
 		} else {
-			_module.set_coordinates(repere::Coordinates({old_distance, D}, angle, get_reference()));
+			_module.set_coordinates(repere::Coordinates({old_distance, D}, angle));
 		}
 		return ActionResult::SUCCESS;
 	}

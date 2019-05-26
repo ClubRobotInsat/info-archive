@@ -19,16 +19,11 @@ namespace Strategy::Interfacer {
 		using SensRotation = PhysicalRobot::SensRotation;
 		using SensAdvance = PhysicalRobot::SensAdvance;
 
-		NavigationInterfacer(std::shared_ptr<PhysicalRobot::Robot>,
-		                     Environment&,
-		                     AvoidanceInterfacer&,
-		                     const repere::Repere& reference = repere::ABSOLUTE_REFERENCE);
+		NavigationInterfacer(std::shared_ptr<PhysicalRobot::Robot>, Environment&, AvoidanceInterfacer&);
 
 		interfaced_type* operator->();
 
 		repere::Coordinates get_origin_coordinates() const;
-
-		const repere::Repere& get_reference() const;
 
 		void activate_asserv();
 
@@ -78,7 +73,7 @@ namespace Strategy::Interfacer {
 
 		ActionResult turn_absolute(repere::Orientation, SensRotation, Duration timeout = 10_s);
 
-		ActionResult turn_relative(Angle, Duration timeout = 10_s);
+		ActionResult turn_relative(Angle, Duration timeout = 10_s, const repere::Repere& repere = repere::ABSOLUTE_REFERENCE);
 
 		ActionResult stop();
 
@@ -101,7 +96,6 @@ namespace Strategy::Interfacer {
 	private:
 		interfaced_type& _module;
 		AvoidanceInterfacer& _avoidance;
-		const repere::Repere& _reference;
 
 		template <typename T>
 		T peek_stack(const std::stack<T>& stack) const {

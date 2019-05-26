@@ -14,7 +14,7 @@ namespace {
 	}
 
 	const repere::Repere& get_reference() {
-		return navigation()->get_reference();
+		return GLOBAL_CONSTANTS().get_reference(_color);
 	}
 
 	const Duration ADD_TIMEOUT_SECURITY = 10_s;
@@ -62,7 +62,7 @@ ActionResult emergency_stop() {
 ActionResult turn_relative(Angle angle) {
 	logInfo("Relative Turn ", angle, ":");
 	Duration timeout = abs(angle) / get_angular_speed() + ADD_TIMEOUT_SECURITY;
-	auto res = navigation().turn_relative(angle, timeout);
+	auto res = navigation().turn_relative(angle, timeout, get_reference());
 	if(res != ActionResult::SUCCESS) {
 		logError("Failure of Relative Turn ", angle, ": ", res);
 	}
@@ -72,7 +72,7 @@ ActionResult turn_relative(Angle angle) {
 ActionResult turn_absolute(Angle angle) {
 	logInfo("Absolute Turn ", angle, ":");
 	Duration timeout = abs((angle - get_angle()).toMinusPiPi()) / get_angular_speed() + ADD_TIMEOUT_SECURITY;
-	auto res = navigation().turn_absolute(angle, timeout);
+	auto res = navigation().turn_absolute(repere::Orientation(angle, get_reference()), timeout);
 	if(res != ActionResult::SUCCESS) {
 		logError("Failure of Absolute Turn ", angle, ": ", res);
 	}
@@ -82,7 +82,7 @@ ActionResult turn_absolute(Angle angle) {
 ActionResult turn_absolute(Angle angle, SensRotation sens) {
 	logInfo("Absolute Turn ", angle, ", ", sens, ":");
 	Duration timeout = abs(360_deg - (angle - get_angle()).toMinusPiPi()) / get_angular_speed() + ADD_TIMEOUT_SECURITY;
-	auto res = navigation().turn_absolute(angle, sens, timeout);
+	auto res = navigation().turn_absolute(repere::Orientation(angle, get_reference()), sens, timeout);
 	if(res != ActionResult::SUCCESS) {
 		logError("Failure of Absolute Turn ", angle, ", ", sens, ": ", res);
 	}
