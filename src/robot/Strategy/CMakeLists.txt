@@ -46,7 +46,7 @@ if (RASPI)
 
     #link_directories(${PROJECT_SOURCE_DIR}/precompiled-libraries/)
     #add_subdirectory(precompiled-libraries)
-    target_link_libraries(IAWiimote ModuleInterfacers HighLevelFunctions -${PROJECT_SOURCE_DIR}/precompiled-libraries/ wiicpp wiic)
+    target_link_libraries(IAWiimote ModuleInterfacers HighLevelFunctions -L${PROJECT_SOURCE_DIR}/precompiled-libraries/ wiicpp wiic)
 
     if(USE_PETRILAB)
         target_link_libraries(IAOneRobot dl -L${PROJECT_SOURCE_DIR}/precompiled-libraries/)
