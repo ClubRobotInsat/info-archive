@@ -1431,7 +1431,7 @@ void CalibrationDepla::entreAxesAuto() {
 ParsingArguments::ParsingArguments(int argc, char* argv[])
         : _id_robot(1), _id_navigation(1), _id_navigation_parameters(10), _should_exit(false) {
 	int arg;
-	static struct option long_options[] = {{"robot", optional_argument, 0, 'r'},
+	static struct option long_options[] = {{"robot", required_argument, 0, 'r'},
 	                                       {"id-robot", optional_argument, 0, 'i'},
 	                                       {"id-navigation", optional_argument, 0, 'n'},
 	                                       {"id-navigation-parameters", optional_argument, 0, 'p'},
@@ -1457,6 +1457,9 @@ ParsingArguments::ParsingArguments(int argc, char* argv[])
 			default:
 				print_help();
 		}
+	}
+	if(_robot_name.empty()) {
+		print_help();
 	}
 }
 
@@ -1501,6 +1504,6 @@ std::string ParsingArguments::get_robot_name() const {
 }
 
 void ParsingArguments::print_help(std::ostream& os) {
-	os << "Usage: [--robot <name>] [--id-robot <id>] [--id-navigation <id>] [--id-navigation-parameters <id>]" << std::endl;
+	os << "Usage: --robot <name> [--id-robot <id>] [--id-navigation <id>] [--id-navigation-parameters <id>]" << std::endl;
 	_should_exit = true;
 }

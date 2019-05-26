@@ -13,8 +13,10 @@ namespace Strategy {
 		        , _env(env)
 		        , _turret_shift(turret_shift)
 		        , _angle_detection_adversary(GLOBAL_CONSTANTS()[_robot->name].get_angle_adversary_detection()) {
-			_thread_lidar = std::thread(std::bind(&AvoidanceInterfacer::thread_lidar_main, this));
-			set_turret_shift(GLOBAL_CONSTANTS()[_robot->name].get_turret_position());
+			if(robot->has_lidar()) {
+				_thread_lidar = std::thread(std::bind(&AvoidanceInterfacer::thread_lidar_main, this));
+				set_turret_shift(GLOBAL_CONSTANTS()[_robot->name].get_turret_position());
+			}
 		}
 
 		AvoidanceInterfacer::~AvoidanceInterfacer() {
