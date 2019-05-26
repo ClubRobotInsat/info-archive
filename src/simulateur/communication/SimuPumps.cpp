@@ -12,7 +12,7 @@ JSON SimuPumps::getModuleState() {
 
 std::vector<JSON> SimuPumps::generate_list_jsons() const {
 	JSON json;
-	json["pump_intensity"] = 65335;
+	// json["pump_intensity"] = 65335;
 	return {json};
 }
 

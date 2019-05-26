@@ -12,8 +12,6 @@
 namespace Strategy {
 
 	class IAOneRobot : public AbstractStrategy {
-		std::shared_ptr<Interfacer::RobotManager> get_robot() const;
-
 		std::string get_robot_name() const;
 
 	protected:
@@ -26,6 +24,8 @@ namespace Strategy {
 		void init_strategy();
 
 		virtual std::unique_ptr<Petri::PetriDynamicLib> generate_petrilab_lib() = 0;
+
+		std::shared_ptr<Interfacer::RobotManager> get_robot() const;
 
 	private:
 		using AbstractStrategy::add_manager;
