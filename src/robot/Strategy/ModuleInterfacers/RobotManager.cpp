@@ -4,17 +4,16 @@
 
 #include "RobotManager.h"
 
-namespace Strategy {
-	namespace Interfacer {
+namespace Strategy::Interfacer {
 
-		RobotManager::RobotManager(std::shared_ptr<PhysicalRobot::Robot> robot) : _robot(std::move(robot)) {
-			if(_robot == nullptr) {
-				throw std::runtime_error("Interfacer::RobotManager called with a nullptr as a robot.");
-			}
+	RobotManager::RobotManager(std::shared_ptr<PhysicalRobot::Robot> robot) : _robot(std::move(robot)) {
+		if(_robot == nullptr) {
+			throw std::runtime_error("Interfacer::RobotManager called with a nullptr as a robot.");
 		}
+	}
 
-		std::shared_ptr<PhysicalRobot::Robot> RobotManager::get_robot() const {
-			return _robot;
-		}
-	} // namespace Interfacer
-} // namespace Strategy
+	std::shared_ptr<PhysicalRobot::Robot> RobotManager::get_robot() const {
+		return _robot;
+	}
+
+} // namespace Strategy::Interfacer

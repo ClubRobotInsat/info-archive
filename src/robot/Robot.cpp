@@ -108,7 +108,7 @@ namespace PhysicalRobot {
 			return;
 		}
 
-		for(auto module : GLOBAL_CONSTANTS()[name].get_modules()) {
+		for(const auto& module : GLOBAL_CONSTANTS()[name].get_modules()) {
 			if(module.first == "navigation") {
 				_module_manager->add_module<Navigation>(module.second);
 			} else if(module.first == "servos") {
@@ -128,47 +128,4 @@ namespace PhysicalRobot {
 			}
 		}
 	}
-
-
-	// TODO : déplacer ce code dans la partie 'stratégie'
-	/*void Robot::wait_for_tirette() const {
-	    int state_tirette = 0;
-	    setting_up_tirette();
-
-	    // Méthode compliquée d'avant : la tirette ne marchait pas trop
-	    while (state_tirette < Robot::NB_RETRY_TIRETTE) {
-	        if (is_tirette_pulled()) {
-	            ++state_tirette;
-	            logDebug5(state_tirette);
-	        } else {
-	            state_tirette = 0;
-	        }
-	        sleep(100_ms);
-	    }
-
-	    // FIXME : tester si ce code suffit
-	    while (!is_tirette_pulled()) {
-	        sleep(100_ms);
-	    }
-	}
-
-	// Utilitaire : attente de mise de la tirette
-	void Robot::setting_up_tirette() const {
-	    logInfo("Attente que l'on mette la tirette");
-
-	    while (not this->_module_manager->get_module<IO>().read_tirette()) {
-	        sleep(100_ms);
-	    }
-
-	    logInfo("Tirette mise, tirer sur la tirette plz !");
-	}
-
-	// Utilitaire : vérification de tirette tirée
-	bool Robot::is_tirette_pulled() const {
-	    if (not this->_module_manager->get_module<IO>().read_tirette()) {
-	        logDebug6("Tirette detectée comme tirée");
-	        return true;
-	    }
-	    return false;
-	}*/
 } // namespace PhysicalRobot
