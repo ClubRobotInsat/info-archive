@@ -148,7 +148,7 @@ namespace Strategy {
 			/** Attend la fin de la trajectoire et retourne le résultat. Si le robot est bloqué par l'adversaire,
 			 * il est arrêté en urgence. */
 			ActionResult wait_end_trajectory(const std::function<bool()>& condition_end_trajectory,
-			                                 TimePoint date_timeout,
+			                                 const TimePoint& date_timeout,
 			                                 bool stop = true,
 			                                 bool check_adversary = true,
 			                                 SensAdvance = SensAdvance::Forward);

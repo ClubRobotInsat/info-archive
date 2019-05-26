@@ -300,7 +300,7 @@ namespace Strategy {
 		};
 
 		ActionResult NavigationInterfacer::wait_end_trajectory(const std::function<bool()>& condition_end_trajectory,
-		                                                       TimePoint date_timeout,
+		                                                       const TimePoint& date_timeout,
 		                                                       bool stop,
 		                                                       bool check_adversary,
 		                                                       SensAdvance sens) {
