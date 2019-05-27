@@ -6,6 +6,7 @@
 #include <log/Log.h>
 
 namespace PhysicalRobot {
+
 	void Servos::add_servo(servo_t id, BlockingMode mode) {
 		std::lock_guard<std::mutex> lk(_mutex_variables);
 
@@ -247,4 +248,5 @@ namespace PhysicalRobot {
 		_state_changed.exchange(true);
 		unlock_variables();
 	}
+
 } // namespace PhysicalRobot

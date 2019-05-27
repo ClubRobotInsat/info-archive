@@ -49,6 +49,7 @@ namespace Communication {
 		// Ferme le socket
 		void close_socket();
 	};
+
 } // namespace Communication
 
 #endif

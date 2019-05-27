@@ -10,6 +10,7 @@
 #include "Module.hpp"
 
 namespace PhysicalRobot {
+
 	ENUM_CLASS_NS(PhysicalRobot, TriggerState, Triggered, Waiting);
 	ENUM_CLASS_NS(PhysicalRobot, IOState, On, Off);
 	ENUM_CLASS_NS(PhysicalRobot, BuzzerState, Rest, PlayErrorSound, PlaySuccessSound);
@@ -30,6 +31,7 @@ namespace PhysicalRobot {
 		std::atomic<TriggerState> _tirette;
 		std::atomic<BuzzerState> _buzzer;
 	};
+
 } // namespace PhysicalRobot
 
 #endif // ROOT_MODULEIO_H

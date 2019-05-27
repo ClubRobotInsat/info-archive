@@ -91,6 +91,7 @@ namespace Strategy {
 		// Appel de la fonction virtuelle 'execute' ; ça permets d'arrêter le thread de la stratégie à la fin du match
 		void exec();
 	};
+
 } // namespace Strategy
 
 #endif // ROOT_STRATEGY_H

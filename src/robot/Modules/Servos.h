@@ -26,6 +26,7 @@
 #endif
 
 namespace PhysicalRobot {
+
 	ENUM_CLASS_NS(PhysicalRobot, BlockingMode, Unblocking, HoldOnBlock);
 	ENUM_CLASS_NS(PhysicalRobot, Color, Black, Red, Green, Yellow, Blue, Magenta, Cyan, White);
 	ENUM_CLASS_NS(PhysicalRobot, Rotation, Clockwise, CounterClockwise);
@@ -104,6 +105,7 @@ namespace PhysicalRobot {
 
 		std::unique_ptr<Servo> _servos[ID_MAX_SERVOS];
 	};
+
 } // namespace PhysicalRobot
 
 #endif // ROOT_SERVOS_H

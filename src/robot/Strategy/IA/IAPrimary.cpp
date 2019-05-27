@@ -26,6 +26,7 @@ int main(int argc, char* argv[]) {
 }
 
 namespace Strategy {
+
 	IAPrimary::IAPrimary(const IAArguments& args) : IAOneRobot(args, "primary") {
 		init_strategy();
 	}
@@ -37,4 +38,5 @@ namespace Strategy {
 	void IAPrimary::funny_action() {
 		logDebug0("Funny action here for the primary robot!");
 	}
+
 } // namespace Strategy

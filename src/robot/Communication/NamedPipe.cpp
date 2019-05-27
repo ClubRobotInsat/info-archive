@@ -9,6 +9,7 @@
 #include <unistd.h>   // close, unlink, write
 
 namespace Communication {
+
 	NamedPipe::NamedPipe(const std::string& path_read, const std::string& path_write)
 	        : _path_read(path_read), _path_write(path_write) {
 		// Si les pipes n'existent pas, on les crée
@@ -89,4 +90,5 @@ namespace Communication {
 
 		return pipe_created;
 	}
+
 } // namespace Communication

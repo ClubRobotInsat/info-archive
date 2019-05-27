@@ -12,6 +12,7 @@
 #include <thread>
 
 namespace Communication {
+
 	class NullCommunicator : public Serial {
 	public:
 		NullCommunicator() = default;
@@ -25,6 +26,7 @@ namespace Communication {
 			return true;
 		}
 	};
+
 } // namespace Communication
 
 

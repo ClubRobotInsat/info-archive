@@ -7,6 +7,7 @@
 #include <petrilab/Cpp/PetriLab.h>
 
 namespace Strategy {
+
 	IAOneRobot::IAOneRobot(const IAArguments& args, std::string robot_name)
 	        : AbstractStrategy(args.get_color()), name(std::move(robot_name)) {
 		if(debug_mode) {
@@ -93,4 +94,5 @@ namespace Strategy {
 		}
 		return ActionResult::SUCCESS;
 	}
+
 } // namespace Strategy

@@ -17,6 +17,7 @@
 #include "Serial.h"
 
 namespace Communication {
+
 	/// Interface de communication série via datagramme UDP
 	class UDP : public Serial {
 	public:
@@ -51,6 +52,7 @@ namespace Communication {
 		// Ferme le socket
 		void close_socket();
 	};
+
 } // namespace Communication
 
 #endif // ROOT_UDP_H

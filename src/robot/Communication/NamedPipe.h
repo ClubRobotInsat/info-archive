@@ -11,6 +11,7 @@
 #include <fcntl.h>
 
 namespace Communication {
+
 	class NamedPipe : public Serial {
 	public:
 		/// Crée et configure les descripteurs de communication
@@ -34,6 +35,7 @@ namespace Communication {
 
 		bool create_descriptor(const std::string& path);
 	};
+
 } // namespace Communication
 
 #endif // ROOT_NAMEDPIPE_H

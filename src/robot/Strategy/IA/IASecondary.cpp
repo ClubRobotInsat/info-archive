@@ -26,6 +26,7 @@ int main(int argc, char* argv[]) {
 }
 
 namespace Strategy {
+
 	IASecondary::IASecondary(const IAArguments& args) : IAOneRobot(args, "secondary") {
 		init_strategy();
 	}

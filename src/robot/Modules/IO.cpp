@@ -5,6 +5,7 @@
 #include "IO.h"
 
 namespace PhysicalRobot {
+
 	IO::IO(uint8_t id) : Module(id, "IO"), _tirette(TriggerState::Waiting), _buzzer(BuzzerState::Rest) {}
 
 	TriggerState IO::read_tirette() const {
@@ -37,4 +38,5 @@ namespace PhysicalRobot {
 			}
 		}
 	}
+
 } // namespace PhysicalRobot

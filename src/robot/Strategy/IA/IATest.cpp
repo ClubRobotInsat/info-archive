@@ -19,6 +19,7 @@ int main(int argc, char* argv[]) {
 }
 
 namespace Strategy {
+
 	IATest::IATest() : AbstractStrategy(Constants::RobotColor::Purple), _id_servo(254) {
 		logInfo("Initialization of the test robot");
 
@@ -84,4 +85,5 @@ namespace Strategy {
 	void IATest::funny_action() {
 		logDebug0("Funny action here!");
 	}
+
 } // namespace Strategy

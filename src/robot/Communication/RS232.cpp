@@ -158,4 +158,5 @@ namespace Communication {
 #endif
 		return bytes_number;
 	}
+
 } // namespace Communication

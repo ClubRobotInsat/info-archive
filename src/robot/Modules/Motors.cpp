@@ -9,6 +9,7 @@
 #define MAX_BRUSHLESS 8
 
 namespace PhysicalRobot {
+
 	uint8_t Motors::get_nbr_controlled() const {
 		uint8_t count = 0;
 		for(uint8_t i = 0; i < MAX_CONTROLLED_MOTORS; ++i) {
@@ -279,4 +280,5 @@ namespace PhysicalRobot {
 		}
 		_state_changed.exchange(true);
 	}
+
 } // namespace PhysicalRobot

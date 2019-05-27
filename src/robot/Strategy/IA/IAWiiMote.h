@@ -11,6 +11,7 @@
 //#define NUNCHUK_UTILISER_COURBES
 
 namespace Strategy {
+
 	enum TypeNavigation {
 		GO_FORWARD,
 		GO_BACKWARD,
@@ -72,6 +73,7 @@ namespace Strategy {
 		const Vector2m _initial_position = toVec2(GLOBAL_CONSTANTS()["primary"].get_start_position());
 		const Angle _initial_angle = GLOBAL_CONSTANTS()["primary"].get_start_angle();
 	};
+
 } // namespace Strategy
 
 #endif // ROOT_IAWIIMOTE_H

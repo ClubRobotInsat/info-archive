@@ -7,6 +7,7 @@
 #include <log/Log.h>
 
 namespace Communication {
+
 	UDP::UDP(const std::string& addr, uint16_t local_port, uint16_t remote_port) {
 		const std::string address = (addr == "localhost" ? "127.0.0.1" : addr);
 
@@ -90,4 +91,5 @@ namespace Communication {
 			_connected = false;
 		}
 	}
+
 } // namespace Communication

@@ -20,6 +20,7 @@ namespace Strategy {
 
 		void funny_action() override;
 	};
+
 } // namespace Strategy
 
 #endif // ROOT_IAPRIMARY_H

@@ -41,6 +41,7 @@ namespace Strategy {
 
 		std::thread _points_printer;
 	};
+
 } // namespace Strategy
 
 #endif // ROOT_IAONEROBOT_H

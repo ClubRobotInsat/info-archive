@@ -103,31 +103,6 @@ CalibrationDepla::CalibrationDepla(int argc, char** argv) {
 	_length_robot = GLOBAL_CONSTANTS()[parser.get_robot_name()].get_size().x;
 }
 
-// clang-format off
-/*
-void CalibrationDepla::attendreFinDeplacement(Duration timeout) {
-	StopWatch clock;
-	unsigned int comptBlocage = 0;
-
-	while(!_deplacement.verifierDeplacementTermine()) {
-		if(clock.getElapsedTime() > timeout) {
-			_deplacement.arretUrgence();
-			std::cout << clock.getElapsedTime() << std::endl;
-			return;
-		}
-
-		if(_deplacement.verifierNouveauBlocage())
-			comptBlocage++;
-
-		if(comptBlocage > Constantes::NOMBRE_BLOCAGE_PHYSIQUE_MAX) {
-			return;
-		}
-
-		sleep(20_ms);
-	}
-}*/
-// clang-format on
-
 void CalibrationDepla::check_physical_blocking_appeared() {
 	assert(_res == ActionResult::BLOCKED);
 }

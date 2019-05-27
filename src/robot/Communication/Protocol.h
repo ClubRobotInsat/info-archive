@@ -21,6 +21,7 @@
 #include <log/Log.h>
 
 namespace Communication {
+
 	enum SerialProtocolType {
 		// Communications séries en one-to-one, avec un header `0xAC DC AB BA` devant les trames
 		SERIAL_LOCAL,

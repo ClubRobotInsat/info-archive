@@ -28,6 +28,7 @@ namespace Communication {
 		/// * la taille du message dans les connexions par transfert de datagrammes (ex : UDP)
 		virtual size_t read_bytes(uint8_t* octets, std::size_t bytes_number) = 0;
 	};
+
 } // namespace Communication
 
 #endif

@@ -11,6 +11,7 @@
 #include <atomic>
 
 namespace PhysicalRobot {
+
 	ENUM_CLASS_NS(PhysicalRobot, MovingCommand, GoForward, GoBackward, TurnRelative, TurnAbsolute, DoNothing, EmergencyStop, Stop);
 	ENUM_CLASS_NS(PhysicalRobot, SensAdvance, Backward, Forward);
 	ENUM_CLASS_NS(PhysicalRobot, SensRotation, Clockwise, Trigo);
@@ -115,6 +116,7 @@ namespace PhysicalRobot {
 
 		void set_command(MovingCommand command);
 	};
+
 } // namespace PhysicalRobot
 
 #endif // ROOT_MODULEMOVING_H

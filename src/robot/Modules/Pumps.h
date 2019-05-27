@@ -51,6 +51,7 @@ namespace PhysicalRobot {
 		void test_is_valve_ok(valve_t) const;
 		void test_is_vacst_ok(vacst_t) const;
 	};
+
 } // namespace PhysicalRobot
 
 #endif

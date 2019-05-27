@@ -46,4 +46,5 @@ namespace Strategy {
 		logDebug("Robot color is ", toString(_color));
 		logDebug(_simulator ? "Connecting to the simulator" : "Connecting to the robot");
 	}
+
 } // namespace Strategy

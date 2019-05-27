@@ -37,6 +37,7 @@ namespace Communication {
 		int _fd;
 #endif
 	};
+
 } // namespace Communication
 
 #endif

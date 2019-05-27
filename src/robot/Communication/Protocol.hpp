@@ -6,6 +6,7 @@
 #include <future>
 
 namespace Communication {
+
 	template <SerialProtocolType P>
 	AbstractSerialProtocol<P>::AbstractSerialProtocol() : AbstractSerialProtocol(nullptr) {}
 
@@ -194,4 +195,5 @@ namespace Communication {
 		ss << "end of the " << M << " communication";
 		throw ReceptionAborted(ss.str());
 	}
+
 } // namespace Communication

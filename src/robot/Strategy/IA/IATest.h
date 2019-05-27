@@ -8,6 +8,7 @@
 #include "../AbstractStrategy.h"
 
 namespace Strategy {
+
 	class IATest final : public AbstractStrategy {
 	public:
 		IATest();
@@ -22,6 +23,7 @@ namespace Strategy {
 
 		PhysicalRobot::Servos::servo_t _id_servo;
 	};
+
 } // namespace Strategy
 
 #endif // ROOT_IATEST_H

@@ -16,6 +16,7 @@ int main(int argc, char* argv[]) {
 }
 
 namespace Strategy {
+
 	using PhysicalRobot::SensAdvance;
 	using PhysicalRobot::SensRotation;
 
@@ -293,6 +294,7 @@ namespace Strategy {
 
 		return DO_NOTHING;
 	}
+
 } // namespace Strategy
 
 #undef MANETTE_COUCHEE

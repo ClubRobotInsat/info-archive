@@ -12,10 +12,7 @@ using namespace Strategy;
 class CalibrationDepla {
 public:
 	CalibrationDepla(int argc, char* argv[]);
-	virtual ~CalibrationDepla() {}
-
-	// éviter de devoir appuyer sur le bouton d'arret d'urgence si le robot fait du caca
-	void desactiverPuisActiverAsserv();
+	virtual ~CalibrationDepla() = default;
 
 	void pid();
 	void saveDatas();

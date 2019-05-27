@@ -51,6 +51,7 @@ namespace PhysicalRobot {
 		/// Le coefficient dérivée sur l'orientation
 		float _orient_kd = 0;
 	};
+
 } // namespace PhysicalRobot
 
 #endif // ROOT_MODULENAVIGATIONPARAMETERS_H

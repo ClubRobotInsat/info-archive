@@ -5,6 +5,7 @@
 #include "NullCommunicator.h"
 
 namespace Communication {
+
 	size_t NullCommunicator::read_bytes(uint8_t* bytes, std::size_t bytes_number) {
 		while(bytes_number > 0) {
 			--bytes_number;
@@ -15,4 +16,5 @@ namespace Communication {
 	}
 
 	void NullCommunicator::write_bytes(const uint8_t*, std::size_t) {}
+
 } // namespace Communication

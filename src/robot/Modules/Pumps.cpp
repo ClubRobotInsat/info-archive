@@ -163,4 +163,5 @@ namespace PhysicalRobot {
 			throw std::runtime_error("Invalid number for the vacuostat: "s + std::to_string(id));
 		}
 	}
+
 } // namespace PhysicalRobot

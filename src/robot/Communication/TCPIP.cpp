@@ -107,4 +107,5 @@ namespace Communication {
 
 		_connected = false;
 	}
+
 } // namespace Communication

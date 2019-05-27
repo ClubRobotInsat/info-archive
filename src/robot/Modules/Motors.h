@@ -96,6 +96,7 @@ namespace PhysicalRobot {
 		std::unique_ptr<UncontrolledMotor> _uncontrolled[ID_MAX_UNCONTROLLED_MOTORS];
 		std::unique_ptr<Brushless> _brushless[ID_MAX_BRUSHLESS];
 	};
+
 } // namespace PhysicalRobot
 
 #endif // ROOT_MODULEMOTEURS_H

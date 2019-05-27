@@ -144,6 +144,7 @@ namespace PhysicalRobot {
 		/// ID du module dans le robot, allant de 0 à 15
 		uint8_t _id;
 	};
+
 } // namespace PhysicalRobot
 
 #endif //_MODULE_H
