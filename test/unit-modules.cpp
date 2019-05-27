@@ -56,24 +56,25 @@ TEST_CASE("Servos' Module", "[integration]") {
 		REQUIRE_THROWS_WITH(my_module.add_servo(PhysicalRobot::Servos::ID_RESERVED_SERVOS), "ID du servo trop grand (255 > 254) !");
 		REQUIRE_THROWS_WITH(my_module.add_servo(5), "Double assignation du servo 5 !");
 		REQUIRE_NOTHROW(my_module.add_servo(42));
-		REQUIRE_NOTHROW(my_module.add_servo(0));
-		CHECK(my_module.get_nbr_servos() == 4);
+		CHECK_NOTHROW(my_module.add_servo(0));
+		CHECK(my_module.get_nbr_servos() == 5);
 		CHECK(my_module.name == "Servos");
 
-		REQUIRE_THROWS_WITH(my_module.set_position(0, 50_deg), "Numéro du servo demandé invalide : 0");
+		REQUIRE_THROWS_WITH(my_module.set_position(PhysicalRobot::Servos::ID_RESERVED_SERVOS, 50_deg),
+		                    "Numéro du servo demandé invalide : 255");
 		REQUIRE_THROWS_WITH(my_module.set_position(1, 50_deg), "Numéro du servo demandé invalide : 1");
 		my_module.set_position(2, 50.4_deg);
 		// Servo 2 commandé en position
 		CHECK_FALSE(my_module.is_moving_done(2));
 
-		REQUIRE_THROWS_WITH(my_module.set_speed(0, 2_deg_s), "Numéro du servo demandé invalide : 0");
+		REQUIRE_NOTHROW(my_module.set_speed(0, 2_deg_s));
 		REQUIRE_THROWS_WITH(my_module.set_speed(1, 2_deg_s), "Numéro du servo demandé invalide : 1");
 		my_module.set_speed(2, 6_deg_s, PhysicalRobot::Rotation::CounterClockwise);
 
-		REQUIRE_THROWS_WITH(my_module.read_position(0), "Numéro du servo demandé invalide : 0");
+		CHECK_NOTHROW(my_module.read_position(0));
 		REQUIRE_THROWS_WITH(my_module.read_position(1), "Numéro du servo demandé invalide : 1");
 
-		REQUIRE_THROWS_WITH(my_module.set_color(0, PhysicalRobot::Color::Green), "Numéro du servo demandé invalide : 0");
+		CHECK_NOTHROW(my_module.set_color(0, PhysicalRobot::Color::Green));
 		REQUIRE_THROWS_WITH(my_module.set_color(1, PhysicalRobot::Color::Green), "Numéro du servo demandé invalide : 1");
 		my_module.set_color(2, PhysicalRobot::Color::Green);
 
@@ -81,15 +82,15 @@ TEST_CASE("Servos' Module", "[integration]") {
 		                    "Numéro du servo demandé invalide : 1");
 		my_module.set_blocking_mode(2, PhysicalRobot::BlockingMode::HoldOnBlock);
 
-		REQUIRE_THROWS_WITH(my_module.get_blocking_mode(0), "Numéro du servo demandé invalide : 0");
+		CHECK_NOTHROW(my_module.get_blocking_mode(0) == PhysicalRobot::BlockingMode::HoldOnBlock);
 		REQUIRE_THROWS_WITH(my_module.get_blocking_mode(1), "Numéro du servo demandé invalide : 1");
 		CHECK(my_module.get_blocking_mode(2) == PhysicalRobot::BlockingMode::HoldOnBlock);
 
-		REQUIRE_THROWS_WITH(my_module.is_blocking(0), "Numéro du servo demandé invalide : 0");
+		CHECK_NOTHROW(my_module.is_blocking(0));
 		REQUIRE_THROWS_WITH(my_module.is_blocking(1), "Numéro du servo demandé invalide : 1");
 		CHECK_FALSE(my_module.is_blocking(2));
 
-		REQUIRE_THROWS_WITH(my_module.is_moving_done(0), "Numéro du servo demandé invalide : 0");
+		CHECK_NOTHROW(my_module.is_moving_done(0));
 		REQUIRE_THROWS_WITH(my_module.is_moving_done(1), "Numéro du servo demandé invalide : 1");
 		// Servo 2 commandé en vitesse
 		CHECK(my_module.is_moving_done(2));
@@ -202,8 +203,8 @@ TEST_CASE("ModuleManager", "[integration]") {
 
 			SECTION("Servos") {
 				auto& module_servos = manager.add_module<PhysicalRobot::Servos>(15);
-				module_servos.add_servo(254);
-				module_servos.set_speed(254, 500_mrad_s);
+				REQUIRE_NOTHROW(module_servos.add_servo(PhysicalRobot::Servos::ID_MAX_SERVOS));
+				module_servos.set_speed(PhysicalRobot::Servos::ID_MAX_SERVOS, 500_mrad_s);
 
 				auto frames_servos = manager.write_frame();
 				REQUIRE(frames_servos.size() == 1);

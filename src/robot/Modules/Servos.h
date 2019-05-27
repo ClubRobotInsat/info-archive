@@ -104,7 +104,7 @@ namespace PhysicalRobot {
 			std::atomic<Color> color;
 		};
 
-		std::unique_ptr<Servo> _servos[ID_MAX_SERVOS];
+		std::array<std::unique_ptr<Servo>, ID_MAX_SERVOS + 1> _servos;
 	};
 
 } // namespace PhysicalRobot
