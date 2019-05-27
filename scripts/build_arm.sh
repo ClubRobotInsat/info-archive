@@ -38,12 +38,7 @@ if [ $# -ne "0" ]
     done
 else
     print_usage
-    compile_primary=1
-    compile_secondary=1
-    compile_wii=1
-    compile_test=1
-    compile_ia_test=1
-    compile_lidar=1
+    compile_all=1
 fi
 
 Green='\e[1;32m'

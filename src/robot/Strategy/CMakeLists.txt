@@ -39,13 +39,6 @@ if (RASPI)
     # WiiMote #
     message(STATUS "Compiling IAWiimote for the raspi")
 
-    #add_library(libwiimotecpp SHARED IMPORTED)
-    #add_library(libwiimotec SHARED IMPORTED)
-    #set_target_properties(libwiimotecpp PROPERTIES IMPORTED_LOCATION "../../../precompiled-libraries/libwiicpp.so")
-    #set_target_properties(libwiimotec PROPERTIES IMPORTED_LOCATION "../../../precompiled-libraries/libwiic.so")
-
-    #link_directories(${PROJECT_SOURCE_DIR}/precompiled-libraries/)
-    #add_subdirectory(precompiled-libraries)
     target_link_libraries(IAWiimote ModuleInterfacers HighLevelFunctions -L${PROJECT_SOURCE_DIR}/precompiled-libraries/ wiicpp wiic)
 
     if(USE_PETRILAB)
