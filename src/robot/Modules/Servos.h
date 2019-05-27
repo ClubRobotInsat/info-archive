@@ -36,7 +36,8 @@ namespace PhysicalRobot {
 	public:
 		using servo_t = uint8_t;
 
-		static const servo_t ID_MAX_SERVOS = std::numeric_limits<uint8_t>::max();
+		static const servo_t ID_MAX_SERVOS = 254;
+		static const servo_t ID_RESERVED_SERVOS = 255;
 
 		explicit Servos(uint8_t id) : Module(id, "Servos") {}
 
@@ -85,7 +86,7 @@ namespace PhysicalRobot {
 
 			// Par défaut, un servo est commandé en vitesse (0 rad/s).
 			Servo(servo_t id, BlockingMode mode)
-			        : id(static_cast<servo_t>(id > 0 ? id : throw std::runtime_error("ID equals to 0.")))
+			        : id(static_cast<servo_t>(id != ID_RESERVED_SERVOS ? id : throw std::runtime_error("ID is reserved.")))
 			        , position(0_deg)
 			        , command(CommandSpeed(0_deg_s, Rotation::CounterClockwise))
 			        , command_type(CommandType::Speed)

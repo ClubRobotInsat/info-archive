@@ -10,10 +10,10 @@ namespace PhysicalRobot {
 	void Servos::add_servo(servo_t id, BlockingMode mode) {
 		std::lock_guard<std::mutex> lk(_mutex_variables);
 
-		if(id >= ID_MAX_SERVOS) {
-			throw std::runtime_error("ID du servo trop grand ("s + std::to_string(id) + " >= " + std::to_string(ID_MAX_SERVOS) + ") !");
-		} else if(id == 0) {
-			throw std::runtime_error("L'ID 0 des servos est réservé !");
+		if(id > ID_MAX_SERVOS) {
+			throw std::runtime_error("ID du servo trop grand ("s + std::to_string(id) + " > " + std::to_string(ID_MAX_SERVOS) + ") !");
+		} else if(id == ID_RESERVED_SERVOS) {
+			throw std::runtime_error("L'ID " + std::to_string(id) + " des servos est réservé !");
 		} else if(_servos[id]) {
 			throw std::runtime_error("Double assignation du servo "s + std::to_string(id) + " !");
 		}
@@ -33,8 +33,8 @@ namespace PhysicalRobot {
 		const servo_t INDEX_BAD_ID = ID_MAX_SERVOS;
 		std::lock_guard<std::mutex> lk(_mutex_variables);
 
-		// 'id == 0' veut dire qu'il n'y a pas de servo-moteur dans la représentation C
-		if(id == 0) {
+		// 'id == 255' veut dire qu'il n'y a pas de servo-moteur
+		if(id == ID_RESERVED_SERVOS) {
 			return INDEX_BAD_ID;
 		}
 
@@ -50,7 +50,7 @@ namespace PhysicalRobot {
 	void Servos::set_position(servo_t id, Angle angle) {
 		uint8_t index = get_index_of(id);
 
-		if(index >= ID_MAX_SERVOS) {
+		if(index > ID_MAX_SERVOS) {
 			throw std::runtime_error("Numéro du servo demandé invalide : "s + std::to_string(id));
 		}
 
@@ -65,7 +65,7 @@ namespace PhysicalRobot {
 	void Servos::set_speed(servo_t id, AngularSpeed speed, Rotation rotation) {
 		uint8_t index = get_index_of(id);
 
-		if(index >= ID_MAX_SERVOS) {
+		if(index > ID_MAX_SERVOS) {
 			throw std::runtime_error("Numéro du servo demandé invalide : "s + std::to_string(id));
 		}
 
@@ -79,7 +79,7 @@ namespace PhysicalRobot {
 	Angle Servos::read_position(servo_t id) const {
 		uint8_t index = get_index_of(id);
 
-		if(index >= ID_MAX_SERVOS) {
+		if(index > ID_MAX_SERVOS) {
 			throw std::runtime_error("Numéro du servo demandé invalide : "s + std::to_string(id));
 		}
 
@@ -90,7 +90,7 @@ namespace PhysicalRobot {
 	void Servos::set_color(servo_t id, Color color) {
 		uint8_t index = get_index_of(id);
 
-		if(index >= ID_MAX_SERVOS) {
+		if(index > ID_MAX_SERVOS) {
 			throw std::runtime_error("Numéro du servo demandé invalide : "s + std::to_string(id));
 		}
 
@@ -103,7 +103,7 @@ namespace PhysicalRobot {
 	void Servos::set_blocking_mode(servo_t id, BlockingMode mode) {
 		uint8_t index = get_index_of(id);
 
-		if(index >= ID_MAX_SERVOS) {
+		if(index > ID_MAX_SERVOS) {
 			throw std::runtime_error("Numéro du servo demandé invalide : "s + std::to_string(id));
 		}
 
@@ -116,7 +116,7 @@ namespace PhysicalRobot {
 	BlockingMode Servos::get_blocking_mode(PhysicalRobot::Servos::servo_t id) {
 		uint8_t index = get_index_of(id);
 
-		if(index >= ID_MAX_SERVOS) {
+		if(index > ID_MAX_SERVOS) {
 			throw std::runtime_error("Numéro du servo demandé invalide : "s + std::to_string(id));
 		}
 
@@ -127,7 +127,7 @@ namespace PhysicalRobot {
 	bool Servos::is_blocking(servo_t id) const {
 		uint8_t index = get_index_of(id);
 
-		if(index >= ID_MAX_SERVOS) {
+		if(index > ID_MAX_SERVOS) {
 			throw std::runtime_error("Numéro du servo demandé invalide : "s + std::to_string(id));
 		}
 
@@ -138,7 +138,7 @@ namespace PhysicalRobot {
 	bool Servos::is_moving_done(servo_t id) const {
 		uint8_t index = get_index_of(id);
 
-		if(index >= ID_MAX_SERVOS) {
+		if(index > ID_MAX_SERVOS) {
 			throw std::runtime_error("Numéro du servo demandé invalide : "s + std::to_string(id));
 		}
 

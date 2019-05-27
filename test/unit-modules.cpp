@@ -53,10 +53,10 @@ TEST_CASE("Servos' Module", "[integration]") {
 		my_module.add_servo(2, PhysicalRobot::BlockingMode::Unblocking);
 		my_module.add_servo(4);
 
-		REQUIRE_THROWS_WITH(my_module.add_servo(PhysicalRobot::Servos::ID_MAX_SERVOS), "ID du servo trop grand (255 >= 255) !");
+		REQUIRE_THROWS_WITH(my_module.add_servo(PhysicalRobot::Servos::ID_RESERVED_SERVOS), "ID du servo trop grand (255 > 254) !");
 		REQUIRE_THROWS_WITH(my_module.add_servo(5), "Double assignation du servo 5 !");
 		REQUIRE_NOTHROW(my_module.add_servo(42));
-		REQUIRE_THROWS_WITH(my_module.add_servo(0), "L'ID 0 des servos est réservé !");
+		REQUIRE_NOTHROW(my_module.add_servo(0));
 		CHECK(my_module.get_nbr_servos() == 4);
 		CHECK(my_module.name == "Servos");
 
