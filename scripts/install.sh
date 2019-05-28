@@ -59,6 +59,17 @@ if [ $install_apt -eq 1 ]
         echo -e "${Yellow}Installing gcc-7 suite from the ppa:jonathonf/gcc-7.1${End}"
         sudo add-apt-repository --yes ppa:jonathonf/gcc-7.1
         sudo apt-get update
+
+        sudo apt purge cmake
+        version=3.9
+        build=3
+        cd /tmp
+        wget https://cmake.org/files/v$version/cmake-$version.$build.tar.gz
+        tar -xzvf cmake-$version.$build.tar.gz
+        cd cmake-$version.$build/
+        ./bootstrap
+        make -j $(nproc)
+        sudo make install
     fi
     sudo apt-get install --yes cmake git libbox2d-dev gcc-7 g++-7 libbluetooth-dev build-essential libglu1-mesa-dev curl libgtkmm-3.0-dev libusb-1.0-0-dev clang-format libirrlicht-dev # libglfw-dev
     if [ "$VERSION" -lt "18" ]; then
