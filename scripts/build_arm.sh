@@ -38,6 +38,7 @@ if [ $# -ne "0" ]
     done
 else
     print_usage
+    echo ""
     compile_all=1
 fi
 

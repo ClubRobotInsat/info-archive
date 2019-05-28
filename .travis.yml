@@ -43,6 +43,8 @@ install:
 script:
   # Show OS/compiler version
   - uname -a
+  - lsb_release -a
+  - cmake --version
   - $CXX --version
   - cd ${TRAVIS_BUILD_DIR}
   - rm -rf build
