@@ -56,7 +56,7 @@ if [ $install_apt -eq 1 ]
     then echo -e "${Yellow}Installation des logiciels nécessaires${End}"
     sudo apt-get update
     if [ "$VERSION" -lt "18" ]; then
-        echo -e "${Yellow}Installing gcc-7 suite from the ppa:jonathonf/gcc-7.1"
+        echo -e "${Yellow}Installing gcc-7 suite from the ppa:jonathonf/gcc-7.1${End}"
         sudo add-apt-repository --yes ppa:jonathonf/gcc-7.1
         sudo apt-get update
     fi
