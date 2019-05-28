@@ -29,6 +29,7 @@ private:
 class WiimoteEventHandler {
 public:
 	virtual void processWiimoteInput(WiimoteState& state) = 0;
+	virtual ~WiimoteEventHandler() = default;
 };
 
 enum WiimoteButton {
@@ -51,7 +52,7 @@ enum WiimoteButton {
  */
 class WiimoteState {
 public:
-	WiimoteState(CWiimote& wiimote);
+	explicit WiimoteState(CWiimote& wiimote);
 
 	bool isJustPressed(WiimoteButton button);
 	bool isPressed(WiimoteButton button);

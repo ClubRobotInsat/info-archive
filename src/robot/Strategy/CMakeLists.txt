@@ -39,7 +39,7 @@ if (RASPI)
     # WiiMote #
     message(STATUS "Compiling IAWiimote for the raspi")
 
-    target_link_libraries(IAWiimote ModuleInterfacers HighLevelFunctions -L${PROJECT_SOURCE_DIR}/precompiled-libraries/ wiicpp wiic)
+    target_link_libraries(IAWiimote -L${PROJECT_SOURCE_DIR}/precompiled-libraries/ wiic)
 
     if(USE_PETRILAB)
         target_link_libraries(IAOneRobot dl -L${PROJECT_SOURCE_DIR}/precompiled-libraries/)
@@ -61,7 +61,6 @@ if (RASPI)
     # IATest
     message(STATUS "Compiling IATest for the raspi")
 else()
-    target_link_libraries(IAWiimote ModuleInterfacers HighLevelFunctions wiicpp)
 
     if(USE_PETRILAB)
         execute_process(
@@ -77,3 +76,5 @@ else()
         message(WARNING "PetriLab is not installed, please run 'info/scripts/install.sh petri'")
     endif()
 endif()
+
+target_link_libraries(IAWiimote ModuleInterfacers HighLevelFunctions wiicpp)

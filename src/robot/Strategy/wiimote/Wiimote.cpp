@@ -5,7 +5,11 @@
 #include "Wiimote.h"
 #include <iostream>
 #include <unistd.h>
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wnon-virtual-dtor"
+#pragma GCC diagnostic ignored "-Wold-style-cast"
 #include <wiic/wiicpp.h>
+#pragma GCC diagnostic pop
 
 //---------------- FONCTIONS UTILITAIRES
 
@@ -40,7 +44,7 @@ int getButton(WiimoteButton button) {
 
 //----------------
 
-WiimoteInputProvider::WiimoteInputProvider() {}
+WiimoteInputProvider::WiimoteInputProvider() : handler(nullptr) {}
 
 void WiimoteInputProvider::registerEventHandler(WiimoteEventHandler* handler) {
 	this->handler = handler;

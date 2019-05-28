@@ -39,6 +39,7 @@ install:
   - scripts/install.sh tools
   - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 60 --slave /usr/bin/g++ g++ /usr/bin/g++-7
   - scripts/install.sh wii
+  - scripts/install.sh raspi
 
 script:
   # Show OS/compiler version
@@ -47,11 +48,15 @@ script:
   - cmake --version
   - $CXX --version
   - cd ${TRAVIS_BUILD_DIR}
+  - echo -e "\033[0;43mCompiling for the x86 architecture\033[0;0m"
   - rm -rf build
   - cmake -H. -Bbuild ${CMAKE_OPTIONS}
   - cd build
   - make all -j $(nproc)
   - ./unit_testing_all '[integration]'
+  - echo -e "\033[0;43mCompiling for the ARM architecture\033[0;0m"
+  - cd ${TRAVIS_BUILD_DIR}
+  - ./scripts/build_arm.sh all
 
 notifications:
   email: false
