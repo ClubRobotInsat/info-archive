@@ -9,6 +9,8 @@ namespace Strategy::Interfacer {
 	// Constructor
 	NavigationInterfacer::NavigationInterfacer(std::shared_ptr<PhysicalRobot::Robot> robot, Environment& env, AvoidanceInterfacer& avoidance)
 	        : _module(robot->get_module<interfaced_type>()), _avoidance(avoidance), _env(env) {
+
+		logInfo("name: ", robot->name);
 		push_linear_speed(GLOBAL_CONSTANTS()[robot->name].get_linear_speed());
 		push_angular_speed(GLOBAL_CONSTANTS()[robot->name].get_angular_speed());
 		push_linear_accuracy(GLOBAL_CONSTANTS()[robot->name].get_linear_accuracy());

@@ -39,6 +39,7 @@ namespace Strategy {
 		} catch(std::exception const& e) {
 			logError("Impossible to initialize PetriLab: ", e.what());
 		}
+		logInfo("name: ", name);
 
 		set_points(0);
 	}
@@ -117,6 +118,7 @@ namespace Strategy {
 			logInfo("Insertion of an Interfacer::AvoidanceInterfacer inside the robot '" + robot->name + "'");
 		}
 
+		logInfo("name: ", robot->name);
 		auto& avoidance =
 		    manager->add_interfacer<Interfacer::AvoidanceInterfacer>(get_environment(),
 		                                                             GLOBAL_CONSTANTS()[robot->name].get_turret_position());
@@ -205,6 +207,8 @@ namespace Strategy {
 		}
 
 		_interfacers[manager->get_robot()->name] = manager;
+
+		logInfo("name: ", manager->get_robot()->name);
 
 		return manager;
 	}

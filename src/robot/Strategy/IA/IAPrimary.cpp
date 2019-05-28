@@ -29,6 +29,8 @@ namespace Strategy {
 
 	IAPrimary::IAPrimary(const IAArguments& args) : IAOneRobot(args, "primary") {
 		init_strategy();
+		logInfo("name: ", name);
+		// get_robot()->get_interfacer<Interfacer::ServosInterfacer>()->add_servo(254);
 	}
 
 	std::unique_ptr<Petri::PetriDynamicLib> IAPrimary::generate_petrilab_lib() {

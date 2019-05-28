@@ -21,6 +21,8 @@ namespace PhysicalRobot {
 	Robot::Robot(std::string name, Lidar::LidarType lidar, bool debug_active)
 	        : Robot(std::make_shared<ModuleManager>(), name, lidar, debug_active) {
 		_communicator = std::make_unique<Communication::Communicator<ModuleManager>>(_module_manager);
+
+		logInfo("name: ", name);
 		_communicator->connect(GLOBAL_CONSTANTS()[name]);
 	}
 
@@ -31,7 +33,9 @@ namespace PhysicalRobot {
 	}
 
 	Robot::Robot(std::string name, const std::vector<std::string>& args, bool debug_active)
-	        : Robot(name, args, GLOBAL_CONSTANTS()[name].get_lidar_type(), debug_active) {}
+	        : Robot(name, args, GLOBAL_CONSTANTS()[name].get_lidar_type(), debug_active) {
+		logInfo("name: ", name);
+	}
 
 	/// Initialise le robot à partir des arguments passés au programme.
 	Robot::Robot(std::shared_ptr<ModuleManager> module_manager, std::string name, Lidar::LidarType lidar, bool debug_active)
