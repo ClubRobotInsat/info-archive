@@ -10,6 +10,7 @@ set(BITS "64" CACHE . "Build en 32 ou 64 bits")
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -std=gnu++17")
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_ENABLE_EXPORTS ON)
 
 if(RASPI)
 	set(INFO_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/build_arm")
