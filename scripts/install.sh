@@ -54,12 +54,20 @@ raspi_installed=0
 
 if [ $install_apt -eq 1 ]
     then echo -e "${Yellow}Installation des logiciels nécessaires${End}"
-    sudo apt-get update
+
     if [ "$VERSION" -lt "18" ]; then
         echo -e "${Yellow}Installing gcc-7 suite from the ppa:jonathonf/gcc-7.1${End}"
         sudo add-apt-repository --yes ppa:jonathonf/gcc-7.1
-        sudo apt-get update
+    fi
 
+    sudo apt update
+    sudo apt install --yes cmake
+
+    # Installation de CMake 3.9.3 au minimum
+    CMAKE_VERSION=$(cmake --version | head -n1 | cut -d' ' -f3)
+    MIN_CMAKE_VERSION="3.9.2"
+    if [ ! "$CMAKE_VERSION" = "$(echo -e "$CMAKE_VERSION\n$MIN_CMAKE_VERSION" | sort -V | tail -1)" ]; then
+        echo -e "${Yellow}Installing CMake 3.9.3${End}"
         sudo apt purge cmake
         version=3.9
         build=3
@@ -71,7 +79,7 @@ if [ $install_apt -eq 1 ]
         make -j $(nproc)
         sudo make install
     fi
-    sudo apt-get install --yes cmake git libbox2d-dev gcc-7 g++-7 libbluetooth-dev build-essential libglu1-mesa-dev curl libgtkmm-3.0-dev libusb-1.0-0-dev clang-format libirrlicht-dev # libglfw-dev
+    sudo apt-get install --yes git libbox2d-dev gcc-7 g++-7 libbluetooth-dev build-essential libglu1-mesa-dev curl libgtkmm-3.0-dev libusb-1.0-0-dev clang-format libirrlicht-dev # libglfw-dev
     if [ "$VERSION" -lt "18" ]; then
         sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 70 --slave /usr/bin/g++ g++ /usr/bin/g++-7
     fi
