@@ -26,6 +26,7 @@ namespace Strategy {
 					_simulator = true;
 					break;
 				case 'h':
+				default:
 					print_help_and_exit();
 					break;
 			}

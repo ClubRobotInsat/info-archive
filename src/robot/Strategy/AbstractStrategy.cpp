@@ -11,7 +11,8 @@
 extern void init_petri_avoidance(std::shared_ptr<Strategy::Interfacer::RobotManager> manager);
 extern void init_petri_io(std::shared_ptr<Strategy::Interfacer::RobotManager> manager);
 extern void init_petri_navigation(std::shared_ptr<Strategy::Interfacer::RobotManager> manager, Constants::RobotColor color);
-extern void init_petri_pumps(std::shared_ptr<Strategy::Interfacer::RobotManager> manager);
+extern void init_petri_pumps_primary(std::shared_ptr<Strategy::Interfacer::RobotManager> manager);
+extern void init_petri_pumps_secondary(std::shared_ptr<Strategy::Interfacer::RobotManager> manager);
 extern void init_petri_servos(std::shared_ptr<Strategy::Interfacer::RobotManager> manager, Constants::RobotColor color);
 extern void init_petri_utils(Strategy::AbstractStrategy& strategy);
 
@@ -137,12 +138,19 @@ namespace Strategy {
 			}
 			manager->add_interfacer<Interfacer::IOInterfacer>();
 		}
-		// Interfacer::PumpsInterfacer
-		if(manager->get_robot()->has_module<PhysicalRobot::Pumps>()) {
+		// Interfacer::PumpsInterfacerSecondary
+		if(manager->get_robot()->has_module<PhysicalRobot::Pumps>() && robot->name == "secondary") {
 			if(debug_mode) {
-				logInfo("Insertion of an Interfacer::PumpsInterfacer inside the robot '" + robot->name + "'");
+				logInfo("Insertion of an Interfacer::PumpsInterfacerSecondary inside the robot '" + robot->name + "'");
 			}
-			manager->add_interfacer<Interfacer::PumpsInterfacer>();
+			manager->add_interfacer<Interfacer::PumpsInterfacerSecondary>();
+		}
+		// Interfacer::PumpsInterfacerPrimary
+		else if(manager->get_robot()->has_module<PhysicalRobot::Pumps>()) {
+			if(debug_mode) {
+				logInfo("Insertion of an Interfacer::PumpsInterfacerPrimary inside the robot '" + robot->name + "'");
+			}
+			manager->add_interfacer<Interfacer::PumpsInterfacerPrimary>();
 		}
 		// Interfacer::ServosInterfacer
 		if(manager->get_robot()->has_module<PhysicalRobot::Servos>()) {
@@ -186,13 +194,21 @@ namespace Strategy {
 				}
 				init_petri_navigation(manager, _color);
 			}
-			// Interfacer::PumpsInterfacer
-			if(manager->has_interfacer<Interfacer::PumpsInterfacer>()) {
+			// Interfacer::PumpsInterfacerSecondary
+			if(manager->has_interfacer<Interfacer::PumpsInterfacerSecondary>()) {
 				if(debug_mode) {
-					logInfo("Insertion of PetriLab::Pumps functionalities associated with the robot '" +
+					logInfo("Insertion of PetriLab::PumpsSecondary functionalities associated with the robot '" +
 					        manager->get_robot()->name + "'");
 				}
-				init_petri_pumps(manager);
+				init_petri_pumps_secondary(manager);
+			}
+			// Interfacer::PumpsInterfacerPrimary
+			if(manager->has_interfacer<Interfacer::PumpsInterfacerPrimary>()) {
+				if(debug_mode) {
+					logInfo("Insertion of PetriLab::PumpsPrimary functionalities associated with the robot '" +
+					        manager->get_robot()->name + "'");
+				}
+				init_petri_pumps_primary(manager);
 			}
 			// Interfacer::ServosInterfacer
 			if(manager->has_interfacer<Interfacer::ServosInterfacer>()) {

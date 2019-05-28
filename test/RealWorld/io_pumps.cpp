@@ -4,6 +4,7 @@
 
 #include "../../src/robot/Robot.h"
 #include "../../src/robot/Strategy/AbstractStrategy.h"
+#include "../../src/robot/Strategy/ModuleInterfacers/AtomType.h"
 #include "../../src/robot/Strategy/ModuleInterfacers/RobotManager.h"
 
 class StrategyIO final : public Strategy::AbstractStrategy {
@@ -15,19 +16,19 @@ public:
 private:
 	void execute() override {
 		auto io = _interfacers["primary"]->get_interfacer<Strategy::Interfacer::IOInterfacer>();
-		auto pumps = _interfacers["primary"]->get_interfacer<Strategy::Interfacer::PumpsInterfacer>();
+		auto pumps = _interfacers["primary"]->get_interfacer<Strategy::Interfacer::PumpsInterfacerPrimary>();
 		_interfacers["primary"]->get_robot()->set_debug(true);
 
-		using Strategy::Interfacer::PumpsInterfacer;
+		using Strategy::Interfacer::PumpsInterfacerPrimary;
 
 		wait_for_tirette();
 
 		io.play_success_sound();
 
 		sleep(5_s);
-		pumps.catch_front(PumpsInterfacer::AtomType::Blueium, PumpsInterfacer::AtomType::Redium);
+		pumps.catch_front(Strategy::AtomType::Blueium, Strategy::AtomType::Redium);
 		sleep(5_s);
-		pumps.catch_back(PumpsInterfacer::AtomType::Goldenium, PumpsInterfacer::AtomType::Nothing);
+		pumps.catch_back(Strategy::AtomType::Goldenium, Strategy::AtomType::Nothing);
 	}
 };
 

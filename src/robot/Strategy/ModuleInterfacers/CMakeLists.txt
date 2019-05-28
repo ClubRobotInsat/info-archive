@@ -1,10 +1,12 @@
 set(INTERFACERS_SOURCES
         Interfacer.hpp
+        AtomType.h
         AvoidanceInterfacer.cpp
         ElevatorInterfacer.cpp
         IOInterfacer.cpp
         NavigationInterfacer.cpp
-        PumpsInterfacer.cpp
+        PumpsInterfacerPrimary.cpp
+        PumpsInterfacerSecondary.cpp
         ServosInterfacer.cpp
         RobotManager.cpp)
 

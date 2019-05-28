@@ -9,7 +9,8 @@
 #include "ElevatorInterfacer.h"
 #include "IOInterfacer.h"
 #include "NavigationInterfacer.h"
-#include "PumpsInterfacer.h"
+#include "PumpsInterfacerPrimary.h"
+#include "PumpsInterfacerSecondary.h"
 #include "ServosInterfacer.h"
 
 #include <typeindex>

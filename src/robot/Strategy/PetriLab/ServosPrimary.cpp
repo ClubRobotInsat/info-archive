@@ -6,6 +6,7 @@
 #include "../ModuleInterfacers/RobotManager.h"
 
 namespace {
+
 	using namespace Strategy::Interfacer;
 
 	std::shared_ptr<RobotManager> _manager;
@@ -27,10 +28,11 @@ namespace {
 
 	ArmPosition front_position;
 	ArmPosition back_position;
+
 } // namespace
 
-void init_petri_servos(std::shared_ptr<RobotManager> manager, Constants::RobotColor color) {
-	_manager = manager;
+void init_petri_servos_primary(std::shared_ptr<RobotManager> manager, Constants::RobotColor color) {
+	_manager = std::move(manager);
 	_color = color;
 }
 
@@ -70,15 +72,21 @@ ActionResult hand(Arm arm, Angle angle) {
 ActionResult external_storage(ExternalStorage storage, Angle angle) {
 	ServosInterfacer::servo_t id;
 
-	if(storage == ExternalStorage::FRONT_LEFT) {
-		id = ID_SERVO_FRONT_LEFT_STORAGE;
-	} else if(storage == ExternalStorage::FRONT_RIGHT) {
-		id = ID_SERVO_FRONT_RIGHT_STORAGE;
-	} else if(storage == ExternalStorage::BACK_LEFT) {
-		id = ID_SERVO_BACK_LEFT_STORAGE;
-	} else if(storage == ExternalStorage::BACK_RIGHT) {
-		id = ID_SERVO_BACK_RIGHT_STORAGE;
+	switch(storage) {
+		case ExternalStorage::FRONT_LEFT:
+			id = ID_SERVO_FRONT_LEFT_STORAGE;
+			break;
+		case ExternalStorage::FRONT_RIGHT:
+			id = ID_SERVO_FRONT_RIGHT_STORAGE;
+			break;
+		case ExternalStorage::BACK_LEFT:
+			id = ID_SERVO_BACK_LEFT_STORAGE;
+			break;
+		case ExternalStorage::BACK_RIGHT:
+			id = ID_SERVO_BACK_RIGHT_STORAGE;
+			break;
 	}
+
 	return servos().set_position(id, angle);
 }
 
@@ -93,7 +101,6 @@ ArmPosition get_back_position() {
 ArmPosition get_front_position() {
 	return front_position;
 }
-
 
 void set_position(Arm arm, ArmPosition position) {
 	if(arm == Arm::FRONT) {
@@ -126,13 +133,24 @@ ActionResult arm_bottom_vertical(Arm arm) {
 	return _combine_actions(actions);
 }
 
-ActionResult arm_goldenium(Arm arm) {
+ActionResult arm_catch_goldenium(Arm arm) {
 	std::vector<fun_ar> actions;
 
 	ADD_FN(actions, hand, arm, 50_deg);
 	ADD_FN(actions, arm_position, arm, 50_deg);
 
-	set_position(arm, ArmPosition::BOTTOM_GOLDENIUM);
+	set_position(arm, ArmPosition::CATCH_GOLDENIUM);
+
+	return _combine_actions(actions);
+}
+
+ActionResult arm_release_goldenium(Arm arm) {
+	std::vector<fun_ar> actions;
+
+	ADD_FN(actions, hand, arm, 50_deg);
+	ADD_FN(actions, arm_position, arm, 50_deg);
+
+	set_position(arm, ArmPosition::RELEASE_GOLDENIUM);
 
 	return _combine_actions(actions);
 }
@@ -170,6 +188,7 @@ ActionResult close_external_storage(ExternalStorage storage) {
 ActionResult open_internal_storage() {
 	return internal_storage(0_deg);
 }
+
 ActionResult close_internal_storage() {
 	return internal_storage(20_deg);
 }

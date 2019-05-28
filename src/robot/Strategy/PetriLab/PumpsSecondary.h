@@ -4,13 +4,13 @@
 
 #pragma once
 
-#include "../ModuleInterfacers/PumpsInterfacer.h"
+#include "../ModuleInterfacers/PumpsInterfacerSecondary.h"
 #include "Utils.h"
 #include <ActionResult.h>
 
 // @PetriLab@ Pumps
 
-using AtomType = Strategy::Interfacer::PumpsInterfacer::AtomType;
+using AtomType = Strategy::AtomType;
 
 ActionResult catch_atom(AtomType atom);
 ActionResult release_atom();

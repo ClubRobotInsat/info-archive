@@ -10,23 +10,19 @@ namespace {
 
 	std::shared_ptr<RobotManager> _manager;
 
-	PumpsInterfacer& pumps() {
-		return _manager->get_interfacer<PumpsInterfacer>();
+	PumpsInterfacerSecondary& pumps() {
+		return _manager->get_interfacer<PumpsInterfacerSecondary>();
 	}
 } // namespace
 
-void init_petri_pumps(std::shared_ptr<RobotManager> manager) {
-	_manager = manager;
+void init_petri_pumps_secondary(std::shared_ptr<RobotManager> manager) {
+	_manager = std::move(manager);
 }
 
 ActionResult catch_atom(AtomType atom) {
-	// TODO
-	logError("Not implemented!");
-	return ActionResult::FAILURE;
+	return pumps().catch_atom(atom);
 }
 
 ActionResult release_atom() {
-	// TODO
-	logError("Not implemented!");
-	return ActionResult::FAILURE;
+	return pumps().release_atom();
 }

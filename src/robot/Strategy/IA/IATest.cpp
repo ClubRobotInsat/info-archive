@@ -7,7 +7,8 @@
 
 int main(int argc, char* argv[]) {
 	AsciiArt art(std::cout);
-	art.print_chocobot();
+	art.print_patatohm();
+	art.print_tuberkulex();
 
 	Log::open(argc, argv, false);
 
@@ -46,7 +47,21 @@ namespace Strategy {
 		auto& io = _robot_manager->get_interfacer<Interfacer::IOInterfacer>();
 
 		auto& pumps = _module_manager->get_module<PhysicalRobot::Pumps>();
-		// auto& interfacer_pumps = _robot_manager->get_interfacer<Interfacer::PumpsInterfacer>();
+		auto& interfacer_pumps = _robot_manager->get_interfacer<Interfacer::PumpsInterfacerPrimary>();
+
+		while(true) {
+			for(uint8_t id = 0; id < PhysicalRobot::Pumps::NBR_MAX_VALVE; ++id) {
+				pumps.activate_valve(id);
+			}
+			sleep(2_s);
+			pumps.activate_pump(0);
+			sleep(2_s);
+			for(uint8_t id = 0; id < PhysicalRobot::Pumps::NBR_MAX_VALVE; ++id) {
+				pumps.deactivate_valve(id);
+			}
+			pumps.deactivate_pump(0);
+			sleep(2_s);
+		}
 
 
 		std::cout << "###########################\n## Test of pumps and valves" << std::endl;
@@ -63,7 +78,7 @@ namespace Strategy {
 		std::cout << "all valves and pumps activated" << std::endl;
 
 		sleep(2_s);
-		for(int i = 0; i < 6; ++i) {
+		for(int i = 0; i < PhysicalRobot::Pumps::NBR_MAX_VALVE; ++i) {
 			pumps.deactivate_valve(i);
 			sleep(1_s);
 		}

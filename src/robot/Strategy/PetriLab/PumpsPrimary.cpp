@@ -10,13 +10,13 @@ namespace {
 
 	std::shared_ptr<RobotManager> _manager;
 
-	PumpsInterfacer& pumps() {
-		return _manager->get_interfacer<PumpsInterfacer>();
+	PumpsInterfacerPrimary& pumps() {
+		return _manager->get_interfacer<PumpsInterfacerPrimary>();
 	}
 } // namespace
 
-void init_petri_pumps(std::shared_ptr<RobotManager> manager) {
-	_manager = manager;
+void init_petri_pumps_primary(std::shared_ptr<RobotManager> manager) {
+	_manager = std::move(manager);
 }
 
 ActionResult catch_front(AtomType left, AtomType right) {
@@ -27,10 +27,6 @@ ActionResult catch_back(AtomType left, AtomType right) {
 	return pumps().catch_back(left, right);
 }
 
-ActionResult release_front() {
-	return pumps().release_front();
-}
-
-ActionResult release_back() {
-	return pumps().release_back();
+ActionResult release_all() {
+	return pumps().release_all();
 }
