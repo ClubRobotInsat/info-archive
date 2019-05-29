@@ -205,3 +205,7 @@ ActionResult open_internal_storage() {
 ActionResult close_internal_storage() {
 	return internal_storage(20_deg);
 }
+
+double get_angle_by_id(int id) {
+	return servos()->read_position(static_cast<uint8_t>(id)).toMinusPiPi().toDeg();
+}

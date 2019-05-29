@@ -38,3 +38,5 @@ ActionResult open_external_storage(ExternalStorage);
 ActionResult close_external_storage(ExternalStorage);
 ActionResult open_internal_storage();
 ActionResult close_internal_storage();
+
+double get_angle_by_id(int id);

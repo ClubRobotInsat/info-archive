@@ -175,7 +175,7 @@ class app :
 
     #Callback for running the AI
     def callback_run(self) :
-        #ia_arguments = " RS232 " + self.available_connection
+        ia_arguments = "" #" RS232 " + self.available_connection
         if self.ia_picker_value == "IAWiimote" :
             self.ia = subprocess.Popen("exec "+ ia_directory +[self.ia_map[self.ia_picker_value.get()] + ia_arguments + " > " + ia_directory + "tmp 2>&1"],shell=True,env=env,preexec_fn=os.setsid,cwd=ia_directory)
         else :
