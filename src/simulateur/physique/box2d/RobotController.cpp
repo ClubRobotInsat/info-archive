@@ -87,7 +87,7 @@ void RobotController::update(Duration elapsed) {
 
 		// Check if the robot is blocked
 		if(abs(distanceDiff) < 0.1_mm && abs(angleDiff) < 0.1_deg) {
-			_blockedCounter++;
+			//_blockedCounter++;
 		} else {
 			_blockedCounter = 0;
 		}
