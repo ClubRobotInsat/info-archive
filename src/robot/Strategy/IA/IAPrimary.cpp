@@ -28,6 +28,7 @@ int main(int argc, char* argv[]) {
 namespace Strategy {
 
 	IAPrimary::IAPrimary(const IAArguments& args) : IAOneRobot(args, "primary") {
+		logInfo("Running the IAPrimary with debug_mode = ", debug_mode);
 		init_strategy();
 		logInfo("name: ", name);
 		// get_robot()->get_interfacer<Interfacer::ServosInterfacer>()->add_servo(254);

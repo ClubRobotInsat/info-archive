@@ -60,11 +60,11 @@ namespace Strategy {
 				AsciiArt art(std::cout);
 
 				while(true) {
-					art.print_chocobot();
-					sleep(2_s);
-					art.print_number(static_cast<std::size_t>(get_points()));
-					sleep(2_s);
-					art.print_string("INSA", AsciiArt::COLOR_RED, AsciiArt::COLOR_RED);
+					//art.print_chocobot();
+					//sleep(2_s);
+					art.print_number(static_cast<std::size_t>(5));
+					//sleep(2_s);
+					//art.print_string("INSA", AsciiArt::COLOR_RED, AsciiArt::COLOR_RED);
 					sleep(2_s);
 				}
 			});
