@@ -165,6 +165,12 @@ namespace Constants {
 			}
 		}
 
+		/// True si les mouvements du robot doivent être inversés quand il a la
+		/// couleur passée en paramètres.
+		bool is_inverted(RobotColor color) const {
+			return color == RobotColor::Purple;
+		}
+
 		inline const Duration& get_default_communication_delay() const {
 			return _communication_delay;
 		}

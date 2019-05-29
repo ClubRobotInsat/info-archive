@@ -11,7 +11,7 @@
 extern void init_petri_avoidance(std::shared_ptr<Strategy::Interfacer::RobotManager> manager);
 extern void init_petri_io(std::shared_ptr<Strategy::Interfacer::RobotManager> manager);
 extern void init_petri_navigation(std::shared_ptr<Strategy::Interfacer::RobotManager> manager, Constants::RobotColor color);
-extern void init_petri_pumps_primary(std::shared_ptr<Strategy::Interfacer::RobotManager> manager);
+extern void init_petri_pumps_primary(std::shared_ptr<Strategy::Interfacer::RobotManager> manager, Constants::RobotColor color);
 extern void init_petri_pumps_secondary(std::shared_ptr<Strategy::Interfacer::RobotManager> manager);
 extern void init_petri_servos_primary(std::shared_ptr<Strategy::Interfacer::RobotManager> manager, Constants::RobotColor color);
 extern void init_petri_servos_secondary(std::shared_ptr<Strategy::Interfacer::RobotManager> manager, Constants::RobotColor color);
@@ -218,7 +218,7 @@ namespace Strategy {
 					logInfo("Insertion of PetriLab::PumpsPrimary functionalities associated with the robot '" +
 					        manager->get_robot()->name + "'");
 				}
-				init_petri_pumps_primary(manager);
+				init_petri_pumps_primary(manager, _color);
 			}
 			// Interfacer::ServosInterfacer
 			if(manager->has_interfacer<Interfacer::ServosInterfacer>()) {

@@ -16,15 +16,15 @@ namespace {
 		return _manager->get_interfacer<ServosInterfacer>();
 	}
 
-	const ServosInterfacer::servo_t ID_SERVO_FRONT_ARM = 254;
-	const ServosInterfacer::servo_t ID_SERVO_FRONT_HAND = 254;
-	const ServosInterfacer::servo_t ID_SERVO_BACK_ARM = 3;
-	const ServosInterfacer::servo_t ID_SERVO_BACK_HAND = 4;
-	const ServosInterfacer::servo_t ID_SERVO_FRONT_LEFT_STORAGE = 254;
-	const ServosInterfacer::servo_t ID_SERVO_FRONT_RIGHT_STORAGE = 254;
-	const ServosInterfacer::servo_t ID_SERVO_BACK_LEFT_STORAGE = 254;
-	const ServosInterfacer::servo_t ID_SERVO_BACK_RIGHT_STORAGE = 254;
-	const ServosInterfacer::servo_t ID_SERVO_INTERNAL_STORAGE = 254;
+	const ServosInterfacer::servo_t ID_SERVO_FRONT_ARM = 1;
+	const ServosInterfacer::servo_t ID_SERVO_FRONT_HAND = 0;
+	const ServosInterfacer::servo_t ID_SERVO_BACK_ARM = 2;
+	const ServosInterfacer::servo_t ID_SERVO_BACK_HAND = 6;
+	const ServosInterfacer::servo_t ID_SERVO_FRONT_LEFT_STORAGE = 4;
+	const ServosInterfacer::servo_t ID_SERVO_FRONT_RIGHT_STORAGE = 3;
+	const ServosInterfacer::servo_t ID_SERVO_BACK_LEFT_STORAGE = 9;
+	const ServosInterfacer::servo_t ID_SERVO_BACK_RIGHT_STORAGE = 7;
+	const ServosInterfacer::servo_t ID_SERVO_INTERNAL_STORAGE = 5;
 
 	ArmPosition front_position;
 	ArmPosition back_position;
@@ -69,21 +69,23 @@ ActionResult hand(Arm arm, Angle angle) {
 	}
 }
 
+
 ActionResult external_storage(ExternalStorage storage, Angle angle) {
 	ServosInterfacer::servo_t id;
+	bool inverted = GLOBAL_CONSTANTS().is_inverted(_color);
 
 	switch(storage) {
 		case ExternalStorage::FRONT_LEFT:
-			id = ID_SERVO_FRONT_LEFT_STORAGE;
+			id = inverted ? ID_SERVO_FRONT_RIGHT_STORAGE : ID_SERVO_FRONT_LEFT_STORAGE;
 			break;
 		case ExternalStorage::FRONT_RIGHT:
-			id = ID_SERVO_FRONT_RIGHT_STORAGE;
+			id = inverted ? ID_SERVO_FRONT_LEFT_STORAGE : ID_SERVO_FRONT_RIGHT_STORAGE;
 			break;
 		case ExternalStorage::BACK_LEFT:
-			id = ID_SERVO_BACK_LEFT_STORAGE;
+			id = inverted ? ID_SERVO_BACK_RIGHT_STORAGE : ID_SERVO_BACK_LEFT_STORAGE;
 			break;
 		case ExternalStorage::BACK_RIGHT:
-			id = ID_SERVO_BACK_RIGHT_STORAGE;
+			id = inverted ? ID_SERVO_BACK_LEFT_STORAGE : ID_SERVO_BACK_RIGHT_STORAGE;
 			break;
 	}
 
