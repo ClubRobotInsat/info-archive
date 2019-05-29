@@ -161,6 +161,8 @@ private:
 
 	std::string _json_file = "";
 
+	std::optional<ConnectionData> _last_connection;
+
 
 	/**
 	 * Initialise la simulation et place tous les objets de l'année en cours

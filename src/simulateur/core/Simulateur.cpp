@@ -34,7 +34,8 @@ std::unique_ptr<Simulateur> Simulateur::_instance = nullptr;
 Simulateur::Simulateur()
         : _graphicalCtx(std::make_unique<Scene>())
         , _physicalCtx(std::make_unique<Box2DPhysicalContext>(b2Vec2(0, 0)))
-        , _theWorld(_physicalCtx.get(), _graphicalCtx.get()) {
+        , _theWorld(_physicalCtx.get(), _graphicalCtx.get())
+        , _last_connection(std::nullopt) {
 
 	// Ajout du handler pour savoir quand la scène est fermée par l'utilisateur
 	if(dynamic_cast<Scene*>(_graphicalCtx.get())) {
@@ -104,6 +105,7 @@ void Simulateur::connect(const ConnectionData& connectionData) {
 	auto result = Parser::make_protocol(args);
 	if(result.first != typeid(void)) {
 		logDebug("Connecting to robot with : ", connectionData.method);
+		_last_connection = connectionData;
 		_robot->connect(std::move(result.second));
 	} else {
 		logError("Failed to connect with given arguments");
@@ -168,6 +170,10 @@ void Simulateur::initWorld() {
 
 	if(_robotName != "off") {
 		addRobot(_robotName, _robotColor);
+
+		if(_last_connection) {
+			connect(*_last_connection);
+		}
 	}
 	_theWorld.enableCollisions(_enablePhysics);
 

@@ -29,6 +29,7 @@ PanelConnect::PanelConnect() {
 	for(auto& keyval : CONNECTIONS) {
 		_connectionType->append(keyval.first);
 	}
+	_connectionType->set_active_text("UDP");
 
 	// TODO simulator.ini
 	_connectionArguments->set_text("localhost 5101 5001");
