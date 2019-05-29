@@ -147,11 +147,13 @@ namespace Strategy {
 			manager->add_interfacer<Interfacer::CaptorsInterfacerSecondary>();
 		}
 		// Interfacer::PumpsInterfacerSecondary
-		if(manager->get_robot()->has_module<PhysicalRobot::Pumps>() && robot->name == "secondary") {
+		if(manager->get_robot()->has_module<PhysicalRobot::Pumps>() && robot->name == "secondary" &&
+		   manager->has_interfacer<Interfacer::CaptorsInterfacerSecondary>()) {
 			if(debug_mode) {
 				logInfo("Insertion of an Interfacer::PumpsInterfacerSecondary inside the robot '" + robot->name + "'");
 			}
-			manager->add_interfacer<Interfacer::PumpsInterfacerSecondary>();
+			manager->add_interfacer<Interfacer::PumpsInterfacerSecondary>(
+			    manager->get_interfacer<Interfacer::CaptorsInterfacerSecondary>());
 		}
 		// Interfacer::PumpsInterfacerPrimary
 		else if(manager->get_robot()->has_module<PhysicalRobot::Pumps>()) {
