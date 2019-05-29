@@ -6,6 +6,7 @@
 #define ROOT_PUMPSINTERFACERSECONDARY_H
 
 #include "AtomType.h"
+#include "CaptorsInterfacerSecondary.h"
 #include "Interfacer.hpp"
 
 namespace Strategy::Interfacer {
@@ -17,18 +18,25 @@ namespace Strategy::Interfacer {
 		using pump_t = interfaced_type::pump_t;
 		using valve_t = interfaced_type::valve_t;
 
-		explicit PumpsInterfacerSecondary(interfaced_type& module_pumps);
+		PumpsInterfacerSecondary(interfaced_type& module_pumps, CaptorsInterfacerSecondary&);
 
-		explicit PumpsInterfacerSecondary(const std::shared_ptr<PhysicalRobot::Robot>&);
+		PumpsInterfacerSecondary(const std::shared_ptr<PhysicalRobot::Robot>&, CaptorsInterfacerSecondary&);
 
-		explicit PumpsInterfacerSecondary(PhysicalRobot::Robot&);
+		PumpsInterfacerSecondary(PhysicalRobot::Robot&, CaptorsInterfacerSecondary&);
 
-		ActionResult catch_atom(AtomType);
+		ActionResult catch_atom();
 
 		ActionResult release_atom();
 
+		AtomType get_color_hand() const;
+
+		AtomType get_color_top_left() const;
+
+		AtomType get_color_top_right() const;
+
 	private:
 		interfaced_type& _module;
+		CaptorsInterfacerSecondary& _captors;
 
 		pump_t _pump;
 		valve_t _evacuation;
@@ -36,6 +44,8 @@ namespace Strategy::Interfacer {
 		AtomType _hand;
 		std::vector<AtomType> _left_container;
 		std::vector<AtomType> _right_container;
+
+		AtomType _color_to_atom(PhysicalRobot::CaptorColor) const;
 	};
 
 } // namespace Strategy::Interfacer

@@ -12,5 +12,6 @@
 
 using AtomType = Strategy::AtomType;
 
-ActionResult catch_atom(AtomType atom);
+ActionResult catch_atom();
+AtomType get_color_atom();
 ActionResult release_atom();

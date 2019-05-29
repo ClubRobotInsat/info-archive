@@ -13,14 +13,20 @@ namespace {
 	PumpsInterfacerSecondary& pumps() {
 		return _manager->get_interfacer<PumpsInterfacerSecondary>();
 	}
+
+	AtomType atom;
 } // namespace
 
 void init_petri_pumps_secondary(std::shared_ptr<RobotManager> manager) {
 	_manager = std::move(manager);
 }
 
-ActionResult catch_atom(AtomType atom) {
-	return pumps().catch_atom(atom);
+ActionResult catch_atom() {
+	return pumps().catch_atom();
+}
+
+AtomType get_color_atom() {
+	return atom;
 }
 
 ActionResult release_atom() {
