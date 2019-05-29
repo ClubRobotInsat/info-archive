@@ -1108,9 +1108,15 @@ void CalibrationDepla::facteurEchelle() {
 	_distG_Avant = navigation()->get_left_wheel_distance();
 	logDebug0("Distance Roue G : ", _distG_Avant);
 
+	navigation().activate_asserv();
+
 	navigation().push_linear_speed(REPOSITIONING_LINEAR_SPEED);
-	_res = navigation().forward_infinity(SensAdvance::Forward);
+	_res = navigation().forward(4_m, SensAdvance::Forward, 20_s);
 	navigation().pop_linear_speed();
+
+	navigation().deactivate_asserv();
+	logDebug0("Recalez le robot à 4m");
+	// 6.41165
 
 	getchar();
 
@@ -1120,7 +1126,7 @@ void CalibrationDepla::facteurEchelle() {
 	_distG_Apres = navigation()->get_left_wheel_distance();
 	logDebug0("Distance Roue G apres : ", _distG_Apres);
 
-	Distance d = 2.5_m; // GLOBAL_CONSTANTS().get_table_size().x - _length_robot;
+	Distance d = 4_m; // GLOBAL_CONSTANTS().get_table_size().x - _length_robot;
 
 	_distanceParcourue = ((_distD_Apres - _distD_Avant) + (_distG_Apres - _distG_Avant)) / 2.0;
 	logDebug0("Distance parcourue = ", _distanceParcourue, " au lieu de ", d, (abs(d - _distanceParcourue) < 1_mm ? ", ACCEPTABLE" : ", NON ACCEPTABLE"));
@@ -1167,7 +1173,10 @@ void CalibrationDepla::entreAxes() {
 	// Blocking function
 	for(int i = 0; i < NBR_TOURS; i++) {
 		navigation().turn_relative(2_PI);
+		logDebug0(i, "...");
 	}
+	logDebug0("Soleil!");
+	// 33.8175
 
 	navigation().pop_angular_speed();
 	navigation().stop();
