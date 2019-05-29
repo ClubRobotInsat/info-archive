@@ -133,6 +133,17 @@ ActionResult arm_bottom_vertical(Arm arm) {
 	return _combine_actions(actions);
 }
 
+ActionResult arm_top_vertical(Arm arm) {
+	std::vector<fun_ar> actions;
+
+	ADD_FN(actions, hand, arm, 50_deg);
+	ADD_FN(actions, arm_position, arm, 50_deg);
+
+	set_position(arm, ArmPosition::TOP_VERTICAL);
+
+	return _combine_actions(actions);
+}
+
 ActionResult arm_catch_goldenium(Arm arm) {
 	std::vector<fun_ar> actions;
 

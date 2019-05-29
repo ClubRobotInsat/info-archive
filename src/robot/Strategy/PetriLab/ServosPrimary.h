@@ -8,7 +8,7 @@
 #include <ActionResult.h>
 
 ENUM_CLASS(Arm, FRONT, BACK)
-ENUM_CLASS(ArmPosition, BOTTOM_HORIZONTAL, BOTTOM_VERTICAL, CATCH_GOLDENIUM, RELEASE_GOLDENIUM, TOP_EXTERNAL_STORAGE, TOP_INTERNAL_STORAGE)
+ENUM_CLASS(ArmPosition, BOTTOM_HORIZONTAL, BOTTOM_VERTICAL, TOP_VERTICAL, CATCH_GOLDENIUM, RELEASE_GOLDENIUM, TOP_EXTERNAL_STORAGE, TOP_INTERNAL_STORAGE)
 ENUM_CLASS(ExternalStorage, FRONT_LEFT, FRONT_RIGHT, BACK_LEFT, BACK_RIGHT)
 
 // @PetriLab@ Servos
@@ -28,6 +28,7 @@ ArmPosition get_back_position();
 
 ActionResult arm_bottom_horizontal(Arm arm);
 ActionResult arm_bottom_vertical(Arm arm);
+ActionResult arm_top_vertical(Arm arm);
 ActionResult arm_catch_goldenium(Arm arm);
 ActionResult arm_release_goldenium(Arm arm);
 ActionResult arm_external_storage(Arm arm);
