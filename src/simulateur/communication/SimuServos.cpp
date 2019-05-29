@@ -18,7 +18,7 @@ void SimuServos::deactivation() {}
 std::vector<JSON> SimuServos::generate_list_jsons() const {
 	JSON j;
 	j["id"] = 1;
-	j["known_position"] = 0;
+	j["known_position"] = 450;
 	j["blocked"] = false;
 	j["color"] = toString(PhysicalRobot::Color::Red);
 	// TODO generate simuservos json

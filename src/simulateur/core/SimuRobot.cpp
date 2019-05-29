@@ -57,6 +57,9 @@ namespace Simu {
 			} else if(moduleData.first == "io") {
 				logDebug8("Added io module at id ", static_cast<int>(moduleData.second));
 				_moduleMgr->add_module<SimuIO>(moduleData.second);
+			} else if(moduleData.first == "captors") {
+				logDebug8("Added color module at id ", static_cast<int>(moduleData.second));
+				_moduleMgr->add_module<SimuColor>(moduleData.second);
 			}
 		}
 	}

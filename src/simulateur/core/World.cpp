@@ -116,7 +116,12 @@ void World::enableCollisions(bool enable) {
 		if(object->hasTag(TAG_ROBOT)) {
 			object->getPhysics().enableSimulation(true);
 		} else {
-			bool enabled = enable && object->getMetadata()["simulateur"]["enabled"].get<bool>();
+			bool enabled;
+			try {
+				enabled = enable && object->getMetadata().at("simulateur").at("enabled").get<bool>();
+			} catch(...) {
+				enabled = enable;
+			}
 			object->getPhysics().enableSimulation(enabled);
 		}
 	}

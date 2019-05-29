@@ -30,7 +30,7 @@ void PanelRobotState::refreshPanel(const JSON& json) {
 void PanelRobotState::updateRow(Gtk::TreeModel::Row row, const JSON::const_iterator& it) {
 	row[_columns.col_name] = it.key();
 
-	if(!it.value().is_structured()) {
+	if(!it.value().is_structured() || it.value().is_array()) {
 		row[_columns.col_status] = it.value().dump();
 	} else {
 		row[_columns.col_status] = "";

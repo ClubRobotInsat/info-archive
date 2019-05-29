@@ -4,18 +4,22 @@
 
 SimuPumps::SimuPumps(uint8_t id) : SimuModule(id, "SimuPumps") {}
 
+void SimuPumps::add_field(const std::string& key, const std::string& value) {
+	_frame[key] = value;
+}
+
 void SimuPumps::deactivation() {}
 
 JSON SimuPumps::getModuleState() {
-	return generate_list_jsons()[0];
+	std::lock_guard<std::mutex> _lock(_mutex_variables);
+	return _state;
 }
 
 std::vector<JSON> SimuPumps::generate_list_jsons() const {
-	JSON json;
-	// json["pump_intensity"] = 65335;
-	return {json};
+	return {_frame};
 }
 
 void SimuPumps::message_processing(const JSON& json) {
 	_state_changed.exchange(true);
+	_state = json;
 }
