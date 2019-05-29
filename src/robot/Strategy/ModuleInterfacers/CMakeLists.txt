@@ -2,6 +2,7 @@ set(INTERFACERS_SOURCES
         Interfacer.hpp
         AtomType.h
         AvoidanceInterfacer.cpp
+        CaptorsInterfacerSecondary.cpp
         ElevatorInterfacer.cpp
         IOInterfacer.cpp
         NavigationInterfacer.cpp

@@ -2,6 +2,7 @@ set(MODULE_SOURCES
         Module.hpp
         ModuleManager.cpp
 
+        Captors.cpp
         IO.cpp
         Motors.cpp
         Navigation.cpp

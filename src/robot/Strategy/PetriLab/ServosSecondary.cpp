@@ -19,7 +19,7 @@ namespace {
 	ElevatorPosition elevator_position;
 } // namespace
 
-void init_petri_servos(std::shared_ptr<RobotManager> manager, Constants::RobotColor color) {
+void init_petri_servos_secondary(std::shared_ptr<RobotManager> manager, Constants::RobotColor color) {
 	_manager = manager;
 	_color = color;
 }

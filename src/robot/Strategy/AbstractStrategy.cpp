@@ -13,7 +13,8 @@ extern void init_petri_io(std::shared_ptr<Strategy::Interfacer::RobotManager> ma
 extern void init_petri_navigation(std::shared_ptr<Strategy::Interfacer::RobotManager> manager, Constants::RobotColor color);
 extern void init_petri_pumps_primary(std::shared_ptr<Strategy::Interfacer::RobotManager> manager);
 extern void init_petri_pumps_secondary(std::shared_ptr<Strategy::Interfacer::RobotManager> manager);
-extern void init_petri_servos(std::shared_ptr<Strategy::Interfacer::RobotManager> manager, Constants::RobotColor color);
+extern void init_petri_servos_primary(std::shared_ptr<Strategy::Interfacer::RobotManager> manager, Constants::RobotColor color);
+extern void init_petri_servos_secondary(std::shared_ptr<Strategy::Interfacer::RobotManager> manager, Constants::RobotColor color);
 extern void init_petri_utils(Strategy::AbstractStrategy& strategy);
 
 namespace Strategy {
@@ -138,6 +139,13 @@ namespace Strategy {
 			}
 			manager->add_interfacer<Interfacer::IOInterfacer>();
 		}
+		// Interfacer::CaptorsInterfacerSecondary
+		if(manager->get_robot()->has_module<PhysicalRobot::Captors>() && robot->name == "secondary") {
+			if(debug_mode) {
+				logInfo("Inserion of an Interfacer::CaptorsInterfacerSecondary inside the robot '" + robot->name + "'");
+			}
+			manager->add_interfacer<Interfacer::CaptorsInterfacerSecondary>();
+		}
 		// Interfacer::PumpsInterfacerSecondary
 		if(manager->get_robot()->has_module<PhysicalRobot::Pumps>() && robot->name == "secondary") {
 			if(debug_mode) {
@@ -216,7 +224,11 @@ namespace Strategy {
 					logInfo("Insertion of PetriLab::Servos functionalities associated with the robot '" +
 					        manager->get_robot()->name + "'");
 				}
-				init_petri_servos(manager, _color);
+				if(manager->get_robot()->name == "secondary") {
+					init_petri_servos_secondary(manager, _color);
+				} else {
+					init_petri_servos_primary(manager, _color);
+				}
 			}
 		} catch(std::exception const& e) {
 			logError("Impossible to initialize PetriLab: ", e.what());

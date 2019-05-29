@@ -6,6 +6,7 @@
 #define ROOT_INTERFACERMANAGER_H
 
 #include "AvoidanceInterfacer.h"
+#include "CaptorsInterfacerSecondary.h"
 #include "ElevatorInterfacer.h"
 #include "IOInterfacer.h"
 #include "NavigationInterfacer.h"

@@ -28,6 +28,7 @@
 
 #include "Module.hpp"
 
+#include "Captors.h"
 #include "IO.h"
 #include "Motors.h"
 #include "Navigation.h"
