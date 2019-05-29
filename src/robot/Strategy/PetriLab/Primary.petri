@@ -41,69 +41,81 @@
     <Window X="960" Y="27" W="960" H="1023" />
   </Settings>
   <PetriNet ID="0" Name="Root" X="0" Y="0" Active="true" RequiredTokens="0" Radius="30">
-    <Comments />
+    <Comments>
+      <Comment ID="1" Name="Pour homologation :&#xA;Homologation --&gt; True&#xA;Stratégie --&gt; False" X="520" Y="330" Width="208" R="1" G="1" B="0.7" A="1" />
+      <Comment ID="2" Name="Homologation" X="131" Y="54" Width="113" R="1" G="1" B="0.7" A="1" />
+    </Comments>
     <States>
-      <Exit ID="1" Name="End" X="480" Y="650" Active="false" RequiredTokens="0" Radius="25" Function="Petri::Utility::doNothing()" />
-      <Action ID="2" Name="BEGIN" X="280" Y="420" Active="true" RequiredTokens="0" Radius="20" Function="Petri::Utility::doNothing()" />
-      <Action ID="3" Name="Forward50" X="360" Y="310" Active="false" RequiredTokens="1" Radius="20" Function="forward(50_cm)" />
-      <Action ID="4" Name="Turn" X="430" Y="220" Active="false" RequiredTokens="1" Radius="20" Function="turn_relative(-90_deg)" />
-      <Action ID="5" Name="Forward50" X="560" Y="180" Active="false" RequiredTokens="1" Radius="20" Function="forward(50_cm)" />
-      <Action ID="6" Name="Turn" X="700" Y="160" Active="false" RequiredTokens="1" Radius="20" Function="turn_relative(-90_deg)" />
-      <Action ID="7" Name="Forward50" X="830" Y="170" Active="false" RequiredTokens="1" Radius="20" Function="forward(50_cm)" />
-      <PetriNet ID="8" Name="Ramasse atom / Va_bleunium" X="480" Y="420" Active="false" RequiredTokens="1" Radius="30">
+      <Exit ID="3" Name="End" X="480" Y="650" Active="false" RequiredTokens="0" Radius="25" Function="Petri::Utility::doNothing()" />
+      <Action ID="4" Name="BEGIN" X="280" Y="420" Active="false" RequiredTokens="0" Radius="20" Function="Petri::Utility::doNothing()" />
+      <Action ID="5" Name="Forward50" X="360" Y="310" Active="false" RequiredTokens="1" Radius="20" Function="forward(50_cm)" />
+      <Action ID="6" Name="Turn" X="430" Y="220" Active="false" RequiredTokens="1" Radius="20" Function="turn_relative(90_deg)" />
+      <Action ID="7" Name="Forward50" X="560" Y="180" Active="false" RequiredTokens="1" Radius="20" Function="forward(50_cm)" />
+      <Action ID="8" Name="Turn" X="700" Y="160" Active="false" RequiredTokens="1" Radius="20" Function="turn_relative(-90_deg)" />
+      <Action ID="9" Name="Forward50" X="830" Y="170" Active="false" RequiredTokens="1" Radius="20" Function="forward(50_cm)" />
+      <PetriNet ID="10" Name="Ramasse atom / Va_bleunium" X="480" Y="420" Active="false" RequiredTokens="1" Radius="30">
         <Comments />
         <States>
-          <Exit ID="22" Name="End" X="470" Y="150" Active="false" RequiredTokens="1" Radius="25" Function="Petri::Utility::doNothing()" />
-          <Action ID="23" Name="Bras baisse" X="50" Y="50" Active="true" RequiredTokens="0" Radius="20" Function="arm_bottom_horizontal(Arm::FRONT)" />
-          <Action ID="24" Name="Active pompe" X="180" Y="50" Active="false" RequiredTokens="1" Radius="20" Function="catch_front(AtomType::Redium, AtomType::Redium)" />
-          <Action ID="25" Name="Bras Monte" X="340" Y="50" Active="false" RequiredTokens="1" Radius="20" Function="arm_external_storage(Arm::FRONT)" />
-          <Action ID="26" Name="release" X="480" Y="50" Active="false" RequiredTokens="1" Radius="20" Function="release_all()" />
-          <Action ID="27" Name="Va_bleunium" X="340" Y="150" Active="false" RequiredTokens="1" Radius="20" Function="move_to(1700_mm, 450_mm, 90_deg, SensAdvance::Forward)" />
+          <Exit ID="30" Name="End" X="470" Y="150" Active="false" RequiredTokens="1" Radius="25" Function="Petri::Utility::doNothing()" />
+          <Action ID="31" Name="Bras baisse" X="50" Y="50" Active="true" RequiredTokens="0" Radius="20" Function="arm_bottom_horizontal(Arm::FRONT)" />
+          <Action ID="32" Name="Active pompe" X="180" Y="50" Active="false" RequiredTokens="1" Radius="20" Function="catch_front(AtomType::Redium, AtomType::Redium)" />
+          <Action ID="33" Name="Bras Monte" X="340" Y="50" Active="false" RequiredTokens="1" Radius="20" Function="arm_external_storage(Arm::FRONT)" />
+          <Action ID="34" Name="release" X="480" Y="50" Active="false" RequiredTokens="1" Radius="20" Function="release_all()" />
+          <Action ID="35" Name="Va_bleunium" X="340" Y="150" Active="false" RequiredTokens="1" Radius="20" Function="move_to(1700_mm, 1550_mm, 90_deg, SensAdvance::Forward)" />
         </States>
         <Transitions>
-          <Transition ID="28" Name="" X="120" Y="50" BeforeID="23" AfterID="24" Condition="true" W="50" H="30" ShiftX="5" ShiftY="0" ShiftAmplitude="130" />
-          <Transition ID="29" Name="" X="260" Y="50" BeforeID="24" AfterID="25" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="160" />
-          <Transition ID="30" Name="" X="410" Y="50" BeforeID="25" AfterID="26" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
-          <Transition ID="31" Name="" X="260" Y="100" BeforeID="24" AfterID="27" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="188.67962264113208" />
-          <Transition ID="32" Name="" X="405" Y="150" BeforeID="27" AfterID="22" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="130" />
+          <Transition ID="36" Name="" X="120" Y="50" BeforeID="31" AfterID="32" Condition="true" W="50" H="30" ShiftX="5" ShiftY="0" ShiftAmplitude="130" />
+          <Transition ID="37" Name="" X="260" Y="50" BeforeID="32" AfterID="33" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="160" />
+          <Transition ID="38" Name="" X="410" Y="50" BeforeID="33" AfterID="34" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
+          <Transition ID="39" Name="" X="260" Y="100" BeforeID="32" AfterID="35" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="188.67962264113208" />
+          <Transition ID="40" Name="" X="405" Y="150" BeforeID="35" AfterID="30" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="130" />
         </Transitions>
       </PetriNet>
-      <Action ID="9" Name="Slow speed" X="630" Y="420" Active="false" RequiredTokens="1" Radius="20" Function="set_slow_linear_speed()" />
-      <Action ID="10" Name="--&gt; Bluenium" X="780" Y="420" Active="false" RequiredTokens="1" Radius="20" Function="forward(230_mm, SensAdvance::Forward)" />
-      <Action ID="11" Name="Bras top verti." X="780" Y="500" Active="false" RequiredTokens="1" Radius="20" Function="arm_top_vertical(Arm::FRONT)" />
-      <Action ID="12" Name="Pompe on" X="930" Y="500" Active="false" RequiredTokens="1" Radius="20" Function="catch_front(AtomType::Blueium, AtomType::Nothing)" />
-      <Action ID="13" Name="Attendre_Vide" X="930" Y="420" Active="false" RequiredTokens="1" Radius="20" Function="Petri::Utility::pause(1s)" />
-      <Action ID="14" Name="Stockahe interne" X="1070" Y="420" Active="false" RequiredTokens="1" Radius="20" Function="arm_internal_storage(Arm::FRONT)" />
-      <Action ID="15" Name="Reset speed" X="1070" Y="330" Active="false" RequiredTokens="1" Radius="20" Function="reset_linear_speed()" />
-      <Action ID="16" Name="Prep_release _red" X="1200" Y="430" Active="false" RequiredTokens="1" Radius="20" Function="move_to(2000_mm, 450_mm, 90_deg, SensAdvance::Backward)" />
-      <Action ID="17" Name="" X="1200" Y="540" Active="false" RequiredTokens="1" Radius="20" Function="forward(230_mm, SensAdvance::Forward)" />
-      <Action ID="18" Name="Release_Red" X="1200" Y="650" Active="false" RequiredTokens="1" Radius="20" Function="open_external_storage(ExternalStorage::FRONT_LEFT)" />
-      <Action ID="19" Name="Delais" X="1060" Y="650" Active="false" RequiredTokens="1" Radius="20" Function="Petri::Utility::pause(1s)" />
-      <Action ID="20" Name="Close bay door" X="930" Y="650" Active="false" RequiredTokens="1" Radius="20" Function="close_external_storage(ExternalStorage::FRONT_LEFT)" />
-      <Action ID="21" Name="Prep_Goldenium" X="780" Y="650" Active="false" RequiredTokens="1" Radius="20" Function="move_to(2200_mm, 400_mm, 90_deg, SensAdvance::Forward)" />
-      <Action ID="57" Name="Grab_Goldenium" X="640" Y="650" Active="false" RequiredTokens="1" Radius="20" Function="forward_infinity(2_s)" />
+      <Action ID="11" Name="Slow speed" X="630" Y="420" Active="false" RequiredTokens="1" Radius="20" Function="set_slow_linear_speed()" />
+      <Action ID="12" Name="--&gt; Bluenium" X="780" Y="420" Active="false" RequiredTokens="1" Radius="20" Function="forward(230_mm, SensAdvance::Forward)" />
+      <Action ID="13" Name="Bras top verti." X="780" Y="500" Active="false" RequiredTokens="1" Radius="20" Function="arm_top_vertical(Arm::FRONT)" />
+      <Action ID="14" Name="Pompe on" X="930" Y="500" Active="false" RequiredTokens="1" Radius="20" Function="catch_front(AtomType::Blueium, AtomType::Nothing)" />
+      <Action ID="15" Name="Attendre_Vide" X="930" Y="420" Active="false" RequiredTokens="1" Radius="20" Function="Petri::Utility::pause(1s)" />
+      <Action ID="16" Name="Stockahe interne" X="1070" Y="420" Active="false" RequiredTokens="1" Radius="20" Function="arm_internal_storage(Arm::FRONT)" />
+      <Action ID="17" Name="Reset speed" X="1070" Y="330" Active="false" RequiredTokens="1" Radius="20" Function="reset_linear_speed()" />
+      <Action ID="18" Name="Prep_release _red" X="1200" Y="430" Active="false" RequiredTokens="1" Radius="20" Function="move_to(2000_mm, 1550_mm, 90_deg, SensAdvance::Backward)" />
+      <Action ID="19" Name="" X="1200" Y="540" Active="false" RequiredTokens="1" Radius="20" Function="forward(230_mm, SensAdvance::Forward)" />
+      <Action ID="20" Name="Release_Red" X="1200" Y="650" Active="false" RequiredTokens="1" Radius="20" Function="open_external_storage(ExternalStorage::FRONT_LEFT)" />
+      <Action ID="21" Name="Delais" X="1060" Y="650" Active="false" RequiredTokens="1" Radius="20" Function="Petri::Utility::pause(1s)" />
+      <Action ID="22" Name="Close bay door" X="930" Y="650" Active="false" RequiredTokens="1" Radius="20" Function="close_external_storage(ExternalStorage::FRONT_LEFT)" />
+      <Action ID="23" Name="Prep_Goldenium" X="780" Y="650" Active="false" RequiredTokens="1" Radius="20" Function="move_to(2200_mm, 1550_mm, 90_deg, SensAdvance::Forward)" />
+      <Action ID="24" Name="Grab_Goldenium" X="640" Y="650" Active="false" RequiredTokens="1" Radius="20" Function="forward_infinity(2_s)" />
+      <Action ID="25" Name="" X="80" Y="130" Active="true" RequiredTokens="0" Radius="20" Function="forward(70_cm)" />
+      <Action ID="26" Name="" X="225" Y="131" Active="false" RequiredTokens="1" Radius="20" Function="turn_absolute(-90_deg)" />
+      <Action ID="27" Name="" X="370" Y="130" Active="false" RequiredTokens="1" Radius="20" Function="forward(30_cm)" />
+      <Action ID="28" Name="" X="360" Y="230" Active="false" RequiredTokens="1" Radius="20" Function="turn_absolute(180_deg)" />
+      <Action ID="29" Name="" X="218" Y="224" Active="false" RequiredTokens="1" Radius="20" Function="forward(60_cm)" />
     </States>
     <Transitions>
-      <Transition ID="33" Name="true" X="395" Y="265" BeforeID="3" AfterID="4" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="114.0175425099138" />
-      <Transition ID="34" Name="true" X="495" Y="200" BeforeID="4" AfterID="5" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="136.01470508735443" />
-      <Transition ID="35" Name="true" X="630" Y="170" BeforeID="5" AfterID="6" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="141.42135623730951" />
-      <Transition ID="36" Name="true" X="765" Y="165" BeforeID="6" AfterID="7" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="130.38404810405297" />
-      <Transition ID="37" Name="Homologation" X="320" Y="365" BeforeID="2" AfterID="3" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="136.01470508735443" />
-      <Transition ID="38" Name="Strategie" X="380" Y="420" BeforeID="2" AfterID="8" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="200" />
-      <Transition ID="39" Name="" X="555" Y="420" BeforeID="8" AfterID="9" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="150" />
-      <Transition ID="40" Name="" X="705" Y="420" BeforeID="9" AfterID="10" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="150" />
-      <Transition ID="41" Name="" X="705" Y="460" BeforeID="9" AfterID="11" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="170" />
-      <Transition ID="42" Name="" X="855" Y="500" BeforeID="11" AfterID="12" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="150" />
-      <Transition ID="43" Name="" X="855" Y="420" BeforeID="10" AfterID="13" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="150" />
-      <Transition ID="44" Name="" X="1000" Y="420" BeforeID="13" AfterID="14" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
-      <Transition ID="45" Name="" X="1000" Y="375" BeforeID="13" AfterID="15" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="166.43316977093238" />
-      <Transition ID="46" Name="" X="1135" Y="380" BeforeID="15" AfterID="16" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="164.01219466856725" />
-      <Transition ID="47" Name="" X="1200" Y="485" BeforeID="16" AfterID="17" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="110" />
-      <Transition ID="48" Name="" X="1200" Y="595" BeforeID="17" AfterID="18" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="110" />
-      <Transition ID="49" Name="" X="1130" Y="650" BeforeID="18" AfterID="19" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
-      <Transition ID="50" Name="" X="995" Y="650" BeforeID="19" AfterID="20" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="130" />
-      <Transition ID="51" Name="" X="855" Y="650" BeforeID="20" AfterID="21" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="150" />
-      <Transition ID="58" Name="" X="710" Y="650" BeforeID="21" AfterID="57" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
+      <Transition ID="41" Name="true" X="395" Y="265" BeforeID="5" AfterID="6" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="114.0175425099138" />
+      <Transition ID="42" Name="true" X="495" Y="200" BeforeID="6" AfterID="7" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="136.01470508735443" />
+      <Transition ID="43" Name="true" X="630" Y="170" BeforeID="7" AfterID="8" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="141.42135623730951" />
+      <Transition ID="44" Name="true" X="765" Y="165" BeforeID="8" AfterID="9" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="130.38404810405297" />
+      <Transition ID="45" Name="Homologation" X="320" Y="365" BeforeID="4" AfterID="5" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="136.01470508735443" />
+      <Transition ID="46" Name="Strategie" X="380" Y="420" BeforeID="4" AfterID="10" Condition="false" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="200" />
+      <Transition ID="47" Name="" X="555" Y="420" BeforeID="10" AfterID="11" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="150" />
+      <Transition ID="48" Name="" X="705" Y="420" BeforeID="11" AfterID="12" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="150" />
+      <Transition ID="49" Name="" X="705" Y="460" BeforeID="11" AfterID="13" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="170" />
+      <Transition ID="50" Name="" X="855" Y="500" BeforeID="13" AfterID="14" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="150" />
+      <Transition ID="51" Name="" X="855" Y="420" BeforeID="12" AfterID="15" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="150" />
+      <Transition ID="52" Name="" X="1000" Y="420" BeforeID="15" AfterID="16" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
+      <Transition ID="53" Name="" X="1000" Y="375" BeforeID="15" AfterID="17" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="166.43316977093238" />
+      <Transition ID="54" Name="" X="1135" Y="380" BeforeID="17" AfterID="18" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="164.01219466856725" />
+      <Transition ID="55" Name="" X="1200" Y="485" BeforeID="18" AfterID="19" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="110" />
+      <Transition ID="56" Name="" X="1200" Y="595" BeforeID="19" AfterID="20" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="110" />
+      <Transition ID="57" Name="" X="1130" Y="650" BeforeID="20" AfterID="21" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
+      <Transition ID="58" Name="" X="995" Y="650" BeforeID="21" AfterID="22" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="130" />
+      <Transition ID="59" Name="" X="855" Y="650" BeforeID="22" AfterID="23" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="150" />
+      <Transition ID="60" Name="" X="710" Y="650" BeforeID="23" AfterID="24" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
+      <Transition ID="61" Name="" X="152.5" Y="130.5" BeforeID="25" AfterID="26" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="145.00344823486094" />
+      <Transition ID="62" Name="" X="297.5" Y="130.5" BeforeID="26" AfterID="27" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="145.00344823486094" />
+      <Transition ID="63" Name="" X="365" Y="180" BeforeID="27" AfterID="28" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="100.4987562112089" />
+      <Transition ID="64" Name="" X="289" Y="227" BeforeID="28" AfterID="29" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="142.12670403551894" />
     </Transitions>
   </PetriNet>
 </Document>
