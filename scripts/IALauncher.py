@@ -83,8 +83,8 @@ class app :
         self.ia=""
 
         # ---- IA Picker
-        self.ia_picker_option = ('IAPrimary', 'IAWiimote')
-        self.ia_map = {'IAPrimary' : 'IAPrimary', 'IAWiimote' : 'IAWiimote'}
+        self.ia_picker_option = ('IAPrimary', 'IAWiimote', 'Calibration')
+        self.ia_map = {'IAPrimary' : 'IAPrimary', 'IAWiimote' : 'IAWiimote', 'Calibration' : 'Calibration'}
         self.ia_picker_value = tkinter.StringVar()
         self.ia_picker_value.set(self.ia_picker_option[0])
 

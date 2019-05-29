@@ -1,7 +1,7 @@
 #!/bin/bash
 
 print_usage () {
-    echo "Usage : $0 [all|primary|secondary|wii|test|ia_test|lidar]"
+    echo "Usage : $0 [all|primary|secondary|wii|test|ia_test|calibration|lidar]"
 }
 
 #Arguments
@@ -11,6 +11,7 @@ compile_secondary=0
 compile_wii=0
 compile_test=0
 compile_ia_test=0
+compile_calibration=0
 compile_lidar=0
 cores=$(nproc)
 
@@ -29,6 +30,8 @@ if [ $# -ne "0" ]
             then compile_test=1
         elif [ "$arg" = "ia_test" ]
             then compile_ia_test=1
+        elif [ "$arg" = "calibration" ]
+            then compile_calibration=1
         elif [ "$arg" = "lidar" ]
             then compile_lidar=1
         else
@@ -113,6 +116,10 @@ fi
 
 if [ $compile_ia_test -eq 1 ]; then
     building_process "IATest"
+fi
+
+if [ $compile_calibration -eq 1 ]; then
+    building_process "Calibration"
 fi
 
 if [ $compile_lidar -eq 1 ]; then
