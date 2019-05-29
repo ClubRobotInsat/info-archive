@@ -36,7 +36,7 @@ namespace PhysicalRobot {
 
 	private:
 		/// Le rayon d'une roue codeuse en dizième de mm
-		uint16_t _left_coder_radius = 300;
+		uint16_t _left_coder_radius = 639 / 2;
 		/// Coefficient de correction de la roue codeuse droite, pour corriger
 		/// le sens et l'écart de diamètre entre les deux roues.
 		float _right_wheel_coef = 1.00428;

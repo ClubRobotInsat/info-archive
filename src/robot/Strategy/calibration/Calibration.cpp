@@ -1112,13 +1112,15 @@ void CalibrationDepla::facteurEchelle() {
 	_res = navigation().forward_infinity(SensAdvance::Forward);
 	navigation().pop_linear_speed();
 
+	getchar();
+
 	_distD_Apres = navigation()->get_right_wheel_distance();
 	logDebug0("Distance Roue D apres : ", _distD_Apres);
 
 	_distG_Apres = navigation()->get_left_wheel_distance();
 	logDebug0("Distance Roue G apres : ", _distG_Apres);
 
-	Distance d = GLOBAL_CONSTANTS().get_table_size().x - _length_robot;
+	Distance d = 2.5_m; // GLOBAL_CONSTANTS().get_table_size().x - _length_robot;
 
 	_distanceParcourue = ((_distD_Apres - _distD_Avant) + (_distG_Apres - _distG_Avant)) / 2.0;
 	logDebug0("Distance parcourue = ", _distanceParcourue, " au lieu de ", d, (abs(d - _distanceParcourue) < 1_mm ? ", ACCEPTABLE" : ", NON ACCEPTABLE"));
@@ -1154,7 +1156,7 @@ void CalibrationDepla::entreAxes() {
 	_angleBrutRobot_Avant = navigation()->get_orientation().getAngle();
 	logDebug0("Angle brut du robot = ", _angleBrutRobot_Avant);
 
-	const int NBR_TOURS = 40;
+	const int NBR_TOURS = 10;
 	logDebug0("START.....(puis ENTREE) - ", NBR_TOURS, " tours");
 	getchar(); // PAUSE ____________________________________________
 	navigation().activate_asserv();
@@ -1163,7 +1165,9 @@ void CalibrationDepla::entreAxes() {
 	navigation().push_angular_speed(2_rad_s);
 
 	// Blocking function
-	navigation().turn_relative(NBR_TOURS * 2_PI);
+	for(int i = 0; i < NBR_TOURS; i++) {
+		navigation().turn_relative(2_PI);
+	}
 
 	navigation().pop_angular_speed();
 	navigation().stop();

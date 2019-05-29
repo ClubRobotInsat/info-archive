@@ -219,6 +219,7 @@ namespace Strategy::Interfacer {
 		TimePoint date_timeout = TimePoint::now() + timeout;
 		auto lock = get_lock_for_action(date_timeout);
 		if(lock.owns_lock()) {
+			logDebug("Turn absolute ", angle.getAngle().toDeg(), " deg");
 			_module.turn_absolute(angle.getAngle(), sens);
 			return wait_end_trajectory(get_check_moving_done(), date_timeout, true, false);
 		}
