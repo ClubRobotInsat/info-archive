@@ -62,6 +62,9 @@ namespace Strategy::Interfacer {
 	}
 
 	bool AvoidanceInterfacer::adversary_detected(Distance threshold, PhysicalRobot::SensAdvance sens) const {
+		if(sens == PhysicalRobot::SensAdvance::Backward) {
+			return false;
+		}
 		repere::Position robot_position = get_robot_position();
 		repere::Orientation robot_orientation = get_robot_orientation();
 		auto adversaries = get_adversary_positions();

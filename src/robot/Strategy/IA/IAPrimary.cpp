@@ -40,10 +40,10 @@ namespace Strategy {
 		logInfo("name: ", name);
 
 		logInfo("Meca initialization");
-		open_external_storage(ExternalStorage::BackRight);
-		open_external_storage(ExternalStorage::BackLeft);
-		close_external_storage(ExternalStorage::BackRight);
-		close_external_storage(ExternalStorage::BackLeft);
+		// open_external_storage(ExternalStorage::BackRight);
+		// open_external_storage(ExternalStorage::BackLeft);
+		// close_external_storage(ExternalStorage::BackRight);
+		// close_external_storage(ExternalStorage::BackLeft);
 		set_points(0);
 	}
 
