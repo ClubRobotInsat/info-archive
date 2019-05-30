@@ -59,7 +59,7 @@ namespace Strategy::Interfacer {
 				result = ActionResult::SUCCESS;
 				break;
 			case PhysicalRobot::IOState::Off:
-				_module.deactivate_pump(_pump);
+				//_module.deactivate_pump(_pump);
 				result = ActionResult::FAILURE;
 				break;
 		}
@@ -73,6 +73,8 @@ namespace Strategy::Interfacer {
 			logWarn("A back sucker is not free");
 			return ActionResult::FAILURE;
 		}
+
+		_module.activate_pump(_pump);
 
 		if(left != AtomType::Nothing) {
 			_module.activate_valve(_back_left_valve);
@@ -94,7 +96,7 @@ namespace Strategy::Interfacer {
 				break;
 			case PhysicalRobot::IOState::Off:
 			default:
-				_module.deactivate_pump(_pump);
+				//_module.deactivate_pump(_pump);
 				result = ActionResult::FAILURE;
 				break;
 		}
@@ -192,6 +194,8 @@ namespace Strategy::Interfacer {
 		_front_hand[1] = AtomType::Nothing;
 		_back_hand[0] = AtomType::Nothing;
 		_back_hand[1] = AtomType::Nothing;
+
+		_module.deactivate_pump(_pump);
 
 		return ActionResult::SUCCESS;
 	}

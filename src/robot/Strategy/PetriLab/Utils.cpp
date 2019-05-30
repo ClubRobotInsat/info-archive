@@ -38,3 +38,7 @@ ActionResult add_points(int points) {
 int get_points() {
 	return _strategy->get_points();
 }
+
+Duration get_left_time() {
+	return _strategy->get_left_time();
+}

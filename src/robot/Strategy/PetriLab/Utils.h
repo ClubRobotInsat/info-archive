@@ -30,3 +30,5 @@ bool color_undef();
 ActionResult set_points(int);
 ActionResult add_points(int);
 int get_points();
+
+Duration get_left_time();
