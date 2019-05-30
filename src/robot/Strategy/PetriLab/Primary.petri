@@ -38,7 +38,7 @@
         <Libs />
       </Profile>
     </Profiles>
-    <Window X="0" Y="0" W="1918" H="1059" />
+    <Window X="0" Y="27" W="1920" H="1023" />
   </Settings>
   <PetriNet ID="0" Name="Root" X="0" Y="0" Active="true" RequiredTokens="0" Radius="30">
     <Comments>
@@ -101,7 +101,7 @@
       <Action ID="38" Name="turn" X="239" Y="1091" Active="false" RequiredTokens="1" Radius="20" Function="turn_absolute(-90_deg, SensRotation::Clockwise)" />
       <Action ID="39" Name="Experience" X="390" Y="1090" Active="false" RequiredTokens="2" Radius="20" Function="backward(22_cm)" />
       <Action ID="40" Name="Retry " X="530" Y="1090" Active="false" RequiredTokens="1" Radius="20" Function="forward(200_mm)" />
-      <Action ID="41" Name="Experience" X="680" Y="1090" Active="false" RequiredTokens="1" Radius="20" Function="backward(18_cm)" />
+      <Action ID="41" Name="Experience" X="680" Y="1090" Active="false" RequiredTokens="1" Radius="20" Function="backward(21_cm)" />
       <Action ID="42" Name="Retry " X="820" Y="1090" Active="false" RequiredTokens="1" Radius="20" Function="forward(200_mm)" />
       <Action ID="43" Name="mv_bleuium" X="800" Y="1180" Active="false" RequiredTokens="1" Radius="20" Function="move_to(1620_mm, 1790_mm, -70_deg, SensAdvance::Forward)" />
       <Action ID="44" Name="Repli bras" X="960" Y="1090" Active="false" RequiredTokens="1" Radius="20" Function="arm_external_storage(Arm::Back)" />
@@ -118,16 +118,17 @@
       <Action ID="55" Name="Pos_Gold" X="621" Y="1638" Active="false" RequiredTokens="2" Radius="20" Function="move_to(2180_mm, 1690_mm, -90_deg, SensAdvance::Forward)" />
       <Action ID="56" Name="ARm" X="480" Y="1640" Active="false" RequiredTokens="1" Radius="20" Function="arm_catch_goldenium(Arm::Back)" />
       <Action ID="57" Name="pump" X="480" Y="1560" Active="false" RequiredTokens="1" Radius="20" Function="catch_back(AtomType::Goldenium, AtomType::Nothing)" />
-      <Action ID="58" Name="Recul" X="300" Y="1630" Active="false" RequiredTokens="2" Radius="20" Function="backward(10_cm)" />
+      <Action ID="58" Name="Recul" X="300" Y="1630" Active="false" RequiredTokens="2" Radius="20" Function="backward(13_cm)" />
       <Action ID="59" Name="EFD" X="274" Y="1505" Active="false" RequiredTokens="1" Radius="20" Function="move_to(380_mm, 1250_mm, 0_deg, SensAdvance::Forward)" />
       <Action ID="60" Name="Release pumps" X="270" Y="1380" Active="false" RequiredTokens="1" Radius="20" Function="release_all()" />
       <Action ID="61" Name="forward" X="131" Y="1327" Active="false" RequiredTokens="1" Radius="20" Function="forward(500_mm)" />
       <Action ID="62" Name="delais" X="270" Y="1290" Active="false" RequiredTokens="1" Radius="20" Function="Petri::Utility::pause(1s)" />
-      <Action ID="63" Name="backward" X="730" Y="1320" Active="false" RequiredTokens="1" Radius="20" Function="backward(7_cm)" />
+      <Action ID="63" Name="backward" X="730" Y="1320" Active="false" RequiredTokens="1" Radius="20" Function="backward(9_cm)" />
       <Action ID="64" Name="BEGIN" X="110" Y="1090" Active="true" RequiredTokens="0" Radius="20" Function="backward(7_cm)" />
       <Action ID="65" Name="turn" X="583" Y="1132" Active="false" RequiredTokens="1" Radius="20" Function="turn_relative(10_deg)" />
       <Action ID="66" Name="" X="899" Y="1216" Active="false" RequiredTokens="2" Radius="20" Function="Petri::Utility::doNothing()" />
       <Action ID="67" Name="" X="551" Y="1744" Active="false" RequiredTokens="1" Radius="20" Function="Petri::Utility::doNothing()" />
+      <Action ID="142" Name="" X="378" Y="1542" Active="false" RequiredTokens="1" Radius="20" Function="Petri::Utility::pause(1s)" />
     </States>
     <Transitions>
       <Transition ID="79" Name="Strategie" X="350" Y="330" BeforeID="3" AfterID="4" Condition="false" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="200" />
@@ -177,7 +178,6 @@
       <Transition ID="123" Name="" X="390" Y="1135" BeforeID="45" AfterID="39" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="90" />
       <Transition ID="124" Name="" X="605" Y="1205" BeforeID="49" AfterID="41" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="274.59060435491961" />
       <Transition ID="125" Name="" X="314.5" Y="1090.5" BeforeID="38" AfterID="39" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="151.00331122197287" />
-      <Transition ID="126" Name="" X="390" Y="1595" BeforeID="57" AfterID="58" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="193.13207915827965" />
       <Transition ID="127" Name="" X="270" Y="1335" BeforeID="60" AfterID="62" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="90" />
       <Transition ID="128" Name="" X="200.5" Y="1308.5" BeforeID="62" AfterID="61" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="143.84018909887459" />
       <Transition ID="129" Name="" X="720" Y="1590.5" BeforeID="53" AfterID="55" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="219.61101975993827" />
@@ -193,6 +193,8 @@
       <Transition ID="139" Name="" X="586" Y="1691" BeforeID="55" AfterID="67" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="127.02755606560333" />
       <Transition ID="140" Name="" X="542.5" Y="1622" BeforeID="67" AfterID="57" Condition="true" W="50" H="30" ShiftX="27" ShiftY="-30" ShiftAmplitude="197.22322378462431" />
       <Transition ID="141" Name="" X="515.5" Y="1692" BeforeID="67" AfterID="56" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="125.92458060283545" />
+      <Transition ID="144" Name="" X="429" Y="1551" BeforeID="57" AfterID="142" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="103.57605900979242" />
+      <Transition ID="145" Name="Sleep" X="339" Y="1586" BeforeID="142" AfterID="58" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="117.5925167687128" />
     </Transitions>
   </PetriNet>
 </Document>
