@@ -41,9 +41,6 @@
     <Window X="0" Y="0" W="1918" H="1059" />
   </Settings>
   <PetriNet ID="0" Name="Root" X="0" Y="0" Active="true" RequiredTokens="0" Radius="30">
-    <Variables>
-      <Variable Name="$var0" Value="0" />
-    </Variables>
     <Comments>
       <Comment ID="1" Name="Homologation" X="320" Y="30" Width="115" R="1" G="1" B="0.7" A="1" />
     </Comments>
@@ -194,10 +191,8 @@
       <Transition ID="137" Name="" X="814.5" Y="1268" BeforeID="66" AfterID="63" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="198.43638779215871" />
       <Transition ID="138" Name="" X="631.5" Y="1111" BeforeID="65" AfterID="41" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="105.70241246064349" />
       <Transition ID="139" Name="" X="586" Y="1691" BeforeID="55" AfterID="67" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="127.02755606560333" />
-      <Transition ID="140" Name="" X="542.5" Y="1622" BeforeID="67" AfterID="57" Condition="$Res == SUCCESS" W="50" H="30" ShiftX="27" ShiftY="-30" ShiftAmplitude="197.22322378462431" />
-      <Transition ID="141" Name="" X="515.5" Y="1692" BeforeID="67" AfterID="56" Condition="$Res == SUCCESS" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="125.92458060283545" />
-      <Transition ID="142" Name="" X="700" Y="1739" BeforeID="67" AfterID="55" Condition="$Res != SUCCESS &amp;&amp; get_left_time() &lt; 80_s" W="50" H="30" ShiftX="114" ShiftY="48" ShiftAmplitude="127.02755606560333" />
-      <Transition ID="143" Name="" X="191.5" Y="1768.5" BeforeID="67" AfterID="59" Condition="$Res != SUCCESS &amp;&amp; get_left_time() &gt;= 80_s" W="50" H="30" ShiftX="-221" ShiftY="144" ShiftAmplitude="365.85516259853432" />
+      <Transition ID="140" Name="" X="542.5" Y="1622" BeforeID="67" AfterID="57" Condition="true" W="50" H="30" ShiftX="27" ShiftY="-30" ShiftAmplitude="197.22322378462431" />
+      <Transition ID="141" Name="" X="515.5" Y="1692" BeforeID="67" AfterID="56" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="125.92458060283545" />
     </Transitions>
   </PetriNet>
 </Document>
