@@ -50,19 +50,19 @@
       <PetriNet ID="4" Name="Ramasse atom / Va_bleunium" X="450" Y="330" Active="false" RequiredTokens="1" Radius="30">
         <Comments />
         <States>
-          <Exit ID="53" Name="End" X="760" Y="330" Active="false" RequiredTokens="1" Radius="25" Function="Petri::Utility::doNothing()" />
-          <Action ID="54" Name="Bras baisse" X="340" Y="230" Active="true" RequiredTokens="0" Radius="20" Function="arm_bottom_horizontal(Arm::FRONT)" />
-          <Action ID="55" Name="Active pompe" X="480" Y="230" Active="false" RequiredTokens="1" Radius="20" Function="catch_front(AtomType::Redium, AtomType::Redium)" />
-          <Action ID="56" Name="Bras Monte" X="640" Y="230" Active="false" RequiredTokens="1" Radius="20" Function="arm_external_storage(Arm::FRONT)" />
-          <Action ID="57" Name="release" X="780" Y="230" Active="false" RequiredTokens="1" Radius="20" Function="release_all()" />
-          <Action ID="58" Name="Va_bleunium" X="640" Y="330" Active="false" RequiredTokens="1" Radius="20" Function="move_to(1700_mm, 1550_mm, 90_deg, SensAdvance::Forward)" />
+          <Exit ID="61" Name="End" X="760" Y="330" Active="false" RequiredTokens="1" Radius="25" Function="Petri::Utility::doNothing()" />
+          <Action ID="62" Name="Bras baisse" X="340" Y="230" Active="true" RequiredTokens="0" Radius="20" Function="arm_bottom_horizontal(Arm::FRONT)" />
+          <Action ID="63" Name="Active pompe" X="480" Y="230" Active="false" RequiredTokens="1" Radius="20" Function="catch_front(AtomType::Redium, AtomType::Redium)" />
+          <Action ID="64" Name="Bras Monte" X="640" Y="230" Active="false" RequiredTokens="1" Radius="20" Function="arm_external_storage(Arm::FRONT)" />
+          <Action ID="65" Name="release" X="780" Y="230" Active="false" RequiredTokens="1" Radius="20" Function="release_all()" />
+          <Action ID="66" Name="Va_bleunium" X="640" Y="330" Active="false" RequiredTokens="1" Radius="20" Function="move_to(1700_mm, 1550_mm, 90_deg, SensAdvance::Forward)" />
         </States>
         <Transitions>
-          <Transition ID="59" Name="" X="415.38461538461536" Y="230" BeforeID="54" AfterID="55" Condition="true" W="50" H="30" ShiftX="5.3846153846153584" ShiftY="0" ShiftAmplitude="140" />
-          <Transition ID="60" Name="" X="560" Y="230" BeforeID="55" AfterID="56" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="160" />
-          <Transition ID="61" Name="" X="710" Y="230" BeforeID="56" AfterID="57" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
-          <Transition ID="62" Name="" X="560" Y="280" BeforeID="55" AfterID="58" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="188.67962264113208" />
-          <Transition ID="63" Name="" X="700" Y="330" BeforeID="58" AfterID="53" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="120" />
+          <Transition ID="67" Name="" X="415.38461538461536" Y="230" BeforeID="62" AfterID="63" Condition="true" W="50" H="30" ShiftX="5.3846153846153584" ShiftY="0" ShiftAmplitude="140" />
+          <Transition ID="68" Name="" X="560" Y="230" BeforeID="63" AfterID="64" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="160" />
+          <Transition ID="69" Name="" X="710" Y="230" BeforeID="64" AfterID="65" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
+          <Transition ID="70" Name="" X="560" Y="280" BeforeID="63" AfterID="66" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="188.67962264113208" />
+          <Transition ID="71" Name="" X="700" Y="330" BeforeID="66" AfterID="61" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="120" />
         </Transitions>
       </PetriNet>
       <Action ID="5" Name="Slow speed" X="610" Y="330" Active="false" RequiredTokens="1" Radius="20" Function="set_slow_linear_speed()" />
@@ -106,57 +106,74 @@
       <Action ID="43" Name="mv_bleuium" X="820" Y="1210" Active="false" RequiredTokens="1" Radius="20" Function="move_to(1620_mm, 1740_mm, -70_deg, SensAdvance::Forward)" />
       <Action ID="44" Name="Repli bras" X="960" Y="1090" Active="false" RequiredTokens="1" Radius="20" Function="arm_external_storage(Arm::Back)" />
       <Action ID="45" Name="Bras_experience" X="390" Y="1180" Active="false" RequiredTokens="1" Radius="20" Function="arm_activate_experience(Arm::Back)" />
-      <Action ID="46" Name="Bras" X="820" Y="1320" Active="false" RequiredTokens="1" Radius="20" Function="backward(200_mm)" />
-      <Action ID="47" Name="" X="830" Y="1452" Active="false" RequiredTokens="0" Radius="20" Function="Petri::Utility::doNothing()" />
+      <Action ID="46" Name="Bras" X="820" Y="1320" Active="false" RequiredTokens="1" Radius="20" Function="arm_activate_experience(Arm::Back)" />
+      <Action ID="47" Name="Rot" X="820" Y="1430" Active="false" RequiredTokens="1" Radius="20" Function="turn_relative(-40_deg)" />
       <Action ID="48" Name="RetryArm" X="530" Y="1200" Active="false" RequiredTokens="1" Radius="20" Function="arm_external_storage(Arm::Back)" />
       <Action ID="49" Name="Re" X="530" Y="1320" Active="false" RequiredTokens="1" Radius="20" Function="arm_activate_experience(Arm::Back)" />
       <Action ID="50" Name="points exp" X="148" Y="1203" Active="true" RequiredTokens="0" Radius="20" Function="set_points(5)" />
       <Action ID="51" Name="points exp" X="459" Y="1150" Active="false" RequiredTokens="1" Radius="20" Function="add_points(15)" />
-      <Action ID="52" Name="points bleu" X="916" Y="1273" Active="false" RequiredTokens="1" Radius="20" Function="add_points(20)" />
+      <Action ID="52" Name="points bleu" X="960" Y="1310" Active="false" RequiredTokens="1" Radius="20" Function="add_points(20)" />
+      <Action ID="53" Name="-90_deg" X="819" Y="1543" Active="false" RequiredTokens="1" Radius="20" Function="turn_absolute(-90_deg, SensRotation::Clockwise)" />
+      <Action ID="54" Name="Repli bras" X="820" Y="1640" Active="false" RequiredTokens="1" Radius="20" Function="arm_external_storage(Arm::Back)" />
+      <Action ID="55" Name="Pos_Gold" X="621" Y="1638" Active="false" RequiredTokens="1" Radius="20" Function="move_to(2180_mm, 1690_mm, -90_deg, SensAdvance::Forward)" />
+      <Action ID="56" Name="ARm" X="480" Y="1640" Active="false" RequiredTokens="1" Radius="20" Function="arm_catch_goldenium(Arm::Back)" />
+      <Action ID="57" Name="pump" X="480" Y="1560" Active="false" RequiredTokens="1" Radius="20" Function="catch_back(AtomType::Goldenium, AtomType::Nothing)" />
+      <Action ID="58" Name="Recul" X="302" Y="1628" Active="false" RequiredTokens="1" Radius="20" Function="backward(40_mm)" />
+      <Action ID="59" Name="EFD" X="274" Y="1505" Active="false" RequiredTokens="1" Radius="20" Function="move_to(180_mm, 1250_mm, 0_deg, SensAdvance::Forward)" />
+      <Action ID="60" Name="" X="284" Y="1324" Active="false" RequiredTokens="1" Radius="20" Function="release_all()" />
     </States>
     <Transitions>
-      <Transition ID="64" Name="Strategie" X="350" Y="330" BeforeID="3" AfterID="4" Condition="false" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="200" />
-      <Transition ID="65" Name="" X="530" Y="330" BeforeID="4" AfterID="5" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="160" />
-      <Transition ID="66" Name="" X="680" Y="330" BeforeID="5" AfterID="6" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
-      <Transition ID="67" Name="" X="680" Y="370" BeforeID="5" AfterID="7" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="161.24515496597098" />
-      <Transition ID="68" Name="" X="830" Y="410" BeforeID="7" AfterID="8" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="160" />
-      <Transition ID="69" Name="" X="830" Y="330" BeforeID="6" AfterID="9" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="160" />
-      <Transition ID="70" Name="" X="1000" Y="340" BeforeID="9" AfterID="10" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="181.10770276274835" />
-      <Transition ID="71" Name="" X="1000" Y="300" BeforeID="9" AfterID="11" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="189.73665961010275" />
-      <Transition ID="72" Name="" X="1150" Y="320" BeforeID="11" AfterID="12" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="156.20499351813308" />
-      <Transition ID="73" Name="" X="1210" Y="420" BeforeID="12" AfterID="13" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="100" />
-      <Transition ID="74" Name="" X="1210" Y="530" BeforeID="13" AfterID="14" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="120" />
-      <Transition ID="75" Name="" X="1140" Y="590" BeforeID="14" AfterID="15" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
-      <Transition ID="76" Name="" X="990" Y="580" BeforeID="15" AfterID="16" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="161.24515496597098" />
-      <Transition ID="77" Name="" X="830" Y="570" BeforeID="16" AfterID="17" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="160" />
-      <Transition ID="78" Name="" X="680" Y="570" BeforeID="17" AfterID="18" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
-      <Transition ID="79" Name="true" X="360" Y="80" BeforeID="19" AfterID="20" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="160" />
-      <Transition ID="80" Name="true" X="510" Y="80" BeforeID="20" AfterID="21" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
-      <Transition ID="81" Name="true" X="580" Y="130" BeforeID="21" AfterID="22" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="100" />
-      <Transition ID="82" Name="true" X="510" Y="179" BeforeID="22" AfterID="23" Condition="true" W="50" H="30" ShiftX="0" ShiftY="-1" ShiftAmplitude="140" />
-      <Transition ID="83" Name="" X="310" Y="690" BeforeID="24" AfterID="25" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
-      <Transition ID="84" Name="" X="310" Y="730" BeforeID="24" AfterID="26" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="161.24515496597098" />
-      <Transition ID="85" Name="" X="450" Y="690" BeforeID="25" AfterID="27" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
-      <Transition ID="86" Name="" X="735" Y="690" BeforeID="28" AfterID="29" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="150" />
-      <Transition ID="87" Name="" X="590" Y="690" BeforeID="27" AfterID="28" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
-      <Transition ID="88" Name="" X="316" Y="891.5" BeforeID="31" AfterID="32" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="148.03040228277433" />
-      <Transition ID="89" Name="" X="460" Y="890" BeforeID="32" AfterID="33" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
-      <Transition ID="90" Name="" X="605" Y="890" BeforeID="33" AfterID="34" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="150" />
-      <Transition ID="91" Name="" X="680.5" Y="945.5" BeforeID="34" AfterID="35" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="111.00450441310929" />
-      <Transition ID="92" Name="" X="605.5" Y="1000.5" BeforeID="35" AfterID="36" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="151.00331122197287" />
-      <Transition ID="93" Name="" X="460" Y="1000" BeforeID="36" AfterID="37" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
-      <Transition ID="94" Name="" X="314.5" Y="1090.5" BeforeID="38" AfterID="39" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="151.00331122197287" />
-      <Transition ID="95" Name="" X="460" Y="1090" BeforeID="39" AfterID="40" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
-      <Transition ID="96" Name="" X="750" Y="1090" BeforeID="41" AfterID="42" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
-      <Transition ID="97" Name="" X="605" Y="1090" BeforeID="40" AfterID="41" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="150" />
-      <Transition ID="98" Name="" X="820" Y="1150" BeforeID="42" AfterID="43" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="120" />
-      <Transition ID="99" Name="" X="314.5" Y="1135.5" BeforeID="38" AfterID="45" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="175.27692375210148" />
-      <Transition ID="100" Name="" X="820" Y="1265" BeforeID="43" AfterID="46" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="110" />
-      <Transition ID="101" Name="" X="530" Y="1260" BeforeID="48" AfterID="49" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="120" />
-      <Transition ID="102" Name="" X="530" Y="1145" BeforeID="40" AfterID="48" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="110" />
-      <Transition ID="103" Name="" X="890" Y="1090" BeforeID="42" AfterID="44" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
-      <Transition ID="104" Name="" X="424.5" Y="1120" BeforeID="39" AfterID="51" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="91.438503924769023" />
-      <Transition ID="105" Name="" X="868" Y="1241.5" BeforeID="43" AfterID="52" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="114.82595525402782" />
+      <Transition ID="72" Name="Strategie" X="350" Y="330" BeforeID="3" AfterID="4" Condition="false" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="200" />
+      <Transition ID="73" Name="" X="530" Y="330" BeforeID="4" AfterID="5" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="160" />
+      <Transition ID="74" Name="" X="680" Y="330" BeforeID="5" AfterID="6" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
+      <Transition ID="75" Name="" X="680" Y="370" BeforeID="5" AfterID="7" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="161.24515496597098" />
+      <Transition ID="76" Name="" X="830" Y="410" BeforeID="7" AfterID="8" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="160" />
+      <Transition ID="77" Name="" X="830" Y="330" BeforeID="6" AfterID="9" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="160" />
+      <Transition ID="78" Name="" X="1000" Y="340" BeforeID="9" AfterID="10" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="181.10770276274835" />
+      <Transition ID="79" Name="" X="1000" Y="300" BeforeID="9" AfterID="11" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="189.73665961010275" />
+      <Transition ID="80" Name="" X="1150" Y="320" BeforeID="11" AfterID="12" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="156.20499351813308" />
+      <Transition ID="81" Name="" X="1210" Y="420" BeforeID="12" AfterID="13" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="100" />
+      <Transition ID="82" Name="" X="1210" Y="530" BeforeID="13" AfterID="14" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="120" />
+      <Transition ID="83" Name="" X="1140" Y="590" BeforeID="14" AfterID="15" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
+      <Transition ID="84" Name="" X="990" Y="580" BeforeID="15" AfterID="16" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="161.24515496597098" />
+      <Transition ID="85" Name="" X="830" Y="570" BeforeID="16" AfterID="17" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="160" />
+      <Transition ID="86" Name="" X="680" Y="570" BeforeID="17" AfterID="18" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
+      <Transition ID="87" Name="true" X="360" Y="80" BeforeID="19" AfterID="20" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="160" />
+      <Transition ID="88" Name="true" X="510" Y="80" BeforeID="20" AfterID="21" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
+      <Transition ID="89" Name="true" X="580" Y="130" BeforeID="21" AfterID="22" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="100" />
+      <Transition ID="90" Name="true" X="510" Y="179" BeforeID="22" AfterID="23" Condition="true" W="50" H="30" ShiftX="0" ShiftY="-1" ShiftAmplitude="140" />
+      <Transition ID="91" Name="" X="310" Y="690" BeforeID="24" AfterID="25" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
+      <Transition ID="92" Name="" X="310" Y="730" BeforeID="24" AfterID="26" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="161.24515496597098" />
+      <Transition ID="93" Name="" X="450" Y="690" BeforeID="25" AfterID="27" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
+      <Transition ID="94" Name="" X="735" Y="690" BeforeID="28" AfterID="29" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="150" />
+      <Transition ID="95" Name="" X="590" Y="690" BeforeID="27" AfterID="28" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
+      <Transition ID="96" Name="" X="316" Y="891.5" BeforeID="31" AfterID="32" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="148.03040228277433" />
+      <Transition ID="97" Name="" X="460" Y="890" BeforeID="32" AfterID="33" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
+      <Transition ID="98" Name="" X="605" Y="890" BeforeID="33" AfterID="34" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="150" />
+      <Transition ID="99" Name="" X="680.5" Y="945.5" BeforeID="34" AfterID="35" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="111.00450441310929" />
+      <Transition ID="100" Name="" X="605.5" Y="1000.5" BeforeID="35" AfterID="36" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="151.00331122197287" />
+      <Transition ID="101" Name="" X="460" Y="1000" BeforeID="36" AfterID="37" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
+      <Transition ID="102" Name="" X="314.5" Y="1090.5" BeforeID="38" AfterID="39" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="151.00331122197287" />
+      <Transition ID="103" Name="" X="460" Y="1090" BeforeID="39" AfterID="40" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
+      <Transition ID="104" Name="" X="750" Y="1090" BeforeID="41" AfterID="42" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
+      <Transition ID="105" Name="" X="605" Y="1090" BeforeID="40" AfterID="41" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="150" />
+      <Transition ID="106" Name="" X="820" Y="1150" BeforeID="42" AfterID="43" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="120" />
+      <Transition ID="107" Name="" X="314.5" Y="1135.5" BeforeID="38" AfterID="45" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="175.27692375210148" />
+      <Transition ID="108" Name="" X="820" Y="1265" BeforeID="43" AfterID="46" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="110" />
+      <Transition ID="109" Name="" X="530" Y="1260" BeforeID="48" AfterID="49" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="120" />
+      <Transition ID="110" Name="" X="530" Y="1145" BeforeID="40" AfterID="48" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="110" />
+      <Transition ID="111" Name="" X="890" Y="1090" BeforeID="42" AfterID="44" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
+      <Transition ID="112" Name="" X="424.5" Y="1120" BeforeID="39" AfterID="51" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="91.438503924769023" />
+      <Transition ID="113" Name="" X="890" Y="1260" BeforeID="43" AfterID="52" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="172.04650534085255" />
+      <Transition ID="114" Name="" X="820" Y="1375" BeforeID="46" AfterID="47" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="110" />
+      <Transition ID="115" Name="" X="819.5" Y="1486.5" BeforeID="47" AfterID="53" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="113.00442469213318" />
+      <Transition ID="116" Name="" X="819.5" Y="1591.5" BeforeID="53" AfterID="54" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="97.0051545022222" />
+      <Transition ID="117" Name="" X="720.5" Y="1639" BeforeID="54" AfterID="55" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="199.01004999748127" />
+      <Transition ID="118" Name="" X="550.5" Y="1599" BeforeID="55" AfterID="57" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="161.13658802394943" />
+      <Transition ID="119" Name="" X="550.5" Y="1639" BeforeID="55" AfterID="56" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="141.01418368376991" />
+      <Transition ID="120" Name="" X="391" Y="1634" BeforeID="56" AfterID="58" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="178.40403582878949" />
+      <Transition ID="121" Name="" X="288" Y="1566.5" BeforeID="58" AfterID="59" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="126.14673994994877" />
+      <Transition ID="122" Name="release" X="279" Y="1414.5" BeforeID="59" AfterID="60" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="181.27603261324978" />
     </Transitions>
   </PetriNet>
 </Document>
