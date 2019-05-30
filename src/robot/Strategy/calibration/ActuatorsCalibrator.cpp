@@ -2,7 +2,7 @@
 // Created by terae on 13/02/19.
 //
 
-#include "../ModuleInterfacers/RobotManager.h"
+#include "ActuatorsCalibrator.h"
 
 #include "../PetriLab/Avoidance.h"
 #include "../PetriLab/IO.h"
@@ -12,27 +12,26 @@
 #include "../PetriLab/Utils.h"
 
 int main(int argc, char* argv[]) {
-	auto module_manager = std::make_shared<PhysicalRobot::ModuleManager>();
-	auto& module_servos = module_manager->add_module<PhysicalRobot::Servos>(2);
-	for(uint8_t id = 0; id < 8; ++id) {
-		module_servos.add_servo(id);
-	}
-	module_servos.add_servo(9);
-	auto& module_pumps = module_manager->add_module<PhysicalRobot::Pumps>(5);
+	ActuatorsCalibrator calibrator(Constants::RobotColor::Yellow);
+	calibrator.start(1_h);
 
-	auto physical_robot = std::make_shared<PhysicalRobot::Robot>(
-	    module_manager,
-	    std::vector<std::string>({"ETHERNET", "2", "192.168.1.2", "5002", "52", "5", "192.168.1.4", "5005", "55"}),
-	    Lidar::LidarType::None,
-	    true);
+	return EXIT_SUCCESS;
+}
 
-	auto robot = std::make_shared<Strategy::Interfacer::RobotManager>(physical_robot);
+ActuatorsCalibrator::ActuatorsCalibrator(Constants::RobotColor color) : AbstractStrategy(color) {
+	debug_mode = true;
+	std::shared_ptr<PhysicalRobot::Robot> physical_robot = std::make_shared<PhysicalRobot::Robot>("primary", true);
 
-	auto& interfacer_servos = robot->add_interfacer<Strategy::Interfacer::ServosInterfacer>();
-	auto& interfacer_pumps = robot->add_interfacer<Strategy::Interfacer::PumpsInterfacerPrimary>();
+	add_robot(physical_robot);
+}
+
+void ActuatorsCalibrator::execute() {
+	auto& module_servos = get_robot("primary")->get_robot()->get_module<PhysicalRobot::Servos>();
+	auto& module_pumps = get_robot("primary")->get_robot()->get_module<PhysicalRobot::Pumps>();
+	auto& interfacer_servos = get_robot("primary")->get_interfacer<Interfacer::ServosInterfacer>();
+	auto& interfacer_pumps = get_robot("primary")->get_interfacer<Interfacer::PumpsInterfacerPrimary>();
 
 	logInfo("=== Starting the calibration process ===");
-
 
 	int choice;
 	for(;;) {
@@ -238,6 +237,4 @@ int main(int argc, char* argv[]) {
 			break;
 		}
 	}
-
-	return EXIT_SUCCESS;
 }
