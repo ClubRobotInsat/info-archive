@@ -152,23 +152,39 @@ Distance get_distance_robot_position(Distance x, Distance y) {
 }
 
 Outcome recaling_top(SensAdvance sens) {
-	return navigation().recaling_top(sens,
-	                                 GLOBAL_CONSTANTS().get_table_size().y -
-	                                     GLOBAL_CONSTANTS()[_manager->get_robot()->name].get_size().y / 2);
+	return recaling_top(sens, 0_m);
 }
 
 Outcome recaling_bottom(SensAdvance sens) {
-	return navigation().recaling_bottom(sens, GLOBAL_CONSTANTS()[_manager->get_robot()->name].get_size().y / 2);
+	return recaling_bottom(sens, 0_m);
 }
 
 Outcome recaling_right(SensAdvance sens) {
-	return navigation().recaling_right(sens,
-	                                   GLOBAL_CONSTANTS().get_table_size().x -
-	                                       GLOBAL_CONSTANTS()[_manager->get_robot()->name].get_size().y / 2);
+	return recaling_right(sens, 0_m);
 }
 
 Outcome recaling_left(SensAdvance sens) {
-	return navigation().recaling_left(sens, GLOBAL_CONSTANTS()[_manager->get_robot()->name].get_size().y / 2);
+	return recaling_left(sens, 0_m);
+}
+
+Outcome recaling_top(SensAdvance sens, Distance offset_y) {
+	return navigation().recaling_top(sens,
+	                                 GLOBAL_CONSTANTS().get_table_size().y -
+	                                     GLOBAL_CONSTANTS()[_manager->get_robot()->name].get_size().y / 2 - offset_y);
+}
+
+Outcome recaling_bottom(SensAdvance sens, Distance offset_y) {
+	return navigation().recaling_bottom(sens, GLOBAL_CONSTANTS()[_manager->get_robot()->name].get_size().y / 2 + offset_y);
+}
+
+Outcome recaling_right(SensAdvance sens, Distance offset_x) {
+	return navigation().recaling_right(sens,
+	                                   GLOBAL_CONSTANTS().get_table_size().x -
+	                                       GLOBAL_CONSTANTS()[_manager->get_robot()->name].get_size().y / 2 - offset_x);
+}
+
+Outcome recaling_left(SensAdvance sens, Distance offset_x) {
+	return navigation().recaling_left(sens, GLOBAL_CONSTANTS()[_manager->get_robot()->name].get_size().y / 2 + offset_x);
 }
 
 Outcome activate_asserv() {

@@ -11,6 +11,7 @@ PanelCentral::PanelCentral(GtkSimuContext& context) : _context(context) {
 	_builder->get_widget("color", _colorCombo);
 	_builder->get_widget("enableWorld", _worldCheck);
 	_builder->get_widget("enablePhysics", _physicsCheck);
+	_builder->get_widget("tirette", _tiretteButton);
 
 	Gtk::Widget* root;
 	_builder->get_widget("root", root);
@@ -33,6 +34,8 @@ PanelCentral::PanelCentral(GtkSimuContext& context) : _context(context) {
 	// signals
 	_resetButton->signal_clicked().connect(sigc::mem_fun(this, &PanelCentral::onReset));
 	_physicsCheck->signal_clicked().connect(sigc::mem_fun(this, &PanelCentral::onPhysicsChange));
+	_tiretteButton->signal_pressed().connect(sigc::mem_fun(this, &PanelCentral::onTirettePressed));
+	_tiretteButton->signal_released().connect(sigc::mem_fun(this, &PanelCentral::onTiretteReleased));
 }
 
 void PanelCentral::onReset() {
@@ -44,6 +47,18 @@ void PanelCentral::onReset() {
 	_context.queueAction([this, nameTxt, colorTxt, enableWorld, enablePhysics] {
 		_context.getGuiClient().resetWorld(ResetData{nameTxt, colorTxt, enableWorld, enablePhysics});
 	});
+}
+
+void PanelCentral::onTirettePressed() {
+	onTirette(true);
+}
+
+void PanelCentral::onTiretteReleased() {
+	onTirette(false);
+}
+
+void PanelCentral::onTirette(bool tirette) {
+	_context.queueAction([this, tirette] { _context.getGuiClient().setTiretteState(tirette); });
 }
 
 void PanelCentral::onPhysicsChange() {

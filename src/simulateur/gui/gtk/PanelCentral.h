@@ -21,9 +21,14 @@ private:
 	Gtk::ComboBoxText* _colorCombo;
 	Gtk::CheckButton* _worldCheck;
 	Gtk::CheckButton* _physicsCheck;
+	Gtk::Button* _tiretteButton;
 
 
 	void onReset();
+
+	void onTirettePressed();
+	void onTiretteReleased();
+	void onTirette(bool tirette);
 
 	void onPhysicsChange();
 };

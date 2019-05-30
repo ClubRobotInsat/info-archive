@@ -16,6 +16,9 @@ add_executable(IAWiimote ${WIIMOTE_SOURCES})
 add_executable(Calibration calibration/Calibration.cpp)
 target_link_libraries(Calibration ModuleInterfacers HighLevelFunctions)
 
+add_executable(ActuatorsCalibrator calibration/ActuatorsCalibrator.cpp)
+target_link_libraries(ActuatorsCalibrator ModuleInterfacers HighLevelFunctions)
+
 if(EXISTS "/usr/bin/petrilab")
     set(USE_PETRILAB ON)
     message(STATUS "PetriLab found at '/usr/bin/petrilab'")

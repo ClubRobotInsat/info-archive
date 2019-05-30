@@ -33,6 +33,10 @@ namespace Simu {
 			return _name;
 		}
 
+		PhysicalRobot::ModuleManager& getModuleManager() {
+			return *_moduleMgr;
+		}
+
 	private:
 		std::string _name;
 		Constants::RobotColor _color;

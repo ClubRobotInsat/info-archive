@@ -63,6 +63,11 @@ Outcome recaling_bottom(SensAdvance sens);
 Outcome recaling_right(SensAdvance sens);
 Outcome recaling_left(SensAdvance sens);
 
+Outcome recaling_top(SensAdvance sens, Distance offset_y);
+Outcome recaling_bottom(SensAdvance sens, Distance offset_y);
+Outcome recaling_right(SensAdvance sens, Distance offset_x);
+Outcome recaling_left(SensAdvance sens, Distance offset_x);
+
 Outcome activate_asserv();
 Outcome deactivate_asserv();
 

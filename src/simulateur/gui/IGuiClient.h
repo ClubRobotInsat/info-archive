@@ -48,6 +48,8 @@ public:
 	 * Cette méthode est utilisée uniquement pour tester la navigation. */
 	virtual void testNavigationTurn(Angle angle) = 0;
 
+	virtual void setTiretteState(bool activated) = 0;
+
 	/** Reset le simulateur, avec les données passées en paramètres. */
 	virtual void resetWorld(const ResetData& resetData) = 0;
 

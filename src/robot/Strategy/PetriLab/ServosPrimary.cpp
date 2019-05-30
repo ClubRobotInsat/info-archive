@@ -92,12 +92,13 @@ Outcome arm_bottom_horizontal(Arm arm) {
 	switch(arm) {
 		case Arm::Front: {
 			logWarn("Front servos aren't calibrated yet");
-			ADD_FN(actions, []() { return Outcome::FAILURE; });
+			ADD_FN(actions, hand_position, arm, 20_deg);
+			ADD_FN(actions, arm_position, arm, -100_deg);
 			break;
 		}
 		case Arm::Back: {
-			ADD_FN(actions, arm_position, arm, 90_deg);
 			ADD_FN(actions, hand_position, arm, -30_deg);
+			ADD_FN(actions, arm_position, arm, 95_deg);
 			break;
 		}
 	}
@@ -117,12 +118,12 @@ Outcome arm_bottom_vertical(Arm arm) {
 
 	switch(arm) {
 		case Arm::Front: {
-			logWarn("Front servos aren't calibrated yet");
-			ADD_FN(actions, []() { return Outcome::FAILURE; });
+			ADD_FN(actions, arm_position, arm, -55_deg);
+			ADD_FN(actions, hand_position, arm, 95_deg);
 			break;
 		}
 		case Arm::Back: {
-			ADD_FN(actions, arm_position, arm, 65_deg);
+			ADD_FN(actions, arm_position, arm, 6_deg);
 			ADD_FN(actions, hand_position, arm, -100_deg);
 			break;
 		}
@@ -144,12 +145,13 @@ Outcome arm_top_vertical(Arm arm) {
 	switch(arm) {
 		case Arm::Front: {
 			logWarn("Front servos aren't calibrated yet");
-			ADD_FN(actions, []() { return Outcome::FAILURE; });
+			ADD_FN(actions, arm_position, arm, -30_deg);
+			ADD_FN(actions, hand_position, arm, 60_deg);
 			break;
 		}
 		case Arm::Back: {
-			ADD_FN(actions, arm_position, arm, 20_deg);
-			ADD_FN(actions, hand_position, arm, -40_deg);
+			ADD_FN(actions, arm_position, arm, 30_deg);
+			ADD_FN(actions, hand_position, arm, -60_deg);
 			break;
 		}
 	}
@@ -170,7 +172,8 @@ Outcome arm_catch_goldenium(Arm arm) {
 	switch(arm) {
 		case Arm::Front: {
 			logWarn("Front servos aren't calibrated yet");
-			ADD_FN(actions, []() { return Outcome::FAILURE; });
+			ADD_FN(actions, arm_position, arm, -15_deg);
+			ADD_FN(actions, hand_position, arm, 50_deg);
 			break;
 		}
 		case Arm::Back: {
@@ -234,8 +237,9 @@ Outcome arm_external_storage(Arm arm) {
 			ADD_FN(actions, hand_position, arm, -15_deg);
 			ADD_FN(actions, arm_position, arm, -50_deg);
 			ADD_FN(actions, hand_position, arm, -5_deg);
-			ADD_FN(actions, arm_position, arm, -80_deg);
+			ADD_FN(actions, arm_position, arm, -60_deg);
 			ADD_FN(actions, hand_position, arm, 10_deg);
+			ADD_FN(actions, arm_position, arm, -80_deg);
 			break;
 		}
 	}
@@ -293,15 +297,15 @@ Outcome open_external_storage(ExternalStorage storage) {
 
 	const Angle ANGLE_BACK_LEFT = -20_deg;
 	const Angle ANGLE_BACK_RIGHT = -15_deg;
-	const Angle ANGLE_FRONT_LEFT = 0_deg;
-	const Angle ANGLE_FRONT_RIGHT = 0_deg;
+	const Angle ANGLE_FRONT_LEFT = -15_deg;
+	const Angle ANGLE_FRONT_RIGHT = -10_deg;
 
 	switch(storage) {
 		case ExternalStorage::FrontLeft: {
 			if(inverted) {
-				// res = servos().set_position(ID_SERVO_FRONT_RIGHT_STORAGE, ANGLE_FRONT_RIGHT);
+				res = servos().set_position(ID_SERVO_FRONT_RIGHT_STORAGE, ANGLE_FRONT_RIGHT);
 			} else {
-				// res = servos().set_position(ID_SERVO_FRONT_LEFT_STORAGE, ANGLE_FRONT_LEFT);
+				res = servos().set_position(ID_SERVO_FRONT_LEFT_STORAGE, ANGLE_FRONT_LEFT);
 			}
 
 			logWarn("The front external storage isn't available yet");
@@ -310,9 +314,9 @@ Outcome open_external_storage(ExternalStorage storage) {
 		}
 		case ExternalStorage::FrontRight: {
 			if(inverted) {
-				// res = servos().set_position(ID_SERVO_FRONT_LEFT_STORAGE, ANGLE_FRONT_LEFT);
+				res = servos().set_position(ID_SERVO_FRONT_LEFT_STORAGE, ANGLE_FRONT_LEFT);
 			} else {
-				// res = servos().set_position(ID_SERVO_FRONT_RIGHT_STORAGE, ANGLE_FRONT_RIGHT);
+				res = servos().set_position(ID_SERVO_FRONT_RIGHT_STORAGE, ANGLE_FRONT_RIGHT);
 			}
 
 			logWarn("The front external storage isn't available yet");
@@ -345,16 +349,16 @@ Outcome close_external_storage(ExternalStorage storage) {
 	Outcome res;
 
 	const Angle ANGLE_BACK_LEFT = 10_deg;
-	const Angle ANGLE_BACK_RIGHT = 30_deg;
-	const Angle ANGLE_FRONT_LEFT = 0_deg;
-	const Angle ANGLE_FRONT_RIGHT = 0_deg;
+	const Angle ANGLE_BACK_RIGHT = 10_deg;
+	const Angle ANGLE_FRONT_LEFT = 10_deg;
+	const Angle ANGLE_FRONT_RIGHT = -35_deg;
 
 	switch(storage) {
 		case ExternalStorage::FrontLeft: {
 			if(inverted) {
-				// res = servos().set_position(ID_SERVO_FRONT_RIGHT_STORAGE, ANGLE_FRONT_RIGHT);
+				res = servos().set_position(ID_SERVO_FRONT_RIGHT_STORAGE, ANGLE_FRONT_RIGHT);
 			} else {
-				// res = servos().set_position(ID_SERVO_FRONT_LEFT_STORAGE, ANGLE_FRONT_LEFT);
+				res = servos().set_position(ID_SERVO_FRONT_LEFT_STORAGE, ANGLE_FRONT_LEFT);
 			}
 
 			logWarn("The front external storage isn't available yet");
