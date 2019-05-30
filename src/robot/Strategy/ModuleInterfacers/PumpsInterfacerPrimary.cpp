@@ -117,7 +117,7 @@ namespace Strategy::Interfacer {
 		sleep(200_ms);
 
 		switch(get_front_position()) {
-			case ArmPosition::TOP_EXTERNAL_STORAGE: {
+			case ArmPosition::TopExternalStorage: {
 				if(_front_hand[0] != AtomType::Nothing) {
 					_front_external_storage[0] = _front_hand[0];
 					logInfo("The left front external storage now has a ", toString(_front_external_storage[0]), " atom");
@@ -128,7 +128,7 @@ namespace Strategy::Interfacer {
 				}
 				break;
 			}
-			case ArmPosition::TOP_INTERNAL_STORAGE: {
+			case ArmPosition::TopInternalStorage: {
 				if(_front_hand[0] != AtomType::Nothing) {
 					_internal_storage[0] = _front_hand[0];
 					_front_hand[0] = AtomType::Nothing;
@@ -141,11 +141,11 @@ namespace Strategy::Interfacer {
 				}
 				break;
 			}
-			case ArmPosition::RELEASE_GOLDENIUM: {
+			case ArmPosition::ReleaseGoldenium: {
 				if(_front_hand[0] == AtomType::Goldenium) {
-					logInfo("The Goldenium was released from the left front hand");
+					logInfo("The Goldenium was released from the left front hand_position");
 				} else if(_front_hand[1] == AtomType::Goldenium) {
-					logInfo("The Goldenium was released from the right front hand");
+					logInfo("The Goldenium was released from the right front hand_position");
 				}
 				break;
 			}
@@ -154,7 +154,7 @@ namespace Strategy::Interfacer {
 		}
 
 		switch(get_back_position()) {
-			case ArmPosition::TOP_EXTERNAL_STORAGE: {
+			case ArmPosition::TopExternalStorage: {
 				if(_back_hand[0] != AtomType::Nothing) {
 					_back_external_storage[0] = _back_hand[0];
 					logInfo("The left back external storage now has a ", toString(_back_external_storage[0]), " atom");
@@ -165,7 +165,7 @@ namespace Strategy::Interfacer {
 				}
 				break;
 			}
-			case ArmPosition::TOP_INTERNAL_STORAGE: {
+			case ArmPosition::TopInternalStorage: {
 				if(_back_hand[0] != AtomType::Nothing) {
 					_internal_storage[0] = _back_hand[0];
 					logInfo("The left internal storage now has a ", toString(_internal_storage[0]), " atom");
@@ -176,11 +176,11 @@ namespace Strategy::Interfacer {
 				}
 				break;
 			}
-			case ArmPosition::RELEASE_GOLDENIUM: {
+			case ArmPosition::ReleaseGoldenium: {
 				if(_back_hand[0] == AtomType::Goldenium) {
-					logInfo("The Goldenium was released from the left back hand");
+					logInfo("The Goldenium was released from the left back hand_position");
 				} else if(_back_hand[1] == AtomType::Goldenium) {
-					logInfo("The Goldenium was released from the right back hand");
+					logInfo("The Goldenium was released from the right back hand_position");
 				}
 				break;
 			}

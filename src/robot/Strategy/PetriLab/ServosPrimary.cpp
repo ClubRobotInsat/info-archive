@@ -54,46 +54,19 @@ ActionResult back_hand(Angle angle) {
 }
 
 ActionResult arm_position(Arm arm, Angle angle) {
-	if(arm == Arm::FRONT) {
+	if(arm == Arm::Front) {
 		return front_arm(angle);
 	} else {
 		return back_arm(angle);
 	}
 }
 
-ActionResult hand(Arm arm, Angle angle) {
-	if(arm == Arm::FRONT) {
+ActionResult hand_position(Arm arm, Angle angle) {
+	if(arm == Arm::Front) {
 		return front_hand(angle);
 	} else {
 		return back_hand(angle);
 	}
-}
-
-
-ActionResult external_storage(ExternalStorage storage, Angle angle) {
-	ServosInterfacer::servo_t id;
-	bool inverted = GLOBAL_CONSTANTS().is_inverted(_color);
-
-	switch(storage) {
-		case ExternalStorage::FRONT_LEFT:
-			id = inverted ? ID_SERVO_FRONT_RIGHT_STORAGE : ID_SERVO_FRONT_LEFT_STORAGE;
-			break;
-		case ExternalStorage::FRONT_RIGHT:
-			id = inverted ? ID_SERVO_FRONT_LEFT_STORAGE : ID_SERVO_FRONT_RIGHT_STORAGE;
-			break;
-		case ExternalStorage::BACK_LEFT:
-			id = inverted ? ID_SERVO_BACK_RIGHT_STORAGE : ID_SERVO_BACK_LEFT_STORAGE;
-			break;
-		case ExternalStorage::BACK_RIGHT:
-			id = inverted ? ID_SERVO_BACK_LEFT_STORAGE : ID_SERVO_BACK_RIGHT_STORAGE;
-			break;
-	}
-
-	return servos().set_position(id, angle);
-}
-
-ActionResult internal_storage(Angle angle) {
-	return servos().set_position(ID_SERVO_INTERNAL_STORAGE, angle);
 }
 
 ArmPosition get_back_position() {
@@ -105,7 +78,7 @@ ArmPosition get_front_position() {
 }
 
 void set_position(Arm arm, ArmPosition position) {
-	if(arm == Arm::FRONT) {
+	if(arm == Arm::Front) {
 		front_position = position;
 	} else {
 		back_position = position;
@@ -116,96 +89,295 @@ void set_position(Arm arm, ArmPosition position) {
 ActionResult arm_bottom_horizontal(Arm arm) {
 	std::vector<fun_ar> actions;
 
-	ADD_FN(actions, hand, arm, 50_deg);
-	ADD_FN(actions, arm_position, arm, 50_deg);
+	switch(arm) {
+		case Arm::Front: {
+			logWarn("Front servos aren't calibrated yet");
+			ADD_FN(actions, []() { return ActionResult::FAILURE; });
+			break;
+		}
+		case Arm::Back: {
+			ADD_FN(actions, arm_position, arm, 90_deg);
+			ADD_FN(actions, hand_position, arm, -30_deg);
+			break;
+		}
+	}
 
-	set_position(arm, ArmPosition::BOTTOM_HORIZONTAL);
+	ActionResult res = _combine_actions(actions);
+	if(res != ActionResult::SUCCESS) {
+		set_position(arm, ArmPosition::Unknown);
+	} else {
+		set_position(arm, ArmPosition::BottomHorizontal);
+	}
 
-	return _combine_actions(actions);
+	return res;
 }
 
 ActionResult arm_bottom_vertical(Arm arm) {
 	std::vector<fun_ar> actions;
 
-	ADD_FN(actions, hand, arm, 50_deg);
-	ADD_FN(actions, arm_position, arm, 50_deg);
+	switch(arm) {
+		case Arm::Front: {
+			logWarn("Front servos aren't calibrated yet");
+			ADD_FN(actions, []() { return ActionResult::FAILURE; });
+			break;
+		}
+		case Arm::Back: {
+			ADD_FN(actions, arm_position, arm, 65_deg);
+			ADD_FN(actions, hand_position, arm, -100_deg);
+			break;
+		}
+	}
 
-	set_position(arm, ArmPosition::BOTTOM_VERTICAL);
+	ActionResult res = _combine_actions(actions);
+	if(res != ActionResult::SUCCESS) {
+		set_position(arm, ArmPosition::Unknown);
+	} else {
+		set_position(arm, ArmPosition::BottomVertical);
+	}
 
-	return _combine_actions(actions);
+	return res;
 }
 
 ActionResult arm_top_vertical(Arm arm) {
 	std::vector<fun_ar> actions;
 
-	ADD_FN(actions, hand, arm, 50_deg);
-	ADD_FN(actions, arm_position, arm, 50_deg);
+	switch(arm) {
+		case Arm::Front: {
+			logWarn("Front servos aren't calibrated yet");
+			ADD_FN(actions, []() { return ActionResult::FAILURE; });
+			break;
+		}
+		case Arm::Back: {
+			ADD_FN(actions, arm_position, arm, 20_deg);
+			ADD_FN(actions, hand_position, arm, -40_deg);
+			break;
+		}
+	}
 
-	set_position(arm, ArmPosition::TOP_VERTICAL);
+	ActionResult res = _combine_actions(actions);
+	if(res != ActionResult::SUCCESS) {
+		set_position(arm, ArmPosition::Unknown);
+	} else {
+		set_position(arm, ArmPosition::TopVertical);
+	}
 
-	return _combine_actions(actions);
+	return res;
 }
 
 ActionResult arm_catch_goldenium(Arm arm) {
 	std::vector<fun_ar> actions;
 
-	ADD_FN(actions, hand, arm, 50_deg);
-	ADD_FN(actions, arm_position, arm, 50_deg);
+	switch(arm) {
+		case Arm::Front: {
+			logWarn("Front servos aren't calibrated yet");
+			ADD_FN(actions, []() { return ActionResult::FAILURE; });
+			break;
+		}
+		case Arm::Back: {
+			ADD_FN(actions, arm_position, arm, 15_deg);
+			ADD_FN(actions, hand_position, arm, -50_deg);
+			break;
+		}
+	}
 
-	set_position(arm, ArmPosition::CATCH_GOLDENIUM);
+	ActionResult res = _combine_actions(actions);
+	if(res != ActionResult::SUCCESS) {
+		set_position(arm, ArmPosition::Unknown);
+	} else {
+		set_position(arm, ArmPosition::CatchGoldenium);
+	}
 
-	return _combine_actions(actions);
+	return res;
 }
 
 ActionResult arm_release_goldenium(Arm arm) {
 	std::vector<fun_ar> actions;
 
-	ADD_FN(actions, hand, arm, 50_deg);
-	ADD_FN(actions, arm_position, arm, 50_deg);
+	switch(arm) {
+		case Arm::Front: {
+			logWarn("Front servos aren't calibrated yet");
+			ADD_FN(actions, []() { return ActionResult::FAILURE; });
+			break;
+		}
+		case Arm::Back: {
+			/// TODO : déposer le goldenium sur la balance
+			logWarn("Back servos aren't calibrated yet for the goldenium release");
+			ADD_FN(actions, []() { return ActionResult::FAILURE; });
+			// ADD_FN(actions, arm_position, arm, 65_deg);
+			// ADD_FN(actions, hand_position, arm, -100_deg);
+			break;
+		}
+	}
 
-	set_position(arm, ArmPosition::RELEASE_GOLDENIUM);
+	ActionResult res = _combine_actions(actions);
+	if(res != ActionResult::SUCCESS) {
+		set_position(arm, ArmPosition::Unknown);
+	} else {
+		set_position(arm, ArmPosition::ReleaseGoldenium);
+	}
 
-	return _combine_actions(actions);
+	return res;
 }
 
 ActionResult arm_external_storage(Arm arm) {
 	std::vector<fun_ar> actions;
 
-	ADD_FN(actions, hand, arm, 50_deg);
-	ADD_FN(actions, arm_position, arm, 50_deg);
+	switch(arm) {
+		case Arm::Front: {
+			logWarn("Front servos aren't calibrated yet");
+			ADD_FN(actions, []() { return ActionResult::FAILURE; });
+			break;
+		}
+		case Arm::Back: {
+			ADD_FN(actions, hand_position, arm, -50_deg);
+			ADD_FN(actions, arm_position, arm, -30_deg);
+			ADD_FN(actions, hand_position, arm, -15_deg);
+			ADD_FN(actions, arm_position, arm, -50_deg);
+			ADD_FN(actions, hand_position, arm, -5_deg);
+			ADD_FN(actions, arm_position, arm, -80_deg);
+			ADD_FN(actions, hand_position, arm, 10_deg);
+			break;
+		}
+	}
 
-	set_position(arm, ArmPosition::TOP_EXTERNAL_STORAGE);
+	ActionResult res = _combine_actions(actions);
+	sleep(300_ms);
+	if(res != ActionResult::SUCCESS) {
+		set_position(arm, ArmPosition::Unknown);
+	} else {
+		set_position(arm, ArmPosition::TopExternalStorage);
+	}
 
-	return _combine_actions(actions);
+	return res;
 }
 
 ActionResult arm_internal_storage(Arm arm) {
 	std::vector<fun_ar> actions;
 
-	ADD_FN(actions, hand, arm, 50_deg);
-	ADD_FN(actions, arm_position, arm, 50_deg);
-
-	set_position(arm, ArmPosition::TOP_INTERNAL_STORAGE);
-
-	return _combine_actions(actions);
+	logWarn("The internal storage isn't available");
+	return ActionResult::FAILURE;
 }
 
 ActionResult open_external_storage(ExternalStorage storage) {
-	return external_storage(storage, 50_deg);
+	bool inverted = GLOBAL_CONSTANTS().is_inverted(_color);
+	ActionResult res;
+
+	const Angle ANGLE_BACK_LEFT = -20_deg;
+	const Angle ANGLE_BACK_RIGHT = -15_deg;
+	const Angle ANGLE_FRONT_LEFT = 0_deg;
+	const Angle ANGLE_FRONT_RIGHT = 0_deg;
+
+	switch(storage) {
+		case ExternalStorage::FrontLeft: {
+			if(inverted) {
+				// res = servos().set_position(ID_SERVO_FRONT_RIGHT_STORAGE, ANGLE_FRONT_RIGHT);
+			} else {
+				// res = servos().set_position(ID_SERVO_FRONT_LEFT_STORAGE, ANGLE_FRONT_LEFT);
+			}
+
+			logWarn("The front external storage isn't available yet");
+			res = ActionResult::FAILURE;
+			break;
+		}
+		case ExternalStorage::FrontRight: {
+			if(inverted) {
+				// res = servos().set_position(ID_SERVO_FRONT_LEFT_STORAGE, ANGLE_FRONT_LEFT);
+			} else {
+				// res = servos().set_position(ID_SERVO_FRONT_RIGHT_STORAGE, ANGLE_FRONT_RIGHT);
+			}
+
+			logWarn("The front external storage isn't available yet");
+			res = ActionResult::FAILURE;
+			break;
+		}
+		case ExternalStorage::BackLeft: {
+			if(inverted) {
+				res = servos().set_position(ID_SERVO_BACK_RIGHT_STORAGE, ANGLE_BACK_RIGHT);
+			} else {
+				res = servos().set_position(ID_SERVO_BACK_LEFT_STORAGE, ANGLE_BACK_LEFT);
+			}
+			break;
+		}
+		case ExternalStorage::BackRight: {
+			if(inverted) {
+				res = servos().set_position(ID_SERVO_BACK_LEFT_STORAGE, ANGLE_BACK_LEFT);
+			} else {
+				res = servos().set_position(ID_SERVO_BACK_RIGHT_STORAGE, ANGLE_BACK_RIGHT);
+			}
+			break;
+		}
+	}
+
+	return res;
 }
 
 ActionResult close_external_storage(ExternalStorage storage) {
-	return external_storage(storage, 0_deg);
+	bool inverted = GLOBAL_CONSTANTS().is_inverted(_color);
+	ActionResult res;
+
+	const Angle ANGLE_BACK_LEFT = 10_deg;
+	const Angle ANGLE_BACK_RIGHT = 30_deg;
+	const Angle ANGLE_FRONT_LEFT = 0_deg;
+	const Angle ANGLE_FRONT_RIGHT = 0_deg;
+
+	switch(storage) {
+		case ExternalStorage::FrontLeft: {
+			if(inverted) {
+				// res = servos().set_position(ID_SERVO_FRONT_RIGHT_STORAGE, ANGLE_FRONT_RIGHT);
+			} else {
+				// res = servos().set_position(ID_SERVO_FRONT_LEFT_STORAGE, ANGLE_FRONT_LEFT);
+			}
+
+			logWarn("The front external storage isn't available yet");
+			res = ActionResult::FAILURE;
+			break;
+		}
+		case ExternalStorage::FrontRight: {
+			if(inverted) {
+				// res = servos().set_position(ID_SERVO_FRONT_LEFT_STORAGE, ANGLE_FRONT_LEFT);
+			} else {
+				// res = servos().set_position(ID_SERVO_FRONT_RIGHT_STORAGE, ANGLE_FRONT_RIGHT);
+			}
+
+			logWarn("The front external storage isn't available yet");
+			res = ActionResult::FAILURE;
+			break;
+		}
+		case ExternalStorage::BackLeft: {
+			if(inverted) {
+				res = servos().set_position(ID_SERVO_BACK_RIGHT_STORAGE, ANGLE_BACK_RIGHT);
+			} else {
+				res = servos().set_position(ID_SERVO_BACK_LEFT_STORAGE, ANGLE_BACK_LEFT);
+			}
+			break;
+		}
+		case ExternalStorage::BackRight: {
+			if(inverted) {
+				res = servos().set_position(ID_SERVO_BACK_LEFT_STORAGE, ANGLE_BACK_LEFT);
+			} else {
+				res = servos().set_position(ID_SERVO_BACK_RIGHT_STORAGE, ANGLE_BACK_RIGHT);
+			}
+			break;
+		}
+	}
+
+	return res;
 }
 
 ActionResult open_internal_storage() {
-	return internal_storage(0_deg);
+	logWarn("The internal storage isn't available");
+	return ActionResult::FAILURE;
 }
 
 ActionResult close_internal_storage() {
-	return internal_storage(20_deg);
+	logWarn("The internal storage isn't available");
+	return ActionResult::FAILURE;
 }
 
 double get_angle_by_id(int id) {
 	return servos()->read_position(static_cast<uint8_t>(id)).toMinusPiPi().toDeg();
+}
+
+ActionResult set_angle_by_id(Angle angle, int id) {
+	return servos().set_position(id, angle);
 }
