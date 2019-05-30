@@ -15,7 +15,7 @@ namespace Strategy {
 		std::string get_robot_name() const;
 
 	protected:
-		IAOneRobot(const IAArguments& arguments, std::string robot_name);
+		IAOneRobot(const IAArguments& arguments, const std::string& robot_name);
 
 		const std::string name;
 

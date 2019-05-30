@@ -25,7 +25,7 @@ namespace PhysicalRobot {
 		Robot(std::shared_ptr<ModuleManager> module_manager, const std::vector<std::string>& args, Lidar::LidarType, bool debug_active = false);
 
 		// Initialisation du robot à partir du fichier `src/robot.ini`
-		Robot(std::string name, bool debug_active = false);
+		Robot(const std::string& name, bool debug_active = false);
 		Robot(std::string name, Lidar::LidarType, bool debug_active = false);
 		// Initialisation du robot à partir du fichier `src/robot.ini` mais choix du protocol de com en ligne de cmd
 		Robot(std::string name, const std::vector<std::string>& args, bool debug_active = false);

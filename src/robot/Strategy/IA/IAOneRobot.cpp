@@ -8,8 +8,8 @@
 
 namespace Strategy {
 
-	IAOneRobot::IAOneRobot(const IAArguments& args, std::string robot_name)
-	        : AbstractStrategy(args.get_color()), name(std::move(robot_name)) {
+	IAOneRobot::IAOneRobot(const IAArguments& args, const std::string& robot_name)
+	        : AbstractStrategy(args.get_color()), name(robot_name) {
 		debug_mode = args._debug_mode;
 
 		if(debug_mode) {
@@ -27,7 +27,6 @@ namespace Strategy {
 		}
 		add_robot(physical_robot);
 
-		logInfo("name: ", name);
 		get_robot()->get_interfacer<Interfacer::NavigationInterfacer>()->set_coordinates(repere::Coordinates(
 		    GLOBAL_CONSTANTS()[name].get_start_position(), GLOBAL_CONSTANTS()[name].get_start_angle(), get_reference()));
 	}
