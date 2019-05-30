@@ -15,7 +15,7 @@ import time
 left="yellow"
 right="purple"
 env=os.environ
-#env['LD_LIBRARY_PATH']="/home/pi/Desktop"
+env['LD_LIBRARY_PATH']="/home/pi/Desktop:/opt/gcc-9.1.0/lib:$LD_LIBRARY_PATH"
 
 # This variable defines where the AI are living
 ia_directory="/home/pi/Desktop/"
