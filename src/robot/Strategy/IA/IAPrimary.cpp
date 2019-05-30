@@ -7,6 +7,13 @@
 #include <AsciiArt.hpp>
 #include <petrilab/Cpp/PetriLab.h>
 
+#include "../PetriLab/Avoidance.h"
+#include "../PetriLab/IO.h"
+#include "../PetriLab/Navigation.h"
+#include "../PetriLab/PumpsPrimary.h"
+#include "../PetriLab/ServosPrimary.h"
+#include "../PetriLab/Utils.h"
+
 int main(int argc, char* argv[]) {
 	AsciiArt art(std::cout);
 	art.print_patatohm();
@@ -31,7 +38,13 @@ namespace Strategy {
 		logInfo("Running the IAPrimary with debug_mode = ", debug_mode);
 		init_strategy();
 		logInfo("name: ", name);
-		// get_robot()->get_interfacer<Interfacer::ServosInterfacer>()->add_servo(254);
+
+		logInfo("Meca initialization");
+		open_external_storage(ExternalStorage::BackRight);
+		open_external_storage(ExternalStorage::BackLeft);
+		close_external_storage(ExternalStorage::BackRight);
+		close_external_storage(ExternalStorage::BackLeft);
+		set_points(0);
 	}
 
 	std::unique_ptr<Petri::PetriDynamicLib> IAPrimary::generate_petrilab_lib() {

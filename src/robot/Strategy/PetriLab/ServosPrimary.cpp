@@ -251,6 +251,35 @@ ActionResult arm_external_storage(Arm arm) {
 	return res;
 }
 
+ActionResult arm_activate_experience(Arm arm) {
+	std::vector<fun_ar> actions;
+
+	switch(arm) {
+		case Arm::Front: {
+			logWarn("Front servos aren't calibrated yet");
+			ADD_FN(actions, []() { return ActionResult::FAILURE; });
+			break;
+		}
+		case Arm::Back: {
+			ADD_FN(actions, arm_position, arm, -60_deg);
+			ADD_FN(actions, hand_position, arm, 0_deg);
+			ADD_FN(actions, arm_position, arm, 0_deg);
+			ADD_FN(actions, hand_position, arm, -50_deg);
+			ADD_FN(actions, arm_position, arm, 60_deg);
+			break;
+		}
+	}
+
+	ActionResult res = _combine_actions(actions);
+	if(res != ActionResult::SUCCESS) {
+		set_position(arm, ArmPosition::Unknown);
+	} else {
+		set_position(arm, ArmPosition::ReleaseGoldenium);
+	}
+
+	return res;
+}
+
 ActionResult arm_internal_storage(Arm arm) {
 	std::vector<fun_ar> actions;
 

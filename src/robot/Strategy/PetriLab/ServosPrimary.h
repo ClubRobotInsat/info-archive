@@ -34,6 +34,7 @@ ActionResult arm_top_vertical(Arm arm);
 ActionResult arm_catch_goldenium(Arm arm);
 ActionResult arm_release_goldenium(Arm arm);
 ActionResult arm_external_storage(Arm arm);
+ActionResult arm_activate_experience(Arm arm);
 // ActionResult arm_internal_storage(Arm arm);
 
 ActionResult open_external_storage(ExternalStorage);
