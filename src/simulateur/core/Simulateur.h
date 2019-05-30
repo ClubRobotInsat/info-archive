@@ -127,6 +127,8 @@ public:
 
 	void testNavigationTurn(Angle angle) override;
 
+	void setTiretteState(bool activated) override;
+
 	std::vector<std::string> getRobotColors() const override;
 
 private:

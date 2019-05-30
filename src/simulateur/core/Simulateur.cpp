@@ -5,6 +5,7 @@
 #include <functional>
 
 #include "../../robot/Communication/CommunicatorParsing.h"
+#include "../communication/SimuIO.h"
 #include "../graphique/irrlicht/Scene.h"
 #include "../gui/gtk/GtkSimuContext.h"
 #include "../physique/box2d/Box2DPhysicalContext.h"
@@ -127,6 +128,13 @@ void Simulateur::testNavigationTurn(Angle angle) {
 	if(_robot != nullptr) {
 		auto& controller = _robot->getController();
 		controller.turnRelative(angle);
+	}
+}
+
+void Simulateur::setTiretteState(bool activated) {
+	if(_robot != nullptr) {
+		_robot->getModuleManager().get_module<SimuIO>().setTriggerState(activated ? PhysicalRobot::TriggerState::Triggered :
+		                                                                            PhysicalRobot::TriggerState::Waiting);
 	}
 }
 
