@@ -69,9 +69,9 @@ namespace Strategy::Interfacer {
 		ActionResult forward_infinity(SensAdvance, Duration timeout = 10_s);
 
 		/// Tourne selon le sens le plus rapide qui permets d'orienter le robot à l'angle absolu souhaité
-		ActionResult turn_absolute(repere::Orientation, Duration timeout = 10_s);
+		ActionResult turn_absolute(const repere::Orientation&, Duration timeout = 10_s);
 
-		ActionResult turn_absolute(repere::Orientation, SensRotation, Duration timeout = 10_s);
+		ActionResult turn_absolute(const repere::Orientation&, SensRotation, Duration timeout = 10_s);
 
 		ActionResult turn_relative(Angle, Duration timeout = 10_s, const repere::Repere& repere = repere::ABSOLUTE_REFERENCE);
 
@@ -80,7 +80,7 @@ namespace Strategy::Interfacer {
 		ActionResult emergency_stop();
 
 		/// Helpers
-		SensRotation optimal_rotation_sens(repere::Orientation from, repere::Orientation to);
+		SensRotation optimal_rotation_sens(const repere::Orientation& from, const repere::Orientation& to);
 
 		/// Recallages
 		ActionResult recaling_top(SensAdvance sens, Distance y);

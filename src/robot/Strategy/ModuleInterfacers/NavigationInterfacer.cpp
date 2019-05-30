@@ -207,13 +207,13 @@ namespace Strategy::Interfacer {
 		return forward(infinity, sens, timeout);
 	}
 
-	ActionResult NavigationInterfacer::turn_absolute(repere::Orientation angle, Duration timeout) {
+	ActionResult NavigationInterfacer::turn_absolute(const repere::Orientation& angle, Duration timeout) {
 		SensRotation sens = optimal_rotation_sens(_module.get_orientation(), angle);
 
 		return turn_absolute(angle, sens, timeout);
 	}
 
-	ActionResult NavigationInterfacer::turn_absolute(repere::Orientation angle,
+	ActionResult NavigationInterfacer::turn_absolute(const repere::Orientation& angle,
 	                                                 Strategy::Interfacer::NavigationInterfacer::SensRotation sens,
 	                                                 Duration timeout) {
 		TimePoint date_timeout = TimePoint::now() + timeout;
@@ -253,7 +253,8 @@ namespace Strategy::Interfacer {
 		return ActionResult::TIMEOUT;
 	}
 
-	NavigationInterfacer::SensRotation NavigationInterfacer::optimal_rotation_sens(repere::Orientation from, repere::Orientation to) {
+	NavigationInterfacer::SensRotation
+	    NavigationInterfacer::optimal_rotation_sens(const repere::Orientation& from, const repere::Orientation& to) {
 		return (to.getAngle() - from.getAngle()).toMinusPiPi() >= 0_rad ? SensRotation::Trigo : SensRotation::Clockwise;
 	}
 

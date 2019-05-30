@@ -11,10 +11,10 @@ namespace Strategy::Interfacer {
 	        : AbstractInterfacer()
 	        , _module(module_pumps)
 	        , _pump(0)
-	        , _front_left_valve(0)
-	        , _front_right_valve(1)
-	        , _back_left_valve(2)
-	        , _back_right_valve(3) {
+	        , _front_left_valve(3)
+	        , _front_right_valve(2)
+	        , _back_left_valve(0)
+	        , _back_right_valve(1) {
 		_front_external_storage.fill(AtomType::Nothing);
 		_back_external_storage.fill(AtomType::Nothing);
 		_internal_storage.fill(AtomType::Nothing);
