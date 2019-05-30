@@ -15,6 +15,7 @@ using SensRotation = Strategy::Interfacer::NavigationInterfacer::SensRotation;
 // @PetriLab@ Navigation
 
 /// Linear moves; stop if detect an adversary
+ActionResult forward(Distance, SensAdvance, Duration timeout);
 ActionResult forward(Distance, SensAdvance);
 ActionResult backward(Distance);
 
