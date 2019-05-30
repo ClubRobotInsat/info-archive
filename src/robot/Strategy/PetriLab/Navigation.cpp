@@ -151,20 +151,24 @@ Distance get_distance_robot_position(Distance x, Distance y) {
 	return (get_position() - repere::Position(x, y, get_reference()).getPos2D(get_reference())).norm();
 }
 
-ActionResult recaling_top(SensAdvance sens, Distance y) {
-	return navigation().recaling_top(sens, y);
+ActionResult recaling_top(SensAdvance sens) {
+	return navigation().recaling_top(sens,
+	                                 GLOBAL_CONSTANTS().get_table_size().y -
+	                                     GLOBAL_CONSTANTS()[_manager->get_robot()->name].get_size().y / 2);
 }
 
-ActionResult recaling_bottom(SensAdvance sens, Distance y) {
-	return navigation().recaling_bottom(sens, y);
+ActionResult recaling_bottom(SensAdvance sens) {
+	return navigation().recaling_bottom(sens, GLOBAL_CONSTANTS()[_manager->get_robot()->name].get_size().y / 2);
 }
 
-ActionResult recaling_right(SensAdvance sens, Distance x) {
-	return navigation().recaling_right(sens, x);
+ActionResult recaling_right(SensAdvance sens) {
+	return navigation().recaling_right(sens,
+	                                   GLOBAL_CONSTANTS().get_table_size().x -
+	                                       GLOBAL_CONSTANTS()[_manager->get_robot()->name].get_size().y / 2);
 }
 
-ActionResult recaling_left(SensAdvance sens, Distance x) {
-	return navigation().recaling_left(sens, x);
+ActionResult recaling_left(SensAdvance sens) {
+	return navigation().recaling_left(sens, GLOBAL_CONSTANTS()[_manager->get_robot()->name].get_size().y / 2);
 }
 
 ActionResult activate_asserv() {

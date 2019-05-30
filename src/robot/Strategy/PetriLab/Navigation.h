@@ -58,10 +58,10 @@ ActionResult set_coordinates(Distance x, Distance y, Angle angle);
 // Returns the distance as the crow flies between the robot and a given position
 Distance get_distance_robot_position(Distance x, Distance y);
 
-ActionResult recaling_top(SensAdvance sens, Distance y);
-ActionResult recaling_bottom(SensAdvance sens, Distance y);
-ActionResult recaling_right(SensAdvance sens, Distance x);
-ActionResult recaling_left(SensAdvance sens, Distance x);
+ActionResult recaling_top(SensAdvance sens);
+ActionResult recaling_bottom(SensAdvance sens);
+ActionResult recaling_right(SensAdvance sens);
+ActionResult recaling_left(SensAdvance sens);
 
 ActionResult activate_asserv();
 ActionResult deactivate_asserv();
