@@ -28,7 +28,7 @@ namespace PhysicalRobot {
 	void Navigation::turn_absolute(Angle angle, SensRotation sens) {
 		lock_variables();
 		set_command(MovingCommand::TurnAbsolute);
-		_args_cmd[0] = uint16_t(angle_to_i32(angle));
+		_args_cmd[0] = uint16_t(angle_to_i32(angle.toMod2Pi()));
 
 		if(sens == SensRotation::Trigo) {
 			_args_cmd[1] = 0;

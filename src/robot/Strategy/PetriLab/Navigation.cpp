@@ -43,6 +43,10 @@ ActionResult forward(Distance distance) {
 	return forward(distance, SensAdvance::Forward);
 }
 
+ActionResult forward(Distance distance, Duration duration) {
+	return forward(distance, SensAdvance::Forward, duration);
+}
+
 ActionResult backward(Distance distance) {
 	return forward(distance, SensAdvance::Backward);
 }

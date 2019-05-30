@@ -1188,9 +1188,9 @@ void CalibrationDepla::entreAxes() {
 	getchar(); // PAUSE ____________________________________________
 
 	_angleBrutRobot_Apres = navigation()->get_orientation().getAngle();
-	logDebug0("Angle brut du robot = ", _angleBrutRobot_Apres);
+	logDebug0("Angle brut du robot = ", _angleBrutRobot_Apres.toDeg());
 
-	_rapportEntreAxe_Reel_sur_Mesure = (_angleBrutRobot_Apres - _angleBrutRobot_Avant).toDeg() / (NBR_TOURS * M_PI);
+	_rapportEntreAxe_Reel_sur_Mesure = (NBR_TOURS * 2_PI) / (_angleBrutRobot_Apres - _angleBrutRobot_Avant);
 	logDebug0("Rapport Entreaxe reel / mesure = ", _rapportEntreAxe_Reel_sur_Mesure);
 
 	_entreAxe = navigation_parameters().get_inter_axial_length();

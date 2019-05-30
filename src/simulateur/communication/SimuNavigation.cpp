@@ -81,6 +81,7 @@ void SimuNavigation::message_processing(const JSON& frame) {
 		Angle angle;
 
 		auto robot_coords = _robotController->getCoordinates();
+		int sign;
 
 		switch(_command) {
 			case MovingCommand::GoForward:
@@ -96,7 +97,8 @@ void SimuNavigation::message_processing(const JSON& frame) {
 				break;
 
 			case MovingCommand::TurnRelative:
-				angle = i32_to_angle(_args_cmd[0]);
+				sign = _args_cmd[1] == 1 ? -1 : 1;
+				angle = sign * i32_to_angle(_args_cmd[0]);
 				_robotController->turnRelative(angle);
 				logDebug6("Turn relative ", angle.toDeg(), " deg");
 				break;

@@ -64,7 +64,7 @@ namespace PhysicalRobot {
 			try {
 				message_processing(JSON::parse(msg));
 			} catch(nlohmann::detail::parse_error& e) {
-				logError("JSON parsing error: ", e.what());
+				logError("JSON parsing error: ", e.what(), "\ntrame: ", msg);
 			}
 			unlock_variables();
 		}
