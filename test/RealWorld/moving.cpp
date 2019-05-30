@@ -27,7 +27,7 @@ int main(int argc, char** argv) {
 	auto& nav_module = m->add_module<Navigation>(1);
 
 	if(action == "parameters") {
-		m->add_module<NavigationParameters>(10);
+		// m->add_module<NavigationParameters>(10);
 	}
 
 	std::shared_ptr<Robot> robot;
@@ -65,8 +65,8 @@ int main(int argc, char** argv) {
 	} else if(action == "parameters") {
 		std::cout << "-> This test uses the NavigationParameters module" << std::endl
 		          << "(type 'q' to quit)" << std::endl;
-		auto& nav_params = m->get_module<NavigationParameters>();
-		nav_params.set_inter_axial_length(10_cm);
+		// auto& nav_params = m->get_module<NavigationParameters>();
+		// nav_params.set_inter_axial_length(10_cm);
 
 		int c = getchar();
 		nav_interfacer.deactivate_asserv();
@@ -77,7 +77,7 @@ int main(int argc, char** argv) {
 			c = getchar();
 		}
 
-		nav_params.set_inter_axial_length(10_cm);
+		// nav_params.set_inter_axial_length(10_cm);
 	} else if(action == "interfacer") {
 		std::cout << "forward(10_cm)?" << std::endl;
 		getchar();
