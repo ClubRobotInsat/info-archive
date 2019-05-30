@@ -51,6 +51,21 @@ if (RASPI)
         )
 
         execute_process(
+                COMMAND petrilab --update --profile "ARM release" PetriLab/MacroPrimaryBlueRail.petri
+                WORKING_DIRECTORY ${root_SOURCE_DIR}/src/robot/Strategy
+        )
+
+        execute_process(
+                COMMAND petrilab --update --profile "ARM release" PetriLab/MacroPrimaryChaos.petri
+                WORKING_DIRECTORY ${root_SOURCE_DIR}/src/robot/Strategy
+        )
+
+        execute_process(
+                COMMAND petrilab --update --profile "ARM release" PetriLab/MacroPrimaryGoldenium.petri
+                WORKING_DIRECTORY ${root_SOURCE_DIR}/src/robot/Strategy
+        )
+
+        execute_process(
                 COMMAND petrilab --update --profile "ARM release" PetriLab/Secondary.petri
                 WORKING_DIRECTORY ${root_SOURCE_DIR}/src/robot/Strategy
         )
@@ -65,6 +80,21 @@ else()
     if(USE_PETRILAB)
         execute_process(
                 COMMAND petrilab --update --profile "Default" PetriLab/Primary.petri
+                WORKING_DIRECTORY ${root_SOURCE_DIR}/src/robot/Strategy
+        )
+
+        execute_process(
+                COMMAND petrilab --update --profile "Default" PetriLab/MacroPrimaryBlueRail.petri
+                WORKING_DIRECTORY ${root_SOURCE_DIR}/src/robot/Strategy
+        )
+
+        execute_process(
+                COMMAND petrilab --update --profile "Default" PetriLab/MacroPrimaryChaos.petri
+                WORKING_DIRECTORY ${root_SOURCE_DIR}/src/robot/Strategy
+        )
+
+        execute_process(
+                COMMAND petrilab --update --profile "Default" PetriLab/MacroPrimaryGoldenium.petri
                 WORKING_DIRECTORY ${root_SOURCE_DIR}/src/robot/Strategy
         )
 
