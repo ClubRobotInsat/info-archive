@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Document APIVersion="105">
-  <Settings Name="Template" Language="Cpp" Enum="ActionResult,SUCCESS,FAILURE,BLOCKED,BLOCKED_BY_ADV,TIMEOUT,POSITION_MODIFIED" DefaultExecutionVerbosity="Nothing" OverrideChildCompilationSettings="False">
+  <Settings Name="Template" Language="Cpp" Enum="Outcome,SUCCESS,FAILURE,BLOCKED,BLOCKED_BY_ADV,TIMEOUT,POSITION_MODIFIED" DefaultExecutionVerbosity="Nothing" OverrideChildCompilationSettings="False">
     <Headers>
       <Header File="Utils.h" />
       <Header File="Avoidance.h" />
