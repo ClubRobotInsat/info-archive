@@ -25,19 +25,19 @@ void init_petri_servos_secondary(std::shared_ptr<RobotManager> manager, Constant
 }
 
 
-ActionResult raise_arm(Angle angle) {
+Outcome raise_arm(Angle angle) {
 	return servos().set_position(ID_SERVO_RAISE_ARM, angle);
 }
 
-ActionResult rotate_arm(Angle angle) {
+Outcome rotate_arm(Angle angle) {
 	return servos().set_position(ID_SERVO_ROTATE_ARM, angle);
 }
 
-ActionResult elevator(Angle angle) {
+Outcome elevator(Angle angle) {
 	return servos().set_position(ID_SERVO_ELEVATOR, angle);
 }
 
-ActionResult arm_ground() {
+Outcome arm_ground() {
 	std::vector<fun_ar> actions;
 
 	ADD_FN(actions, rotate_arm, 0_deg);
@@ -48,7 +48,7 @@ ActionResult arm_ground() {
 	return _combine_actions(actions);
 }
 
-ActionResult arm_top_right() {
+Outcome arm_top_right() {
 	std::vector<fun_ar> actions;
 
 	ADD_FN(actions, raise_arm, 50_deg);
@@ -59,7 +59,7 @@ ActionResult arm_top_right() {
 	return _combine_actions(actions);
 }
 
-ActionResult arm_top_left() {
+Outcome arm_top_left() {
 	std::vector<fun_ar> actions;
 
 	ADD_FN(actions, raise_arm, 50_deg);
@@ -71,11 +71,11 @@ ActionResult arm_top_left() {
 }
 
 // TODO : Contrôle en vitesse ?
-ActionResult raise_elevator() {
+Outcome raise_elevator() {
 	return elevator(5200_deg);
 }
 
-ActionResult lower_elevator() {
+Outcome lower_elevator() {
 	return elevator(-5300_deg);
 }
 

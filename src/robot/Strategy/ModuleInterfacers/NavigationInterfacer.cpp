@@ -95,19 +95,19 @@ namespace Strategy::Interfacer {
 	}
 
 	// States
-	ActionResult NavigationInterfacer::move_to(repere::Coordinates destination, Duration timeout) {
+	Outcome NavigationInterfacer::move_to(repere::Coordinates destination, Duration timeout) {
 		return move_to(destination, SensAdvance::Forward, timeout);
 	}
 
-	ActionResult NavigationInterfacer::move_to(repere::Coordinates destination, SensAdvance sens, Duration timeout) {
+	Outcome NavigationInterfacer::move_to(repere::Coordinates destination, SensAdvance sens, Duration timeout) {
 		auto deadline = TimePoint::now() + timeout;
 
 		// On récupère la Coordinates par rapport au robot
-		ActionResult res = this->follow_trajectory(this->compute_trajectory(destination, sens), deadline);
+		Outcome res = this->follow_trajectory(this->compute_trajectory(destination, sens), deadline);
 
-		if(res != ActionResult::BLOCKED_BY_ADV) {
-			if(res == ActionResult::SUCCESS && _env.isForbidden(destination.getPos2D()))
-				res = ActionResult::POSITION_MODIFIED;
+		if(res != Outcome::BLOCKED_BY_ADV) {
+			if(res == Outcome::SUCCESS && _env.isForbidden(destination.getPos2D()))
+				res = Outcome::POSITION_MODIFIED;
 		} else {
 #ifndef HOMOLOGATION
 			sleep(1_s);
@@ -120,14 +120,14 @@ namespace Strategy::Interfacer {
 
 			// Si on ne peut pas reculer assez : on se considère bloqué par adv.
 			if(escapeRadius <= 1_cm) {
-				return ActionResult::BLOCKED_BY_ADV;
+				return Outcome::BLOCKED_BY_ADV;
 			}
 
 			// Si on peut reculer : on le fait.
 			res = this->forward(escapeRadius, escapeSens, timeout);
 
 
-			if(res != ActionResult::SUCCESS) {
+			if(res != Outcome::SUCCESS) {
 				logDebug("Can't go backward.");
 				return res;
 			}
@@ -140,14 +140,14 @@ namespace Strategy::Interfacer {
 		return res;
 	}
 
-	ActionResult NavigationInterfacer::internal_forward(Distance distance, SensAdvance sens, Duration timeout) {
+	Outcome NavigationInterfacer::internal_forward(Distance distance, SensAdvance sens, Duration timeout) {
 		auto threshold = std::min(distance + GLOBAL_CONSTANTS()["primary"].get_radius_rotation() / 2, 30_cm);
 		if(_avoidance.adversary_detected(threshold, sens)) {
-			return ActionResult::BLOCKED_BY_ADV;
+			return Outcome::BLOCKED_BY_ADV;
 		}
 
 		TimePoint date_timeout = TimePoint::now() + timeout;
-		ActionResult result = ActionResult::FAILURE;
+		Outcome result = Outcome::FAILURE;
 
 		auto lock = get_lock_for_action(date_timeout);
 		if(lock.owns_lock()) {
@@ -160,7 +160,7 @@ namespace Strategy::Interfacer {
 		return result;
 	}
 
-	ActionResult NavigationInterfacer::forward(Distance distance, SensAdvance sens, Duration timeout) {
+	Outcome NavigationInterfacer::forward(Distance distance, SensAdvance sens, Duration timeout) {
 		// Attente que la position soit actualisée à coup sûr
 		sleep(GLOBAL_CONSTANTS().get_frame_period());
 
@@ -175,7 +175,7 @@ namespace Strategy::Interfacer {
 
 		// Le robot essaie d'avancer. S'il se retrouve bloqué par l'adversaire, il retente l'action
 		// jusqu'à ce que le timer ait expiré.
-		ActionResult result;
+		Outcome result;
 		do {
 			sleep(GLOBAL_CONSTANTS().get_frame_period());
 			auto current_pos = _module.get_coordinates().getPos2D();
@@ -183,16 +183,16 @@ namespace Strategy::Interfacer {
 			logDebug("Current pos: ", current_pos, " | dest: ", final_coords, " | left distance: ", distance);
 			result = internal_forward(distance, sens, timeout - (TimePoint::now() - begin));
 
-			if(result != ActionResult::SUCCESS) {
+			if(result != Outcome::SUCCESS) {
 				logWarn("Failed to forward to ", final_coords, ", sens: ", sens, ", result: ", result);
 			}
 
-			if(result == ActionResult::BLOCKED) {
+			if(result == Outcome::BLOCKED) {
 				break;
 			}
-		} while(result == ActionResult::BLOCKED_BY_ADV && (TimePoint::now() - begin) <= timeout);
+		} while(result == Outcome::BLOCKED_BY_ADV && (TimePoint::now() - begin) <= timeout);
 
-		if(result != ActionResult::SUCCESS) {
+		if(result != Outcome::SUCCESS) {
 			logWarn("Failed to forward to ", final_coords, ", sens: ", sens, ", result: ", result);
 			_module.stop();
 			sleep(100_ms);
@@ -202,20 +202,20 @@ namespace Strategy::Interfacer {
 		return result;
 	}
 
-	ActionResult NavigationInterfacer::forward_infinity(SensAdvance sens, Duration timeout) {
+	Outcome NavigationInterfacer::forward_infinity(SensAdvance sens, Duration timeout) {
 		const static Distance infinity = Distance::makeFromMm(std::numeric_limits<int32_t>::max() / 10.0);
 		return forward(infinity, sens, timeout);
 	}
 
-	ActionResult NavigationInterfacer::turn_absolute(const repere::Orientation& angle, Duration timeout) {
+	Outcome NavigationInterfacer::turn_absolute(const repere::Orientation& angle, Duration timeout) {
 		SensRotation sens = optimal_rotation_sens(_module.get_orientation(), angle);
 
 		return turn_absolute(angle, sens, timeout);
 	}
 
-	ActionResult NavigationInterfacer::turn_absolute(const repere::Orientation& angle,
-	                                                 Strategy::Interfacer::NavigationInterfacer::SensRotation sens,
-	                                                 Duration timeout) {
+	Outcome NavigationInterfacer::turn_absolute(const repere::Orientation& angle,
+	                                            Strategy::Interfacer::NavigationInterfacer::SensRotation sens,
+	                                            Duration timeout) {
 		TimePoint date_timeout = TimePoint::now() + timeout;
 		auto lock = get_lock_for_action(date_timeout);
 		if(lock.owns_lock()) {
@@ -224,10 +224,10 @@ namespace Strategy::Interfacer {
 			return wait_end_trajectory(get_check_moving_done(), date_timeout, true, false);
 		}
 		logDebug3("Module not available");
-		return ActionResult::FAILURE;
+		return Outcome::FAILURE;
 	}
 
-	ActionResult NavigationInterfacer::turn_relative(Angle angle, Duration timeout, const repere::Repere& repere) {
+	Outcome NavigationInterfacer::turn_relative(Angle angle, Duration timeout, const repere::Repere& repere) {
 		TimePoint date_timeout = TimePoint::now() + timeout;
 		auto lock = get_lock_for_action(date_timeout);
 
@@ -238,19 +238,19 @@ namespace Strategy::Interfacer {
 			return wait_end_trajectory(get_check_moving_done(), date_timeout, true, false);
 		}
 		logDebug3("Module not available");
-		return ActionResult::FAILURE;
+		return Outcome::FAILURE;
 	}
 
-	ActionResult NavigationInterfacer::stop() {
+	Outcome NavigationInterfacer::stop() {
 		_module.stop();
 		sleep(100_ms);
-		return ActionResult::SUCCESS;
+		return Outcome::SUCCESS;
 	}
 
-	ActionResult NavigationInterfacer::emergency_stop() {
+	Outcome NavigationInterfacer::emergency_stop() {
 		_module.emergency_stop();
 		sleep(100_ms);
-		return ActionResult::TIMEOUT;
+		return Outcome::TIMEOUT;
 	}
 
 	NavigationInterfacer::SensRotation
@@ -258,19 +258,19 @@ namespace Strategy::Interfacer {
 		return (to.getAngle() - from.getAngle()).toMinusPiPi() >= 0_rad ? SensRotation::Trigo : SensRotation::Clockwise;
 	}
 
-	ActionResult NavigationInterfacer::recaling_top(SensAdvance sens, Distance y) {
+	Outcome NavigationInterfacer::recaling_top(SensAdvance sens, Distance y) {
 		return recaling_helper(sens, y, std::make_pair(90_deg, -90_deg), false);
 	}
 
-	ActionResult NavigationInterfacer::recaling_bottom(SensAdvance sens, Distance y) {
+	Outcome NavigationInterfacer::recaling_bottom(SensAdvance sens, Distance y) {
 		return recaling_helper(sens, y, std::make_pair(-90_deg, 90_deg), false);
 	}
 
-	ActionResult NavigationInterfacer::recaling_right(SensAdvance sens, Distance x) {
+	Outcome NavigationInterfacer::recaling_right(SensAdvance sens, Distance x) {
 		return recaling_helper(sens, x, std::make_pair(0_deg, 180_deg), true);
 	}
 
-	ActionResult NavigationInterfacer::recaling_left(SensAdvance sens, Distance x) {
+	Outcome NavigationInterfacer::recaling_left(SensAdvance sens, Distance x) {
 		return recaling_helper(sens, x, std::make_pair(180_deg, 0_deg), true);
 	}
 
@@ -296,32 +296,32 @@ namespace Strategy::Interfacer {
 		return [this]() { return _module.is_precision_reached(); };
 	};
 
-	ActionResult NavigationInterfacer::wait_end_trajectory(const std::function<bool()>& condition_end_trajectory,
-	                                                       const TimePoint& date_timeout,
-	                                                       bool stop,
-	                                                       bool check_adversary,
-	                                                       SensAdvance sens) {
+	Outcome NavigationInterfacer::wait_end_trajectory(const std::function<bool()>& condition_end_trajectory,
+	                                                  const TimePoint& date_timeout,
+	                                                  bool stop,
+	                                                  bool check_adversary,
+	                                                  SensAdvance sens) {
 		for(;;) {
 			// Timeout
 			if(TimePoint::now() >= date_timeout) {
-				return ActionResult::TIMEOUT;
+				return Outcome::TIMEOUT;
 			}
 
 			// Adversary
 			if(check_adversary && _avoidance.adversary_detected(sens)) {
 				this->stop();
-				return ActionResult::BLOCKED_BY_ADV;
+				return Outcome::BLOCKED_BY_ADV;
 			}
 
 			auto lock = try_get_lock_for_action();
 			// Module unavailable: trajectory not valid
 			if(!lock.owns_lock()) {
-				return ActionResult::FAILURE;
+				return Outcome::FAILURE;
 			}
 
 			// Blocking
 			if(_module.is_physically_blocked()) {
-				return ActionResult::BLOCKED;
+				return Outcome::BLOCKED;
 			}
 
 			// Trajectory ended
@@ -329,7 +329,7 @@ namespace Strategy::Interfacer {
 				if(stop) {
 					this->stop();
 				}
-				return ActionResult::SUCCESS;
+				return Outcome::SUCCESS;
 			}
 
 			sleep(10_ms);
@@ -410,9 +410,9 @@ namespace Strategy::Interfacer {
 		return trajectory;
 	}
 
-	ActionResult NavigationInterfacer::follow_trajectory(Trajectory&& trajectory, TimePoint const& timeoutDate) {
+	Outcome NavigationInterfacer::follow_trajectory(Trajectory&& trajectory, TimePoint const& timeoutDate) {
 
-		ActionResult result = trajectory.empty() ? ActionResult::FAILURE : ActionResult::SUCCESS;
+		Outcome result = trajectory.empty() ? Outcome::FAILURE : Outcome::SUCCESS;
 
 		while(!trajectory.empty()) {
 			TrajectoryPoint nextPoint = trajectory.front();
@@ -425,7 +425,7 @@ namespace Strategy::Interfacer {
 			result = go_to_point_straight(nextPos, nextPoint.sens, timeoutDate);
 
 			// Si une erreur s'est produite, on abandonne
-			if(result != ActionResult::SUCCESS) {
+			if(result != Outcome::SUCCESS) {
 				logWarn("failed : ", result);
 				return result;
 			}
@@ -440,9 +440,7 @@ namespace Strategy::Interfacer {
 		return result;
 	}
 
-	ActionResult NavigationInterfacer::go_to_point_straight(const repere::Coordinates& destination,
-	                                                        SensAdvance sens,
-	                                                        TimePoint const& date_timeout) {
+	Outcome NavigationInterfacer::go_to_point_straight(const repere::Coordinates& destination, SensAdvance sens, TimePoint const& date_timeout) {
 		repere::Coordinates origin = _module.get_coordinates();
 		Vector2m diff = destination.getPos2D() - origin.getPos2D();
 		Angle direction = atan2(diff.y, diff.x);
@@ -451,18 +449,18 @@ namespace Strategy::Interfacer {
 		// Turn to direction
 		auto lock = get_lock_for_action(date_timeout);
 
-		ActionResult result;
+		Outcome result;
 		if(lock.owns_lock()) {
 			logDebug("Repositionnement vers ", direction.toDeg(), " deg");
 			_module.turn_absolute(direction, optimal_rotation_sens(origin.getAngle(), direction));
 			result = wait_end_trajectory(get_check_moving_done(), date_timeout);
 		} else {
 			logDebug6("Module is unavailable");
-			result = ActionResult::FAILURE;
+			result = Outcome::FAILURE;
 		}
 
 		logDebug4("Angle actuel: ", _module.get_coordinates().getAngle().toDeg(), " deg");
-		if(result == ActionResult::SUCCESS) {
+		if(result == Outcome::SUCCESS) {
 			logDebug("Avancée de ", diff.norm());
 			result = internal_forward(diff.norm(), sens, date_timeout - TimePoint::now());
 		}
@@ -492,14 +490,14 @@ namespace Strategy::Interfacer {
 		return escapeRadius;
 	}
 
-	ActionResult NavigationInterfacer::recaling_helper(SensAdvance sens, Distance D, std::pair<Angle, Angle> angles, bool isX) {
+	Outcome NavigationInterfacer::recaling_helper(SensAdvance sens, Distance D, std::pair<Angle, Angle> angles, bool isX) {
 		// Ces constantes permettent aux recallages d'etre immunisés à un palet farceur qui se glisserait entre le robot et un mur
 		static constexpr Angle OFFSET_MAX_RECALING_ANGLE = 8_deg;
 		static constexpr Distance OFFSET_MAX_RECALING_DISTANCE = 5_cm;
 
 		Angle angle = (sens == SensAdvance::Forward ? angles.first : angles.second);
-		ActionResult result = turn_absolute(angle);
-		if(result != ActionResult::SUCCESS) {
+		Outcome result = turn_absolute(angle);
+		if(result != Outcome::SUCCESS) {
 			logError("Failed to turn at the good angle");
 			return result;
 		}
@@ -508,7 +506,7 @@ namespace Strategy::Interfacer {
 		result = forward_infinity(sens, 10_s);
 		pop_linear_speed();
 
-		if(result != ActionResult::SUCCESS && result != ActionResult::BLOCKED) {
+		if(result != Outcome::SUCCESS && result != Outcome::BLOCKED) {
 			logError("Failed to reach the recaling wall");
 			stop();
 			return result;
@@ -528,14 +526,14 @@ namespace Strategy::Interfacer {
 			        (isX ? "X" : "Y"),
 			        " is too important: ",
 			        variation_distance);
-			return ActionResult::BLOCKED;
+			return Outcome::BLOCKED;
 		}
 
 		if(variation_angle > OFFSET_MAX_RECALING_ANGLE) {
 			logWarn("Problem while recaling the robot: the variation between the actual angle and the expected "
 			        "angle is too important: ",
 			        variation_angle);
-			return ActionResult::BLOCKED;
+			return Outcome::BLOCKED;
 		}
 
 		if(isX) {
@@ -543,7 +541,7 @@ namespace Strategy::Interfacer {
 		} else {
 			_module.set_coordinates(repere::Coordinates({old_distance, D}, angle));
 		}
-		return ActionResult::SUCCESS;
+		return Outcome::SUCCESS;
 	}
 
 } // namespace Strategy::Interfacer

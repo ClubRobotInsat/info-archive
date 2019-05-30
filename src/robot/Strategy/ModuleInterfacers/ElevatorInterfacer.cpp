@@ -17,22 +17,22 @@ namespace Strategy::Interfacer {
 	ElevatorInterfacer::ElevatorInterfacer(PhysicalRobot::Robot& robot, const std::vector<Angle>& positions, uint8_t id_motor)
 	        : ElevatorInterfacer(robot.get_module<PhysicalRobot::Motors>(), positions, id_motor) {}
 
-	ActionResult ElevatorInterfacer::increment() {
+	Outcome ElevatorInterfacer::increment() {
 		return this->set_elevator_blocking(_position + 1);
 	}
 
-	ActionResult ElevatorInterfacer::decrement() {
+	Outcome ElevatorInterfacer::decrement() {
 		return this->set_elevator_blocking(_position - 1);
 	}
 
-	ActionResult ElevatorInterfacer::set_elevator_blocking(std::size_t pos) {
+	Outcome ElevatorInterfacer::set_elevator_blocking(std::size_t pos) {
 		std::lock_guard<std::mutex> lock(_mutex_moves);
 
 		set_elevator(pos);
 		return wait_for_elevator();
 	}
 
-	ActionResult ElevatorInterfacer::set_angle_blocking(Angle angle) {
+	Outcome ElevatorInterfacer::set_angle_blocking(Angle angle) {
 		std::lock_guard<std::mutex> lock(_mutex_moves);
 		logDebug("ElevatorInterfacer goes to the angle ", angle.toDeg());
 		_module.set_position_angle(_id_motor, angle);
@@ -40,32 +40,32 @@ namespace Strategy::Interfacer {
 		return this->wait_for_elevator();
 	}
 
-	ActionResult ElevatorInterfacer::set_elevator(std::size_t pos) {
+	Outcome ElevatorInterfacer::set_elevator(std::size_t pos) {
 		Angle angle = _positions.at(pos) + _offset;
 		logDebug("ElevatorInterfacer goes to the position ", angle.toDeg());
 
 		_position = pos;
 		_module.set_position_angle(_id_motor, angle);
 
-		return ActionResult::SUCCESS;
+		return Outcome::SUCCESS;
 	}
 
-	ActionResult ElevatorInterfacer::wait_for_elevator() {
+	Outcome ElevatorInterfacer::wait_for_elevator() {
 		StopWatch compteur;
 		while(!this->verify_elevator_position() && compteur.getElapsedTime() < TIMEOUT) {
 			if(this->verify_elevator_blocking()) {
 				_module.stop_controlled_motor(_id_motor);
-				return ActionResult::BLOCKED;
+				return Outcome::BLOCKED;
 			}
 			sleep(20_ms);
 		}
 
 		if(compteur.getElapsedTime() >= TIMEOUT) {
 			_module.stop_controlled_motor(_id_motor);
-			return ActionResult::TIMEOUT;
+			return Outcome::TIMEOUT;
 		}
 
-		return verify_elevator_position() ? ActionResult::SUCCESS : ActionResult::FAILURE;
+		return verify_elevator_position() ? Outcome::SUCCESS : Outcome::FAILURE;
 	}
 
 	bool ElevatorInterfacer::verify_elevator_position() const {
@@ -78,9 +78,9 @@ namespace Strategy::Interfacer {
 		return false;
 	}
 
-	ActionResult ElevatorInterfacer::init(Strategy::Interfacer::ElevatorInterfacer::RotatingDirection sens) {
+	Outcome ElevatorInterfacer::init(Strategy::Interfacer::ElevatorInterfacer::RotatingDirection sens) {
 		// TODO
-		return ActionResult::SUCCESS;
+		return Outcome::SUCCESS;
 		/*_module.set_position_angle(_id_motor, -10000_rad);
 		auto res = wait_for_elevator();
 		_module.fix_angle(0_deg);

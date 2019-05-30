@@ -104,7 +104,7 @@ CalibrationDepla::CalibrationDepla(int argc, char** argv) {
 }
 
 void CalibrationDepla::check_physical_blocking_appeared() {
-	assert(_res == ActionResult::BLOCKED);
+	assert(_res == Outcome::BLOCKED);
 }
 
 void CalibrationDepla::execute() {

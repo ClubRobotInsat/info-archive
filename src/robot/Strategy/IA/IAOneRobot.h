@@ -36,7 +36,7 @@ namespace Strategy {
 		void execute() override;
 
 		// Lance le réseau Petri qui contient l'IA en release ou debug
-		ActionResult launch_petrilab(bool debug);
+		Outcome launch_petrilab(bool debug);
 		std::unique_ptr<Petri::PetriDynamicLib> _petrilab;
 
 		std::thread _points_printer;

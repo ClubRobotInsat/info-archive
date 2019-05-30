@@ -57,7 +57,7 @@ int main(int argc, char** argv) {
 
 	// Tests
 
-	ActionResult result;
+	Outcome result;
 	logDebug4("Testing ", action);
 
 	if(action == "module") {

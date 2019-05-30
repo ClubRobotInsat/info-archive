@@ -6,12 +6,12 @@
 
 #include "../ModuleInterfacers/PumpsInterfacerSecondary.h"
 #include "Utils.h"
-#include <ActionResult.h>
+#include <Outcome.h>
 
 // @PetriLab@ Pumps
 
 using AtomType = Strategy::AtomType;
 
-ActionResult catch_atom();
+Outcome catch_atom();
 AtomType get_color_atom();
-ActionResult release_atom();
+Outcome release_atom();

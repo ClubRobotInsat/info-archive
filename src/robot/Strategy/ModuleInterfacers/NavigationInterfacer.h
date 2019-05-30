@@ -61,35 +61,35 @@ namespace Strategy::Interfacer {
 		 * Actions
 		 */
 
-		ActionResult move_to(repere::Coordinates destination, Duration timeout);
-		ActionResult move_to(repere::Coordinates destination, SensAdvance = SensAdvance::Forward, Duration timeout = 25_s);
+		Outcome move_to(repere::Coordinates destination, Duration timeout);
+		Outcome move_to(repere::Coordinates destination, SensAdvance = SensAdvance::Forward, Duration timeout = 25_s);
 
-		ActionResult forward(Distance, SensAdvance, Duration timeout = 10_s);
+		Outcome forward(Distance, SensAdvance, Duration timeout = 10_s);
 
-		ActionResult forward_infinity(SensAdvance, Duration timeout = 10_s);
+		Outcome forward_infinity(SensAdvance, Duration timeout = 10_s);
 
 		/// Tourne selon le sens le plus rapide qui permets d'orienter le robot à l'angle absolu souhaité
-		ActionResult turn_absolute(const repere::Orientation&, Duration timeout = 10_s);
+		Outcome turn_absolute(const repere::Orientation&, Duration timeout = 10_s);
 
-		ActionResult turn_absolute(const repere::Orientation&, SensRotation, Duration timeout = 10_s);
+		Outcome turn_absolute(const repere::Orientation&, SensRotation, Duration timeout = 10_s);
 
-		ActionResult turn_relative(Angle, Duration timeout = 10_s, const repere::Repere& repere = repere::ABSOLUTE_REFERENCE);
+		Outcome turn_relative(Angle, Duration timeout = 10_s, const repere::Repere& repere = repere::ABSOLUTE_REFERENCE);
 
-		ActionResult stop();
+		Outcome stop();
 
-		ActionResult emergency_stop();
+		Outcome emergency_stop();
 
 		/// Helpers
 		SensRotation optimal_rotation_sens(const repere::Orientation& from, const repere::Orientation& to);
 
 		/// Recallages
-		ActionResult recaling_top(SensAdvance sens, Distance y);
+		Outcome recaling_top(SensAdvance sens, Distance y);
 
-		ActionResult recaling_bottom(SensAdvance sens, Distance y);
+		Outcome recaling_bottom(SensAdvance sens, Distance y);
 
-		ActionResult recaling_right(SensAdvance sens, Distance x);
+		Outcome recaling_right(SensAdvance sens, Distance x);
 
-		ActionResult recaling_left(SensAdvance sens, Distance x);
+		Outcome recaling_left(SensAdvance sens, Distance x);
 
 		EXCEPTION_CLASS(ExceptionStack);
 
@@ -139,13 +139,13 @@ namespace Strategy::Interfacer {
 
 		/** Attend la fin de la trajectoire et retourne le résultat. Si le robot est bloqué par l'adversaire,
 		 * il est arrêté en urgence. */
-		ActionResult wait_end_trajectory(const std::function<bool()>& condition_end_trajectory,
-		                                 const TimePoint& date_timeout,
-		                                 bool stop = true,
-		                                 bool check_adversary = true,
-		                                 SensAdvance = SensAdvance::Forward);
+		Outcome wait_end_trajectory(const std::function<bool()>& condition_end_trajectory,
+		                            const TimePoint& date_timeout,
+		                            bool stop = true,
+		                            bool check_adversary = true,
+		                            SensAdvance = SensAdvance::Forward);
 
-		ActionResult internal_forward(Distance, SensAdvance, Duration timeout);
+		Outcome internal_forward(Distance, SensAdvance, Duration timeout);
 
 		struct TrajectoryPoint {
 			TrajectoryPoint(const repere::Coordinates& coord, SensAdvance sens) : coordinates(coord), sens(sens) {}
@@ -158,15 +158,15 @@ namespace Strategy::Interfacer {
 
 		Trajectory compute_trajectory(const repere::Coordinates& destination, SensAdvance sens);
 
-		ActionResult follow_trajectory(Trajectory&& trajectory, TimePoint const& timeoutDate);
+		Outcome follow_trajectory(Trajectory&& trajectory, TimePoint const& timeoutDate);
 
-		ActionResult go_to_point_straight(const repere::Coordinates& destination, SensAdvance sens, TimePoint const& date_timeout);
+		Outcome go_to_point_straight(const repere::Coordinates& destination, SensAdvance sens, TimePoint const& date_timeout);
 
 		/** Propose une position de repli en cas de bloquage par l'adversaire. Choisit un point possible
 		 * parmi un nombre fini de possibilités autour de la position présente du robot */
 		Distance compute_backup_distance(SensAdvance escapeSens, Distance escapeRadius);
 
-		ActionResult recaling_helper(SensAdvance, Distance other_component, std::pair<Angle, Angle> angles, bool isX);
+		Outcome recaling_helper(SensAdvance, Distance other_component, std::pair<Angle, Angle> angles, bool isX);
 
 
 		mutable std::mutex _mutex_states;

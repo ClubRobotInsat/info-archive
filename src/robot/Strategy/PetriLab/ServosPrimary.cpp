@@ -37,23 +37,23 @@ void init_petri_servos_primary(std::shared_ptr<RobotManager> manager, Constants:
 }
 
 // Control of each servo
-ActionResult front_arm(Angle angle) {
+Outcome front_arm(Angle angle) {
 	return servos().set_position(ID_SERVO_FRONT_ARM, angle);
 }
 
-ActionResult front_hand(Angle angle) {
+Outcome front_hand(Angle angle) {
 	return servos().set_position(ID_SERVO_FRONT_HAND, angle);
 }
 
-ActionResult back_arm(Angle angle) {
+Outcome back_arm(Angle angle) {
 	return servos().set_position(ID_SERVO_BACK_ARM, angle);
 }
 
-ActionResult back_hand(Angle angle) {
+Outcome back_hand(Angle angle) {
 	return servos().set_position(ID_SERVO_BACK_HAND, angle);
 }
 
-ActionResult arm_position(Arm arm, Angle angle) {
+Outcome arm_position(Arm arm, Angle angle) {
 	if(arm == Arm::Front) {
 		return front_arm(angle);
 	} else {
@@ -61,7 +61,7 @@ ActionResult arm_position(Arm arm, Angle angle) {
 	}
 }
 
-ActionResult hand_position(Arm arm, Angle angle) {
+Outcome hand_position(Arm arm, Angle angle) {
 	if(arm == Arm::Front) {
 		return front_hand(angle);
 	} else {
@@ -86,13 +86,13 @@ void set_position(Arm arm, ArmPosition position) {
 }
 
 // Combined functions
-ActionResult arm_bottom_horizontal(Arm arm) {
+Outcome arm_bottom_horizontal(Arm arm) {
 	std::vector<fun_ar> actions;
 
 	switch(arm) {
 		case Arm::Front: {
 			logWarn("Front servos aren't calibrated yet");
-			ADD_FN(actions, []() { return ActionResult::FAILURE; });
+			ADD_FN(actions, []() { return Outcome::FAILURE; });
 			break;
 		}
 		case Arm::Back: {
@@ -102,8 +102,8 @@ ActionResult arm_bottom_horizontal(Arm arm) {
 		}
 	}
 
-	ActionResult res = _combine_actions(actions);
-	if(res != ActionResult::SUCCESS) {
+	Outcome res = _combine_actions(actions);
+	if(res != Outcome::SUCCESS) {
 		set_position(arm, ArmPosition::Unknown);
 	} else {
 		set_position(arm, ArmPosition::BottomHorizontal);
@@ -112,13 +112,13 @@ ActionResult arm_bottom_horizontal(Arm arm) {
 	return res;
 }
 
-ActionResult arm_bottom_vertical(Arm arm) {
+Outcome arm_bottom_vertical(Arm arm) {
 	std::vector<fun_ar> actions;
 
 	switch(arm) {
 		case Arm::Front: {
 			logWarn("Front servos aren't calibrated yet");
-			ADD_FN(actions, []() { return ActionResult::FAILURE; });
+			ADD_FN(actions, []() { return Outcome::FAILURE; });
 			break;
 		}
 		case Arm::Back: {
@@ -128,8 +128,8 @@ ActionResult arm_bottom_vertical(Arm arm) {
 		}
 	}
 
-	ActionResult res = _combine_actions(actions);
-	if(res != ActionResult::SUCCESS) {
+	Outcome res = _combine_actions(actions);
+	if(res != Outcome::SUCCESS) {
 		set_position(arm, ArmPosition::Unknown);
 	} else {
 		set_position(arm, ArmPosition::BottomVertical);
@@ -138,13 +138,13 @@ ActionResult arm_bottom_vertical(Arm arm) {
 	return res;
 }
 
-ActionResult arm_top_vertical(Arm arm) {
+Outcome arm_top_vertical(Arm arm) {
 	std::vector<fun_ar> actions;
 
 	switch(arm) {
 		case Arm::Front: {
 			logWarn("Front servos aren't calibrated yet");
-			ADD_FN(actions, []() { return ActionResult::FAILURE; });
+			ADD_FN(actions, []() { return Outcome::FAILURE; });
 			break;
 		}
 		case Arm::Back: {
@@ -154,8 +154,8 @@ ActionResult arm_top_vertical(Arm arm) {
 		}
 	}
 
-	ActionResult res = _combine_actions(actions);
-	if(res != ActionResult::SUCCESS) {
+	Outcome res = _combine_actions(actions);
+	if(res != Outcome::SUCCESS) {
 		set_position(arm, ArmPosition::Unknown);
 	} else {
 		set_position(arm, ArmPosition::TopVertical);
@@ -164,13 +164,13 @@ ActionResult arm_top_vertical(Arm arm) {
 	return res;
 }
 
-ActionResult arm_catch_goldenium(Arm arm) {
+Outcome arm_catch_goldenium(Arm arm) {
 	std::vector<fun_ar> actions;
 
 	switch(arm) {
 		case Arm::Front: {
 			logWarn("Front servos aren't calibrated yet");
-			ADD_FN(actions, []() { return ActionResult::FAILURE; });
+			ADD_FN(actions, []() { return Outcome::FAILURE; });
 			break;
 		}
 		case Arm::Back: {
@@ -180,8 +180,8 @@ ActionResult arm_catch_goldenium(Arm arm) {
 		}
 	}
 
-	ActionResult res = _combine_actions(actions);
-	if(res != ActionResult::SUCCESS) {
+	Outcome res = _combine_actions(actions);
+	if(res != Outcome::SUCCESS) {
 		set_position(arm, ArmPosition::Unknown);
 	} else {
 		set_position(arm, ArmPosition::CatchGoldenium);
@@ -190,27 +190,27 @@ ActionResult arm_catch_goldenium(Arm arm) {
 	return res;
 }
 
-ActionResult arm_release_goldenium(Arm arm) {
+Outcome arm_release_goldenium(Arm arm) {
 	std::vector<fun_ar> actions;
 
 	switch(arm) {
 		case Arm::Front: {
 			logWarn("Front servos aren't calibrated yet");
-			ADD_FN(actions, []() { return ActionResult::FAILURE; });
+			ADD_FN(actions, []() { return Outcome::FAILURE; });
 			break;
 		}
 		case Arm::Back: {
 			/// TODO : déposer le goldenium sur la balance
 			logWarn("Back servos aren't calibrated yet for the goldenium release");
-			ADD_FN(actions, []() { return ActionResult::FAILURE; });
+			ADD_FN(actions, []() { return Outcome::FAILURE; });
 			// ADD_FN(actions, arm_position, arm, 65_deg);
 			// ADD_FN(actions, hand_position, arm, -100_deg);
 			break;
 		}
 	}
 
-	ActionResult res = _combine_actions(actions);
-	if(res != ActionResult::SUCCESS) {
+	Outcome res = _combine_actions(actions);
+	if(res != Outcome::SUCCESS) {
 		set_position(arm, ArmPosition::Unknown);
 	} else {
 		set_position(arm, ArmPosition::ReleaseGoldenium);
@@ -219,13 +219,13 @@ ActionResult arm_release_goldenium(Arm arm) {
 	return res;
 }
 
-ActionResult arm_external_storage(Arm arm) {
+Outcome arm_external_storage(Arm arm) {
 	std::vector<fun_ar> actions;
 
 	switch(arm) {
 		case Arm::Front: {
 			logWarn("Front servos aren't calibrated yet");
-			ADD_FN(actions, []() { return ActionResult::FAILURE; });
+			ADD_FN(actions, []() { return Outcome::FAILURE; });
 			break;
 		}
 		case Arm::Back: {
@@ -240,9 +240,9 @@ ActionResult arm_external_storage(Arm arm) {
 		}
 	}
 
-	ActionResult res = _combine_actions(actions);
+	Outcome res = _combine_actions(actions);
 	sleep(300_ms);
-	if(res != ActionResult::SUCCESS) {
+	if(res != Outcome::SUCCESS) {
 		set_position(arm, ArmPosition::Unknown);
 	} else {
 		set_position(arm, ArmPosition::TopExternalStorage);
@@ -251,13 +251,13 @@ ActionResult arm_external_storage(Arm arm) {
 	return res;
 }
 
-ActionResult arm_activate_experience(Arm arm) {
+Outcome arm_activate_experience(Arm arm) {
 	std::vector<fun_ar> actions;
 
 	switch(arm) {
 		case Arm::Front: {
 			logWarn("Front servos aren't calibrated yet");
-			ADD_FN(actions, []() { return ActionResult::FAILURE; });
+			ADD_FN(actions, []() { return Outcome::FAILURE; });
 			break;
 		}
 		case Arm::Back: {
@@ -270,8 +270,8 @@ ActionResult arm_activate_experience(Arm arm) {
 		}
 	}
 
-	ActionResult res = _combine_actions(actions);
-	if(res != ActionResult::SUCCESS) {
+	Outcome res = _combine_actions(actions);
+	if(res != Outcome::SUCCESS) {
 		set_position(arm, ArmPosition::Unknown);
 	} else {
 		set_position(arm, ArmPosition::ReleaseGoldenium);
@@ -280,16 +280,16 @@ ActionResult arm_activate_experience(Arm arm) {
 	return res;
 }
 
-ActionResult arm_internal_storage(Arm arm) {
+Outcome arm_internal_storage(Arm arm) {
 	std::vector<fun_ar> actions;
 
 	logWarn("The internal storage isn't available");
-	return ActionResult::FAILURE;
+	return Outcome::FAILURE;
 }
 
-ActionResult open_external_storage(ExternalStorage storage) {
+Outcome open_external_storage(ExternalStorage storage) {
 	bool inverted = GLOBAL_CONSTANTS().is_inverted(_color);
-	ActionResult res;
+	Outcome res;
 
 	const Angle ANGLE_BACK_LEFT = -20_deg;
 	const Angle ANGLE_BACK_RIGHT = -15_deg;
@@ -305,7 +305,7 @@ ActionResult open_external_storage(ExternalStorage storage) {
 			}
 
 			logWarn("The front external storage isn't available yet");
-			res = ActionResult::FAILURE;
+			res = Outcome::FAILURE;
 			break;
 		}
 		case ExternalStorage::FrontRight: {
@@ -316,7 +316,7 @@ ActionResult open_external_storage(ExternalStorage storage) {
 			}
 
 			logWarn("The front external storage isn't available yet");
-			res = ActionResult::FAILURE;
+			res = Outcome::FAILURE;
 			break;
 		}
 		case ExternalStorage::BackLeft: {
@@ -340,9 +340,9 @@ ActionResult open_external_storage(ExternalStorage storage) {
 	return res;
 }
 
-ActionResult close_external_storage(ExternalStorage storage) {
+Outcome close_external_storage(ExternalStorage storage) {
 	bool inverted = GLOBAL_CONSTANTS().is_inverted(_color);
-	ActionResult res;
+	Outcome res;
 
 	const Angle ANGLE_BACK_LEFT = 10_deg;
 	const Angle ANGLE_BACK_RIGHT = 30_deg;
@@ -358,7 +358,7 @@ ActionResult close_external_storage(ExternalStorage storage) {
 			}
 
 			logWarn("The front external storage isn't available yet");
-			res = ActionResult::FAILURE;
+			res = Outcome::FAILURE;
 			break;
 		}
 		case ExternalStorage::FrontRight: {
@@ -369,7 +369,7 @@ ActionResult close_external_storage(ExternalStorage storage) {
 			}
 
 			logWarn("The front external storage isn't available yet");
-			res = ActionResult::FAILURE;
+			res = Outcome::FAILURE;
 			break;
 		}
 		case ExternalStorage::BackLeft: {
@@ -393,20 +393,20 @@ ActionResult close_external_storage(ExternalStorage storage) {
 	return res;
 }
 
-ActionResult open_internal_storage() {
+Outcome open_internal_storage() {
 	logWarn("The internal storage isn't available");
-	return ActionResult::FAILURE;
+	return Outcome::FAILURE;
 }
 
-ActionResult close_internal_storage() {
+Outcome close_internal_storage() {
 	logWarn("The internal storage isn't available");
-	return ActionResult::FAILURE;
+	return Outcome::FAILURE;
 }
 
 double get_angle_by_id(int id) {
 	return servos()->read_position(static_cast<uint8_t>(id)).toMinusPiPi().toDeg();
 }
 
-ActionResult set_angle_by_id(Angle angle, int id) {
+Outcome set_angle_by_id(Angle angle, int id) {
 	return servos().set_position(id, angle);
 }

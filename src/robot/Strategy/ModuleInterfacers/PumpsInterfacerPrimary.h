@@ -28,10 +28,10 @@ namespace Strategy::Interfacer {
 		explicit PumpsInterfacerPrimary(const std::shared_ptr<PhysicalRobot::Robot>&);
 		explicit PumpsInterfacerPrimary(PhysicalRobot::Robot&);
 
-		ActionResult catch_front(AtomType left, AtomType right);
-		ActionResult catch_back(AtomType left, AtomType right);
+		Outcome catch_front(AtomType left, AtomType right);
+		Outcome catch_back(AtomType left, AtomType right);
 
-		ActionResult release_all();
+		Outcome release_all();
 
 	private:
 		interfaced_type& _module;

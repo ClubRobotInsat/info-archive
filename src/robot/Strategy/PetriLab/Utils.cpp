@@ -25,14 +25,14 @@ bool color_undef() {
 	return _strategy->get_color() == Constants::RobotColor::Undef;
 }
 
-ActionResult set_points(int points) {
+Outcome set_points(int points) {
 	_strategy->set_points(points);
-	return ActionResult::SUCCESS;
+	return Outcome::SUCCESS;
 }
 
-ActionResult add_points(int points) {
+Outcome add_points(int points) {
 	_strategy->add_points(points);
-	return ActionResult::SUCCESS;
+	return Outcome::SUCCESS;
 }
 
 int get_points() {

@@ -10,5 +10,5 @@
 
 using BuzzerState = Strategy::Interfacer::IOInterfacer::BuzzerState;
 
-ActionResult play_success_sound();
-ActionResult play_error_sound();
+Outcome play_success_sound();
+Outcome play_error_sound();

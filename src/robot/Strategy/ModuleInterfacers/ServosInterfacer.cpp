@@ -17,7 +17,7 @@ namespace Strategy::Interfacer {
 	ServosInterfacer::ServosInterfacer(PhysicalRobot::Robot& robot /*, std::function<Angle(servo_t, uint8_t)> get_servo_position*/)
 	        : ServosInterfacer(robot.get_module<interfaced_type>() /*, get_servo_position*/) {}
 
-	ActionResult ServosInterfacer::set_position(servo_t servo, Angle pos) {
+	Outcome ServosInterfacer::set_position(servo_t servo, Angle pos) {
 		auto TIMEOUT_SERVO = 1000_ms; // 500_ms;
 		auto timeoutDate = TimePoint::now() + TIMEOUT_SERVO;
 
@@ -28,18 +28,18 @@ namespace Strategy::Interfacer {
 
 		while(true) {
 			if(_module.is_moving_done(servo)) {
-				return ActionResult::SUCCESS;
+				return Outcome::SUCCESS;
 			}
 
 			if(TimePoint::now() >= timeoutDate) {
 				logWarn("TIMEOUT !");
-				return ActionResult::TIMEOUT;
+				return Outcome::TIMEOUT;
 			}
 
 			if(_module.is_blocking(servo)) {
 				logWarn("Blocked, I go back to the previous position!");
 				_module.set_position(servo, old_pos);
-				return ActionResult::FAILURE;
+				return Outcome::FAILURE;
 			}
 			sleep(50_ms);
 		}

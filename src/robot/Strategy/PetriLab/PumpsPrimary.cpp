@@ -21,7 +21,7 @@ void init_petri_pumps_primary(std::shared_ptr<RobotManager> manager, Constants::
 	_color = color;
 }
 
-ActionResult catch_front(AtomType left, AtomType right) {
+Outcome catch_front(AtomType left, AtomType right) {
 	if(GLOBAL_CONSTANTS().is_inverted(_color)) {
 		return pumps().catch_front(right, left);
 	} else {
@@ -29,7 +29,7 @@ ActionResult catch_front(AtomType left, AtomType right) {
 	}
 }
 
-ActionResult catch_back(AtomType left, AtomType right) {
+Outcome catch_back(AtomType left, AtomType right) {
 	if(GLOBAL_CONSTANTS().is_inverted(_color)) {
 		return pumps().catch_back(right, left);
 	} else {
@@ -37,6 +37,6 @@ ActionResult catch_back(AtomType left, AtomType right) {
 	}
 }
 
-ActionResult release_all() {
+Outcome release_all() {
 	return pumps().release_all();
 }

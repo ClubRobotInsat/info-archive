@@ -25,7 +25,7 @@ namespace Strategy::Interfacer {
 		/**
 		 * Positionne le servomoteur à la position demandée en gérant les blocages
 		 */
-		ActionResult set_position(servo_t, Angle position);
+		Outcome set_position(servo_t, Angle position);
 
 		interfaced_type* operator->();
 

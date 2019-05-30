@@ -30,12 +30,12 @@ namespace Strategy::Interfacer {
 	PumpsInterfacerPrimary::PumpsInterfacerPrimary(PhysicalRobot::Robot& robot)
 	        : PumpsInterfacerPrimary(robot.get_module<interfaced_type>()) {}
 
-	ActionResult PumpsInterfacerPrimary::catch_front(AtomType left, AtomType right) {
+	Outcome PumpsInterfacerPrimary::catch_front(AtomType left, AtomType right) {
 		// Check if each sucker is free
 		if((_front_hand[0] != AtomType::Nothing && left != AtomType::Nothing) ||
 		   (_front_hand[1] != AtomType::Nothing && right != AtomType::Nothing)) {
 			logWarn("A front sucker is not free");
-			return ActionResult::FAILURE;
+			return Outcome::FAILURE;
 		}
 
 		if(left != AtomType::Nothing) {
@@ -47,7 +47,7 @@ namespace Strategy::Interfacer {
 
 		_module.activate_pump(_pump);
 
-		ActionResult result;
+		Outcome result;
 		switch(_module.is_pump_activated(_pump)) {
 			case PhysicalRobot::IOState::On:
 				if(left != AtomType::Nothing) {
@@ -56,22 +56,22 @@ namespace Strategy::Interfacer {
 				if(right != AtomType::Nothing) {
 					_front_hand[1] = right;
 				}
-				result = ActionResult::SUCCESS;
+				result = Outcome::SUCCESS;
 				break;
 			case PhysicalRobot::IOState::Off:
 				//_module.deactivate_pump(_pump);
-				result = ActionResult::FAILURE;
+				result = Outcome::FAILURE;
 				break;
 		}
 		return result;
 	}
 
-	ActionResult PumpsInterfacerPrimary::catch_back(AtomType left, AtomType right) {
+	Outcome PumpsInterfacerPrimary::catch_back(AtomType left, AtomType right) {
 		// Check if each sucker is free
 		if((_back_hand[0] != AtomType::Nothing && left != AtomType::Nothing) ||
 		   (_back_hand[1] != AtomType::Nothing && right != AtomType::Nothing)) {
 			logWarn("A back sucker is not free");
-			return ActionResult::FAILURE;
+			return Outcome::FAILURE;
 		}
 
 		_module.activate_pump(_pump);
@@ -83,7 +83,7 @@ namespace Strategy::Interfacer {
 			_module.activate_valve(_back_right_valve);
 		}
 
-		ActionResult result;
+		Outcome result;
 		switch(_module.is_pump_activated(_pump)) {
 			case PhysicalRobot::IOState::On:
 				if(left != AtomType::Nothing) {
@@ -92,18 +92,18 @@ namespace Strategy::Interfacer {
 				if(right != AtomType::Nothing) {
 					_back_hand[1] = right;
 				}
-				result = ActionResult::SUCCESS;
+				result = Outcome::SUCCESS;
 				break;
 			case PhysicalRobot::IOState::Off:
 			default:
 				//_module.deactivate_pump(_pump);
-				result = ActionResult::FAILURE;
+				result = Outcome::FAILURE;
 				break;
 		}
 		return result;
 	}
 
-	ActionResult PumpsInterfacerPrimary::release_all() {
+	Outcome PumpsInterfacerPrimary::release_all() {
 		valve_t evacuation = std::numeric_limits<valve_t>::max();
 		for(valve_t id = 0; id < PhysicalRobot::Pumps::NBR_MAX_VALVE; ++id) {
 			if(_module.is_valve_activated(id) == PhysicalRobot::IOState::Off) {
@@ -113,7 +113,7 @@ namespace Strategy::Interfacer {
 		}
 		if(evacuation == std::numeric_limits<valve_t>::max()) {
 			logWarn("All valves are activated, impossible to release all atoms");
-			return ActionResult::FAILURE;
+			return Outcome::FAILURE;
 		}
 		_module.activate_valve(evacuation);
 		sleep(200_ms);
@@ -197,7 +197,7 @@ namespace Strategy::Interfacer {
 
 		_module.deactivate_pump(_pump);
 
-		return ActionResult::SUCCESS;
+		return Outcome::SUCCESS;
 	}
 
 } // namespace Strategy::Interfacer

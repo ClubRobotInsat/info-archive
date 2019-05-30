@@ -28,7 +28,7 @@ TEST_CASE("Interfacers", "[integration]") {
 		auto robot = std::make_shared<PhysicalRobot::Robot>(manager, std::vector{"NULL"s}, Lidar::None);
 		ServosInterfacer interfacer2(robot /*, get_servo_position*/);
 		CHECK(interfacer2->get_nbr_servos() == 1);
-		CHECK(interfacer2.set_position(42, 50_deg) == ActionResult::TIMEOUT);
+		CHECK(interfacer2.set_position(42, 50_deg) == Outcome::TIMEOUT);
 		interfacer2.set_offset(42, 18_deg);
 		CHECK(interfacer2.get_offset(42) == 18_deg);
 		ServosInterfacer interfacer3(*robot /*, get_servo_position*/);

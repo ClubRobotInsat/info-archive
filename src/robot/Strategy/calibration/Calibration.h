@@ -67,7 +67,7 @@ private:
 
 	const Speed REPOSITIONING_LINEAR_SPEED = 50_mm_s;
 
-	ActionResult _res;
+	Outcome _res;
 };
 
 #endif // CALIBRATION_DEPLA_H

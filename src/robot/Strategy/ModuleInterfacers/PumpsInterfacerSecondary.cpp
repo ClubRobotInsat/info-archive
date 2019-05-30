@@ -19,15 +19,15 @@ namespace Strategy::Interfacer {
 	PumpsInterfacerSecondary::PumpsInterfacerSecondary(PhysicalRobot::Robot& robot, CaptorsInterfacerSecondary& captors)
 	        : PumpsInterfacerSecondary(robot.get_module<interfaced_type>(), captors) {}
 
-	ActionResult PumpsInterfacerSecondary::catch_atom() {
+	Outcome PumpsInterfacerSecondary::catch_atom() {
 		_module.deactivate_valve(_evacuation);
 		_module.activate_pump(_pump);
 		_hand = _color_to_atom(_captors->read_color());
-		return ActionResult::SUCCESS;
+		return Outcome::SUCCESS;
 	}
 
 
-	ActionResult PumpsInterfacerSecondary::release_atom() {
+	Outcome PumpsInterfacerSecondary::release_atom() {
 		_module.deactivate_pump(_pump);
 		_module.activate_valve(_evacuation);
 
@@ -43,7 +43,7 @@ namespace Strategy::Interfacer {
 		}
 		_hand = AtomType::Nothing;
 
-		return ActionResult::SUCCESS;
+		return Outcome::SUCCESS;
 	}
 
 	AtomType PumpsInterfacerSecondary::get_color_hand() const {

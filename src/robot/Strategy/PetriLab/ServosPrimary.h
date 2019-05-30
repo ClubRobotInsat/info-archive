@@ -5,7 +5,7 @@
 #pragma once
 
 #include "Utils.h"
-#include <ActionResult.h>
+#include <Outcome.h>
 
 ENUM_CLASS(Arm, Front, Back)
 ENUM_CLASS(ArmPosition, BottomHorizontal, BottomVertical, TopVertical, CatchGoldenium, ReleaseGoldenium, TopExternalStorage, TopInternalStorage, Unknown)
@@ -13,31 +13,31 @@ ENUM_CLASS(ExternalStorage, FrontLeft, FrontRight, BackLeft, BackRight)
 
 // @PetriLab@ ServosHelper
 
-ActionResult front_arm(Angle);
-ActionResult front_hand(Angle);
-ActionResult back_arm(Angle);
-ActionResult back_hand(Angle);
-ActionResult arm_position(Arm arm, Angle angle);
-ActionResult hand_position(Arm arm, Angle angle);
+Outcome front_arm(Angle);
+Outcome front_hand(Angle);
+Outcome back_arm(Angle);
+Outcome back_hand(Angle);
+Outcome arm_position(Arm arm, Angle angle);
+Outcome hand_position(Arm arm, Angle angle);
 
 ArmPosition get_front_position();
 ArmPosition get_back_position();
 
 double get_angle_by_id(int id);
-ActionResult set_angle_by_id(Angle angle, int id);
+Outcome set_angle_by_id(Angle angle, int id);
 
 // @PetriLab@ Servos
 
-ActionResult arm_bottom_horizontal(Arm arm);
-ActionResult arm_bottom_vertical(Arm arm);
-ActionResult arm_top_vertical(Arm arm);
-ActionResult arm_catch_goldenium(Arm arm);
-ActionResult arm_release_goldenium(Arm arm);
-ActionResult arm_external_storage(Arm arm);
-ActionResult arm_activate_experience(Arm arm);
-// ActionResult arm_internal_storage(Arm arm);
+Outcome arm_bottom_horizontal(Arm arm);
+Outcome arm_bottom_vertical(Arm arm);
+Outcome arm_top_vertical(Arm arm);
+Outcome arm_catch_goldenium(Arm arm);
+Outcome arm_release_goldenium(Arm arm);
+Outcome arm_external_storage(Arm arm);
+Outcome arm_activate_experience(Arm arm);
+// Outcome arm_internal_storage(Arm arm);
 
-ActionResult open_external_storage(ExternalStorage);
-ActionResult close_external_storage(ExternalStorage);
-// ActionResult open_internal_storage();
-// ActionResult close_internal_storage();
+Outcome open_external_storage(ExternalStorage);
+Outcome close_external_storage(ExternalStorage);
+// Outcome open_internal_storage();
+// Outcome close_internal_storage();

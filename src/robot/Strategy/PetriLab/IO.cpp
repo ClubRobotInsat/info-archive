@@ -17,14 +17,14 @@ void init_petri_io(std::shared_ptr<Strategy::Interfacer::RobotManager> manager) 
 	_manager = manager;
 }
 
-ActionResult play_success_sound() {
+Outcome play_success_sound() {
 	io().play_success_sound();
 	sleep(2_s);
-	return ActionResult::SUCCESS;
+	return Outcome::SUCCESS;
 }
 
-ActionResult play_error_sound() {
+Outcome play_error_sound() {
 	io().play_error_sound();
 	sleep(2_s);
-	return ActionResult::SUCCESS;
+	return Outcome::SUCCESS;
 }

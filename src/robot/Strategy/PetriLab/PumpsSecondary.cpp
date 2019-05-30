@@ -21,7 +21,7 @@ void init_petri_pumps_secondary(std::shared_ptr<RobotManager> manager) {
 	_manager = std::move(manager);
 }
 
-ActionResult catch_atom() {
+Outcome catch_atom() {
 	return pumps().catch_atom();
 }
 
@@ -29,6 +29,6 @@ AtomType get_color_atom() {
 	return atom;
 }
 
-ActionResult release_atom() {
+Outcome release_atom() {
 	return pumps().release_atom();
 }

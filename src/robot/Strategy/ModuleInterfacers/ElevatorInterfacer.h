@@ -38,8 +38,8 @@ namespace Strategy::Interfacer {
 		/**
 		 * Balance une exception en cas de dépassement de bornes.
 		 */
-		ActionResult increment();
-		ActionResult decrement();
+		Outcome increment();
+		Outcome decrement();
 
 		std::size_t position() const {
 			return _position;
@@ -54,19 +54,19 @@ namespace Strategy::Interfacer {
 			return moves;
 		}
 
-		ActionResult init(RotatingDirection sens);
+		Outcome init(RotatingDirection sens);
 
 		void set_offset(Angle offset) {
 			_offset = offset;
 		}
 
-		ActionResult set_angle_blocking(Angle angle);
+		Outcome set_angle_blocking(Angle angle);
 		Angle get_angle() const;
 
 	protected:
-		ActionResult set_elevator_blocking(std::size_t pos);
-		ActionResult set_elevator(std::size_t pos);
-		ActionResult wait_for_elevator();
+		Outcome set_elevator_blocking(std::size_t pos);
+		Outcome set_elevator(std::size_t pos);
+		Outcome wait_for_elevator();
 		bool verify_elevator_position() const;
 		bool verify_elevator_blocking() const;
 

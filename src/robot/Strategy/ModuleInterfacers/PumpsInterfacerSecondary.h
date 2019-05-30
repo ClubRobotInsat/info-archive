@@ -24,9 +24,9 @@ namespace Strategy::Interfacer {
 
 		PumpsInterfacerSecondary(PhysicalRobot::Robot&, CaptorsInterfacerSecondary&);
 
-		ActionResult catch_atom();
+		Outcome catch_atom();
 
-		ActionResult release_atom();
+		Outcome release_atom();
 
 		AtomType get_color_hand() const;
 

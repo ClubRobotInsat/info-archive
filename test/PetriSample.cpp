@@ -20,11 +20,11 @@ void init_petri_tests(std::shared_ptr<Strategy::Interfacer::RobotManager> manage
 	action_was_called = false;
 }
 
-ActionResult test_action(int a, int b) {
+Outcome test_action(int a, int b) {
 	tests()->set_a_value(a);
 	tests()->set_b_value(b);
 	action_was_called = true;
-	return ActionResult::SUCCESS;
+	return Outcome::SUCCESS;
 }
 
 bool test_bool() {

@@ -78,7 +78,7 @@ namespace Strategy {
 		logDebug0("Funny action here for the robot ", name, "!");
 	}
 
-	ActionResult IAOneRobot::launch_petrilab(bool debug) {
+	Outcome IAOneRobot::launch_petrilab(bool debug) {
 		if(debug) {
 			Petri::DebugServer debug_session(*_petrilab);
 			debug_session.start();
@@ -94,7 +94,7 @@ namespace Strategy {
 
 			ia->stop();
 		}
-		return ActionResult::SUCCESS;
+		return Outcome::SUCCESS;
 	}
 
 } // namespace Strategy

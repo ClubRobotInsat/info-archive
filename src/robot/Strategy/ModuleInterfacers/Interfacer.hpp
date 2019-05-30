@@ -6,7 +6,7 @@
 #define ROOT_INTERFACER_H
 
 #include "../../Robot.h"
-#include <ActionResult.h>
+#include <Outcome.h>
 
 namespace Strategy::Interfacer {
 	/**

@@ -6,13 +6,13 @@
 
 #include "../ModuleInterfacers/PumpsInterfacerPrimary.h"
 #include "Utils.h"
-#include <ActionResult.h>
+#include <Outcome.h>
 
 // @PetriLab@ Pumps
 
 using AtomType = Strategy::AtomType;
 
-ActionResult catch_front(AtomType left, AtomType right);
-ActionResult catch_back(AtomType left, AtomType right);
+Outcome catch_front(AtomType left, AtomType right);
+Outcome catch_back(AtomType left, AtomType right);
 
-ActionResult release_all();
+Outcome release_all();

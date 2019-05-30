@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include <ActionResult.h>
 #include <Constants.h>
+#include <Outcome.h>
 
 #include "../ModuleInterfacers/NavigationInterfacer.h"
 
@@ -15,67 +15,67 @@ using SensRotation = Strategy::Interfacer::NavigationInterfacer::SensRotation;
 // @PetriLab@ Navigation
 
 /// Linear moves; stop if detect an adversary
-ActionResult forward(Distance, SensAdvance, Duration timeout);
-ActionResult forward(Distance, SensAdvance);
-ActionResult forward(Distance, Duration timeout);
-ActionResult backward(Distance);
+Outcome forward(Distance, SensAdvance, Duration timeout);
+Outcome forward(Distance, SensAdvance);
+Outcome forward(Distance, Duration timeout);
+Outcome backward(Distance);
 
 /// Lienar moves; moves until a blocking element
-ActionResult forward_infinity(Duration timeout = GLOBAL_CONSTANTS().get_match_duration());
-ActionResult backward_infinity(Duration timeout = GLOBAL_CONSTANTS().get_match_duration());
+Outcome forward_infinity(Duration timeout = GLOBAL_CONSTANTS().get_match_duration());
+Outcome backward_infinity(Duration timeout = GLOBAL_CONSTANTS().get_match_duration());
 
 /// Stop
-ActionResult stop();
-ActionResult emergency_stop();
+Outcome stop();
+Outcome emergency_stop();
 
 /// Angular moves
-ActionResult turn_relative(Angle);
-ActionResult turn_absolute(Angle, SensRotation);
+Outcome turn_relative(Angle);
+Outcome turn_absolute(Angle, SensRotation);
 
 /// A* moves; all is automatized
-ActionResult move_to(Distance x, Distance y, Angle final_angle, SensAdvance);
-ActionResult move_to(Distance x, Distance y, Angle final_angle, SensAdvance, Duration timeout);
-ActionResult move_to_vec(Vector2m, Angle final_angle);
-ActionResult move_to_vec(Vector2m, Angle final_angle, SensAdvance, Duration timeout = 25_s);
+Outcome move_to(Distance x, Distance y, Angle final_angle, SensAdvance);
+Outcome move_to(Distance x, Distance y, Angle final_angle, SensAdvance, Duration timeout);
+Outcome move_to_vec(Vector2m, Angle final_angle);
+Outcome move_to_vec(Vector2m, Angle final_angle, SensAdvance, Duration timeout = 25_s);
 
 // @PetriLab@
 
 /// Functions used often
-ActionResult forward(Distance);
-ActionResult turn_absolute(Angle);
-ActionResult move_to(Distance x, Distance y, Angle final_angle);
+Outcome forward(Distance);
+Outcome turn_absolute(Angle);
+Outcome move_to(Distance x, Distance y, Angle final_angle);
 
 // @PetriLab@ NavigationHelpers
 
 Vector2m get_position();
-ActionResult set_position(Distance x, Distance y);
+Outcome set_position(Distance x, Distance y);
 
 Angle get_angle();
-ActionResult set_angle(Angle angle);
+Outcome set_angle(Angle angle);
 
-ActionResult set_coordinates(Distance x, Distance y, Angle angle);
+Outcome set_coordinates(Distance x, Distance y, Angle angle);
 
 // Returns the distance as the crow flies between the robot and a given position
 Distance get_distance_robot_position(Distance x, Distance y);
 
-ActionResult recaling_top(SensAdvance sens);
-ActionResult recaling_bottom(SensAdvance sens);
-ActionResult recaling_right(SensAdvance sens);
-ActionResult recaling_left(SensAdvance sens);
+Outcome recaling_top(SensAdvance sens);
+Outcome recaling_bottom(SensAdvance sens);
+Outcome recaling_right(SensAdvance sens);
+Outcome recaling_left(SensAdvance sens);
 
-ActionResult activate_asserv();
-ActionResult deactivate_asserv();
+Outcome activate_asserv();
+Outcome deactivate_asserv();
 
 // @PetriLab@ Speed
 
-ActionResult set_fast_linear_speed();
-ActionResult set_slow_linear_speed();
-ActionResult set_linear_speed(Speed);
-ActionResult reset_linear_speed();
+Outcome set_fast_linear_speed();
+Outcome set_slow_linear_speed();
+Outcome set_linear_speed(Speed);
+Outcome reset_linear_speed();
 Speed get_linear_speed();
 
-ActionResult set_fast_angular_speed();
-ActionResult set_slow_angular_speed();
-ActionResult set_angular_speed(AngularSpeed);
-ActionResult reset_angular_speed();
+Outcome set_fast_angular_speed();
+Outcome set_slow_angular_speed();
+Outcome set_angular_speed(AngularSpeed);
+Outcome reset_angular_speed();
 AngularSpeed get_angular_speed();

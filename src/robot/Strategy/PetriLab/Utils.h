@@ -10,13 +10,13 @@
 #define ADD_FN_CLASS(Vector, Class, Function, ...) Vector.push_back(std::bind(&Class::Function, this, ##__VA_ARGS__))
 #define ADD_FN(Vector, Function, ...) Vector.push_back(std::bind(Function, ##__VA_ARGS__))
 
-typedef std::function<ActionResult(void)> fun_ar;
+typedef std::function<Outcome(void)> fun_ar;
 
-inline ActionResult _combine_actions(std::vector<fun_ar> actions) {
-	ActionResult result = ActionResult::SUCCESS;
+inline Outcome _combine_actions(std::vector<fun_ar> actions) {
+	Outcome result = Outcome::SUCCESS;
 
 	for(fun_ar action : actions) {
-		if(result != ActionResult::SUCCESS && result != ActionResult::TIMEOUT)
+		if(result != Outcome::SUCCESS && result != Outcome::TIMEOUT)
 			return result;
 		result = action();
 	}
@@ -27,8 +27,8 @@ bool color_purple();
 bool color_yellow();
 bool color_undef();
 
-ActionResult set_points(int);
-ActionResult add_points(int);
+Outcome set_points(int);
+Outcome add_points(int);
 int get_points();
 
 Duration get_left_time();
