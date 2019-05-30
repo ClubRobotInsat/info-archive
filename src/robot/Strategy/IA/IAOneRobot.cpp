@@ -10,6 +10,8 @@ namespace Strategy {
 
 	IAOneRobot::IAOneRobot(const IAArguments& args, std::string robot_name)
 	        : AbstractStrategy(args.get_color()), name(std::move(robot_name)) {
+		debug_mode = args._debug_mode;
+
 		if(debug_mode) {
 			logInfo("Initialization of the physical robot '", name, "'");
 			args.print_parsed_arguments();
@@ -60,11 +62,11 @@ namespace Strategy {
 				AsciiArt art(std::cout);
 
 				while(true) {
-					//art.print_chocobot();
-					//sleep(2_s);
+					// art.print_chocobot();
+					// sleep(2_s);
 					art.print_number(static_cast<std::size_t>(5));
-					//sleep(2_s);
-					//art.print_string("INSA", AsciiArt::COLOR_RED, AsciiArt::COLOR_RED);
+					// sleep(2_s);
+					// art.print_string("INSA", AsciiArt::COLOR_RED, AsciiArt::COLOR_RED);
 					sleep(2_s);
 				}
 			});

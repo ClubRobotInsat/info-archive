@@ -6,11 +6,13 @@
 
 namespace Strategy {
 
-	IAArguments::IAArguments() : _should_exit{false}, _color{Constants::RobotColor::Yellow}, _simulator{false} {};
+	IAArguments::IAArguments()
+	        : _debug_mode{false}, _should_exit{false}, _color{Constants::RobotColor::Yellow}, _simulator{false} {};
 
 	IAArguments::IAArguments(int argc, char** argv) : IAArguments() {
 		int arg;
 		static struct option long_options[] = {{"color", required_argument, 0, 'c'},
+		                                       {"debug", no_argument, 0, 'd'},
 		                                       {"simu", no_argument, 0, 's'},
 		                                       {"help", no_argument, 0, 'h'},
 		                                       {0, 0, 0, 0}};
@@ -24,6 +26,9 @@ namespace Strategy {
 					break;
 				case 's':
 					_simulator = true;
+					break;
+				case 'd':
+					_debug_mode = true;
 					break;
 				case 'h':
 				default:
@@ -39,7 +44,7 @@ namespace Strategy {
 	}
 
 	void IAArguments::print_help_and_exit() {
-		std::cout << "Usage: --color [purple|yellow] [--simu]" << std::endl;
+		std::cout << "Usage: --color [purple|yellow] [--simu] [--debug]" << std::endl;
 		_should_exit = true;
 	}
 

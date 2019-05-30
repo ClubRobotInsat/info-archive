@@ -8,6 +8,9 @@ namespace Strategy {
 
 	class IAArguments {
 	public:
+		bool _debug_mode;
+
+
 		IAArguments();
 
 		IAArguments(int argc, char** argv);
