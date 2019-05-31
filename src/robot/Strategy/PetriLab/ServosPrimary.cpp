@@ -112,9 +112,8 @@ Outcome arm_bottom_horizontal(Arm arm) {
 
 	switch(arm) {
 		case Arm::Front: {
-			logWarn("Front servos aren't calibrated yet");
-			ADD_FN(actions, hand_position, arm, 20_deg);
-			ADD_FN(actions, arm_position, arm, -100_deg);
+			ADD_FN(actions, hand_position, arm, 30_deg);
+			ADD_FN(actions, arm_position, arm, -105_deg);
 			break;
 		}
 		case Arm::Back: {
@@ -139,8 +138,8 @@ Outcome arm_bottom_vertical(Arm arm) {
 
 	switch(arm) {
 		case Arm::Front: {
-			ADD_FN(actions, arm_position, arm, -55_deg);
-			ADD_FN(actions, hand_position, arm, 95_deg);
+			ADD_FN(actions, arm_position, arm, -65_deg);
+			ADD_FN(actions, hand_position, arm, 110_deg);
 			break;
 		}
 		case Arm::Back: {
@@ -165,9 +164,8 @@ Outcome arm_top_vertical(Arm arm) {
 
 	switch(arm) {
 		case Arm::Front: {
-			logWarn("Front servos aren't calibrated yet");
-			ADD_FN(actions, arm_position, arm, -30_deg);
-			ADD_FN(actions, hand_position, arm, 60_deg);
+			ADD_FN(actions, arm_position, arm, -20_deg);
+			ADD_FN(actions, hand_position, arm, 70_deg);
 			break;
 		}
 		case Arm::Back: {
@@ -248,8 +246,11 @@ Outcome arm_external_storage(Arm arm) {
 
 	switch(arm) {
 		case Arm::Front: {
+			ADD_FN(actions, arm_position, arm, 60_deg);
+			ADD_FN(actions, hand_position, arm, -10_deg);
+			ADD_FN(actions, arm_position, arm, 80_deg);
+			ADD_FN(actions, hand_position, arm, -25_deg);
 			logWarn("Front servos aren't calibrated yet");
-			ADD_FN(actions, []() { return Outcome::FAILURE; });
 			break;
 		}
 		case Arm::Back: {
@@ -318,7 +319,7 @@ Outcome open_external_storage(ExternalStorage storage) {
 	bool inverted = GLOBAL_CONSTANTS().is_inverted(_color);
 	Outcome res;
 
-	const Angle ANGLE_BACK_LEFT = -20_deg;
+	const Angle ANGLE_BACK_LEFT = 10_deg;
 	const Angle ANGLE_BACK_RIGHT = -15_deg;
 	const Angle ANGLE_FRONT_LEFT = -15_deg;
 	const Angle ANGLE_FRONT_RIGHT = -10_deg;
@@ -331,7 +332,6 @@ Outcome open_external_storage(ExternalStorage storage) {
 				res = servos().set_position(ID_SERVO_FRONT_LEFT_STORAGE, ANGLE_FRONT_LEFT);
 			}
 
-			logWarn("The front external storage isn't available yet");
 			res = Outcome::FAILURE;
 			break;
 		}
@@ -342,7 +342,6 @@ Outcome open_external_storage(ExternalStorage storage) {
 				res = servos().set_position(ID_SERVO_FRONT_RIGHT_STORAGE, ANGLE_FRONT_RIGHT);
 			}
 
-			logWarn("The front external storage isn't available yet");
 			res = Outcome::FAILURE;
 			break;
 		}
@@ -371,7 +370,7 @@ Outcome close_external_storage(ExternalStorage storage) {
 	bool inverted = GLOBAL_CONSTANTS().is_inverted(_color);
 	Outcome res;
 
-	const Angle ANGLE_BACK_LEFT = 10_deg;
+	const Angle ANGLE_BACK_LEFT = -20_deg;
 	const Angle ANGLE_BACK_RIGHT = 10_deg;
 	const Angle ANGLE_FRONT_LEFT = 10_deg;
 	const Angle ANGLE_FRONT_RIGHT = -35_deg;
@@ -384,18 +383,16 @@ Outcome close_external_storage(ExternalStorage storage) {
 				res = servos().set_position(ID_SERVO_FRONT_LEFT_STORAGE, ANGLE_FRONT_LEFT);
 			}
 
-			logWarn("The front external storage isn't available yet");
 			res = Outcome::FAILURE;
 			break;
 		}
 		case ExternalStorage::FrontRight: {
 			if(inverted) {
-				// res = servos().set_position(ID_SERVO_FRONT_LEFT_STORAGE, ANGLE_FRONT_LEFT);
+				res = servos().set_position(ID_SERVO_FRONT_LEFT_STORAGE, ANGLE_FRONT_LEFT);
 			} else {
-				// res = servos().set_position(ID_SERVO_FRONT_RIGHT_STORAGE, ANGLE_FRONT_RIGHT);
+				res = servos().set_position(ID_SERVO_FRONT_RIGHT_STORAGE, ANGLE_FRONT_RIGHT);
 			}
 
-			logWarn("The front external storage isn't available yet");
 			res = Outcome::FAILURE;
 			break;
 		}
