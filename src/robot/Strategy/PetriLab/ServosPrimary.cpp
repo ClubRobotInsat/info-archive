@@ -123,7 +123,7 @@ Outcome arm_bottom_vertical(Arm arm) {
 			break;
 		}
 		case Arm::Back: {
-			ADD_FN(actions, arm_position, arm, 6_deg);
+			ADD_FN(actions, arm_position, arm, 60_deg);
 			ADD_FN(actions, hand_position, arm, -100_deg);
 			break;
 		}
@@ -240,6 +240,8 @@ Outcome arm_external_storage(Arm arm) {
 			ADD_FN(actions, arm_position, arm, -60_deg);
 			ADD_FN(actions, hand_position, arm, 10_deg);
 			ADD_FN(actions, arm_position, arm, -80_deg);
+			ADD_FN(actions, hand_position, arm, 25_deg);
+			ADD_FN(actions, arm_position, arm, -100_deg);
 			break;
 		}
 	}
