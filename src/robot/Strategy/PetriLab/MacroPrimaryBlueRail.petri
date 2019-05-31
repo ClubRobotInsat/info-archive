@@ -38,7 +38,7 @@
         <Libs />
       </Profile>
     </Profiles>
-    <Window X="960" Y="0" W="952" H="1047" />
+    <Window X="0" Y="0" W="1920" H="1015" />
   </Settings>
   <PetriNet ID="0" Name="Root" X="0" Y="0" Active="true" RequiredTokens="0" Radius="30">
     <Comments />
@@ -51,16 +51,16 @@
       <Action ID="6" Name="Repli bras" X="320" Y="600" Active="false" RequiredTokens="1" Radius="20" Function="arm_external_storage(Arm::Back)" />
       <Action ID="7" Name="backward" X="240" Y="280" Active="false" RequiredTokens="1" Radius="20" Function="backward(9_cm)" />
       <Action ID="8" Name="" X="400" Y="160" Active="false" RequiredTokens="0" Radius="20" Function="Petri::Utility::doNothing()" />
-      <Action ID="9" Name="Bras" X="660" Y="340" Active="false" RequiredTokens="1" Radius="20" Function="arm_catch_goldenium(Arm::Front)" />
+      <Action ID="9" Name="Bras" X="660" Y="340" Active="false" RequiredTokens="1" Radius="20" Function="arm_catch_goldenium(Arm::Back)" />
       <Action ID="10" Name="GoToRamp" X="640" Y="440" Active="false" RequiredTokens="1" Radius="20" Function="move_to(1900_mm, 1690_mm, 90_deg, SensAdvance::Forward)" />
       <Action ID="11" Name="points bleu" X="780" Y="320" Active="false" RequiredTokens="1" Radius="20" Function="add_points(20)" />
-      <Action ID="12" Name="-90_deg" X="780" Y="570" Active="false" RequiredTokens="1" Radius="20" Function="turn_absolute(-90_deg, SensRotation::Clockwise)" />
-      <Action ID="13" Name="Repli bras" X="630" Y="650" Active="false" RequiredTokens="1" Radius="20" Function="arm_release_goldenium(Arm::Front)" />
-      <Action ID="14" Name="backward" X="530" Y="390" Active="false" RequiredTokens="1" Radius="20" Function="backward(5_cm)" />
+      <Action ID="12" Name="+90_deg" X="780" Y="570" Active="false" RequiredTokens="1" Radius="20" Function="turn_absolute(+90_deg, SensRotation::Clockwise)" />
+      <Action ID="13" Name="Repli bras" X="630" Y="650" Active="false" RequiredTokens="1" Radius="20" Function="arm_release_goldenium(Arm::Back)" />
+      <Action ID="14" Name="forward" X="530" Y="390" Active="false" RequiredTokens="1" Radius="20" Function="forward(5_cm)" />
       <Action ID="15" Name="End" X="920" Y="650" Active="false" RequiredTokens="1" Radius="20" Function="Petri::Utility::doNothing()" />
-      <Action ID="16" Name="Adjust" X="700" Y="200" Active="false" RequiredTokens="1" Radius="20" Function="forward(10_cm)" />
+      <Action ID="16" Name="Adjust" X="700" Y="200" Active="false" RequiredTokens="1" Radius="20" Function="backward(10_cm)" />
       <Action ID="17" Name="" X="630" Y="100" Active="true" RequiredTokens="0" Radius="20" Function="Petri::Utility::doNothing()" />
-      <Action ID="20" Name="Adjust" X="640" Y="520" Active="false" RequiredTokens="1" Radius="20" Function="forward(10_cm)" />
+      <Action ID="20" Name="Adjust" X="640" Y="520" Active="false" RequiredTokens="1" Radius="20" Function="backward(10_cm)" />
       <Action ID="21" Name="Low Speed" X="770" Y="100" Active="false" RequiredTokens="1" Radius="20" Function="set_slow_linear_speed()" />
       <Action ID="22" Name="Normal Speed" X="780" Y="650" Active="false" RequiredTokens="1" Radius="20" Function="set_fast_linear_speed()" />
     </States>
