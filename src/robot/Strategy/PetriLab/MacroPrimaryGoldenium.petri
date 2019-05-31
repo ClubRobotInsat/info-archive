@@ -45,19 +45,19 @@
       <Comment ID="1" Name="Strat Goldenium :&#xA;Lorsque que le robot accède à la strat goldenium, il y a déjà un atome qui est passé dans l'accelérateur, et le goldenium est disponible.&#xA;&#xA;Cette strat consiste à un recalage du robot et à la gestion du goldenium" X="310" Y="50" Width="408" R="1" G="1" B="0.7" A="1" />
     </Comments>
     <States>
-      <Exit ID="2" Name="End" X="30" Y="420" Active="false" RequiredTokens="2" Radius="25" Function="backward(200_mm)" />
+      <Exit ID="2" Name="End" X="30" Y="420" Active="false" RequiredTokens="2" Radius="25" Function="forward(200_mm)" />
       <Action ID="3" Name="BEGIN" X="40" Y="160" Active="true" RequiredTokens="0" Radius="20" Function="move_to(375_mm, 1550_mm, 180_deg, SensAdvance::Forward)" />
       <Action ID="4" Name="Recalage_x" X="170" Y="160" Active="false" RequiredTokens="1" Radius="20" Function="recaling_left(SensAdvance::Forward)" />
       <Action ID="5" Name="Prep_Recalage_y" X="320" Y="160" Active="false" RequiredTokens="1" Radius="20" Function="move_to(2000_mm, 1550_mm, 90_deg, SensAdvance::Forward)" />
       <Action ID="6" Name="Recalage_y" X="460" Y="160" Active="false" RequiredTokens="1" Radius="20" Function="recaling_top(SensAdvance::Forward, 22_mm)" />
       <Action ID="7" Name="mv" X="600" Y="160" Active="false" RequiredTokens="1" Radius="20" Function="move_to(2000_mm, 1650_mm, 0_deg, SensAdvance::Backward)" />
-      <Action ID="8" Name="Prep" X="600" Y="280" Active="false" RequiredTokens="1" Radius="20" Function="move_to(2300_mm, 1650_mm, 90_deg, SensAdvance::Forward)" />
-      <Action ID="9" Name="Goldenium" X="670" Y="380" Active="false" RequiredTokens="2" Radius="20" Function="move_to(2300_mm, 1770_mm, 90_deg, SensAdvance::Forward)" />
-      <Action ID="10" Name="Prep_bras" X="740" Y="160" Active="false" RequiredTokens="1" Radius="20" Function="arm_catch_goldenium(Arm::Front)" />
-      <Action ID="11" Name="Prep_pompes" X="740" Y="280" Active="false" RequiredTokens="1" Radius="20" Function="catch_front(AtomType::Goldenium, AtomType::Nothing)" />
-      <Action ID="12" Name="Recul" X="600" Y="470" Active="false" RequiredTokens="1" Radius="20" Function="backward(10_cm)" />
-      <Action ID="13" Name="Prep_Release" X="456" Y="471" Active="false" RequiredTokens="1" Radius="20" Function="move_to(1300_mm, 1000_mm, -90_deg, SensAdvance::Forward)" />
-      <Action ID="14" Name="Pos_release" X="310" Y="470" Active="false" RequiredTokens="1" Radius="20" Function="move_to(1300_mm, 600_mm, -90_deg, SensAdvance::Forward)" />
+      <Action ID="8" Name="Prep" X="600" Y="280" Active="false" RequiredTokens="1" Radius="20" Function="move_to(2300_mm, 1650_mm, -90_deg, SensAdvance::Forward)" />
+      <Action ID="9" Name="Goldenium" X="670" Y="380" Active="false" RequiredTokens="2" Radius="20" Function="move_to(2300_mm, 1770_mm, -90_deg, SensAdvance::Backward)" />
+      <Action ID="10" Name="Prep_bras" X="740" Y="160" Active="false" RequiredTokens="1" Radius="20" Function="arm_catch_goldenium(Arm::Back)" />
+      <Action ID="11" Name="Prep_pompes" X="740" Y="280" Active="false" RequiredTokens="1" Radius="20" Function="catch_back(AtomType::Goldenium, AtomType::Goldenium)" />
+      <Action ID="12" Name="Recul" X="600" Y="470" Active="false" RequiredTokens="1" Radius="20" Function="forward(10_cm)" />
+      <Action ID="13" Name="Prep_Release" X="456" Y="471" Active="false" RequiredTokens="1" Radius="20" Function="move_to(1300_mm, 1000_mm, 90_deg, SensAdvance::Forward)" />
+      <Action ID="14" Name="Pos_release" X="310" Y="470" Active="false" RequiredTokens="1" Radius="20" Function="move_to(1300_mm, 600_mm, 90_deg, SensAdvance::Backward)" />
       <Action ID="15" Name="Bras Retour" X="200" Y="420" Active="false" RequiredTokens="1" Radius="20" Function="arm_external_storage(Arm::Front)" />
       <Action ID="16" Name="Release" X="200" Y="540" Active="false" RequiredTokens="1" Radius="20" Function="release_all()" />
       <Action ID="17" Name="Delais" X="80" Y="540" Active="false" RequiredTokens="1" Radius="20" Function="Petri::Utility::pause(1s)" />
