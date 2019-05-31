@@ -103,6 +103,7 @@ namespace PhysicalRobot {
 
 	void Navigation::set_coordinates(const repere::Coordinates& coords) {
 		lock_variables();
+		logDebug6("Reset position was called");
 		_reset = true;
 		_coords = coords;
 		_state_changed.exchange(true);
@@ -205,7 +206,8 @@ namespace PhysicalRobot {
 				   abs(i32_to_distance(json["y"]) - _coords.getY()) < 1_mm &&
 				   abs(i32_to_angle(json["angle"]) - _coords.getAngle()) < 1_deg) {
 					_reset = false;
-					logDebug("Reset position was successful");
+					logDebug6("Reset position was successful.");
+                    logDebug7(" ===> COM OK!");
 				}
 			} else {
 				_coords = repere::Coordinates({i32_to_distance(json["x"]), i32_to_distance(json["y"])},
