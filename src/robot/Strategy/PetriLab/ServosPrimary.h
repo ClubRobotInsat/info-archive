@@ -23,6 +23,10 @@ Outcome hand_position(Arm arm, Angle angle);
 ArmPosition get_front_position();
 ArmPosition get_back_position();
 
+// Retourne la place occupée par les bras devant le robot pour mettre à jour la distance d'évitement
+// FIXME : ce code est dégueulasse, il faut le supprimer après la Coupe (le design est fucked up)
+Distance get_actuators_offset();
+
 double get_angle_by_id(int id);
 Outcome set_angle_by_id(Angle angle, int id);
 
