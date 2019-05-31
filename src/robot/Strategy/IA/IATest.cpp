@@ -28,16 +28,17 @@ namespace Strategy {
 		auto& servos = _module_manager->add_module<PhysicalRobot::Servos>(2);
 		auto& io = _module_manager->add_module<PhysicalRobot::IO>(4);
 		auto& pumps = _module_manager->add_module<PhysicalRobot::Pumps>(5);
+		auto& navigation = _module_manager->add_module<PhysicalRobot::Navigation>(1);
 
 		servos.add_servo(_id_servo);
 		// servos.add_servo(2);
 		// servos.add_servo(1);
 
 		std::vector<std::string> communicator_arguments{
-		    "ETHERNET", "2", "192.168.1.2", "5002", "52", "4", "192.168.1.4", "5004", "54", "5", "192.168.1.4", "5005", "55"};
+		    "ETHERNET", "1", "192.168.2.1", "5001", "51", "2", "192.168.2.2", "5002", "52", "4", "192.168.2.4", "5004", "54", "5", "192.168.2.4", "5005", "55"};
 
 		auto physical_robot =
-		    std::make_shared<PhysicalRobot::Robot>(_module_manager, communicator_arguments, Lidar::LidarType::None, true);
+		    std::make_shared<PhysicalRobot::Robot>(_module_manager, communicator_arguments, Lidar::LidarType::Hokuyo, true);
 		_robot_manager = add_robot(physical_robot);
 
 		wait_for_tirette();
@@ -48,6 +49,47 @@ namespace Strategy {
 
 		auto& pumps = _module_manager->get_module<PhysicalRobot::Pumps>();
 		auto& interfacer_pumps = _robot_manager->get_interfacer<Interfacer::PumpsInterfacerPrimary>();
+		auto& interfacer_navigation = _robot_manager->get_interfacer<Interfacer::NavigationInterfacer>();
+
+		int choice;
+		for(;;) {
+			std::cout << "1 - forward\n2 - backward\n3 - turn absolute\n4 - turn relative\n" << std::endl;
+			std::cin >> choice;
+			switch(choice) {
+				case 1: {
+					std::cout << "distance (mm) ? " << std::flush;
+					std::cin >> choice;
+					auto res = interfacer_navigation.forward(Distance::makeFromMm(choice), PhysicalRobot::SensAdvance::Forward);
+					std::cout << "res = " << res << "\n" << std::endl;
+					break;
+				}
+
+				case 2: {
+					std::cout << "distance (mm) ? " << std::flush;
+					std::cin >> choice;
+					auto res = interfacer_navigation.forward(Distance::makeFromMm(choice), PhysicalRobot::SensAdvance::Backward);
+					std::cout << "res = " << res << "\n" << std::endl;
+					break;
+				}
+
+				case 3: {
+					std::cout << "angle (deg) ? " << std::flush;
+					std::cin >> choice;
+					auto res = interfacer_navigation.turn_absolute(
+					    repere::Orientation(Angle::makeFromDeg(choice), repere::ABSOLUTE_REFERENCE));
+					std::cout << "res = " << res << "\n" << std::endl;
+					break;
+				}
+
+				case 4: {
+					std::cout << "angle (deg) ? " << std::flush;
+					std::cin >> choice;
+					auto res = interfacer_navigation.turn_relative(Angle::makeFromDeg(choice));
+					std::cout << "res = " << res << "\n" << std::endl;
+					break;
+				}
+			}
+		}
 
 		while(true) {
 			for(uint8_t id = 0; id < PhysicalRobot::Pumps::NBR_MAX_VALVE; ++id) {
