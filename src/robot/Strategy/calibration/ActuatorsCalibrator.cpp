@@ -36,7 +36,7 @@ void ActuatorsCalibrator::execute() {
 	int choice;
 	for(;;) {
 		std::cout << "1 - Set position\n2 - Run sequence for FRONT servos\n3 - Run sequence for BACK servos\n4 - "
-		             "pumps\n5 - exit"
+		             "Module pumps\n5 - Catch atom sequences\n6 - exit"
 		          << std::endl;
 		std::cin >> choice;
 		bool should_exit = false;
@@ -112,9 +112,10 @@ void ActuatorsCalibrator::execute() {
 						case 11:
 							res = close_external_storage(ExternalStorage::FrontLeft);
 							break;
-						default:
+						default: {
 							should_exit = true;
 							break;
+						}
 					}
 					if(should_exit) {
 						should_exit = false;
@@ -174,9 +175,10 @@ void ActuatorsCalibrator::execute() {
 						case 11:
 							res = close_external_storage(ExternalStorage::BackLeft);
 							break;
-						default:
+						default: {
 							should_exit = true;
 							break;
+						}
 					}
 					if(should_exit) {
 						should_exit = false;
@@ -216,9 +218,10 @@ void ActuatorsCalibrator::execute() {
 							module_pumps.deactivate_valve(valve_id);
 							break;
 						}
-						default:
+						default: {
 							should_exit = true;
 							break;
+						}
 					}
 					if(should_exit) {
 						should_exit = false;
@@ -228,9 +231,114 @@ void ActuatorsCalibrator::execute() {
 				break;
 			}
 
-			default:
+			// Complete atom-catching sequences
+			case 5: {
+				logInfo("Complete atom-catching sequences");
+				Outcome res;
+
+				for(;;) {
+					std::cout
+					    << "1 - Catch front, left only\n2 - Catch front, right only\n3 - Catch front, both hands\n4 - "
+					       "Catch back, left only\n5 - Catch back, right only\n6 - Catch back, both hands\n7 - exit"
+					    << std::endl;
+					std::cin >> choice;
+					switch(choice) {
+						// Catch front, left only
+						case 1: {
+							res = arm_bottom_vertical(Arm::Front);
+							std::cout << "arm_bottom_vertical(Front): " << res << std::endl;
+							res = catch_front(AtomType::Blueium, AtomType::Nothing);
+							std::cout << "catch_front(Blueium, Nothing): " << res << std::endl;
+							res = arm_external_storage(Arm::Front);
+							std::cout << "arm_external_storage(Front): " << res << std::endl;
+							res = release_all();
+							std::cout << "release_all(): " << res << "\n" << std::endl;
+							break;
+						}
+
+						// Catch front, right only
+						case 2: {
+							res = arm_bottom_vertical(Arm::Front);
+							std::cout << "arm_bottom_vertical(Front): " << res << std::endl;
+							res = catch_front(AtomType::Nothing, AtomType::Blueium);
+							std::cout << "catch_front(Nothing, Blueium): " << res << std::endl;
+							res = arm_external_storage(Arm::Front);
+							std::cout << "arm_external_storage(Front): " << res << std::endl;
+							res = release_all();
+							std::cout << "release_all(): " << res << "\n" << std::endl;
+							break;
+						}
+
+							// Catch front, both hands
+						case 3: {
+							res = arm_bottom_vertical(Arm::Front);
+							std::cout << "arm_bottom_vertical(Front): " << res << std::endl;
+							res = catch_front(AtomType::Blueium, AtomType::Blueium);
+							std::cout << "catch_front(Blueium, Blueium): " << res << std::endl;
+							res = arm_external_storage(Arm::Front);
+							std::cout << "arm_external_storage(Front): " << res << std::endl;
+							res = release_all();
+							std::cout << "release_all(): " << res << "\n" << std::endl;
+							break;
+						}
+
+							// Catch back, left only
+						case 4: {
+							res = arm_bottom_vertical(Arm::Back);
+							std::cout << "arm_bottom_vertical(Back): " << res << std::endl;
+							res = catch_back(AtomType::Blueium, AtomType::Nothing);
+							std::cout << "catch_back(Blueium, Nothing): " << res << std::endl;
+							res = arm_external_storage(Arm::Back);
+							std::cout << "arm_external_storage(Back): " << res << std::endl;
+							res = release_all();
+							std::cout << "release_all(): " << res << "\n" << std::endl;
+							break;
+						}
+
+							// Catch back, right only
+						case 5: {
+							res = arm_bottom_vertical(Arm::Back);
+							std::cout << "arm_bottom_vertical(Back): " << res << std::endl;
+							res = catch_back(AtomType::Nothing, AtomType::Blueium);
+							std::cout << "catch_back(Nothing, Blueium): " << res << std::endl;
+							res = arm_external_storage(Arm::Back);
+							std::cout << "arm_external_storage(Back): " << res << std::endl;
+							res = release_all();
+							std::cout << "release_all(): " << res << "\n" << std::endl;
+							break;
+						}
+
+							// Catch back, both hands
+						case 6: {
+							res = arm_bottom_vertical(Arm::Back);
+							std::cout << "arm_bottom_vertical(Back): " << res << std::endl;
+							res = catch_back(AtomType::Blueium, AtomType::Blueium);
+							std::cout << "catch_back(Blueium, Blueium): " << res << std::endl;
+							res = arm_external_storage(Arm::Back);
+							std::cout << "arm_external_storage(Back): " << res << std::endl;
+							res = release_all();
+							std::cout << "release_all(): " << res << "\n" << std::endl;
+							break;
+						}
+
+						default: {
+							should_exit = true;
+							break;
+						}
+					}
+
+					if(should_exit) {
+						should_exit = false;
+						break;
+					}
+				}
+				break;
+			}
+
+			default: {
 				should_exit = true;
 				break;
+			}
 		}
 
 		if(should_exit) {

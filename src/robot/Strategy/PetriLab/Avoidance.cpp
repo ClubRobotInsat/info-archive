@@ -15,7 +15,6 @@ namespace {
 	std::shared_ptr<std::atomic<Distance>> _actuator_offset;
 
 	Distance get_actuator_offset() {
-		logInfo("get_actuator_offset called");
 		if(_actuator_offset == nullptr) {
 			return 0_m;
 		} else {
