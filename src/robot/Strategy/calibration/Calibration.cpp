@@ -1151,6 +1151,14 @@ void CalibrationDepla::facteurEchelle() {
 }
 
 void CalibrationDepla::entreAxes() {
+	logDebug1("Coefficient roue droite / gauche custom (default ", navigation_parameters().get_right_wheel_radius(), ") : ");
+	std::cin >> _rapport_D_sur_G;
+	logDebug1("Diamètre des codeurs (default ", navigation_parameters().get_left_wheel_radius() * 2, ") : ");
+	double val;
+	std::cin >> val;
+	_diamRoueG = Distance::makeFromMm(val);
+	navigation_parameters().set_right_wheel_coef(_rapport_D_sur_G);
+	navigation_parameters().set_left_coder_radius(_diamRoueG / 2);
 
 	logDebug0("DEBUT CALIBRATION ENTREAXE (Distance entre les 2 roues codeuses)");
 
