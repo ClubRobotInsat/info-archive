@@ -165,7 +165,7 @@ Outcome arm_top_vertical(Arm arm) {
 	switch(arm) {
 		case Arm::Front: {
 			ADD_FN(actions, arm_position, arm, -20_deg);
-			ADD_FN(actions, hand_position, arm, 70_deg);
+			ADD_FN(actions, hand_position, arm, 60_deg);
 			break;
 		}
 		case Arm::Back: {

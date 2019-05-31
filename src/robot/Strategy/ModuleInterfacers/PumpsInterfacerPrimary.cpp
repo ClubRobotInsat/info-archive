@@ -111,12 +111,10 @@ namespace Strategy::Interfacer {
 				break;
 			}
 		}
-		if(evacuation == std::numeric_limits<valve_t>::max()) {
-			logWarn("All valves are activated, impossible to release all atoms");
-			return Outcome::FAILURE;
+		for(valve_t id = 0; id < PhysicalRobot::Pumps::NBR_MAX_VALVE; ++id) {
+			_module.activate_valve(id);
 		}
-		_module.activate_valve(evacuation);
-		sleep(200_ms);
+		sleep(500_ms);
 
 		switch(get_front_position()) {
 			case ArmPosition::TopExternalStorage: {

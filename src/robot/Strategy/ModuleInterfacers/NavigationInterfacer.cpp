@@ -507,7 +507,7 @@ namespace Strategy::Interfacer {
 		pop_linear_speed();
 
 		if(result != Outcome::SUCCESS && result != Outcome::BLOCKED) {
-			logError("Failed to reach the recaling wall");
+			logError("Failed to reach the recaling wall, result = ", result);
 			stop();
 			return result;
 		}
