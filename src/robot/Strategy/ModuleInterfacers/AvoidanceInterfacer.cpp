@@ -45,6 +45,10 @@ namespace Strategy::Interfacer {
 		_fake_positions.emplace_back(position);
 	}
 
+	void AvoidanceInterfacer::clear_fake_adversary_positions() {
+		_fake_positions.clear();
+	}
+
 	bool AvoidanceInterfacer::adversary_detected(Distance threshold) const {
 		repere::Position robot_position = get_robot_position();
 		auto adversaries = get_adversary_positions();
@@ -94,8 +98,10 @@ namespace Strategy::Interfacer {
 
 		const Distance adv_radius = 0.80f * env.getRobotRadius();
 
+		auto adversaries = get_adversary_positions();
+
 		_mutex_adversary.lock();
-		for(const repere::Position& pos : _adversary_positions) {
+		for(const repere::Position& pos : adversaries) {
 			int id = first_dynamic + last_dynamic++;
 			env.addDynamicShape(id, std::make_unique<Circle>(Environment::DANGER_INFINITY, adv_radius, pos.getPos2D()));
 		}

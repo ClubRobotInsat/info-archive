@@ -22,9 +22,12 @@ namespace Strategy::Interfacer {
 
 		std::vector<repere::Position> get_adversary_positions() const;
 
-		/** Ajoute une position d'adversaire fictive. Utilisé entre autres dans les tests unitaires pour contrôller
+		/** Ajoute une position d'adversaire fictive. Utilisé entre autres dans les tests unitaires pour contrôler
 		 * que le traitement des positions de l'adversaire est correct. */
 		void add_fake_adversary_position(const repere::Position& position);
+
+		/** Enlève toutes les positions d'adversaire fictives de la carte. */
+		void clear_fake_adversary_positions();
 
 		/**
 		 * @return true si l'adversaire est devant le robot

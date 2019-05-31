@@ -110,6 +110,7 @@ namespace PhysicalRobot {
 		std::atomic_bool _reset;
 
 		MovingCommand _command = MovingCommand::DoNothing;
+		// TODO there should be 3*i32 arguments instead of 2*u16
 		uint16_t _args_cmd[2];
 		uint16_t _counter = 0;
 		std::atomic_bool _moving_done;

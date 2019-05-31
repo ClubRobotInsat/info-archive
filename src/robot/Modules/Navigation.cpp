@@ -199,11 +199,13 @@ namespace PhysicalRobot {
 
 	void Navigation::message_processing(const JSON& json) {
 		if(json_has_fields(json, {"x", "y", "angle", "left_dist", "right_dist", "blocked", "counter", "moving_done"})) {
+			// TODO change reset to a command
 			if(_reset) {
 				if(abs(i32_to_distance(json["x"]) - _coords.getX()) < 1_mm &&
 				   abs(i32_to_distance(json["y"]) - _coords.getY()) < 1_mm &&
 				   abs(i32_to_angle(json["angle"]) - _coords.getAngle()) < 1_deg) {
 					_reset = false;
+					logDebug("Reset position was successful");
 				}
 			} else {
 				_coords = repere::Coordinates({i32_to_distance(json["x"]), i32_to_distance(json["y"])},

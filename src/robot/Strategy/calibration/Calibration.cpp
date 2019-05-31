@@ -1053,6 +1053,7 @@ void CalibrationDepla::diametres() {
 	logDebug3("Asservissement OFF");
 
 	logDebug0("RECALER ROBOT.....(puis ENTREE)");
+	navigation_parameters().set_right_wheel_coef(1);
 	getchar(); // PAUSE ____________________________________________
 
 	_distD_Avant = navigation()->get_right_wheel_distance();
