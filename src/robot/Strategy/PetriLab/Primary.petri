@@ -38,7 +38,7 @@
         <Libs />
       </Profile>
     </Profiles>
-    <Window X="65" Y="24" W="1855" H="1056" />
+    <Window X="0" Y="0" W="1918" H="1059" />
   </Settings>
   <PetriNet ID="0" Name="Root" X="0" Y="0" Active="true" RequiredTokens="0" Radius="30">
     <Variables>
@@ -96,7 +96,7 @@
         <Comments />
         <States>
           <Exit ID="83" Name="End" X="940" Y="240" Active="false" RequiredTokens="1" Radius="25" Function="Petri::Utility::doNothing()" />
-          <Action ID="84" Name="move_to" X="310" Y="240" Active="false" RequiredTokens="1" Radius="20" Function="move_to(1670_mm, 1590_mm, -90_deg, SensAdvance::Forward)" />
+          <Action ID="84" Name="move_to" X="310" Y="240" Active="false" RequiredTokens="1" Radius="20" Function="move_to(1770_mm, 1650_mm, -90_deg, SensAdvance::Forward)" />
           <Action ID="85" Name="BEGIN" X="130" Y="240" Active="true" RequiredTokens="0" Radius="20" Function="Petri::Utility::doNothing()" />
           <Action ID="86" Name="" X="800" Y="240" Active="false" RequiredTokens="1" Radius="20" Function="Petri::Utility::doNothing()" />
           <Action ID="87" Name="" X="650" Y="240" Active="false" RequiredTokens="1" Radius="20" Function="$blue_rail_done = 1" />
@@ -129,7 +129,7 @@
               <Action ID="111" Name="catch" X="600" Y="730" Active="false" RequiredTokens="1" Radius="20" Function="arm_catch_goldenium(Arm::Back)" />
               <Action ID="112" Name="pumps" X="700" Y="760" Active="false" RequiredTokens="1" Radius="20" Function="catch_back(AtomType::Nothing, AtomType::Goldenium)" />
               <Action ID="113" Name="fwd" X="854" Y="744" Active="false" RequiredTokens="1" Radius="20" Function="forward(20_cm)" />
-              <Action ID="114" Name="End" X="1000" Y="660" Active="false" RequiredTokens="3" Radius="20" Function="Petri::Utility::doNothing()" />
+              <Action ID="114" Name="End" X="1000" Y="660" Active="false" RequiredTokens="1" Radius="20" Function="Petri::Utility::doNothing()" />
             </States>
             <Transitions>
               <Transition ID="115" Name="" X="690" Y="165" BeforeID="95" AfterID="91" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="120.41594578792295" />

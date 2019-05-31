@@ -37,9 +37,6 @@ namespace Strategy::Interfacer {
 			vec.insert(vec.end(), _adversary_positions.begin(), _adversary_positions.end());
 			return vec;
 		} else {
-			if(!_adversary_positions.empty()) {
-				std::cout << _adversary_positions.size() << " adversaries found!!" << std::endl;
-			}
 			return _adversary_positions;
 		}
 	}
@@ -99,16 +96,14 @@ namespace Strategy::Interfacer {
 		const int first_dynamic = 10;
 		int last_dynamic = 0;
 
-		const Distance adv_radius = 40_cm; // 0.80f * env.getRobotRadius();
+		const Distance adv_radius = 0.80f * env.getRobotRadius();
 
 		auto adversaries = get_adversary_positions();
 
 		_mutex_adversary.lock();
 		for(const repere::Position& pos : adversaries) {
 			int id = first_dynamic + last_dynamic++;
-			logInfo("Insertion of an adversary (id ", id, ") detected at ", pos.getPos2D());
 			env.addDynamicShape(id, std::make_unique<Circle>(Environment::DANGER_INFINITY, adv_radius, pos.getPos2D()));
-			// result.push_back(id);
 		}
 		_mutex_adversary.unlock();
 		return result;
