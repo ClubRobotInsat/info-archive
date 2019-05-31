@@ -52,7 +52,7 @@
     </Comments>
     <States>
       <Exit ID="2" Name="End" X="1330" Y="1000" Active="false" RequiredTokens="1" Radius="25" Function="Petri::Utility::doNothing()" />
-      <Action ID="3" Name="forward_80" X="280" Y="80" Active="false" RequiredTokens="0" Radius="20" Function="forward(80_cm, SensAdvance::Forward, 60_s)" />
+      <Action ID="3" Name="forward_80" X="280" Y="80" Active="true" RequiredTokens="0" Radius="20" Function="forward(80_cm, SensAdvance::Forward, 60_s)" />
       <Action ID="4" Name="Turn_-90" X="440" Y="80" Active="false" RequiredTokens="1" Radius="20" Function="turn_relative(-90_deg)" />
       <Action ID="5" Name="forward_30" X="580" Y="80" Active="false" RequiredTokens="1" Radius="20" Function="forward(30_cm, SensAdvance::Forward, 60_s)" />
       <Action ID="6" Name="turn_-90" X="580" Y="180" Active="false" RequiredTokens="1" Radius="20" Function="turn_relative(-90_deg)" />
@@ -69,7 +69,7 @@
           <Transition ID="28" Name="" X="355" Y="240" BeforeID="26" AfterID="24" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="150" />
         </Transitions>
       </PetriNet>
-      <Action ID="9" Name="BEGIN" X="130" Y="280" Active="true" RequiredTokens="0" Radius="20" Function="Petri::Utility::printText(&quot;Bonjour à toi vaillant roboticien !&quot;)" />
+      <Action ID="9" Name="BEGIN" X="130" Y="280" Active="false" RequiredTokens="0" Radius="20" Function="Petri::Utility::printText(&quot;Bonjour à toi vaillant roboticien !&quot;)" />
       <Action ID="10" Name="Begin goldenium" X="790" Y="480" Active="false" RequiredTokens="1" Radius="20" Function="Petri::Utility::doNothing()" />
       <PetriNet ID="11" Name="Goldenium" X="950" Y="480" Active="false" RequiredTokens="1" Radius="30">
         <Comments />
@@ -284,7 +284,7 @@
               <Action ID="281" Name="backward" X="490" Y="170" Active="false" RequiredTokens="1" Radius="20" Function="backward(45_cm)" />
               <Action ID="282" Name="arm" X="330" Y="220" Active="false" RequiredTokens="1" Radius="20" Function="arm_bottom_vertical(Arm::Back)" />
               <Action ID="283" Name="pumps" X="490" Y="290" Active="false" RequiredTokens="1" Radius="20" Function="catch_back(AtomType::Redium, AtomType::Greenium)" />
-              <Action ID="284" Name="" X="647" Y="227" Active="false" RequiredTokens="2" Radius="20" Function="Petri::Utility::pause(300ms)" />
+              <Action ID="284" Name="" X="647" Y="227" Active="false" RequiredTokens="2" Radius="20" Function="Petri::Utility::pause(2s)" />
               <Action ID="285" Name="forward" X="810" Y="230" Active="false" RequiredTokens="1" Radius="20" Function="forward(1_m)" />
               <Action ID="286" Name="turn" X="980" Y="230" Active="false" RequiredTokens="1" Radius="20" Function="turn_absolute(0_deg)" />
               <Action ID="287" Name="forward" X="1150" Y="230" Active="false" RequiredTokens="1" Radius="20" Function="forward(45_cm)" />
