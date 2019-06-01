@@ -261,9 +261,6 @@ Outcome arm_external_storage(Arm arm) {
 			ADD_FN(actions, hand_position, arm, -5_deg);
 			ADD_FN(actions, arm_position, arm, -60_deg);
 			ADD_FN(actions, hand_position, arm, 10_deg);
-			ADD_FN(actions, arm_position, arm, -80_deg);
-			ADD_FN(actions, hand_position, arm, 25_deg);
-			ADD_FN(actions, arm_position, arm, -100_deg);
 			break;
 		}
 	}

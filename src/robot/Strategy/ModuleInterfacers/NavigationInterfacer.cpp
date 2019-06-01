@@ -203,7 +203,7 @@ namespace Strategy::Interfacer {
 	}
 
 	Outcome NavigationInterfacer::forward_infinity(SensAdvance sens, Duration timeout) {
-		const static Distance infinity = Distance::makeFromMm(std::numeric_limits<int32_t>::max() / 10.0);
+		const static Distance infinity = 3_m; // Distance::makeFromMm(std::numeric_limits<int32_t>::max() / 10.0);
 		return forward(infinity, sens, timeout);
 	}
 
@@ -492,8 +492,8 @@ namespace Strategy::Interfacer {
 
 	Outcome NavigationInterfacer::recaling_helper(SensAdvance sens, Distance D, std::pair<Angle, Angle> angles, bool isX) {
 		// Ces constantes permettent aux recallages d'etre immunisés à un palet farceur qui se glisserait entre le robot et un mur
-		static constexpr Angle OFFSET_MAX_RECALING_ANGLE = 8_deg;
-		static constexpr Distance OFFSET_MAX_RECALING_DISTANCE = 5_cm;
+		static constexpr Angle OFFSET_MAX_RECALING_ANGLE = 45_deg;
+		static constexpr Distance OFFSET_MAX_RECALING_DISTANCE = 20_cm;
 
 		Angle angle = (sens == SensAdvance::Forward ? angles.first : angles.second);
 		Outcome result = turn_absolute(angle);
@@ -503,14 +503,14 @@ namespace Strategy::Interfacer {
 		}
 
 		push_linear_speed(get_linear_speed() / 2);
-		result = forward_infinity(sens, 10_s);
+		result = forward_infinity(sens, 4_s);
 		pop_linear_speed();
 
-		if(result != Outcome::SUCCESS && result != Outcome::BLOCKED) {
-			logError("Failed to reach the recaling wall, result = ", result);
-			stop();
-			return result;
-		}
+		/*if(result != Outcome::SUCCESS && result != Outcome::BLOCKED) {
+		    logError("Failed to reach the recaling wall, result = ", result);
+		    stop();
+		    return result;
+		}*/
 
 		Vector2m old_pos = _module.get_position().getPos2D();
 		Angle old_angle = _module.get_orientation().getAngle();
@@ -537,10 +537,11 @@ namespace Strategy::Interfacer {
 		}
 
 		if(isX) {
-			_module.set_coordinates(repere::Coordinates({D, old_distance}, angle));
+			_module.set_coordinates(repere::Coordinates({D, old_pos.y}, angle));
 		} else {
-			_module.set_coordinates(repere::Coordinates({old_distance, D}, angle));
+			_module.set_coordinates(repere::Coordinates({old_pos.x, D}, angle));
 		}
+		logDebug4("Recalage de ", repere::Coordinates(old_pos, old_angle), " vers ", _module.get_coordinates());
 		return Outcome::SUCCESS;
 	}
 
