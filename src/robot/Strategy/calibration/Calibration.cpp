@@ -210,6 +210,8 @@ void CalibrationDepla::setDefaultParams() {
 	                             0.0639245); // Secondaire : 0. | Principal : 0.0639554
 	sleep(100_ms);*/
 	navigation_parameters().set_inter_axial_length(29.2404_cm);
+	navigation_parameters().set_right_wheel_coef(0.998);
+	navigation_parameters().set_left_coder_radius(64.387_mm/2);
 }
 
 void CalibrationDepla::pid() {
@@ -1112,11 +1114,11 @@ void CalibrationDepla::facteurEchelle() {
 	navigation().activate_asserv();
 
 	navigation().push_linear_speed(REPOSITIONING_LINEAR_SPEED);
-	_res = navigation().forward(4_m, SensAdvance::Forward, 20_s);
+	_res = navigation().forward(2.5_m, SensAdvance::Forward, 20_s);
 	navigation().pop_linear_speed();
 
 	navigation().deactivate_asserv();
-	logDebug0("Recalez le robot à 4m");
+	logDebug0("Recalez le robot à 2.5m");
 	// 6.41165
 
 	getchar();
@@ -1127,7 +1129,7 @@ void CalibrationDepla::facteurEchelle() {
 	_distG_Apres = navigation()->get_left_wheel_distance();
 	logDebug0("Distance Roue G apres : ", _distG_Apres);
 
-	Distance d = 4_m; // GLOBAL_CONSTANTS().get_table_size().x - _length_robot;
+	Distance d = 2.5_m; // GLOBAL_CONSTANTS().get_table_size().x - _length_robot;
 
 	_distanceParcourue = ((_distD_Apres - _distD_Avant) + (_distG_Apres - _distG_Avant)) / 2.0;
 	logDebug0("Distance parcourue = ", _distanceParcourue, " au lieu de ", d, (abs(d - _distanceParcourue) < 1_mm ? ", ACCEPTABLE" : ", NON ACCEPTABLE"));
@@ -1151,15 +1153,6 @@ void CalibrationDepla::facteurEchelle() {
 }
 
 void CalibrationDepla::entreAxes() {
-	logDebug1("Coefficient roue droite / gauche custom (default ", navigation_parameters().get_right_wheel_radius(), ") : ");
-	std::cin >> _rapport_D_sur_G;
-	logDebug1("Diamètre des codeurs (default ", navigation_parameters().get_left_wheel_radius() * 2, ") : ");
-	double val;
-	std::cin >> val;
-	_diamRoueG = Distance::makeFromMm(val);
-	navigation_parameters().set_right_wheel_coef(_rapport_D_sur_G);
-	navigation_parameters().set_left_coder_radius(_diamRoueG / 2);
-
 	logDebug0("DEBUT CALIBRATION ENTREAXE (Distance entre les 2 roues codeuses)");
 
 	navigation().deactivate_asserv();
