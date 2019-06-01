@@ -104,6 +104,7 @@ namespace Strategy::Interfacer {
 		for(const repere::Position& pos : adversaries) {
 			int id = first_dynamic + last_dynamic++;
 			env.addDynamicShape(id, std::make_unique<Circle>(Environment::DANGER_INFINITY, adv_radius, pos.getPos2D()));
+			result.push_back(id);
 		}
 		_mutex_adversary.unlock();
 		return result;
