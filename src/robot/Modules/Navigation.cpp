@@ -206,8 +206,7 @@ namespace PhysicalRobot {
 				   abs(i32_to_distance(json["y"]) - _coords.getY()) < 1_mm &&
 				   abs(i32_to_angle(json["angle"]) - _coords.getAngle()) < 1_deg) {
 					_reset = false;
-					logDebug6("Reset position was successful.");
-                    logDebug7(" ===> COM OK!");
+					logDebug6("Resetting the position was successful.");
 				}
 			} else {
 				_coords = repere::Coordinates({i32_to_distance(json["x"]), i32_to_distance(json["y"])},

@@ -1175,9 +1175,7 @@ void CalibrationDepla::entreAxes() {
 	// Blocking function
 	for(int i = 0; i < NBR_TOURS; i++) {
 		navigation().turn_relative(2_PI);
-		logDebug0(i, "...");
 	}
-	logDebug0("Soleil!");
 	// 33.8175
 
 	navigation().pop_angular_speed();

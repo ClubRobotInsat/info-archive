@@ -29,6 +29,8 @@ namespace Strategy {
 
 		get_robot()->get_interfacer<Interfacer::NavigationInterfacer>()->set_coordinates(repere::Coordinates(
 		    GLOBAL_CONSTANTS()[name].get_start_position(), GLOBAL_CONSTANTS()[name].get_start_angle(), get_reference()));
+
+		set_points(0);
 	}
 
 	std::shared_ptr<Interfacer::RobotManager> IAOneRobot::get_robot() const {

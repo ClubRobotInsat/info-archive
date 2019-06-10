@@ -8,22 +8,18 @@
 
 #include "resources/EmbeddedFiles.h"
 
-extern void init_petri_avoidance(std::shared_ptr<Strategy::Interfacer::RobotManager> manager,
-                                 std::shared_ptr<std::atomic<Distance>> actuator_offset);
+extern void init_petri_avoidance(std::shared_ptr<Strategy::Interfacer::RobotManager> manager);
 extern void init_petri_io(std::shared_ptr<Strategy::Interfacer::RobotManager> manager);
 extern void init_petri_navigation(std::shared_ptr<Strategy::Interfacer::RobotManager> manager, Constants::RobotColor color);
 extern void init_petri_pumps_primary(std::shared_ptr<Strategy::Interfacer::RobotManager> manager, Constants::RobotColor color);
 extern void init_petri_pumps_secondary(std::shared_ptr<Strategy::Interfacer::RobotManager> manager);
-extern void init_petri_servos_primary(std::shared_ptr<Strategy::Interfacer::RobotManager> manager,
-                                      Constants::RobotColor color,
-                                      std::shared_ptr<std::atomic<Distance>> actuators_offset);
+extern void init_petri_servos_primary(std::shared_ptr<Strategy::Interfacer::RobotManager> manager, Constants::RobotColor color);
 extern void init_petri_servos_secondary(std::shared_ptr<Strategy::Interfacer::RobotManager> manager, Constants::RobotColor color);
 extern void init_petri_utils(Strategy::AbstractStrategy& strategy);
 
 namespace Strategy {
 
 	AbstractStrategy::AbstractStrategy(Constants::RobotColor color, std::string name) : _color(color), _nb_points(0) {
-		_actuator_offset = std::make_shared<std::atomic<Distance>>(0_m);
 		if(_color == Constants::RobotColor::Undef) {
 			throw std::runtime_error("The strategy color is undefined.");
 		}
@@ -190,7 +186,7 @@ namespace Strategy {
 					logInfo("Insertion of PetriLab::AvoidanceInterfacer functionalities associated with the robot '" +
 					        manager->get_robot()->name + "'");
 				}
-				init_petri_avoidance(manager, _actuator_offset);
+				init_petri_avoidance(manager);
 			}
 			// Interfacer::IOInterfacer
 			if(manager->has_interfacer<Interfacer::IOInterfacer>()) {
@@ -233,7 +229,7 @@ namespace Strategy {
 				if(manager->get_robot()->name == "secondary") {
 					init_petri_servos_secondary(manager, _color);
 				} else {
-					init_petri_servos_primary(manager, _color, _actuator_offset);
+					init_petri_servos_primary(manager, _color);
 				}
 			}
 		} catch(std::exception const& e) {

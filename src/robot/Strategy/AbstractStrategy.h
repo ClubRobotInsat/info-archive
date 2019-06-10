@@ -90,10 +90,6 @@ namespace Strategy {
 
 		// Appel de la fonction virtuelle 'execute' ; ça permets d'arrêter le thread de la stratégie à la fin du match
 		void exec();
-
-		// Offset supplémentaire pour la détection de l'adversaire lorsque les bras sont ouverts
-		// TODO : supprimer ce code dégueulasse après la Coupe
-		std::shared_ptr<std::atomic<Distance>> _actuator_offset;
 	};
 
 } // namespace Strategy

@@ -29,15 +29,11 @@ namespace {
 	ArmPosition front_position;
 	ArmPosition back_position;
 
-	std::shared_ptr<std::atomic<Distance>> _actuators_offset;
 } // namespace
 
-void init_petri_servos_primary(std::shared_ptr<RobotManager> manager,
-                               Constants::RobotColor color,
-                               std::shared_ptr<std::atomic<Distance>> actuators_offset) {
+void init_petri_servos_primary(std::shared_ptr<RobotManager> manager, Constants::RobotColor color) {
 	_manager = std::move(manager);
 	_color = color;
-	_actuators_offset = actuators_offset;
 }
 
 // Control of each servo
@@ -81,25 +77,8 @@ ArmPosition get_back_position() {
 	return back_position;
 }
 
-Distance get_actuators_offset() {
-	return _actuators_offset->load();
-}
-
 void set_position(Arm arm, ArmPosition position) {
 	if(arm == Arm::Front) {
-		switch(position) {
-			case ArmPosition::ReleaseGoldenium:
-			case ArmPosition::CatchGoldenium:
-			case ArmPosition::TopVertical:
-			case ArmPosition::BottomHorizontal:
-			case ArmPosition::BottomVertical:
-			case ArmPosition::Unknown:
-				_actuators_offset->exchange(20_cm);
-				break;
-			default:
-				_actuators_offset->exchange(0_m);
-				break;
-		}
 		front_position = position;
 	} else {
 		back_position = position;

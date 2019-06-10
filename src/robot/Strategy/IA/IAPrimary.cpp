@@ -37,14 +37,6 @@ namespace Strategy {
 	IAPrimary::IAPrimary(const IAArguments& args) : IAOneRobot(args, "primary") {
 		logInfo("Running the IAPrimary with debug_mode = ", debug_mode);
 		init_strategy();
-		logInfo("name: ", name);
-
-		logInfo("Meca initialization");
-		// open_external_storage(ExternalStorage::BackRight);
-		// open_external_storage(ExternalStorage::BackLeft);
-		// close_external_storage(ExternalStorage::BackRight);
-		// close_external_storage(ExternalStorage::BackLeft);
-		set_points(0);
 	}
 
 	std::unique_ptr<Petri::PetriDynamicLib> IAPrimary::generate_petrilab_lib() {

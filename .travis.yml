@@ -54,9 +54,6 @@ script:
   - cd build
   - make all -j $(nproc)
   - ./unit_testing_all '[integration]'
-  - echo -e "\033[0;43mCompiling for the ARM architecture\033[0;0m"
-  - cd ${TRAVIS_BUILD_DIR}
-  - ./scripts/build_arm.sh all
 
 notifications:
   email: false
