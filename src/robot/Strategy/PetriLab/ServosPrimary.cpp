@@ -293,7 +293,7 @@ Outcome arm_internal_storage(Arm arm) {
 
 Outcome open_external_storage(ExternalStorage storage) {
 	bool inverted = GLOBAL_CONSTANTS().is_inverted(_color);
-	Outcome res;
+	Outcome res = Outcome::FAILURE;
 
 	const Angle ANGLE_BACK_LEFT = 10_deg;
 	const Angle ANGLE_BACK_RIGHT = -15_deg;
@@ -344,7 +344,7 @@ Outcome open_external_storage(ExternalStorage storage) {
 
 Outcome close_external_storage(ExternalStorage storage) {
 	bool inverted = GLOBAL_CONSTANTS().is_inverted(_color);
-	Outcome res;
+	Outcome res = Outcome::FAILURE;
 
 	const Angle ANGLE_BACK_LEFT = -20_deg;
 	const Angle ANGLE_BACK_RIGHT = 10_deg;

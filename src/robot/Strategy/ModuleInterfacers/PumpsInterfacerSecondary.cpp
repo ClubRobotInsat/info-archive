@@ -8,7 +8,7 @@
 namespace Strategy::Interfacer {
 
 	PumpsInterfacerSecondary::PumpsInterfacerSecondary(interfaced_type& module_pumps, CaptorsInterfacerSecondary& captors)
-	        : AbstractInterfacer(), _module(module_pumps), _captors(captors), _hand(AtomType::Nothing), _pump(0), _evacuation(0) {
+	        : AbstractInterfacer(), _module(module_pumps), _captors(captors), _pump(0), _evacuation(0), _hand(AtomType::Nothing) {
 		_module.deactivate_pump(_pump);
 	}
 
@@ -40,6 +40,8 @@ namespace Strategy::Interfacer {
 				_right_container.push_back(_hand);
 				break;
 			}
+			default:
+                break;
 		}
 		_hand = AtomType::Nothing;
 

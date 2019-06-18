@@ -12,6 +12,7 @@ TEST_CASE("Global constants", "[integration]") {
 		/*JSON j = panel.generateTestJSON();
 
 		CHECK(j.)*/
+		delete panel;
 	}
 	SECTION("TEST PRINT JSON") {}
 }

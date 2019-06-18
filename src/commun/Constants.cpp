@@ -16,7 +16,7 @@ namespace Constants {
 
 	int read_field(IniFile& file, const std::string& section, const std::string& field, int default_value) {
 		auto it = file[section];
-		if(it.member(field)) {
+		if(it.has(field)) {
 			return it[field].asInt();
 		} else {
 			return default_value;
@@ -25,7 +25,7 @@ namespace Constants {
 
 	std::string read_field(IniFile& file, const std::string& section, const std::string& field, const std::string& default_value) {
 		auto it = file[section];
-		if(it.member(field)) {
+		if(it.has(field)) {
 			return it[field].asString();
 		} else {
 			return default_value;

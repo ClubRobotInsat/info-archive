@@ -47,7 +47,7 @@ namespace Strategy::Interfacer {
 
 		_module.activate_pump(_pump);
 
-		Outcome result;
+		Outcome result = Outcome::FAILURE;
 		switch(_module.is_pump_activated(_pump)) {
 			case PhysicalRobot::IOState::On:
 				if(left != AtomType::Nothing) {
@@ -104,13 +104,6 @@ namespace Strategy::Interfacer {
 	}
 
 	Outcome PumpsInterfacerPrimary::release_all() {
-		valve_t evacuation = std::numeric_limits<valve_t>::max();
-		for(valve_t id = 0; id < PhysicalRobot::Pumps::NBR_MAX_VALVE; ++id) {
-			if(_module.is_valve_activated(id) == PhysicalRobot::IOState::Off) {
-				evacuation = id;
-				break;
-			}
-		}
 		for(valve_t id = 0; id < PhysicalRobot::Pumps::NBR_MAX_VALVE; ++id) {
 			_module.activate_valve(id);
 		}
