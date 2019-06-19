@@ -61,7 +61,8 @@ TEST_CASE("Interfacers", "[integration]") {
 
 		SECTION("Adversary in back") {
 			avoidance2.add_fake_adversary_position({0.8_m, 0.8_m});
-			CHECK(avoidance2.adversary_detected(50_cm, PhysicalRobot::SensAdvance::Backward));
+			// Lidars cannot see behind them so all backward positive output are dropped
+			CHECK_FALSE(avoidance2.adversary_detected(50_cm, PhysicalRobot::SensAdvance::Backward));
 			CHECK_FALSE(avoidance2.adversary_detected(50_cm, PhysicalRobot::SensAdvance::Forward));
 		}
 
