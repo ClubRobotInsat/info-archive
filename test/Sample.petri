@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Document APIVersion="105">
+  <Settings Name="Sample" Language="Cpp" Enum="ActionResult,SUCCESS,FAILURE,BLOCKED,BLOCKED_BY_ADV,TIMEOUT,POSITION_MODIFIED" DefaultExecutionVerbosity="Nothing" OverrideChildCompilationSettings="False">
+    <Headers>
+      <Header File="PetriSample.h" />
+    </Headers>
+    <Macros />
+    <Profiles Default="Default">
+      <Profile Name="Default" SourceOutputPath="." LibOutputPath="../build" DeployMode="DoNothing" DeployPath="" DeployScript="#!/bin/sh&#xA;&#xA;/bin/cp &quot;$PETRI_LIB_PATH&quot; .&#xA;" DeployWhenDebug="True" Port="12345" DebugMode="Attach" Hostname="localhost" HostProgram="" HostProgramArguments="">
+        <Compiler Invocation="/usr/bin/g++">
+          <Flag Value="--std=c++17" />
+        </Compiler>
+        <IncludePaths>
+          <IncludePath Path="../src/commun" Recursive="false" />
+          <IncludePath Path="../third_parties" Recursive="false" />
+          <IncludePath Path="../third_parties/include" Recursive="false" />
+          <IncludePath Path="../third_parties/asio/asio/include" Recursive="false" />
+        </IncludePaths>
+        <LibPaths />
+        <Libs />
+      </Profile>
+      <Profile Name="ARM release" SourceOutputPath="." LibOutputPath="../build_arm" DeployMode="DoNothing" DeployPath="" DeployScript="#!/bin/sh&#xA;&#xA;/bin/cp &quot;$PETRI_LIB_PATH&quot; .&#xA;" DeployWhenDebug="True" Port="12345" DebugMode="Attach" Hostname="localhost" HostProgram="" HostProgramArguments="">
+        <Compiler Invocation="/usr/bin/arm-linux-gnueabihf-g++-7">
+          <Flag Value="--std=c++17" />
+        </Compiler>
+        <IncludePaths>
+          <IncludePath Path="../src/commun" Recursive="false" />
+          <IncludePath Path="../third_parties" Recursive="false" />
+          <IncludePath Path="../third_parties/include" Recursive="false" />
+          <IncludePath Path="../third_parties/asio/asio/include" Recursive="false" />
+        </IncludePaths>
+        <LibPaths />
+        <Libs />
+      </Profile>
+    </Profiles>
+    <Window X="0" Y="531" W="958" H="528" />
+  </Settings>
+  <PetriNet ID="0" Name="Root" X="0" Y="0" Active="true" RequiredTokens="0" Radius="30">
+    <Comments />
+    <States>
+      <Exit ID="1" Name="End" X="380" Y="120" Active="false" RequiredTokens="1" Radius="25" Function="Petri::Utility::doNothing()" />
+      <Action ID="2" Name="BEGIN" X="200" Y="120" Active="true" RequiredTokens="0" Radius="20" Function="test_action(4, 5)" />
+    </States>
+    <Transitions>
+      <Transition ID="3" Name="" X="290" Y="120" BeforeID="2" AfterID="1" Condition="test_bool()" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="180" />
+    </Transitions>
+  </PetriNet>
+</Document>

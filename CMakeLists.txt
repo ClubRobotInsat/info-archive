@@ -1,30 +1,40 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.8)
 
 project(root)
 
 option(TARGET "Architecture cible" pc)
 option(COLOR "Sortie en couleur de la compilation" ON)
 option(DEBUG "Compilation avec les symboles de debug et sans optimisations" OFF)
+option(COVERAGE "Compilation avec '--coverage' pour l'utilisation de 'lcov'" OFF)
 set(BITS "64" CACHE . "Build en 32 ou 64 bits")
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -std=gnu++17")
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_ENABLE_EXPORTS ON)
 
-if(${OUTPUTINBUILD})
-	set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build)
-	set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build)
-	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build)
+if(RASPI)
+	set(INFO_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/build_arm")
+else()
+	set(INFO_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/build")
 endif()
+
+execute_process(
+	COMMAND mkdir -p ${INFO_OUTPUT_DIRECTORY}
+)
+
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${INFO_OUTPUT_DIRECTORY})
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${INFO_OUTPUT_DIRECTORY})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${INFO_OUTPUT_DIRECTORY})
 
 SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules/")
 
 # Mise à jour des submodules Git.
 execute_process(
-		COMMAND git submodule update --init --recursive --remote
+		COMMAND git submodule update --init --recursive
 		WORKING_DIRECTORY ${root_SOURCE_DIR}
 )
 add_custom_target(InfoSubmodules
-		COMMAND git submodule update --init --recursive --remote
+		COMMAND git submodule update --init --recursive
 		WORKING_DIRECTORY ${root_SOURCE_DIR}
 		)
 
@@ -36,6 +46,12 @@ else()
 	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -flto")
 	set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -flto")
 	set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -flto")
+endif()
+
+if(COVERAGE)
+    message(STATUS "Building project with coverage information")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 --coverage")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -O0 --coverage")
 endif()
 
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL "^(Apple)?Clang$")
@@ -65,7 +81,7 @@ if(${BITS} EQUAL 32)
 	set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -m32")
 endif()
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Waddress -Wbuiltin-macro-redefined -Werror=return-type -Winit-self -Wnon-virtual-dtor -Wno-sign-compare -Wold-style-cast -Woverloaded-virtual -Wsuggest-attribute=const -Wsuggest-attribute=noreturn -Wsuggest-attribute=pure -Wswitch -Wuninitialized -Wunreachable-code -Wunused-parameter -Wunused-value")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Waddress -Wbuiltin-macro-redefined -Werror=return-type -Winit-self -Wnon-virtual-dtor -Wno-sign-compare -Wold-style-cast -Woverloaded-virtual -Wsuggest-attribute=noreturn -Wswitch -Wuninitialized -Wunreachable-code -Wunused-parameter -Wunused-value")
 
 function(compile_petri TARGET_NAME PATH_TO_DOC OUTPUT)
 	add_custom_target(${TARGET_NAME}
@@ -73,12 +89,20 @@ function(compile_petri TARGET_NAME PATH_TO_DOC OUTPUT)
 			)
 endfunction()
 
+if(RASPI)
+	add_definitions(-DRASPI)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-psabi")
+else()
+	link_directories(/usr/local/lib/)
+endif()
+
 # Il y a du code pour les ombres, apparamment. Ca a pas l'air de marcher.
 # debug/CGTK semble désactivé depuis un moment également.
-add_definitions(-DGTKWIN_DISABLE)
+#add_definitions(-DGTKWIN_DISABLE)
 
-include_directories(src/commun third_parties /usr/local/include/)
-link_directories(/usr/local/lib/)
+include_directories(src/commun /usr/local/include/)
+add_subdirectory(third_parties)
+
 add_subdirectory(src)
 
 # Target pour les tests unitaires

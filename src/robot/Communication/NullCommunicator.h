@@ -12,6 +12,7 @@
 #include <thread>
 
 namespace Communication {
+
 	class NullCommunicator : public Serial {
 	public:
 		NullCommunicator() = default;
@@ -19,12 +20,13 @@ namespace Communication {
 
 		void write_bytes(const uint8_t* bytes, std::size_t bytes_number) override;
 
-		void read_bytes(uint8_t* bytes, std::size_t bytes_number) override;
+		size_t read_bytes(uint8_t* bytes, std::size_t bytes_number) override;
 
 		bool is_connected() {
 			return true;
 		}
 	};
+
 } // namespace Communication
 
 

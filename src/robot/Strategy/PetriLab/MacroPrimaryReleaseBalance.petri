@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Document APIVersion="105">
+  <Settings Name="MacroPrimaryReleaseBalance" Language="Cpp" Enum="Outcome,SUCCESS,FAILURE,BLOCKED,BLOCKED_BY_ADV,TIMEOUT,POSITION_MODIFIED" DefaultExecutionVerbosity="Nothing" OverrideChildCompilationSettings="False">
+    <Headers>
+      <Header File="Utils.h" />
+      <Header File="Avoidance.h" />
+      <Header File="Navigation.h" />
+      <Header File="IO.h" />
+      <Header File="PumpsPrimary.h" />
+      <Header File="ServosPrimary.h" />
+    </Headers>
+    <Macros />
+    <Profiles Default="ARM release">
+      <Profile Name="Default" SourceOutputPath="src" LibOutputPath="../../../../build" DeployMode="DoNothing" DeployPath="" DeployScript="#!/bin/sh&#xA;&#xA;/bin/cp &quot;$PETRI_LIB_PATH&quot; .&#xA;" DeployWhenDebug="True" Port="12345" DebugMode="Attach" Hostname="localhost" HostProgram="" HostProgramArguments="">
+        <Compiler Invocation="/usr/bin/g++">
+          <Flag Value="--std=c++17" />
+        </Compiler>
+        <IncludePaths>
+          <IncludePath Path="../../../commun" Recursive="false" />
+          <IncludePath Path="../../../../third_parties" Recursive="false" />
+          <IncludePath Path="../../../../third_parties/include" Recursive="false" />
+          <IncludePath Path="../../../../third_parties/asio/asio/include" Recursive="false" />
+        </IncludePaths>
+        <LibPaths />
+        <Libs />
+      </Profile>
+      <Profile Name="ARM release" SourceOutputPath="src" LibOutputPath="../../../../build_arm/src/robot/Strategy" DeployMode="DoNothing" DeployPath="" DeployScript="#!/bin/sh&#xA;&#xA;/bin/cp &quot;$PETRI_LIB_PATH&quot; .&#xA;" DeployWhenDebug="True" Port="12345" DebugMode="Attach" Hostname="localhost" HostProgram="" HostProgramArguments="">
+        <Compiler Invocation="/usr/bin/arm-linux-gnueabihf-g++-7">
+          <Flag Value="--std=c++17" />
+        </Compiler>
+        <IncludePaths>
+          <IncludePath Path="../../../commun" Recursive="false" />
+          <IncludePath Path="../../../../third_parties" Recursive="false" />
+          <IncludePath Path="../../../../third_parties/include" Recursive="false" />
+          <IncludePath Path="../../../../third_parties/asio/asio/include" Recursive="false" />
+        </IncludePaths>
+        <LibPaths />
+        <Libs />
+      </Profile>
+    </Profiles>
+    <Window X="954" Y="0" W="958" H="1015" />
+  </Settings>
+  <PetriNet ID="0" Name="Root" X="0" Y="0" Active="true" RequiredTokens="0" Radius="30">
+    <Comments />
+    <States>
+      <Exit ID="1" Name="End" X="540" Y="380" Active="false" RequiredTokens="1" Radius="25" Function="Petri::Utility::doNothing()" />
+      <Action ID="2" Name="BEGIN" X="73" Y="147" Active="true" RequiredTokens="0" Radius="20" Function="Petri::Utility::doNothing()" />
+      <Action ID="3" Name="move to" X="240" Y="100" Active="false" RequiredTokens="1" Radius="20" Function="move_to(1250_mm, 90_cm, 90_deg)" />
+      <Action ID="4" Name="arm" X="240" Y="210" Active="false" RequiredTokens="1" Radius="20" Function="arm_top_vertical(Arm::Back)" />
+      <Action ID="5" Name="backward" X="390" Y="150" Active="false" RequiredTokens="2" Radius="20" Function="backward(50_cm)" />
+      <Action ID="6" Name="release" X="540" Y="150" Active="false" RequiredTokens="1" Radius="20" Function="release_all()" />
+      <Action ID="7" Name="forward" X="540" Y="260" Active="false" RequiredTokens="2" Radius="20" Function="forward(40_cm)" />
+      <Action ID="8" Name="sleep" X="390" Y="260" Active="false" RequiredTokens="1" Radius="20" Function="Petri::Utility::pause(1s)" />
+    </States>
+    <Transitions>
+      <Transition ID="9" Name="" X="156.5" Y="123.5" BeforeID="2" AfterID="3" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="173.4877517290486" />
+      <Transition ID="10" Name="" X="156.5" Y="178.5" BeforeID="2" AfterID="4" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="178.48809484108457" />
+      <Transition ID="11" Name="" X="315" Y="125" BeforeID="3" AfterID="5" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="158.11388300841898" />
+      <Transition ID="12" Name="" X="315" Y="180" BeforeID="4" AfterID="5" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="161.55494421403512" />
+      <Transition ID="13" Name="" X="465" Y="150" BeforeID="5" AfterID="6" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="150" />
+      <Transition ID="14" Name="" X="540" Y="205" BeforeID="6" AfterID="7" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="110" />
+      <Transition ID="15" Name="" X="540" Y="320" BeforeID="7" AfterID="1" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="120" />
+      <Transition ID="16" Name="" X="390" Y="205" BeforeID="5" AfterID="8" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="110" />
+      <Transition ID="17" Name="" X="465" Y="260" BeforeID="8" AfterID="7" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="150" />
+    </Transitions>
+  </PetriNet>
+</Document>

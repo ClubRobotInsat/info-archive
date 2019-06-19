@@ -375,6 +375,7 @@ std::vector<CurvatureInfos> parameter_spline::get_curvature_advance(Distance ent
 
 		double denom = Xderiv1 * Yderivs[i].second - Yderiv1 * Xderivs[i].second;
 		if(std::abs(denom) > 1.0) {
+			std::cout << "WARNING: faulty case with R=0_m." << std::endl;
 		} // TODO : gérer le cas défectueux (R = 0_m)
 		Distance R = fromSplineCalculationD(std::abs(pow(Xderiv1 * Xderiv1 + Yderiv1 * Yderiv1, 1.5) / denom));
 		bool inversion = R < 0_m;

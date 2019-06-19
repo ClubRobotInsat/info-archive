@@ -23,7 +23,7 @@ namespace Communication {
 		void write_bytes(const uint8_t* bytes, std::size_t bytes_number) override;
 
 		/// Attend plusieurs octets sur le port et retourne lorsque le nombre demandé a été reçu - BLOQUANT
-		void read_bytes(uint8_t* bytes, std::size_t bytes_number) override;
+		size_t read_bytes(uint8_t* bytes, std::size_t bytes_number) override;
 
 	private:
 #ifdef WIN32
@@ -37,6 +37,7 @@ namespace Communication {
 		int _fd;
 #endif
 	};
+
 } // namespace Communication
 
 #endif

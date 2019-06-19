@@ -3,19 +3,16 @@
  * Ceux-ci s'appliquent à la stratégie post-2018 dans laquelle tout l'état du robot est regroupé
  *
  * La construction de chaque module spéficique (moteurs, servos, déplacement, capteurs, ...)
- * s'appuie sur une structure C partagée avec le code Rust et dont les fonctions de conversion
- * struct / trame sont entreposées dans une librairie C pour être utilisées par les deux parties.
+ * s'appuie sur la mise en commun avec les élecs d'une structure de donnée JSON qui est
+ * utilisée pour la communication des datas entre les deux parties
  *
  * Enfin, la cohésion entre ces modules est gérée par la classe 'ModuleManager'.
  *
  * Pour créer un nouveau module, il faut :
- *  === dans les fichiers 'SharedWithRust.[c|h]' ===
- *   - créer une nouvelle structure en C partagée avec la partie électronique
- *   - écrire les fonctions de parsing struct / trame en C
  *  === dans une nouvelle classe '{NOM_DU_MODULE}{ANNEE}.[cpp|h]' ===
- *   - faire hériter le nouveau module de la classe mère 'Module' en donnant les paramètres C
- *   - overrider les fonctions 'generate_shared' et 'message_processing' (utilisation de la struct)
- *   - définir la taille d'une trame en overridant 'get_frame_size' (/!\ fonction très importante)
+ *   - faire hériter le nouveau module de la classe mère 'Module'
+ *   - overrider les fonctions 'generate_json' et 'message_processing' pour parser le format JSON
+ *   - overrider la fonction 'deactivation'
  *  === rajouter la ligne `#include "{NOM_DU_MODULE}{ANNEE}.h"` dans `ModuleManager.h` et dans le `CMakeLists.txt`
  *  === idéalement, écrire des tests unitaires (`/test/unit-modules.cpp`) et de la doc =)
  *
@@ -25,10 +22,9 @@
 #ifndef _MODULE_H
 #define _MODULE_H
 
-#include "../../elec/librobot/c_src/SharedWithRust.h"
-
 #include <Commun.h> // GlobalFrame
 #include <Constants.h>
+#include <log/Log.h>
 
 #include <atomic>     // atomic
 #include <functional> // function
@@ -36,12 +32,12 @@
 
 namespace PhysicalRobot {
 
-	// Cette classe permets de stocker des 'Modules' non-templates
-	class BaseModule {
+	class Module {
 	public:
-		explicit BaseModule(uint8_t id) : _state_changed(false), _id(id) {}
+		/// Initialisation du module
+		Module(uint8_t id, std::string module_name) : name(module_name), _state_changed(false), _id(id) {}
 
-		virtual ~BaseModule() = default;
+		virtual ~Module() = default;
 
 		/// Retourne l'ID du module dans le robot
 		inline uint8_t get_id() {
@@ -51,7 +47,7 @@ namespace PhysicalRobot {
 		/// Retourne vrai si l'état du module nécessite d'être partagé avec les élecs
 		/// i.e. si une modification informatique a été apportée, ou si le timer a expiré
 		bool needs_to_be_shared() const {
-			return _state_changed; // || _timer.getElapsedTime() >= GLOBAL_CONSTANTS.get_frame_period();
+			return _state_changed || _timer.getElapsedTime() >= GLOBAL_CONSTANTS().get_frame_period();
 		}
 
 		/// On a prit en compte la nouvelle trame pour l'envoyer aux élecs
@@ -60,19 +56,67 @@ namespace PhysicalRobot {
 			_timer.reset();
 		}
 
-		/// Construit la trame du module (thread-safe)
-		virtual GlobalFrame make_frame() const = 0;
-
 		/// Traite les données fournies par le robot (thread-safe)
-		virtual void update(const GlobalFrame&) = 0;
+		// Le gros du travail est à implémenter dans chaque module par l'override de 'message_processing'
+		void update(const GlobalFrame& f) {
+			lock_variables();
+			std::string msg(f.getDonnees(), f.getDonnees() + f.getNbDonnees());
+			try {
+				message_processing(JSON::parse(msg));
+			} catch(nlohmann::detail::parse_error& e) {
+				logError("JSON parsing error: ", e.what(), "\nreceived frame: ", msg);
+			}
+			unlock_variables();
+		}
 
-		/// Retourne la taille d'une trame
-		virtual uint8_t get_frame_size() const = 0;
+		/// Construit la trame du module (thread-safe)
+		// Pour chaque module, il ne faut qu'overrider la fonction qui génère la struct JSON partagée avec Rust
+		std::vector<GlobalFrame> make_frames() const {
+			std::lock_guard<std::mutex> lk(_mutex_variables);
+
+			std::vector<JSON> v = generate_list_jsons();
+
+			std::vector<GlobalFrame> result;
+			for(const JSON& j : v) {
+				std::stringstream ss;
+				ss << j;
+				std::string str = ss.str();
+				result.emplace_back(std::vector<uint8_t>(str.cbegin(), str.cend()));
+			}
+
+			return result;
+		}
 
 		/// Arrêt mécanique du module
 		virtual void deactivation() = 0;
 
+		const std::string name;
+
 	protected:
+		/// Conversion entre le module C++ et une structure JSON Rust-friendly
+		/// Cette fonction est appelée par 'make_frame' et ne doit pas toucher au mutex
+		virtual std::vector<JSON> generate_list_jsons() const = 0;
+
+		/// Mise à jour du module à partir d'une structure JSON Rust-friendly entrante
+		/// Cette fonction est appelée par 'update' et ne doit pas toucher au mutex
+		virtual void message_processing(const JSON&) = 0;
+
+		/// @return true si le JSON contient la liste des champs spécifiés
+		bool json_has_fields(const JSON& j, std::vector<std::string> fields) const {
+			for(std::string field : fields) {
+				if(j.find(field) == j.cend()) {
+					logError("JSON doesn't have the field '", field, "': ", j);
+					return false;
+				}
+			}
+			return true;
+		}
+
+		/// @return true si le JSON contient le champ spécifié
+		bool json_has_field(const JSON& j, std::string field) const {
+			return json_has_fields(j, std::vector<std::string>{field});
+		}
+
 		/// Bloque l'accés aux variables membres
 		void lock_variables() {
 			_mutex_variables.lock();
@@ -101,69 +145,6 @@ namespace PhysicalRobot {
 		uint8_t _id;
 	};
 
-	/// Abstraction qui gère le lien entre les trames et les fonctions en C
-	template <typename SharedStruct>
-	class Module : public BaseModule {
-	public:
-		/// Initialisation du module
-		Module(uint8_t id,
-		       SharedStruct (*read_function)(const uint8_t*, uint8_t),
-		       uint8_t (*write_function)(uint8_t*, uint8_t, const SharedStruct*))
-		        : BaseModule(id), _wrapper(read_function, write_function) {}
-
-		~Module() override = default;
-
-		/// Traite les données fournies par le robot
-		// Le gros du travail est à implémenter dans chaque module par l'override de 'message_processing'
-		void update(const GlobalFrame& f) final {
-			lock_variables();
-			message_processing(_wrapper.read_frame(f.getDonnees(), static_cast<uint8_t>(f.getNbDonnees())));
-			unlock_variables();
-		}
-
-		/// Construit la trame du module
-		// Pour chaque module, il ne faut qu'overrider la fonction qui génère la struct partagée avec Rust
-		// ainsi que la fonction C qui convertit cette struct en une trame binaire
-		GlobalFrame make_frame() const final {
-			std::lock_guard<std::mutex> lk(_mutex_variables);
-
-			const uint8_t SIZE = get_frame_size();
-			uint8_t buf[SIZE];
-
-			SharedStruct s = generate_shared();
-			uint8_t size = _wrapper.write_frame(buf, SIZE, &s);
-
-			if(size != SIZE) {
-				throw std::runtime_error("Bad frame generation - no matching sizes.");
-			}
-
-			//_state_changed.exchange(false);
-			//_timer.reset();
-			return GlobalFrame{SIZE, buf};
-		}
-
-	protected:
-		/// Conversion entre le module C++ et une structure Rust-friendly
-		/// Cette fonction est appelée par 'make_frame' et ne doit pas toucher au mutex
-		virtual SharedStruct generate_shared() const = 0;
-
-		/// Mise à jour du module à partir d'une structure Rust-friendly entrante
-		/// Cette fonction est appelée par 'update' et ne doit pas toucher au mutex
-		virtual void message_processing(const SharedStruct&) = 0;
-
-	private:
-		/// Classe helper pour intégrer les fonctions codées en C
-		struct FunctorWrapper {
-			FunctorWrapper(SharedStruct (*read_function)(const uint8_t*, uint8_t),
-			               uint8_t (*write_function)(uint8_t*, uint8_t, const SharedStruct*))
-			        : read_frame(read_function), write_frame(write_function) {}
-
-			std::function<SharedStruct(const uint8_t*, uint8_t)> read_frame;
-			std::function<uint8_t(uint8_t*, uint8_t, const SharedStruct*)> write_frame;
-		};
-
-		FunctorWrapper _wrapper;
-	};
 } // namespace PhysicalRobot
 
 #endif //_MODULE_H

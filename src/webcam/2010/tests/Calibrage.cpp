@@ -11,7 +11,6 @@ int main() {
 #include "ImageFiltree.h"
 #include "Socket.h"
 #include "TGALoader.h"
-#include "TGALoader.h"
 #include "Webcam2010.h"
 #include "log/Log.h"
 #include <GL/glfw.h>
@@ -713,8 +712,7 @@ void GLFWCALL MouseCallback(int key, int state) {
 				}
 			}
 		} // else
-
-	} // if(state == GLFW_PRESS)
+	}     // if(state == GLFW_PRESS)
 }
 
 void DisplayMouse() {

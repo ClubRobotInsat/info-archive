@@ -10,7 +10,7 @@
 #include <Units.h>
 
 #include <Color.h>
-#include <ConstantesCommunes.h>
+#include <Constants.h>
 #include <MathToolbox/MathToolbox.h>
 #include <MathToolbox/Repere.h>
 
@@ -21,7 +21,7 @@ namespace mass {
 	const Mass LIGHT = 100_g;
 	const Mass MEDIUM = 1_kg;
 	const Mass HEAVY = 10000_kg;
-}
+} // namespace mass
 
 
 /*****************************
@@ -55,11 +55,11 @@ namespace ConstantesSimu2017 {
 	const Color3f COLOR_CYLINDER_BLUE = BLUE;
 	const Color3f COLOR_CYLINDER_YELLOW = YELLOW;
 	const Color3f COLOR_CYLINDER_MULTICOLOR = GREY;
-}
+} // namespace ConstantesSimu2017
 
 // Repère de la simulation
 const repere::Repere REFERENCE_SIMULATOR =
-    repere::Repere({0_m, 0_m}, repere::Multiplicateur::SENS_POSITIF, repere::Multiplicateur::SENS_POSITIF);
+    repere::Repere({0_m, 0_m}, repere::Multiplier::SENS_POSITIVE, repere::Multiplier::SENS_POSITIVE);
 
 // Tags d'objets
 const std::string TAG_ROBOT = "robot";

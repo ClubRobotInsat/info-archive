@@ -10,17 +10,15 @@
 
 #include <Box2D/Dynamics/b2World.h>
 
-#include <ConstantesCommunes.h>
+#include <Constants.h>
 
 #include "../graphique/IGraphicalContext.h"
 #include "../physique/IPhysicalContext.h"
 #include "Object3D.h"
 
-class Robot2018;
 class Object3D;
 
 class World {
-
 public:
 	/**
 	 * Construction du monde de la simulation
@@ -60,9 +58,9 @@ public:
 	 * être un objet JSON décrivant l'état du monde. */
 	void loadWorldFromFile(std::string filename);
 
-	Object3D& createRobotFromJSON(const JSON& json, Constantes::RobotColor color);
+	Object3D& createRobotFromJSON(const JSON& json, const std::string& robotName, Constants::RobotColor color);
 
-	Object3D& createRobotFromFile(std::string filename, Constantes::RobotColor color);
+	Object3D& createRobotFromFile(std::string filename, const std::string& robotName, Constants::RobotColor color);
 
 	/**
 	 * Ecrit le contenu du monde dans un json et le renvoit.

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Document APIVersion="105">
+  <Settings Name="MacroPrimaryChaos" Language="Cpp" Enum="Outcome,SUCCESS,FAILURE,BLOCKED,BLOCKED_BY_ADV,TIMEOUT,POSITION_MODIFIED" DefaultExecutionVerbosity="Nothing" OverrideChildCompilationSettings="False">
+    <Headers>
+      <Header File="Utils.h" />
+      <Header File="Avoidance.h" />
+      <Header File="Navigation.h" />
+      <Header File="IO.h" />
+      <Header File="PumpsPrimary.h" />
+      <Header File="ServosPrimary.h" />
+    </Headers>
+    <Macros />
+    <Profiles Default="ARM release">
+      <Profile Name="Default" SourceOutputPath="src" LibOutputPath="../../../../build" DeployMode="DoNothing" DeployPath="" DeployScript="#!/bin/sh&#xA;&#xA;/bin/cp &quot;$PETRI_LIB_PATH&quot; .&#xA;" DeployWhenDebug="True" Port="12345" DebugMode="Attach" Hostname="localhost" HostProgram="" HostProgramArguments="">
+        <Compiler Invocation="/usr/bin/g++">
+          <Flag Value="--std=c++17" />
+        </Compiler>
+        <IncludePaths>
+          <IncludePath Path="../../../commun" Recursive="false" />
+          <IncludePath Path="../../../../third_parties" Recursive="false" />
+          <IncludePath Path="../../../../third_parties/include" Recursive="false" />
+          <IncludePath Path="../../../../third_parties/asio/asio/include" Recursive="false" />
+        </IncludePaths>
+        <LibPaths />
+        <Libs />
+      </Profile>
+      <Profile Name="ARM release" SourceOutputPath="src" LibOutputPath="../../../../build_arm/src/robot/Strategy" DeployMode="DoNothing" DeployPath="" DeployScript="#!/bin/sh&#xA;&#xA;/bin/cp &quot;$PETRI_LIB_PATH&quot; .&#xA;" DeployWhenDebug="True" Port="12345" DebugMode="Attach" Hostname="localhost" HostProgram="" HostProgramArguments="">
+        <Compiler Invocation="/usr/bin/arm-linux-gnueabihf-g++-7">
+          <Flag Value="--std=c++17" />
+        </Compiler>
+        <IncludePaths>
+          <IncludePath Path="../../../commun" Recursive="false" />
+          <IncludePath Path="../../../../third_parties" Recursive="false" />
+          <IncludePath Path="../../../../third_parties/include" Recursive="false" />
+          <IncludePath Path="../../../../third_parties/asio/asio/include" Recursive="false" />
+        </IncludePaths>
+        <LibPaths />
+        <Libs />
+      </Profile>
+    </Profiles>
+    <Window X="960" Y="27" W="960" H="1023" />
+  </Settings>
+  <PetriNet ID="0" Name="Root" X="0" Y="0" Active="true" RequiredTokens="0" Radius="30">
+    <Comments>
+      <Comment ID="1" Name="Abréviations :&#xA;Ang : Angle&#xA;Lin : Linéaire&#xA;RST : Reset&#xA;Sp : Speed&#xA;SEC : Sécurité" X="620" Y="310" Width="142" R="0.7" G="1" B="0.7" A="1" />
+    </Comments>
+    <States>
+      <Exit ID="2" Name="End" X="600" Y="720" Active="false" RequiredTokens="2" Radius="25" Function="backward(200_mm)" />
+      <Action ID="3" Name="Entry" X="60" Y="270" Active="true" RequiredTokens="0" Radius="20" Function="move_to(1500_mm, 1400_mm, -90_deg, SensAdvance::Forward)" />
+      <Action ID="4" Name="Préparation pousse" X="200" Y="270" Active="false" RequiredTokens="1" Radius="20" Function="move_to(1500_mm, 950_mm, 180_deg, SensAdvance::Forward)" />
+      <Action ID="5" Name="Pousse" X="350" Y="270" Active="false" RequiredTokens="1" Radius="20" Function="move_to(465_mm, 950_mm, 180_deg, SensAdvance::Forward)" />
+      <Action ID="6" Name="Recul SEC" X="510" Y="270" Active="false" RequiredTokens="1" Radius="20" Function="move_to(500_mm, 950_mm, 90_deg, SensAdvance::Backward)" />
+      <Action ID="7" Name="Evitemment" X="510" Y="360" Active="false" RequiredTokens="1" Radius="20" Function="move_to(500_mm, 1400_mm, 180_deg, SensAdvance::Forward)" />
+      <Action ID="8" Name="Evitemment 2" X="350" Y="360" Active="false" RequiredTokens="1" Radius="20" Function="move_to(434_mm, 1400_mm, -90_deg, SensAdvance::Forward)" />
+      <Action ID="9" Name="Pousse 2" X="200" Y="360" Active="false" RequiredTokens="1" Radius="20" Function="move_to(300_mm, 210_mm, -90_deg, SensAdvance::Forward)" />
+      <Action ID="10" Name="Slow_Ang_Sp" X="150" Y="1170" Active="false" RequiredTokens="0" Radius="20" Function="set_slow_angular_speed()" />
+      <Action ID="11" Name="Slow_Lin_Sp" X="270" Y="1170" Active="false" RequiredTokens="0" Radius="20" Function="set_slow_linear_speed()" />
+      <Action ID="12" Name="Virage_Lin" X="270" Y="1270" Active="false" RequiredTokens="1" Radius="20" Function="forward(320_mm, SensAdvance::Forward)" />
+      <Action ID="13" Name="Virage_Ang" X="150" Y="1270" Active="false" RequiredTokens="1" Radius="20" Function="turn_absolute(0_deg, SensRotation::Trigo)" />
+      <Action ID="14" Name="RST_sp" X="270" Y="1370" Active="false" RequiredTokens="1" Radius="20" Function="reset_linear_speed()" />
+      <Action ID="15" Name="RST_sp" X="150" Y="1370" Active="false" RequiredTokens="1" Radius="20" Function="reset_angular_speed()" />
+      <Action ID="16" Name="Fin_Pousse" X="210" Y="1450" Active="false" RequiredTokens="2" Radius="20" Function="move_to(200_mm, 1220_mm, 0_deg, SensAdvance::Forward)" />
+      <Action ID="17" Name="Retour Arène" X="350" Y="1450" Active="false" RequiredTokens="1" Radius="20" Function="move_to(225_mm, 200_mm, 90_deg, SensAdvance::Backward)" />
+      <Action ID="18" Name="Succes_Sound" X="210" Y="1550" Active="false" RequiredTokens="1" Radius="20" Function="play_success_sound()" />
+      <Action ID="19" Name="Rot_degagement" X="60" Y="360" Active="false" RequiredTokens="1" Radius="20" Function="turn_absolute(0_deg, SensRotation::Clockwise)" />
+      <Action ID="20" Name="Prep_grab" X="60" Y="480" Active="false" RequiredTokens="1" Radius="20" Function="move_to(840_mm, 900_mm, 90_deg, SensAdvance::Forward)" />
+      <Action ID="21" Name="Bras" X="200" Y="480" Active="false" RequiredTokens="1" Radius="20" Function="arm_bottom_vertical(Arm::Back)" />
+      <Action ID="22" Name="Pompes" X="200" Y="600" Active="false" RequiredTokens="1" Radius="20" Function="catch_back(AtomType::Greenium, AtomType::Greenium)" />
+      <Action ID="23" Name="Grab" X="60" Y="660" Active="false" RequiredTokens="2" Radius="20" Function="move_to(840_mm, 687_mm, 90_deg, SensAdvance::Backward)" />
+      <Action ID="24" Name="Back" X="60" Y="780" Active="false" RequiredTokens="1" Radius="20" Function="forward(10_cm)" />
+      <Action ID="25" Name="Pos_release" X="290" Y="780" Active="false" RequiredTokens="1" Radius="20" Function="move_to(1300_mm, 600_mm, 90_deg, SensAdvance::Backward)" />
+      <Action ID="26" Name="Bras Retour" X="420" Y="720" Active="false" RequiredTokens="1" Radius="20" Function="arm_external_storage(Arm::Back)" />
+      <Action ID="27" Name="Release" X="420" Y="840" Active="false" RequiredTokens="1" Radius="20" Function="release_all()" />
+      <Action ID="28" Name="Delais" X="540" Y="840" Active="false" RequiredTokens="1" Radius="20" Function="Petri::Utility::pause(1s)" />
+      <Action ID="29" Name="prep_release" X="180" Y="780" Active="false" RequiredTokens="1" Radius="20" Function="move_to(1300_mm, 800_mm, 90_deg, SensAdvance::Forward)" />
+    </States>
+    <Transitions>
+      <Transition ID="30" Name="" X="130" Y="270" BeforeID="3" AfterID="4" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
+      <Transition ID="31" Name="" X="275" Y="270" BeforeID="4" AfterID="5" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="150" />
+      <Transition ID="32" Name="" X="430" Y="270" BeforeID="5" AfterID="6" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="160" />
+      <Transition ID="33" Name="" X="510" Y="315" BeforeID="6" AfterID="7" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="90" />
+      <Transition ID="34" Name="" X="430" Y="360" BeforeID="7" AfterID="8" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="160" />
+      <Transition ID="35" Name="" X="275" Y="360" BeforeID="8" AfterID="9" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="150" />
+      <Transition ID="36" Name="" X="150" Y="1220" BeforeID="10" AfterID="13" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="100" />
+      <Transition ID="37" Name="" X="270" Y="1220" BeforeID="11" AfterID="12" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="100" />
+      <Transition ID="38" Name="" X="150" Y="1320" BeforeID="13" AfterID="15" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="100" />
+      <Transition ID="39" Name="" X="270" Y="1320" BeforeID="12" AfterID="14" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="100" />
+      <Transition ID="40" Name="" X="180" Y="1410" BeforeID="15" AfterID="16" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="100" />
+      <Transition ID="41" Name="" X="240" Y="1410" BeforeID="14" AfterID="16" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="100" />
+      <Transition ID="42" Name="" X="280" Y="1450" BeforeID="16" AfterID="17" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
+      <Transition ID="43" Name="" X="210" Y="1500" BeforeID="16" AfterID="18" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="100" />
+      <Transition ID="44" Name="" X="130" Y="360" BeforeID="9" AfterID="19" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="140" />
+      <Transition ID="45" Name="" X="200" Y="540" BeforeID="21" AfterID="22" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="120" />
+      <Transition ID="46" Name="" X="60" Y="420" BeforeID="19" AfterID="20" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="120" />
+      <Transition ID="47" Name="" X="130" Y="420" BeforeID="19" AfterID="21" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="184.39088914585776" />
+      <Transition ID="48" Name="" X="60" Y="570" BeforeID="20" AfterID="23" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="180" />
+      <Transition ID="49" Name="" X="130" Y="630" BeforeID="22" AfterID="23" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="152.31546211727817" />
+      <Transition ID="50" Name="" X="355" Y="810" BeforeID="25" AfterID="27" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="143.17821063276352" />
+      <Transition ID="51" Name="" X="480" Y="840" BeforeID="27" AfterID="28" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="120" />
+      <Transition ID="52" Name="" X="355" Y="750" BeforeID="25" AfterID="26" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="143.17821063276352" />
+      <Transition ID="53" Name="" X="60" Y="720" BeforeID="23" AfterID="24" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="120" />
+      <Transition ID="54" Name="" X="570" Y="780" BeforeID="28" AfterID="2" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="134.16407864998737" />
+      <Transition ID="55" Name="" X="510" Y="720" BeforeID="26" AfterID="2" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="180" />
+      <Transition ID="56" Name="" X="120" Y="780" BeforeID="24" AfterID="29" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="120" />
+      <Transition ID="57" Name="" X="235" Y="780" BeforeID="29" AfterID="25" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="110" />
+    </Transitions>
+  </PetriNet>
+</Document>

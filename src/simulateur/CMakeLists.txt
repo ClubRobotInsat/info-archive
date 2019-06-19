@@ -4,13 +4,6 @@ if (RASPI)
 endif(RASPI)
 
 
-SET(SIMU_OU_ROBOT Simu)
-
-add_subdirectory(../commun commun)
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
-cmake_minimum_required(VERSION 3.2)
-
 link_libraries(pthread)
 #add_subdirectory(graphique/server)
 #include_directories(SYSTEM ${root_SOURCE_DIR}/third_parties/websocketpp)
@@ -19,13 +12,14 @@ include_directories(${root_SOURCE_DIR}/third_parties/petri/Runtime/Cpp/detail/js
 
 # Obtention d'Irrlicht
 FIND_PACKAGE(Irrlicht)
-# A faire : messages d'erreurs si irrlicht pas trouvé
+if (NOT ${IRRLICHT_FOUND})
+    message(FATAL_ERROR "Irrlicht was not found. Simulator cannot be built.")
+endif()
+
 include_directories(${IRRLICHT_INCLUDE_DIRS})
 message(STATUS "Irrlicht trouvé ici : ${IRRLICHT_INCLUDE_DIRS}")
 
-add_executable(Simulator
-        main.cpp
-
+add_library(LibSimu
         core/Simulateur.cpp
         core/World.cpp
         core/WorldIO.cpp
@@ -36,38 +30,34 @@ add_executable(Simulator
         physique/box2d/PhysicalObjectDefinition.cpp
         physique/box2d/PhysicalObject.cpp
         physique/box2d/Box2DPhysicalContext.cpp
+        physique/box2d/RobotController.cpp
+        physique/box2d/pid/Asservissement.cpp
+        physique/box2d/pid/PID.cpp
 
         graphique/IGraphicalContext.h
         graphique/IGraphicalInstance.h
         graphique/IGraphicalUserListener.h
-        #graphique/server/WebGraphicalContext.cpp
-        #graphique/server/WebObjectHandler.cpp
         graphique/irrlicht/SimulationToIrrlicht.h
         graphique/irrlicht/Object.cpp
         graphique/irrlicht/Scene.cpp
+        #graphique/server/WebGraphicalContext.cpp
+        #graphique/server/WebObjectHandler.cpp
 
-        communication/cartes/CarteAsservissement2009.cpp
-        communication/cartes/CarteCAN_USB.cpp
-        communication/cartes/CarteDeplacement2009.cpp
-        communication/cartes/CarteEvitement2018.cpp
-        communication/cartes/CarteIO2018.cpp
-        communication/cartes/CarteMoteurs2018.cpp
-        communication/cartes/deplacement/Asservissement.cpp
-        communication/cartes/deplacement/PID.cpp
+        # TODO Enlever ModuleManager quand il sera dans librairies incluses
+        ../robot/Modules/ModuleManager.cpp
+        core/SimuRobot.cpp
 
-        communication/cartes/Carte.cpp
-        communication/Robot2018.cpp
-        communication/modules/ModuleContactor.cpp
-        communication/modules/ModuleMotors.cpp
-        communication/modules/ModuleMove.cpp
-        communication/modules/ModuleServos.cpp
+        communication/SimuCommunicator.cpp
+        communication/SimuServos.cpp
+        communication/SimuLed.cpp
+        communication/SimuNavigation.cpp
+        communication/SimuPumps.cpp
+        communication/SimuIO.cpp)
 
-        ../commun/communication/Communicateur.cpp
-        ../commun/communication/CommunicateurSerie.cpp
-        ../commun/communication/CommunicateurTCPIP.cpp
-        ../commun/communication/CommunicateurPipe.cpp
+add_subdirectory(gui/gtk)
 
-        ${root_SOURCE_DIR}/third_parties/json.hpp)
+target_link_libraries(LibSimu GtkSimu Communication Outils_Simu)
+target_link_libraries(LibSimu Box2D ${IRRLICHT_LIBRARIES})
 
-#target_link_libraries(Simulator Box2D Outils_Simu Server ${IRRLICHT_LIBRARIES})
-target_link_libraries(Simulator Box2D Outils_Simu ${IRRLICHT_LIBRARIES})
+add_executable(Simulator main.cpp)
+target_link_libraries(Simulator LibSimu)

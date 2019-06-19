@@ -29,16 +29,16 @@ int main() {
 	// Murs
 	helloWorld.addStaticShape(std::make_unique<Rect>(danger,
 	                                                 Vector2m(-WALLS_SIZE, -WALLS_SIZE),
-	                                                 Vector2m(GLOBAL_CONSTANTS.get_table_size().x + 2 * WALLS_SIZE, WALLS_SIZE)));
+	                                                 Vector2m(GLOBAL_CONSTANTS().get_table_size().x + 2 * WALLS_SIZE, WALLS_SIZE)));
 	helloWorld.addStaticShape(std::make_unique<Rect>(danger,
 	                                                 Vector2m(-WALLS_SIZE, -WALLS_SIZE),
-	                                                 Vector2m(WALLS_SIZE, GLOBAL_CONSTANTS.get_table_size().y + 2 * WALLS_SIZE)));
+	                                                 Vector2m(WALLS_SIZE, GLOBAL_CONSTANTS().get_table_size().y + 2 * WALLS_SIZE)));
 	helloWorld.addStaticShape(std::make_unique<Rect>(danger,
-	                                                 Vector2m(-WALLS_SIZE, GLOBAL_CONSTANTS.get_table_size().y),
-	                                                 Vector2m(GLOBAL_CONSTANTS.get_table_size().x + 2 * WALLS_SIZE, WALLS_SIZE)));
+	                                                 Vector2m(-WALLS_SIZE, GLOBAL_CONSTANTS().get_table_size().y),
+	                                                 Vector2m(GLOBAL_CONSTANTS().get_table_size().x + 2 * WALLS_SIZE, WALLS_SIZE)));
 	helloWorld.addStaticShape(std::make_unique<Rect>(danger,
-	                                                 Vector2m(GLOBAL_CONSTANTS.get_table_size().x, -WALLS_SIZE),
-	                                                 Vector2m(WALLS_SIZE, GLOBAL_CONSTANTS.get_table_size().y + 2 * WALLS_SIZE)));
+	                                                 Vector2m(GLOBAL_CONSTANTS().get_table_size().x, -WALLS_SIZE),
+	                                                 Vector2m(WALLS_SIZE, GLOBAL_CONSTANTS().get_table_size().y + 2 * WALLS_SIZE)));
 
 	// Bâtons devant la base
 	helloWorld.addStaticShape(std::make_unique<Rect>(danger, Vector2m(0_m, 36_cm), Vector2m(71_cm, 22_mm)));

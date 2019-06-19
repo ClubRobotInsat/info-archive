@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Document APIVersion="105">
+  <Settings Name="MacroPrimaryBlueRail" Language="Cpp" Enum="Outcome,SUCCESS,FAILURE,BLOCKED,BLOCKED_BY_ADV,TIMEOUT,POSITION_MODIFIED" DefaultExecutionVerbosity="Nothing" OverrideChildCompilationSettings="False">
+    <Headers>
+      <Header File="Utils.h" />
+      <Header File="Avoidance.h" />
+      <Header File="Navigation.h" />
+      <Header File="IO.h" />
+      <Header File="PumpsPrimary.h" />
+      <Header File="ServosPrimary.h" />
+    </Headers>
+    <Macros />
+    <Profiles Default="ARM release">
+      <Profile Name="Default" SourceOutputPath="src" LibOutputPath="../../../../build" DeployMode="DoNothing" DeployPath="" DeployScript="#!/bin/sh&#xA;&#xA;/bin/cp &quot;$PETRI_LIB_PATH&quot; .&#xA;" DeployWhenDebug="True" Port="12345" DebugMode="Attach" Hostname="localhost" HostProgram="" HostProgramArguments="">
+        <Compiler Invocation="/usr/bin/g++">
+          <Flag Value="--std=c++17" />
+        </Compiler>
+        <IncludePaths>
+          <IncludePath Path="../../../commun" Recursive="false" />
+          <IncludePath Path="../../../../third_parties" Recursive="false" />
+          <IncludePath Path="../../../../third_parties/include" Recursive="false" />
+          <IncludePath Path="../../../../third_parties/asio/asio/include" Recursive="false" />
+        </IncludePaths>
+        <LibPaths />
+        <Libs />
+      </Profile>
+      <Profile Name="ARM release" SourceOutputPath="src" LibOutputPath="../../../../build_arm/src/robot/Strategy" DeployMode="DoNothing" DeployPath="" DeployScript="#!/bin/sh&#xA;&#xA;/bin/cp &quot;$PETRI_LIB_PATH&quot; .&#xA;" DeployWhenDebug="True" Port="12345" DebugMode="Attach" Hostname="localhost" HostProgram="" HostProgramArguments="">
+        <Compiler Invocation="/usr/bin/arm-linux-gnueabihf-g++-7">
+          <Flag Value="--std=c++17" />
+        </Compiler>
+        <IncludePaths>
+          <IncludePath Path="../../../commun" Recursive="false" />
+          <IncludePath Path="../../../../third_parties" Recursive="false" />
+          <IncludePath Path="../../../../third_parties/include" Recursive="false" />
+          <IncludePath Path="../../../../third_parties/asio/asio/include" Recursive="false" />
+        </IncludePaths>
+        <LibPaths />
+        <Libs />
+      </Profile>
+    </Profiles>
+    <Window X="57" Y="0" W="1855" H="1009" />
+  </Settings>
+  <PetriNet ID="0" Name="Root" X="0" Y="0" Active="true" RequiredTokens="0" Radius="30">
+    <Comments>
+      <Comment ID="1" Name="Attraper le goldenium" X="460" Y="540" Width="108" R="1" G="1" B="0.7" A="1" />
+    </Comments>
+    <States>
+      <Exit ID="2" Name="End" X="980" Y="640" Active="false" RequiredTokens="3" Radius="25" Function="Petri::Utility::doNothing()" />
+      <Action ID="3" Name="Bras" X="710" Y="190" Active="false" RequiredTokens="1" Radius="20" Function="arm_top_vertical(Arm::Back)" />
+      <Action ID="4" Name="points bleu" X="780" Y="320" Active="false" RequiredTokens="1" Radius="20" Function="add_points(20)" />
+      <Action ID="5" Name="forward" X="650" Y="460" Active="false" RequiredTokens="1" Radius="20" Function="forward(5_cm)" />
+      <Action ID="6" Name="Adjust" X="660" Y="280" Active="false" RequiredTokens="2" Radius="20" Function="backward(10_cm)" />
+      <Action ID="7" Name="" X="630" Y="100" Active="false" RequiredTokens="0" Radius="20" Function="Petri::Utility::doNothing()" />
+      <Action ID="8" Name="sleep" X="651" Y="359" Active="false" RequiredTokens="1" Radius="20" Function="Petri::Utility::pause(1s)" />
+      <Action ID="9" Name="" X="595" Y="195" Active="false" RequiredTokens="1" Radius="20" Function="catch_back(AtomType::Blueium, AtomType::Nothing)" />
+      <Action ID="10" Name="" X="800" Y="420" Active="false" RequiredTokens="0" Radius="20" Function="arm_external_storage(Arm::Back)" />
+      <Action ID="11" Name="release" X="740" Y="560" Active="false" RequiredTokens="1" Radius="20" Function="release_all()" />
+      <Action ID="12" Name="" X="830" Y="617" Active="false" RequiredTokens="1" Radius="20" Function="Petri::Utility::pause(1s)" />
+      <Action ID="13" Name="" X="860" Y="500" Active="false" RequiredTokens="1" Radius="20" Function="Petri::Utility::pause(300ms)" />
+      <Action ID="14" Name="" X="400" Y="160" Active="true" RequiredTokens="0" Radius="20" Function="Petri::Utility::doNothing()" />
+      <Action ID="15" Name="backward" X="240" Y="280" Active="false" RequiredTokens="1" Radius="20" Function="backward(9_cm)" />
+      <Action ID="16" Name="Repli bras" X="230" Y="600" Active="false" RequiredTokens="1" Radius="20" Function="arm_top_vertical(Arm::Back)" />
+      <Action ID="17" Name="-90_deg" X="280" Y="490" Active="false" RequiredTokens="1" Radius="20" Function="turn_absolute(-90_deg, SensRotation::Clockwise)" />
+      <Action ID="18" Name="points bleu" X="460" Y="260" Active="false" RequiredTokens="1" Radius="20" Function="add_points(20)" />
+      <Action ID="19" Name="Rot" X="320" Y="380" Active="false" RequiredTokens="2" Radius="20" Function="turn_relative(-40_deg)" />
+      <Action ID="20" Name="Bras" X="340" Y="280" Active="false" RequiredTokens="1" Radius="20" Function="arm_catch_goldenium(Arm::Back)" />
+      <Action ID="21" Name="forward" X="400" Y="600" Active="false" RequiredTokens="0" Radius="20" Function="forward(51.5_cm)" />
+      <Action ID="22" Name="turn" X="490" Y="660" Active="false" RequiredTokens="1" Radius="20" Function="turn_absolute(-90_deg)" />
+      <Action ID="23" Name="catch" X="580" Y="710" Active="false" RequiredTokens="1" Radius="20" Function="arm_catch_goldenium(Arm::Back)" />
+      <Action ID="24" Name="pumps" X="680" Y="740" Active="false" RequiredTokens="1" Radius="20" Function="catch_back(AtomType::Nothing, AtomType::Goldenium)" />
+      <Action ID="25" Name="fwd" X="834" Y="724" Active="false" RequiredTokens="1" Radius="20" Function="forward(20_cm)" />
+    </States>
+    <Transitions>
+      <Transition ID="26" Name="" X="670" Y="145" BeforeID="7" AfterID="3" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="120.41594578792295" />
+      <Transition ID="27" Name="" X="685" Y="235" BeforeID="3" AfterID="6" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="102.95630140987001" />
+      <Transition ID="28" Name="" X="720" Y="300" BeforeID="6" AfterID="4" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="126.49110640673517" />
+      <Transition ID="29" Name="" X="655.5" Y="319.5" BeforeID="6" AfterID="8" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="79.511005527536881" />
+      <Transition ID="30" Name="" X="612.5" Y="147.5" BeforeID="7" AfterID="9" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="101.24228365658294" />
+      <Transition ID="31" Name="" X="627.5" Y="237.5" BeforeID="9" AfterID="6" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="107.00467279516349" />
+      <Transition ID="32" Name="" X="650.5" Y="409.5" BeforeID="8" AfterID="5" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="101.00495037373169" />
+      <Transition ID="33" Name="" X="695" Y="510" BeforeID="5" AfterID="11" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="134.53624047073711" />
+      <Transition ID="34" Name="" X="785" Y="588.5" BeforeID="11" AfterID="12" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="106.53168542738823" />
+      <Transition ID="35" Name="" X="905" Y="628.5" BeforeID="12" AfterID="2" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="151.75308893067054" />
+      <Transition ID="36" Name="" X="830" Y="460" BeforeID="10" AfterID="13" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="100" />
+      <Transition ID="37" Name="" X="320" Y="220" BeforeID="14" AfterID="15" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="200" />
+      <Transition ID="38" Name="" X="430" Y="210" BeforeID="14" AfterID="18" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="116.61903789690601" />
+      <Transition ID="39" Name="" X="280" Y="330" BeforeID="15" AfterID="19" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="128.06248474865697" />
+      <Transition ID="40" Name="" X="300" Y="435" BeforeID="19" AfterID="17" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="117.04699910719626" />
+      <Transition ID="41" Name="" X="370" Y="220" BeforeID="14" AfterID="20" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="134.16407864998737" />
+      <Transition ID="42" Name="" X="330" Y="330" BeforeID="20" AfterID="19" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="101.9803902718557" />
+      <Transition ID="43" Name="" X="800" Y="530" BeforeID="13" AfterID="11" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="134.16407864998737" />
+      <Transition ID="44" Name="" X="445" Y="630" BeforeID="21" AfterID="22" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="108.16653826391968" />
+      <Transition ID="45" Name="" X="535" Y="685" BeforeID="22" AfterID="23" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="102.95630140987001" />
+      <Transition ID="46" Name="" X="630" Y="725" BeforeID="23" AfterID="24" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="104.4030650891055" />
+      <Transition ID="47" Name="" X="757" Y="732" BeforeID="24" AfterID="25" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="154.82893786369524" />
+      <Transition ID="48" Name="" X="907" Y="682" BeforeID="25" AfterID="2" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="168.43990026119107" />
+      <Transition ID="49" Name="" X="255" Y="545" BeforeID="17" AfterID="16" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="120.83045973594572" />
+      <Transition ID="50" Name="" X="590" Y="826" BeforeID="16" AfterID="2" Condition="true" W="50" H="30" ShiftX="-15" ShiftY="206" ShiftAmplitude="751.06590922501607" />
+    </Transitions>
+  </PetriNet>
+</Document>

@@ -18,22 +18,22 @@ public:
 	SickLidar(libusb_device_handle* hnd);
 	~SickLidar();
 
-	Time getTimeOrigin() override;
-	TrameLidar getTrame() override;
+	Time get_time_origin() override;
+	FrameLidar get_frame() override;
 
 private:
 	libusb_device_handle* _hDev;
 	std::vector<uint8_t> _recv;
 	int _cRecv;
 	uint8_t* _cur;
-	std::thread _acquisitionThread;
-	std::mutex _acquisitionMutex;
-	TrameLidar _lastTrame;
+	std::thread _acquisition_thread;
+	std::mutex _acquisition_mutex;
+	FrameLidar _lastTrame;
 	std::atomic_bool _hasTrame = {false};
 	std::exception_ptr _except;
 
 private:
-	void readTelegram(TrameLidar& out);
+	void readTelegram(FrameLidar& out);
 	int readHex(); // lit un entier du flux.
 	void acquire();
 };

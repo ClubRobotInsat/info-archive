@@ -49,7 +49,6 @@ Serie::~Serie() {}
 
 /// Ecrit un octet sur le port
 void Serie::envoyer(unsigned char octet) {
-
 #ifdef WIN32
 	DWORD dummy;
 	WriteFile(_fd, &octet, 1, &dummy, nullptr);

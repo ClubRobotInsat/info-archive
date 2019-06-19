@@ -6,12 +6,12 @@
 #define ROOT_NAMEDPIPE_H
 
 #include "Commun.h"
-
 #include "Serial.h"
 
 #include <fcntl.h>
 
 namespace Communication {
+
 	class NamedPipe : public Serial {
 	public:
 		/// Crée et configure les descripteurs de communication
@@ -20,7 +20,7 @@ namespace Communication {
 
 		void write_bytes(const uint8_t* bytes, std::size_t bytes_number) override;
 
-		void read_bytes(uint8_t* bytes, std::size_t bytes_number) override;
+		size_t read_bytes(uint8_t* bytes, std::size_t bytes_number) override;
 
 		// erreur si la connection n'est pas ouverte
 		EXCEPTION_CLASS(ErrorPipeOpening);
@@ -35,6 +35,7 @@ namespace Communication {
 
 		bool create_descriptor(const std::string& path);
 	};
+
 } // namespace Communication
 
 #endif // ROOT_NAMEDPIPE_H

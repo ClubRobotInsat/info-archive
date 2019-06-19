@@ -10,7 +10,6 @@
 #include <log/Log.h>
 
 Start_Screen::Start_Screen() : Gtk::Window(), _canAdress(""), _serialList({}) {
-
 	_canListeningOnTCPIP = false;
 
 	this->set_border_width(1);
@@ -39,7 +38,6 @@ Start_Screen::~Start_Screen() {}
 
 
 bool Start_Screen::scanSerialConnection() {
-
 	_serialList.clear();
 
 	// temp file for storing everything that is in /dev;
@@ -66,7 +64,6 @@ bool Start_Screen::scanSerialConnection() {
 }
 
 void Start_Screen::mainLoop() {
-
 	this->scanSerialConnection();
 	this->scanTCPIPConnection();
 	this->updateComboBoxList();
@@ -74,7 +71,6 @@ void Start_Screen::mainLoop() {
 }
 
 void Start_Screen::updateComboBoxList() {
-
 	_displayedList.remove_all();
 	for(auto items : _serialList) {
 		_displayedList.append(items);
@@ -87,7 +83,6 @@ void Start_Screen::updateComboBoxList() {
 }
 
 void Start_Screen::scanTCPIPConnection() {
-
 	try {
 		Commun::TCPIP connection("127.0.0.1", 1234);
 		_canListeningOnTCPIP = true;
@@ -102,12 +97,10 @@ Start_Screen::type_startScreenSignalOnExit Start_Screen::startScreenSignalOnExit
 }
 
 void Start_Screen::emitLaunchCanSignal() {
-
 	_canAdress = _displayedList.get_active_text();
 	_startScreenSignalOnExit.emit(_canAdress);
 }
 
 void Start_Screen::updateConnectionButton() {
-
 	_launchCanMonitor.set_sensitive((_displayedList.get_active_text() != ""));
 }

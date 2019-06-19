@@ -51,7 +51,7 @@ private:
 	unique_ptr<thread> _thread;
 	Server& _server;
 
-	void _mainloop();
+	[[noreturn]] void _mainloop();
 
 	int _id = 0;
 	Vector2m _pos;
@@ -106,7 +106,7 @@ void Client::run() {
 void Client::_mainloop() {
 	for(;;) {
 		auto cmd = _sock->readTextTo('\n');
-		char nomLidar;
+		// char nomLidar;
 		if(cmd.size() == 0) {
 			continue;
 		}
@@ -118,12 +118,12 @@ void Client::_mainloop() {
 				break;
 
 			case 'r': // relevés
-				_sock->write(gLidars->relevesAsText());
+				_sock->write(gLidars->recordsAsText());
 				break;
 
 			case 'a':
 				while(!_sock->hasNext()) {
-					_sock->write(gLidars->relevesChrMap());
+					_sock->write(gLidars->recordsChrMap());
 					_sock->write("\n\n");
 					sleep(1_s);
 				}
@@ -166,8 +166,7 @@ void Client::_mainloop() {
 
 Server::~Server() {
 	if(_clis.size()) {
-		logError("Il reste encore des clients qui ne sont pas morts correctement."
-		         " Plz debug !");
+		logError("Il reste encore des clients qui ne sont pas morts correctement. Plz debug !");
 	}
 }
 
@@ -201,7 +200,7 @@ void Server::removeClient(Client* me) {
 
 ////==== Main ====////
 
-void usage() {
+[[noreturn]] void usage() {
 	printf("Usage: serverLidar [-g] <#TcpPort>");
 	exit(-1);
 }

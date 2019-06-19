@@ -86,6 +86,7 @@ public:
 
 	// Constructeurs
 	GlobalFrame() = default;
+	GlobalFrame(const std::vector<uint8_t>& donnees);
 	GlobalFrame(std::initializer_list<uint8_t> donnees);
 	explicit GlobalFrame(uint16_t nbDonnees, uint8_t const donnees[]);
 	explicit GlobalFrame(uint8_t donnee) : GlobalFrame({donnee}) {}
@@ -114,6 +115,7 @@ public:
 	void addByte(uint8_t value) {
 		this->addDonnees(value);
 	}
+	void addBytes(const std::vector<uint8_t>& bytes);
 	void addBytes(std::initializer_list<uint8_t> bytes);
 	void addBytes(uint16_t count, uint8_t const bytes[]);
 
@@ -136,6 +138,8 @@ public:
 
 	// afficher la trame sur le flux de sortie
 	friend std::ostream& operator<<(std::ostream&, const GlobalFrame&);
+
+	friend bool operator==(const GlobalFrame&, const GlobalFrame&);
 
 	// Opérateurs de concaténation des trames
 	// Les informations annexes des '_donnees' sont copiées depuis la variable de gauche

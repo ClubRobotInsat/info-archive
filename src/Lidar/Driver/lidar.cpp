@@ -11,7 +11,7 @@
 #include <fstream>
 
 
-void TrameLidar::saveToFile(std::string const& file) {
+void FrameLidar::save_to_file(std::string const& file) {
 	std::ofstream out(file);
 
 	out << (timestamp * 1e6).toS<uint32_t>() << '\n';
@@ -25,7 +25,7 @@ void TrameLidar::saveToFile(std::string const& file) {
 	}
 }
 
-TrameLidar::TrameLidar(std::string const& filename) {
+FrameLidar::FrameLidar(std::string const& filename) {
 	std::ifstream in(filename);
 	uint32_t tmp;
 	int32_t stmp;
@@ -65,7 +65,11 @@ namespace {
 	LibUsbCtx const usbContext;
 }
 
-std::unique_ptr<Lidar> Lidar::openLidar(LidarType lidarType) {
+std::unique_ptr<Lidar> Lidar::open_lidar(LidarType lidarType) {
+	if(lidarType == Lidar::None) {
+		return nullptr;
+	}
+
 	// en énumérant à la main, on a un meilleur diagnostic qu'avec l'utilitaire
 	// libusb openByVidPid.
 
@@ -83,7 +87,10 @@ std::unique_ptr<Lidar> Lidar::openLidar(LidarType lidarType) {
 		}
 	}
 
+	std::cout << "LidarType: " << lidarType << std::endl;
+	std::cout << "Sick has been found? " << std::boolalpha << (sick != nullptr) << std::endl;
 	if(sick && lidarType != LidarType::Hokuyo) {
+		std::cout << "Trying to open the Sick lidar" << std::endl;
 		libusb_device_handle* hnd;
 		int rc;
 		if(sick)
@@ -96,14 +103,18 @@ std::unique_ptr<Lidar> Lidar::openLidar(LidarType lidarType) {
 		if(!hnd)
 			throw std::runtime_error("Erreur inconnue.");
 
+		std::cout << "Sick lidar found!" << std::endl;
 		return std::make_unique<SickLidar>(hnd);
 	} else if(lidarType != LidarType::Sick) {
+		std::cout << "Trying to open the Hokuyo lidar" << std::endl;
 // peut apparaitre sous plusieurs noms. on essaie des noms connus dans
 // l'ordre
-#define TRY(name)                                   \
-	try {                                           \
-		return std::make_unique<HokuyoLidar>(name); \
-	} catch(...) {                                  \
+#define TRY(name)                                         \
+	try {                                                 \
+		auto lidar = std::make_unique<HokuyoLidar>(name); \
+		std::cout << "Hokuyo lidar found!" << std::endl;  \
+		return lidar;                                     \
+	} catch(...) {                                        \
 	}
 		TRY("/dev/ttyACM0");
 		TRY("/dev/ttyACM1");

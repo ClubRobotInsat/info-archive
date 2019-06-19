@@ -40,7 +40,7 @@ public:
 	/**
 	 * Destruction de l'objet physique
 	 */
-	virtual ~PhysicalObject() override;
+	~PhysicalObject() override;
 
 	int getId() const override;
 
@@ -137,6 +137,8 @@ public:
 	 * Obtient la paire {position, rayon} qui définit la shape d'un objet de type Circle
 	 */
 	CircleDefinition getBodyCircleDef() const;
+
+	IRobotController* createRobotController() override;
 
 	/**
 	 * Actualise la position de l'objet 3D passé en paramètre pour

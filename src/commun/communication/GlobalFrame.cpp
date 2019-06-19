@@ -22,6 +22,10 @@ std::ostream& operator<<(std::ostream& s, Byte const& b) {
 	return s;
 }
 
+GlobalFrame::GlobalFrame(const std::vector<uint8_t>& donnees) {
+	this->addBytes(donnees);
+}
+
 GlobalFrame::GlobalFrame(std::initializer_list<uint8_t> donnees) {
 	this->addBytes(donnees);
 }
@@ -50,9 +54,16 @@ void GlobalFrame::setNumPaquet(uint8_t num_paquet) {
 	_num_paquet = num_paquet;
 }
 
+void GlobalFrame::addBytes(const std::vector<uint8_t>& donnees) {
+	if(donnees.size() + this->getNbDonnees() > GlobalFrame::DONNEES_TRAME_MAX)
+		throw ErreurTropDeDonnees(static_cast<uint16_t>(donnees.size()));
+
+	_donnees.insert(_donnees.end(), donnees.begin(), donnees.end());
+}
+
 void GlobalFrame::addBytes(std::initializer_list<uint8_t> donnees) {
 	if(donnees.size() + this->getNbDonnees() > GlobalFrame::DONNEES_TRAME_MAX)
-		throw ErreurTropDeDonnees(donnees.size());
+		throw ErreurTropDeDonnees(static_cast<uint16_t>(donnees.size()));
 
 	_donnees.insert(_donnees.end(), donnees.begin(), donnees.end());
 }
@@ -91,6 +102,10 @@ std::ostream& operator<<(std::ostream& o, GlobalFrame const& t) {
 		o << ", ";
 	}
 	return o << "]]";
+}
+
+bool operator==(const GlobalFrame& f1, const GlobalFrame& f2) {
+	return f1._donnees == f2._donnees;
 }
 
 GlobalFrame GlobalFrame::operator+(const GlobalFrame& f) const {

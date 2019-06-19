@@ -1,4 +1,3 @@
-#include "RobotPrincipal/Constantes.h"
 #include "SimulateurConstantes.h"
 
 #include "World.h"
@@ -44,10 +43,8 @@ void World::loadWorldFromJSON(const JSON& json) {
 
 		if(createdObject != nullptr) {
 			createdObject->setAngle(angle);
-
-			if(!object["simulateur"]["enabled"].get<bool>()) {
-				createdObject->getPhysics().enableSimulation(false);
-			}
+			createdObject->getPhysics().enableSimulation(object["simulateur"]["enabled"].get<bool>());
+			createdObject->setMetadata(object);
 		}
 	}
 }
@@ -59,32 +56,32 @@ void World::loadWorldFromFile(std::string filename) {
 	if(in >> json) {
 		loadWorldFromJSON(json);
 	} else {
-		// TODO
+		// TODO manage problems
 	}
 	in.close();
 }
 
-Object3D& World::createRobotFromJSON(const JSON& json, Constantes::RobotColor color) {
+Object3D& World::createRobotFromJSON(const JSON& json, const std::string& robotName, Constants::RobotColor color) {
 	// Permet de récupérer les spécificités du robot principal
-	auto it =
-	    std::find_if(json["robot"].begin(), json["robot"].end(), [](const JSON& j) { return j["name"] == "principal"; });
-	if(it == json["robot"].end()) {
-		// TODO
+	auto& robots = json["robot"];
+	auto it = std::find_if(robots.begin(), robots.end(), [&robotName](const JSON& j) { return j["name"] == robotName; });
+	if(it == robots.end()) {
+		// TODO default robot
 		Object3D* obj = &createCube({1_m, 1_m, 1_m}, {0_m, 0_m, 0_m}, 1_kg, STATIC_BODY, {0, 0, 0});
 		return *obj;
 	}
 
 	const JSON& robot = *it;
 
-	const repere::Coordonnees coords_robot(Json::toVector2m(robot["position"]),
-	                                       Angle::makeFromDeg(robot["angle"].get<double>()),
-	                                       color == Constantes::RobotColor::Orange ? ConstantesPrincipal::REFERENCE_ORANGE :
-	                                                                                 ConstantesPrincipal::REFERENCE_GREEN);
+	const repere::Coordinates coords_robot(GLOBAL_CONSTANTS()[robotName].get_start_position(),
+	                                       GLOBAL_CONSTANTS()[robotName].get_start_angle(),
+	                                       GLOBAL_CONSTANTS().get_reference(color));
 
 	auto position = coords_robot.getPos3D(REFERENCE_SIMULATOR);
 	auto angle = coords_robot.getAngle(REFERENCE_SIMULATOR);
 
 	Vector3m robotSize = Json::toVector3m(robot["size"]);
+	position.z += robotSize.z / 2;
 	IPhysicalInstance* physicProp = getPhysics().createCuboid(position, mass::HEAVY, DYNAMIC_BODY, robotSize);
 	physicProp->setAngle(angle);
 
@@ -92,8 +89,15 @@ Object3D& World::createRobotFromJSON(const JSON& json, Constantes::RobotColor co
 	// IGraphicalInstance* graphicProp = getGraphics().createModel(position, "robot");
 	// graphicProp->setScale({0.008, 0.008, 0.012});
 	IGraphicalInstance* graphicProp = getGraphics().createCuboid(position, robotSize);
-	graphicProp->setColor(color == Constantes::RobotColor::Orange ? Json::toColor3f(robot["color"]["orange"]) :
-	                                                                Json::toColor3f(robot["color"]["green"]));
+	std::string str_color = toString(color);
+	std::transform(str_color.cbegin(), str_color.cend(), str_color.begin(), ::tolower);
+
+	// Set robot color
+	if(robot.find("color") != robot.end() && robot["color"].find(str_color) != robot["color"].end()) {
+		graphicProp->setColor(Json::toColor3f(robot["color"][str_color]));
+	} else {
+		graphicProp->setColor({0.5, 0.5, 0.5});
+	}
 
 	Object3D& created = createObject(graphicProp, physicProp, position);
 	created.addTag(TAG_ROBOT);
@@ -101,13 +105,13 @@ Object3D& World::createRobotFromJSON(const JSON& json, Constantes::RobotColor co
 	return created;
 }
 
-Object3D& World::createRobotFromFile(std::string filename, Constantes::RobotColor color) {
+Object3D& World::createRobotFromFile(std::string filename, const std::string& robotName, Constants::RobotColor color) {
 	JSON json;
 	std::ifstream in(filename);
 
 	if(in >> json) {
 		in.close();
-		return createRobotFromJSON(json, color);
+		return createRobotFromJSON(json, robotName, color);
 	} else {
 		in.close();
 		// TODO

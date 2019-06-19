@@ -11,7 +11,6 @@
 #include <iostream>
 
 class DigitalIn {
-
 public:
 	DigitalIn(PinName pin, PinMode mode = PullUp) : _mode(mode), _pin(pin) {}
 
@@ -25,6 +24,5 @@ private:
 	PinMode _mode;
 	PinName _pin;
 };
-
 
 #endif // ROOT_DIGITALIN_H

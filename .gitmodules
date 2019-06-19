@@ -4,18 +4,15 @@
 [submodule "third_parties/asio"]
 	path = third_parties/asio
 	url = https://github.com/chriskohlhoff/asio.git
-[submodule "Units"]
-	path = third_parties/Units
-	url = https://github.com/rems4e/si-units.git
 [submodule "third_parties/threadpool"]
 	path = third_parties/threadpool
 	url = https://github.com/rems4e/threadpool
 [submodule "third_parties/catch"]
 	path = third_parties/catch
 	url = https://github.com/philsquared/Catch.git
-[submodule "third_parties/ini"]
-	path = third_parties/ini
+[submodule "third_parties/include/Units"]
+	path = third_parties/include/Units
+	url = https://github.com/rems4e/si-units.git
+[submodule "third_parties/include/ini"]
+	path = third_parties/include/ini
 	url = https://github.com/NovA80/inifile-cpp
-[submodule "src/elec/librobot"]
-	path = src/elec/librobot
-	url = https://github.com/ClubRobotInsat/librobot

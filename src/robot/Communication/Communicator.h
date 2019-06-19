@@ -14,9 +14,11 @@
 // Connexions séries disponibles
 #include "NamedPipe.h"
 #include "NullCommunicator.h"
+#include "Protocol.h"
 #include "RS232.h"
 #include "Serial.h"
 #include "TCPIP.h"
+#include "UDP.h"
 
 #include <Units/Time.h>                // Duration
 #include <communication/GlobalFrame.h> // GlobalFrame
@@ -25,6 +27,8 @@
 #include <condition_variable> // condition_variable
 #include <memory>             // unique_ptr
 #include <mutex>              // mutex, lock_guard
+#include <typeindex>          // std::type_index, typeid
+#include <variant>            // variant
 
 namespace Communication {
 
@@ -41,57 +45,34 @@ namespace Communication {
 		/// Connexion au médiumm spécifié et début de la communication
 		bool connect(const std::vector<std::string>& args);
 
+		bool connect(const Constants::RobotInitializationData&);
+
 		/// Arrêt de la communication et déconnexion du médium
 		void disconnect();
 
-		/// Notification par le constructeur du robot physique que la communication peut démarrer
-		void set_modules_initialized();
-
-		///----- Paramétrisation de la connexion physique -----///
-
-		/// Définit le temps d'attente entre chaque envoi de trame
-		void set_delay(Duration);
+		std::type_index get_protocol_type() const;
 
 		/// Active ou désactive l'affichage de débug des trames envoyées et reçues
 		void set_debug(bool active);
 
 	private:
-		/// Envoi une trame sur le médium de communication
-		void send_frame(const GlobalFrame& f);
-
-		/// Attends l'arrivée dune trame complète tant que la communication est maintenue
-		GlobalFrame recv_frame_blocking(const std::atomic_bool& running_execution);
-
-		/// Valeurs constantes de certains octets des trames
-		enum {
-			BYTE_BEGIN_FRAME_1 = 0xac,
-			BYTE_BEGIN_FRAME_2 = 0xdc,
-			BYTE_BEGIN_FRAME_3 = 0xab,
-			BYTE_BEGIN_FRAME_4_NORMAL = 0xba,
-			BYTE_BEGIN_FRAME_4_PING = 0xbb,
-		};
-
 		/// Chronomètre initialisé au début de la connexion série, utile pour débuguer les messages
 		StopWatch _chrono;
 
-		/// Mutex permettant d'assurer la serialisation correcte des donnees
-		std::mutex _mutex_write;
 		/// Une unique instance de communication peut être lancée à la fois
 		std::mutex _mutex_communication;
 		/// Processus de réception des trames
-		std::thread _reception;
+		std::thread _communication;
 
-		/// Port de communication serie utilise pour la communication avec le bus CAN
-		std::unique_ptr<Serial> _serial;
 		/// Instance d'une classe qui lit et écrit des trames de communication pour y appliquer les messages
 		std::shared_ptr<ParsingClass> _parser;
 
-		std::atomic_bool _connected, _running_execution;
-		std::condition_variable _modules_initialized;
-		std::atomic_bool _modules_init_notified;
+		/// Protocole de communication ; contient la logique d'abstraction du médium pour la lecture et l'écriture
+		std::unique_ptr<Protocol> _protocol;
 
-		/// Temps à attendre maximum entre chaque envoi de trame
-		Duration _delay;
+		std::type_index _protocol_type;
+
+		std::atomic_bool _connected;
 
 		/// Mode débug actif ou non
 		bool _debug_active;

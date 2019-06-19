@@ -3,18 +3,24 @@
 //
 
 #include "Scene.h"
+#include "AxisSceneNode.h"
+#include "IrrlichtUtils.h"
 #include "SimulationToIrrlicht.h"
 
-// TODO (pas urgent) lancer irrlicht sur un thread à part
+#include <log/Log.h>
+
+// TODO Intégrer irrlicht dans la fenêtre gtk
 
 Scene::Scene() : _objectId(0) {
-	_device = irr::createDevice(irr::video::EDT_OPENGL, irr::core::dimension2d<irr::u32>(800, 600), 32, false, true, false, 0);
+	_device = irr::createDevice(irr::video::EDT_OPENGL, irr::core::dimension2d<irr::u32>(800, 600), 32, false, true, false, this);
 	_scenemanager = _device->getSceneManager();
 	_driver = _device->getVideoDriver();
+	_collisions = _scenemanager->getSceneCollisionManager();
 
 	// Camera
 	AddCameraMaya(-1000.f, 200.f, 100.f);
 	_scenemanager->getActiveCamera()->setTarget(irr::core::vector3df(15.f, 0.f, 10.f));
+	AddAxis();
 
 	// Lumière venant du haut
 	irr::scene::ILightSceneNode* light1 = _scenemanager->addLightSceneNode();
@@ -30,12 +36,16 @@ void Scene::AddCube(float size, irr::core::vector3df position) {
 	incrementId();
 };
 
-void Scene::update() {
+void Scene::AddAxis() {
+	auto* axis = new AxesSceneNode(_scenemanager->getRootSceneNode(), _scenemanager, -1);
+	axis->setAxesScale(10);
+}
 
+void Scene::update() {
 	if(_device->run()) {
 		// Mise à jour du ratio de la fenetre (si l'utilisateur la redimensionne)
 		auto screenSize = _driver->getScreenSize();
-		_scenemanager->getActiveCamera()->setAspectRatio((float)screenSize.Width / screenSize.Height);
+		_scenemanager->getActiveCamera()->setAspectRatio(static_cast<float>(screenSize.Width) / screenSize.Height);
 
 		// Dessin de la scene
 		_driver->beginScene(true, true, irr::video::SColor(255, 200, 200, 200));
@@ -55,27 +65,20 @@ void Scene::displayMessage(std::string message) {
 }
 
 IGraphicalInstance* Scene::createDefaultObject() {
-	auto node = _scenemanager->addEmptySceneNode(0, _objectId);
-	incrementId();
-
-	_listeObjet.push_back(std::make_unique<Object>(_objectId, node));
-
-	return _listeObjet.back().get();
+	auto* node = _scenemanager->addEmptySceneNode(0, _objectId);
+	return &setupAndAddObject(node, {});
 };
 
 IGraphicalInstance* Scene::createCuboid(const Vector3m& position, const Vector3m& dimensions) {
 	irr::scene::IMeshSceneNode* cube =
 	    _scenemanager->addCubeSceneNode(1, 0, -1, SimulationToIrrlicht::VectorIrr(position), irr::core::vector3df(0, 180, 0));
-	cube->setID(_objectId);
+	Object& obj = setupAndAddMeshObject(cube, position);
 
-	_listeObjet.push_back(std::make_unique<Object>(_objectId, cube));
-	incrementId();
-
-	irr::scene::IMesh* _cubeMesh = cube->getMesh();
+	irr::scene::IMesh* cubeMesh = cube->getMesh();
 	irr::scene::IMeshManipulator* Mcube = _scenemanager->getMeshManipulator();
-	Mcube->scale(_cubeMesh, SimulationToIrrlicht::VectorIrr(dimensions));
+	Mcube->scale(cubeMesh, SimulationToIrrlicht::VectorIrr(dimensions));
 
-	return _listeObjet.back().get();
+	return &obj;
 };
 
 IGraphicalInstance* Scene::createCylinder(const Vector3m& position, Length radius, Length height) {
@@ -87,29 +90,20 @@ IGraphicalInstance* Scene::createCylinder(const Vector3m& position, Length radiu
 	                                                                  true,
 	                                                                  0.0);
 
-	auto _meshNodeTube = _scenemanager->addMeshSceneNode(cylindreMesh);
-	_meshNodeTube->setID(_objectId);
-	_listeObjet.push_back(std::make_unique<Object>(_objectId, _meshNodeTube));
-	Scene::ChangePosition(SimulationToIrrlicht::VectorIrr(position), _objectId);
-	incrementId();
-
-	return _listeObjet.back().get();
+	auto* meshNodeTube = _scenemanager->addMeshSceneNode(cylindreMesh);
+	return &setupAndAddMeshObject(meshNodeTube, position);
 };
 
 IGraphicalInstance* Scene::createSphere(const Vector3m& position, Length radius) {
-	irr::scene::ISceneNode* sphere = _scenemanager->addSphereSceneNode(SimulationToIrrlicht::ToIrrlicht(radius),
-	                                                                   32,
-	                                                                   0,
-	                                                                   -1,
-	                                                                   SimulationToIrrlicht::VectorIrr(position),
-	                                                                   irr::core::vector3df(0, 0, 0),
-	                                                                   irr::core::vector3df(1.0f, 1.0f, 1.0));
+	irr::scene::IMeshSceneNode* sphere = _scenemanager->addSphereSceneNode(SimulationToIrrlicht::ToIrrlicht(radius),
+	                                                                       32,
+	                                                                       0,
+	                                                                       -1,
+	                                                                       SimulationToIrrlicht::VectorIrr(position),
+	                                                                       irr::core::vector3df(0, 0, 0),
+	                                                                       irr::core::vector3df(1.0f, 1.0f, 1.0));
 
-	sphere->setID(_objectId);
-	_listeObjet.push_back(std::make_unique<Object>(_objectId, sphere));
-	incrementId();
-
-	return _listeObjet.back().get();
+	return &setupAndAddMeshObject(sphere, position);
 };
 
 IGraphicalInstance* Scene::createModel(const Vector3m& position, const std::string& model) {
@@ -128,24 +122,54 @@ IGraphicalInstance* Scene::createModel(const Vector3m& position, const std::stri
 	return createDefaultObject();
 }
 
-void Scene::remove(IGraphicalInstance* object) {
-	// TODO On peut pas faire comme ça, parce que IGraphicalInstance ne possède  [...]
-	// pas les méthodes de Object. Une manière propre de récupérer l'objet
-	// est de récuperer son Id, puis de récuperer l'objet dans la liste qui
-	// correspond à cet Id.
+Object& Scene::setupAndAddMeshObject(irr::scene::IMeshSceneNode* node, const Vector3m& position) {
+	Object& result = setupAndAddObject(node, position);
 
-	/*object.getInternalPtr()->remove();
-	int id = object->getId();
-	_listeObjet.erase(_listeObjet.begin() + id);*/
+	// Add triangle selector
+	irr::scene::ITriangleSelector* selector = _scenemanager->createTriangleSelector(node->getMesh(), node);
+	node->setTriangleSelector(selector);
+	selector->drop();
+
+	return result;
 }
 
-void Scene::ChangePosition(irr::core::vector3df position, int id) {
-	_listeObjet[id]->getInternalPtr()->setPosition(position);
-};
+Object& Scene::setupAndAddObject(irr::scene::ISceneNode* node, const Vector3m& position) {
+	node->setID(_objectId);
+	node->setPosition(SimulationToIrrlicht::VectorIrr(position));
 
-void Scene::Rotation(irr::core::vector3df rotation, int id) {
-	_listeObjet[id]->getInternalPtr()->setRotation(rotation);
-};
+	_listeObjet.push_back(std::make_unique<Object>(_objectId, node));
+	incrementId();
+	return *_listeObjet.back();
+}
+
+void Scene::remove(IGraphicalInstance* object) {
+	for(auto it = _listeObjet.begin(); it != _listeObjet.end(); it++) {
+		if((*it)->getId() == object->getId()) {
+			(*it)->getInternalPtr()->remove();
+			_listeObjet.erase(it);
+			return;
+		}
+	}
+}
+
+bool Scene::OnEvent(const irr::SEvent& event) {
+	if(event.EventType == irr::EET_MOUSE_INPUT_EVENT) {
+		if(event.MouseInput.Event == irr::EMIE_LMOUSE_PRESSED_DOWN) {
+			// get camera direction
+			// auto ray = _collisions->getRayFromScreenCoordinates({event.MouseInput.X, event.MouseInput.Y});
+			core::line3df ray({1.5, 1000, 1}, {1.5, -1000, 1});
+			core::vector3df point;
+			core::triangle3df triangle;
+			auto* s = _collisions->getSceneNodeAndCollisionPointFromRay(ray, point, triangle);
+
+			/*std::cout << "Ray is " << ray.start << " ; " << ray.end << std::endl;
+			std::cout << "Clicking on " << point.X << ", " << point.Y << ", " << point.Z << std::endl;
+			std::cout << "Object is: " << s << std::endl;*/
+		}
+	}
+
+	return false;
+}
 
 // Pas besoin pour l'instant
 void Scene::Loop() {
@@ -157,18 +181,33 @@ void Scene::Loop() {
 };
 
 void Scene::AddCamera() {
-	_scenemanager->addCameraSceneNode(0, irr::core::vector3df(-5, -5, -5), irr::core::vector3df(5, 0, 0));
+	if(_camera != nullptr)
+		_camera->remove();
+
+	_camera = _scenemanager->addCameraSceneNode(0, irr::core::vector3df(-5, -5, -5), irr::core::vector3df(5, 0, 0));
 };
 
 void Scene::AddCameraMaya(irr::f32 rotatespeed, irr::f32 zoomspeed, irr::f32 translationspeed) {
-	_scenemanager->addCameraSceneNodeMaya(0, rotatespeed, zoomspeed, translationspeed, -1, 40.f);
+	if(_camera != nullptr)
+		_camera->remove();
+
+	_camera = _scenemanager->addCameraSceneNodeMaya(0, rotatespeed, zoomspeed, translationspeed, -1, 40.f);
 };
 
-void Scene::PutCameraObjet() {
+void Scene::cameraLookAt() {
 	_scenemanager->getActiveCamera()->setTarget(_listeObjet.at(0)->getInternalPtr()->getAbsolutePosition());
 };
 
 void Scene::incrementId() {
-
 	_objectId++;
+}
+
+Object& Scene::getAt(int id) {
+	for(auto it = _listeObjet.begin(); it != _listeObjet.end(); it++) {
+		if((*it)->getId() == id) {
+			return **it;
+		}
+	}
+	logError("Id not found: ", id);
+	throw std::runtime_error("bad id");
 }

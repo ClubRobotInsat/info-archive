@@ -1,3 +1,5 @@
+add_subdirectory(commun)
+add_subdirectory(Lidar)
 add_subdirectory(robot)
-#add_subdirectory(simulateur)
+add_subdirectory(simulateur)
 #add_subdirectory(elec)

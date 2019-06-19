@@ -14,7 +14,6 @@
 
 
 class Start_Screen : public Gtk::Window {
-
 public:
 	Start_Screen();
 
@@ -38,7 +37,6 @@ protected:
 	 * @return True if there is some changes in /dev, false otherwise
 	 */
 	bool scanSerialConnection();
-
 
 	/**
 	 * @brief Update _displayedList() and ask gtkmm for a redraw
@@ -77,6 +75,5 @@ private:
 
 	sigc::signal<void, std::string> _startScreenSignalOnExit;
 };
-
 
 #endif // ROOT_START_SCREEN_H

@@ -10,15 +10,17 @@
 #define WIDTH 640
 #define HEIGHT 480
 #define DEVICE "/dev/video1"
-#define FPS 30.0f // Je crois que c'est le nombre de FPS d'une vidéo lorsque l'on utilise
-                  // la possibilité d'enregistrer un .avi...
+#define FPS \
+	30.0f // Je crois que c'est le nombre de FPS d'une vidéo lorsque l'on utilise
+	      // la possibilité d'enregistrer un .avi...
 
 //#define FORMAT V4L2_PIX_FMT_MJPEG
 #define FORMAT V4L2_PIX_FMT_YUYV // J'ai eu des problèmes avec MJPEG, ça ne marchait pas à tous les coups...
 
-#define GRAB_METHOD 1 // Peut valoir 0 ou 1 ; apparemment, avec 0, c'est du "streaming"
-                      // (V4L2_CAP_STREAMING) tandis qu'avec 0 c'est du "read I/O"
-                      // (V4L2_CAP_READWRITE)...
+#define GRAB_METHOD \
+	1 // Peut valoir 0 ou 1 ; apparemment, avec 0, c'est du "streaming"
+	  // (V4L2_CAP_STREAMING) tandis qu'avec 0 c'est du "read I/O"
+	  // (V4L2_CAP_READWRITE)...
 
 #define AVI_FILE_NAME "video1.avi" // Inutilisé ^^
 

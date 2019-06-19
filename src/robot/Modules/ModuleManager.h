@@ -28,16 +28,18 @@
 
 #include "Module.hpp"
 
-#include "Avoidance2019.h"
-#include "IO2019.h"
-#include "Motors2019.h"
-//#include "Moving2019.h"
-#include "Servos2019.h"
+#include "Captors.h"
+#include "IO.h"
+#include "Motors.h"
+#include "Navigation.h"
+#include "NavigationParameters.h"
+#include "Pumps.h"
+#include "Servos.h"
 
-#include <memory>   // unique_ptr, make_unique
-#include <optional> // optional
+#include <memory> // unique_ptr, make_unique
 
 namespace PhysicalRobot {
+
 	class ModuleManager final {
 	public:
 		static const uint8_t NB_MODULES_MAX = 16;
@@ -47,7 +49,7 @@ namespace PhysicalRobot {
 		/// Ajoute un module dont l'ID et le type sont uniques
 		/// @throw  si les paramètres sont mauvais ou si un module ayant le même id / type existe déjà
 		template <typename Module, typename... T>
-		Module& add_module(uint8_t id, T... params);
+		Module& add_module(uint8_t id, T&&... params);
 
 		/// Retourne vrai si un module de type 'Module' existe
 		/// @nothrow
@@ -62,10 +64,14 @@ namespace PhysicalRobot {
 		/// @nothrow
 		uint8_t get_nb_modules() const;
 
+		/// Retourne la liste de tous les modules instantiés
+		/// @nothrow
+		std::vector<uint8_t> get_list_modules() const;
+
 		/// Retourne le module selon l'id
 		/// Il faut appliquer `dynamic_cast<T&>(module);` pour convertir 'module' vers le type souhaité
 		/// @throw si l'id est trop grand ou si le module associé n'existe pas
-		BaseModule& get_module_by_id(uint8_t id);
+		Module& get_module_by_id(uint8_t id);
 
 		/// Retourne le module selon le type
 		/// @throw si aucun module ayant le bon type n'existe
@@ -77,23 +83,16 @@ namespace PhysicalRobot {
 		/// Cette fonction implémente l'API de `ParsingClassChecker`
 		// FIXME Vérifier que les modules de grands `id`s peuvent communiquer
 		// FIXME sinon utiliser un compteur pour répartir la parole de manière cyclique
-		std::optional<GlobalFrame> write_frame() const;
+		std::vector<GlobalFrame> write_frame() const;
+
 		/// Lecture d'une trame ; implémente l'API de `ParsingClassChecker`
 		void read_frame(const GlobalFrame&);
-
-		/*/// Construit la trame globale du robot depuis chaque module instantié
-		/// @maythrow si on module n'arrive pas à générer sa trame (très peu probable)
-		GlobalFrame write_frame() const;
-
-		/// Met à jour tous les modules depuis une trame qui contient l'état général du robot
-		/// @throw si la trame a un mauvais formatage
-		void read_frame(const GlobalFrame&);*/
 
 		/// Désactive tous les comportements mécaniques du robot (anciennement 'couperMeca')
 		void deactivation();
 
 	private:
-		std::unique_ptr<BaseModule> _modules[NB_MODULES_MAX];
+		std::unique_ptr<Module> _modules[NB_MODULES_MAX];
 	};
 
 	/////////////////////////////////////////
@@ -113,7 +112,7 @@ namespace PhysicalRobot {
 	}
 
 	template <typename Module, typename... T>
-	Module& ModuleManager::add_module(uint8_t id, T... params) {
+	Module& ModuleManager::add_module(uint8_t id, T&&... params) {
 		if(id >= NB_MODULES_MAX) {
 			throw std::runtime_error("Impossible to add module n°" + std::to_string(id) + " (> " +
 			                         std::to_string(NB_MODULES_MAX) + ").");
@@ -132,7 +131,7 @@ namespace PhysicalRobot {
 
 	template <typename Module>
 	Module& ModuleManager::get_module() {
-		static_assert(std::is_base_of<BaseModule, Module>::value, "The specified module must inherit Module as public.");
+		static_assert(std::is_base_of<Module, Module>::value, "The specified module must inherit Module as public.");
 		for(uint8_t id = 0; id < NB_MODULES_MAX; ++id) {
 			if(_modules[id] != nullptr) {
 				try {
@@ -144,6 +143,7 @@ namespace PhysicalRobot {
 
 		throw std::runtime_error("The module doesn't exist.");
 	}
+
 } // namespace PhysicalRobot
 
 #endif // ROOT_MODULEMANAGER_H

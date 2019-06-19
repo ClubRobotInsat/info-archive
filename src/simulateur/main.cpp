@@ -2,13 +2,10 @@
 // Created by paul on 04/02/16.
 //
 
-#include <atomic>
 #include <getopt.h>
 #include <signal.h>
 
-//#include "communication/Robot2017.h"
 #include "Commun.h"
-#include "ConstantesCommunes.h"
 #include "core/Simulateur.h"
 #include "core/SimulateurConstantes.h"
 #include "core/World.h"
@@ -16,8 +13,11 @@
 
 using namespace std;
 
-void printHelp() {
-	std::cout << "Usage : --robot [on|off] --world [on|off] --color [green|orange] --load <path.json> [--no-physics]" << std::endl;
+void printHelp(std::ostream& os = std::cout) {
+	std::string colors = "["s + toString(Constants::RobotColor::Purple) + "|" + toString(Constants::RobotColor::Yellow) + "]";
+	std::transform(colors.cbegin(), colors.cend(), colors.begin(), ::tolower);
+
+	os << "Usage : --robot [name|off] --world [on|off] --color " << colors << " --load <path.json> [--no-physics]" << std::endl;
 }
 
 /** Cette fonction parse les arguments envoyés au simu et
@@ -30,10 +30,10 @@ bool parseArgument(int argc, char** argv, Simulateur& simulateur) {
 	bool parsingOK = true;
 
 	bool no_physics = false;
-	bool robot = true;
+	std::string robot = "primary";
 	bool world = true;
 	std::string json_file;
-	Constantes::RobotColor color = Constantes::RobotColor::Undef;
+	Constants::RobotColor color = Constants::RobotColor::Undef;
 
 	int arg;
 	static struct option long_options[] = {{"robot", required_argument, 0, 'r'},
@@ -46,19 +46,12 @@ bool parseArgument(int argc, char** argv, Simulateur& simulateur) {
 
 	int long_index = 0;
 	while((arg = getopt_long(argc, argv, "r:c:w:l:h:", long_options, &long_index)) != -1) {
-
 		switch(arg) {
 			case 'r':
-				if(std::string(optarg) == "off") {
-					robot = false;
-				}
+				robot = std::string(optarg);
 				break;
 			case 'c':
-				if(std::string(optarg) == "orange") {
-					color = Constantes::RobotColor::Orange;
-				} else if(std::string(optarg) == "green") {
-					color = Constantes::RobotColor::Green;
-				}
+				color = Constants::string_to_color(std::string(optarg));
 				break;
 			case 'w':
 				if(std::string(optarg) == "off") {
@@ -78,103 +71,60 @@ bool parseArgument(int argc, char** argv, Simulateur& simulateur) {
 		}
 	}
 
-	// TODO virer les vieux namespaces tous pourris comme Constantes (remplacer par des trucs logiques)
-	if(color == Constantes::RobotColor::Undef) {
-		logDebug5("Pas de couleur spécifiée.");
+	if(color == Constants::RobotColor::Undef) {
+		logError("Pas de couleur spécifiée.");
 		printHelp();
 		return false;
 	}
+	logDebug("Démarrage du simulateur");
 	std::ifstream file(json_file.c_str());
 	if(!file) {
 		// Utilisation de TABLE_2018 par défaut
+		logDebug4("Utilisation de TABLE_2019.json par défaut.");
 		json_file = "";
+	} else {
+		logDebug("Utilisation d'une nouvelle table de jeu : '", json_file, "'.");
 	}
-
-	logDebug5("Démarrage du simulateur");
 	simulateur.setJSONFile(json_file);
 
 	// Robot
-	if(robot) {
-		simulateur.addRobot(color);
-		logDebug5(std::string("Couleur du robot : ") + std::string(color == Constantes::RobotColor::Orange ? "orange" : "vert"));
+	simulateur.setRobotName(robot);
+	simulateur.setRobotColor(color);
+	if(robot != "off") {
+		logDebug("Robot \"", robot, "\" ajouté ! ");
+		logDebug(std::string("Couleur du robot : ") + toString(color));
 	} else {
 		logDebug4("Aucun robot ajouté.");
 	}
 
 	// Monde
+	simulateur.setWorldEnabled(world);
 	if(world) {
-		simulateur.initWorld();
-		logDebug5("Ajout du monde au simulateur...");
+		logDebug("Ajout du monde au simulateur...");
 	} else {
 		logDebug4("Le monde n'a pas été ajouté.");
 	}
 
+	simulateur.setPhysicsEnabled(!no_physics);
 	if(no_physics) {
-		simulateur.disableSimulation();
 		logDebug4("Desactivation de la physique");
 	}
 
 	return parsingOK;
 }
 
-namespace {
-	std::atomic_bool _simuAlive = {true};
-	Simulateur _simu;
-}
-
-void stopSimu() {
-	_simuAlive = false;
-}
-
-void parseConsole() {
-
-	while(_simuAlive) {
-		// Obtention de la commande de l'utilisateur.
-		std::string input;
-		std::getline(std::cin, input);
-
-		// quitter
-		if(input == std::string("q")) {
-			_simuAlive = false;
-			// reset
-		} else if(input == std::string("r")) {
-			_simu.setResetWorldFlag(true);
-			// commande inconnue, afficher l'aide
-		} else {
-			std::cout << "help : q (quit), r (reset)"
-			          << std::endl; // TO DO Afficher l'aide de façon synchrone avec un buffer
-		}
-	}
-}
-
 int main(int argc, char** argv) {
+	Simulateur& simu = Simulateur::getInstance();
+
 	// On coupe proprement le simu.
-	signal(SIGINT, [](int) {
-		_simuAlive = false;
-		std::cout << "Demande d'arrêt du simulateur" << std::endl;
-	});
+	std::signal(SIGINT, [](int) { Simulateur::getInstance().requestStop(); });
 
-	if(parseArgument(argc, argv, _simu)) {
-		logDebug5("Starting simulator");
-
-		auto last = TimePoint::now();
-
-		// Thread pour analyser les entrées console ("entrée" pour reset par exemple)
-		std::thread consoleThread(std::bind(&parseConsole));
-		consoleThread.detach();
-
-		while(_simuAlive) {
-			_simu.update(10_ms);
-
-			// On se cale sur 60 fps.
-			auto now = TimePoint::now();
-			sleep(max(0_s, 1 / 60_Hz - (now - last)));
-			last = now;
-		}
+	if(parseArgument(argc, argv, simu)) {
+		logDebug("Starting simulator");
+		simu.start();
 	}
 
 	return EXIT_SUCCESS;
 }
 
-// TODO [BIG PROJECT] Lecture de la table en Json
 // TODO [BIG (?) PROJECT] Gestion de l'IA au sein du simu

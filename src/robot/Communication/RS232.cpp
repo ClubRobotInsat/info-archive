@@ -10,7 +10,6 @@
 #include <termios.h>
 #endif
 
-
 namespace Communication {
 
 	/// Ouvre le port série indiqué et le configure
@@ -132,7 +131,7 @@ namespace Communication {
 	}
 
 	/// Attend plusieurs octets sur le port et retourne lorsque le nombre demandé a été reçu - BLOQUANT
-	void RS232::read_bytes(uint8_t* bytes, std::size_t bytes_number) {
+	size_t RS232::read_bytes(uint8_t* bytes, std::size_t bytes_number) {
 #ifdef WIN32
 
 		DWORD dummy;
@@ -157,5 +156,7 @@ namespace Communication {
 		}
 
 #endif
+		return bytes_number;
 	}
+
 } // namespace Communication

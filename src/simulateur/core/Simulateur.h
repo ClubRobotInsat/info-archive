@@ -9,55 +9,22 @@
 
 #include <atomic>
 
-#include "ConstantesCommunes.h"
+#include "../gui/IGuiClient.h"
+#include "../gui/IGuiContext.h"
+#include "SimuRobot.h"
 #include "World.h"
-
-class Robot2018;
-
-// permet de positionner plus facilement les objets
-struct CubeData {
-public:
-	/**
-	 * Obtient la taille du cube
-	 */
-	const Vector3m getSize() {
-		return size;
-	}
-	/**
-	 * Obtient les coordonnées du centre du cube
-	 * Permet de convertir la position du coin supérieur gauche en centre du cube pour faciliter le placement des points
-	 */
-	const Vector3m getPosition();
-	/**
-	 * Modifie la taille du cube
-	 * @param newSize
-	 */
-	void setSize(Vector3m newSize) {
-		size = newSize;
-	}
-	/**
-	 * Modifie la position du cube
-	 * @param newPosition du coin supérieur gauche du cube
-	 */
-	void setPosition(Vector3m newPosition) {
-		position = newPosition;
-	}
-
-private:
-	/// Taille du cube
-	Vector3m size;
-	/// Position du coin supérieur gauche du cube
-	Vector3m position;
-};
 
 enum SIMU_YEAR { MOON = 2017, CITY = 2018 };
 
-class Simulateur {
+class Simulateur : public IGuiClient {
 public:
 	/**
 	 * Obtient un pointeur vers l'unique instance du simulateur
 	 */
 	static Simulateur& getInstance() {
+		if(_instance == nullptr) {
+			_instance = std::make_unique<Simulateur>();
+		}
 		return *_instance;
 	}
 
@@ -72,6 +39,49 @@ public:
 	~Simulateur();
 
 	/**
+	 * Execute la boucle principale du simulateur. Cette méthode
+	 * ne retourne pas tant que le simulateur ne s'est pas fermé.
+	 * */
+	void start();
+
+
+	/**
+	 * Change de fichier JSON cible pour load toute la table et ajouter le robot.
+	 * Nécessite un reset du simulateur pour être appliqué.
+	 */
+	void setJSONFile(const std::string&);
+
+	/** Active ou désactive l'ajout de l'environnement dans le simulateur. Si l'environnement
+	 * est désactivé, le robot évolue dans un espace vide.
+	 *
+	 * Ce paramètre prend effet lors d'un reset du simulateur. */
+	void setWorldEnabled(bool enabled) {
+		_enableWorld = enabled;
+	}
+
+	/**
+	 * Change la couleur du robot. Ce paramètre sera appliqué lors d'un reset du
+	 * simulateur.
+	 */
+	void setRobotColor(Constants::RobotColor color) {
+		_robotColor = color;
+	}
+
+	/**
+	 * Change le nom du robot. Ce paramètre est appliqué lors d'un reset du simulateur.
+	 * Si le nom du robot vaut "off", alors aucun robot ne sera ajouté au simulateur.
+	 */
+	void setRobotName(const std::string& name) {
+		_robotName = name;
+	}
+
+	/**
+	 * Active ou désactive les collisions. Ce paramètre prend effet immédiatement.
+	 * */
+	void setPhysicsEnabled(bool enabled) override;
+
+
+	/**
 	 * Obtient un pointeur sur le monde du simu
 	 */
 	World* getWorld() {
@@ -79,28 +89,17 @@ public:
 	}
 
 	/**
+	 * Envoie une demande d'arrêt au simulateur. Celui-ci effectue
+	 * les dernières opérations avant l'arrêt, puis s'arrête.
+	 * */
+	void requestStop();
+
+	/**
 	 * Mise à jour du monde et de l'état du robot
 	 * @param time 10_ms is good
 	 */
 	void update(Duration time);
 
-	/**
-	 * Change de fichier JSON cible pour load toute la table et ajouter le robot
-	 */
-	void setJSONFile(const std::string&);
-
-	/**
-	 * Initialise la simulation et place tous les objets de l'année en cours
-	 */
-	void initWorld();
-
-	/**
-	 * On demande une réinitialisation du monde si on reçoit une entrée console
-	 * @param flag TRUE = reset demandé
-	 */
-	void setResetWorldFlag(bool flag) {
-		_resetWorld = flag;
-	};
 
 	/**
 	 * Réinitialisation du simulateur : objets + robot
@@ -108,52 +107,80 @@ public:
 	void resetWorld();
 
 	/**
+	 * Réinitialisation du simulateur avec les données de reset.
+	 * */
+	void resetWorld(const ResetData& resetData) override;
+
+	ResetData getResetData() override;
+
+	Simu::SimuRobot& getRobot() {
+		return *_robot;
+	}
+
+	void sendTextMessage(const std::string& message);
+
+	void connect(const ConnectionData& connectionData) override;
+
+	void createIAProcess(const IAProcessData& iaProcessData, const ConnectionData& connectionData) override;
+
+	void testNavigationForward(Distance distance) override;
+
+	void testNavigationTurn(Angle angle) override;
+
+	void setTiretteState(bool activated) override;
+
+	std::vector<std::string> getRobotColors() const override;
+
+private:
+	/// Unique instance du simulateur
+	static std::unique_ptr<Simulateur> _instance;
+
+	std::unique_ptr<IGraphicalContext> _graphicalCtx;
+	std::unique_ptr<IPhysicalContext> _physicalCtx;
+	std::unique_ptr<IGuiContext> _guiCtx;
+
+	friend class SimuGuiClient;
+
+	/// Le monde dans lequel on stocke tous les objets
+	World _theWorld;
+
+	std::unique_ptr<Simu::SimuRobot> _robot;
+
+	std::atomic_bool _simuAlive = false;
+
+
+	// Parametres du simulateur
+
+	/// Nom du robot actuel
+	std::string _robotName = "off";
+	/// Couleur du robot actuel
+	Constants::RobotColor _robotColor = Constants::RobotColor::Undef;
+
+	/// Indique si la physique est activée.
+	bool _enablePhysics = true;
+
+	bool _enableWorld = true;
+
+	std::string _json_file = "";
+
+	std::optional<ConnectionData> _last_connection;
+
+
+	/**
+	 * Initialise la simulation et place tous les objets de l'année en cours
+	 */
+	void initWorld();
+
+	/**
 	 * On arrête la simulation : suppression du robot et de tous les objets
 	 */
-	void endWorld();
+	void destroyWorld();
 
 	/**
 	 * On ajoute notre robot sur la table
 	 * @param color couleur du robot, détermine sa position initiale et sa couleur d'affichage
 	 */
-	void addRobot(Constantes::RobotColor color);
-
-	/**
-	 * Obtient la couleur du robot
-	 */
-	Constantes::RobotColor getRobotColor();
-
-	/**
-	 * Désactive la simulation physique de tous les objets et du robot sur la table
-	 * L'affichage n'est pas compromis
-	 */
-	void disableSimulation();
-
-	void sendTextMessage(const std::string& message);
-
-private:
-	/// Unique instance du simulateur
-	static Simulateur* _instance;
-
-	std::unique_ptr<IGraphicalContext> _graphicalCtx;
-	std::unique_ptr<IPhysicalContext> _physicalCtx;
-
-	/// Le monde dans lequel on stocke tous les objets
-	World _theWorld;
-
-	/// Robot simulé de l'année actuelle
-	std::unique_ptr<Robot2018> _robot;
-
-	/// On demande à réinitialiser la simulation?
-	std::atomic_bool _resetWorld;
-
-	/// Indique si la physique est activée.
-	bool _enablePhysics;
-
-	// Pour afficher sans simuler les objets de la table
-	//(parce que le robot est sensible et que ça fait n'importe quoi)
-
-	std::string _json_file;
+	void addRobot(std::string name, Constants::RobotColor color);
 };
 
 #endif // ROOT_SIMULATEUR_H

@@ -5,13 +5,11 @@
 #include "NamedPipe.h"
 #include <log/Log.h>
 
-//#include <exception>
 #include <sys/stat.h> // stat, lstat, mkfifo, S_ISFIFO
 #include <unistd.h>   // close, unlink, write
-//#include <sstream>
-//#include <string>
 
 namespace Communication {
+
 	NamedPipe::NamedPipe(const std::string& path_read, const std::string& path_write)
 	        : _path_read(path_read), _path_write(path_write) {
 		// Si les pipes n'existent pas, on les crée
@@ -20,12 +18,12 @@ namespace Communication {
 
 		// Ouverture des FIFOs
 		if((_fd_read = open(_path_read.c_str(), O_RDWR)) == -1) {
-			std::cout << "impossible to open read" << std::endl;
-			throw ErrorPipeOpening("Echec de l'ouverture du FIFO read (open).");
+			throw ErrorPipeOpening("NamedPipe::open: Impossible to open the read FIFO.");
 		}
 		if((_fd_write = open(_path_write.c_str(), O_RDWR)) == -1) {
-			std::cout << "impossible to open write" << std::endl;
-			throw ErrorPipeOpening("Echec de l'ouverture du FIFO write (open).");
+			close(_fd_read);
+			unlink(_path_read.c_str());
+			throw ErrorPipeOpening("NamedPipe::open: Impossible to open the write FIFO.");
 		}
 	}
 
@@ -47,7 +45,7 @@ namespace Communication {
 		}
 	}
 
-	void NamedPipe::read_bytes(uint8_t* bytes, std::size_t bytes_number) {
+	size_t NamedPipe::read_bytes(uint8_t* bytes, std::size_t bytes_number) {
 		std::size_t nb_read = 0;
 		while(nb_read < bytes_number) {
 			ssize_t val = read(_fd_read, bytes + nb_read, bytes_number - nb_read);
@@ -56,10 +54,12 @@ namespace Communication {
 				perror("Erreur retournée");
 				sleep(1_s);
 			}
-			if(val == 0)
+			if(val == 0) {
 				throw ErreurEOF();
+			}
 			nb_read += val;
 		}
+		return bytes_number;
 	}
 
 	bool NamedPipe::create_descriptor(const std::string& path) {
@@ -90,4 +90,5 @@ namespace Communication {
 
 		return pipe_created;
 	}
+
 } // namespace Communication

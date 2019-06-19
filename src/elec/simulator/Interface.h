@@ -10,7 +10,6 @@
 #include <queue>
 
 class Interface {
-
 public:
 	Interface() {}
 
@@ -34,8 +33,6 @@ private:
 	static std::queue<uint8_t> _from_elec;
 };
 
-
 static Interface interface_elec_info;
-
 
 #endif // ROOT_INTERFACE_H_H

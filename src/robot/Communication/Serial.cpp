@@ -1,6 +1,7 @@
 #include "Serial.h"
 
 namespace Communication {
+
 	void Serial::write_byte(uint8_t byte) {
 		this->write_bytes(&byte, 1);
 	}
@@ -10,4 +11,5 @@ namespace Communication {
 		this->read_bytes(&ret, 1);
 		return ret;
 	}
+
 } // namespace Communication

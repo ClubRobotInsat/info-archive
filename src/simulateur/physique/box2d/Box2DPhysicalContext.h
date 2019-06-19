@@ -21,7 +21,7 @@ public:
 
 	b2World& getWorld();
 
-	virtual void update() override;
+	void update() override;
 
 	IPhysicalInstance* createDefaultObject(const Vector3m& position, BodyType type) override;
 	IPhysicalInstance* createCuboid(const Vector3m& position, Mass mass, BodyType type, const Vector3m& dimensions) override;
@@ -45,6 +45,5 @@ private:
 
 	int nextId();
 };
-
 
 #endif // ROOT_BOX2DPHYSICALCONTEXT_H

@@ -4,6 +4,9 @@ set(COMMUNICATION_SOURCE
         NullCommunicator.cpp
         TCPIP.cpp
         NamedPipe.cpp
-        Communicator.hpp)
+        UDP.cpp
+        Communicator.hpp
+        Protocol.hpp
+        CommunicatorParsing.cpp)
 add_library(Communication STATIC ${COMMUNICATION_SOURCE})
 target_link_libraries(Communication Outils_Robot)

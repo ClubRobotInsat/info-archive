@@ -4,7 +4,7 @@
 #include "Clock.h"
 #include "Enum/Enum.h"
 #include "MathToolbox/MathToolbox.h"
-#include "ResultatAction.h"
+#include "Outcome.h"
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wint-in-bool-context"

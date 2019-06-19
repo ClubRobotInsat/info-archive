@@ -43,8 +43,7 @@ IPhysicalInstance* Box2DPhysicalContext::createCuboid(const Vector3m& position, 
 	return addObject(cubeDefinition, this, nextId(), position.x, position.y);
 }
 
-IPhysicalInstance*
-    Box2DPhysicalContext::createCylinder(const Vector3m& position, Mass mass, BodyType type, Length radius, Length height) {
+IPhysicalInstance* Box2DPhysicalContext::createCylinder(const Vector3m& position, Mass mass, BodyType type, Length radius, Length /* height */) {
 	PhysicalObjectDefinition cylinderDefinition;
 	cylinderDefinition.setShapeCircle(radius);
 	cylinderDefinition.setMass(mass);
@@ -53,7 +52,7 @@ IPhysicalInstance*
 }
 
 void Box2DPhysicalContext::remove(IPhysicalInstance* object) {
-	for(auto it = _objects.begin(); it == _objects.end(); it++) {
+	for(auto it = _objects.begin(); it != _objects.end(); it++) {
 		if((*it)->getId() == object->getId()) {
 			_objects.erase(it);
 			return;
