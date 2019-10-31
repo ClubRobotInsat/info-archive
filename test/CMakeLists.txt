@@ -64,6 +64,7 @@ target_link_libraries(unit_testing_robot Robot)
 target_link_libraries(unit_testing_servos_conversions Modules)
 target_link_libraries(unit_testing_interfacers ModuleInterfacers)
 target_link_libraries(unit_testing_strategy Strategy test_utils)
+target_link_libraries(unit_testing_led19 Modules Robot)
 if(EXISTS "/usr/bin/petrilab")
     target_link_libraries(unit_testing_petri Strategy test_utils)
 endif()
@@ -85,7 +86,7 @@ endif()
 set(UNITTEST_TARGET_NAME "unit_testing_all")
 add_executable(${UNITTEST_TARGET_NAME}
         $<TARGET_OBJECTS:catch_main>
-        ${files})
+        ${files} unit-led19.cpp)
 target_include_directories(${UNITTEST_TARGET_NAME} PRIVATE "../third_parties/catch/single_include/catch2")
 
 if(RASPI)
