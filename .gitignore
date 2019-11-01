@@ -9,6 +9,6 @@ cmake-build-debug/
 /doc/html
 /doc/latex
 *.swp
-/third_parties
+third_parties
 
-src/elec/librobot #Librobot is a full repository. To update it just go in it and pull
+bin
