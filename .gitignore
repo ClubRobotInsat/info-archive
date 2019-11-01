@@ -10,3 +10,4 @@ cmake-build-debug/
 /doc/latex
 *.swp
 /third_parties
+bin
