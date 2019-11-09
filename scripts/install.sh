@@ -157,7 +157,7 @@ if [ $install_opencv -eq 1 ]; then
 	echo -e "${Yellow}Verification des outils OpenCV${End}"
 	
 	if [ `dpkg-query -W libopencv-dev | awk '{print $1}'` == "libopencv-dev" ]; then
-		OCV_VERSION=$(dpkg-query -W libopencv-dev | awk '{print $2}' | awk -F . '{print $1}')
+		OCV_VERSION=$(pkg-config --modversion opencv | awk -F . '{print $1}')
 		if [ $OCV_VERSION -ge $OCV_MIN_VERSION_REQUIRED ]; then
 			echo -e "${Green}OpenCV déjà installé avec la version minimale requise${End}"
 		else
