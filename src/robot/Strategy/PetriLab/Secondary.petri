@@ -25,7 +25,7 @@
         <Libs />
       </Profile>
       <Profile Name="ARM release" SourceOutputPath="src" LibOutputPath="../../../../build_arm/src/robot/Strategy" DeployMode="DoNothing" DeployPath="" DeployScript="#!/bin/sh&#xA;&#xA;/bin/cp &quot;$PETRI_LIB_PATH&quot; .&#xA;" DeployWhenDebug="True" Port="12345" DebugMode="Attach" Hostname="localhost" HostProgram="" HostProgramArguments="">
-        <Compiler Invocation="/usr/bin/arm-linux-gnueabihf-g++-7">
+        <Compiler Invocation="/usr/bin/arm-linux-gnueabihf-g++-8">
           <Flag Value="--std=c++17" />
         </Compiler>
         <IncludePaths>
@@ -38,19 +38,19 @@
         <Libs />
       </Profile>
     </Profiles>
-    <Window X="0" Y="0" W="1918" H="1059" />
+    <Window X="0" Y="0" W="959" H="1080" />
   </Settings>
   <PetriNet ID="0" Name="Root" X="0" Y="0" Active="true" RequiredTokens="0" Radius="30">
     <Comments />
     <States>
       <Exit ID="1" Name="End" X="570" Y="280" Active="false" RequiredTokens="1" Radius="25" Function="Petri::Utility::doNothing()" />
       <Action ID="2" Name="BEGIN" X="370" Y="280" Active="true" RequiredTokens="0" Radius="20" Function="backward(50_cm)" />
-      <Action ID="6" Name="" X="844" Y="356" Active="true" RequiredTokens="0" Radius="20" Function="Petri::Utility::doNothing()" />
-      <Action ID="7" Name="" X="1041" Y="338" Active="false" RequiredTokens="1" Radius="20" Function="Petri::Utility::doNothing()" />
+      <Action ID="3" Name="" X="844" Y="356" Active="true" RequiredTokens="0" Radius="20" Function="Petri::Utility::doNothing()" />
+      <Action ID="4" Name="" X="1041" Y="338" Active="false" RequiredTokens="1" Radius="20" Function="Petri::Utility::doNothing()" />
     </States>
     <Transitions>
-      <Transition ID="3" Name="true" X="466" Y="280" BeforeID="2" AfterID="1" Condition="true" W="50" H="30" ShiftX="-4" ShiftY="0" ShiftAmplitude="200" />
-      <Transition ID="8" Name="" X="942.5" Y="347" BeforeID="6" AfterID="7" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="197.82062582046393" />
+      <Transition ID="5" Name="true" X="466" Y="280" BeforeID="2" AfterID="1" Condition="true" W="50" H="30" ShiftX="-4" ShiftY="0" ShiftAmplitude="200" />
+      <Transition ID="6" Name="" X="942.5" Y="347" BeforeID="3" AfterID="4" Condition="true" W="50" H="30" ShiftX="0" ShiftY="0" ShiftAmplitude="197.82062582046393" />
     </Transitions>
   </PetriNet>
 </Document>
