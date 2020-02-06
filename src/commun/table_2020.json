@@ -1,0 +1,987 @@
+{
+    "objects": [
+        {
+            "A*": {
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 3.0,
+                "y": 2.0,
+                "z": 0.02
+            },
+            "position": {
+                "x": 1.6,
+                "y": 1.0,
+                "z": -0.01
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0.68,
+                    "g": 0.84,
+                    "r": 0.9
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0.0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 0.4,
+                "y": 0.03,
+                "z": 0.0
+            },
+            "position": {
+                "x": 0.3,
+                "y": 0.515,
+                "z": 0.02
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0.0,
+                    "g": 1,
+                    "r": 0.0
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 0.4,
+                "y": 0.03,
+                "z": 0.0
+            },
+            "position": {
+                "x": 0.3,
+                "y": 1.085,
+                "z": 0.02
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0.0,
+                    "g": 0.0,
+                    "r": 1
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "enabled": false
+            },
+            "angle": 0,
+            "height": 0.115,
+            "position": {
+                "x": 0.033,
+                "y": 1.45,
+                "z": 0
+            },
+            "radius": 0.036,
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 0,
+                    "r": 0
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cylinder"
+        },
+        {
+            "A*": {
+                "enabled": false
+            },
+            "angle": 0,
+            "height": 0.115,
+            "position": {
+                "x": 0.033,
+                "y": 1.525,
+                "z": 0
+            },
+            "radius": 0.036,
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 0,
+                    "r": 0
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cylinder"
+        },
+        {
+            "A*": {
+                "enabled": false
+            },
+            "angle": 0,
+            "height": 0.115,
+            "position": {
+                "x": 0.033,
+                "y": 1.6,
+                "z": 0
+            },
+            "radius": 0.036,
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 0,
+                    "r": 0
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cylinder"
+        },
+        {
+            "A*": {
+                "enabled": false
+            },
+            "angle": 0,
+            "height": 0.115,
+            "position": {
+                "x": 0.033,
+                "y": 1.675,
+                "z": 0
+            },
+            "radius": 0.036,
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 0,
+                    "r": 0
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cylinder"
+        },
+        {
+            "A*": {
+                "enabled": false
+            },
+            "angle": 0,
+            "height": 0.115,
+            "position": {
+                "x": 0.033,
+                "y": 1.75,
+                "z": 0
+            },
+            "radius": 0.036,
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 0,
+                    "r": 0
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cylinder"
+        },
+        {
+            "A*": {
+                "enabled": false
+            },
+            "angle": 0,
+            "height": 0.115,
+            "position": {
+                "x": 3.167,
+                "y": 1.45,
+                "z": 0
+            },
+            "radius": 0.036,
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 0,
+                    "r": 0
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cylinder"
+        },
+        {
+            "A*": {
+                "enabled": false
+            },
+            "angle": 0,
+            "height": 0.115,
+            "position": {
+                "x": 3.167,
+                "y": 1.525,
+                "z": 0
+            },
+            "radius": 0.036,
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 0,
+                    "r": 0
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cylinder"
+        },
+        {
+            "A*": {
+                "enabled": false
+            },
+            "angle": 0,
+            "height": 0.115,
+            "position": {
+                "x": 3.167,
+                "y": 1.6,
+                "z": 0
+            },
+            "radius": 0.036,
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 0,
+                    "r": 0
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cylinder"
+        },
+        {
+            "A*": {
+                "enabled": false
+            },
+            "angle": 0,
+            "height": 0.115,
+            "position": {
+                "x": 3.167,
+                "y": 1.675,
+                "z": 0
+            },
+            "radius": 0.036,
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 0,
+                    "r": 0
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cylinder"
+        },
+        {
+            "A*": {
+                "enabled": false
+            },
+            "angle": 0,
+            "height": 0.115,
+            "position": {
+                "x": 3.167,
+                "y": 1.75,
+                "z": 0
+            },
+            "radius": 0.036,
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 0,
+                    "r": 0
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cylinder"
+        },
+        {
+            "A*": {
+                "enabled": false
+            },
+            "angle": 0,
+            "height": 0.115,
+            "position": {
+                "x": 0.4,
+                "y": 0.4,
+                "z": 0
+            },
+            "radius": 0.036,
+            "simulateur": {
+                "color": {
+                    "b": 0.0,
+                    "g": 0.0,
+                    "r": 1
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cylinder"
+        },
+        {
+            "A*": {
+                "enabled": false
+            },
+            "angle": 0,
+            "height": 0.115,
+            "position": {
+                "x": 0.550,
+                "y": 1.085,
+                "z": 0
+            },
+            "radius": 0.036,
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 0,
+                    "r": 1
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cylinder"
+        },
+        {
+            "A*": {
+                "enabled": false
+            },
+            "angle": 0,
+            "height": 0.115,
+            "position": {
+                "x": 0.4,
+                "y": 1.2,
+                "z": 0
+            },
+            "radius": 0.036,
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 1,
+                    "r": 0
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cylinder"
+        },
+        {
+            "A*": {
+                "enabled": false
+            },
+            "angle": 0,
+            "height": 0.115,
+            "position": {
+                "x": 0.770,
+                "y": 0.1,
+                "z": 0
+            },
+            "radius": 0.036,
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 0,
+                    "r": 1
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cylinder"
+        },
+        {
+            "A*": {
+                "enabled": false
+            },
+            "angle": 0,
+            "height": 0.115,
+            "position": {
+                "x": 1.050,
+                "y": 0.4,
+                "z": 0
+            },
+            "radius": 0.036,
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 1,
+                    "r": 0
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cylinder"
+        },
+        {
+            "A*": {
+                "enabled": false
+            },
+            "angle": 0,
+            "height": 0.115,
+            "position": {
+                "x": 1.2,
+                "y": 0.8,
+                "z": 0
+            },
+            "radius": 0.036,
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 0,
+                    "r": 1
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cylinder"
+        },
+        {
+            "A*": {
+                "enabled": false
+            },
+            "angle": 0,
+            "height": 0.115,
+            "position": {
+                "x": 1.435,
+                "y": 1.65,
+                "z": 0
+            },
+            "radius": 0.036,
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 0,
+                    "r": 1
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cylinder"
+        },
+        {
+            "A*": {
+                "enabled": false
+            },
+            "angle": 0,
+            "height": 0.115,
+            "position": {
+                "x": 1.105,
+                "y": 1.955,
+                "z": 0
+            },
+            "radius": 0.036,
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 0,
+                    "r": 1
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cylinder"
+        },
+        {
+            "A*": {
+                "enabled": false
+            },
+            "angle": 0,
+            "height": 0.115,
+            "position": {
+                "x": 1.830,
+                "y": 1.2,
+                "z": 0
+            },
+            "radius": 0.036,
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 0,
+                    "r": 1
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cylinder"
+        },
+        {
+            "A*": {
+                "enabled": false
+            },
+            "angle": 0,
+            "height": 0.115,
+            "position": {
+                "x": 2.035,
+                "y": 1.65,
+                "z": 0
+            },
+            "radius": 0.036,
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 0,
+                    "r": 1
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cylinder"
+        },
+        {
+            "A*": {
+                "enabled": false
+            },
+            "angle": 0,
+            "height": 0.115,
+            "position": {
+                "x": 2.8,
+                "y": 1.2,
+                "z": 0
+            },
+            "radius": 0.036,
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 0,
+                    "r": 1
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cylinder"
+        },
+        {
+            "A*": {
+                "enabled": false
+            },
+            "angle": 0,
+            "height": 0.115,
+            "position": {
+                "x": 2.15,
+                "y": 0.4,
+                "z": 0
+            },
+            "radius": 0.036,
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 0,
+                    "r": 1
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cylinder"
+        },
+        {
+            "A*": {
+                "enabled": false
+            },
+            "angle": 0,
+            "height": 0.115,
+            "position": {
+                "x": 2.65,
+                "y": 0.51,
+                "z": 0
+            },
+            "radius": 0.036,
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 0,
+                    "r": 1
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cylinder"
+        },
+        {
+            "A*": {
+                "enabled": false
+            },
+            "angle": 0,
+            "height": 0.115,
+            "position": {
+                "x": 1.705,
+                "y": 1.955,
+                "z": 0
+            },
+            "radius": 0.036,
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 0,
+                    "r": 1
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cylinder"
+        },
+        {
+            "A*": {
+                "enabled": false
+            },
+            "angle": 0,
+            "height": 0.115,
+            "position": {
+                "x": 2.4,
+                "y": 0.1,
+                "z": 0
+            },
+            "radius": 0.036,
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 1,
+                    "r": 0
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cylinder"
+        },
+        {
+            "A*": {
+                "enabled": false
+            },
+            "angle": 0,
+            "height": 0.115,
+            "position": {
+                "x": 2.8,
+                "y": 0.4,
+                "z": 0
+            },
+            "radius": 0.036,
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 1,
+                    "r": 0
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cylinder"
+        },
+        {
+            "A*": {
+                "enabled": false
+            },
+            "angle": 0,
+            "height": 0.115,
+            "position": {
+                "x": 2.4,
+                "y": 0.1,
+                "z": 0
+            },
+            "radius": 0.036,
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 1,
+                    "r": 0
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cylinder"
+        },
+        {
+            "A*": {
+                "enabled": false
+            },
+            "angle": 0,
+            "height": 0.115,
+            "position": {
+                "x": 2,
+                "y": 0.8,
+                "z": 0
+            },
+            "radius": 0.036,
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 1,
+                    "r": 0
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cylinder"
+        },
+        {
+            "A*": {
+                "enabled": false
+            },
+            "angle": 0,
+            "height": 0.115,
+            "position": {
+                "x": 1.37,
+                "y": 1.2,
+                "z": 0
+            },
+            "radius": 0.036,
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 1,
+                    "r": 0
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cylinder"
+        },
+        {
+            "A*": {
+                "enabled": false
+            },
+            "angle": 0,
+            "height": 0.115,
+            "position": {
+                "x": 1.165,
+                "y": 1.65,
+                "z": 0
+            },
+            "radius": 0.036,
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 1,
+                    "r": 0
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cylinder"
+        },
+        {
+            "A*": {
+                "enabled": false
+            },
+            "angle": 0,
+            "height": 0.115,
+            "position": {
+                "x": 1.765,
+                "y": 1.650,
+                "z": 0
+            },
+            "radius": 0.036,
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 1,
+                    "r": 0
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cylinder"
+        },
+        {
+            "A*": {
+                "enabled": false
+            },
+            "angle": 0,
+            "height": 0.115,
+            "position": {
+                "x": 1.495,
+                "y": 1.955,
+                "z": 0
+            },
+            "radius": 0.036,
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 1,
+                    "r": 0
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cylinder"
+        },
+        {
+            "A*": {
+                "enabled": false
+            },
+            "angle": 0,
+            "height": 0.115,
+            "position": {
+                "x": 2.095,
+                "y": 1.955,
+                "z": 0
+            },
+            "radius": 0.036,
+            "simulateur": {
+                "color": {
+                    "b": 0,
+                    "g": 1,
+                    "r": 0
+                },
+                "dynamic": true,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cylinder"
+        },
+        {
+            "A*": {
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 0.1,
+                "y": 0.3,
+                "z": 0.0
+            },
+            "position": {
+                "x": 1.2,
+                "y": 1.85,
+                "z": 0.02
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0.0,
+                    "g": 1,
+                    "r": 0.0
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 0.1,
+                "y": 0.3,
+                "z": 0.0
+            },
+            "position": {
+                "x": 1.8,
+                "y": 1.85,
+                "z": 0.02
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0.0,
+                    "g": 1,
+                    "r": 0.0
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 0.1,
+                "y": 0.3,
+                "z": 0.0
+            },
+            "position": {
+                "x": 1.4,
+                "y": 1.85,
+                "z": 0.02
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0.0,
+                    "g": 0,
+                    "r": 1
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        },
+        {
+            "A*": {
+                "enabled": false
+            },
+            "angle": 0,
+            "dimensions": {
+                "x": 0.1,
+                "y": 0.3,
+                "z": 0.0
+            },
+            "position": {
+                "x": 2,
+                "y": 1.85,
+                "z": 0.02
+            },
+            "simulateur": {
+                "color": {
+                    "b": 0.0,
+                    "g": 0,
+                    "r": 1
+                },
+                "dynamic": false,
+                "enabled": false,
+                "mass": 0
+            },
+            "type": "cuboid"
+        }
+
+
+    ]
+}
