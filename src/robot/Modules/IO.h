@@ -30,6 +30,13 @@ namespace PhysicalRobot {
 
 		std::atomic<TriggerState> _tirette;
 		std::atomic<BuzzerState> _buzzer;
+
+		std::atomic<IOState> _limit_left_down;
+		std::atomic<IOState> _limit_left_middle;
+		std::atomic<IOState> _limit_left_high;
+		std::atomic<IOState> _limit_right_down;
+		std::atomic<IOState> _limit_right_middle;
+		std::atomic<IOState> _limit_right_high;
 	};
 
 } // namespace PhysicalRobot
