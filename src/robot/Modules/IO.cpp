@@ -20,6 +20,31 @@ namespace PhysicalRobot {
 		unlock_variables();
 	}
 
+    IOState IO::limit_switches(std::string limit_switch_name) const {
+	    if(limit_switch_name == "left_high"){
+	        return _limit_left_high;
+	    }
+	    else if(limit_switch_name == "left_middle")
+        {
+	        return _limit_left_middle;
+        }
+	    else if(limit_switch_name == "left_down"){
+	        return _limit_left_down;
+	    }
+	    else if(limit_switch_name == "right_high"){
+            return _limit_right_high;
+	    }
+	    else if(limit_switch_name == "right_middle"){
+	        return _limit_right_middle;
+	    }
+	    else if(limit_switch_name == "right_down"){
+	        return _limit_right_down;
+	    }
+
+	    return IOState::Exception;
+
+    }
+
 	std::vector<JSON> IO::generate_list_jsons() const {
 		JSON j;
 		j["tirette"] = toString(TriggerState::Waiting);
@@ -37,47 +62,41 @@ namespace PhysicalRobot {
 				}
 			}
 
-            if(j["limit_left_down"] == toString(IOState::On))
-            {
-                _limit_left_down.exchange(IOState::On);
-            } else if (j["limit_left_down"] == toString(IOState::Off)){
-                _limit_left_down.exchange(IOState::Off);
-            }
+			if(j["limit_left_down"] == toString(IOState::On)) {
+				_limit_left_down.exchange(IOState::On);
+			} else if(j["limit_left_down"] == toString(IOState::Off)) {
+				_limit_left_down.exchange(IOState::Off);
+			}
 
-            if(j["limit_left_middle"] == toString(IOState::On))
-            {
-                _limit_left_middle.exchange(IOState::On);
-            } else if (j["limit_left_middle"] == toString(IOState::Off)){
-                _limit_left_middle.exchange(IOState::Off);
-            }
+			if(j["limit_left_middle"] == toString(IOState::On)) {
+				_limit_left_middle.exchange(IOState::On);
+			} else if(j["limit_left_middle"] == toString(IOState::Off)) {
+				_limit_left_middle.exchange(IOState::Off);
+			}
 
-            if(j["limit_left_high"] == toString(IOState::On))
-            {
-                _limit_left_high.exchange(IOState::On);
-            } else if (j["limit_left_high"] == toString(IOState::Off)){
-                _limit_left_high.exchange(IOState::Off);
-            }
+			if(j["limit_left_high"] == toString(IOState::On)) {
+				_limit_left_high.exchange(IOState::On);
+			} else if(j["limit_left_high"] == toString(IOState::Off)) {
+				_limit_left_high.exchange(IOState::Off);
+			}
 
-            if(j["limit_right_down"] == toString(IOState::On))
-            {
-                _limit_right_down.exchange(IOState::On);
-            } else if (j["limit_right_down"] == toString(IOState::Off)){
-                _limit_right_down.exchange(IOState::Off);
-            }
+			if(j["limit_right_down"] == toString(IOState::On)) {
+				_limit_right_down.exchange(IOState::On);
+			} else if(j["limit_right_down"] == toString(IOState::Off)) {
+				_limit_right_down.exchange(IOState::Off);
+			}
 
-            if(j["limit_right_middle"] == toString(IOState::On))
-            {
-                _limit_right_middle.exchange(IOState::On);
-            } else if (j["limit_right_middle"] == toString(IOState::Off)){
-                _limit_right_middle.exchange(IOState::Off);
-            }
+			if(j["limit_right_middle"] == toString(IOState::On)) {
+				_limit_right_middle.exchange(IOState::On);
+			} else if(j["limit_right_middle"] == toString(IOState::Off)) {
+				_limit_right_middle.exchange(IOState::Off);
+			}
 
-            if(j["limit_right_high"] == toString(IOState::On))
-            {
-                _limit_right_high.exchange(IOState::On);
-            } else if (j["limit_right_high"] == toString(IOState::Off)){
-                _limit_right_high.exchange(IOState::Off);
-            }
+			if(j["limit_right_high"] == toString(IOState::On)) {
+				_limit_right_high.exchange(IOState::On);
+			} else if(j["limit_right_high"] == toString(IOState::Off)) {
+				_limit_right_high.exchange(IOState::Off);
+			}
 		}
 	}
 
