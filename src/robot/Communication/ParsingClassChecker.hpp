@@ -1,4 +1,4 @@
-/// Le code suivant permets de tester qu'un donne à ElecCommunicator un objet qui peut lire et écrire des trames
+/// Le code suivant permets de tester qu'on donne à ElecCommunicator un objet qui peut lire et écrire des trames
 /// Voir la [réponse sur StackOverflow](https://stackoverflow.com/questions/87372/check-if-a-class-has-a-member-function-of-a-given-signature)
 
 #include <optional>
