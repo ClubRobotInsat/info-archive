@@ -12,7 +12,7 @@
 namespace PhysicalRobot {
 
 	ENUM_CLASS_NS(PhysicalRobot, TriggerState, Triggered, Waiting);
-	ENUM_CLASS_NS(PhysicalRobot, IOState, On, Off);
+	ENUM_CLASS_NS(PhysicalRobot, IOState, On, Off, Exception);
 	ENUM_CLASS_NS(PhysicalRobot, BuzzerState, Rest, PlayErrorSound, PlaySuccessSound);
 
 	class IO final : public Module {
@@ -21,6 +21,8 @@ namespace PhysicalRobot {
 
 		TriggerState read_tirette() const;
 		void set_sound(BuzzerState);
+
+		IOState limit_switches(std::string limit_switch_name) const;
 
 	private:
 		std::vector<JSON> generate_list_jsons() const override;
