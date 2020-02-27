@@ -25,7 +25,7 @@
         <Libs />
       </Profile>
       <Profile Name="ARM release" SourceOutputPath="src" LibOutputPath="../../../../build_arm/src/robot/Strategy" DeployMode="DoNothing" DeployPath="" DeployScript="#!/bin/sh&#xA;&#xA;/bin/cp &quot;$PETRI_LIB_PATH&quot; .&#xA;" DeployWhenDebug="True" Port="12345" DebugMode="Attach" Hostname="localhost" HostProgram="" HostProgramArguments="">
-        <Compiler Invocation="/usr/bin/arm-linux-gnueabihf-g++-7">
+        <Compiler Invocation="/usr/bin/arm-linux-gnueabihf-g++-8">
           <Flag Value="--std=c++17" />
         </Compiler>
         <IncludePaths>
@@ -38,7 +38,7 @@
         <Libs />
       </Profile>
     </Profiles>
-    <Window X="960" Y="27" W="960" H="1023" />
+    <Window X="0" Y="0" W="959" H="1080" />
   </Settings>
   <PetriNet ID="0" Name="Root" X="0" Y="0" Active="true" RequiredTokens="0" Radius="30">
     <Comments>
