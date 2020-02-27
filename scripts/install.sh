@@ -6,6 +6,9 @@ install_hook=0
 install_petri=0
 install_wii=0
 install_raspi=0
+install_opencv=0
+
+usage="Usage : $0 [all|tools|petri|format|wii|raspi|opencv]"
 
 if [ $# -ne "0" ]
     then for arg in $*
@@ -16,6 +19,7 @@ if [ $# -ne "0" ]
             install_hook=1
             install_wii=1
             install_raspi=1
+            install_opencv=1
         elif [ "$arg" = "tools" ]
             then install_apt=1
         elif [ "$arg" = "petri" ]
@@ -26,13 +30,15 @@ if [ $# -ne "0" ]
             then install_wii=1
         elif [ "$arg" = "raspi" ]
              then install_raspi=1
+	elif [ "$arg" = "opencv" ]
+             then install_opencv=1
         else
-            echo "Usage : $0 [all|tools|petri|format|wii|raspi]"
+            echo $usage
             exit
         fi
     done
 else
-    echo "Usage : $0 [all|tools|petri|format|wii|raspi]"
+    echo $usage
 fi
 
 #echo -e
@@ -144,3 +150,40 @@ if [ $install_raspi -eq 1 ]; then
         echo -e "${Red}Installation de la cross-compilation pour Raspberry échouée${End}"
     fi
 fi
+
+
+if [ $install_opencv -eq 1 ]; then
+	OCV_MIN_VERSION_REQUIRED=2
+	echo -e "${Yellow}Verification des outils OpenCV${End}"
+	
+	if [ `dpkg-query -W libopencv-dev | awk '{print $1}'` == "libopencv-dev" ]; then
+		OCV_VERSION=$(pkg-config --modversion opencv | awk -F . '{print $1}')
+		if [ $OCV_VERSION -ge $OCV_MIN_VERSION_REQUIRED ]; then
+			echo -e "${Green}OpenCV déjà installé avec la version minimale requise${End}"
+		else
+			echo -e "${Red}OpenCV installé avec une version obsolete${End}"
+		fi
+	else
+	
+		echo -e "${Yellow}Installation des outils OpenCV${End}"
+		sudo apt-get install libopencv-dev 
+	fi
+
+fi
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

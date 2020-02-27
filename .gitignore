@@ -1,6 +1,7 @@
 cmake-build-debug/
 .DS_Store
 /.idea
+src/.idea
 *~
 /cmake-build-*
 /build_arm
@@ -9,6 +10,5 @@ cmake-build-debug/
 /doc/html
 /doc/latex
 *.swp
-third_parties
-
+/third_parties
 bin
