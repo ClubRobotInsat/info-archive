@@ -1,19 +1,28 @@
 #include "EmbeddedFiles.h"
+#include "Constants.h"
 
 #include <fstream>
 
 // Uncomment this to read the file directly on the
 // computer (and not the embedded version)
-// #define READ_EXTERNAL_FILES
+//
+//#define READ_EXTERNAL_FILES
 
 const std::string& EmbeddedFiles::readText(const std::string& path) {
 	auto it = files().find(path);
+
+	//for(auto it: files())
+	    //std::cout << it.first << std::endl;
 
 	if(it != files().end()) {
 		return it->second;
 	} else {
 #ifdef READ_EXTERNAL_FILES
-		std::ifstream file(path);
+	   /* std::string configFolderPath = GLOBAL_CONSTANTS().get;
+	    std::string confPath;
+	    confPath = configFolderPath + path;
+		std::ifstream file(confPath);*/
+	   std::ifstream file(path);
 
 		// TODO Check exception safety
 		if(file.good()) {
@@ -27,15 +36,16 @@ const std::string& EmbeddedFiles::readText(const std::string& path) {
 			return files()[path] = contents;
 		}
 #endif
-		return files()[path] = "";
+		//No file has been found
+		return NULL;
 	}
 }
 
 std::map<std::string, std::string>& EmbeddedFiles::files() {
 	static std::map<std::string, std::string> _files{
-#ifndef READ_EXTERNAL_FILES
-#include "embedded"
-#endif
+        #ifndef READ_EXTERNAL_FILES
+        #include "embedded"
+        #endif
 	};
 	return _files;
 }

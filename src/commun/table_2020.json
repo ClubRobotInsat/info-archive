@@ -1,6 +1,7 @@
 {
     "objects": [
         {
+            "_comment": "table",
             "A*": {
                 "enabled": false
             },
@@ -28,6 +29,7 @@
             "type": "cuboid"
         },
         {
+            "_comment" : "port01",
             "A*": {
                 "enabled": false
             },
@@ -55,6 +57,7 @@
             "type": "cuboid"
         },
         {
+            "_comment" : "port02",
             "A*": {
                 "enabled": false
             },
@@ -981,7 +984,5 @@
             },
             "type": "cuboid"
         }
-
-
     ]
 }
