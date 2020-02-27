@@ -182,9 +182,9 @@ namespace Constants {
 
 		// Convertir la table du fichier texte en un objet JSON à la pré-compilation
 
-		const JSON& TABLE_2019() const {
-			static JSON TABLE_2019 = nlohmann::json::parse(EmbeddedFiles::readText("table_2019.json"));
-			return TABLE_2019;
+		const JSON& TABLE_2020() const {
+			static JSON TABLE_2020 = nlohmann::json::parse(EmbeddedFiles::readText("table_2020.json"));
+			return TABLE_2020;
 		}
 
 		inline Duration get_lidar_actualization_period() const {
@@ -196,6 +196,8 @@ namespace Constants {
 		}
 
 	private:
+
+	    std::string configFolderPath;
 		uint16_t _TCPIP_port_simu;
 		Vector3m _table_size;
 

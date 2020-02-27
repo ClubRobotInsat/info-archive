@@ -9,3 +9,6 @@ target_link_libraries(TEST_COLORDETECTION Strategy)
 
 add_executable(TEST_IO_PUMPS io_pumps.cpp)
 target_link_libraries(TEST_IO_PUMPS Strategy)
+
+add_executable(TEST_ENV1 testEnv.cpp)
+target_link_libraries(TEST_ENV1 Environment)
