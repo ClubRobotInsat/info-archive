@@ -6,7 +6,7 @@
 
 namespace Strategy::Interfacer {
 
-	CaptorsInterfacerSecondary::CaptorsInterfacerSecondary(interfaced_type& module_captors)
+	/*CaptorsInterfacerSecondary::CaptorsInterfacerSecondary(interfaced_type& module_captors)
 	        : AbstractInterfacer(), _module(module_captors) {}
 
 	CaptorsInterfacerSecondary::CaptorsInterfacerSecondary(std::shared_ptr<PhysicalRobot::Robot> robot)
@@ -17,6 +17,6 @@ namespace Strategy::Interfacer {
 
 	CaptorsInterfacerSecondary::interfaced_type* CaptorsInterfacerSecondary::operator->() {
 		return &_module;
-	}
+	}*/
 
 } // namespace Strategy::Interfacer

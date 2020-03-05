@@ -66,7 +66,7 @@ namespace Strategy::Interfacer {
 		return AtomType::Nothing;
 	}
 
-	AtomType PumpsInterfacerSecondary::_color_to_atom(PhysicalRobot::CaptorColor color) const {
+	/*AtomType PumpsInterfacerSecondary::_color_to_atom(PhysicalRobot::CaptorColor color) const {
 		switch(color) {
 			case PhysicalRobot::CaptorColor::Red:
 				return AtomType::Redium;
@@ -76,6 +76,6 @@ namespace Strategy::Interfacer {
 				return AtomType::Greenium;
 		}
 		return AtomType::Nothing;
-	}
+	}*/
 
 } // namespace Strategy::Interfacer

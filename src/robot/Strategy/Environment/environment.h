@@ -17,12 +17,12 @@
 #include <vector>
 
 struct Neighbor {
-	Neighbor(Distance distance, Node& n);
+	Neighbor(Distance distance, RobotEnv::Node& n);
 
 	/** Représente la distance au point pour lequel ce voisin a été sélectionné. */
 	Distance dist;
 	/** Pointeur vers le noeud représenté par ce voisin. */
-	Node& n;
+    RobotEnv::Node& n;
 };
 
 struct TrajectoryPart {
@@ -216,7 +216,7 @@ private:
 	 * @param from noeud source.
 	 * @param to noeud de destination.
 	 */
-	float getHeuristicCost(Node& from, Node& to);
+	float getHeuristicCost(RobotEnv::Node& from, RobotEnv::Node& to);
 
 	/**
 	 * Ajoute le voisin aux coordonnées (x, y) et à la distance donnée à la liste des voisins,
@@ -227,14 +227,14 @@ private:
 	 * Obtient les voisins du noeud donné.
 	 * @param noeud duquel donner les voisins.
 	 */
-	std::vector<Neighbor> getNeighbors(Node& n);
+	std::vector<Neighbor> getNeighbors(RobotEnv::Node& n);
 	/**
 	 * Obtient les étapes permettant de relier le noeud source et destination.
 	 * @param from noeud source
 	 * @param to de destination
 	 * @param previousNodes map contenant pour chaque noeud le noeud qui a été utilisé pour l'atteindre.
 	 */
-	std::vector<Vector2m> getPathTo(Node& from, Node& to, std::unordered_map<Node*, Node*>& previousNodes);
+	std::vector<Vector2m> getPathTo(RobotEnv::Node& from, RobotEnv::Node& to, std::unordered_map<RobotEnv::Node*, RobotEnv::Node*>& previousNodes);
 
 	/** Obtient une position permettant de sortir d'une zone de danger infini. */
 	Vector2m getEscapePosition(Vector2m start, Duration timeout);
@@ -242,19 +242,19 @@ private:
 	/**
 	 * Dessine toutes les formes statiques sur la grille.
 	 */
-	void drawStaticShapes(std::vector<std::vector<Node>>& target);
+	void drawStaticShapes(std::vector<std::vector<RobotEnv::Node>>& target);
 
 
 	/**
 	 * Remet les noeuds donnés à leur état initial.
 	 */
-	void resetNodes(std::vector<std::vector<Node>>& target);
+	void resetNodes(std::vector<std::vector<RobotEnv::Node>>& target);
 
 	/**
 	 * Dessine les formes dynamiques.
 	 * /!\ Un appel à resetNodes préalable est nécessaire.
 	 */
-	void drawDynamicShapes(std::vector<std::vector<Node>>& target);
+	void drawDynamicShapes(std::vector<std::vector<RobotEnv::Node>>& target);
 
 	/**
 	 * Dessine la forme donnée sur la grille de noeuds donnés.
@@ -262,12 +262,12 @@ private:
 	 * @param target grille sur laquelle dessiner les formes.
 	 * @param dynamic booléen indiquant si la forme à dessiner est dynamique.
 	 */
-	void drawShape(Shape& shape, std::vector<std::vector<Node>>& target, bool dynamic);
+	void drawShape(Shape& shape, std::vector<std::vector<RobotEnv::Node>>& target, bool dynamic);
 
 	/**
 	 * Dessine la forme + une forme de debug (qui apporte des infos supplémentaires).
 	 */
-	void drawDebugShape(Shape& shape, std::vector<std::vector<Node>>& target);
+	void drawDebugShape(Shape& shape, std::vector<std::vector<RobotEnv::Node>>& target);
 
 	/**
 	 * Modifie la taille de la grille.
