@@ -39,7 +39,7 @@ namespace PhysicalRobot {
 
 		} else {
 
-			uint8_t dataSetSize = 10;//Initialisation of the decision delay
+			uint8_t dataSetSize = 10; // Initialisation of the decision delay
 
 			uint8_t results[4] = {0, 0, 0, 0}; // 0: none | 1: red | 2: green | 3: red and green
 
@@ -69,7 +69,7 @@ namespace PhysicalRobot {
 			Scalar redHigh = Scalar(iHighRedH, iHighRedS, iHighRedV);
 			PhysicalRobot::DetectedColor detectedColor;
 
-			//std::vector<std::string> positions = {"normal", "reverse"};
+			// std::vector<std::string> positions = {"normal", "reverse"};
 			while(dataSetSize-- > 0) {
 				Mat imgOriginal;
 
@@ -120,7 +120,7 @@ namespace PhysicalRobot {
 				// imshow("Colored Image", imgColored); //show the thresholded image
 				// imshow("Original", imgOriginal); //show the original image
 
-				std::vector<std::vector<Point> > contours;
+				std::vector<std::vector<Point>> contours;
 				findContours(imgThreshGreen, contours, CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE);
 
 				detectedColor = PhysicalRobot::DetectedColor::None;
@@ -139,38 +139,38 @@ namespace PhysicalRobot {
 						if(detectedColor == PhysicalRobot::DetectedColor::Green) {
 							detectedColor = PhysicalRobot::DetectedColor::Red_and_Green;
 						} else {
-                            detectedColor = PhysicalRobot::DetectedColor::Red;
+							detectedColor = PhysicalRobot::DetectedColor::Red;
 						}
 					}
 				}
 
 				logDebug1("Detected color: ", toString(detectedColor));
 
-				switch(detectedColor){
-				    case PhysicalRobot::DetectedColor::None:
-				        results[0]++;
-                        break;
-                    case PhysicalRobot::DetectedColor::Red:
-                        results[1]++;
-                        break;
-                    case PhysicalRobot::DetectedColor::Green:
-                        results[2]++;
-                        break;
-                    case PhysicalRobot::DetectedColor::Red_and_Green:
-                        results[3]++;
-                        break;
-                    default:
-                        logDebug1("Erreur ");
-                        break;
+				switch(detectedColor) {
+					case PhysicalRobot::DetectedColor::None:
+						results[0]++;
+						break;
+					case PhysicalRobot::DetectedColor::Red:
+						results[1]++;
+						break;
+					case PhysicalRobot::DetectedColor::Green:
+						results[2]++;
+						break;
+					case PhysicalRobot::DetectedColor::Red_and_Green:
+						results[3]++;
+						break;
+					default:
+						logDebug1("Erreur ");
+						break;
 				}
 			}
 
 			uint8_t r = index_max(results, 4);
 
 			std::vector<std::string> colors = {"none", "red", "green", "red_and_green"};
-            for(int i=0; i<4; i++) {
-                std::cout << colors[i] << " :" << results[i] << std::endl;
-            }
+			for(int i = 0; i < 4; i++) {
+				std::cout << colors[i] << " :" << results[i] << std::endl;
+			}
 
 
 			if(r == 1) {
