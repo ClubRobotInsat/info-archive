@@ -1,3 +1,4 @@
+find_package( OpenCV REQUIRED )
 set(MODULE_SOURCES
         Module.hpp
         ModuleManager.cpp
@@ -10,4 +11,4 @@ set(MODULE_SOURCES
         Servos.cpp)
 
 add_library(Modules STATIC ${MODULE_SOURCES})
-target_link_libraries(Modules Outils_Robot)
+target_link_libraries(Modules Outils_Robot ${OpenCV_LIBS})
