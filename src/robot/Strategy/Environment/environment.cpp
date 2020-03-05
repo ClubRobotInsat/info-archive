@@ -291,7 +291,8 @@ vector<Neighbor> Environment::getNeighbors(RobotEnv::Node& n) {
 	return neighbors;
 }
 
-vector<Vector2m> Environment::getPathTo(RobotEnv::Node& from, RobotEnv::Node& to, unordered_map<RobotEnv::Node*, RobotEnv::Node*>& previousNodes) {
+vector<Vector2m>
+    Environment::getPathTo(RobotEnv::Node& from, RobotEnv::Node& to, unordered_map<RobotEnv::Node*, RobotEnv::Node*>& previousNodes) {
 	vector<Vector2m> pts;
 	if(to == from) {
 		pts.emplace_back(toWorldUnit(to.x), toWorldUnit(to.y));
@@ -551,7 +552,7 @@ bool Environment::canMoveLine(Vector2m start, Vector2m end) {
 	return true;
 }
 
-void Environment::drawStaticShapes(vector<vector<RobotEnv::Node> >& target) {
+void Environment::drawStaticShapes(vector<vector<RobotEnv::Node>>& target) {
 	for(vector<RobotEnv::Node>& nodes : target)
 		for(auto& node : nodes) {
 			node.staticValue = 0;
@@ -566,7 +567,7 @@ void Environment::drawStaticShapes(vector<vector<RobotEnv::Node> >& target) {
 	}
 }
 
-void Environment::resetNodes(vector<vector<RobotEnv::Node> >& target) {
+void Environment::resetNodes(vector<vector<RobotEnv::Node>>& target) {
 	for(vector<RobotEnv::Node>& nodes : target)
 		for(auto& node : nodes) {
 			node.dynamicValue = 0;
@@ -575,12 +576,12 @@ void Environment::resetNodes(vector<vector<RobotEnv::Node> >& target) {
 		}
 }
 
-void Environment::drawDynamicShapes(vector<vector<RobotEnv::Node> >& target) {
+void Environment::drawDynamicShapes(vector<vector<RobotEnv::Node>>& target) {
 	for(auto& p : _dynamicShapes)
 		drawShape(*(p.second), target, true);
 }
 
-void Environment::drawDebugShape(Shape& shape, vector<vector<RobotEnv::Node>> & target) {
+void Environment::drawDebugShape(Shape& shape, vector<vector<RobotEnv::Node>>& target) {
 	if(shape.getType() == ShapeType::Shape_Circle) {
 		auto& circle = static_cast<Circle&>(shape);
 		Distance radius = circle.radius;
@@ -614,7 +615,7 @@ void Environment::drawDebugShape(Shape& shape, vector<vector<RobotEnv::Node>> & 
 	}
 }
 
-void Environment::drawShape(Shape& shape, vector<vector<RobotEnv::Node> >& target, bool dynamic) {
+void Environment::drawShape(Shape& shape, vector<vector<RobotEnv::Node>>& target, bool dynamic) {
 	if(shape.getType() == ShapeType::Shape_Circle) {
 		Circle& circle = static_cast<Circle&>(shape);
 
@@ -987,7 +988,7 @@ void Environment::saveToTGA(const char* path, vector<Vector2m> const& traj) cons
 	char r, g, b, a = 0;
 
 	TGAWriter writer(this->_size.x, this->_size.y);
-	const vector<vector<RobotEnv::Node> >& obst = this->getNodes();
+	const vector<vector<RobotEnv::Node>>& obst = this->getNodes();
 
 	// On inverse tous les points selon l'axe Y pour que l'affichage soit bien orienté
 	std::function<Vector2m(Vector2m)> inverserY = [&writer, this](Vector2m vec) {
