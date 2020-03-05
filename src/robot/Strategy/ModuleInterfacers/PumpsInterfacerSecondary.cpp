@@ -22,7 +22,7 @@ namespace Strategy::Interfacer {
 	Outcome PumpsInterfacerSecondary::catch_atom() {
 		_module.deactivate_valve(_evacuation);
 		_module.activate_pump(_pump);
-		_hand = _color_to_atom(_captors->read_color());
+//		_hand = _color_to_atom(_captors->read_color());
 		return Outcome::SUCCESS;
 	}
 

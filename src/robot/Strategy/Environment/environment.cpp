@@ -12,7 +12,7 @@ const float Environment::DANGER_INFINITY = 2;
 const repere::Repere REFERENCE_ENVIRONMENT =
     repere::Repere({0_m, 0_m}, repere::Multiplier::SENS_POSITIVE, repere::Multiplier::SENS_POSITIVE);
 
-Neighbor::Neighbor(Distance distance, Node& n_) : dist(distance), n(n_) {}
+Neighbor::Neighbor(Distance distance, RobotEnv::Node& n_) : dist(distance), n(n_) {}
 
 Nodemap const& Environment::getNodes() const {
 	return _nodes;
@@ -44,7 +44,7 @@ Environment::Environment(Vector2u16 size, Distance scale, Distance robotWidth, D
 void Environment::initNodes() {
 	_nodes.clear();
 	for(int x = 0; x < _size.x; x++) {
-		std::vector<Node> v;
+		std::vector<RobotEnv::Node> v;
 		for(int y = 0; y < _size.y; y++) {
 			v.emplace_back(x, y, 0, 0, 0);
 		}
@@ -53,7 +53,7 @@ void Environment::initNodes() {
 }
 
 struct NodeComp {
-	bool operator()(Node* n1, Node* n2) const {
+	bool operator()(RobotEnv::Node* n1, RobotEnv::Node* n2) const {
 		return *n1 < *n2;
 	}
 };
@@ -132,9 +132,9 @@ vector<Vector2m> Environment::getTrajectory(Vector2m start, Vector2m end, Durati
 		return trajectory;
 	}
 
-	set<Node*, NodeComp> candidateNodes;
-	unordered_set<Node*> doneNodes;
-	unordered_map<Node*, Node*> previousNodes;
+	set<RobotEnv::Node*, NodeComp> candidateNodes;
+	unordered_set<RobotEnv::Node*> doneNodes;
+	unordered_map<RobotEnv::Node*, RobotEnv::Node*> previousNodes;
 
 
 	// Initialisation
@@ -144,7 +144,7 @@ vector<Vector2m> Environment::getTrajectory(Vector2m start, Vector2m end, Durati
 	while(!candidateNodes.empty()) {
 		// Traite le noeud en cours.
 		auto candidateIt = candidateNodes.begin();
-		Node* candidate = *(candidateIt);
+		RobotEnv::Node* candidate = *(candidateIt);
 
 		if(candidate->x == ex && candidate->y == ey) {
 			return postProcess(getPathTo(_nodes[sx][sy], *candidate, previousNodes), cubic_interpolation);
@@ -157,7 +157,7 @@ vector<Vector2m> Environment::getTrajectory(Vector2m start, Vector2m end, Durati
 		// Ajoute les voisins à la liste.
 		vector<Neighbor> neighbors = getNeighbors(*candidate);
 		for(auto it = neighbors.begin(); it != neighbors.end(); it++) {
-			Node& neighbor = it->n;
+			RobotEnv::Node& neighbor = it->n;
 			bool contains = candidateNodes.find(&neighbor) != candidateNodes.end();
 			contains |= doneNodes.count(&neighbor) > 0;
 
@@ -196,7 +196,7 @@ vector<Vector2m> Environment::getTrajectory(Vector2m start, Vector2m end, Durati
 }
 
 
-float Environment::getHeuristicCost(Node& from, Node& to) {
+float Environment::getHeuristicCost(RobotEnv::Node& from, RobotEnv::Node& to) {
 	auto sx = toWorldUnit(from.x - to.x);
 	auto sy = toWorldUnit(from.y - to.y);
 	auto val = sqrt(sx * sx + sy * sy);
@@ -264,7 +264,7 @@ void Environment::addNeighbor(vector<Neighbor>& neighbors, int x, int y, Distanc
 	neighbors.emplace_back(distance, _nodes[x][y]);
 }
 
-vector<Neighbor> Environment::getNeighbors(Node& n) {
+vector<Neighbor> Environment::getNeighbors(RobotEnv::Node& n) {
 	const float sqrt2 = 1.41f;
 	vector<Neighbor> neighbors;
 	bool left = n.x > 0;
@@ -291,14 +291,14 @@ vector<Neighbor> Environment::getNeighbors(Node& n) {
 	return neighbors;
 }
 
-vector<Vector2m> Environment::getPathTo(Node& from, Node& to, unordered_map<Node*, Node*>& previousNodes) {
+vector<Vector2m> Environment::getPathTo(RobotEnv::Node& from, RobotEnv::Node& to, unordered_map<RobotEnv::Node*, RobotEnv::Node*>& previousNodes) {
 	vector<Vector2m> pts;
 	if(to == from) {
 		pts.emplace_back(toWorldUnit(to.x), toWorldUnit(to.y));
 		return pts;
 	}
 
-	Node* current = &to;
+	RobotEnv::Node* current = &to;
 	while(!(*current == from)) {
 		pts.emplace_back(toWorldUnit(current->x), toWorldUnit(current->y));
 		current = previousNodes[current];
@@ -551,8 +551,8 @@ bool Environment::canMoveLine(Vector2m start, Vector2m end) {
 	return true;
 }
 
-void Environment::drawStaticShapes(vector<vector<Node>>& target) {
-	for(vector<Node>& nodes : target)
+void Environment::drawStaticShapes(vector<vector<RobotEnv::Node> >& target) {
+	for(vector<RobotEnv::Node>& nodes : target)
 		for(auto& node : nodes) {
 			node.staticValue = 0;
 			node._debugValue = 0;
@@ -566,8 +566,8 @@ void Environment::drawStaticShapes(vector<vector<Node>>& target) {
 	}
 }
 
-void Environment::resetNodes(vector<vector<Node>>& target) {
-	for(vector<Node>& nodes : target)
+void Environment::resetNodes(vector<vector<RobotEnv::Node> >& target) {
+	for(vector<RobotEnv::Node>& nodes : target)
 		for(auto& node : nodes) {
 			node.dynamicValue = 0;
 			node.heuristicCost = 0;
@@ -575,12 +575,12 @@ void Environment::resetNodes(vector<vector<Node>>& target) {
 		}
 }
 
-void Environment::drawDynamicShapes(vector<vector<Node>>& target) {
+void Environment::drawDynamicShapes(vector<vector<RobotEnv::Node> >& target) {
 	for(auto& p : _dynamicShapes)
 		drawShape(*(p.second), target, true);
 }
 
-void Environment::drawDebugShape(Shape& shape, vector<vector<Node>>& target) {
+void Environment::drawDebugShape(Shape& shape, vector<vector<RobotEnv::Node>> & target) {
 	if(shape.getType() == ShapeType::Shape_Circle) {
 		auto& circle = static_cast<Circle&>(shape);
 		Distance radius = circle.radius;
@@ -614,7 +614,7 @@ void Environment::drawDebugShape(Shape& shape, vector<vector<Node>>& target) {
 	}
 }
 
-void Environment::drawShape(Shape& shape, vector<vector<Node>>& target, bool dynamic) {
+void Environment::drawShape(Shape& shape, vector<vector<RobotEnv::Node> >& target, bool dynamic) {
 	if(shape.getType() == ShapeType::Shape_Circle) {
 		Circle& circle = static_cast<Circle&>(shape);
 
@@ -987,7 +987,7 @@ void Environment::saveToTGA(const char* path, vector<Vector2m> const& traj) cons
 	char r, g, b, a = 0;
 
 	TGAWriter writer(this->_size.x, this->_size.y);
-	const vector<vector<Node>>& obst = this->getNodes();
+	const vector<vector<RobotEnv::Node> >& obst = this->getNodes();
 
 	// On inverse tous les points selon l'axe Y pour que l'affichage soit bien orienté
 	std::function<Vector2m(Vector2m)> inverserY = [&writer, this](Vector2m vec) {
@@ -1128,7 +1128,7 @@ Distance Environment::getRobotRadius() {
 }
 
 void Environment::clearDebugValues() {
-	for(vector<Node>& nodes : _nodes)
+	for(vector<RobotEnv::Node>& nodes : _nodes)
 		for(auto& node : nodes)
 			node._debugValue = 0;
 }
