@@ -16,7 +16,7 @@ namespace Strategy::Interfacer {
 	        : CaptorsInterfacerSecondary(robot.get_module<interfaced_type>()) {}
 
 	CaptorsInterfacerSecondary::interfaced_type* CaptorsInterfacerSecondary::operator->() {
-		return &_module;
+	    return &_module;
 	}*/
 
 } // namespace Strategy::Interfacer

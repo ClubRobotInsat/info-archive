@@ -22,7 +22,7 @@ struct Neighbor {
 	/** Représente la distance au point pour lequel ce voisin a été sélectionné. */
 	Distance dist;
 	/** Pointeur vers le noeud représenté par ce voisin. */
-    RobotEnv::Node& n;
+	RobotEnv::Node& n;
 };
 
 struct TrajectoryPart {
@@ -234,7 +234,8 @@ private:
 	 * @param to de destination
 	 * @param previousNodes map contenant pour chaque noeud le noeud qui a été utilisé pour l'atteindre.
 	 */
-	std::vector<Vector2m> getPathTo(RobotEnv::Node& from, RobotEnv::Node& to, std::unordered_map<RobotEnv::Node*, RobotEnv::Node*>& previousNodes);
+	std::vector<Vector2m>
+	    getPathTo(RobotEnv::Node& from, RobotEnv::Node& to, std::unordered_map<RobotEnv::Node*, RobotEnv::Node*>& previousNodes);
 
 	/** Obtient une position permettant de sortir d'une zone de danger infini. */
 	Vector2m getEscapePosition(Vector2m start, Duration timeout);

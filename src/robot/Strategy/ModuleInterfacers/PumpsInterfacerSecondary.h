@@ -45,7 +45,7 @@ namespace Strategy::Interfacer {
 		std::vector<AtomType> _left_container;
 		std::vector<AtomType> _right_container;
 
-		//AtomType _color_to_atom(PhysicalRobot::CaptorColor) const;
+		// AtomType _color_to_atom(PhysicalRobot::CaptorColor) const;
 	};
 
 } // namespace Strategy::Interfacer

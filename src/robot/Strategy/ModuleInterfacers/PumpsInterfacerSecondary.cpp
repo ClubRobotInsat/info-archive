@@ -41,7 +41,7 @@ namespace Strategy::Interfacer {
 				break;
 			}
 			default:
-                break;
+				break;
 		}
 		_hand = AtomType::Nothing;
 
@@ -67,15 +67,15 @@ namespace Strategy::Interfacer {
 	}
 
 	/*AtomType PumpsInterfacerSecondary::_color_to_atom(PhysicalRobot::CaptorColor color) const {
-		switch(color) {
-			case PhysicalRobot::CaptorColor::Red:
-				return AtomType::Redium;
-			case PhysicalRobot::CaptorColor::Blue:
-				return AtomType::Blueium;
-			case PhysicalRobot::CaptorColor::Green:
-				return AtomType::Greenium;
-		}
-		return AtomType::Nothing;
+	    switch(color) {
+	        case PhysicalRobot::CaptorColor::Red:
+	            return AtomType::Redium;
+	        case PhysicalRobot::CaptorColor::Blue:
+	            return AtomType::Blueium;
+	        case PhysicalRobot::CaptorColor::Green:
+	            return AtomType::Greenium;
+	    }
+	    return AtomType::Nothing;
 	}*/
 
 } // namespace Strategy::Interfacer

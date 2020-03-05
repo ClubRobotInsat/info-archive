@@ -22,7 +22,7 @@ namespace Strategy::Interfacer {
 		interfaced_type* operator->();
 */
 	private:
-		//interfaced_type& _module;
+		// interfaced_type& _module;
 	};
 
 } // namespace Strategy::Interfacer
