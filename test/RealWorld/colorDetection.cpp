@@ -52,7 +52,7 @@ int main(int argc, char** argv) {
 
 	// robot->deactivation();
 
-	logInfo("End of the sequence test.");
+	logInfo("End of the test sequence.");
 
 	return EXIT_SUCCESS;
 }
