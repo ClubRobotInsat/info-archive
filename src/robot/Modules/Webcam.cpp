@@ -6,10 +6,13 @@
 #include <iostream>
 #include <opencv2/opencv.hpp>
 
+using namespace cv;
+
 namespace PhysicalRobot {
 
-	Webcam::Webcam(uint8_t id, Position position) : Module(id, "Webcam"), _position(position) {
-		_decision_time = 2_s;
+	Webcam::Webcam(uint8_t id, Position pos) :  Module{id, "Webcam"} {
+        _position = pos;
+       _decision_time = 1_s;
 	}
 
 	void Webcam::setPosition(Position position) {
@@ -36,10 +39,11 @@ namespace PhysicalRobot {
 		if(!cap.isOpened()) // if not success, exit program
 		{
 			logDebug1("Cannot open the webcam");
+            exit(-1);
+		}
+		else {
 
-		} else {
-
-			uint8_t dataSetSize = 10; // Initialisation of the decision delay
+			uint8_t dataSetSize = 10; // Initialisation of number of shoot
 
 			uint8_t results[4] = {0, 0, 0, 0}; // 0: none | 1: red | 2: green | 3: red and green
 
@@ -167,9 +171,10 @@ namespace PhysicalRobot {
 
 			uint8_t r = index_max(results, 4);
 
-			std::vector<std::string> colors = {"none", "red", "green", "red_and_green"};
+			std::cout << "Stats" << std::endl;
+			std::string colors[4] = {"none", "red", "green", "red_and_green"};
 			for(int i = 0; i < 4; i++) {
-				std::cout << colors[i] << " :" << results[i] << std::endl;
+				std::cout << colors[i] << " :" << unsigned(results[i]) << std::endl;
 			}
 
 
@@ -190,58 +195,35 @@ namespace PhysicalRobot {
 	}
 
 
-	bool Webcam::cupFound(std::vector<std::vector<Point>>& contours) const {
+	bool Webcam::cupFound(std::vector<std::vector<cv::Point>>& contours) const {
 		Mat imgContour;
-		double c_mx, ca_mx, mx, a_mx;
-
-		double cupThresholdMin = 40000, cupThresholdMax = 75000; // To adjust
+		double area;
+		double cupThresholdMin = 40000; // To adjust
 
 		auto it = contours.begin();
-		c_mx = contourArea(*it, true);
-		ca_mx = abs(c_mx);
-		auto itmx = it;
-		int indx = -1;
 
-		bool res;
+		bool notfound=true;
 
-		if(ca_mx < cupThresholdMin) {
-			it = contours.erase(it);
-		} else {
-			if(ca_mx > a_mx) {
-				mx = c_mx;
-				a_mx = ca_mx;
-				itmx = it;
-				indx++;
-			}
-			it++;
-		}
+		while(it != contours.end() && notfound) {
+			area = abs(cv::contourArea(*it, false));
 
-		while(it != contours.end()) {
-			c_mx = contourArea(*it, true);
-			ca_mx = abs(c_mx);
-
-			if(ca_mx < cupThresholdMin) {
-				it = contours.erase(it);
+			if(area > cupThresholdMin) {
+				notfound = false;
+                std::cout << "Max area: " << area << std::endl;
 			} else {
-				if(ca_mx > a_mx) {
-					mx = c_mx;
-					a_mx = ca_mx;
-					itmx = it;
-					indx++;
-				}
 				it++;
 			}
 		}
 
-		res = !contours.empty();
-		if(res) {
+
+		/*if(!notfound) {
 
 			// drawContours(imgContour, contours, indx, Scalar(359, 0, 100));
 			// imshow("Contours ", imgContour); //show the thresholded image
 
 
 			std::vector<Point> pts = *itmx;
-			std::cout << "MaxAreaSigned: " << mx << " NbPoint: " << itmx->size() << " = " << pts.size() << std::endl;
+			//std::cout << "MaxAreaSigned: " << mx << " NbPoint: " << itmx->size() << " = " << pts.size() << std::endl;
 			double ul_x, ul_y, ur_x, ur_y, dl_x, dl_y, dr_x, dr_y;
 
 
@@ -297,13 +279,13 @@ namespace PhysicalRobot {
 			else
 				std::cout << "Position: reverse" << std::endl;
 
-			/*for(auto p: *itmx){
+			for(auto p: *itmx){
 			    //find upleft, upright, downleft, downright
 			    if(p.x > )
 			     cout << "x=" << p.x << " y=" << p.y << endl;
-			 }*/
-		}
-		return res;
+			 }
+		}*/
+		return !notfound;
 	}
 
 
@@ -314,7 +296,7 @@ namespace PhysicalRobot {
 
 	std::vector<JSON> Webcam::generate_list_jsons() const {
 		JSON webcam;
-		webcam["position"] = toString(_position.load());
+		webcam["position"] = toString(_position);
 		return std::vector({webcam});
 	}
 
