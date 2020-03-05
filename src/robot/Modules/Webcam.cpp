@@ -10,9 +10,9 @@ using namespace cv;
 
 namespace PhysicalRobot {
 
-	Webcam::Webcam(uint8_t id, Position pos) :  Module{id, "Webcam"} {
-        _position = pos;
-       _decision_time = 1_s;
+	Webcam::Webcam(uint8_t id, Position pos) : Module{id, "Webcam"} {
+		_position = pos;
+		_decision_time = 1_s;
 	}
 
 	void Webcam::setPosition(Position position) {
@@ -39,9 +39,8 @@ namespace PhysicalRobot {
 		if(!cap.isOpened()) // if not success, exit program
 		{
 			logDebug1("Cannot open the webcam");
-            exit(-1);
-		}
-		else {
+			exit(-1);
+		} else {
 
 			uint8_t dataSetSize = 10; // Initialisation of number of shoot
 
@@ -202,14 +201,14 @@ namespace PhysicalRobot {
 
 		auto it = contours.begin();
 
-		bool notfound=true;
+		bool notfound = true;
 
 		while(it != contours.end() && notfound) {
 			area = abs(cv::contourArea(*it, false));
 
 			if(area > cupThresholdMin) {
 				notfound = false;
-                std::cout << "Max area: " << area << std::endl;
+				std::cout << "Max area: " << area << std::endl;
 			} else {
 				it++;
 			}
@@ -218,72 +217,72 @@ namespace PhysicalRobot {
 
 		/*if(!notfound) {
 
-			// drawContours(imgContour, contours, indx, Scalar(359, 0, 100));
-			// imshow("Contours ", imgContour); //show the thresholded image
+		    // drawContours(imgContour, contours, indx, Scalar(359, 0, 100));
+		    // imshow("Contours ", imgContour); //show the thresholded image
 
 
-			std::vector<Point> pts = *itmx;
-			//std::cout << "MaxAreaSigned: " << mx << " NbPoint: " << itmx->size() << " = " << pts.size() << std::endl;
-			double ul_x, ul_y, ur_x, ur_y, dl_x, dl_y, dr_x, dr_y;
+		    std::vector<Point> pts = *itmx;
+		    //std::cout << "MaxAreaSigned: " << mx << " NbPoint: " << itmx->size() << " = " << pts.size() << std::endl;
+		    double ul_x, ul_y, ur_x, ur_y, dl_x, dl_y, dr_x, dr_y;
 
 
-			ul_x = pts[0].x;
-			ul_y = pts[0].y;
+		    ul_x = pts[0].x;
+		    ul_y = pts[0].y;
 
-			ur_x = pts[0].x;
-			ur_y = pts[0].y;
+		    ur_x = pts[0].x;
+		    ur_y = pts[0].y;
 
-			dl_x = pts[0].x;
-			dl_y = pts[0].y;
+		    dl_x = pts[0].x;
+		    dl_y = pts[0].y;
 
-			dr_x = pts[0].x;
-			dr_y = pts[0].y;
+		    dr_x = pts[0].x;
+		    dr_y = pts[0].y;
 
 
-			for(int i = 1; i < pts.size(); i++) {
-				// upleft
-				if(pts[i].x <= ul_x && pts[i].y >= ul_y) {
-					ul_x = pts[i].x;
-					ul_y = pts[i].y;
-				}
+		    for(int i = 1; i < pts.size(); i++) {
+		        // upleft
+		        if(pts[i].x <= ul_x && pts[i].y >= ul_y) {
+		            ul_x = pts[i].x;
+		            ul_y = pts[i].y;
+		        }
 
-				// upright
-				if(pts[i].x >= ur_x && pts[i].y >= ur_y) {
-					ur_x = pts[i].x;
-					ur_y = pts[i].y;
-				}
+		        // upright
+		        if(pts[i].x >= ur_x && pts[i].y >= ur_y) {
+		            ur_x = pts[i].x;
+		            ur_y = pts[i].y;
+		        }
 
-				// downright
-				if(pts[i].x >= dr_x && pts[i].y <= dr_y) {
-					dr_x = pts[i].x;
-					dr_y = pts[i].y;
-				}
+		        // downright
+		        if(pts[i].x >= dr_x && pts[i].y <= dr_y) {
+		            dr_x = pts[i].x;
+		            dr_y = pts[i].y;
+		        }
 
-				// downleft
-				if(pts[i].x <= dl_x && pts[i].y <= dl_y) {
-					dl_x = pts[i].x;
-					dl_y = pts[i].y;
-				}
-			}
+		        // downleft
+		        if(pts[i].x <= dl_x && pts[i].y <= dl_y) {
+		            dl_x = pts[i].x;
+		            dl_y = pts[i].y;
+		        }
+		    }
 
-			std::cout << "DL: x=" << dl_x << " y=" << dl_y << std::endl;
+		    std::cout << "DL: x=" << dl_x << " y=" << dl_y << std::endl;
 
-			std::cout << "DR: x=" << dr_x << " y=" << dr_y << std::endl;
+		    std::cout << "DR: x=" << dr_x << " y=" << dr_y << std::endl;
 
-			std::cout << "UL: x=" << ul_x << " y=" << ul_y << std::endl;
+		    std::cout << "UL: x=" << ul_x << " y=" << ul_y << std::endl;
 
-			std::cout << "UR: x=" << ur_x << " y=" << ur_y << std::endl;
+		    std::cout << "UR: x=" << ur_x << " y=" << ur_y << std::endl;
 
-			if(ur_x - ul_x > dr_x - dl_x)
-				std::cout << "Position: normal" << std::endl;
-			else
-				std::cout << "Position: reverse" << std::endl;
+		    if(ur_x - ul_x > dr_x - dl_x)
+		        std::cout << "Position: normal" << std::endl;
+		    else
+		        std::cout << "Position: reverse" << std::endl;
 
-			for(auto p: *itmx){
-			    //find upleft, upright, downleft, downright
-			    if(p.x > )
-			     cout << "x=" << p.x << " y=" << p.y << endl;
-			 }
+		    for(auto p: *itmx){
+		        //find upleft, upright, downleft, downright
+		        if(p.x > )
+		         cout << "x=" << p.x << " y=" << p.y << endl;
+		     }
 		}*/
 		return !notfound;
 	}

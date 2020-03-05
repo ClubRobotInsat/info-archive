@@ -38,7 +38,7 @@ namespace PhysicalRobot {
 		Position _position;
 		Time _decision_time;
 
-		bool cupFound(std::vector<std::vector<cv::Point> >& contours) const;
+		bool cupFound(std::vector<std::vector<cv::Point>>& contours) const;
 	};
 } // namespace PhysicalRobot
 
