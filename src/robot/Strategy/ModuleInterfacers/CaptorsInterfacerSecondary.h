@@ -11,7 +11,7 @@ namespace Strategy::Interfacer {
 
 	class CaptorsInterfacerSecondary final : public AbstractInterfacer {
 	public:
-		using interfaced_type = PhysicalRobot::Captors;
+		/*using interfaced_type = PhysicalRobot::Captors;
 
 		using switch_t = interfaced_type::switch_t;
 
@@ -20,9 +20,9 @@ namespace Strategy::Interfacer {
 		explicit CaptorsInterfacerSecondary(PhysicalRobot::Robot&);
 
 		interfaced_type* operator->();
-
+*/
 	private:
-		interfaced_type& _module;
+		// interfaced_type& _module;
 	};
 
 } // namespace Strategy::Interfacer

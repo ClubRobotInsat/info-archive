@@ -22,7 +22,7 @@ namespace Strategy::Interfacer {
 	Outcome PumpsInterfacerSecondary::catch_atom() {
 		_module.deactivate_valve(_evacuation);
 		_module.activate_pump(_pump);
-		_hand = _color_to_atom(_captors->read_color());
+		//		_hand = _color_to_atom(_captors->read_color());
 		return Outcome::SUCCESS;
 	}
 
@@ -41,7 +41,7 @@ namespace Strategy::Interfacer {
 				break;
 			}
 			default:
-                break;
+				break;
 		}
 		_hand = AtomType::Nothing;
 
@@ -66,16 +66,16 @@ namespace Strategy::Interfacer {
 		return AtomType::Nothing;
 	}
 
-	AtomType PumpsInterfacerSecondary::_color_to_atom(PhysicalRobot::CaptorColor color) const {
-		switch(color) {
-			case PhysicalRobot::CaptorColor::Red:
-				return AtomType::Redium;
-			case PhysicalRobot::CaptorColor::Blue:
-				return AtomType::Blueium;
-			case PhysicalRobot::CaptorColor::Green:
-				return AtomType::Greenium;
-		}
-		return AtomType::Nothing;
-	}
+	/*AtomType PumpsInterfacerSecondary::_color_to_atom(PhysicalRobot::CaptorColor color) const {
+	    switch(color) {
+	        case PhysicalRobot::CaptorColor::Red:
+	            return AtomType::Redium;
+	        case PhysicalRobot::CaptorColor::Blue:
+	            return AtomType::Blueium;
+	        case PhysicalRobot::CaptorColor::Green:
+	            return AtomType::Greenium;
+	    }
+	    return AtomType::Nothing;
+	}*/
 
 } // namespace Strategy::Interfacer

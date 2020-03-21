@@ -117,8 +117,8 @@ namespace PhysicalRobot {
 				_module_manager->add_module<Motors>(module.second);
 			} else if(module.first == "io") {
 				_module_manager->add_module<IO>(module.second);
-			} else if(module.first == "captors") {
-				_module_manager->add_module<Captors>(module.second);
+				//} else if(module.first == "captors") {
+				//	_module_manager->add_module<Captors>(module.second);
 			} else if(module.first == "pumps") {
 				_module_manager->add_module<Pumps>(module.second);
 			} else if(module.first == "navigation_parameters") {

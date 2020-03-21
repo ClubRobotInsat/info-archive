@@ -28,13 +28,13 @@
 
 #include "Module.hpp"
 
-#include "Captors.h"
 #include "IO.h"
 #include "Motors.h"
 #include "Navigation.h"
 #include "NavigationParameters.h"
 #include "Pumps.h"
 #include "Servos.h"
+#include "Webcam.h"
 
 #include <memory> // unique_ptr, make_unique
 
