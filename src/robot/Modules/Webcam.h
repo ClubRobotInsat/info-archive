@@ -7,8 +7,11 @@
 
 #include "Module.hpp"
 #include <iostream>
+//#ifdef RASPI
+//#include "../../../precompiled-libraries/build_hardfp/include/opencv2/opencv.hpp"
+//#else
 #include <opencv2/opencv.hpp>
-
+//#endif
 using namespace cv;
 
 namespace PhysicalRobot {

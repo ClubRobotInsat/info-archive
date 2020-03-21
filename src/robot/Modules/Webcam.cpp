@@ -4,7 +4,6 @@
 
 #include "Webcam.h"
 #include <iostream>
-#include <opencv2/opencv.hpp>
 
 using namespace cv;
 
@@ -12,7 +11,7 @@ namespace PhysicalRobot {
 
 	Webcam::Webcam(uint8_t id, Position pos) : Module{id, "Webcam"} {
 		_position = pos;
-		_decision_time = 1_s;
+		_decision_time = 2_s;
 	}
 
 	void Webcam::setPosition(Position position) {
