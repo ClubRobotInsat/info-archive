@@ -1,7 +1,7 @@
 #!/bin/bash
 
 print_usage () {
-    echo "Usage : $0 [all|primary|secondary|wii|test|ia_test|calibration|lidar]"
+    echo "Usage : $0 [all|primary|secondary|wii|test|ia_test|calibration|lidar|webcam]"
 }
 
 #Arguments
@@ -13,6 +13,7 @@ compile_test=0
 compile_ia_test=0
 compile_calibration=0
 compile_lidar=0
+compile_webcam=0
 cores=$(nproc)
 
 if [ $# -ne "0" ]
@@ -34,6 +35,8 @@ if [ $# -ne "0" ]
             then compile_calibration=1
         elif [ "$arg" = "lidar" ]
             then compile_lidar=1
+	elif [ "$arg" = "webcam" ]
+            then compile_webcam=1
         else
             print_usage
             exit
@@ -110,7 +113,7 @@ if [ $compile_wii -eq 1 ]; then
 fi
 
 if [ $compile_test -eq 1 ]; then
-    building_petrilab "${petri_test}"
+    #building_petrilab "${petri_test}"
     building_process "unit_testing_all"
 fi
 
@@ -126,3 +129,6 @@ if [ $compile_lidar -eq 1 ]; then
     building_process "printRobots"
 fi
 
+if [ $compile_webcam -eq 1 ]; then
+    building_process "TEST_COLORDETECTION"
+fi
