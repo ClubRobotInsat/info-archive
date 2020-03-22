@@ -45,7 +45,8 @@ int main(int argc, char** argv) {
 		std::cout << "Launch a detection ? y/n" << std::endl;
 		std::cin >> cont;
 		if(cont == 'y') {
-			std::cout << toString(webcam.detectColor()) << std::endl;
+			// std::cout << toString(webcam.detectColor()) << std::endl;
+			std::cout << toString(webcam.detectColors()) << std::endl;
 		}
 
 	} while(cont == 'y');
