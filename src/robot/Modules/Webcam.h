@@ -16,10 +16,11 @@ using namespace cv;
 
 namespace PhysicalRobot {
 
-	ENUM_CLASS_NS(PhysicalRobot, DetectedColors, Red_and_None, Green_and_None, Red_and_Green, Green_and_Red, None_and_Red, None_and_Green, None);
+	ENUM_CLASS_NS(PhysicalRobot, DetectedColors, Red_and_None, Green_and_None, Red_and_Green, Green_and_Red, None_and_Red, None_and_Green, None, Red, Green);
 	ENUM_CLASS_NS(PhysicalRobot, DetectedColor, Red, Green, Red_and_Green, None);
 	ENUM_CLASS_NS(PhysicalRobot, Position, Straight, Inclined);
 	ENUM_CLASS_NS(PhysicalRobot, PortCardinal, West, South);
+
 
 	class Webcam final : public Module {
 	public:
@@ -41,7 +42,9 @@ namespace PhysicalRobot {
 		Position _position;
 		Time _decision_time;
 
-		bool cupFound(std::vector<std::vector<cv::Point>>& contours) const;
+
+        DetectedColors cupFound(std::vector<std::vector<cv::Point> >& contours, int colDim, DetectedColor color) const;
+        bool cupFound(std::vector<std::vector<cv::Point> >& contours) const;
 	};
 } // namespace PhysicalRobot
 
