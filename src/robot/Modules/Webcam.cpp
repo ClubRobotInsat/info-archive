@@ -194,228 +194,227 @@ namespace PhysicalRobot {
 		}
 	}
 
-    PhysicalRobot::DetectedColors PhysicalRobot::Webcam::detectColors() const {
+	PhysicalRobot::DetectedColors PhysicalRobot::Webcam::detectColors() const {
 
-        VideoCapture cap(0); // capture the video from web cam
+		VideoCapture cap(0); // capture the video from web cam
 
-        if(!cap.isOpened()) // if not success, exit program
-        {
-            logDebug1("Cannot open the webcam");
-            exit(-1);
-        }
-        else {
+		if(!cap.isOpened()) // if not success, exit program
+		{
+			logDebug1("Cannot open the webcam");
+			exit(-1);
+		} else {
 
-            uint8_t dataSetSize = 10; // Initialisation of number of shoot
+			uint8_t dataSetSize = 10; // Initialisation of number of shoot
 
-            uint8_t results[COLORS] = {0, 0, 0, 0, 0, 0, 0, 0, 0}; // 0: none | 1: red | 2: green | 3: red and green
-                                                                // 4: red and none | 5: green and red | 6: green and none
-                                                                // 7: none and red | 8: none and green
+			uint8_t results[COLORS] = {0, 0, 0, 0, 0, 0, 0, 0, 0}; // 0: none | 1: red | 2: green | 3: red and green
+			                                                       // 4: red and none | 5: green and red | 6: green and
+			                                                       // none 7: none and red | 8: none and green
 
-            // Definition of filters parameters
-            int iLowGreenH = 60;
-            int iHighGreenH = 132;
+			// Definition of filters parameters
+			int iLowGreenH = 60;
+			int iHighGreenH = 132;
 
-            int iLowGreenS = 120;
-            int iHighGreenS = 255;
+			int iLowGreenS = 120;
+			int iHighGreenS = 255;
 
-            int iLowGreenV = 0; // 165 -> 0
-            int iHighGreenV = 255;
+			int iLowGreenV = 0; // 165 -> 0
+			int iHighGreenV = 255;
 
-            int iLowRedH = 123;
-            int iHighRedH = 179;
+			int iLowRedH = 123;
+			int iHighRedH = 179;
 
-            int iLowRedS = 131;
-            int iHighRedS = 255;
+			int iLowRedS = 131;
+			int iHighRedS = 255;
 
-            int iLowRedV = 116;
-            int iHighRedV = 255;
+			int iLowRedV = 116;
+			int iHighRedV = 255;
 
-            Scalar greenLow = Scalar(iLowGreenH, iLowGreenS, iLowGreenV);
-            Scalar greenHigh = Scalar(iHighGreenH, iHighGreenS, iHighGreenV);
+			Scalar greenLow = Scalar(iLowGreenH, iLowGreenS, iLowGreenV);
+			Scalar greenHigh = Scalar(iHighGreenH, iHighGreenS, iHighGreenV);
 
-            Scalar redLow = Scalar(iLowRedH, iLowRedS, iLowRedV);
-            Scalar redHigh = Scalar(iHighRedH, iHighRedS, iHighRedV);
-            PhysicalRobot::DetectedColors detectedColors, detectedColors2;
+			Scalar redLow = Scalar(iLowRedH, iLowRedS, iLowRedV);
+			Scalar redHigh = Scalar(iHighRedH, iHighRedS, iHighRedV);
+			PhysicalRobot::DetectedColors detectedColors, detectedColors2;
 
-            // std::vector<std::string> positions = {"normal", "reverse"};
-            while(dataSetSize-- > 0) {
-                Mat imgOriginal;
+			// std::vector<std::string> positions = {"normal", "reverse"};
+			while(dataSetSize-- > 0) {
+				Mat imgOriginal;
 
-                bool bSuccess = cap.read(imgOriginal); // read a new frame from video
+				bool bSuccess = cap.read(imgOriginal); // read a new frame from video
 
-                if(!bSuccess) // if not success, break loop
-                {
-                    logDebug1("Cannot read a frame from video stream");
-                    break;
-                }
+				if(!bSuccess) // if not success, break loop
+				{
+					logDebug1("Cannot read a frame from video stream");
+					break;
+				}
 
-                Mat imgHSV;
+				Mat imgHSV;
 
-                cvtColor(imgOriginal, imgHSV, COLOR_BGR2HSV); // Convert the captured frame from BGR to HSV
+				cvtColor(imgOriginal, imgHSV, COLOR_BGR2HSV); // Convert the captured frame from BGR to HSV
 
-                Mat imgThreshGreen, imgThreshRed;
+				Mat imgThreshGreen, imgThreshRed;
 
-                inRange(imgHSV, greenLow, greenHigh, imgThreshGreen); // Threshold the image
-                inRange(imgHSV, redLow, redHigh, imgThreshRed);       // Threshold the image
-
-
-                // morphological opening (remove small objects from the foreground)
-                erode(imgThreshGreen, imgThreshGreen, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)));
-                dilate(imgThreshGreen, imgThreshGreen, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)));
-
-                // morphological closing (fill small holes in the foreground)
-                dilate(imgThreshGreen, imgThreshGreen, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)));
-                erode(imgThreshGreen, imgThreshGreen, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)));
+				inRange(imgHSV, greenLow, greenHigh, imgThreshGreen); // Threshold the image
+				inRange(imgHSV, redLow, redHigh, imgThreshRed);       // Threshold the image
 
 
-                // morphological opening (remove small objects from the foreground)
-                erode(imgThreshRed, imgThreshRed, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)));
-                dilate(imgThreshRed, imgThreshRed, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)));
+				// morphological opening (remove small objects from the foreground)
+				erode(imgThreshGreen, imgThreshGreen, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)));
+				dilate(imgThreshGreen, imgThreshGreen, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)));
 
-                // morphological closing (fill small holes in the foreground)
-                dilate(imgThreshRed, imgThreshRed, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)));
-                erode(imgThreshRed, imgThreshRed, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)));
-
-                Mat imgColored;
-                int colDim;
-
-                bitwise_and(imgOriginal, imgOriginal, imgColored, imgThreshRed);
-                bitwise_and(imgOriginal, imgOriginal, imgColored, imgThreshGreen);
+				// morphological closing (fill small holes in the foreground)
+				dilate(imgThreshGreen, imgThreshGreen, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)));
+				erode(imgThreshGreen, imgThreshGreen, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)));
 
 
-                // imshow("Thresholded Green Image", imgThreshGreen); //show the thresholded image
-                // imshow("Thresholded Red Image", imgThreshRed); //show the thresholded image
+				// morphological opening (remove small objects from the foreground)
+				erode(imgThreshRed, imgThreshRed, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)));
+				dilate(imgThreshRed, imgThreshRed, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)));
 
-                // imshow("Colored Image", imgColored); //show the thresholded image
-                // imshow("Original", imgOriginal); //show the original image
+				// morphological closing (fill small holes in the foreground)
+				dilate(imgThreshRed, imgThreshRed, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)));
+				erode(imgThreshRed, imgThreshRed, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)));
 
-                std::vector<std::vector<Point>> contours;
-                findContours(imgThreshGreen, contours, CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE);
+				Mat imgColored;
+				int colDim;
 
-                colDim = imgThreshGreen.cols;
-
-                detectedColors = PhysicalRobot::DetectedColors::None;
-                detectedColors2 = PhysicalRobot::DetectedColors::None;
-
-                if(!contours.empty()) {
-                    detectedColors = cupFound(contours, colDim, DetectedColor::Green);
-                }
-
-                if(detectedColors != DetectedColors::Green) { // -> 2
-
-                    contours.clear();
-                    findContours(imgThreshRed, contours, CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE);
-
-                    if(!contours.empty()) {
-                        detectedColors2 = cupFound(contours, colDim, DetectedColor::Red);
-
-                        if( detectedColors2 != DetectedColors::Red){ // -> 1
-                            if(detectedColors == DetectedColors::None_and_Green) { // -> 8
-                                if(detectedColors2 == DetectedColors::Red_and_None)
-                                    detectedColors = DetectedColors::Red_and_Green; // -> 3
-                            } else if (detectedColors == DetectedColors::Green_and_None) { // -> 6
-                                if(detectedColors2 == DetectedColors::None_and_Red)
-                                    detectedColors = DetectedColors::Green_and_Red;  // -> 5
-                            } else{//None
-                                detectedColors = detectedColors2;
-                            }
-                        }
-                    }
-                }
+				bitwise_and(imgOriginal, imgOriginal, imgColored, imgThreshRed);
+				bitwise_and(imgOriginal, imgOriginal, imgColored, imgThreshGreen);
 
 
-                logDebug1("Detected color: ", toString(detectedColors));
+				// imshow("Thresholded Green Image", imgThreshGreen); //show the thresholded image
+				// imshow("Thresholded Red Image", imgThreshRed); //show the thresholded image
 
-                switch(detectedColors) {
-                    case PhysicalRobot::DetectedColors::None:
-                        results[0]++;
-                        break;
-                    case PhysicalRobot::DetectedColors::Red:
-                        results[1]++;
-                        break;
-                    case PhysicalRobot::DetectedColors::Green:
-                        results[2]++;
-                        break;
-                    case PhysicalRobot::DetectedColors::Red_and_Green:
-                        results[3]++;
-                        break;
-                    case PhysicalRobot::DetectedColors::Red_and_None:
-                        results[4]++;
-                        break;
-                    case PhysicalRobot::DetectedColors::Green_and_Red:
-                        results[5]++;
-                        break;
-                    case PhysicalRobot::DetectedColors::Green_and_None:
-                        results[6]++;
-                        break;
-                    case PhysicalRobot::DetectedColors::None_and_Red:
-                        results[7]++;
-                        break;
-                    case PhysicalRobot::DetectedColors::None_and_Green:
-                        results[8]++;
-                        break;
-                    default:
-                        logDebug1("Erreur ");
-                        break;
-                }
-            }
+				// imshow("Colored Image", imgColored); //show the thresholded image
+				// imshow("Original", imgOriginal); //show the original image
 
-            uint8_t r = index_max(results, 9);
+				std::vector<std::vector<Point>> contours;
+				findContours(imgThreshGreen, contours, CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE);
 
+				colDim = imgThreshGreen.cols;
 
-            switch(r) {
-                case 0:
-                    return PhysicalRobot::DetectedColors::None;
-                case 1:
-                    return PhysicalRobot::DetectedColors::Red;
-                case 2:
-                    return PhysicalRobot::DetectedColors::Green;
-                case 3:
-                    return PhysicalRobot::DetectedColors::Red_and_Green;
-                case 4:
-                    return PhysicalRobot::DetectedColors::Red_and_None;
-                case 5:
-                    return PhysicalRobot::DetectedColors::Green_and_Red;
-                case 6:
-                    return PhysicalRobot::DetectedColors::Green_and_None;
-                case 7:
-                    return PhysicalRobot::DetectedColors::None_and_Red;
-                case 8:
-                    return PhysicalRobot::DetectedColors::None_and_Green;
-                default:
-                    logDebug1("Erreur ");
-                    break;
-            }
-        }
+				detectedColors = PhysicalRobot::DetectedColors::None;
+				detectedColors2 = PhysicalRobot::DetectedColors::None;
 
-        exit(-1);
-    }
+				if(!contours.empty()) {
+					detectedColors = cupFound(contours, colDim, DetectedColor::Green);
+				}
 
-    bool Webcam::cupFound(std::vector<std::vector<cv::Point>>& contours) const {
-        Mat imgContour;
-        double area;
-        double cupThresholdMin = 40000; // To adjust
+				if(detectedColors != DetectedColors::Green) { // -> 2
 
-        auto it = contours.begin();
+					contours.clear();
+					findContours(imgThreshRed, contours, CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE);
 
-        bool notfound = true;
+					if(!contours.empty()) {
+						detectedColors2 = cupFound(contours, colDim, DetectedColor::Red);
 
-        while(it != contours.end() && notfound) {
-            area = abs(cv::contourArea(*it, false));
-
-            if(area > cupThresholdMin) {
-                notfound = false;
-                std::cout << "Max area: " << area << std::endl;
-            } else {
-                it++;
-            }
-        }
-
-        return !notfound;
-    }
+						if(detectedColors2 != DetectedColors::Red) {               // -> 1
+							if(detectedColors == DetectedColors::None_and_Green) { // -> 8
+								if(detectedColors2 == DetectedColors::Red_and_None)
+									detectedColors = DetectedColors::Red_and_Green;       // -> 3
+							} else if(detectedColors == DetectedColors::Green_and_None) { // -> 6
+								if(detectedColors2 == DetectedColors::None_and_Red)
+									detectedColors = DetectedColors::Green_and_Red; // -> 5
+							} else {                                                // None
+								detectedColors = detectedColors2;
+							}
+						}
+					}
+				}
 
 
-    DetectedColors Webcam::cupFound(std::vector<std::vector<cv::Point>>& contours, int colDim, DetectedColor color) const {
+				logDebug1("Detected color: ", toString(detectedColors));
+
+				switch(detectedColors) {
+					case PhysicalRobot::DetectedColors::None:
+						results[0]++;
+						break;
+					case PhysicalRobot::DetectedColors::Red:
+						results[1]++;
+						break;
+					case PhysicalRobot::DetectedColors::Green:
+						results[2]++;
+						break;
+					case PhysicalRobot::DetectedColors::Red_and_Green:
+						results[3]++;
+						break;
+					case PhysicalRobot::DetectedColors::Red_and_None:
+						results[4]++;
+						break;
+					case PhysicalRobot::DetectedColors::Green_and_Red:
+						results[5]++;
+						break;
+					case PhysicalRobot::DetectedColors::Green_and_None:
+						results[6]++;
+						break;
+					case PhysicalRobot::DetectedColors::None_and_Red:
+						results[7]++;
+						break;
+					case PhysicalRobot::DetectedColors::None_and_Green:
+						results[8]++;
+						break;
+					default:
+						logDebug1("Erreur ");
+						break;
+				}
+			}
+
+			uint8_t r = index_max(results, 9);
+
+
+			switch(r) {
+				case 0:
+					return PhysicalRobot::DetectedColors::None;
+				case 1:
+					return PhysicalRobot::DetectedColors::Red;
+				case 2:
+					return PhysicalRobot::DetectedColors::Green;
+				case 3:
+					return PhysicalRobot::DetectedColors::Red_and_Green;
+				case 4:
+					return PhysicalRobot::DetectedColors::Red_and_None;
+				case 5:
+					return PhysicalRobot::DetectedColors::Green_and_Red;
+				case 6:
+					return PhysicalRobot::DetectedColors::Green_and_None;
+				case 7:
+					return PhysicalRobot::DetectedColors::None_and_Red;
+				case 8:
+					return PhysicalRobot::DetectedColors::None_and_Green;
+				default:
+					logDebug1("Erreur ");
+					break;
+			}
+		}
+
+		exit(-1);
+	}
+
+	bool Webcam::cupFound(std::vector<std::vector<cv::Point>>& contours) const {
+		Mat imgContour;
+		double area;
+		double cupThresholdMin = 40000; // To adjust
+
+		auto it = contours.begin();
+
+		bool notfound = true;
+
+		while(it != contours.end() && notfound) {
+			area = abs(cv::contourArea(*it, false));
+
+			if(area > cupThresholdMin) {
+				notfound = false;
+				std::cout << "Max area: " << area << std::endl;
+			} else {
+				it++;
+			}
+		}
+
+		return !notfound;
+	}
+
+
+	DetectedColors Webcam::cupFound(std::vector<std::vector<cv::Point>>& contours, int colDim, DetectedColor color) const {
 		Mat imgContour;
 		double area;
 		double cupThresholdMin = 40000; // To adjust
@@ -432,41 +431,36 @@ namespace PhysicalRobot {
 
 			if(area > cupThresholdMin) {
 				cupfound++;
-                m = cv::moments(*it);
+				m = cv::moments(*it);
 
-                cx = int(m.m10/m.m00);
-                if(cx > colDim/2){
-                    if(color == DetectedColor::Red)
-                    {
-                        if(cupfound == 1)
-                            dC = DetectedColors::None_and_Red;
-                        else//2
-                            dC = DetectedColors::Red;
-                    }
-                    else//green
-                    {
-                        if(cupfound == 1)
-                            dC = DetectedColors::None_and_Green;
-                        else//2
-                            dC = DetectedColors::Green;
-                    }
-                }
-                else{
-                    if(color == DetectedColor::Red)
-                    {
-                        if(cupfound == 1)
-                            dC = DetectedColors::Red_and_None;
-                        else//2
-                            dC = DetectedColors::Red;
-                    }
-                    else//green
-                    {
-                        if(cupfound == 1)
-                            dC = DetectedColors::Green_and_None;
-                        else//2
-                            dC = DetectedColors::Green;
-                    }
-                }
+				cx = int(m.m10 / m.m00);
+				if(cx > colDim / 2) {
+					if(color == DetectedColor::Red) {
+						if(cupfound == 1)
+							dC = DetectedColors::None_and_Red;
+						else // 2
+							dC = DetectedColors::Red;
+					} else // green
+					{
+						if(cupfound == 1)
+							dC = DetectedColors::None_and_Green;
+						else // 2
+							dC = DetectedColors::Green;
+					}
+				} else {
+					if(color == DetectedColor::Red) {
+						if(cupfound == 1)
+							dC = DetectedColors::Red_and_None;
+						else // 2
+							dC = DetectedColors::Red;
+					} else // green
+					{
+						if(cupfound == 1)
+							dC = DetectedColors::Green_and_None;
+						else // 2
+							dC = DetectedColors::Green;
+					}
+				}
 
 				std::cout << "Max area: " << area << std::endl;
 			}

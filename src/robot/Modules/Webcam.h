@@ -43,8 +43,8 @@ namespace PhysicalRobot {
 		Time _decision_time;
 
 
-        DetectedColors cupFound(std::vector<std::vector<cv::Point> >& contours, int colDim, DetectedColor color) const;
-        bool cupFound(std::vector<std::vector<cv::Point> >& contours) const;
+		DetectedColors cupFound(std::vector<std::vector<cv::Point>>& contours, int colDim, DetectedColor color) const;
+		bool cupFound(std::vector<std::vector<cv::Point>>& contours) const;
 	};
 } // namespace PhysicalRobot
 
