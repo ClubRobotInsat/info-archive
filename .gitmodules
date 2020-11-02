@@ -16,3 +16,6 @@
 [submodule "third_parties/include/ini"]
 	path = third_parties/include/ini
 	url = https://github.com/NovA80/inifile-cpp
+[submodule "src/elec/librobot"]
+	path = src/elec/librobot
+	url = https://github.com/ClubRobotInsat/librobot.git

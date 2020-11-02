@@ -12,5 +12,3 @@ src/.idea
 *.swp
 /third_parties
 bin
-
-src/elec/librobot #Librobot is a full repository. To update it just go in it and pull
